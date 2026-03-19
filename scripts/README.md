@@ -7,6 +7,7 @@
 - [Using in Qlib](#Using-in-Qlib)
   - [US data](#US-data)
   - [CN data](#CN-data)
+- [Subagent Toolkit](#Subagent-Toolkit)
 
 
 ## Download Qlib Data
@@ -74,3 +75,17 @@ The is also a [crowd sourced version of qlib data](data_collector/crowd_source/R
 wget https://github.com/chenditc/investment_data/releases/latest/download/qlib_bin.tar.gz
 tar -zxvf qlib_bin.tar.gz -C ~/.qlib/qlib_data/cn_data --strip-components=2
 ```
+
+## Subagent Toolkit
+
+For repository-scale parallel development, use `scripts/subagents/`.
+
+```bash
+python subagents/compose_prompt.py --list
+python subagents/compose_prompt.py --validate
+```
+
+For details and role ownership guidance:
+
+- `scripts/subagents/README.md`
+- `docs/developer/subagent_playbook.rst`

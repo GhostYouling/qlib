@@ -22,6 +22,8 @@ List roles:
 
 ```bash
 python scripts/subagents/compose_prompt.py --list
+# or
+make subagent-list
 ```
 
 Generate a worker prompt:
@@ -34,6 +36,9 @@ python scripts/subagents/compose_prompt.py \
   --context "Do not edit qlib/workflow" \
   --acceptance "tests/model pass" \
   --acceptance "No behavior change for default trainer path"
+
+# or
+make subagent-prompt ROLE=model-worker OBJECTIVE="Add robust early stopping for tree-based models"
 ```
 
 Generate an explorer prompt:
@@ -43,6 +48,14 @@ python scripts/subagents/compose_prompt.py \
   --role pipeline-explorer \
   --objective "Identify CI gaps in lint/test/release consistency" \
   --acceptance "Provide path-level evidence for each risk"
+```
+
+Validate role schema:
+
+```bash
+python scripts/subagents/compose_prompt.py --validate
+# or
+make subagent-validate
 ```
 
 ## Suggested execution order
@@ -56,3 +69,4 @@ python scripts/subagents/compose_prompt.py \
 
 - `compose_prompt.py` only composes prompt text. It does not launch agents.
 - Keep role ownership strict to avoid merge and behavior conflicts.
+- Role schema is validated by `--validate` and covered by unit tests.

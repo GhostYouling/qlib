@@ -54,6 +54,10 @@ jobs:
       run: |
         make dev
 
+    - name: Validate subagent toolkit schema
+      run: |
+        make subagent-validate
+
     - name: Lint with Black
       run: |
         make black

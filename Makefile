@@ -1,4 +1,4 @@
-.PHONY: clean deepclean prerequisite dependencies lightgbm rl develop lint docs package test analysis all install dev black pylint flake8 mypy nbqa nbconvert lint build upload docs-gen
+.PHONY: clean deepclean prerequisite dependencies lightgbm rl develop lint docs package test analysis all install dev black pylint flake8 mypy nbqa nbconvert lint build upload docs-gen subagent-list subagent-validate subagent-prompt
 #You can modify it according to your terminal
 SHELL := /bin/bash
 
@@ -210,3 +210,23 @@ upload:
 
 docs-gen:
 	python -m sphinx.cmd.build -W docs $(PUBLIC_DIR)
+
+########################################################################################
+# Subagent Toolkit
+########################################################################################
+
+subagent-list:
+	python scripts/subagents/compose_prompt.py --list
+
+subagent-validate:
+	python scripts/subagents/compose_prompt.py --validate
+
+subagent-prompt:
+	@if [ -z "$(ROLE)" ] || [ -z "$(OBJECTIVE)" ]; then \
+		echo 'Usage: make subagent-prompt ROLE=model-worker OBJECTIVE="..." [CONTEXT="..."] [ACCEPTANCE="..."]'; \
+		exit 1; \
+	fi
+	@cmd="python scripts/subagents/compose_prompt.py --role \"$(ROLE)\" --objective \"$(OBJECTIVE)\""; \
+	if [ -n "$(CONTEXT)" ]; then cmd="$$cmd --context \"$(CONTEXT)\""; fi; \
+	if [ -n "$(ACCEPTANCE)" ]; then cmd="$$cmd --acceptance \"$(ACCEPTANCE)\""; fi; \
+	eval "$$cmd"

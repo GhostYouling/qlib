@@ -4,6 +4,7 @@
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -15,6 +16,41 @@ def load_roles(path: Path) -> Dict[str, Any]:
     if not isinstance(roles, dict):
         raise ValueError("Invalid roles.json: `roles` must be a dictionary.")
     return roles
+
+
+def validate_roles(roles: Dict[str, Any]) -> List[str]:
+    errors: List[str] = []
+    allowed_agent_types = {"worker", "explorer"}
+
+    if not roles:
+        errors.append("roles is empty")
+        return errors
+
+    for role_name, role in roles.items():
+        prefix = f"{role_name}:"
+        if not isinstance(role, dict):
+            errors.append(f"{prefix} role entry must be a dictionary")
+            continue
+
+        agent_type = role.get("agent_type")
+        if agent_type not in allowed_agent_types:
+            errors.append(f"{prefix} agent_type must be one of {sorted(allowed_agent_types)}")
+
+        purpose = role.get("purpose")
+        if not isinstance(purpose, str) or not purpose.strip():
+            errors.append(f"{prefix} purpose must be a non-empty string")
+
+        for key in ["write_paths", "read_paths", "must_do", "must_not", "required_checks"]:
+            value = role.get(key, [])
+            if not isinstance(value, list) or any(not isinstance(item, str) or not item.strip() for item in value):
+                errors.append(f"{prefix} `{key}` must be a list of non-empty strings")
+
+        if agent_type == "worker":
+            write_paths = role.get("write_paths", [])
+            if not write_paths:
+                errors.append(f"{prefix} worker role must define non-empty write_paths")
+
+    return errors
 
 
 def render_list(roles: Dict[str, Any]) -> str:
@@ -105,6 +141,7 @@ def main() -> None:
         help="Path to roles.json (default: scripts/subagents/roles.json).",
     )
     parser.add_argument("--list", action="store_true", help="List available roles.")
+    parser.add_argument("--validate", action="store_true", help="Validate roles schema and exit.")
     parser.add_argument("--role", help="Role name from roles.json.")
     parser.add_argument("--objective", help="Main objective for this agent task.")
     parser.add_argument(
@@ -123,6 +160,20 @@ def main() -> None:
     args = parser.parse_args()
 
     roles = load_roles(Path(args.roles))
+    validation_errors = validate_roles(roles)
+
+    if args.validate:
+        if validation_errors:
+            print("roles.json validation failed:", file=sys.stderr)
+            for err in validation_errors:
+                print(f"- {err}", file=sys.stderr)
+            raise SystemExit(1)
+        print("roles.json is valid.")
+        if not args.list and not args.role:
+            return
+
+    if validation_errors:
+        raise SystemExit("Error: roles.json is invalid. Run with --validate for details.")
 
     if args.list:
         print(render_list(roles))
@@ -148,4 +199,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

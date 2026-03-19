@@ -121,6 +121,7 @@ Use the helper under ``scripts/subagents/`` to avoid rewriting prompts.
 1. ``roles.json`` defines agent catalog, ownership, and checks.
 2. ``compose_prompt.py`` generates standardized prompts for explorers/workers.
 3. ``README.md`` includes command examples.
+4. ``make subagent-validate`` checks schema consistency.
 
 Example
 =======
@@ -128,10 +129,11 @@ Example
 .. code-block:: bash
 
     python scripts/subagents/compose_prompt.py --list
+    make subagent-list
     python scripts/subagents/compose_prompt.py \
       --role model-worker \
       --objective "Add early stopping callback for tree models" \
       --context "Keep recorder artifact compatibility" \
       --acceptance "tests/model pass" \
       --acceptance "No change to qlib/workflow"
-
+    make subagent-validate
