@@ -62,6 +62,7 @@ Document Structure
 
    Code Standard & Development Guidance <developer/code_standard_and_dev_guide.rst>
    How to build image <developer/how_to_build_image.rst>
+   Subagent Playbook <developer/subagent_playbook.rst>
 
 .. toctree::
    :maxdepth: 3

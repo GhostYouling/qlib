@@ -1,0 +1,189 @@
+{
+  "version": "1.0",
+  "repo": "qlib",
+  "roles": {
+    "repo-arch-explorer": {
+      "agent_type": "explorer",
+      "purpose": "Map architecture, module boundaries, and critical entry points.",
+      "write_paths": [],
+      "read_paths": [
+        "qlib/",
+        "docs/",
+        "examples/",
+        "tests/",
+        "scripts/"
+      ],
+      "must_do": [
+        "Identify critical files and why they are critical.",
+        "Summarize boundaries between data/model/backtest/workflow/rl."
+      ],
+      "must_not": [
+        "Do not edit files.",
+        "Do not speculate without path-level evidence."
+      ],
+      "required_checks": []
+    },
+    "pipeline-explorer": {
+      "agent_type": "explorer",
+      "purpose": "Map build, test, and release workflow; locate quality risks.",
+      "write_paths": [],
+      "read_paths": [
+        "Makefile",
+        ".github/workflows/",
+        "pyproject.toml",
+        "setup.py",
+        "docs/developer/"
+      ],
+      "must_do": [
+        "Document local dev commands and CI command parity.",
+        "Call out quality gate gaps with file/line evidence."
+      ],
+      "must_not": [
+        "Do not edit files.",
+        "Do not propose generic process changes without repository evidence."
+      ],
+      "required_checks": []
+    },
+    "data-worker": {
+      "agent_type": "worker",
+      "purpose": "Implement data layer and collection logic changes.",
+      "write_paths": [
+        "qlib/data/",
+        "scripts/data_collector/",
+        "tests/data_mid_layer_tests/"
+      ],
+      "must_do": [
+        "Keep provider and storage interfaces backward compatible unless explicitly requested.",
+        "Add or update data-layer tests when behavior changes."
+      ],
+      "must_not": [
+        "Do not edit model/backtest/workflow/rl modules.",
+        "Do not change CI files unless delegated."
+      ],
+      "required_checks": [
+        "pytest tests/data_mid_layer_tests -q"
+      ]
+    },
+    "dataset-feature-worker": {
+      "agent_type": "worker",
+      "purpose": "Implement dataset handler/processor and feature pipeline changes.",
+      "write_paths": [
+        "qlib/data/dataset/",
+        "tests/dataset_tests/"
+      ],
+      "must_do": [
+        "Preserve dataset split semantics unless task explicitly changes them.",
+        "Include tests for feature pipeline behavior changes."
+      ],
+      "must_not": [
+        "Do not edit backtest or workflow modules.",
+        "Do not edit CI and packaging files."
+      ],
+      "required_checks": [
+        "pytest tests/dataset_tests -q"
+      ]
+    },
+    "model-worker": {
+      "agent_type": "worker",
+      "purpose": "Implement model training/inference module changes.",
+      "write_paths": [
+        "qlib/model/",
+        "qlib/contrib/model/",
+        "tests/model/"
+      ],
+      "must_do": [
+        "Keep model serialization and recorder behavior stable by default.",
+        "Add tests for changed trainer/model behavior."
+      ],
+      "must_not": [
+        "Do not edit qlib/workflow unless explicitly approved as cross-boundary work.",
+        "Do not modify data collector scripts."
+      ],
+      "required_checks": [
+        "pytest tests/model -q"
+      ]
+    },
+    "backtest-worker": {
+      "agent_type": "worker",
+      "purpose": "Implement strategy and backtest engine changes.",
+      "write_paths": [
+        "qlib/backtest/",
+        "qlib/strategy/",
+        "tests/backtest/"
+      ],
+      "must_do": [
+        "Protect execution semantics and default strategy behavior.",
+        "Include regression coverage for changed execution paths."
+      ],
+      "must_not": [
+        "Do not edit model training internals.",
+        "Do not edit release workflows."
+      ],
+      "required_checks": [
+        "pytest tests/backtest -q"
+      ]
+    },
+    "workflow-online-worker": {
+      "agent_type": "worker",
+      "purpose": "Implement workflow orchestration and online update logic.",
+      "write_paths": [
+        "qlib/workflow/",
+        "tests/rolling_tests/"
+      ],
+      "must_do": [
+        "Keep offline and online manager contracts explicit.",
+        "Update rolling tests for schedule/online behavior changes."
+      ],
+      "must_not": [
+        "Do not edit backtest execution modules unless delegated.",
+        "Do not edit RL modules."
+      ],
+      "required_checks": [
+        "pytest tests/rolling_tests -q"
+      ]
+    },
+    "rl-worker": {
+      "agent_type": "worker",
+      "purpose": "Implement RL simulator/trainer/strategy changes.",
+      "write_paths": [
+        "qlib/rl/",
+        "examples/rl_order_execution/",
+        "tests/rl/"
+      ],
+      "must_do": [
+        "Preserve environment-policy interaction contracts unless task requires a change.",
+        "Add RL tests for behavior and data queue changes."
+      ],
+      "must_not": [
+        "Do not edit core backtest modules unless delegated.",
+        "Do not modify packaging workflow files."
+      ],
+      "required_checks": [
+        "pytest tests/rl -q"
+      ]
+    },
+    "tooling-ci-worker": {
+      "agent_type": "worker",
+      "purpose": "Improve Makefile, CI, and developer workflow docs.",
+      "write_paths": [
+        "Makefile",
+        ".github/workflows/",
+        "docs/developer/"
+      ],
+      "must_do": [
+        "Keep commands reproducible locally and in CI.",
+        "Document behavior changes in developer docs."
+      ],
+      "must_not": [
+        "Do not edit qlib runtime modules.",
+        "Do not change release credentials handling."
+      ],
+      "required_checks": [
+        "make black",
+        "make flake8",
+        "make mypy"
+      ]
+    }
+  }
+}
+
