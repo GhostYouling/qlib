@@ -30,6 +30,12 @@ Document Structure
    Data Retrieval <start/getdata.rst>
    Custom Model Integration <start/integration.rst>
 
+.. toctree::
+   :maxdepth: 3
+   :caption: LEARNING PATH:
+
+   30-Day Learning Path <learning_path/index.rst>
+
 
 .. toctree::
    :maxdepth: 3
