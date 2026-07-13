@@ -3307,6 +3307,13 @@ def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]
             continue
         pairs = list(audit.get("pairwise_overlap") or [])
         data = audit.get("data") or {}
+        reported_test_use = bool(data.get("test_period_used_for_pair_assessment", False))
+        try:
+            inferred_test_use = overlap_uses_post_development_observations(
+                data.get("calendar_end"), str(data.get("development_end"))
+            )
+        except (TypeError, ValueError):
+            inferred_test_use = False
         jaccards = [float(item["mean_jaccard"]) for item in pairs if item.get("mean_jaccard") is not None]
         correlations = [
             float(item["cohort_net_return_correlation"])
@@ -3321,6 +3328,7 @@ def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]
                 "candidate_libraries": ", ".join(str(item) for item in libraries if item),
                 "calendar_start": str(data.get("calendar_start", "—")),
                 "calendar_end": str(data.get("calendar_end", "—")),
+                "test_period_used_for_pair_assessment": reported_test_use or inferred_test_use,
                 "pair_count": len(pairs),
                 "mean_jaccard": float(np.mean(jaccards)) if jaccards else None,
                 "maximum_return_correlation": float(max(correlations)) if correlations else None,
@@ -3726,8 +3734,8 @@ def render_three_day_research_report(
                 "",
                 "重叠和收益相关性用于防止把相似候选的样本外表现当成多份独立证据；它不选择策略或改写任何前瞻登记。",
                 "",
-                "| 审计 | 因子库 | 候选数 / 配对数 | 历史范围 | 平均篮子 Jaccard | 最高收益相关性 |",
-                "| --- | --- | ---: | --- | ---: | ---: |",
+                "| 审计 | 因子库 | 候选数 / 配对数 | 历史范围 | 测试期参与相似度 | 平均篮子 Jaccard | 最高收益相关性 |",
+                "| --- | --- | ---: | --- | --- | ---: | ---: |",
             ]
         )
         for audit in candidate_overlap_audits:
@@ -3738,13 +3746,14 @@ def render_three_day_research_report(
                 else f"{float(audit['maximum_return_correlation']):.2f}"
             )
             lines.append(
-                "| {run_id} | {libraries} | {candidates} / {pairs} | {start} 至 {end} | {jaccard} | {correlation} |".format(
+                "| {run_id} | {libraries} | {candidates} / {pairs} | {start} 至 {end} | {uses_test} | {jaccard} | {correlation} |".format(
                     run_id=audit["run_id"],
                     libraries=audit["candidate_libraries"] or "—",
                     candidates=audit["candidate_count"],
                     pairs=audit["pair_count"],
                     start=audit["calendar_start"],
                     end=audit["calendar_end"],
+                    uses_test="是（仅描述）" if audit["test_period_used_for_pair_assessment"] else "否",
                     jaccard=mean_jaccard,
                     correlation=correlation,
                 )
@@ -4137,6 +4146,12 @@ def overlap_candidate_references(
     return list(unique.values())
 
 
+def overlap_uses_post_development_observations(last_date: Any, development_end: str) -> bool:
+    """Return whether an overlap calculation reaches beyond its development cut-off."""
+
+    return bool(pd.Timestamp(last_date).normalize() > pd.Timestamp(development_end).normalize())
+
+
 def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
     """Measure whether recorded candidates are genuinely distinct baskets."""
 
@@ -4240,12 +4255,15 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
             "calendar_start": market["datetime"].min().date().isoformat(),
             "calendar_end": market["datetime"].max().date().isoformat(),
             "development_end": args.development_end,
-            "test_period_used_for_pair_assessment": False,
+            "test_period_used_for_pair_assessment": overlap_uses_post_development_observations(
+                market["datetime"].max(), args.development_end
+            ),
         },
         "pairwise_overlap": pairs,
         "limitations": [
             "Basket overlap is a similarity diagnostic, not a strategy-selection or promotion rule.",
             "Only complete active TopK baskets are compared; inactive regimes are intentionally absent from basket overlap.",
+            "When the requested end date is after development_end, post-development observations are used only to describe similarity and must not select, promote, or alter a forward observation.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
         ],
     }

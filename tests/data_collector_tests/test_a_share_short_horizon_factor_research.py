@@ -617,12 +617,18 @@ def test_candidate_overlap_loader_preserves_cross_library_summary(tmp_path):
             "candidate_libraries": "v2_microstructure, v3_quality_grid",
             "calendar_start": "2023-01-03",
             "calendar_end": "2026-07-13",
+            "test_period_used_for_pair_assessment": False,
             "pair_count": 1,
             "mean_jaccard": 0.5,
             "maximum_return_correlation": 0.75,
             "path": str((tmp_path / "cross_candidate_overlap_audit.json").resolve()),
         }
     ]
+
+
+def test_overlap_audit_discloses_post_development_observations():
+    assert not RESEARCH.overlap_uses_post_development_observations("2025-12-31", "2025-12-31")
+    assert RESEARCH.overlap_uses_post_development_observations("2026-01-05", "2025-12-31")
 
 
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
