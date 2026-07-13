@@ -224,6 +224,29 @@ def test_v4_freshness_library_adds_close_known_disclosure_age_weight_variants():
     assert candidate.weights["trend_ma_60"] == pytest.approx(0.225)
 
 
+def test_v5_defensive_library_systematically_adds_low_volatility_and_low_range_variants():
+    v4 = RESEARCH.candidate_library("v4_freshness")
+    v5 = RESEARCH.candidate_library("v5_defensive")
+    additions = v5[len(v4) :]
+    assert len(v5) == 206
+    assert len(additions) == 30
+    assert tuple(candidate.name for candidate in v5[: len(v4)]) == tuple(candidate.name for candidate in v4)
+    assert {candidate.name.split("_q", 1)[0] for candidate in additions} == {
+        "expanded_v5_defensive_low_volatility",
+        "expanded_v5_defensive_low_range",
+        "expanded_v5_defensive_dual_risk",
+    }
+    assert {candidate.weights.get("quality_roe") for candidate in additions if "quality_roe" in candidate.weights} == {
+        0.10,
+        0.15,
+    }
+    low_volatility = RESEARCH.candidate_by_name("expanded_v5_defensive_low_volatility_q15_revenue", "v5_defensive")
+    dual_risk = RESEARCH.candidate_by_name("expanded_v5_defensive_dual_risk_q10_growth", "v5_defensive")
+    assert low_volatility.weights["volatility_low_20"] == pytest.approx(0.17)
+    assert dual_risk.weights["volatility_low_20"] == pytest.approx(0.18)
+    assert dual_risk.weights["amplitude_low"] == pytest.approx(0.162)
+
+
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
     winner = {
         "candidate": "expanded_reversal_trend_20_q25_profit",

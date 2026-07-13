@@ -502,11 +502,96 @@ V4_CANDIDATES = (*V3_CANDIDATES, *V4_FRESHNESS_CANDIDATES)
 if len(V4_CANDIDATES) != 176 or len({candidate.name for candidate in V4_CANDIDATES}) != len(V4_CANDIDATES):
     raise RuntimeError("V4 candidate library must contain 176 uniquely named strategies")
 
+# V5 asks a distinct question raised by the long-history drawdown audit: can a
+# cross-sectional preference for genuinely low twenty-day volatility and/or a
+# consistently narrow five-day range make the three-day continuation basket
+# more defensive?  These are not the earlier "moderate volatility" targets.
+# The full 3 x 5 x 2 grid avoids choosing one quality input or weight after
+# inspecting a specific result.  All components are known at the signal close.
+DEFENSIVE_SIGNAL_BLUEPRINTS = (
+    Candidate(
+        name="defensive_low_volatility",
+        description="Sixty-day continuation with an explicit preference for low twenty-day realized volatility.",
+        weights={
+            "trend_ma_60": 0.24,
+            "momentum_20": 0.20,
+            "momentum_60": 0.16,
+            "amplitude_low_1": 0.12,
+            "volume_dry_up": 0.08,
+            "volatility_low_20": 0.20,
+        },
+    ),
+    Candidate(
+        name="defensive_low_range",
+        description="Sixty-day continuation whose calmness is measured with a low five-day average intraday range.",
+        weights={
+            "trend_ma_60": 0.30,
+            "momentum_20": 0.25,
+            "momentum_60": 0.20,
+            "amplitude_low": 0.15,
+            "volume_dry_up": 0.10,
+        },
+    ),
+    Candidate(
+        name="defensive_dual_risk",
+        description="Sixty-day continuation requiring both low twenty-day realized volatility and a narrow five-day range.",
+        weights={
+            "trend_ma_60": 0.22,
+            "momentum_20": 0.18,
+            "momentum_60": 0.14,
+            "amplitude_low": 0.18,
+            "volume_dry_up": 0.08,
+            "volatility_low_20": 0.20,
+        },
+    ),
+)
+
+DEFENSIVE_QUALITY_OVERLAYS = tuple(
+    (f"q{int(weight * 100):02d}_{name}", factor, weight)
+    for name, factor in (
+        ("roe", "quality_roe"),
+        ("revenue", "quality_revenue"),
+        ("growth", "quality_growth"),
+        ("composite", "quality_score"),
+        ("profit", "quality_profit"),
+    )
+    for weight in (0.10, 0.15)
+)
+
+
+def build_v5_defensive_candidates() -> tuple[Candidate, ...]:
+    """Cross three defensive trend blueprints with a small quality grid."""
+
+    additions: list[Candidate] = []
+    for blueprint in DEFENSIVE_SIGNAL_BLUEPRINTS:
+        if not math.isclose(sum(blueprint.weights.values()), 1.0, abs_tol=1e-9):
+            raise ValueError(f"defensive blueprint weights must sum to one: {blueprint.name}")
+        for suffix, quality_factor, quality_weight in DEFENSIVE_QUALITY_OVERLAYS:
+            weights = {factor: weight * (1.0 - quality_weight) for factor, weight in blueprint.weights.items()}
+            weights[quality_factor] = quality_weight
+            additions.append(
+                Candidate(
+                    name=f"expanded_v5_{blueprint.name}_{suffix}",
+                    description=f"{blueprint.description} Quality overlay: {quality_factor} at {quality_weight:.0%}.",
+                    weights=weights,
+                )
+            )
+    if len(additions) != 30 or len({candidate.name for candidate in additions}) != len(additions):
+        raise RuntimeError("V5 defensive grid must contain 30 new unique strategies")
+    return tuple(additions)
+
+
+V5_DEFENSIVE_CANDIDATES = build_v5_defensive_candidates()
+V5_CANDIDATES = (*V4_CANDIDATES, *V5_DEFENSIVE_CANDIDATES)
+if len(V5_CANDIDATES) != 206 or len({candidate.name for candidate in V5_CANDIDATES}) != len(V5_CANDIDATES):
+    raise RuntimeError("V5 candidate library must contain 206 uniquely named strategies")
+
 CANDIDATE_LIBRARIES = {
     "v1": CANDIDATES,
     "v2_microstructure": V2_CANDIDATES,
     "v3_quality_grid": V3_CANDIDATES,
     "v4_freshness": V4_CANDIDATES,
+    "v5_defensive": V5_CANDIDATES,
 }
 CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v1": "5 fixed baselines plus 19 fixed signal blueprints crossed with 5 fixed quality overlays",
@@ -521,6 +606,10 @@ CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v4_freshness": (
         "V3 plus six quiet-long-trend combinations that independently vary revenue-quality and annual-report "
         "freshness weights; freshness is ranked from the close-known days since the effective announcement date"
+    ),
+    "v5_defensive": (
+        "V4 plus thirty systematic defensive-continuation combinations: three low-volatility/low-range signal "
+        "blueprints crossed with five quality inputs and 10%/15% quality weights"
     ),
 }
 
@@ -1140,6 +1229,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["volatility_target_5"] = 1.0 - (result["rank_volatility_5"] - 0.50).abs()
     result["volatility_target"] = 1.0 - (result["rank_volatility_10"] - 0.65).abs()
     result["volatility_target_20"] = 1.0 - (result["rank_volatility_20"] - 0.50).abs()
+    result["volatility_low_20"] = 1.0 - result["rank_volatility_20"]
     result["amplitude_low_1"] = 1.0 - result["rank_amplitude_1"]
     result["amplitude_low"] = 1.0 - result["rank_amplitude_5"]
     result["gap_reversal"] = 1.0 - result["rank_gap_1"]
