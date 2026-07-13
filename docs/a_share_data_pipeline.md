@@ -312,7 +312,16 @@ python scripts/a_share_short_horizon_factor_research.py risk-gate-audit \
   --selection-policy positive_year_stability_mdd20
 ```
 
-若多个候选都进入前瞻观察，先运行 `candidate-overlap-audit` 判断它们是否实质上选了同一批股票。它报告同一信号日的平均 Jaccard 重叠、完全相同篮子比例及三日净收益序列相关性；高重叠代表候选之间的证据不应被当作独立样本。
+若多个候选都进入前瞻观察，先运行 `candidate-overlap-audit` 判断它们是否实质上选了同一批股票。它报告同一信号日的平均 Jaccard 重叠、完全相同篮子比例及三日净收益序列相关性；高重叠代表候选之间的证据不应被当作独立样本。同一因子库可重复传入 `--candidate`，跨因子库时必须显式使用 `--candidate-spec 因子库:候选名`，避免名称被误解为另一套权重。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py candidate-overlap-audit \
+  --candidate-spec v2_microstructure:expanded_v2_quiet_long_trend_q15_growth \
+  --candidate-spec v3_quality_grid:expanded_v3_quiet_long_trend_q15_revenue \
+  --start 2023-01-01 --end 2026-07-13 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter breadth_5_above_20 \
+  --open-cost 0.00012 --close-cost 0.00062
+```
 
 若补齐较早年度的年报，可把同一审计扩展到更长历史作为压力测试；结果必须额外标注为受“当前上市清单”幸存者偏差影响的稳健性证据，不能替代新的前瞻样本或用来追溯晋级。
 

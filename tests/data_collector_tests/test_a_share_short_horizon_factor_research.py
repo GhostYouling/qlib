@@ -566,6 +566,65 @@ def test_v9_compression_reversal_grid_is_small_predeclared_and_keeps_v8_immutabl
     assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
 
 
+def test_overlap_candidate_references_support_explicit_cross_library_comparisons():
+    references = RESEARCH.overlap_candidate_references(
+        None,
+        None,
+        [
+            "v2_microstructure:expanded_v2_quiet_long_trend_q15_growth",
+            "v3_quality_grid:expanded_v3_quiet_long_trend_q15_revenue",
+        ],
+    )
+    assert [item[0] for item in references] == [
+        "v2_microstructure:expanded_v2_quiet_long_trend_q15_growth",
+        "v3_quality_grid:expanded_v3_quiet_long_trend_q15_revenue",
+    ]
+    assert [item[1] for item in references] == ["v2_microstructure", "v3_quality_grid"]
+    legacy = RESEARCH.overlap_candidate_references(
+        ["expanded_v2_quiet_long_trend_q10_roe", "expanded_v2_quiet_long_trend_q15_growth"],
+        "v2_microstructure",
+        None,
+    )
+    assert [item[0] for item in legacy] == [
+        "expanded_v2_quiet_long_trend_q10_roe",
+        "expanded_v2_quiet_long_trend_q15_growth",
+    ]
+    with pytest.raises(ValueError, match="either --candidate"):
+        RESEARCH.overlap_candidate_references(
+            ["expanded_v2_quiet_long_trend_q10_roe"],
+            "v2_microstructure",
+            ["v3_quality_grid:expanded_v3_quiet_long_trend_q15_revenue"],
+        )
+
+
+def test_candidate_overlap_loader_preserves_cross_library_summary(tmp_path):
+    payload = {
+        "run_id": "cross-library",
+        "status": "completed",
+        "candidate_libraries": ["v2_microstructure", "v3_quality_grid"],
+        "candidates": [{}, {}],
+        "data": {"calendar_start": "2023-01-03", "calendar_end": "2026-07-13"},
+        "pairwise_overlap": [
+            {"mean_jaccard": 0.5, "cohort_net_return_correlation": 0.75},
+        ],
+    }
+    (tmp_path / "cross_candidate_overlap_audit.json").write_text(json.dumps(payload), encoding="utf-8")
+    summary = RESEARCH.load_candidate_overlap_audits(tmp_path)
+    assert summary == [
+        {
+            "run_id": "cross-library",
+            "candidate_count": 2,
+            "candidate_libraries": "v2_microstructure, v3_quality_grid",
+            "calendar_start": "2023-01-03",
+            "calendar_end": "2026-07-13",
+            "pair_count": 1,
+            "mean_jaccard": 0.5,
+            "maximum_return_correlation": 0.75,
+            "path": str((tmp_path / "cross_candidate_overlap_audit.json").resolve()),
+        }
+    ]
+
+
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
     winner = {
         "candidate": "expanded_reversal_trend_20_q25_profit",

@@ -3294,6 +3294,42 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
     return diagnostics
 
 
+def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read basket-overlap evidence without treating similar candidates as independent."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_candidate_overlap_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        pairs = list(audit.get("pairwise_overlap") or [])
+        data = audit.get("data") or {}
+        jaccards = [float(item["mean_jaccard"]) for item in pairs if item.get("mean_jaccard") is not None]
+        correlations = [
+            float(item["cohort_net_return_correlation"])
+            for item in pairs
+            if item.get("cohort_net_return_correlation") is not None
+        ]
+        libraries = audit.get("candidate_libraries") or [audit.get("candidate_library")]
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate_count": len(audit.get("candidates") or []),
+                "candidate_libraries": ", ".join(str(item) for item in libraries if item),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "pair_count": len(pairs),
+                "mean_jaccard": float(np.mean(jaccards)) if jaccards else None,
+                "maximum_return_correlation": float(max(correlations)) if correlations else None,
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_regime_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read completed market-state audits for the human research log.
 
@@ -3583,6 +3619,7 @@ def render_three_day_research_report(
     diversification_audits: list[dict[str, Any]] | None = None,
     cohort_risk_audits: list[dict[str, Any]] | None = None,
     risk_gate_audits: list[dict[str, Any]] | None = None,
+    candidate_overlap_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -3678,6 +3715,38 @@ def render_three_day_research_report(
                     count=diagnostic["factor_count"],
                     factor=diagnostic["top_factor"],
                     mean_ic=formatted_ic,
+                )
+            )
+        lines.append("")
+    if candidate_overlap_audits:
+        lines.extend(
+            [
+                "",
+                "## 候选篮子重叠审计",
+                "",
+                "重叠和收益相关性用于防止把相似候选的样本外表现当成多份独立证据；它不选择策略或改写任何前瞻登记。",
+                "",
+                "| 审计 | 因子库 | 候选数 / 配对数 | 历史范围 | 平均篮子 Jaccard | 最高收益相关性 |",
+                "| --- | --- | ---: | --- | ---: | ---: |",
+            ]
+        )
+        for audit in candidate_overlap_audits:
+            mean_jaccard = "—" if audit["mean_jaccard"] is None else f"{float(audit['mean_jaccard']):.2f}"
+            correlation = (
+                "—"
+                if audit["maximum_return_correlation"] is None
+                else f"{float(audit['maximum_return_correlation']):.2f}"
+            )
+            lines.append(
+                "| {run_id} | {libraries} | {candidates} / {pairs} | {start} 至 {end} | {jaccard} | {correlation} |".format(
+                    run_id=audit["run_id"],
+                    libraries=audit["candidate_libraries"] or "—",
+                    candidates=audit["candidate_count"],
+                    pairs=audit["pair_count"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    jaccard=mean_jaccard,
+                    correlation=correlation,
                 )
             )
         lines.append("")
@@ -3977,6 +4046,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
+    candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
     loss_cap_audits = load_loss_cap_audits(experiment_root)
@@ -4000,6 +4070,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         diversification_audits,
         cohort_risk_audits,
         risk_gate_audits,
+        candidate_overlap_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -4017,6 +4088,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_settlements": len(shadow_ledger["settlements"]),
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
+        "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
         "model_audits": len(model_audits),
         "loss_cap_audits": len(loss_cap_audits),
@@ -4028,22 +4100,60 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
-def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
-    """Measure whether several recorded candidates are genuinely distinct baskets."""
+def overlap_candidate_references(
+    candidate_names: Iterable[str] | None,
+    candidate_library: str | None,
+    candidate_specs: Iterable[str] | None,
+) -> list[tuple[str, str, Candidate]]:
+    """Resolve same-library or explicit cross-library overlap candidates.
 
-    names = list(dict.fromkeys(args.candidate))
-    if len(names) < 2:
-        raise ValueError("--candidate must be supplied at least twice")
+    ``--candidate`` retains the original compact form for one library.  The
+    ``library:candidate`` form is intentionally explicit when comparing
+    candidates from different predeclared libraries, so a name is never looked
+    up in an unintended factor definition.
+    """
+
+    names = list(candidate_names or [])
+    specs = list(candidate_specs or [])
+    if names and specs:
+        raise ValueError("use either --candidate with --candidate-library or --candidate-spec, not both")
+    references: list[tuple[str, str, Candidate]] = []
+    if specs:
+        for spec in specs:
+            library_id, separator, name = str(spec).partition(":")
+            if not separator or not library_id or not name:
+                raise ValueError("--candidate-spec must use library_id:candidate_name")
+            candidate = candidate_by_name(name, library_id)
+            references.append((f"{library_id}:{candidate.name}", library_id, candidate))
+    else:
+        if not candidate_library:
+            raise ValueError("--candidate-library is required when --candidate is used")
+        for name in names:
+            candidate = candidate_by_name(str(name), candidate_library)
+            references.append((candidate.name, candidate_library, candidate))
+    unique = {reference: (reference, library_id, candidate) for reference, library_id, candidate in references}
+    if len(unique) < 2:
+        raise ValueError("supply at least two distinct overlap candidates")
+    return list(unique.values())
+
+
+def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Measure whether recorded candidates are genuinely distinct baskets."""
+
+    references = overlap_candidate_references(
+        getattr(args, "candidate", None),
+        getattr(args, "candidate_library", None),
+        getattr(args, "candidate_spec", None),
+    )
     provider_uri = Path(args.provider_uri).expanduser()
     fundamental_path = Path(args.fundamentals).expanduser()
     experiment_root = Path(args.experiment_root).expanduser()
-    candidates = [candidate_by_name(name, args.candidate_library) for name in names]
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
     market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
     ranked = rank_factor_frame(market)
     results: dict[str, dict[str, Any]] = {}
-    for candidate in candidates:
+    for reference, library_id, candidate in references:
         scored = score_candidate(ranked, candidate)
         baskets = selected_baskets_by_signal(scored, args.hold_days, args.topk, args.regime_filter)
         rounds, summary = evaluate_candidate(
@@ -4057,7 +4167,9 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
             regime_filter=args.regime_filter,
         )
         returns = rounds.set_index("signal_date")["net_return"].astype(float)
-        results[candidate.name] = {
+        results[reference] = {
+            "reference": reference,
+            "candidate_library": library_id,
             "candidate": candidate,
             "baskets": baskets,
             "returns": returns,
@@ -4065,8 +4177,8 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
         }
 
     pairs: list[dict[str, Any]] = []
-    for left_position, left_name in enumerate(names):
-        for right_name in names[left_position + 1 :]:
+    for left_position, (left_name, left_library, _) in enumerate(references):
+        for right_name, right_library, _ in references[left_position + 1 :]:
             left = results[left_name]
             right = results[right_name]
             overlap = basket_overlap_metrics(left["baskets"], right["baskets"])
@@ -4083,7 +4195,9 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
             pairs.append(
                 {
                     "left_candidate": left_name,
+                    "left_candidate_library": left_library,
                     "right_candidate": right_name,
+                    "right_candidate_library": right_library,
                     **overlap,
                     "common_return_cohorts": int(len(common_returns)),
                     "cohort_net_return_correlation": return_correlation,
@@ -4095,19 +4209,22 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
         "run_id": run_id,
         "status": "completed",
         "purpose": "candidate_overlap_research_only_not_investment_advice",
-        "candidate_library": args.candidate_library,
+        "candidate_library": args.candidate_library if not getattr(args, "candidate_spec", None) else None,
+        "candidate_libraries": sorted({library_id for _, library_id, _ in references}),
         "candidates": [
             {
+                "reference": reference,
+                "candidate_library": library_id,
                 "name": candidate.name,
                 "description": candidate.description,
                 "weights": candidate.weights,
-                "active_complete_baskets": len(results[candidate.name]["baskets"]),
-                "return_cohorts": int(len(results[candidate.name]["returns"])),
-                "development": results[candidate.name]["summary"]["development"],
-                "development_stability": results[candidate.name]["summary"].get("development_stability"),
-                "test": results[candidate.name]["summary"]["test"],
+                "active_complete_baskets": len(results[reference]["baskets"]),
+                "return_cohorts": int(len(results[reference]["returns"])),
+                "development": results[reference]["summary"]["development"],
+                "development_stability": results[reference]["summary"].get("development_stability"),
+                "test": results[reference]["summary"]["test"],
             }
-            for candidate in candidates
+            for reference, library_id, candidate in references
         ],
         "strategy": {
             "universe": "buyable_main_chinext",
@@ -4137,7 +4254,7 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
     return {
         "status": "completed",
         "audit_path": str(destination.resolve()),
-        "candidate_count": len(candidates),
+        "candidate_count": len(references),
         "pairwise_overlap": pairs,
     }
 
@@ -5404,8 +5521,13 @@ def parse_args() -> argparse.Namespace:
     overlap_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     overlap_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
     overlap_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
-    overlap_audit.add_argument("--candidate", action="append", required=True, help="repeat for each candidate to compare")
-    overlap_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    overlap_audit.add_argument(
+        "--candidate", action="append", help="repeat for each candidate from one --candidate-library to compare"
+    )
+    overlap_audit.add_argument(
+        "--candidate-spec", action="append", help="repeat library_id:candidate_name for a cross-library comparison"
+    )
+    overlap_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES))
     overlap_audit.add_argument("--start", default="2024-01-01")
     overlap_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
     overlap_audit.add_argument("--development-end", default="2025-12-31")
