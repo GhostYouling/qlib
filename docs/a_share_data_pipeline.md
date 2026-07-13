@@ -149,6 +149,17 @@ python scripts/a_share_short_horizon_factor_research.py run \
 
 可把收盘后计算出的市场广度作为独立的状态因子，例如只在质量股票池平均 5 日收益为正时做多：`--regime-filter breadth_5_positive`。未满足状态时的三日持有周期在回测中按持有现金的零收益计入，不会因为跳过交易而虚增年化收益。
 
+不要把某个状态规则当作默认真理。可对一个已记录候选运行 `regime-audit`，一次比较 `always`、两种正广度和短期广度强于中期广度四种预定义规则；报告只按开发期排序并写入单独审计 JSON，不能用它回写已登记候选或把历史结果包装成前瞻收益。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py regime-audit \
+  --candidate expanded_v3_quiet_long_trend_q15_revenue \
+  --candidate-library v3_quality_grid \
+  --start 2023-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20
+```
+
 当某轮策略在注册表中通过初测后，筛选命令必须带上它对应的状态条件，例如：
 
 ```bash

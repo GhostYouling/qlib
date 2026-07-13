@@ -76,6 +76,34 @@ def test_stability_selection_prefers_the_best_worst_development_year_without_tes
     assert RESEARCH.choose_winner(summaries, "positive_year_stability") == "stable"
 
 
+def test_regime_ranking_uses_development_score_only_and_keeps_unqualified_rules_last():
+    summaries = [
+        (
+            "always",
+            {
+                "selection_scores": {"positive_year_stability_mdd20": 0.01},
+                "test": {"net_cumulative_return": -9.0},
+            },
+        ),
+        (
+            "breadth_5_above_20",
+            {
+                "selection_scores": {"positive_year_stability_mdd20": 0.03},
+                "test": {"net_cumulative_return": -99.0},
+            },
+        ),
+        (
+            "breadth_20_positive",
+            {
+                "selection_scores": {"positive_year_stability_mdd20": None},
+                "test": {"net_cumulative_return": 99.0},
+            },
+        ),
+    ]
+    ranked = RESEARCH.rank_regimes_by_development(summaries, "positive_year_stability_mdd20")
+    assert [item[0] for item in ranked] == ["breadth_5_above_20", "always", "breadth_20_positive"]
+
+
 def test_strict_stability_policy_requires_a_development_drawdown_at_or_above_minus_twenty_percent():
     assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.20) == pytest.approx(0.02)
     assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.200001) is None

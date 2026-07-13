@@ -1317,15 +1317,42 @@ def choose_winner(summaries: list[dict[str, Any]], selection_policy: str = "pool
         raise ValueError(f"unknown selection_policy {selection_policy!r}; choose one of: {choices}")
 
     def score(item: dict[str, Any]) -> Any:
-        if selection_policy == "pooled_return_drawdown":
-            return (item.get("selection_scores") or {}).get(selection_policy, item.get("development_selection_score"))
-        return (item.get("selection_scores") or {}).get(selection_policy)
+        return development_selection_score(item, selection_policy)
 
     eligible = [item for item in summaries if score(item) is not None]
     if not eligible:
         return None
     winner = max(eligible, key=lambda item: float(score(item)))
     return str(winner["candidate"])
+
+
+def development_selection_score(item: dict[str, Any], selection_policy: str) -> float | None:
+    """Read one development-only score with the original-policy fallback."""
+
+    if selection_policy not in SELECTION_POLICIES:
+        choices = ", ".join(sorted(SELECTION_POLICIES))
+        raise ValueError(f"unknown selection_policy {selection_policy!r}; choose one of: {choices}")
+    scores = item.get("selection_scores") or {}
+    score = scores.get(selection_policy)
+    if selection_policy == "pooled_return_drawdown" and score is None:
+        score = item.get("development_selection_score")
+    return None if score is None else float(score)
+
+
+def rank_regimes_by_development(
+    summaries: list[tuple[str, dict[str, Any]]], selection_policy: str
+) -> list[tuple[str, dict[str, Any], float | None]]:
+    """Rank predeclared market-state rules without consulting any test result."""
+
+    ranked = [
+        (regime_filter, summary, development_selection_score(summary, selection_policy))
+        for regime_filter, summary in summaries
+    ]
+    return sorted(
+        ranked,
+        key=lambda item: float(item[2]) if item[2] is not None else float("-inf"),
+        reverse=True,
+    )
 
 
 def candidate_by_name(name: str, library_id: str = "v1") -> Candidate:
@@ -2117,6 +2144,115 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def run_regime_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Compare every close-known regime rule for one recorded factor mix.
+
+    This is a sensitivity audit, not a promotion path.  The ranking explicitly
+    reads only the development-period score, even when a caller supplies a
+    later historical window for diagnostics.
+    """
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidate = candidate_by_name(args.candidate, args.candidate_library)
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    scored = score_candidate(ranked, candidate)
+    run_id = _timestamp()
+    summaries: list[tuple[str, dict[str, Any]]] = []
+    for regime_filter in REGIME_FILTERS:
+        _, summary = evaluate_candidate(
+            scored,
+            candidate,
+            hold_days=args.hold_days,
+            topk=args.topk,
+            open_cost=args.open_cost,
+            close_cost=args.close_cost,
+            development_end=args.development_end,
+            regime_filter=regime_filter,
+        )
+        summaries.append((regime_filter, summary))
+    ranking = rank_regimes_by_development(summaries, args.selection_policy)
+    winner = next((regime_filter for regime_filter, _, score in ranking if score is not None), None)
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "regime_sensitivity_research_only_not_investment_advice",
+        "candidate": {
+            "name": candidate.name,
+            "description": candidate.description,
+            "weights": candidate.weights,
+            "candidate_library": args.candidate_library,
+        },
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "development_end": args.development_end,
+            "test_period_used_for_regime_selection": False,
+        },
+        "selection_policy": args.selection_policy,
+        "selection_rule": f"{SELECTION_POLICIES[args.selection_policy]}; no test metrics are used for regime ranking",
+        "winner_regime_selected_on_development_only": winner,
+        "ranking_by_development": [
+            {
+                "regime_filter": regime_filter,
+                "regime_filter_description": REGIME_FILTERS[regime_filter],
+                "development_selection_score": score,
+                "development": summary["development"],
+                "development_stability": summary.get("development_stability"),
+                "test": summary["test"],
+                "cohorts": summary["cohorts"],
+            }
+            for regime_filter, summary, score in ranking
+        ],
+        "limitations": [
+            "This is a regime sensitivity audit, not an authorization to change a registered forward candidate.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+            "Prices are qfq-adjusted and do not provide exact lot-size, dividend, tax, or limit-up/limit-down execution simulation.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_regime_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate": candidate.name,
+        "winner_regime_selected_on_development_only": winner,
+        "ranking_by_development": [
+            {
+                "regime_filter": regime_filter,
+                "development_selection_score": score,
+                "development": summary["development"],
+                "test": summary["test"],
+            }
+            for regime_filter, summary, score in ranking
+        ],
+    }
+
+
 def run_research(args: argparse.Namespace) -> dict[str, Any]:
     """Run all candidate combinations and write a record for each one."""
 
@@ -2295,6 +2431,25 @@ def parse_args() -> argparse.Namespace:
         help="record a historical diagnostic without allowing promotion; use when the later window has already been reviewed",
     )
 
+    regime_audit = subparsers.add_parser(
+        "regime-audit", help="compare all predeclared close-known market regimes for one recorded candidate"
+    )
+    regime_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    regime_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    regime_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    regime_audit.add_argument("--candidate", required=True)
+    regime_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    regime_audit.add_argument("--start", default="2024-01-01")
+    regime_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
+    regime_audit.add_argument("--development-end", default="2025-12-31")
+    regime_audit.add_argument("--hold-days", type=int, default=3)
+    regime_audit.add_argument("--topk", type=int, default=3)
+    regime_audit.add_argument("--open-cost", type=float, default=0.0015)
+    regime_audit.add_argument("--close-cost", type=float, default=0.0025)
+    regime_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    regime_audit.add_argument("--batch-size", type=int, default=500)
+    regime_audit.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
+
     screen = subparsers.add_parser("screen", help="rank latest locally available candidates with a recorded factor mix")
     screen.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     screen.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -2385,6 +2540,8 @@ def main() -> int:
         report = sync_fundamentals(args.start_year, args.end_year, Path(args.output), Path(args.manifest))
     elif args.command == "run":
         report = run_research(args)
+    elif args.command == "regime-audit":
+        report = run_regime_audit(args)
     elif args.command == "plan":
         report = run_execution_plan(args)
     elif args.command == "monitor":
