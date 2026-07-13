@@ -281,6 +281,15 @@ def test_billboard_join_uses_same_close_for_next_open_and_expires_old_events():
     assert not after_holiday["billboard_available"]
 
 
+def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
+    ranked = pd.DataFrame({"billboard_deal_to_float": [0.10, 0.80, float("nan")]})
+    result = RESEARCH.add_billboard_holdout_factor(ranked)
+    assert result[RESEARCH.BILLBOARD_HOLDOUT_FACTOR].tolist()[:2] == pytest.approx([0.90, 0.20])
+    assert pd.isna(result[RESEARCH.BILLBOARD_HOLDOUT_FACTOR].iloc[2])
+    with pytest.raises(ValueError, match="requires billboard_deal_to_float"):
+        RESEARCH.add_billboard_holdout_factor(pd.DataFrame({"other": [1.0]}))
+
+
 def test_rank_factor_frame_excludes_expired_event_values():
     raw_columns = [
         "momentum_1",
@@ -1437,6 +1446,36 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
     assert "开发期单因子三日预测诊断" in report
     assert "reversal_1" in report
     assert "0.0312" in report
+
+
+def test_billboard_holdouts_are_retained_as_non_promotable_event_evidence(tmp_path):
+    (tmp_path / "billboard_event_factor_holdout.json").write_text(
+        json.dumps(
+            {
+                "run_id": "billboard-holdout",
+                "status": "completed",
+                "hypothesis": {
+                    "factor": "billboard_low_deal_to_float",
+                    "development_diagnostic_run_id": "development-only",
+                },
+                "data": {"holdout_start": "2026-01-01", "holdout_end": "2026-07-13"},
+                "result": {
+                    "cohorts": 12,
+                    "mean_rank_ic": 0.04,
+                    "mean_top_minus_bottom_gross_return": 0.01,
+                },
+                "supportive_holdout_association": True,
+            }
+        ),
+        encoding="utf-8",
+    )
+    holdouts = RESEARCH.load_event_factor_holdouts(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, event_factor_holdouts=holdouts
+    )
+    assert "事件因子留出期验证" in report
+    assert "billboard_low_deal_to_float" in report
+    assert "方向一致（仍不可晋级）" in report
 
 
 def test_correlation_audits_record_full_windows_and_unqualified_diversification(tmp_path):

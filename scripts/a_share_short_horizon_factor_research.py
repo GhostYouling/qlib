@@ -102,6 +102,16 @@ BILLBOARD_FACTOR_DIAGNOSTIC_COLUMNS = (
     "billboard_reason_count",
     "billboard_freshness",
 )
+# This direction is deliberately not part of the development diagnostic
+# catalog.  It was formed after reading the completed 2019--2025 diagnostic,
+# so it may only be evaluated in a separately recorded post-development
+# holdout; it is never automatically eligible as a candidate-library factor.
+BILLBOARD_HOLDOUT_FACTOR = "billboard_low_deal_to_float"
+BILLBOARD_HOLDOUT_HYPOTHESIS = (
+    "Among quality-eligible stocks with a daily billboard event no older than the declared window, "
+    "a lower billboard deal amount relative to free-float market capitalization is associated with a higher "
+    "subsequent three-trading-day return."
+)
 
 
 @dataclass(frozen=True)
@@ -2433,6 +2443,25 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def add_billboard_holdout_factor(ranked: pd.DataFrame) -> pd.DataFrame:
+    """Add the one explicitly post-development billboard holdout direction.
+
+    The direct ``billboard_deal_to_float`` factor was negative in every year
+    of the completed development diagnostic.  Reversing it is therefore a
+    newly formed hypothesis, not retrospective confirmation.  Keep it out of
+    normal candidate libraries and evaluate it only through
+    ``billboard-holdout`` on a subsequent untouched period.
+    """
+
+    if "billboard_deal_to_float" not in ranked.columns:
+        raise ValueError("billboard holdout factor requires billboard_deal_to_float")
+    result = ranked.copy()
+    result[BILLBOARD_HOLDOUT_FACTOR] = 1.0 - pd.to_numeric(
+        result["billboard_deal_to_float"], errors="coerce"
+    )
+    return result
+
+
 def score_candidate(ranked: pd.DataFrame, candidate: Candidate) -> pd.DataFrame:
     """Apply a predeclared factor mix and discard rows with incomplete signals."""
 
@@ -4204,6 +4233,37 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
     return diagnostics
 
 
+def load_event_factor_holdouts(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read explicitly post-development event-factor holdouts for the log."""
+
+    holdouts: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_event_factor_holdout.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        data = audit.get("data") or {}
+        hypothesis = audit.get("hypothesis") or {}
+        result = audit.get("result") or {}
+        holdouts.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "factor": str(hypothesis.get("factor", "—")),
+                "development_diagnostic_run_id": str(hypothesis.get("development_diagnostic_run_id", "—")),
+                "holdout_start": str(data.get("holdout_start", "—")),
+                "holdout_end": str(data.get("holdout_end", "—")),
+                "cohorts": int(result.get("cohorts") or 0),
+                "mean_rank_ic": result.get("mean_rank_ic"),
+                "mean_top_minus_bottom_gross_return": result.get("mean_top_minus_bottom_gross_return"),
+                "supportive": bool(audit.get("supportive_holdout_association", False)),
+                "path": str(path.resolve()),
+            }
+        )
+    return holdouts
+
+
 def load_walk_forward_selection_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read expanding-window selection audits for the human research log."""
 
@@ -4577,6 +4637,7 @@ def render_three_day_research_report(
     candidate_overlap_audits: list[dict[str, Any]] | None = None,
     shadow_suspension_registry: dict[str, Any] | None = None,
     walk_forward_selection_audits: list[dict[str, Any]] | None = None,
+    event_factor_holdouts: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -4682,6 +4743,35 @@ def render_three_day_research_report(
                     count=diagnostic["factor_count"],
                     factor=diagnostic["top_factor"],
                     mean_ic=formatted_ic,
+                )
+            )
+        lines.append("")
+    if event_factor_holdouts:
+        lines.extend(
+            [
+                "",
+                "## 事件因子留出期验证",
+                "",
+                "这里的方向在开发期诊断结束后才被明确，因此仅展示严格后续区间的条件化事件篮子结果；它不是完整日频策略，也不能晋级或生成选股名单。",
+                "",
+                "| 验证 | 因子 | 发展期诊断 | 留出期 | Cohort | 平均 Rank IC | Top3-末3 毛收益差 | 关联方向 |",
+                "| --- | --- | --- | --- | ---: | ---: | ---: | --- |",
+            ]
+        )
+        for holdout in event_factor_holdouts:
+            mean_ic = holdout["mean_rank_ic"]
+            spread = holdout["mean_top_minus_bottom_gross_return"]
+            lines.append(
+                "| {run_id} | {factor} | {development} | {start} 至 {end} | {cohorts} | {mean_ic} | {spread} | {supportive} |".format(
+                    run_id=holdout["run_id"],
+                    factor=holdout["factor"],
+                    development=holdout["development_diagnostic_run_id"],
+                    start=holdout["holdout_start"],
+                    end=holdout["holdout_end"],
+                    cohorts=holdout["cohorts"],
+                    mean_ic="—" if mean_ic is None else f"{float(mean_ic):.4f}",
+                    spread="—" if spread is None else _percent(float(spread)),
+                    supportive="方向一致（仍不可晋级）" if holdout["supportive"] else "不支持（停止）",
                 )
             )
         lines.append("")
@@ -5072,6 +5162,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
+    event_factor_holdouts = load_event_factor_holdouts(experiment_root)
     walk_forward_selection_audits = load_walk_forward_selection_audits(experiment_root)
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
@@ -5100,6 +5191,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         candidate_overlap_audits,
         shadow_suspension_registry,
         walk_forward_selection_audits,
+        event_factor_holdouts,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -5119,6 +5211,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_suspensions": len(shadow_suspension_registry["suspensions"]),
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
+        "event_factor_holdouts": len(event_factor_holdouts),
         "walk_forward_selection_audits": len(walk_forward_selection_audits),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
@@ -5425,6 +5518,126 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         "audit_path": str(destination.resolve()),
         "factor_count": len(summaries),
         "top_factors_by_development_rank_ic": summaries[: min(10, len(summaries))],
+    }
+
+
+def run_billboard_holdout(args: argparse.Namespace) -> dict[str, Any]:
+    """Evaluate the one post-development billboard hypothesis on a held-out interval.
+
+    This command purposefully scores only the fixed inverse turnover direction
+    and never writes to the strategy registry.  It is a conditional event
+    association check; a positive result still needs a separately
+    pre-registered full-strategy test and a future paper observation.
+    """
+
+    holdout_start = pd.Timestamp(args.holdout_start)
+    development_end = pd.Timestamp(args.development_end)
+    if holdout_start <= development_end:
+        raise ValueError("--holdout-start must be strictly after --development-end")
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    billboard_path = Path(args.billboard_events).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.holdout_start, args.end, args.batch_size)
+    market_end = pd.Timestamp(market["datetime"].max())
+    if market_end <= holdout_start:
+        raise ValueError("holdout needs at least one trading session after --holdout-start")
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    billboard_events = load_billboard_events(billboard_path)
+    market = attach_billboard_events_asof(market, billboard_events, max_age_days=args.max_billboard_age_days)
+    ranked = add_billboard_holdout_factor(rank_factor_frame(market))
+    forward_returns = forward_factor_return_frame(ranked, args.hold_days)
+    forward_returns = forward_returns.loc[
+        pd.to_datetime(forward_returns["signal_date"]) >= holdout_start
+    ].copy()
+    summaries = summarize_factor_diagnostics(
+        forward_returns,
+        (BILLBOARD_HOLDOUT_FACTOR,),
+        hold_days=args.hold_days,
+        topk=args.topk,
+        open_cost=args.open_cost,
+        close_cost=args.close_cost,
+    )
+    if len(summaries) != 1:
+        raise RuntimeError("the billboard holdout did not produce a complete conditional event diagnostic")
+    summary = summaries[0]
+    supportive = bool(
+        summary["mean_rank_ic"] > 0.0 and summary["mean_top_minus_bottom_gross_return"] > 0.0
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "strict_post_development_conditional_billboard_event_holdout_not_a_strategy_or_investment_advice",
+        "hypothesis": {
+            "factor": BILLBOARD_HOLDOUT_FACTOR,
+            "description": BILLBOARD_HOLDOUT_HYPOTHESIS,
+            "development_diagnostic_run_id": args.development_diagnostic_run_id,
+            "development_end": development_end.date().isoformat(),
+            "direction_was_fixed_before_holdout_run": True,
+        },
+        "strategy_timing": {
+            "universe": "buyable_main_chinext",
+            "signal_time": "market close on billboard trade_date",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "holding_period_trading_days": args.hold_days,
+            "diagnostic_topk": args.topk,
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "daily_billboard_events": {
+            "source": str(billboard_path.resolve()),
+            "sha256": file_sha256(billboard_path),
+            "effective_date": "same trade_date close, scored after close for next local session open",
+            "max_billboard_age_days": args.max_billboard_age_days,
+            "future_return_fields_stored": False,
+            "eligible_available_rows": int(
+                (market["quality_eligible"].fillna(False) & market["billboard_available"].fillna(False)).sum()
+            ),
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "holdout_start": holdout_start.date().isoformat(),
+            "holdout_end": market_end.date().isoformat(),
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "complete_forward_name_observations": int(len(forward_returns)),
+            "holdout_used_for_factor_design": False,
+        },
+        "result": summary,
+        "supportive_holdout_association": supportive,
+        "promotion": {
+            "eligible_for_promotion": False,
+            "status": "holdout_diagnostic_only",
+            "next_step": (
+                "If this conditional association is supportive, pre-register a full event strategy and evaluate it only "
+                "on a new future period before any paper observation; otherwise retain this as rejection evidence."
+            ),
+        },
+        "limitations": [
+            "This is a conditional sample of eligible stocks with a recent billboard event, not a daily long-only strategy.",
+            "The inverse direction was formed from an already-observed development diagnostic; this one holdout does not erase multiple-testing risk.",
+            "The public billboard snapshot can revise historical entries and is not an exchange-grade point-in-time disclosure database.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias.",
+            "Prices are qfq-adjusted and do not simulate exact tradability, price limits, or suspensions.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_event_factor_holdout.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor": BILLBOARD_HOLDOUT_FACTOR,
+        "supportive_holdout_association": supportive,
+        "result": summary,
     }
 
 
@@ -6735,6 +6948,26 @@ def parse_args() -> argparse.Namespace:
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
+    billboard_holdout = subparsers.add_parser(
+        "billboard-holdout",
+        help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
+    )
+    billboard_holdout.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    billboard_holdout.add_argument("--fundamentals", default=str(DEFAULT_QUARTERLY_FUNDAMENTALS))
+    billboard_holdout.add_argument("--billboard-events", default=str(DEFAULT_BILLBOARD_EVENTS))
+    billboard_holdout.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    billboard_holdout.add_argument("--development-end", default="2025-12-31")
+    billboard_holdout.add_argument("--holdout-start", default="2026-01-01")
+    billboard_holdout.add_argument("--end", help="defaults to the latest local daily-data session")
+    billboard_holdout.add_argument("--development-diagnostic-run-id", required=True)
+    billboard_holdout.add_argument("--hold-days", type=int, default=3)
+    billboard_holdout.add_argument("--topk", type=int, default=3)
+    billboard_holdout.add_argument("--open-cost", type=float, default=0.00012)
+    billboard_holdout.add_argument("--close-cost", type=float, default=0.00062)
+    billboard_holdout.add_argument("--max-quality-age-days", type=int, default=550)
+    billboard_holdout.add_argument("--max-billboard-age-days", type=int, default=3)
+    billboard_holdout.add_argument("--batch-size", type=int, default=500)
+
     walk_forward_selection_audit = subparsers.add_parser(
         "walk-forward-selection-audit",
         help="select a candidate library on expanding historical windows and test each next calendar year",
@@ -7086,6 +7319,8 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "factor-diagnostic":
         report = run_factor_diagnostic(args)
+    elif args.command == "billboard-holdout":
+        report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":
         report = run_walk_forward_selection_audit(args)
     elif args.command == "regime-audit":
