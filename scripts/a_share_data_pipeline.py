@@ -1,0 +1,986 @@
+#!/usr/bin/env python3
+"""Download China A-share daily data and materialize it as a Qlib data set.
+
+The pipeline deliberately keeps two universes:
+
+* ``buyable_main_chinext``: Shanghai/Shenzhen main-board and ChiNext stocks.
+* ``factor_main_chinext_star``: the buyable universe plus STAR Market stocks.
+
+The latter is useful when STAR Market prices are used as explanatory variables,
+while the former remains the universe that a stock-selection strategy may hold.
+
+All generated data lives under ``<repository>/data``.  The script uses public
+Eastmoney endpoints directly, so no username, password, or API token is
+required.  It is intentionally a data-ingestion tool, not investment advice.
+"""
+
+from __future__ import annotations
+
+import argparse
+import concurrent.futures
+import datetime as dt
+import fcntl
+import json
+import logging
+import os
+import random
+import sys
+import tempfile
+import time
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Any, Iterable
+
+import pandas as pd
+import requests
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DATA_ROOT = REPO_ROOT / "data"
+RAW_DIR = DATA_ROOT / "raw" / "a_share" / "daily"
+METADATA_DIR = DATA_ROOT / "metadata"
+RUNS_DIR = METADATA_DIR / "runs"
+LOG_DIR = DATA_ROOT / "logs"
+QLIB_DIR = DATA_ROOT / "qlib" / "cn_a_share"
+LOCK_PATH = DATA_ROOT / ".a_share_pipeline.lock"
+
+# Eleven years of daily cross-sectional history is enough for the initial
+# stock-selection baseline while fitting the combined raw + Qlib data set on a
+# typical laptop.  Users with more disk can request earlier dates explicitly.
+DEFAULT_START_DATE = "2015-01-01"
+DEFAULT_REFRESH_DAYS = 45
+DEFAULT_WORKERS = 3
+
+UNIVERSE_URL = "https://82.push2.eastmoney.com/api/qt/clist/get"
+KLINE_URLS = (
+    "https://63.push2his.eastmoney.com/api/qt/stock/kline/get",
+    "http://push2his.eastmoney.com/api/qt/stock/kline/get",
+)
+HEADERS = {
+    "Accept": "application/json, text/plain, */*",
+    "Referer": "https://quote.eastmoney.com/",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36",
+}
+
+# Board prefixes are documented here rather than inferred from a mutable name
+# field returned by the data provider.  This intentionally excludes B shares,
+# Beijing Stock Exchange, ETFs, funds, and indices.
+MAIN_BOARD_PREFIXES = ("600", "601", "603", "605", "000", "001", "002", "003")
+CHINEXT_PREFIXES = ("300", "301")
+STAR_PREFIXES = ("688", "689")
+
+
+class PipelineError(RuntimeError):
+    """A recoverable data-source or materialization failure."""
+
+
+@dataclass(frozen=True)
+class Instrument:
+    """A listed A-share instrument returned by the universe endpoint."""
+
+    symbol: str
+    code: str
+    name: str
+    board: str
+    listing_date: str | None
+    market_cap: float | None
+    float_market_cap: float | None
+    is_st: bool
+
+
+@dataclass
+class DownloadResult:
+    """A single symbol's download outcome, persisted in the run manifest."""
+
+    symbol: str
+    status: str
+    rows: int = 0
+    first_date: str | None = None
+    last_date: str | None = None
+    error: str | None = None
+
+
+class PipelineLock:
+    """An advisory process lock so scheduled runs cannot corrupt data output."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self._file: Any | None = None
+
+    def __enter__(self) -> "PipelineLock":
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._file = self.path.open("a+")
+        try:
+            fcntl.flock(self._file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise PipelineError(
+                f"another A-share pipeline run holds {self.path}; refusing to overlap"
+            ) from exc
+        self._file.write(f"pid={os.getpid()} started_at={dt.datetime.now(dt.timezone.utc).isoformat()}\n")
+        self._file.flush()
+        return self
+
+    def __exit__(self, exc_type: Any, exc: Any, traceback: Any) -> None:
+        if self._file is not None:
+            fcntl.flock(self._file.fileno(), fcntl.LOCK_UN)
+            self._file.close()
+
+
+def parse_date(value: str) -> dt.date:
+    """Parse a CLI ISO date into a date, with a useful argparse error upstream."""
+
+    return dt.date.fromisoformat(value)
+
+
+def latest_completed_session_date(now: dt.datetime | None = None) -> dt.date:
+    """Return a conservative daily-data cutoff in the local China/Singapore time zone.
+
+    A-share daily bars are provisional before the close. The workspace time
+    zone matches China Standard Time, so before 15:30 on a weekday the most
+    recent safe date is the preceding weekday. Exchange holidays simply leave
+    the existing calendar unchanged, which is safer than ingesting a live bar.
+    """
+
+    local_now = now or dt.datetime.now()
+    cutoff = local_now.date()
+    if local_now.weekday() < 5 and local_now.time() < dt.time(15, 30):
+        cutoff -= dt.timedelta(days=1)
+    while cutoff.weekday() >= 5:
+        cutoff -= dt.timedelta(days=1)
+    return cutoff
+
+
+def qlib_symbol(code: str) -> str:
+    """Convert a six-digit A-share code into Qlib's ``SH/SZ`` notation."""
+
+    if code.startswith(("6", "9")):
+        return f"SH{code}"
+    return f"SZ{code}"
+
+
+def classify_board(code: str) -> str | None:
+    """Classify the requested boards and reject all non-target instruments."""
+
+    if code.startswith(MAIN_BOARD_PREFIXES):
+        return "main"
+    if code.startswith(CHINEXT_PREFIXES):
+        return "chinext"
+    if code.startswith(STAR_PREFIXES):
+        return "star"
+    return None
+
+
+def is_st_name(name: str) -> bool:
+    """Return whether an exchange-provided name carries an ST risk marker."""
+
+    normalized = name.upper().replace(" ", "")
+    return normalized.startswith("ST") or normalized.startswith("*ST")
+
+
+def valid_listing_date(value: Any) -> str | None:
+    """Normalize the provider's optional YYYYMMDD listing date."""
+
+    if value in (None, "", 0, "0"):
+        return None
+    raw = str(value).strip()
+    if len(raw) == 8 and raw.isdigit():
+        try:
+            return dt.datetime.strptime(raw, "%Y%m%d").date().isoformat()
+        except ValueError:
+            return None
+    return None
+
+
+class EastmoneyClient:
+    """Small, retrying adapter around the public Eastmoney JSON endpoints."""
+
+    def __init__(self, timeout: float = 30.0, retries: int = 4, delay: float = 0.35):
+        self.timeout = timeout
+        self.retries = retries
+        self.delay = delay
+
+    def _get_json(self, urls: Iterable[str], params: dict[str, Any]) -> dict[str, Any]:
+        errors: list[str] = []
+        for attempt in range(self.retries):
+            for url in urls:
+                try:
+                    response = requests.get(url, params=params, headers=HEADERS, timeout=self.timeout)
+                    response.raise_for_status()
+                    payload = response.json()
+                    if payload.get("rc") not in (0, None):
+                        raise PipelineError(f"provider returned rc={payload.get('rc')}")
+                    time.sleep(self.delay + random.uniform(0, self.delay / 3))
+                    return payload
+                except (requests.RequestException, ValueError, PipelineError) as exc:
+                    errors.append(f"{url}: {type(exc).__name__}: {exc}")
+            time.sleep(min(16.0, (2**attempt) + random.uniform(0, 0.5)))
+        raise PipelineError("; ".join(errors[-len(tuple(urls)) :]))
+
+    def list_instruments(self) -> list[Instrument]:
+        """Fetch the current A-share list and retain only the requested boards."""
+
+        params = {
+            "pn": 1,
+            # This endpoint silently caps page size at 100 even if a larger
+            # value is supplied, so explicitly page through the whole list.
+            "pz": 100,
+            "po": 1,
+            "np": 1,
+            "fltt": 2,
+            "invt": 2,
+            "fid": "f3",
+            # SH/SZ/BJ A-share groups.  Prefix filtering below is the authoritative
+            # scope control and excludes BJ and any accidental non-equity results.
+            "fs": "m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23,m:0+t:81+s:2048",
+            "fields": "f12,f14,f20,f21,f26",
+        }
+        rows: list[dict[str, Any]] = []
+        expected_total: int | None = None
+        page = 1
+        while True:
+            params["pn"] = page
+            payload = self._get_json((UNIVERSE_URL,), params)
+            data = payload.get("data") or {}
+            page_rows = data.get("diff") or []
+            if expected_total is None:
+                expected_total = int(data.get("total") or 0)
+            if not page_rows:
+                break
+            rows.extend(page_rows)
+            if expected_total and len(rows) >= expected_total:
+                break
+            page += 1
+        instruments: list[Instrument] = []
+        for row in rows:
+            code = str(row.get("f12") or "").zfill(6)
+            board = classify_board(code)
+            if board is None:
+                continue
+            name = str(row.get("f14") or "")
+            instruments.append(
+                Instrument(
+                    symbol=qlib_symbol(code),
+                    code=code,
+                    name=name,
+                    board=board,
+                    listing_date=valid_listing_date(row.get("f26")),
+                    market_cap=_float_or_none(row.get("f20")),
+                    float_market_cap=_float_or_none(row.get("f21")),
+                    is_st=is_st_name(name),
+                )
+            )
+        if not instruments:
+            raise PipelineError("the universe endpoint returned no requested A-share instruments")
+        return sorted(instruments, key=lambda item: item.symbol)
+
+    def daily_bars(self, instrument: Instrument, start: dt.date, end: dt.date, adjust: str) -> pd.DataFrame:
+        """Return adjusted daily OHLCV data in a Qlib-ready column layout."""
+
+        adjust_code = {"raw": "0", "qfq": "1", "hfq": "2"}[adjust]
+        params = {
+            "secid": _eastmoney_secid(instrument),
+            "fields1": "f1,f2,f3,f4,f5,f6",
+            "fields2": "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61",
+            "klt": "101",
+            "fqt": adjust_code,
+            "beg": start.strftime("%Y%m%d"),
+            "end": end.strftime("%Y%m%d"),
+        }
+        payload = self._get_json(KLINE_URLS, params)
+        data = payload.get("data") or {}
+        rows = data.get("klines") or []
+        if not rows:
+            return pd.DataFrame(columns=_BAR_COLUMNS)
+
+        parsed: list[list[Any]] = []
+        for raw in rows:
+            values = str(raw).split(",")
+            if len(values) < 11:
+                continue
+            try:
+                volume = float(values[5])
+                amount = float(values[6])
+                # Eastmoney reports A-share volume in lots (100 shares).  Convert
+                # amount / volume into an actual price-level VWAP for Alpha158.
+                vwap = amount / (volume * 100.0) if volume > 0 else float("nan")
+                parsed.append(
+                    [
+                        values[0],
+                        float(values[1]),
+                        float(values[3]),
+                        float(values[4]),
+                        float(values[2]),
+                        volume,
+                        amount,
+                        vwap,
+                        float(values[9]),
+                        float(values[8]),
+                        float(values[10]),
+                    ]
+                )
+            except (TypeError, ValueError):
+                continue
+        bars = pd.DataFrame(parsed, columns=_BAR_COLUMNS)
+        if bars.empty:
+            return bars
+        bars["date"] = pd.to_datetime(bars["date"], errors="coerce")
+        bars = bars.dropna(subset=["date", "open", "high", "low", "close"])
+        bars = bars.loc[~invalid_price_mask(bars)]
+        bars.insert(1, "symbol", instrument.symbol)
+        return bars.sort_values("date").drop_duplicates("date", keep="last")
+
+
+_BAR_COLUMNS = [
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount",
+    "vwap",
+    "change",
+    "pct_chg",
+    "turnover",
+]
+
+
+def invalid_price_mask(bars: pd.DataFrame) -> pd.Series:
+    """Identify unusable OHLC rows, including negative qfq artifacts.
+
+    Eastmoney's qfq history can become negative for a small number of stocks
+    after large cumulative cash distributions. Negative prices make price
+    ratios and Qlib labels invalid, so represent those dates as unavailable
+    rather than passing a fabricated tradable price into research.
+    """
+
+    required = ["open", "high", "low", "close"]
+    if not set(required).issubset(bars.columns):
+        return pd.Series(True, index=bars.index)
+    prices = bars[required].apply(pd.to_numeric, errors="coerce")
+    return (
+        prices.isna().any(axis=1)
+        | (prices <= 0).any(axis=1)
+        | (prices["high"] < prices["low"])
+        | (prices["high"] < prices[["open", "close"]].max(axis=1))
+        | (prices["low"] > prices[["open", "close"]].min(axis=1))
+    )
+
+
+def _float_or_none(value: Any) -> float | None:
+    try:
+        if value in (None, "", "-"):
+            return None
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _eastmoney_secid(instrument: Instrument) -> str:
+    """Map Qlib's instrument notation to Eastmoney's market.code notation."""
+
+    return f"1.{instrument.code}" if instrument.symbol.startswith("SH") else f"0.{instrument.code}"
+
+
+def _latest_parquet_date(path: Path) -> dt.date | None:
+    """Read the latest source date from compressed Parquet data."""
+
+    if not path.exists() or path.stat().st_size == 0:
+        return None
+    try:
+        dates = pd.read_parquet(path, columns=["date"])["date"]
+        latest = pd.to_datetime(dates, errors="coerce").max()
+        return latest.date() if not pd.isna(latest) else None
+    except (OSError, ValueError, KeyError):
+        return None
+
+
+def _atomic_write_parquet(data: pd.DataFrame, destination: Path) -> None:
+    """Atomically write compressed source data without filling the local disk."""
+
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(suffix=".parquet", dir=destination.parent, delete=False) as handle:
+        temporary = Path(handle.name)
+    data.to_parquet(temporary, index=False, compression="zstd")
+    temporary.replace(destination)
+
+
+def merge_and_save_bars(path: Path, new_bars: pd.DataFrame, end: dt.date | None = None) -> pd.DataFrame:
+    """Merge refreshed rows into a per-symbol source file, preserving latest data."""
+
+    if path.exists():
+        old_bars = pd.read_parquet(path)
+        combined = pd.concat([old_bars, new_bars], ignore_index=True)
+    else:
+        combined = new_bars.copy()
+    combined["date"] = pd.to_datetime(combined["date"])
+    combined = combined.sort_values("date").drop_duplicates("date", keep="last")
+    if end is not None:
+        combined = combined.loc[combined["date"] <= pd.Timestamp(end)].copy()
+    _atomic_write_parquet(combined, path)
+    return combined
+
+
+def migrate_csv_source_files() -> int:
+    """Migrate early CSV source files to compressed Parquet once."""
+
+    migrated = 0
+    for legacy_path in RAW_DIR.glob("*.csv"):
+        destination = legacy_path.with_suffix(".parquet")
+        if not destination.exists():
+            legacy = pd.read_csv(legacy_path, parse_dates=["date"])
+            _atomic_write_parquet(legacy, destination)
+        legacy_path.unlink()
+        migrated += 1
+    return migrated
+
+
+def sanitize_source_data(max_examples: int = 20) -> dict[str, Any]:
+    """Remove legacy non-positive OHLC rows from local source Parquet files.
+
+    The dropped dates are retained as NaN spans after Qlib materialization,
+    matching Qlib's convention for unavailable trading data. A repair manifest
+    records every affected symbol so the operation remains auditable.
+    """
+
+    removed_rows = 0
+    affected: list[dict[str, Any]] = []
+    files = sorted(RAW_DIR.glob("*.parquet"))
+    for path in files:
+        bars = pd.read_parquet(path)
+        bad = invalid_price_mask(bars)
+        if not bad.any():
+            continue
+        bad_dates = pd.to_datetime(bars.loc[bad, "date"]).dt.date.astype(str).tolist()
+        cleaned = bars.loc[~bad].copy()
+        if cleaned.empty:
+            raise PipelineError(f"sanitizing {path.name} would remove every source row")
+        _atomic_write_parquet(cleaned, path)
+        removed_rows += int(bad.sum())
+        affected.append({"symbol": path.stem.upper(), "rows_removed": int(bad.sum()), "dates": bad_dates})
+    return {
+        "raw_files_checked": len(files),
+        "symbols_affected": len(affected),
+        "rows_removed": removed_rows,
+        "affected_symbols": affected[:max_examples],
+        "affected_symbol_count_not_shown": max(0, len(affected) - max_examples),
+    }
+
+
+def prune_source_after(end: dt.date, max_examples: int = 20) -> dict[str, Any]:
+    """Remove provisional source rows later than a completed-session cutoff."""
+
+    removed_rows = 0
+    affected: list[dict[str, Any]] = []
+    files = sorted(RAW_DIR.glob("*.parquet"))
+    cutoff = pd.Timestamp(end)
+    for path in files:
+        bars = pd.read_parquet(path)
+        dates = pd.to_datetime(bars["date"])
+        future = dates > cutoff
+        if not future.any():
+            continue
+        cleaned = bars.loc[~future].copy()
+        if cleaned.empty:
+            raise PipelineError(f"pruning {path.name} would remove every source row")
+        _atomic_write_parquet(cleaned, path)
+        removed_rows += int(future.sum())
+        affected.append(
+            {
+                "symbol": path.stem.upper(),
+                "rows_removed": int(future.sum()),
+                "first_removed_date": dates.loc[future].min().date().isoformat(),
+                "last_removed_date": dates.loc[future].max().date().isoformat(),
+            }
+        )
+    return {
+        "cutoff": end.isoformat(),
+        "raw_files_checked": len(files),
+        "symbols_affected": len(affected),
+        "rows_removed": removed_rows,
+        "affected_symbols": affected[:max_examples],
+        "affected_symbol_count_not_shown": max(0, len(affected) - max_examples),
+    }
+
+
+def write_json(path: Path, value: Any) -> None:
+    """Atomically save machine-readable metadata."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, delete=False) as handle:
+        temporary = Path(handle.name)
+        json.dump(value, handle, ensure_ascii=False, indent=2, sort_keys=True)
+        handle.write("\n")
+    temporary.replace(path)
+
+
+def write_universe_snapshot(instruments: list[Instrument], as_of: dt.date) -> None:
+    """Persist the current universe snapshot and a stable latest copy."""
+
+    records = [asdict(item) for item in instruments]
+    write_json(METADATA_DIR / f"universe_{as_of.isoformat()}.json", records)
+    write_json(METADATA_DIR / "universe_latest.json", records)
+
+
+def _requested_symbols(value: str | None) -> set[str] | None:
+    if not value:
+        return None
+    result: set[str] = set()
+    for item in value.split(","):
+        code = item.strip().upper()
+        if not code:
+            continue
+        if len(code) == 6 and code.isdigit():
+            result.add(qlib_symbol(code))
+        elif len(code) == 8 and code[:2] in {"SH", "SZ"} and code[2:].isdigit():
+            result.add(code)
+        else:
+            raise PipelineError(f"invalid --symbols value: {item!r}; use 600519 or SH600519")
+    return result
+
+
+def select_instruments(
+    instruments: list[Instrument], scope: str, requested: set[str] | None
+) -> list[Instrument]:
+    """Apply the requested collection scope after the canonical board classification."""
+
+    allowed = {"main", "chinext"} if scope == "buyable" else {"main", "chinext", "star"}
+    selected = [item for item in instruments if item.board in allowed]
+    if requested is not None:
+        known = {item.symbol for item in selected}
+        unknown = requested - known
+        if unknown:
+            raise PipelineError(f"requested symbols are outside this scope or not currently listed: {sorted(unknown)}")
+        selected = [item for item in selected if item.symbol in requested]
+    return selected
+
+
+def download_instrument(
+    client: EastmoneyClient,
+    instrument: Instrument,
+    start: dt.date,
+    end: dt.date,
+    refresh_days: int,
+    force_full: bool,
+    only_missing: bool,
+    adjust: str,
+) -> DownloadResult:
+    """Download one symbol, refreshing a tail window to catch late corrections."""
+
+    destination = RAW_DIR / f"{instrument.symbol.lower()}.parquet"
+    latest = _latest_parquet_date(destination)
+    if latest is not None and only_missing:
+        return DownloadResult(instrument.symbol, "up_to_date", last_date=latest.isoformat())
+    fetch_start = start
+    if latest is not None and not force_full:
+        fetch_start = max(start, latest - dt.timedelta(days=refresh_days))
+    if instrument.listing_date:
+        fetch_start = max(fetch_start, parse_date(instrument.listing_date))
+    if fetch_start > end:
+        return DownloadResult(instrument.symbol, "up_to_date", last_date=latest.isoformat() if latest else None)
+    try:
+        bars = client.daily_bars(instrument, fetch_start, end, adjust)
+        if bars.empty:
+            return DownloadResult(instrument.symbol, "empty", error=f"no bars returned for {fetch_start}..{end}")
+        merged = merge_and_save_bars(destination, bars, end=end)
+        return DownloadResult(
+            instrument.symbol,
+            "ok",
+            rows=len(bars),
+            first_date=merged["date"].iloc[0].date().isoformat(),
+            last_date=merged["date"].iloc[-1].date().isoformat(),
+        )
+    except Exception as exc:  # collect per-symbol failures; do not lose a whole run
+        return DownloadResult(instrument.symbol, "failed", error=f"{type(exc).__name__}: {exc}")
+
+
+def _read_qlib_instruments(path: Path) -> dict[str, tuple[str, str]]:
+    if not path.exists():
+        return {}
+    result: dict[str, tuple[str, str]] = {}
+    with path.open(encoding="utf-8") as handle:
+        for line in handle:
+            pieces = line.rstrip("\n").split("\t")
+            if len(pieces) == 3:
+                result[pieces[0].upper()] = (pieces[1], pieces[2])
+    return result
+
+
+def _write_qlib_universe(path: Path, symbols: set[str], all_ranges: dict[str, tuple[str, str]]) -> int:
+    rows = [
+        "\t".join([symbol, *all_ranges[symbol]])
+        for symbol in sorted(symbols)
+        if symbol in all_ranges
+    ]
+    path.write_text("\n".join(rows) + ("\n" if rows else ""), encoding="utf-8")
+    return len(rows)
+
+
+def materialize_qlib(instruments: list[Instrument], workers: int) -> dict[str, int]:
+    """Rebuild Qlib binary data from compressed source files and write scopes.
+
+    A complete rebuild is intentional: qfq prices may be restated by later
+    corporate actions.  Appending only fresh bars would silently leave an
+    inconsistent adjusted-price history.
+    """
+
+    parquet_count = len(list(RAW_DIR.glob("*.parquet")))
+    if not parquet_count:
+        raise PipelineError(f"no source Parquet files exist under {RAW_DIR}")
+    # ``dump_bin.py`` is part of this repository.  We reuse its binary writer
+    # but orchestrate it here with threads rather than its ProcessPoolExecutor:
+    # macOS uses ``spawn`` for child processes, which can recursively re-enter a
+    # CLI main module when this pipeline is invoked by launchd.
+    sys.path.insert(0, str(REPO_ROOT))
+    from scripts.dump_bin import DumpDataAll  # pylint: disable=import-outside-toplevel
+
+    dumper = DumpDataAll(
+        data_path=str(RAW_DIR),
+        qlib_dir=str(QLIB_DIR),
+        freq="day",
+        max_workers=1,
+        date_field_name="date",
+        file_suffix=".parquet",
+        symbol_field_name="symbol",
+        exclude_fields="date,symbol",
+    )
+    all_datetimes: set[pd.Timestamp] = set()
+    date_ranges: list[str] = []
+    for source_path in dumper.df_files:
+        (begin, end), dates = dumper._get_date(source_path, is_begin_end=True, as_set=True)
+        all_datetimes.update(dates)
+        if isinstance(begin, pd.Timestamp) and isinstance(end, pd.Timestamp):
+            date_ranges.append(
+                "\t".join(
+                    [
+                        dumper.get_symbol_from_file(source_path).upper(),
+                        dumper._format_datetime(begin),
+                        dumper._format_datetime(end),
+                    ]
+                )
+            )
+    dumper._calendars_list = sorted(map(pd.Timestamp, all_datetimes))
+    if not dumper._calendars_list:
+        raise PipelineError("source Parquet files contain no usable trading dates")
+    dumper.save_calendars(dumper._calendars_list)
+    dumper.save_instruments(date_ranges)
+
+    def dump_one(source_path: Path) -> None:
+        dumper._dump_bin(source_path, dumper._calendars_list)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
+        for _ in executor.map(dump_one, dumper.df_files):
+            pass
+
+    ranges = _read_qlib_instruments(QLIB_DIR / "instruments" / "all.txt")
+    buyable = {item.symbol for item in instruments if item.board in {"main", "chinext"}}
+    factor = {item.symbol for item in instruments if item.board in {"main", "chinext", "star"}}
+    instruments_dir = QLIB_DIR / "instruments"
+    buyable_count = _write_qlib_universe(instruments_dir / "buyable_main_chinext.txt", buyable, ranges)
+    factor_count = _write_qlib_universe(instruments_dir / "factor_main_chinext_star.txt", factor, ranges)
+    return {
+        "raw_parquet_files": parquet_count,
+        "qlib_all": len(ranges),
+        "qlib_buyable_main_chinext": buyable_count,
+        "qlib_factor_main_chinext_star": factor_count,
+    }
+
+
+def run_sync(args: argparse.Namespace) -> int:
+    """Execute one idempotent collection/materialization run."""
+
+    start = parse_date(args.start)
+    end = (
+        parse_date(args.end)
+        if args.end
+        else dt.date.today()
+        if args.include_current_session
+        else latest_completed_session_date()
+    )
+    if start > end:
+        raise PipelineError("--start must not be later than --end")
+    for directory in (RAW_DIR, METADATA_DIR, RUNS_DIR, LOG_DIR, QLIB_DIR):
+        directory.mkdir(parents=True, exist_ok=True)
+
+    run_started = dt.datetime.now(dt.timezone.utc)
+    client = EastmoneyClient(timeout=args.timeout, retries=args.retries, delay=args.delay)
+    with PipelineLock(LOCK_PATH):
+        migrated_csv_files = migrate_csv_source_files()
+        universe = client.list_instruments()
+        write_universe_snapshot(universe, end)
+        selected = select_instruments(universe, args.scope, _requested_symbols(args.symbols))
+        logging.info(
+            "collecting %d symbols (%s scope; %d main, %d ChiNext, %d STAR in current snapshot)",
+            len(selected),
+            args.scope,
+            sum(item.board == "main" for item in universe),
+            sum(item.board == "chinext" for item in universe),
+            sum(item.board == "star" for item in universe),
+        )
+
+        results: list[DownloadResult] = []
+        with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as executor:
+            futures = [
+                executor.submit(
+                    download_instrument,
+                    client,
+                    item,
+                    start,
+                    end,
+                    args.refresh_days,
+                    args.force_full,
+                    args.only_missing,
+                    args.adjust,
+                )
+                for item in selected
+            ]
+            for index, future in enumerate(concurrent.futures.as_completed(futures), start=1):
+                result = future.result()
+                results.append(result)
+                if result.status == "failed":
+                    logging.warning("%s failed: %s", result.symbol, result.error)
+                elif index % 100 == 0 or index == len(futures):
+                    logging.info("download progress: %d/%d", index, len(futures))
+
+        ok_count = sum(item.status == "ok" for item in results)
+        failed = [item for item in results if item.status == "failed"]
+        empty = [item for item in results if item.status == "empty"]
+        qlib_summary: dict[str, int] = {}
+        if not args.skip_dump and (ok_count > 0 or any(RAW_DIR.glob("*.parquet"))):
+            qlib_summary = materialize_qlib(universe, args.dump_workers)
+
+        completed = dt.datetime.now(dt.timezone.utc)
+        manifest = {
+            "started_at": run_started.isoformat(),
+            "completed_at": completed.isoformat(),
+            "scope": args.scope,
+            "start": start.isoformat(),
+            "end": end.isoformat(),
+            "adjust": args.adjust,
+            "force_full": args.force_full,
+            "only_missing": args.only_missing,
+            "requested_symbols": args.symbols,
+            "universe_counts": {
+                "main": sum(item.board == "main" for item in universe),
+                "chinext": sum(item.board == "chinext" for item in universe),
+                "star": sum(item.board == "star" for item in universe),
+                "selected": len(selected),
+            },
+            "download_counts": {
+                "ok": ok_count,
+                "empty": len(empty),
+                "failed": len(failed),
+                "up_to_date": sum(item.status == "up_to_date" for item in results),
+            },
+            "migrated_legacy_csv_files": migrated_csv_files,
+            "failed": [asdict(item) for item in failed],
+            "empty": [asdict(item) for item in empty],
+            "qlib": qlib_summary,
+        }
+        run_id = run_started.strftime("%Y%m%dT%H%M%SZ")
+        write_json(RUNS_DIR / f"{run_id}.json", manifest)
+        write_json(METADATA_DIR / "latest_run.json", manifest)
+        print(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True))
+        # A failed subset should be visible to a scheduler without losing the
+        # successfully acquired data.  Exit 2 makes launchd retain the log.
+        return 2 if failed else 0
+
+
+def run_status(_: argparse.Namespace) -> int:
+    """Print the latest local pipeline state without accessing the network."""
+
+    latest_run = METADATA_DIR / "latest_run.json"
+    latest_summary: dict[str, Any] | None = None
+    if latest_run.exists():
+        run = json.loads(latest_run.read_text(encoding="utf-8"))
+        latest_summary = {
+            key: run.get(key)
+            for key in (
+                "started_at",
+                "completed_at",
+                "scope",
+                "start",
+                "end",
+                "adjust",
+                "force_full",
+                "only_missing",
+                "universe_counts",
+                "download_counts",
+                "qlib",
+            )
+        }
+        latest_summary["empty_symbols_path"] = str(latest_run)
+        latest_summary["failed_symbols_path"] = str(latest_run)
+    calendar_path = QLIB_DIR / "calendars" / "day.txt"
+    calendar_end = None
+    if calendar_path.exists():
+        with calendar_path.open(encoding="utf-8") as handle:
+            for line in handle:
+                if line.strip():
+                    calendar_end = line.strip()
+    maintenance: dict[str, Any] | None = None
+    maintenance_candidates = [METADATA_DIR / "latest_sanitization.json", METADATA_DIR / "latest_session_prune.json"]
+    existing_maintenance = [path for path in maintenance_candidates if path.exists()]
+    if existing_maintenance:
+        path = max(existing_maintenance, key=lambda item: item.stat().st_mtime)
+        record = json.loads(path.read_text(encoding="utf-8"))
+        repair = record.get("repair") or record.get("prune")
+        if isinstance(repair, dict):
+            repair = {key: value for key, value in repair.items() if key != "affected_symbols"}
+        maintenance = {
+            "path": str(path),
+            "completed_at": record.get("completed_at"),
+            "repair": repair,
+            "qlib": record.get("qlib"),
+        }
+    summary: dict[str, Any] = {
+        "repository": str(REPO_ROOT),
+        "data_root": str(DATA_ROOT),
+        "raw_parquet_files": len(list(RAW_DIR.glob("*.parquet"))),
+        "qlib_features": len(list((QLIB_DIR / "features").glob("*"))) if (QLIB_DIR / "features").exists() else 0,
+        "qlib_calendar_end": calendar_end,
+        "latest_run": latest_summary,
+        "latest_local_maintenance": maintenance,
+    }
+    print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
+def run_materialize(_: argparse.Namespace) -> int:
+    """Rebuild Qlib files from local source data without any network requests."""
+
+    universe_path = METADATA_DIR / "universe_latest.json"
+    if not universe_path.exists():
+        raise PipelineError("no universe snapshot exists; run `sync` before `materialize`")
+    instruments = [Instrument(**item) for item in json.loads(universe_path.read_text(encoding="utf-8"))]
+    started = dt.datetime.now(dt.timezone.utc)
+    with PipelineLock(LOCK_PATH):
+        summary = materialize_qlib(instruments, workers=DEFAULT_WORKERS)
+    manifest = {
+        "started_at": started.isoformat(),
+        "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "qlib": summary,
+    }
+    write_json(METADATA_DIR / "latest_materialization.json", manifest)
+    print(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
+def run_sanitize(args: argparse.Namespace) -> int:
+    """Repair legacy invalid price rows, then rebuild Qlib data from local files."""
+
+    universe_path = METADATA_DIR / "universe_latest.json"
+    if not universe_path.exists():
+        raise PipelineError("no universe snapshot exists; run `sync` before `sanitize`")
+    instruments = [Instrument(**item) for item in json.loads(universe_path.read_text(encoding="utf-8"))]
+    started = dt.datetime.now(dt.timezone.utc)
+    with PipelineLock(LOCK_PATH):
+        repair = sanitize_source_data(max_examples=args.max_examples)
+        qlib_summary = (
+            materialize_qlib(instruments, workers=args.dump_workers)
+            if repair["rows_removed"] and not args.skip_dump
+            else {}
+        )
+    manifest = {
+        "started_at": started.isoformat(),
+        "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "repair": repair,
+        "qlib": qlib_summary,
+    }
+    write_json(METADATA_DIR / "latest_sanitization.json", manifest)
+    write_json(METADATA_DIR / "repairs" / f"sanitize_{started.strftime('%Y%m%dT%H%M%SZ')}.json", manifest)
+    print(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
+def run_prune_session(args: argparse.Namespace) -> int:
+    """Drop provisional daily bars and rebuild Qlib output without a network call."""
+
+    universe_path = METADATA_DIR / "universe_latest.json"
+    if not universe_path.exists():
+        raise PipelineError("no universe snapshot exists; run `sync` before `prune-session`")
+    end = parse_date(args.end) if args.end else latest_completed_session_date()
+    instruments = [Instrument(**item) for item in json.loads(universe_path.read_text(encoding="utf-8"))]
+    started = dt.datetime.now(dt.timezone.utc)
+    with PipelineLock(LOCK_PATH):
+        prune = prune_source_after(end, max_examples=args.max_examples)
+        qlib_summary = (
+            materialize_qlib(instruments, workers=args.dump_workers)
+            if prune["rows_removed"] and not args.skip_dump
+            else {}
+        )
+    manifest = {
+        "started_at": started.isoformat(),
+        "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "prune": prune,
+        "qlib": qlib_summary,
+    }
+    write_json(METADATA_DIR / "latest_session_prune.json", manifest)
+    write_json(METADATA_DIR / "repairs" / f"prune_{started.strftime('%Y%m%dT%H%M%SZ')}.json", manifest)
+    print(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    sync = subparsers.add_parser("sync", help="download data and rebuild the Qlib daily data set")
+    sync.add_argument("--start", default=DEFAULT_START_DATE, help=f"first history date (default: {DEFAULT_START_DATE})")
+    sync.add_argument("--end", help="last history date; defaults to the latest completed local session")
+    sync.add_argument(
+        "--include-current-session",
+        action="store_true",
+        help="allow an unfinished current-day bar when --end is omitted",
+    )
+    sync.add_argument("--scope", choices=("buyable", "factor"), default="factor", help="factor includes STAR data")
+    sync.add_argument("--symbols", help="comma-separated test/repair subset, e.g. 600519,300750,688981")
+    sync.add_argument("--adjust", choices=("qfq", "hfq", "raw"), default="qfq", help="price adjustment requested from source")
+    sync.add_argument("--refresh-days", type=int, default=DEFAULT_REFRESH_DAYS, help="tail window refreshed each run")
+    sync.add_argument("--force-full", action="store_true", help="redownload each selected symbol from --start")
+    sync.add_argument(
+        "--only-missing",
+        action="store_true",
+        help="bootstrap/recovery mode: skip every symbol that already has a local source file",
+    )
+    sync.add_argument("--workers", type=int, default=DEFAULT_WORKERS, help="parallel source requests (keep low to respect source)")
+    sync.add_argument("--dump-workers", type=int, default=DEFAULT_WORKERS, help="Qlib binary materialization workers")
+    sync.add_argument("--timeout", type=float, default=30.0, help="per-request timeout in seconds")
+    sync.add_argument("--retries", type=int, default=4, help="per-symbol source retry count")
+    sync.add_argument("--delay", type=float, default=0.35, help="minimum delay after a source request")
+    sync.add_argument("--skip-dump", action="store_true", help="download source Parquet only; skip Qlib binary rebuild")
+    sync.set_defaults(func=run_sync)
+    materialize = subparsers.add_parser("materialize", help="rebuild Qlib binary data from local source Parquet files")
+    materialize.set_defaults(func=run_materialize)
+    sanitize = subparsers.add_parser("sanitize", help="remove invalid local OHLC rows and rebuild Qlib binaries")
+    sanitize.add_argument("--dump-workers", type=int, default=DEFAULT_WORKERS, help="Qlib binary materialization workers")
+    sanitize.add_argument("--skip-dump", action="store_true", help="repair Parquet only; do not rebuild Qlib binaries")
+    sanitize.add_argument("--max-examples", type=int, default=20, help="maximum affected-symbol details printed")
+    sanitize.set_defaults(func=run_sanitize)
+    prune = subparsers.add_parser("prune-session", help="remove provisional daily bars after a safe cutoff")
+    prune.add_argument("--end", help="completed-session cutoff; defaults to the latest safe local date")
+    prune.add_argument("--dump-workers", type=int, default=DEFAULT_WORKERS, help="Qlib binary materialization workers")
+    prune.add_argument("--skip-dump", action="store_true", help="prune Parquet only; do not rebuild Qlib binaries")
+    prune.add_argument("--max-examples", type=int, default=20, help="maximum affected-symbol details printed")
+    prune.set_defaults(func=run_prune_session)
+    status = subparsers.add_parser("status", help="show local data and last run information")
+    status.set_defaults(func=run_status)
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    args = build_parser().parse_args(argv)
+    if getattr(args, "workers", 1) < 1 or getattr(args, "dump_workers", 1) < 1:
+        raise PipelineError("worker counts must be positive")
+    if getattr(args, "refresh_days", 0) < 0:
+        raise PipelineError("--refresh-days must be non-negative")
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except PipelineError as exc:
+        logging.error("pipeline failed: %s", exc)
+        raise SystemExit(1) from exc

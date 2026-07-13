@@ -51,3 +51,8 @@ tags
 ./pretrain
 .idea/
 .aider*
+
+# Large, reproducible local market-data artifacts created by
+# scripts/a_share_data_pipeline.py.  They deliberately live in the repository
+# folder for easy local use, but must not be committed.
+/data/
