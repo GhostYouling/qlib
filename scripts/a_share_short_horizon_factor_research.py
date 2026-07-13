@@ -539,6 +539,13 @@ REGIME_FILTERS = {
     "breadth_5_positive": "Trade only when the eligible-universe mean five-day return is positive.",
     "breadth_20_positive": "Trade only when the eligible-universe mean twenty-day return is positive.",
     "breadth_5_above_20": "Trade only when five-day eligible-universe breadth exceeds twenty-day breadth.",
+    "breadth_5_and_20_positive": "Trade only when both five-day and twenty-day eligible-universe breadth are positive.",
+    "breadth_5_positive_and_above_20": (
+        "Trade only when five-day eligible-universe breadth is positive and exceeds twenty-day breadth."
+    ),
+    "breadth_5_above_20_and_20_positive": (
+        "Trade only when five-day eligible-universe breadth exceeds a positive twenty-day breadth."
+    ),
 }
 
 SELECTION_POLICIES = {
@@ -594,8 +601,14 @@ def apply_regime_filter(frame: pd.DataFrame, regime_filter: str) -> pd.DataFrame
         condition = frame["market_breadth_5"].gt(0.0)
     elif regime_filter == "breadth_20_positive":
         condition = frame["market_breadth_20"].gt(0.0)
-    else:
+    elif regime_filter == "breadth_5_above_20":
         condition = frame["market_breadth_5"].gt(frame["market_breadth_20"])
+    elif regime_filter == "breadth_5_and_20_positive":
+        condition = frame["market_breadth_5"].gt(0.0) & frame["market_breadth_20"].gt(0.0)
+    elif regime_filter == "breadth_5_positive_and_above_20":
+        condition = frame["market_breadth_5"].gt(0.0) & frame["market_breadth_5"].gt(frame["market_breadth_20"])
+    else:
+        condition = frame["market_breadth_5"].gt(frame["market_breadth_20"]) & frame["market_breadth_20"].gt(0.0)
     return frame.loc[condition.fillna(False)].copy()
 
 
@@ -2127,12 +2140,50 @@ def load_no_eligible_studies(experiment_root: Path) -> list[dict[str, Any]]:
     return studies
 
 
+def load_regime_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read completed market-state audits for the human research log.
+
+    An audit is evidence about a fixed candidate, not a registered strategy
+    iteration.  Retaining unsuccessful audits in the report prevents a later
+    state rule from silently replacing the previously recorded one.
+    """
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_regime_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        ranking = list(audit.get("ranking_by_development") or [])
+        candidate = audit.get("candidate") or {}
+        data = audit.get("data") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate": str(candidate.get("name", "—")),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "selection_policy": str(audit.get("selection_policy", "—")),
+                "winner_regime": audit.get("winner_regime_selected_on_development_only"),
+                "regime_count": len(ranking),
+                "eligible_regime_count": sum(
+                    item.get("development_selection_score") is not None for item in ranking
+                ),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def render_three_day_research_report(
     registry: dict[str, Any],
     ledger: dict[str, Any],
     shadow_ledger: dict[str, Any] | None = None,
     shadow_observation_registry: dict[str, Any] | None = None,
     no_eligible_studies: list[dict[str, Any]] | None = None,
+    regime_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -2202,6 +2253,35 @@ def render_three_day_research_report(
                     library=study["candidate_library"],
                     count=study["candidate_count"],
                     policy=study["selection_policy"],
+                )
+            )
+        lines.append("")
+    if regime_audits:
+        lines.extend(
+            [
+                "",
+                "## 市场状态审计",
+                "",
+                "状态审计只对固定候选按开发期指标比较；即使有状态通过，也不能回写既有策略或替代前瞻样本。",
+                "",
+                "| 审计 | 候选 | 历史范围 | 选择规则 | 状态结论 |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for audit in regime_audits:
+            conclusion = (
+                str(audit["winner_regime"])
+                if audit["winner_regime"]
+                else f"无合格状态（{audit['eligible_regime_count']}/{audit['regime_count']}）"
+            )
+            lines.append(
+                "| {run_id} | {candidate} | {start} 至 {end} | {policy} | {conclusion} |".format(
+                    run_id=audit["run_id"],
+                    candidate=audit["candidate"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    policy=audit["selection_policy"],
+                    conclusion=conclusion,
                 )
             )
         lines.append("")
@@ -2275,12 +2355,14 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     shadow_observation_registry = load_shadow_observation_registry(shadow_observation_registry_path)
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
+    regime_audits = load_regime_audits(experiment_root)
     report = render_three_day_research_report(
         registry,
         ledger,
         shadow_ledger,
         shadow_observation_registry,
         no_eligible_studies,
+        regime_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -2297,6 +2379,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_signals": len(shadow_ledger["signals"]),
         "shadow_settlements": len(shadow_ledger["settlements"]),
         "no_eligible_studies": len(no_eligible_studies),
+        "regime_audits": len(regime_audits),
     }
 
 

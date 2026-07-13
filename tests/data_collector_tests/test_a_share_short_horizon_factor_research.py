@@ -291,12 +291,16 @@ def test_research_only_iteration_cannot_be_promoted_even_if_its_historical_test_
 def test_market_breadth_regime_filter_is_close_known_and_validated():
     frame = pd.DataFrame(
         {
-            "market_breadth_5": [-0.01, 0.01, 0.02],
-            "market_breadth_20": [-0.02, 0.02, 0.01],
+            "market_breadth_5": [-0.01, 0.01, 0.02, 0.01],
+            "market_breadth_20": [-0.02, 0.02, 0.01, -0.02],
         }
     )
-    assert RESEARCH.apply_regime_filter(frame, "breadth_5_positive").index.tolist() == [1, 2]
-    assert RESEARCH.apply_regime_filter(frame, "breadth_5_above_20").index.tolist() == [0, 2]
+    assert RESEARCH.apply_regime_filter(frame, "breadth_5_positive").index.tolist() == [1, 2, 3]
+    assert RESEARCH.apply_regime_filter(frame, "breadth_20_positive").index.tolist() == [1, 2]
+    assert RESEARCH.apply_regime_filter(frame, "breadth_5_above_20").index.tolist() == [0, 2, 3]
+    assert RESEARCH.apply_regime_filter(frame, "breadth_5_and_20_positive").index.tolist() == [1, 2]
+    assert RESEARCH.apply_regime_filter(frame, "breadth_5_positive_and_above_20").index.tolist() == [2, 3]
+    assert RESEARCH.apply_regime_filter(frame, "breadth_5_above_20_and_20_positive").index.tolist() == [2]
     with pytest.raises(ValueError, match="unknown regime_filter"):
         RESEARCH.apply_regime_filter(frame, "not_a_regime")
 
@@ -436,6 +440,34 @@ def test_research_report_marks_non_promotable_historical_diagnostics():
         ]
     }
     assert "历史诊断，不可晋级" in RESEARCH.render_three_day_research_report(registry, {"signals": [], "settlements": []})
+
+
+def test_regime_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
+    (tmp_path / "20260713T152638Z_regime_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "20260713T152638Z",
+                "status": "completed",
+                "candidate": {"name": "defensive_candidate"},
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "selection_policy": "positive_year_stability_mdd20",
+                "winner_regime_selected_on_development_only": None,
+                "ranking_by_development": [
+                    {"development_selection_score": None},
+                    {"development_selection_score": None},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_regime_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, regime_audits=audits
+    )
+    assert "市场状态审计" in report
+    assert "defensive_candidate" in report
+    assert "无合格状态（0/2）" in report
+    assert "不能回写既有策略" in report
 
 
 def test_research_report_labels_development_only_preregistration_for_forward_observation():

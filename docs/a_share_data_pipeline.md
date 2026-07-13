@@ -151,7 +151,7 @@ python scripts/a_share_short_horizon_factor_research.py run \
 
 可把收盘后计算出的市场广度作为独立的状态因子，例如只在质量股票池平均 5 日收益为正时做多：`--regime-filter breadth_5_positive`。未满足状态时的三日持有周期在回测中按持有现金的零收益计入，不会因为跳过交易而虚增年化收益。
 
-不要把某个状态规则当作默认真理。可对一个已记录候选运行 `regime-audit`，一次比较 `always`、两种正广度和短期广度强于中期广度四种预定义规则；报告只按开发期排序并写入单独审计 JSON，不能用它回写已登记候选或把历史结果包装成前瞻收益。
+不要把某个状态规则当作默认真理。可对一个已记录候选运行 `regime-audit`，一次比较 `always`、两种单周期正广度、短期广度强于中期广度，以及三种更保守的确认条件：`breadth_5_and_20_positive`（双周期为正）、`breadth_5_positive_and_above_20`（短期为正且强于中期）和 `breadth_5_above_20_and_20_positive`（双周期为正且短期更强）。报告只按开发期排序并写入单独审计 JSON，不能用它回写已登记候选或把历史结果包装成前瞻收益。
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py regime-audit \
@@ -168,7 +168,7 @@ python scripts/a_share_short_horizon_factor_research.py regime-audit \
 
 长历史压力扫描允许并应当记录 `no_eligible_candidate`：若没有候选同时满足预设的跨年度与回撤约束，系统不会勉强登记赢家、不会创建前瞻观察，也不应事后放松门槛来得到一个看似可用的策略。
 
-`report` 会在“未产生合格候选的压力扫描”章节列出这些淘汰结果，使长历史失败不会被后续研究日志掩盖。
+`report` 会在“未产生合格候选的压力扫描”章节列出这些淘汰结果，并在“市场状态审计”章节列出每次固定候选的广度状态比较及合格状态数量，使长历史失败不会被后续研究日志掩盖。状态审计即使出现开发期胜者，也只是一条研究记录，不能自动晋级。
 
 当某轮策略在注册表中通过初测后，筛选命令必须带上它对应的状态条件，例如：
 
