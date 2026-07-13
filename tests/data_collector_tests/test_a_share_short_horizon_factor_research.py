@@ -126,6 +126,27 @@ def test_v2_microstructure_library_is_versioned_and_keeps_v1_intact():
         RESEARCH.candidate_library("unrecorded")
 
 
+def test_v3_quality_grid_is_a_nonduplicating_systematic_extension_of_v2():
+    v2 = RESEARCH.candidate_library("v2_microstructure")
+    v3 = RESEARCH.candidate_library("v3_quality_grid")
+    additions = v3[len(v2) :]
+    assert len(v3) == 170
+    assert len(additions) == 20
+    assert tuple(candidate.name for candidate in v3[: len(v2)]) == tuple(candidate.name for candidate in v2)
+    assert {candidate.weights.get("quality_revenue") for candidate in additions if "quality_revenue" in candidate.weights} == {
+        0.05,
+        0.10,
+        0.15,
+        0.20,
+        0.25,
+    }
+    v2_signatures = {tuple(sorted(candidate.weights.items())) for candidate in v2}
+    assert all(tuple(sorted(candidate.weights.items())) not in v2_signatures for candidate in additions)
+    assert RESEARCH.candidate_by_name("expanded_v3_quiet_long_trend_q10_growth", "v3_quality_grid").weights[
+        "trend_ma_60"
+    ] == pytest.approx(0.27)
+
+
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
     winner = {
         "candidate": "expanded_reversal_trend_20_q25_profit",

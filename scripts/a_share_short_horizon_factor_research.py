@@ -401,15 +401,74 @@ V2_CANDIDATES = (*CANDIDATES, *_expanded_candidates(MICROSTRUCTURE_SIGNAL_BLUEPR
 if len(V2_CANDIDATES) != 150 or len({candidate.name for candidate in V2_CANDIDATES}) != len(V2_CANDIDATES):
     raise RuntimeError("V2 candidate library must contain 150 uniquely named strategies")
 
+# V2's five quality overlays change both the quality input and its weight at
+# once.  The V3 grid isolates those two decisions around the only V2 signal
+# family that survived the initial stability and drawdown audit.  It excludes
+# the five exact V2 combinations, so every added candidate is genuinely new.
+QUALITY_GRID_OVERLAYS = tuple(
+    (f"q{int(weight * 100):02d}_{name}", factor, weight)
+    for name, factor in (
+        ("roe", "quality_roe"),
+        ("revenue", "quality_revenue"),
+        ("growth", "quality_growth"),
+        ("composite", "quality_score"),
+        ("profit", "quality_profit"),
+    )
+    for weight in (0.05, 0.10, 0.15, 0.20, 0.25)
+)
+
+
+def build_v3_quality_grid_candidates() -> tuple[Candidate, ...]:
+    """Expand quiet-long-trend with a factor-type × weight quality grid.
+
+    Keeping V2's candidates in the V3 library lets development-period
+    selection reject the new grid rather than forcing a newly added variant.
+    """
+
+    quiet_long_trend = next(
+        candidate for candidate in MICROSTRUCTURE_SIGNAL_BLUEPRINTS if candidate.name == "quiet_long_trend"
+    )
+    v2_weight_signatures = {tuple(sorted(candidate.weights.items())) for candidate in V2_CANDIDATES}
+    additions: list[Candidate] = []
+    for suffix, quality_factor, quality_weight in QUALITY_GRID_OVERLAYS:
+        weights = {factor: weight * (1.0 - quality_weight) for factor, weight in quiet_long_trend.weights.items()}
+        weights[quality_factor] = quality_weight
+        if tuple(sorted(weights.items())) in v2_weight_signatures:
+            continue
+        additions.append(
+            Candidate(
+                name=f"expanded_v3_quiet_long_trend_{suffix}",
+                description=(
+                    "Calm continuation above a sixty-day average with a systematic quality-input and weight probe. "
+                    f"Quality overlay: {quality_factor} at {quality_weight:.0%}."
+                ),
+                weights=weights,
+            )
+        )
+    if len(additions) != 20 or len({candidate.name for candidate in additions}) != len(additions):
+        raise RuntimeError("V3 quality grid must contain 20 new unique strategies")
+    return tuple(additions)
+
+
+V3_QUALITY_GRID_CANDIDATES = build_v3_quality_grid_candidates()
+V3_CANDIDATES = (*V2_CANDIDATES, *V3_QUALITY_GRID_CANDIDATES)
+if len(V3_CANDIDATES) != 170 or len({candidate.name for candidate in V3_CANDIDATES}) != len(V3_CANDIDATES):
+    raise RuntimeError("V3 candidate library must contain 170 uniquely named strategies")
+
 CANDIDATE_LIBRARIES = {
     "v1": CANDIDATES,
     "v2_microstructure": V2_CANDIDATES,
+    "v3_quality_grid": V3_CANDIDATES,
 }
 CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v1": "5 fixed baselines plus 19 fixed signal blueprints crossed with 5 fixed quality overlays",
     "v2_microstructure": (
         "V1 plus 10 predeclared close-known microstructure blueprints (one/two-day reversal, close location, "
         "one-day volume/turnover, short range/volatility and sixty-day trend) crossed with 5 quality overlays"
+    ),
+    "v3_quality_grid": (
+        "V2 plus 20 non-duplicate quiet-long-trend candidates that independently cross ROE, revenue, growth, "
+        "composite and profit quality inputs with 5%, 10%, 15%, 20% and 25% weights"
     ),
 }
 
