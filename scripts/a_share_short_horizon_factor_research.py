@@ -46,6 +46,8 @@ DEFAULT_FUNDAMENTALS = DATA_ROOT / "raw" / "a_share" / "fundamentals" / "annual_
 DEFAULT_FUNDAMENTAL_MANIFEST = DATA_ROOT / "metadata" / "annual_quality_manifest.json"
 DEFAULT_QUARTERLY_FUNDAMENTALS = DATA_ROOT / "raw" / "a_share" / "fundamentals" / "quarterly_quality.parquet"
 DEFAULT_QUARTERLY_FUNDAMENTAL_MANIFEST = DATA_ROOT / "metadata" / "quarterly_quality_manifest.json"
+DEFAULT_PERFORMANCE_FORECASTS = DATA_ROOT / "raw" / "a_share" / "fundamentals" / "performance_forecasts.parquet"
+DEFAULT_PERFORMANCE_FORECAST_MANIFEST = DATA_ROOT / "metadata" / "performance_forecasts_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
@@ -57,6 +59,7 @@ DEFAULT_PILOT_CAPITALS = (200_000.0,)
 
 EASTMONEY_DATACENTER_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get"
 EASTMONEY_REPORT = "RPT_LICO_FN_CPD"
+EASTMONEY_PERFORMANCE_FORECAST_REPORT = "RPT_PUBLIC_OP_NEWPREDICT"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -65,6 +68,21 @@ FUNDAMENTAL_COLUMNS = (
     "net_profit",
     "revenue_yoy",
     "profit_yoy",
+)
+PERFORMANCE_FORECAST_COLUMNS = (
+    "instrument",
+    "report_date",
+    "announcement_date",
+    "forecast_type",
+    "forecast_turnaround",
+    "forecast_profit_yoy",
+    "forecast_profit_yoy_width",
+)
+FORECAST_FACTOR_DIAGNOSTIC_COLUMNS = (
+    "forecast_profit_yoy",
+    "forecast_profit_yoy_precision",
+    "forecast_freshness",
+    "forecast_turnaround",
 )
 
 
@@ -1370,6 +1388,37 @@ def _eastmoney_request(session: requests.Session, report_date: str, page_number:
     raise RuntimeError(f"cannot fetch annual report {report_date} page {page_number}: {errors[-1]}")
 
 
+def _eastmoney_performance_forecast_request(
+    session: requests.Session, report_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one page of public performance forecasts for an accounting period."""
+
+    params = {
+        "reportName": EASTMONEY_PERFORMANCE_FORECAST_REPORT,
+        "columns": "ALL",
+        "filter": f"(REPORT_DATE='{report_date}')",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "1,1",
+        "sortColumns": "SECURITY_CODE,NOTICE_DATE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(4):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(f"cannot fetch performance forecast {report_date} page {page_number}: {errors[-1]}")
+
+
 def fetch_annual_report_rows(session: requests.Session, report_date: str) -> list[dict[str, Any]]:
     """Fetch all pages for one annual report period from the public endpoint."""
 
@@ -1381,6 +1430,21 @@ def fetch_annual_report_rows(session: requests.Session, report_date: str) -> lis
     rows = list(result.get("data") or [])
     for page_number in range(2, pages + 1):
         payload = _eastmoney_request(session, report_date, page_number=page_number)
+        rows.extend((payload.get("result") or {}).get("data") or [])
+    return rows
+
+
+def fetch_performance_forecast_rows(session: requests.Session, report_date: str) -> list[dict[str, Any]]:
+    """Fetch all public performance-forecast pages for one report period."""
+
+    first = _eastmoney_performance_forecast_request(session, report_date, page_number=1)
+    result = first["result"]
+    pages = int(result.get("pages") or 0)
+    if pages < 1:
+        return []
+    rows = list(result.get("data") or [])
+    for page_number in range(2, pages + 1):
+        payload = _eastmoney_performance_forecast_request(session, report_date, page_number=page_number)
         rows.extend((payload.get("result") or {}).get("data") or [])
     return rows
 
@@ -1413,6 +1477,62 @@ def normalize_fundamental_rows(rows: Iterable[dict[str, Any]], report_date: str)
     return frame.drop_duplicates(["instrument", "report_date"], keep="first").reset_index(drop=True)
 
 
+def normalize_performance_forecast_rows(rows: Iterable[dict[str, Any]], report_date: str) -> pd.DataFrame:
+    """Reduce forecast notices to dated, numerically auditable event fields.
+
+    The endpoint mixes revenue, EPS, non-recurring-profit, and net-profit
+    forecasts.  Only its ``PREDICT_FINANCE_CODE == '004'`` rows describe the
+    parent-company net profit stated by this research hypothesis.  The lower
+    and upper YoY forecast midpoint is the directional forecast and their
+    distance is its disclosed uncertainty.  A later announcement is retained
+    as a new event: when it was publicly filed it could have superseded an
+    earlier forecast.
+    """
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=PERFORMANCE_FORECAST_COLUMNS)
+    finance_code = raw.get("PREDICT_FINANCE_CODE", pd.Series(index=raw.index, dtype="object"))
+    raw = raw.loc[finance_code.astype("string").eq("004")].copy()
+    if raw.empty:
+        return pd.DataFrame(columns=PERFORMANCE_FORECAST_COLUMNS)
+    lower = pd.to_numeric(raw.get("ADD_AMP_LOWER", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    upper = pd.to_numeric(raw.get("ADD_AMP_UPPER", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    midpoint = pd.concat([lower, upper], axis=1).mean(axis=1)
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("SECURITY_CODE", pd.Series(dtype="object")).map(qlib_symbol),
+            "report_date": pd.to_datetime(report_date),
+            "announcement_date": pd.to_datetime(raw.get("NOTICE_DATE"), errors="coerce"),
+            "forecast_type": raw.get("PREDICT_TYPE", pd.Series(index=raw.index, dtype="object")).astype("string"),
+            "forecast_turnaround": raw.get("PREDICT_TYPE", pd.Series(index=raw.index, dtype="object"))
+            .astype("string")
+            .fillna("")
+            .eq("扭亏")
+            .astype(float),
+            "forecast_profit_yoy": midpoint,
+            "forecast_profit_yoy_width": (upper - lower).abs(),
+        }
+    )
+    frame = frame.dropna(subset=["instrument", "announcement_date"])
+    frame = frame.sort_values(["instrument", "report_date", "announcement_date"], kind="stable")
+    return frame.drop_duplicates(["instrument", "report_date", "announcement_date"], keep="first").reset_index(drop=True)
+
+
+def _eastmoney_session() -> requests.Session:
+    """Create the common public-datacenter session used by dated snapshots."""
+
+    session = requests.Session()
+    session.headers.update(
+        {
+            "Accept": "application/json, text/plain, */*",
+            "Referer": "https://data.eastmoney.com/",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+        }
+    )
+    return session
+
+
 def sync_fundamental_reports(
     report_dates: Iterable[str], output: Path, manifest: Path, *, report_frequency: str
 ) -> dict[str, Any]:
@@ -1424,14 +1544,7 @@ def sync_fundamental_reports(
     if not dates:
         raise ValueError("at least one report date is required")
 
-    session = requests.Session()
-    session.headers.update(
-        {
-            "Accept": "application/json, text/plain, */*",
-            "Referer": "https://data.eastmoney.com/",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
-        }
-    )
+    session = _eastmoney_session()
     frames: list[pd.DataFrame] = []
     counts: dict[str, int] = {}
     for report_date in dates:
@@ -1500,6 +1613,67 @@ def sync_quarterly_fundamentals(
     )
 
 
+def sync_performance_forecasts(
+    start_year: int,
+    end_year: int,
+    output: Path,
+    manifest: Path,
+    through_report_date: str | None = None,
+) -> dict[str, Any]:
+    """Download public net-profit forecast notices as dated event observations."""
+
+    dates = quarterly_report_dates(start_year, end_year)
+    if through_report_date is not None:
+        through = pd.Timestamp(through_report_date).normalize()
+        if pd.isna(through):
+            raise ValueError("through_report_date must be a valid ISO date")
+        dates = [date for date in dates if pd.Timestamp(date) <= through]
+        if not dates:
+            raise ValueError("through_report_date precedes the requested forecast range")
+    session = _eastmoney_session()
+    frames: list[pd.DataFrame] = []
+    counts: dict[str, int] = {}
+    for report_date in dates:
+        rows = fetch_performance_forecast_rows(session, report_date)
+        normalized = normalize_performance_forecast_rows(rows, report_date)
+        frames.append(normalized)
+        counts[report_date] = len(normalized)
+        print(f"{report_date}: {len(normalized)} normalized performance-forecast rows")
+    merged = (
+        pd.concat(frames, ignore_index=True)
+        if frames
+        else pd.DataFrame(columns=PERFORMANCE_FORECAST_COLUMNS)
+    )
+    merged = merged.sort_values(["instrument", "report_date", "announcement_date"], kind="stable")
+    merged = merged.drop_duplicates(["instrument", "report_date", "announcement_date"], keep="first").reset_index(drop=True)
+    if merged.empty:
+        raise RuntimeError("performance-forecast sync produced no usable rows")
+    _atomic_write_parquet(output, merged)
+    result = {
+        "status": "completed",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_PERFORMANCE_FORECAST_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+        "report_frequency": "quarterly_forecast_event",
+        "report_dates": dates,
+        "rows_by_report_date": counts,
+        "rows_written": len(merged),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "The public source is queried as it exists today; it may revise or omit the historical forecast visible on an earlier date.",
+            "Only the provider's parent-company net-profit forecast rows (PREDICT_FINANCE_CODE=004) are retained; revenue, EPS, and non-recurring-profit forecasts are excluded.",
+            "The research join waits until the trading day after announcement_date and retains later forecast notices as later events.",
+            "This is a research event snapshot, not an exchange-grade point-in-time announcement database.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
 def merge_quarterly_fundamentals(input_paths: Iterable[Path], output: Path, manifest: Path) -> dict[str, Any]:
     """Atomically combine independently downloaded quarterly snapshot chunks.
 
@@ -1562,6 +1736,26 @@ def load_fundamentals(path: Path) -> pd.DataFrame:
     for column in ("report_date", "announcement_date"):
         frame[column] = pd.to_datetime(frame[column], errors="coerce")
     for column in ("roe", "net_profit", "revenue_yoy", "profit_yoy"):
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame = frame.dropna(subset=["instrument", "report_date", "announcement_date"])
+    return frame.sort_values(["instrument", "announcement_date", "report_date"], kind="stable").reset_index(drop=True)
+
+
+def load_performance_forecasts(path: Path) -> pd.DataFrame:
+    """Load and validate the local public performance-forecast event snapshot."""
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"performance-forecast snapshot does not exist: {path}; run sync-performance-forecasts first"
+        )
+    frame = pd.read_parquet(path)
+    missing = sorted(set(PERFORMANCE_FORECAST_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(f"performance-forecast snapshot is missing columns: {', '.join(missing)}")
+    frame = frame.loc[:, list(PERFORMANCE_FORECAST_COLUMNS)].copy()
+    for column in ("report_date", "announcement_date"):
+        frame[column] = pd.to_datetime(frame[column], errors="coerce")
+    for column in ("forecast_profit_yoy", "forecast_profit_yoy_width"):
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     frame = frame.dropna(subset=["instrument", "report_date", "announcement_date"])
     return frame.sort_values(["instrument", "announcement_date", "report_date"], kind="stable").reset_index(drop=True)
@@ -1671,6 +1865,74 @@ def attach_quality_asof(market: pd.DataFrame, fundamentals: pd.DataFrame, max_ag
         & result["revenue_yoy"].gt(0.0)
         & result["profit_yoy"].gt(0.0)
         & result["quality_age_days"].between(0, max_age_days)
+    )
+    return result
+
+
+def attach_performance_forecasts_asof(
+    market: pd.DataFrame, forecasts: pd.DataFrame, max_age_days: int = 30
+) -> pd.DataFrame:
+    """Attach public forecast events only after the following local session.
+
+    This is intentionally independent from ``quality_eligible``: forecasts do
+    not make a stock quality-qualified.  They only provide an event sample for
+    measuring whether a fresh public profit forecast explains the next three
+    trading days within the already-qualified universe.
+    """
+
+    required_market = {"instrument", "datetime"}
+    if missing := sorted(required_market - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    required_forecasts = set(PERFORMANCE_FORECAST_COLUMNS)
+    if missing := sorted(required_forecasts - set(forecasts.columns)):
+        raise ValueError(f"performance-forecast events are missing columns: {', '.join(missing)}")
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    events = forecasts.loc[:, list(PERFORMANCE_FORECAST_COLUMNS)].copy()
+    events["forecast_effective_date"] = _first_trading_day_after(calendar, events["announcement_date"])
+    events = events.dropna(subset=["forecast_effective_date"])
+    events = events.sort_values(
+        ["instrument", "forecast_effective_date", "announcement_date", "report_date"], kind="stable"
+    ).drop_duplicates(["instrument", "forecast_effective_date"], keep="last")
+
+    forecast_columns = [
+        "forecast_report_date",
+        "forecast_announcement_date",
+        "forecast_type",
+        "forecast_turnaround",
+        "forecast_profit_yoy",
+        "forecast_profit_yoy_width",
+        "forecast_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"] = 1
+    daily["_row"] = np.arange(len(daily))
+    for column in ("forecast_report_date", "forecast_announcement_date", "forecast_effective_date"):
+        daily[column] = pd.NaT
+    daily["forecast_type"] = pd.Series(pd.NA, index=daily.index, dtype="string")
+    for column in ("forecast_turnaround", "forecast_profit_yoy", "forecast_profit_yoy_width"):
+        daily[column] = np.nan
+    event_rows = events.rename(
+        columns={
+            "forecast_effective_date": "datetime",
+            "report_date": "forecast_report_date",
+            "announcement_date": "forecast_announcement_date",
+        }
+    )[["instrument", "datetime", *[column for column in forecast_columns if column != "forecast_effective_date"]]].copy()
+    event_rows["forecast_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"] = 0
+    event_rows["_row"] = np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False)
+    combined = combined.sort_values(["instrument", "datetime", "_kind"], kind="stable")
+    combined[forecast_columns] = combined.groupby("instrument", sort=False)[forecast_columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *forecast_columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["forecast_age_days"] = (
+        pd.to_datetime(result["datetime"]) - pd.to_datetime(result["forecast_effective_date"])
+    ).dt.days
+    result["forecast_available"] = result["forecast_announcement_date"].notna() & result["forecast_age_days"].between(
+        0, max_age_days
     )
     return result
 
@@ -1819,6 +2081,12 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "revenue_yoy_acceleration",
         "profit_yoy_acceleration",
     ]
+    forecast_raw_columns = [
+        column
+        for column in ("forecast_turnaround", "forecast_profit_yoy", "forecast_profit_yoy_width", "forecast_age_days")
+        if column in result.columns
+    ]
+    raw_columns.extend(forecast_raw_columns)
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     eligible = result["quality_eligible"].fillna(False)
@@ -1851,6 +2119,14 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["roe_change"] = result["rank_roe_change"]
     result["revenue_yoy_acceleration"] = result["rank_revenue_yoy_acceleration"]
     result["profit_yoy_acceleration"] = result["rank_profit_yoy_acceleration"]
+    if "rank_forecast_profit_yoy" in result.columns:
+        result["forecast_profit_yoy"] = result["rank_forecast_profit_yoy"]
+    if "rank_forecast_turnaround" in result.columns:
+        result["forecast_turnaround"] = result["rank_forecast_turnaround"]
+    if "rank_forecast_profit_yoy_width" in result.columns:
+        result["forecast_profit_yoy_precision"] = 1.0 - result["rank_forecast_profit_yoy_width"]
+    if "rank_forecast_age_days" in result.columns:
+        result["forecast_freshness"] = 1.0 - result["rank_forecast_age_days"]
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_3"] = result["rank_momentum_3"]
@@ -3626,6 +3902,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
         data = diagnostic.get("data") or {}
         quality_gate = diagnostic.get("quality_gate") or {}
+        forecast_events = diagnostic.get("performance_forecast_events") or {}
         top = ranking[0] if ranking else {}
         diagnostics.append(
             {
@@ -3633,6 +3910,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "calendar_start": str(data.get("calendar_start", "—")),
                 "calendar_end": str(data.get("calendar_end", "—")),
                 "fundamental_source": str(quality_gate.get("source", "—")),
+                "performance_forecast_source": str(forecast_events.get("source", "—")),
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
@@ -4095,7 +4373,7 @@ def render_three_day_research_report(
                 "",
                 "诊断只描述每个已声明因子与其后完整三日收益的横截面秩相关；它不选择策略，不能替代组合的独立测试或前瞻观察。",
                 "",
-                "| 诊断 | 财务快照 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC |",
+                "| 诊断 | 财务 / 事件快照 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC |",
                 "| --- | --- | --- | ---: | --- | ---: |",
             ]
         )
@@ -4105,9 +4383,15 @@ def render_three_day_research_report(
             lines.append(
                 "| {run_id} | {fundamentals} | {start} 至 {end} | {count} | {factor} | {mean_ic} |".format(
                     run_id=diagnostic["run_id"],
-                    fundamentals=Path(diagnostic["fundamental_source"]).name
-                    if diagnostic["fundamental_source"] != "—"
-                    else "—",
+                    fundamentals=" / ".join(
+                        Path(source).name
+                        for source in (
+                            diagnostic["fundamental_source"],
+                            diagnostic["performance_forecast_source"],
+                        )
+                        if source != "—"
+                    )
+                    or "—",
                     start=diagnostic["calendar_start"],
                     end=diagnostic["calendar_end"],
                     count=diagnostic["factor_count"],
@@ -4736,6 +5020,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
 
     provider_uri = Path(args.provider_uri).expanduser()
     fundamental_path = Path(args.fundamentals).expanduser()
+    forecast_path = Path(args.performance_forecasts).expanduser() if args.performance_forecasts else None
     experiment_root = Path(args.experiment_root).expanduser()
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -4745,11 +5030,21 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "factor-diagnostic is development-only; pass --end no later than --development-end so reserved test data cannot guide factor design"
         )
     market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    if forecast_path is not None:
+        forecasts = load_performance_forecasts(forecast_path)
+        market = attach_performance_forecasts_asof(
+            market, forecasts, max_age_days=args.max_forecast_age_days
+        )
     ranked = rank_factor_frame(market)
     forward_returns = forward_factor_return_frame(ranked, args.hold_days)
+    factor_catalog = [
+        factor
+        for factor in (*FACTOR_DIAGNOSTIC_COLUMNS, *FORECAST_FACTOR_DIAGNOSTIC_COLUMNS)
+        if factor in ranked.columns
+    ]
     summaries = summarize_factor_diagnostics(
         forward_returns,
-        FACTOR_DIAGNOSTIC_COLUMNS,
+        factor_catalog,
         hold_days=args.hold_days,
         topk=args.topk,
         open_cost=args.open_cost,
@@ -4762,7 +5057,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         "run_id": run_id,
         "status": "completed",
         "purpose": "development_only_single_factor_forward_diagnostic_research_not_investment_advice",
-        "factor_catalog": list(FACTOR_DIAGNOSTIC_COLUMNS),
+        "factor_catalog": factor_catalog,
         "strategy_timing": {
             "universe": "buyable_main_chinext",
             "holding_period_trading_days": args.hold_days,
@@ -4780,6 +5075,20 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "effective_date": "strictly next local trading day after announcement_date",
             "max_quality_age_days": args.max_quality_age_days,
         },
+        "performance_forecast_events": (
+            {
+                "source": str(forecast_path.resolve()),
+                "sha256": file_sha256(forecast_path),
+                "effective_date": "strictly next local trading day after announcement_date",
+                "max_forecast_age_days": args.max_forecast_age_days,
+                "available_rows": int(market["forecast_available"].sum()),
+                "eligible_available_rows": int(
+                    (market["quality_eligible"].fillna(False) & market["forecast_available"].fillna(False)).sum()
+                ),
+            }
+            if forecast_path is not None
+            else None
+        ),
         "data": {
             "provider_uri": str(provider_uri.resolve()),
             "calendar_start": market["datetime"].min().date().isoformat(),
@@ -6035,6 +6344,18 @@ def parse_args() -> argparse.Namespace:
     merge_quarterly.add_argument("--output", default=str(DEFAULT_QUARTERLY_FUNDAMENTALS))
     merge_quarterly.add_argument("--manifest", default=str(DEFAULT_QUARTERLY_FUNDAMENTAL_MANIFEST))
 
+    sync_forecasts = subparsers.add_parser(
+        "sync-performance-forecasts",
+        help="download dated public net-profit forecast notices for event-factor research",
+    )
+    sync_forecasts.add_argument("--start-year", type=int, default=2019)
+    sync_forecasts.add_argument("--end-year", type=int, default=2026)
+    sync_forecasts.add_argument(
+        "--through-report-date", help="latest forecast accounting period already public, such as 2026-06-30"
+    )
+    sync_forecasts.add_argument("--output", default=str(DEFAULT_PERFORMANCE_FORECASTS))
+    sync_forecasts.add_argument("--manifest", default=str(DEFAULT_PERFORMANCE_FORECAST_MANIFEST))
+
     run = subparsers.add_parser("run", help="run the predeclared short-horizon factor sweep")
     run.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     run.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -6064,6 +6385,10 @@ def parse_args() -> argparse.Namespace:
     )
     factor_diagnostic.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     factor_diagnostic.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    factor_diagnostic.add_argument(
+        "--performance-forecasts",
+        help="optional dated performance-forecast event snapshot; adds event factors to the development-only diagnostic",
+    )
     factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     factor_diagnostic.add_argument("--start", default="2019-01-01")
     factor_diagnostic.add_argument("--end", default="2025-12-31")
@@ -6073,6 +6398,12 @@ def parse_args() -> argparse.Namespace:
     factor_diagnostic.add_argument("--open-cost", type=float, default=0.0015)
     factor_diagnostic.add_argument("--close-cost", type=float, default=0.0025)
     factor_diagnostic.add_argument("--max-quality-age-days", type=int, default=550)
+    factor_diagnostic.add_argument(
+        "--max-forecast-age-days",
+        type=int,
+        default=30,
+        help="maximum calendar age for a public forecast event; default targets the immediate post-announcement window",
+    )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
     walk_forward_selection_audit = subparsers.add_parser(
@@ -6406,6 +6737,14 @@ def main() -> int:
     elif args.command == "merge-quarterly-fundamentals":
         report = merge_quarterly_fundamentals(
             [Path(path) for path in args.input], Path(args.output), Path(args.manifest)
+        )
+    elif args.command == "sync-performance-forecasts":
+        report = sync_performance_forecasts(
+            args.start_year,
+            args.end_year,
+            Path(args.output),
+            Path(args.manifest),
+            args.through_report_date,
         )
     elif args.command == "run":
         report = run_research(args)

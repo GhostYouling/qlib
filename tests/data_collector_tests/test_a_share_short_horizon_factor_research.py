@@ -136,6 +136,92 @@ def test_quarterly_snapshot_merge_is_atomic_and_keeps_the_earliest_announcement(
     assert merged.iloc[0]["announcement_date"] == pd.Timestamp("2024-04-20")
 
 
+def test_performance_forecast_normalization_keeps_later_notices_as_separate_events():
+    rows = [
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-20",
+            "PREDICT_FINANCE_CODE": "004",
+            "ADD_AMP_LOWER": 10.0,
+            "ADD_AMP_UPPER": 30.0,
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-25",
+            "PREDICT_FINANCE_CODE": "004",
+            "ADD_AMP_LOWER": 20.0,
+            "ADD_AMP_UPPER": 40.0,
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-25",
+            "PREDICT_FINANCE_CODE": "004",
+            "ADD_AMP_LOWER": 20.0,
+            "ADD_AMP_UPPER": 40.0,
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-25",
+            "PREDICT_FINANCE_CODE": "006",
+            "ADD_AMP_LOWER": 200.0,
+            "ADD_AMP_UPPER": 400.0,
+        },
+    ]
+    normalized = RESEARCH.normalize_performance_forecast_rows(rows, "2024-03-31")
+    assert normalized["instrument"].tolist() == ["SZ000001", "SZ000001"]
+    assert normalized["forecast_profit_yoy"].tolist() == pytest.approx([20.0, 30.0])
+    assert normalized["forecast_profit_yoy_width"].tolist() == pytest.approx([20.0, 20.0])
+    assert normalized["forecast_turnaround"].tolist() == pytest.approx([0.0, 0.0])
+
+
+def test_performance_forecast_normalization_keeps_a_turnaround_without_a_numeric_yoy_range():
+    normalized = RESEARCH.normalize_performance_forecast_rows(
+        [
+            {
+                "SECURITY_CODE": "000001",
+                "NOTICE_DATE": "2024-04-20",
+                "PREDICT_FINANCE_CODE": "004",
+                "PREDICT_TYPE": "扭亏",
+                "ADD_AMP_LOWER": None,
+                "ADD_AMP_UPPER": None,
+            }
+        ],
+        "2024-03-31",
+    )
+    assert len(normalized) == 1
+    assert normalized["forecast_type"].item() == "扭亏"
+    assert normalized["forecast_turnaround"].item() == pytest.approx(1.0)
+    assert pd.isna(normalized["forecast_profit_yoy"].item())
+
+
+def test_performance_forecast_join_waits_for_next_session_and_expires_old_events():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-06-10"]),
+        }
+    )
+    forecasts = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "report_date": pd.to_datetime(["2024-03-31"]),
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "forecast_type": ["预增"],
+            "forecast_turnaround": [0.0],
+            "forecast_profit_yoy": [20.0],
+            "forecast_profit_yoy_width": [10.0],
+        }
+    )
+    joined = RESEARCH.attach_performance_forecasts_asof(market, forecasts, max_age_days=30)
+    before = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    effective = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    expired = joined.loc[joined["datetime"] == pd.Timestamp("2024-06-10")].iloc[0]
+    assert not before["forecast_available"]
+    assert effective["forecast_available"]
+    assert effective["forecast_effective_date"] == pd.Timestamp("2024-05-06")
+    assert not expired["forecast_available"]
+
+
 def test_winner_uses_development_only():
     summaries = [
         {"candidate": "development_winner", "development_selection_score": 0.20, "test": {"annualized_return": -0.99}},

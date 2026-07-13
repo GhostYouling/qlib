@@ -126,7 +126,22 @@ python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
 
 这一步只诊断新季度信息的单因子关联，不能直接生成策略、前瞻观察或选股名单。只有在跨年度方向稳定后，才可把一个**预先声明**的季度公告因子库作为新的研究轮次；公开接口的历史值仍可能被后续更正，不能视为交易所级点时财务库。
 
-`--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
+季度报告未产生稳定三日信号时，可以把**业绩预告公告**作为独立事件源继续诊断。接口混有营收、每股收益和扣非利润等口径，脚本只保留“归属于上市公司股东的净利润”（`PREDICT_FINANCE_CODE=004`）的公告日和同比预测区间；再以区间中点表示预期方向、以区间宽度表示不确定性，并保留无需数值区间即可确定的“扭亏”二元事件。所有事件都严格等到公告后的下一本地交易日才允许使用。它不会改变季度质量门槛，也不会直接产生策略或选股名单：只在原本已合格的股票中，测量新鲜预告事件是否解释之后的完整三日收益。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-performance-forecasts \
+  --start-year 2019 --end-year 2026 --through-report-date 2026-06-30
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --performance-forecasts data/raw/a_share/fundamentals/performance_forecasts.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --max-forecast-age-days 30
+```
+
+这是一项预先固定为“公告后 30 个日历日内”的开发期事件诊断；不要根据结果反复扩大窗口来寻找更好看的数值。公开源是当前快照，历史预告可被后续订正或遗漏，因此即使诊断方向稳定，也还需要独立的未见区间和前瞻纸面观察。
+
+季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
