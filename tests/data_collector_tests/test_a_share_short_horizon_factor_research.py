@@ -2,6 +2,7 @@
 
 import importlib.util
 import json
+import math
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -436,6 +437,26 @@ def test_v5_defensive_library_systematically_adds_low_volatility_and_low_range_v
     assert low_volatility.weights["volatility_low_20"] == pytest.approx(0.17)
     assert dual_risk.weights["volatility_low_20"] == pytest.approx(0.18)
     assert dual_risk.weights["amplitude_low"] == pytest.approx(0.162)
+
+
+def test_v6_soft_risk_library_adds_close_pullback_and_short_reversal_without_hard_gates():
+    v5 = RESEARCH.candidate_library("v5_defensive")
+    v6 = RESEARCH.candidate_library("v6_soft_risk")
+    additions = v6[len(v5) :]
+    assert len(v6) == 246
+    assert len(additions) == 40
+    assert tuple(candidate.name for candidate in v6[: len(v5)]) == tuple(candidate.name for candidate in v5)
+    assert {candidate.name.split("_q", 1)[0] for candidate in additions} == {
+        "expanded_v6_soft_close_pullback_defensive",
+        "expanded_v6_soft_short_reversal_defensive",
+        "expanded_v6_soft_close_pullback_low_volatility",
+        "expanded_v6_soft_short_reversal_low_volatility",
+    }
+    pullback = RESEARCH.candidate_by_name("expanded_v6_soft_close_pullback_defensive_q15_revenue", "v6_soft_risk")
+    reversal = RESEARCH.candidate_by_name("expanded_v6_soft_short_reversal_defensive_q10_roe", "v6_soft_risk")
+    assert pullback.weights["close_pullback"] == pytest.approx(0.1105)
+    assert reversal.weights["reversal_1"] == pytest.approx(0.117)
+    assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
 
 
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):

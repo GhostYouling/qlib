@@ -119,10 +119,23 @@ python scripts/a_share_short_horizon_factor_research.py run
 
 `v5_defensive` 保留 V4 的全部候选，再增加 30 个防御型延续组合：低 20 日实现波动、低 5 日平均振幅和两者并用的 3 个信号蓝图，分别与五类质量输入和 10%/15% 质量权重交叉。这里的低波动是同日合格股票横截面中的反向排名，区别于已有“中等波动”目标；全部数值在信号收盘时已知。该库专门检验三日持有的尾部回撤能否改善，仍必须经独立的前瞻纸面观察。
 
+`v6_soft_risk` 保留 V5 的全部候选，再增加 40 个“软风险排序”组合：把收盘远离当日高点的回撤偏好、一日回撤，或其与低 20 日波动的组合直接计入延续分数。它源自最差 cohort 的描述性归因（最差组反而更接近日内高点），但不使用硬门槛、不开盘前未知的变量，也不从被拒绝的篮子中替换第四只股票。4 个信号蓝图均与五类质量输入和 10%/15% 质量权重做完整交叉；必须与旧库一起经长历史压力扫描。
+
 ```bash
 python scripts/a_share_short_horizon_factor_research.py run \
   --hold-days 3 --topk 20 \
   --iteration-label three_day_cycle_001
+```
+
+V6 的三日 Top3 压力扫描示例（只用于研究记录，不登记前瞻策略）：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py run \
+  --candidate-library v6_soft_risk \
+  --start 2019-01-01 --end 2026-07-13 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter always \
+  --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20 --research-only
 ```
 
 新假设应先固定为新库，再仅在开发期内筛选。以下是 V2 的开发期登记示例：它不读 2026，且没有测试段时强制保持研究状态。

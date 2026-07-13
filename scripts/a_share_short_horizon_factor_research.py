@@ -586,12 +586,102 @@ V5_CANDIDATES = (*V4_CANDIDATES, *V5_DEFENSIVE_CANDIDATES)
 if len(V5_CANDIDATES) != 206 or len({candidate.name for candidate in V5_CANDIDATES}) != len(V5_CANDIDATES):
     raise RuntimeError("V5 candidate library must contain 206 uniquely named strategies")
 
+# V6 follows the cohort attribution evidence without turning it into a hard
+# eligibility filter.  The worst V5 cohorts closed materially nearer to their
+# same-day highs than the overall selected set, while hard low-volatility,
+# range and opening-gap gates all failed their sensitivity audits.  These four
+# blueprints therefore test soft close-pullback and one-day-reversal ranking
+# within the same three-day continuation family.  The full 4 x 5 x 2 grid is
+# declared before running the historical pressure scan.
+SOFT_RISK_SIGNAL_BLUEPRINTS = (
+    Candidate(
+        name="soft_close_pullback_defensive",
+        description="Calm sixty-day continuation with a soft preference against an overextended daily close.",
+        weights={
+            "trend_ma_60": 0.27,
+            "momentum_20": 0.22,
+            "momentum_60": 0.17,
+            "amplitude_low": 0.14,
+            "volume_dry_up": 0.07,
+            "close_pullback": 0.13,
+        },
+    ),
+    Candidate(
+        name="soft_short_reversal_defensive",
+        description="Calm sixty-day continuation with a soft one-day pullback preference.",
+        weights={
+            "trend_ma_60": 0.27,
+            "momentum_20": 0.22,
+            "momentum_60": 0.17,
+            "amplitude_low": 0.14,
+            "volume_dry_up": 0.07,
+            "reversal_1": 0.13,
+        },
+    ),
+    Candidate(
+        name="soft_close_pullback_low_volatility",
+        description="Calm continuation balancing a non-overextended close and low twenty-day realized volatility.",
+        weights={
+            "trend_ma_60": 0.23,
+            "momentum_20": 0.19,
+            "momentum_60": 0.15,
+            "amplitude_low": 0.13,
+            "volume_dry_up": 0.06,
+            "close_pullback": 0.12,
+            "volatility_low_20": 0.12,
+        },
+    ),
+    Candidate(
+        name="soft_short_reversal_low_volatility",
+        description="Calm continuation balancing a one-day pullback and low twenty-day realized volatility.",
+        weights={
+            "trend_ma_60": 0.20,
+            "momentum_20": 0.17,
+            "momentum_60": 0.13,
+            "amplitude_low": 0.12,
+            "volume_dry_up": 0.05,
+            "reversal_1": 0.11,
+            "volatility_low_20": 0.11,
+            "close_pullback": 0.11,
+        },
+    ),
+)
+
+
+def build_v6_soft_risk_candidates() -> tuple[Candidate, ...]:
+    """Add soft pullback and short-reversal probes to the defensive trend family."""
+
+    additions: list[Candidate] = []
+    for blueprint in SOFT_RISK_SIGNAL_BLUEPRINTS:
+        if not math.isclose(sum(blueprint.weights.values()), 1.0, abs_tol=1e-9):
+            raise RuntimeError(f"V6 soft-risk blueprint weights must sum to one: {blueprint.name}")
+        for suffix, quality_factor, quality_weight in DEFENSIVE_QUALITY_OVERLAYS:
+            weights = {factor: weight * (1.0 - quality_weight) for factor, weight in blueprint.weights.items()}
+            weights[quality_factor] = quality_weight
+            additions.append(
+                Candidate(
+                    name=f"expanded_v6_{blueprint.name}_{suffix}",
+                    description=f"{blueprint.description} Quality overlay: {quality_factor} at {quality_weight:.0%}.",
+                    weights=weights,
+                )
+            )
+    if len(additions) != 40 or len({candidate.name for candidate in additions}) != len(additions):
+        raise RuntimeError("V6 soft-risk grid must contain 40 new unique strategies")
+    return tuple(additions)
+
+
+V6_SOFT_RISK_CANDIDATES = build_v6_soft_risk_candidates()
+V6_CANDIDATES = (*V5_CANDIDATES, *V6_SOFT_RISK_CANDIDATES)
+if len(V6_CANDIDATES) != 246 or len({candidate.name for candidate in V6_CANDIDATES}) != len(V6_CANDIDATES):
+    raise RuntimeError("V6 candidate library must contain 246 uniquely named strategies")
+
 CANDIDATE_LIBRARIES = {
     "v1": CANDIDATES,
     "v2_microstructure": V2_CANDIDATES,
     "v3_quality_grid": V3_CANDIDATES,
     "v4_freshness": V4_CANDIDATES,
     "v5_defensive": V5_CANDIDATES,
+    "v6_soft_risk": V6_CANDIDATES,
 }
 CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v1": "5 fixed baselines plus 19 fixed signal blueprints crossed with 5 fixed quality overlays",
@@ -610,6 +700,10 @@ CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v5_defensive": (
         "V4 plus thirty systematic defensive-continuation combinations: three low-volatility/low-range signal "
         "blueprints crossed with five quality inputs and 10%/15% quality weights"
+    ),
+    "v6_soft_risk": (
+        "V5 plus forty defensive-continuation combinations: four soft close-pullback/short-reversal signal blueprints "
+        "crossed with five quality inputs and 10%/15% quality weights"
     ),
 }
 
@@ -1250,6 +1344,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["amplitude_low"] = 1.0 - result["rank_amplitude_5"]
     result["gap_reversal"] = 1.0 - result["rank_gap_1"]
     result["gap_strength"] = result["rank_gap_1"]
+    result["close_pullback"] = 1.0 - result["rank_close_to_high"]
     result["drawdown_20"] = 1.0 - result["rank_near_high_20"]
     result["quality_roe"] = result["rank_roe"]
     result["quality_revenue"] = result["rank_revenue_yoy"]
@@ -3567,7 +3662,15 @@ def run_cohort_risk_audit(args: argparse.Namespace) -> dict[str, Any]:
     worst_dates = set(worst_cohorts["signal_date"])
     feature_columns = [
         column
-        for column in ("liquidity_5", "volatility_low_20", "amplitude_low", "quality_score", "quality_revenue", "momentum_20")
+        for column in (
+            "liquidity_5",
+            "volatility_low_20",
+            "amplitude_low",
+            "close_to_high",
+            "quality_score",
+            "quality_revenue",
+            "momentum_20",
+        )
         if column in details.columns
     ]
     feature_summary = {
