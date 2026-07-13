@@ -602,6 +602,54 @@ def test_repurchase_plan_join_waits_until_strictly_after_announcement_date():
     assert effective_day["repurchase_planned_share_ratio"] == pytest.approx(1.25)
 
 
+def test_holder_count_normalization_uses_notice_date_and_excludes_price_fields():
+    rows = [
+        {
+            "SECURITY_CODE": "000001",
+            "END_DATE": "2024-03-31",
+            "HOLD_NOTICE_DATE": "2024-04-30",
+            "HOLDER_NUM_CHANGE": -100.0,
+            "HOLDER_NUM_RATIO": -5.0,
+            "INTERVAL_CHRATE": 99.0,
+            "AVG_MARKET_CAP": 123.0,
+        },
+        {"SECURITY_CODE": "159001", "HOLD_NOTICE_DATE": "2024-04-30", "HOLDER_NUM_CHANGE": 9.0},
+    ]
+    normalized = RESEARCH.normalize_holder_count_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.HOLDER_COUNT_EVENT_COLUMNS)
+    assert len(normalized) == 1
+    row = normalized.iloc[0]
+    assert row["instrument"] == "SZ000001"
+    assert row["announcement_date"] == pd.Timestamp("2024-04-30")
+    assert row["holder_count_change_ratio"] == pytest.approx(-5.0)
+    assert row["holder_count_change_absolute"] == pytest.approx(-100.0)
+    assert "INTERVAL_CHRATE" not in normalized.columns
+
+
+def test_holder_count_join_waits_until_strictly_after_notice_date():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "holder_count_change_ratio": [-5.0],
+            "holder_count_change_absolute": [-100.0],
+        }
+    )
+    joined = RESEARCH.attach_holder_count_events_asof(market, events, max_age_days=3)
+    notice_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    effective_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    assert not notice_day["holder_count_available"]
+    assert effective_day["holder_count_available"]
+    assert effective_day["holder_count_effective_date"] == pd.Timestamp("2024-05-06")
+    assert effective_day["holder_count_change_ratio"] == pytest.approx(-5.0)
+
+
 def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
     ranked = pd.DataFrame({"billboard_deal_to_float": [0.10, 0.80, float("nan")]})
     result = RESEARCH.add_billboard_holdout_factor(ranked)

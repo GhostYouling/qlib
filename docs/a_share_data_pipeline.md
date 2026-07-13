@@ -236,6 +236,21 @@ python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
 
 回购计划事件在质量门后每年只有很少的非重叠 cohort；即使某一汇总指标看起来积极，也必须通过现有的至少 200 个 cohort、跨年度 Rank IC 与 Top‑3 可行性审计，不能凭小样本晋级。
 
+另一类已核验的独立事件是**股东户数变动公告**。脚本按每个季度末拉取全市场快照，只请求股票代码、`HOLD_NOTICE_DATE`、股东户数增减比例和增减绝对值；季度末 `END_DATE` 只用于下载分片，绝不用于信号时点。`INTERVAL_CHRATE`、户均市值、户均持股、总市值和总股本均为价格或后续状态字段，在请求层排除；信号严格从公告后的下一本地交易日生效，窗口固定为 3 个日历日：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-holder-count-events \
+  --start-year 2019 --end-year 2025
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --holder-count-events data/raw/a_share/events/holder_count_changes.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --max-holder-count-age-days 3
+```
+
+在固定开发期中，户数增减比例和绝对值的总体 Rank IC 均为负，且 Top‑3 净收益无法稳定跨年；新鲜度也未通过年度方向与回撤要求。因此三项户数因子均被淘汰，不能反向、扩窗或并入现有组合。
+
 季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash

@@ -60,6 +60,8 @@ DEFAULT_INSTITUTIONAL_SURVEY_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" /
 DEFAULT_INSTITUTIONAL_SURVEY_EVENT_MANIFEST = DATA_ROOT / "metadata" / "institutional_surveys_manifest.json"
 DEFAULT_REPURCHASE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "repurchase_plans.parquet"
 DEFAULT_REPURCHASE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "repurchase_plans_manifest.json"
+DEFAULT_HOLDER_COUNT_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "holder_count_changes.parquet"
+DEFAULT_HOLDER_COUNT_EVENT_MANIFEST = DATA_ROOT / "metadata" / "holder_count_changes_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
@@ -78,6 +80,7 @@ EASTMONEY_BLOCK_TRADE_REPORT = "RPT_DATA_BLOCKTRADE"
 EASTMONEY_MARGIN_FINANCING_REPORT = "RPTA_WEB_RZRQ_GGMX"
 EASTMONEY_INSTITUTIONAL_SURVEY_REPORT = "RPT_ORG_SURVEY"
 EASTMONEY_REPURCHASE_REPORT = "RPTA_WEB_GETHGLIST_NEW"
+EASTMONEY_HOLDER_COUNT_REPORT = "RPT_HOLDERNUM_DET"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -180,6 +183,17 @@ REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS = (
     "repurchase_planned_share_ratio",
     "repurchase_planned_amount",
     "repurchase_freshness",
+)
+HOLDER_COUNT_EVENT_COLUMNS = (
+    "instrument",
+    "announcement_date",
+    "holder_count_change_ratio",
+    "holder_count_change_absolute",
+)
+HOLDER_COUNT_FACTOR_DIAGNOSTIC_COLUMNS = (
+    "holder_count_change_ratio",
+    "holder_count_change_absolute",
+    "holder_count_freshness",
 )
 MARGIN_FINANCING_TOP_N = 100
 # This direction is deliberately not part of the development diagnostic
@@ -1774,6 +1788,46 @@ def _eastmoney_repurchase_request(session: requests.Session, page_number: int) -
     raise RuntimeError(f"cannot fetch repurchase-plan page {page_number}: {errors[-1]}")
 
 
+def _eastmoney_holder_count_request(
+    session: requests.Session, end_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one shareholder-count reporting-period page with notice timing.
+
+    The report also exposes period price change, household market value, and
+    total market capitalization.  Those price-derived fields are excluded at
+    request time.  The only candidate inputs are the disclosed holder-count
+    changes, and they become usable only after ``HOLD_NOTICE_DATE``.
+    """
+
+    params = {
+        "reportName": EASTMONEY_HOLDER_COUNT_REPORT,
+        "columns": (
+            "SECURITY_CODE,END_DATE,HOLD_NOTICE_DATE,HOLDER_NUM,PRE_HOLDER_NUM,"
+            "HOLDER_NUM_CHANGE,HOLDER_NUM_RATIO"
+        ),
+        "filter": f"(END_DATE='{end_date}')",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "-1,-1",
+        "sortColumns": "HOLD_NOTICE_DATE,SECURITY_CODE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(4):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(f"cannot fetch holder-count report {end_date} page {page_number}: {errors[-1]}")
+
+
 def fetch_annual_report_rows(session: requests.Session, report_date: str) -> list[dict[str, Any]]:
     """Fetch all pages for one annual report period from the public endpoint."""
 
@@ -2247,6 +2301,35 @@ def normalize_repurchase_plan_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFra
         frame.loc[:, list(REPURCHASE_EVENT_COLUMNS)]
         .sort_values(["instrument", "announcement_date"], kind="stable")
         .drop_duplicates(["instrument", "announcement_date"], keep="first")
+        .reset_index(drop=True)
+    )
+
+
+def normalize_holder_count_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Reduce holder-count notices to announced, non-price change inputs."""
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=HOLDER_COUNT_EVENT_COLUMNS)
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("SECURITY_CODE", pd.Series(index=raw.index, dtype="object")).map(qlib_symbol),
+            "announcement_date": pd.to_datetime(
+                raw.get("HOLD_NOTICE_DATE", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+            ),
+            "holder_count_change_ratio": pd.to_numeric(
+                raw.get("HOLDER_NUM_RATIO", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+            "holder_count_change_absolute": pd.to_numeric(
+                raw.get("HOLDER_NUM_CHANGE", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+        }
+    )
+    frame = frame.dropna(subset=["instrument", "announcement_date"])
+    return (
+        frame.loc[:, list(HOLDER_COUNT_EVENT_COLUMNS)]
+        .sort_values(["instrument", "announcement_date"], kind="stable")
+        .drop_duplicates(["instrument", "announcement_date"], keep="last")
         .reset_index(drop=True)
     )
 
@@ -2832,6 +2915,70 @@ def sync_repurchase_plan_events(output: Path, manifest: Path) -> dict[str, Any]:
     return report
 
 
+def sync_holder_count_events(start_year: int, end_year: int, output: Path, manifest: Path) -> dict[str, Any]:
+    """Download dated public shareholder-count changes for every quarter end."""
+
+    report_dates = quarterly_report_dates(start_year, end_year)
+    session = _eastmoney_session()
+    frames: list[pd.DataFrame] = []
+    pages_by_report_date: dict[str, int] = {}
+    source_rows_by_report_date: dict[str, int] = {}
+    for report_date in report_dates:
+        first = _eastmoney_holder_count_request(session, report_date, page_number=1)
+        result = first["result"]
+        pages = int(result.get("pages") or 0)
+        pages_by_report_date[report_date] = pages
+        source_rows = 0
+        for page_number in range(1, pages + 1):
+            payload = first if page_number == 1 else _eastmoney_holder_count_request(
+                session, report_date, page_number
+            )
+            rows = list((payload.get("result") or {}).get("data") or [])
+            source_rows += len(rows)
+            normalized = normalize_holder_count_rows(rows)
+            if not normalized.empty:
+                frames.append(normalized)
+        source_rows_by_report_date[report_date] = source_rows
+        print(f"{report_date}: {pages} pages; {source_rows} holder-count source rows")
+    merged = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=HOLDER_COUNT_EVENT_COLUMNS)
+    merged = (
+        merged.sort_values(["instrument", "announcement_date"], kind="stable")
+        .drop_duplicates(["instrument", "announcement_date"], keep="last")
+        .reset_index(drop=True)
+    )
+    if merged.empty:
+        raise RuntimeError("holder-count sync produced no usable A-share notice events")
+    _atomic_write_parquet(output, merged)
+    result = {
+        "status": "completed",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_HOLDER_COUNT_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+        "event_frequency": "quarterly_end_dated_holder_count_notice",
+        "report_dates": report_dates,
+        "pages_by_report_date": pages_by_report_date,
+        "source_rows_by_report_date": source_rows_by_report_date,
+        "rows_by_announcement_year": {
+            str(year): int(len(group))
+            for year, group in merged.groupby(pd.to_datetime(merged["announcement_date"]).dt.year, sort=True)
+        },
+        "rows_written": len(merged),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "The public source is queried as it exists today and can revise or omit historical records.",
+            "END_DATE is a holder-count cutoff, not a score-time date; the join uses only the strictly later local session after HOLD_NOTICE_DATE.",
+            "INTERVAL_CHRATE, AVG_MARKET_CAP, AVG_HOLD_NUM, TOTAL_MARKET_CAP, and TOTAL_A_SHARES are excluded at request time because they are price- or later-state-derived fields outside this hypothesis.",
+            "This is a research event snapshot, not an exchange-grade point-in-time disclosure database.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
 def merge_quarterly_fundamentals(input_paths: Iterable[Path], output: Path, manifest: Path) -> dict[str, Any]:
     """Atomically combine independently downloaded quarterly snapshot chunks.
 
@@ -3020,6 +3167,24 @@ def load_repurchase_plan_events(path: Path) -> pd.DataFrame:
     frame = frame.loc[:, list(REPURCHASE_EVENT_COLUMNS)].copy()
     frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
     for column in REPURCHASE_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    return frame.dropna(subset=["instrument", "announcement_date"]).sort_values(
+        ["instrument", "announcement_date"], kind="stable"
+    ).reset_index(drop=True)
+
+
+def load_holder_count_events(path: Path) -> pd.DataFrame:
+    """Load dated shareholder-count change notices without price-derived fields."""
+
+    if not path.exists():
+        raise FileNotFoundError(f"holder-count snapshot does not exist: {path}; run sync-holder-count-events first")
+    frame = pd.read_parquet(path)
+    missing = sorted(set(HOLDER_COUNT_EVENT_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(f"holder-count snapshot is missing columns: {', '.join(missing)}")
+    frame = frame.loc[:, list(HOLDER_COUNT_EVENT_COLUMNS)].copy()
+    frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
+    for column in HOLDER_COUNT_EVENT_COLUMNS[2:]:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     return frame.dropna(subset=["instrument", "announcement_date"]).sort_values(
         ["instrument", "announcement_date"], kind="stable"
@@ -3568,6 +3733,55 @@ def attach_repurchase_plan_events_asof(
     return result
 
 
+def attach_holder_count_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach holder-count changes strictly after their published notice date."""
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    if missing := sorted({"instrument", "datetime"} - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(HOLDER_COUNT_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError(f"holder-count events are missing columns: {', '.join(missing)}")
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source = events.loc[:, list(HOLDER_COUNT_EVENT_COLUMNS)].copy()
+    source["holder_count_effective_date"] = _first_trading_day_after(calendar, source["announcement_date"])
+    source = source.dropna(subset=["holder_count_effective_date"]).sort_values(
+        ["instrument", "holder_count_effective_date", "announcement_date"], kind="stable"
+    ).drop_duplicates(["instrument", "holder_count_effective_date"], keep="last")
+    columns = [
+        "holder_count_announcement_date", "holder_count_change_ratio", "holder_count_change_absolute",
+        "holder_count_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"], daily["_row"] = 1, np.arange(len(daily))
+    for column in ("holder_count_announcement_date", "holder_count_effective_date"):
+        daily[column] = pd.NaT
+    for column in columns[1:-1]:
+        daily[column] = np.nan
+    event_rows = source.rename(columns={"holder_count_effective_date": "datetime", "announcement_date": "holder_count_announcement_date"})[
+        ["instrument", "datetime", *[column for column in columns if column != "holder_count_effective_date"]]
+    ].copy()
+    event_rows["holder_count_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"], event_rows["_row"] = 0, np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False).sort_values(
+        ["instrument", "datetime", "_kind"], kind="stable"
+    )
+    combined[columns] = combined.groupby("instrument", sort=False)[columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["holder_count_age_days"] = (
+        pd.to_datetime(result["datetime"]) - pd.to_datetime(result["holder_count_effective_date"])
+    ).dt.days
+    result["holder_count_available"] = result["holder_count_announcement_date"].notna() & result[
+        "holder_count_age_days"
+    ].between(0, max_age_days)
+    return result
+
+
 def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size: int) -> pd.DataFrame:
     """Load the local buyable universe and precompute only non-forward factors."""
 
@@ -3785,6 +3999,16 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         if column in result.columns
     ]
     raw_columns.extend(repurchase_raw_columns)
+    holder_count_raw_columns = [
+        column
+        for column in (
+            "holder_count_change_ratio",
+            "holder_count_change_absolute",
+            "holder_count_age_days",
+        )
+        if column in result.columns
+    ]
+    raw_columns.extend(holder_count_raw_columns)
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     # Event rows are forward-filled only so each row retains the event context
@@ -3799,6 +4023,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         ("margin_financing_available", margin_financing_raw_columns),
         ("institutional_survey_available", institutional_survey_raw_columns),
         ("repurchase_available", repurchase_raw_columns),
+        ("holder_count_available", holder_count_raw_columns),
     ):
         if available_column in result.columns:
             result.loc[~result[available_column].fillna(False), event_columns] = np.nan
@@ -3888,6 +4113,12 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
             result[column] = result[rank_column]
     if "rank_repurchase_age_days" in result.columns:
         result["repurchase_freshness"] = 1.0 - result["rank_repurchase_age_days"]
+    for column in ("holder_count_change_ratio", "holder_count_change_absolute"):
+        rank_column = f"rank_{column}"
+        if rank_column in result.columns:
+            result[column] = result[rank_column]
+    if "rank_holder_count_age_days" in result.columns:
+        result["holder_count_freshness"] = 1.0 - result["rank_holder_count_age_days"]
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_3"] = result["rank_momentum_3"]
@@ -5819,6 +6050,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         margin_financing_events = diagnostic.get("margin_financing_events") or {}
         institutional_survey_events = diagnostic.get("institutional_survey_events") or {}
         repurchase_events = diagnostic.get("repurchase_events") or {}
+        holder_count_events = diagnostic.get("holder_count_events") or {}
         top = ranking[0] if ranking else {}
         diagnostics.append(
             {
@@ -5833,6 +6065,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "margin_financing_event_source": str(margin_financing_events.get("source", "—")),
                 "institutional_survey_event_source": str(institutional_survey_events.get("source", "—")),
                 "repurchase_event_source": str(repurchase_events.get("source", "—")),
+                "holder_count_event_source": str(holder_count_events.get("source", "—")),
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
@@ -6405,6 +6638,7 @@ def render_three_day_research_report(
                             diagnostic["margin_financing_event_source"],
                             diagnostic["institutional_survey_event_source"],
                             diagnostic["repurchase_event_source"],
+                            diagnostic["holder_count_event_source"],
                         )
                         if source != "—"
                     )
@@ -7132,6 +7366,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         Path(args.institutional_survey_events).expanduser() if args.institutional_survey_events else None
     )
     repurchase_path = Path(args.repurchase_events).expanduser() if args.repurchase_events else None
+    holder_count_path = Path(args.holder_count_events).expanduser() if args.holder_count_events else None
     experiment_root = Path(args.experiment_root).expanduser()
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -7176,6 +7411,11 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         market = attach_repurchase_plan_events_asof(
             market, repurchase_events, max_age_days=args.max_repurchase_age_days
         )
+    if holder_count_path is not None:
+        holder_count_events = load_holder_count_events(holder_count_path)
+        market = attach_holder_count_events_asof(
+            market, holder_count_events, max_age_days=args.max_holder_count_age_days
+        )
     ranked = rank_factor_frame(market)
     forward_returns = forward_factor_return_frame(ranked, args.hold_days)
     factor_catalog = [
@@ -7189,6 +7429,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS,
             *INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS,
             *REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS,
+            *HOLDER_COUNT_FACTOR_DIAGNOSTIC_COLUMNS,
         )
         if factor in ranked.columns
     ]
@@ -7334,6 +7575,21 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "future_implementation_fields_stored": False,
             }
             if repurchase_path is not None
+            else None
+        ),
+        "holder_count_events": (
+            {
+                "source": str(holder_count_path.resolve()),
+                "sha256": file_sha256(holder_count_path),
+                "effective_date": "strictly next local trading day after HOLD_NOTICE_DATE",
+                "max_holder_count_age_days": args.max_holder_count_age_days,
+                "available_rows": int(market["holder_count_available"].sum()),
+                "eligible_available_rows": int(
+                    (market["quality_eligible"].fillna(False) & market["holder_count_available"].fillna(False)).sum()
+                ),
+                "price_derived_fields_stored": False,
+            }
+            if holder_count_path is not None
             else None
         ),
         "data": {
@@ -8926,6 +9182,15 @@ def parse_args() -> argparse.Namespace:
     sync_repurchase.add_argument("--output", default=str(DEFAULT_REPURCHASE_EVENTS))
     sync_repurchase.add_argument("--manifest", default=str(DEFAULT_REPURCHASE_EVENT_MANIFEST))
 
+    sync_holder_count = subparsers.add_parser(
+        "sync-holder-count-events",
+        help="download dated public shareholder-count changes for short-horizon event research",
+    )
+    sync_holder_count.add_argument("--start-year", type=int, default=2019)
+    sync_holder_count.add_argument("--end-year", type=int, default=2026)
+    sync_holder_count.add_argument("--output", default=str(DEFAULT_HOLDER_COUNT_EVENTS))
+    sync_holder_count.add_argument("--manifest", default=str(DEFAULT_HOLDER_COUNT_EVENT_MANIFEST))
+
     run = subparsers.add_parser("run", help="run the predeclared short-horizon factor sweep")
     run.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     run.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -8983,6 +9248,10 @@ def parse_args() -> argparse.Namespace:
         "--repurchase-events",
         help="optional initial repurchase-plan snapshot; adds next-session plan factors to the development-only diagnostic",
     )
+    factor_diagnostic.add_argument(
+        "--holder-count-events",
+        help="optional dated shareholder-count change snapshot; adds next-session event factors to the development-only diagnostic",
+    )
     factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     factor_diagnostic.add_argument("--start", default="2019-01-01")
     factor_diagnostic.add_argument("--end", default="2025-12-31")
@@ -9033,6 +9302,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="maximum calendar age for an initial repurchase plan; default matches the three-day holding horizon",
+    )
+    factor_diagnostic.add_argument(
+        "--max-holder-count-age-days",
+        type=int,
+        default=3,
+        help="maximum calendar age for a shareholder-count notice; default matches the three-day holding horizon",
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
@@ -9464,6 +9739,8 @@ def main() -> int:
         )
     elif args.command == "sync-repurchase-plan-events":
         report = sync_repurchase_plan_events(Path(args.output), Path(args.manifest))
+    elif args.command == "sync-holder-count-events":
+        report = sync_holder_count_events(args.start_year, args.end_year, Path(args.output), Path(args.manifest))
     elif args.command == "run":
         report = run_research(args)
     elif args.command == "factor-diagnostic":
