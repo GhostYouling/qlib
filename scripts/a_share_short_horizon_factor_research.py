@@ -675,6 +675,91 @@ V6_CANDIDATES = (*V5_CANDIDATES, *V6_SOFT_RISK_CANDIDATES)
 if len(V6_CANDIDATES) != 246 or len({candidate.name for candidate in V6_CANDIDATES}) != len(V6_CANDIDATES):
     raise RuntimeError("V6 candidate library must contain 246 uniquely named strategies")
 
+# V7 is deliberately small and explicitly diagnostic-driven: development-only
+# single-factor evidence found negative three-day association for the existing
+# long-trend inputs, while reversal_5, volume_dry_up and gap_strength showed a
+# positive extreme-basket spread.  It is therefore a historical sensitivity
+# library only; no V7 result may be promoted or registered for forward
+# observation without a separately predeclared, genuinely unseen evaluation.
+REVERSION_IC_SIGNAL_BLUEPRINTS = (
+    Candidate(
+        name="reversal_dry_gap_pullback",
+        description="Five-day pullback with quiet volume, a strong opening gap, and an intraday close pullback.",
+        weights={
+            "reversal_5": 0.35,
+            "volume_dry_up": 0.30,
+            "gap_strength": 0.20,
+            "close_pullback": 0.15,
+        },
+    ),
+    Candidate(
+        name="reversal_dry_gap",
+        description="Five-day pullback with quiet volume and a strong opening gap, without trend confirmation.",
+        weights={
+            "reversal_5": 0.45,
+            "volume_dry_up": 0.35,
+            "gap_strength": 0.20,
+        },
+    ),
+    Candidate(
+        name="gap_dry_reversal",
+        description="Strong opening gap with quiet-volume and five-day pullback confirmation.",
+        weights={
+            "gap_strength": 0.35,
+            "reversal_5": 0.25,
+            "volume_dry_up": 0.25,
+            "close_pullback": 0.15,
+        },
+    ),
+    Candidate(
+        name="quiet_reversal_pullback",
+        description="Five-day pullback with quiet volume, a less overextended close, and a modest one-day range preference.",
+        weights={
+            "reversal_5": 0.35,
+            "volume_dry_up": 0.25,
+            "close_pullback": 0.20,
+            "amplitude_low_1": 0.20,
+        },
+    ),
+)
+REVERSION_IC_QUALITY_OVERLAYS: tuple[tuple[str, str | None, float], ...] = (
+    ("gate_only", None, 0.0),
+    ("q05_growth", "quality_growth", 0.05),
+    ("q10_composite", "quality_score", 0.10),
+)
+
+
+def build_v7_reversion_ic_candidates() -> tuple[Candidate, ...]:
+    """Add a compact, diagnostic-driven mean-reversion sensitivity grid."""
+
+    additions: list[Candidate] = []
+    for blueprint in REVERSION_IC_SIGNAL_BLUEPRINTS:
+        if not math.isclose(sum(blueprint.weights.values()), 1.0, abs_tol=1e-9):
+            raise RuntimeError(f"V7 reversion blueprint weights must sum to one: {blueprint.name}")
+        for suffix, quality_factor, quality_weight in REVERSION_IC_QUALITY_OVERLAYS:
+            weights = {factor: weight * (1.0 - quality_weight) for factor, weight in blueprint.weights.items()}
+            if quality_factor is not None:
+                weights[quality_factor] = quality_weight
+            additions.append(
+                Candidate(
+                    name=f"expanded_v7_{blueprint.name}_{suffix}",
+                    description=(
+                        f"{blueprint.description} Quality overlay: "
+                        f"{quality_factor or 'quality_gate_only'} at {quality_weight:.0%}."
+                    ),
+                    weights=weights,
+                )
+            )
+    if len(additions) != 12 or len({candidate.name for candidate in additions}) != len(additions):
+        raise RuntimeError("V7 reversion grid must contain 12 new unique strategies")
+    return tuple(additions)
+
+
+V7_REVERSION_IC_CANDIDATES = build_v7_reversion_ic_candidates()
+V7_CANDIDATES = (*V6_CANDIDATES, *V7_REVERSION_IC_CANDIDATES)
+if len(V7_CANDIDATES) != 258 or len({candidate.name for candidate in V7_CANDIDATES}) != len(V7_CANDIDATES):
+    raise RuntimeError("V7 candidate library must contain 258 uniquely named strategies")
+
 CANDIDATE_LIBRARIES = {
     "v1": CANDIDATES,
     "v2_microstructure": V2_CANDIDATES,
@@ -682,6 +767,7 @@ CANDIDATE_LIBRARIES = {
     "v4_freshness": V4_CANDIDATES,
     "v5_defensive": V5_CANDIDATES,
     "v6_soft_risk": V6_CANDIDATES,
+    "v7_reversion_ic": V7_CANDIDATES,
 }
 CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v1": "5 fixed baselines plus 19 fixed signal blueprints crossed with 5 fixed quality overlays",
@@ -705,7 +791,19 @@ CANDIDATE_LIBRARY_DESCRIPTIONS = {
         "V5 plus forty defensive-continuation combinations: four soft close-pullback/short-reversal signal blueprints "
         "crossed with five quality inputs and 10%/15% quality weights"
     ),
+    "v7_reversion_ic": (
+        "V6 plus twelve diagnostic-driven historical sensitivity combinations: four short-reversal/quiet-volume/gap "
+        "blueprints crossed with quality-gate-only, 5% growth, and 10% composite quality modes"
+    ),
 }
+
+# This diagnostic catalog is derived from the declared candidate libraries,
+# rather than from a result-dependent shortlist.  It is evidence for forming a
+# future library; it never selects or promotes an existing candidate.
+FACTOR_DIAGNOSTIC_COLUMNS = tuple(
+    sorted({factor for candidate in V7_CANDIDATES for factor in candidate.weights})
+)
+FACTOR_DIAGNOSTIC_BUCKET_COUNT = 5
 
 
 def candidate_library(library_id: str) -> tuple[Candidate, ...]:
@@ -2054,6 +2152,144 @@ def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | in
     }
 
 
+def forward_factor_return_frame(ranked: pd.DataFrame, hold_days: int) -> pd.DataFrame:
+    """Pair every close-known eligible signal with its next-open three-day return.
+
+    This intentionally mirrors the research harness timing but makes no
+    portfolio decision.  It is used only for cross-sectional factor
+    diagnostics, and therefore retains every eligible name with complete
+    future quotes rather than choosing a TopK basket first.
+    """
+
+    if hold_days < 1:
+        raise ValueError("hold_days must be positive")
+    calendar = pd.DatetimeIndex(sorted(ranked["datetime"].unique()))
+    if len(calendar) <= hold_days + 1:
+        raise ValueError("research window is too short for the requested holding period")
+    date_to_position = {date: position for position, date in enumerate(calendar)}
+    rebalances = calendar[: -(hold_days + 1) : hold_days]
+    signals = ranked.loc[
+        ranked["quality_eligible"].fillna(False) & ranked["datetime"].isin(rebalances)
+    ].copy()
+    signals["entry_date"] = signals["datetime"].map(lambda value: calendar[date_to_position[value] + 1])
+    signals["exit_date"] = signals["datetime"].map(lambda value: calendar[date_to_position[value] + hold_days])
+    quotes = ranked[["datetime", "instrument", "open", "close"]].drop_duplicates(["datetime", "instrument"])
+    entry = quotes.rename(columns={"datetime": "entry_date", "open": "entry_open"})[
+        ["entry_date", "instrument", "entry_open"]
+    ]
+    exit_quote = quotes.rename(columns={"datetime": "exit_date", "close": "exit_close"})[
+        ["exit_date", "instrument", "exit_close"]
+    ]
+    result = signals.merge(entry, on=["entry_date", "instrument"], how="left")
+    result = result.merge(exit_quote, on=["exit_date", "instrument"], how="left")
+    result = result.dropna(subset=["close", "entry_open", "exit_close"])
+    result = result.loc[
+        (result["close"] > 0.0) & (result["entry_open"] > 0.0) & (result["exit_close"] > 0.0)
+    ].copy()
+    result = result.rename(columns={"datetime": "signal_date"})
+    result["forward_gross_return"] = result["exit_close"] / result["entry_open"] - 1.0
+    return result.sort_values(["signal_date", "instrument"], kind="stable")
+
+
+def summarize_factor_diagnostics(
+    forward_returns: pd.DataFrame,
+    factor_columns: Iterable[str],
+    hold_days: int,
+    topk: int,
+    open_cost: float,
+    close_cost: float,
+) -> list[dict[str, Any]]:
+    """Describe each close-known factor's non-overlapping forward association.
+
+    Higher factor values are always interpreted according to their already
+    declared candidate direction.  Rank IC is computed within each signal
+    cross-section; the TopK-minus-BottomK figure is a descriptive gross return
+    spread, not a tradable long-short claim.
+    """
+
+    if hold_days < 1 or topk < 1:
+        raise ValueError("hold_days and topk must both be positive")
+    required = {"signal_date", "instrument", "forward_gross_return"}
+    missing = sorted(required - set(forward_returns.columns))
+    if missing:
+        raise ValueError(f"forward_returns is missing required columns: {', '.join(missing)}")
+    summaries: list[dict[str, Any]] = []
+    for factor in factor_columns:
+        if factor not in forward_returns.columns:
+            continue
+        cohorts: list[dict[str, Any]] = []
+        quintile_means: list[dict[str, Any]] = []
+        for signal_date, group in forward_returns.groupby("signal_date", sort=True):
+            valid = group[[factor, "forward_gross_return"]].dropna()
+            if len(valid) < max(2, 2 * topk) or valid[factor].nunique() < 2:
+                continue
+            rank_ic = valid[factor].corr(valid["forward_gross_return"], method="spearman")
+            if pd.isna(rank_ic):
+                continue
+            ordered = valid.sort_values(factor, ascending=False, kind="stable")
+            top = ordered.head(topk)["forward_gross_return"]
+            bottom = ordered.tail(topk)["forward_gross_return"]
+            top_gross_return = float(top.mean())
+            top_net_return = float((1.0 - open_cost) * (1.0 + top_gross_return) * (1.0 - close_cost) - 1.0)
+            factor_rank = valid[factor].rank(method="first")
+            quintile = pd.qcut(factor_rank, FACTOR_DIAGNOSTIC_BUCKET_COUNT, labels=False)
+            for bucket, bucket_returns in valid.groupby(quintile, observed=True)["forward_gross_return"]:
+                quintile_means.append(
+                    {
+                        "signal_date": pd.Timestamp(signal_date),
+                        "quintile": int(bucket) + 1,
+                        "mean_forward_gross_return": float(bucket_returns.mean()),
+                    }
+                )
+            cohorts.append(
+                {
+                    "signal_date": pd.Timestamp(signal_date),
+                    "rank_ic": float(rank_ic),
+                    "topk_gross_return": top_gross_return,
+                    "topk_net_return": top_net_return,
+                    "top_minus_bottom_gross_return": float(top.mean() - bottom.mean()),
+                }
+            )
+        if not cohorts:
+            continue
+        cohort_frame = pd.DataFrame(cohorts)
+        quintile_frame = pd.DataFrame(quintile_means)
+        topk_rounds = cohort_frame.rename(
+            columns={"topk_net_return": "net_return", "topk_gross_return": "gross_return"}
+        )
+        topk_rounds["holdings"] = topk
+        by_year = {
+            str(year): {
+                "cohorts": int(len(group)),
+                "mean_rank_ic": float(group["rank_ic"].mean()),
+                "positive_rank_ic_rate": float((group["rank_ic"] > 0.0).mean()),
+                "topk_net_cumulative_return": float((1.0 + group["topk_net_return"]).prod() - 1.0),
+            }
+            for year, group in cohort_frame.groupby(cohort_frame["signal_date"].dt.year, sort=True)
+        }
+        summaries.append(
+            {
+                "factor": factor,
+                "cohorts": int(len(cohort_frame)),
+                "mean_rank_ic": float(cohort_frame["rank_ic"].mean()),
+                "median_rank_ic": float(cohort_frame["rank_ic"].median()),
+                "positive_rank_ic_rate": float((cohort_frame["rank_ic"] > 0.0).mean()),
+                "mean_top_minus_bottom_gross_return": float(cohort_frame["top_minus_bottom_gross_return"].mean()),
+                "mean_forward_gross_return_by_factor_quintile": {
+                    str(quintile): float(group["mean_forward_gross_return"].mean())
+                    for quintile, group in quintile_frame.groupby("quintile", sort=True)
+                },
+                "topk": return_metrics(topk_rounds, hold_days),
+                "by_signal_year": by_year,
+            }
+        )
+    return sorted(
+        summaries,
+        key=lambda item: (float(item["mean_rank_ic"]), float(item["mean_top_minus_bottom_gross_return"])),
+        reverse=True,
+    )
+
+
 def choose_winner(summaries: list[dict[str, Any]], selection_policy: str = "pooled_return_drawdown") -> str | None:
     """Choose only from development-period results; reject missing metrics."""
 
@@ -2772,6 +3008,34 @@ def load_no_eligible_studies(experiment_root: Path) -> list[dict[str, Any]]:
     return studies
 
 
+def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read development-only single-factor diagnostics for the research log."""
+
+    diagnostics: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        try:
+            diagnostic = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if diagnostic.get("status") != "completed":
+            continue
+        ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
+        data = diagnostic.get("data") or {}
+        top = ranking[0] if ranking else {}
+        diagnostics.append(
+            {
+                "run_id": str(diagnostic.get("run_id", path.stem)),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "factor_count": len(ranking),
+                "top_factor": str(top.get("factor", "—")),
+                "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
+                "path": str(path.resolve()),
+            }
+        )
+    return diagnostics
+
+
 def load_regime_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read completed market-state audits for the human research log.
 
@@ -3020,6 +3284,7 @@ def render_three_day_research_report(
     shadow_ledger: dict[str, Any] | None = None,
     shadow_observation_registry: dict[str, Any] | None = None,
     no_eligible_studies: list[dict[str, Any]] | None = None,
+    factor_diagnostics: list[dict[str, Any]] | None = None,
     regime_audits: list[dict[str, Any]] | None = None,
     loss_cap_audits: list[dict[str, Any]] | None = None,
     entry_gap_audits: list[dict[str, Any]] | None = None,
@@ -3096,6 +3361,32 @@ def render_three_day_research_report(
                     library=study["candidate_library"],
                     count=study["candidate_count"],
                     policy=study["selection_policy"],
+                )
+            )
+        lines.append("")
+    if factor_diagnostics:
+        lines.extend(
+            [
+                "",
+                "## 开发期单因子三日预测诊断",
+                "",
+                "诊断只描述每个已声明因子与其后完整三日收益的横截面秩相关；它不选择策略，不能替代组合的独立测试或前瞻观察。",
+                "",
+                "| 诊断 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC |",
+                "| --- | --- | ---: | --- | ---: |",
+            ]
+        )
+        for diagnostic in factor_diagnostics:
+            mean_ic = diagnostic["top_factor_mean_rank_ic"]
+            formatted_ic = "—" if mean_ic is None else f"{float(mean_ic):.4f}"
+            lines.append(
+                "| {run_id} | {start} 至 {end} | {count} | {factor} | {mean_ic} |".format(
+                    run_id=diagnostic["run_id"],
+                    start=diagnostic["calendar_start"],
+                    end=diagnostic["calendar_end"],
+                    count=diagnostic["factor_count"],
+                    factor=diagnostic["top_factor"],
+                    mean_ic=formatted_ic,
                 )
             )
         lines.append("")
@@ -3364,6 +3655,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     shadow_observation_registry = load_shadow_observation_registry(shadow_observation_registry_path)
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
+    factor_diagnostics = load_factor_diagnostics(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     loss_cap_audits = load_loss_cap_audits(experiment_root)
     entry_gap_audits = load_entry_gap_audits(experiment_root)
@@ -3377,6 +3669,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         shadow_ledger,
         shadow_observation_registry,
         no_eligible_studies,
+        factor_diagnostics,
         regime_audits,
         loss_cap_audits,
         entry_gap_audits,
@@ -3400,6 +3693,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_signals": len(shadow_ledger["signals"]),
         "shadow_settlements": len(shadow_ledger["settlements"]),
         "no_eligible_studies": len(no_eligible_studies),
+        "factor_diagnostics": len(factor_diagnostics),
         "regime_audits": len(regime_audits),
         "loss_cap_audits": len(loss_cap_audits),
         "entry_gap_audits": len(entry_gap_audits),
@@ -3521,6 +3815,84 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
         "audit_path": str(destination.resolve()),
         "candidate_count": len(candidates),
         "pairwise_overlap": pairs,
+    }
+
+
+def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Measure development-only forward association for the declared factor catalog."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market_end = market["datetime"].max()
+    if market_end > pd.Timestamp(args.development_end):
+        raise ValueError(
+            "factor-diagnostic is development-only; pass --end no later than --development-end so reserved test data cannot guide factor design"
+        )
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    forward_returns = forward_factor_return_frame(ranked, args.hold_days)
+    summaries = summarize_factor_diagnostics(
+        forward_returns,
+        FACTOR_DIAGNOSTIC_COLUMNS,
+        hold_days=args.hold_days,
+        topk=args.topk,
+        open_cost=args.open_cost,
+        close_cost=args.close_cost,
+    )
+    if not summaries:
+        raise RuntimeError("no factor diagnostics could be computed from complete future quotes")
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "development_only_single_factor_forward_diagnostic_research_not_investment_advice",
+        "factor_catalog": list(FACTOR_DIAGNOSTIC_COLUMNS),
+        "strategy_timing": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "diagnostic_topk": args.topk,
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market_end.date().isoformat(),
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "complete_forward_name_observations": int(len(forward_returns)),
+            "development_end": args.development_end,
+            "test_period_used_for_factor_design": False,
+        },
+        "ranking_by_development_rank_ic": summaries,
+        "limitations": [
+            "This ranks individual factor associations only; it does not select, register, or promote a trading strategy.",
+            "TopK-minus-BottomK is a descriptive gross cross-sectional spread, not an executable long-short simulation.",
+            "A later factor library must be declared independently and evaluated with an untouched future period; this diagnostic does not validate a combined model.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_factor_diagnostic.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_count": len(summaries),
+        "top_factors_by_development_rank_ic": summaries[: min(10, len(summaries))],
     }
 
 
@@ -4615,6 +4987,22 @@ def parse_args() -> argparse.Namespace:
         help="record a historical diagnostic without allowing promotion; use when the later window has already been reviewed",
     )
 
+    factor_diagnostic = subparsers.add_parser(
+        "factor-diagnostic", help="measure development-only three-day rank IC and TopK spread for every declared factor"
+    )
+    factor_diagnostic.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    factor_diagnostic.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    factor_diagnostic.add_argument("--start", default="2019-01-01")
+    factor_diagnostic.add_argument("--end", default="2025-12-31")
+    factor_diagnostic.add_argument("--development-end", default="2025-12-31")
+    factor_diagnostic.add_argument("--hold-days", type=int, default=3)
+    factor_diagnostic.add_argument("--topk", type=int, default=3)
+    factor_diagnostic.add_argument("--open-cost", type=float, default=0.0015)
+    factor_diagnostic.add_argument("--close-cost", type=float, default=0.0025)
+    factor_diagnostic.add_argument("--max-quality-age-days", type=int, default=550)
+    factor_diagnostic.add_argument("--batch-size", type=int, default=500)
+
     regime_audit = subparsers.add_parser(
         "regime-audit", help="compare all predeclared close-known market regimes for one recorded candidate"
     )
@@ -4898,6 +5286,8 @@ def main() -> int:
         report = sync_fundamentals(args.start_year, args.end_year, Path(args.output), Path(args.manifest))
     elif args.command == "run":
         report = run_research(args)
+    elif args.command == "factor-diagnostic":
+        report = run_factor_diagnostic(args)
     elif args.command == "regime-audit":
         report = run_regime_audit(args)
     elif args.command == "loss-cap-audit":

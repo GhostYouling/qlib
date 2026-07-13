@@ -459,6 +459,66 @@ def test_v6_soft_risk_library_adds_close_pullback_and_short_reversal_without_har
     assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
 
 
+def test_v7_reversion_ic_library_adds_a_diagnostic_only_quality_gate_mode():
+    v6 = RESEARCH.candidate_library("v6_soft_risk")
+    v7 = RESEARCH.candidate_library("v7_reversion_ic")
+    additions = v7[len(v6) :]
+    assert len(v7) == 258
+    assert len(additions) == 12
+    assert tuple(candidate.name for candidate in v7[: len(v6)]) == tuple(candidate.name for candidate in v6)
+    assert {
+        candidate.name.replace("_gate_only", "").replace("_q05_growth", "").replace("_q10_composite", "")
+        for candidate in additions
+    } == {
+        "expanded_v7_reversal_dry_gap_pullback",
+        "expanded_v7_reversal_dry_gap",
+        "expanded_v7_gap_dry_reversal",
+        "expanded_v7_quiet_reversal_pullback",
+    }
+    gate_only = RESEARCH.candidate_by_name("expanded_v7_reversal_dry_gap_gate_only", "v7_reversion_ic")
+    growth = RESEARCH.candidate_by_name("expanded_v7_reversal_dry_gap_q05_growth", "v7_reversion_ic")
+    assert "quality_score" not in gate_only.weights
+    assert "quality_growth" not in gate_only.weights
+    assert growth.weights["quality_growth"] == pytest.approx(0.05)
+    assert gate_only.weights["reversal_5"] == pytest.approx(0.45)
+    assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
+
+
+def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
+    dates = pd.to_datetime(["2025-01-02"] * 5 + ["2025-01-07"] * 5)
+    forward_returns = pd.DataFrame(
+        {
+            "signal_date": dates,
+            "instrument": [f"S{index}" for index in range(10)],
+            "forward_gross_return": [0.01, 0.02, 0.03, 0.04, 0.05, 0.02, 0.03, 0.04, 0.05, 0.06],
+            "good": [0.1, 0.2, 0.3, 0.4, 0.5, 0.1, 0.2, 0.3, 0.4, 0.5],
+            "bad": [0.5, 0.4, 0.3, 0.2, 0.1, 0.5, 0.4, 0.3, 0.2, 0.1],
+        }
+    )
+    summaries = RESEARCH.summarize_factor_diagnostics(
+        forward_returns,
+        ["good", "bad"],
+        hold_days=3,
+        topk=1,
+        open_cost=0.0,
+        close_cost=0.0,
+    )
+    by_factor = {item["factor"]: item for item in summaries}
+    assert by_factor["good"]["cohorts"] == 2
+    assert by_factor["good"]["mean_rank_ic"] == pytest.approx(1.0)
+    assert by_factor["good"]["positive_rank_ic_rate"] == pytest.approx(1.0)
+    assert by_factor["good"]["mean_top_minus_bottom_gross_return"] == pytest.approx(0.04)
+    assert by_factor["good"]["mean_forward_gross_return_by_factor_quintile"] == {
+        "1": pytest.approx(0.015),
+        "2": pytest.approx(0.025),
+        "3": pytest.approx(0.035),
+        "4": pytest.approx(0.045),
+        "5": pytest.approx(0.055),
+    }
+    assert by_factor["good"]["topk"]["net_cumulative_return"] == pytest.approx((1.05 * 1.06) - 1.0)
+    assert by_factor["bad"]["mean_rank_ic"] == pytest.approx(-1.0)
+
+
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
     winner = {
         "candidate": "expanded_reversal_trend_20_q25_profit",
@@ -759,6 +819,30 @@ def test_entry_gap_audits_are_retained_in_the_research_report_without_promotion(
     assert "次日开盘跳空审计" in report
     assert "defensive_candidate" in report
     assert "无合格跳空上限（0/2）" in report
+
+
+def test_factor_diagnostics_are_retained_in_the_research_report_without_promotion(tmp_path):
+    (tmp_path / "20260714T000000Z_factor_diagnostic.json").write_text(
+        json.dumps(
+            {
+                "run_id": "factor-diagnostic",
+                "status": "completed",
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "ranking_by_development_rank_ic": [
+                    {"factor": "reversal_1", "mean_rank_ic": 0.03125},
+                    {"factor": "momentum_20", "mean_rank_ic": 0.01},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    diagnostics = RESEARCH.load_factor_diagnostics(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, factor_diagnostics=diagnostics
+    )
+    assert "开发期单因子三日预测诊断" in report
+    assert "reversal_1" in report
+    assert "0.0312" in report
 
 
 def test_correlation_audits_record_full_windows_and_unqualified_diversification(tmp_path):

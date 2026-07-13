@@ -138,6 +138,26 @@ python scripts/a_share_short_horizon_factor_research.py run \
   --selection-policy positive_year_stability_mdd20 --research-only
 ```
 
+在设计下一轮候选前，可先运行 `factor-diagnostic`。它在**仅限开发期**的数据上，对所有已声明因子计算每个非重叠信号日的三日横截面 Rank IC、Top‑3 相对 Bottom‑3 的毛收益差，以及各自然年的汇总。它不产生策略、不会从因子排序自动选出赢家；后续组合仍必须预注册，并以未见日期验证。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062
+```
+
+`v7_reversion_ic` 是一次明确标为**诊断驱动的历史敏感性研究**：它保留 V6 的候选，另加入 12 个“5 日回撤、缩量、高开强度、收盘回撤”组合，并分别使用仅质量门、5% 增长质量和 10% 综合质量。该方向来自开发期单因子诊断，因而即使长历史表现较好，也只能作为已见样本上的研究记录，不能自动登记前瞻观察或替换既有候选。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py run \
+  --candidate-library v7_reversion_ic \
+  --start 2019-01-01 --end 2026-07-13 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter always \
+  --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20 --research-only \
+  --iteration-label v7_ic_guided_historical_diagnostic
+```
+
 新假设应先固定为新库，再仅在开发期内筛选。以下是 V2 的开发期登记示例：它不读 2026，且没有测试段时强制保持研究状态。
 
 ```bash
