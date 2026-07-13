@@ -158,6 +158,18 @@ python scripts/a_share_short_horizon_factor_research.py run \
   --iteration-label v7_ic_guided_historical_diagnostic
 ```
 
+如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge 与浅层 LightGBM 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票。2023–2025 仅用于模型配置选择，2026 只作检查；任一配置必须每个开发年度为正且整体最大回撤不差于 −20% 才能在审计中标为合格。该命令只写入模型审计，绝不会登记策略或产生选股名单。
+
+```bash
+python scripts/a_share_short_horizon_model_research.py \
+  --start 2019-01-01 --end 2026-07-13 \
+  --development-start 2023-01-01 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --train-window-rounds 336 --maximum-train-rows-per-signal 384
+```
+
+模型预测会在与未来收益合并**之前**形成完整 Top‑3；若其中任一股票后来缺少进出场报价，整组按现金记录而不会用第四只股票替换。汇总同时展示实际持仓周期比例，避免低频空仓被误读为模型优势。
+
 新假设应先固定为新库，再仅在开发期内筛选。以下是 V2 的开发期登记示例：它不读 2026，且没有测试段时强制保持研究状态。
 
 ```bash

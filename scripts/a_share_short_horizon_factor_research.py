@@ -3169,6 +3169,38 @@ def load_regime_audits(experiment_root: Path) -> list[dict[str, Any]]:
     return audits
 
 
+def load_model_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read time-safe three-day model diagnostics without treating them as strategies."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_model_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        ranking = list(audit.get("ranking_by_development") or [])
+        data = audit.get("data") or {}
+        protocol = audit.get("protocol") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "development_start": str(protocol.get("development_start", "—")),
+                "development_end": str(protocol.get("development_end", "—")),
+                "configuration_count": len(ranking),
+                "winner_configuration": audit.get("winner_configuration_selected_on_development_only"),
+                "eligible_configuration_count": sum(
+                    item.get("development_selection_score") is not None for item in ranking
+                ),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_loss_cap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read completed close-loss-cap sensitivity audits for the research log."""
 
@@ -3382,6 +3414,7 @@ def render_three_day_research_report(
     no_eligible_studies: list[dict[str, Any]] | None = None,
     factor_diagnostics: list[dict[str, Any]] | None = None,
     regime_audits: list[dict[str, Any]] | None = None,
+    model_audits: list[dict[str, Any]] | None = None,
     loss_cap_audits: list[dict[str, Any]] | None = None,
     entry_gap_audits: list[dict[str, Any]] | None = None,
     basket_correlation_audits: list[dict[str, Any]] | None = None,
@@ -3511,6 +3544,36 @@ def render_three_day_research_report(
                     start=audit["calendar_start"],
                     end=audit["calendar_end"],
                     policy=audit["selection_policy"],
+                    conclusion=conclusion,
+                )
+            )
+        lines.append("")
+    if model_audits:
+        lines.extend(
+            [
+                "",
+                "## 三日滚动模型审计",
+                "",
+                "模型按年度用此前信号日重新训练；后续历史区间不参与配置选择。该结果仅检验预测能力，不能注册策略、创建信号或替代前瞻观察。",
+                "",
+                "| 审计 | 历史范围 | 开发期 | 模型数 | 模型结论 |",
+                "| --- | --- | --- | ---: | --- |",
+            ]
+        )
+        for audit in model_audits:
+            conclusion = (
+                str(audit["winner_configuration"])
+                if audit["winner_configuration"]
+                else f"无合格模型（{audit['eligible_configuration_count']}/{audit['configuration_count']}）"
+            )
+            lines.append(
+                "| {run_id} | {start} 至 {end} | {development_start} 至 {development_end} | {count} | {conclusion} |".format(
+                    run_id=audit["run_id"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    development_start=audit["development_start"],
+                    development_end=audit["development_end"],
+                    count=audit["configuration_count"],
                     conclusion=conclusion,
                 )
             )
@@ -3753,6 +3816,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
+    model_audits = load_model_audits(experiment_root)
     loss_cap_audits = load_loss_cap_audits(experiment_root)
     entry_gap_audits = load_entry_gap_audits(experiment_root)
     basket_correlation_audits = load_basket_correlation_audits(experiment_root)
@@ -3767,6 +3831,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         no_eligible_studies,
         factor_diagnostics,
         regime_audits,
+        model_audits,
         loss_cap_audits,
         entry_gap_audits,
         basket_correlation_audits,
@@ -3791,6 +3856,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
         "regime_audits": len(regime_audits),
+        "model_audits": len(model_audits),
         "loss_cap_audits": len(loss_cap_audits),
         "entry_gap_audits": len(entry_gap_audits),
         "basket_correlation_audits": len(basket_correlation_audits),

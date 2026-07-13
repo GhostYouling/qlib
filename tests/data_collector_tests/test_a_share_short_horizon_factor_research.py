@@ -830,6 +830,31 @@ def test_regime_audits_are_retained_in_the_research_report_without_promotion(tmp
     assert "不能回写既有策略" in report
 
 
+def test_model_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
+    (tmp_path / "20260713T190000Z_model_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "20260713T190000Z",
+                "status": "completed",
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2026-07-13"},
+                "protocol": {"development_start": "2023-01-01", "development_end": "2025-12-31"},
+                "winner_configuration_selected_on_development_only": None,
+                "ranking_by_development": [
+                    {"configuration": "ridge", "development_selection_score": None},
+                    {"configuration": "lgbm_shallow", "development_selection_score": None},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_model_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, model_audits=audits
+    )
+    assert "三日滚动模型审计" in report
+    assert "无合格模型（0/2）" in report
+
+
 def test_loss_cap_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
     (tmp_path / "20260713T160011Z_loss_cap_audit.json").write_text(
         json.dumps(
