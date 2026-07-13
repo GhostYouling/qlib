@@ -175,6 +175,19 @@ def test_v3_quality_grid_is_a_nonduplicating_systematic_extension_of_v2():
     ] == pytest.approx(0.27)
 
 
+def test_v4_freshness_library_adds_close_known_disclosure_age_weight_variants():
+    v3 = RESEARCH.candidate_library("v3_quality_grid")
+    v4 = RESEARCH.candidate_library("v4_freshness")
+    additions = v4[len(v3) :]
+    assert len(v4) == 176
+    assert len(additions) == 6
+    assert tuple(candidate.name for candidate in v4[: len(v3)]) == tuple(candidate.name for candidate in v3)
+    candidate = RESEARCH.candidate_by_name("expanded_v4_quiet_long_trend_q15_revenue_f10", "v4_freshness")
+    assert candidate.weights["quality_revenue"] == pytest.approx(0.15)
+    assert candidate.weights["quality_freshness"] == pytest.approx(0.10)
+    assert candidate.weights["trend_ma_60"] == pytest.approx(0.225)
+
+
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
     winner = {
         "candidate": "expanded_reversal_trend_20_q25_profit",

@@ -455,10 +455,58 @@ V3_CANDIDATES = (*V2_CANDIDATES, *V3_QUALITY_GRID_CANDIDATES)
 if len(V3_CANDIDATES) != 170 or len({candidate.name for candidate in V3_CANDIDATES}) != len(V3_CANDIDATES):
     raise RuntimeError("V3 candidate library must contain 170 uniquely named strategies")
 
+# Financial quality is attached only after its announcement date, but older
+# annual reports can remain eligible for many months.  V4 tests whether a
+# cross-sectional preference for more recent disclosures adds information to
+# the V3 revenue-growth family.  The six combinations independently vary the
+# revenue and freshness allocations while keeping all prices close-known.
+FRESHNESS_REVENUE_OVERLAYS = (
+    ("q10_revenue_f05", 0.10, 0.05),
+    ("q15_revenue_f05", 0.15, 0.05),
+    ("q20_revenue_f05", 0.20, 0.05),
+    ("q10_revenue_f10", 0.10, 0.10),
+    ("q15_revenue_f10", 0.15, 0.10),
+    ("q20_revenue_f10", 0.20, 0.10),
+)
+
+
+def build_v4_freshness_candidates() -> tuple[Candidate, ...]:
+    """Add revenue-quality and disclosure-freshness probes to V3."""
+
+    quiet_long_trend = next(
+        candidate for candidate in MICROSTRUCTURE_SIGNAL_BLUEPRINTS if candidate.name == "quiet_long_trend"
+    )
+    additions: list[Candidate] = []
+    for suffix, revenue_weight, freshness_weight in FRESHNESS_REVENUE_OVERLAYS:
+        signal_weight = 1.0 - revenue_weight - freshness_weight
+        weights = {factor: weight * signal_weight for factor, weight in quiet_long_trend.weights.items()}
+        weights["quality_revenue"] = revenue_weight
+        weights["quality_freshness"] = freshness_weight
+        additions.append(
+            Candidate(
+                name=f"expanded_v4_quiet_long_trend_{suffix}",
+                description=(
+                    "Calm sixty-day trend with revenue quality and cross-sectional annual-report freshness. "
+                    f"Revenue weight: {revenue_weight:.0%}; freshness weight: {freshness_weight:.0%}."
+                ),
+                weights=weights,
+            )
+        )
+    if len(additions) != 6 or len({candidate.name for candidate in additions}) != len(additions):
+        raise RuntimeError("V4 freshness library must contain six unique strategies")
+    return tuple(additions)
+
+
+V4_FRESHNESS_CANDIDATES = build_v4_freshness_candidates()
+V4_CANDIDATES = (*V3_CANDIDATES, *V4_FRESHNESS_CANDIDATES)
+if len(V4_CANDIDATES) != 176 or len({candidate.name for candidate in V4_CANDIDATES}) != len(V4_CANDIDATES):
+    raise RuntimeError("V4 candidate library must contain 176 uniquely named strategies")
+
 CANDIDATE_LIBRARIES = {
     "v1": CANDIDATES,
     "v2_microstructure": V2_CANDIDATES,
     "v3_quality_grid": V3_CANDIDATES,
+    "v4_freshness": V4_CANDIDATES,
 }
 CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v1": "5 fixed baselines plus 19 fixed signal blueprints crossed with 5 fixed quality overlays",
@@ -469,6 +517,10 @@ CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v3_quality_grid": (
         "V2 plus 20 non-duplicate quiet-long-trend candidates that independently cross ROE, revenue, growth, "
         "composite and profit quality inputs with 5%, 10%, 15%, 20% and 25% weights"
+    ),
+    "v4_freshness": (
+        "V3 plus six quiet-long-trend combinations that independently vary revenue-quality and annual-report "
+        "freshness weights; freshness is ranked from the close-known days since the effective announcement date"
     ),
 }
 
@@ -1052,6 +1104,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "roe",
         "revenue_yoy",
         "profit_yoy",
+        "quality_age_days",
     ]
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
@@ -1082,6 +1135,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["quality_roe"] = result["rank_roe"]
     result["quality_revenue"] = result["rank_revenue_yoy"]
     result["quality_profit"] = result["rank_profit_yoy"]
+    result["quality_freshness"] = 1.0 - result["rank_quality_age_days"]
     result["quality_growth"] = result[["rank_revenue_yoy", "rank_profit_yoy"]].mean(axis=1)
     result["quality_score"] = result[["rank_roe", "rank_revenue_yoy", "rank_profit_yoy"]].mean(axis=1)
     result["momentum_1"] = result["rank_momentum_1"]
