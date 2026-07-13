@@ -44,6 +44,8 @@ DATA_ROOT = REPO_ROOT / "data"
 DEFAULT_PROVIDER_URI = DATA_ROOT / "qlib" / "cn_a_share"
 DEFAULT_FUNDAMENTALS = DATA_ROOT / "raw" / "a_share" / "fundamentals" / "annual_quality.parquet"
 DEFAULT_FUNDAMENTAL_MANIFEST = DATA_ROOT / "metadata" / "annual_quality_manifest.json"
+DEFAULT_QUARTERLY_FUNDAMENTALS = DATA_ROOT / "raw" / "a_share" / "fundamentals" / "quarterly_quality.parquet"
+DEFAULT_QUARTERLY_FUNDAMENTAL_MANIFEST = DATA_ROOT / "metadata" / "quarterly_quality_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
@@ -1329,6 +1331,18 @@ def annual_report_dates(start_year: int, end_year: int) -> list[str]:
     return [f"{year}-12-31" for year in range(start_year, end_year + 1)]
 
 
+def quarterly_report_dates(start_year: int, end_year: int) -> list[str]:
+    """Return every cumulative quarterly financial-report period in chronological order."""
+
+    if end_year < start_year:
+        raise ValueError("--end-year must not be earlier than --start-year")
+    return [
+        f"{year}-{month_day}"
+        for year in range(start_year, end_year + 1)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+
+
 def _eastmoney_request(session: requests.Session, report_date: str, page_number: int) -> dict[str, Any]:
     params = {
         "reportName": EASTMONEY_REPORT,
@@ -1399,8 +1413,16 @@ def normalize_fundamental_rows(rows: Iterable[dict[str, Any]], report_date: str)
     return frame.drop_duplicates(["instrument", "report_date"], keep="first").reset_index(drop=True)
 
 
-def sync_fundamentals(start_year: int, end_year: int, output: Path, manifest: Path) -> dict[str, Any]:
-    """Download annual quality inputs and write an auditable local snapshot."""
+def sync_fundamental_reports(
+    report_dates: Iterable[str], output: Path, manifest: Path, *, report_frequency: str
+) -> dict[str, Any]:
+    """Download dated public financial reports and write an auditable local snapshot."""
+
+    dates = list(report_dates)
+    if report_frequency not in {"annual", "quarterly"}:
+        raise ValueError("report_frequency must be annual or quarterly")
+    if not dates:
+        raise ValueError("at least one report date is required")
 
     session = requests.Session()
     session.headers.update(
@@ -1412,18 +1434,18 @@ def sync_fundamentals(start_year: int, end_year: int, output: Path, manifest: Pa
     )
     frames: list[pd.DataFrame] = []
     counts: dict[str, int] = {}
-    for report_date in annual_report_dates(start_year, end_year):
+    for report_date in dates:
         rows = fetch_annual_report_rows(session, report_date)
         normalized = normalize_fundamental_rows(rows, report_date)
         frames.append(normalized)
         counts[report_date] = len(normalized)
-        print(f"{report_date}: {len(normalized)} normalized annual-report rows")
+        print(f"{report_date}: {len(normalized)} normalized {report_frequency}-report rows")
 
     merged = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=FUNDAMENTAL_COLUMNS)
     merged = merged.sort_values(["instrument", "report_date", "announcement_date"], kind="stable")
     merged = merged.drop_duplicates(["instrument", "report_date"], keep="first").reset_index(drop=True)
     if merged.empty:
-        raise RuntimeError("annual-report sync produced no usable rows")
+        raise RuntimeError(f"{report_frequency}-report sync produced no usable rows")
     _atomic_write_parquet(output, merged)
     result = {
         "status": "completed",
@@ -1433,13 +1455,93 @@ def sync_fundamentals(start_year: int, end_year: int, output: Path, manifest: Pa
             "report": EASTMONEY_REPORT,
             "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         },
-        "report_dates": annual_report_dates(start_year, end_year),
+        "report_frequency": report_frequency,
+        "report_dates": dates,
         "rows_by_report_date": counts,
         "rows_written": len(merged),
         "output": str(output.resolve()),
         "sha256": file_sha256(output),
         "limitations": [
             "The public source is queried as it exists today; later corrections may not reproduce the original disclosure values.",
+            "The research join waits until the trading day after announcement_date, but it is not a substitute for an exchange-grade point-in-time fundamentals vendor.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
+def sync_fundamentals(start_year: int, end_year: int, output: Path, manifest: Path) -> dict[str, Any]:
+    """Download annual quality inputs and write an auditable local snapshot."""
+
+    return sync_fundamental_reports(
+        annual_report_dates(start_year, end_year), output, manifest, report_frequency="annual"
+    )
+
+
+def sync_quarterly_fundamentals(
+    start_year: int,
+    end_year: int,
+    output: Path,
+    manifest: Path,
+    through_report_date: str | None = None,
+) -> dict[str, Any]:
+    """Download quarterly quality inputs for post-announcement short-horizon research."""
+
+    dates = quarterly_report_dates(start_year, end_year)
+    if through_report_date is not None:
+        through = pd.Timestamp(through_report_date).normalize()
+        if pd.isna(through):
+            raise ValueError("through_report_date must be a valid ISO date")
+        dates = [date for date in dates if pd.Timestamp(date) <= through]
+        if not dates:
+            raise ValueError("through_report_date precedes the requested quarterly range")
+    return sync_fundamental_reports(
+        dates, output, manifest, report_frequency="quarterly"
+    )
+
+
+def merge_quarterly_fundamentals(input_paths: Iterable[Path], output: Path, manifest: Path) -> dict[str, Any]:
+    """Atomically combine independently downloaded quarterly snapshot chunks.
+
+    Public report downloads can be lengthy.  This recovery path permits small
+    date-range downloads without treating any individual chunk as a complete
+    research source.  The final output remains a single de-duplicated,
+    auditable snapshot.
+    """
+
+    paths = [Path(path).expanduser() for path in input_paths]
+    if not paths:
+        raise ValueError("at least one quarterly snapshot input is required")
+    missing = [str(path) for path in paths if not path.exists()]
+    if missing:
+        raise FileNotFoundError(f"quarterly snapshot inputs do not exist: {', '.join(missing)}")
+    frames = [load_fundamentals(path) for path in paths]
+    merged = pd.concat(frames, ignore_index=True)
+    merged = merged.sort_values(["instrument", "report_date", "announcement_date"], kind="stable")
+    merged = merged.drop_duplicates(["instrument", "report_date"], keep="first").reset_index(drop=True)
+    if merged.empty:
+        raise RuntimeError("quarterly snapshot merge produced no usable rows")
+    report_dates = sorted(pd.Timestamp(value).date().isoformat() for value in merged["report_date"].unique())
+    rows_by_report_date = {
+        report_date: int((merged["report_date"] == pd.Timestamp(report_date)).sum()) for report_date in report_dates
+    }
+    _atomic_write_parquet(output, merged)
+    result = {
+        "status": "completed",
+        "report_frequency": "quarterly",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "merged_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "input_files": [str(path.resolve()) for path in paths],
+            "input_sha256": {str(path.resolve()): file_sha256(path) for path in paths},
+        },
+        "report_dates": report_dates,
+        "rows_by_report_date": rows_by_report_date,
+        "rows_written": len(merged),
+        "output": str(output.expanduser().resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "Every chunk is a current public snapshot; later corrections may not reproduce the original disclosure values.",
             "The research join waits until the trading day after announcement_date, but it is not a substitute for an exchange-grade point-in-time fundamentals vendor.",
         ],
     }
@@ -1487,7 +1589,7 @@ FUNDAMENTAL_ACCELERATION_COLUMNS = (
 
 
 def attach_fundamental_accelerations(events: pd.DataFrame) -> pd.DataFrame:
-    """Add year-over-year changes using only earlier annual reports per stock.
+    """Add same-fiscal-quarter year-over-year changes using only earlier reports.
 
     These values belong to the newer report and therefore become usable only
     when that report itself is made effective after its announcement date in
@@ -1499,13 +1601,17 @@ def attach_fundamental_accelerations(events: pd.DataFrame) -> pd.DataFrame:
     if missing := sorted(required - set(events.columns)):
         raise ValueError(f"fundamental events are missing columns: {', '.join(missing)}")
     result = events.sort_values(["instrument", "report_date", "announcement_date"], kind="stable").copy()
+    # Annual data only has month 12, so this exactly preserves the original
+    # year-to-year calculation.  Quarterly data must compare Q1 with the
+    # previous Q1 (and so on), not with Q4's cumulative statement.
+    result["_report_month"] = pd.to_datetime(result["report_date"]).dt.month
     for field, acceleration in (
         ("roe", "roe_change"),
         ("revenue_yoy", "revenue_yoy_acceleration"),
         ("profit_yoy", "profit_yoy_acceleration"),
     ):
-        result[acceleration] = result.groupby("instrument", sort=False)[field].diff()
-    return result
+        result[acceleration] = result.groupby(["instrument", "_report_month"], sort=False)[field].diff()
+    return result.drop(columns="_report_month")
 
 
 def attach_quality_asof(market: pd.DataFrame, fundamentals: pd.DataFrame, max_age_days: int = 550) -> pd.DataFrame:
@@ -3519,12 +3625,14 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
             continue
         ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
         data = diagnostic.get("data") or {}
+        quality_gate = diagnostic.get("quality_gate") or {}
         top = ranking[0] if ranking else {}
         diagnostics.append(
             {
                 "run_id": str(diagnostic.get("run_id", path.stem)),
                 "calendar_start": str(data.get("calendar_start", "—")),
                 "calendar_end": str(data.get("calendar_end", "—")),
+                "fundamental_source": str(quality_gate.get("source", "—")),
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
@@ -3987,16 +4095,19 @@ def render_three_day_research_report(
                 "",
                 "诊断只描述每个已声明因子与其后完整三日收益的横截面秩相关；它不选择策略，不能替代组合的独立测试或前瞻观察。",
                 "",
-                "| 诊断 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC |",
-                "| --- | --- | ---: | --- | ---: |",
+                "| 诊断 | 财务快照 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC |",
+                "| --- | --- | --- | ---: | --- | ---: |",
             ]
         )
         for diagnostic in factor_diagnostics:
             mean_ic = diagnostic["top_factor_mean_rank_ic"]
             formatted_ic = "—" if mean_ic is None else f"{float(mean_ic):.4f}"
             lines.append(
-                "| {run_id} | {start} 至 {end} | {count} | {factor} | {mean_ic} |".format(
+                "| {run_id} | {fundamentals} | {start} 至 {end} | {count} | {factor} | {mean_ic} |".format(
                     run_id=diagnostic["run_id"],
+                    fundamentals=Path(diagnostic["fundamental_source"]).name
+                    if diagnostic["fundamental_source"] != "—"
+                    else "—",
                     start=diagnostic["calendar_start"],
                     end=diagnostic["calendar_end"],
                     count=diagnostic["factor_count"],
@@ -5906,6 +6017,24 @@ def parse_args() -> argparse.Namespace:
     sync.add_argument("--output", default=str(DEFAULT_FUNDAMENTALS))
     sync.add_argument("--manifest", default=str(DEFAULT_FUNDAMENTAL_MANIFEST))
 
+    sync_quarterly = subparsers.add_parser(
+        "sync-quarterly-fundamentals", help="download quarterly ROE/profit/revenue inputs with announcement dates"
+    )
+    sync_quarterly.add_argument("--start-year", type=int, default=2019)
+    sync_quarterly.add_argument("--end-year", type=int, default=2026)
+    sync_quarterly.add_argument(
+        "--through-report-date", help="latest already-public report period to request, such as 2026-03-31"
+    )
+    sync_quarterly.add_argument("--output", default=str(DEFAULT_QUARTERLY_FUNDAMENTALS))
+    sync_quarterly.add_argument("--manifest", default=str(DEFAULT_QUARTERLY_FUNDAMENTAL_MANIFEST))
+
+    merge_quarterly = subparsers.add_parser(
+        "merge-quarterly-fundamentals", help="atomically merge independently downloaded quarterly snapshot chunks"
+    )
+    merge_quarterly.add_argument("--input", action="append", required=True, help="repeat one or more parquet inputs")
+    merge_quarterly.add_argument("--output", default=str(DEFAULT_QUARTERLY_FUNDAMENTALS))
+    merge_quarterly.add_argument("--manifest", default=str(DEFAULT_QUARTERLY_FUNDAMENTAL_MANIFEST))
+
     run = subparsers.add_parser("run", help="run the predeclared short-horizon factor sweep")
     run.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     run.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -6266,6 +6395,18 @@ def main() -> int:
     args = parse_args()
     if args.command == "sync-fundamentals":
         report = sync_fundamentals(args.start_year, args.end_year, Path(args.output), Path(args.manifest))
+    elif args.command == "sync-quarterly-fundamentals":
+        report = sync_quarterly_fundamentals(
+            args.start_year,
+            args.end_year,
+            Path(args.output),
+            Path(args.manifest),
+            args.through_report_date,
+        )
+    elif args.command == "merge-quarterly-fundamentals":
+        report = merge_quarterly_fundamentals(
+            [Path(path) for path in args.input], Path(args.output), Path(args.manifest)
+        )
     elif args.command == "run":
         report = run_research(args)
     elif args.command == "factor-diagnostic":

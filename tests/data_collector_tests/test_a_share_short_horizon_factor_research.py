@@ -21,6 +21,16 @@ SPEC.loader.exec_module(RESEARCH)
 
 def test_annual_report_dates_and_symbol_mapping():
     assert RESEARCH.annual_report_dates(2023, 2025) == ["2023-12-31", "2024-12-31", "2025-12-31"]
+    assert RESEARCH.quarterly_report_dates(2023, 2024) == [
+        "2023-03-31",
+        "2023-06-30",
+        "2023-09-30",
+        "2023-12-31",
+        "2024-03-31",
+        "2024-06-30",
+        "2024-09-30",
+        "2024-12-31",
+    ]
     assert RESEARCH.qlib_symbol("600000") == "SH600000"
     assert RESEARCH.qlib_symbol("300001") == "SZ300001"
     assert RESEARCH.qlib_symbol("200001") is None
@@ -76,6 +86,54 @@ def test_fundamental_acceleration_becomes_available_only_with_newer_announcement
     assert after["roe_change"] == pytest.approx(2.0)
     assert after["revenue_yoy_acceleration"] == pytest.approx(7.0)
     assert after["profit_yoy_acceleration"] == pytest.approx(15.0)
+
+
+def test_quarterly_acceleration_compares_only_the_same_fiscal_quarter():
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 5,
+            "report_date": pd.to_datetime(
+                ["2023-03-31", "2023-06-30", "2023-09-30", "2023-12-31", "2024-03-31"]
+            ),
+            "announcement_date": pd.to_datetime(
+                ["2023-04-20", "2023-08-20", "2023-10-20", "2024-03-20", "2024-04-20"]
+            ),
+            "roe": [2.0, 4.0, 6.0, 8.0, 3.0],
+            "net_profit": [1.0, 2.0, 3.0, 4.0, 1.5],
+            "revenue_yoy": [10.0, 20.0, 30.0, 40.0, 16.0],
+            "profit_yoy": [5.0, 15.0, 25.0, 35.0, 12.0],
+        }
+    )
+    accelerated = RESEARCH.attach_fundamental_accelerations(events)
+    latest = accelerated.iloc[-1]
+    assert latest["roe_change"] == pytest.approx(1.0)
+    assert latest["revenue_yoy_acceleration"] == pytest.approx(6.0)
+    assert latest["profit_yoy_acceleration"] == pytest.approx(7.0)
+
+
+def test_quarterly_snapshot_merge_is_atomic_and_keeps_the_earliest_announcement(tmp_path):
+    columns = {
+        "instrument": ["SZ000001"],
+        "report_date": pd.to_datetime(["2024-03-31"]),
+        "roe": [8.0],
+        "net_profit": [1.0],
+        "revenue_yoy": [10.0],
+        "profit_yoy": [12.0],
+    }
+    first = pd.DataFrame({**columns, "announcement_date": pd.to_datetime(["2024-04-22"])})
+    second = pd.DataFrame({**columns, "announcement_date": pd.to_datetime(["2024-04-20"])})
+    first_path = tmp_path / "quarterly_first.parquet"
+    second_path = tmp_path / "quarterly_second.parquet"
+    first.to_parquet(first_path, index=False)
+    second.to_parquet(second_path, index=False)
+    output = tmp_path / "quarterly_merged.parquet"
+    manifest = tmp_path / "quarterly_manifest.json"
+    result = RESEARCH.merge_quarterly_fundamentals([first_path, second_path], output, manifest)
+    merged = pd.read_parquet(output)
+    assert result["report_frequency"] == "quarterly"
+    assert result["report_dates"] == ["2024-03-31"]
+    assert len(merged) == 1
+    assert merged.iloc[0]["announcement_date"] == pd.Timestamp("2024-04-20")
 
 
 def test_winner_uses_development_only():

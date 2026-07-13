@@ -113,6 +113,38 @@ python scripts/a_share_short_horizon_factor_research.py sync-fundamentals \
 python scripts/a_share_short_horizon_factor_research.py run
 ```
 
+年度财报在三日策略中更新过慢；若要研究公告后的业绩变化，应另行下载**季度**报告，不能悄悄替换原年度质量数据。季度文件保留相同的公告日后下一交易日生效规则，并将加速度与上一年**同一财务季度**比较，避免把 Q1 与 Q4 的累计口径差异误当成基本面变化：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
+  --start-year 2019 --end-year 2026 --through-report-date 2026-03-31
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062
+```
+
+这一步只诊断新季度信息的单因子关联，不能直接生成策略、前瞻观察或选股名单。只有在跨年度方向稳定后，才可把一个**预先声明**的季度公告因子库作为新的研究轮次；公开接口的历史值仍可能被后续更正，不能视为交易所级点时财务库。
+
+`--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
+  --start-year 2019 --end-year 2020 --output data/raw/a_share/fundamentals/quarterly_2019_2020.parquet
+python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
+  --start-year 2021 --end-year 2022 --output data/raw/a_share/fundamentals/quarterly_2021_2022.parquet
+python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
+  --start-year 2023 --end-year 2024 --output data/raw/a_share/fundamentals/quarterly_2023_2024.parquet
+python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
+  --start-year 2025 --end-year 2026 --through-report-date 2026-03-31 \
+  --output data/raw/a_share/fundamentals/quarterly_2025_2026q1.parquet
+python scripts/a_share_short_horizon_factor_research.py merge-quarterly-fundamentals \
+  --input data/raw/a_share/fundamentals/quarterly_2019_2020.parquet \
+  --input data/raw/a_share/fundamentals/quarterly_2021_2022.parquet \
+  --input data/raw/a_share/fundamentals/quarterly_2023_2024.parquet \
+  --input data/raw/a_share/fundamentals/quarterly_2025_2026q1.parquet
+```
+
 每个候选组合会在 `data/experiments/short_horizon/` 写入一个独立 JSON；同一批运行另有一个 `*_study.json` 汇总文件。记录包含因子权重、年报文件哈希、股票池、成本、发展期/测试期切分以及净收益、波动、回撤和胜率；汇总文件另提供全部 100 个策略按开发期风险调整分数排序的 `ranking_by_development`。候选组合只按 `2025-12-31` 以前的发展期结果选择，之后的测试期不会参与选优。
 
 ### 三日持有的迭代研究规范
