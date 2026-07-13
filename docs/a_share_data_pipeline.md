@@ -99,7 +99,7 @@ python scripts/run_a_share_alpha158_pilot.py
 
 ## 短持有期量价 + 业绩质量研究
 
-若策略目标是约 5 个交易日的快进快出、以量价关系为主，同时只在具备正向业绩基础的公司中选股，请使用可复现的研究脚本。它先下载带公告日期的年度 ROE、净利润、营收同比和净利润同比，再运行五个预先声明的候选因子组合：突破、量能加速、回撤反转、趋势内回撤与均衡组合。
+若策略目标是约 **3 个交易日**的快进快出、以量价关系为主，同时只在具备正向业绩基础的公司中选股，请使用可复现的研究脚本。它先下载带公告日期的年度 ROE、净利润、营收同比和净利润同比，再运行 **100 个预先声明**的候选策略：5 个基线组合，以及 19 个量价信号蓝图与 5 个质量覆盖层的 95 个固定组合。新增信号涵盖多期限动量/反转、突破位置、量能与换手、流动性、波动率、振幅、跳空、均线趋势与 ROE/营收/利润质量；2026 测试期不参与候选设计或选优。
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py sync-fundamentals \
@@ -107,7 +107,85 @@ python scripts/a_share_short_horizon_factor_research.py sync-fundamentals \
 python scripts/a_share_short_horizon_factor_research.py run
 ```
 
-每个候选组合会在 `data/experiments/short_horizon/` 写入一个独立 JSON；同一批运行另有一个 `*_study.json` 汇总文件。记录包含因子权重、年报文件哈希、股票池、成本、发展期/测试期切分以及净收益、波动、回撤和胜率。候选组合只按 `2025-12-31` 以前的发展期结果选择，之后的测试期不会参与选优。
+每个候选组合会在 `data/experiments/short_horizon/` 写入一个独立 JSON；同一批运行另有一个 `*_study.json` 汇总文件。记录包含因子权重、年报文件哈希、股票池、成本、发展期/测试期切分以及净收益、波动、回撤和胜率；汇总文件另提供全部 100 个策略按开发期风险调整分数排序的 `ranking_by_development`。候选组合只按 `2025-12-31` 以前的发展期结果选择，之后的测试期不会参与选优。
+
+### 三日持有的迭代研究规范
+
+短线研究的默认持有期是 **3 个本地交易日**。默认 `v1` 候选库运行完整的 100 个预先声明组合；`v2_microstructure` 保留这 100 个组合，并额外加入 10 组一/二日反转、收盘位置、一日量能/换手、短波动/振幅和 60 日趋势假设与 5 个质量覆盖层的交叉组合，共 150 个。每次 `run` 都会把候选库版本、指纹、因子权重、持有期、成本、开发期胜者、独立测试表现和晋级结论追加至 `data/experiments/short_horizon/strategy_registry.json`。注册表是追加式的：新一轮研究不能覆盖或重写旧结果。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py run \
+  --hold-days 3 --topk 20 \
+  --iteration-label three_day_cycle_001
+```
+
+新假设应先固定为新库，再仅在开发期内筛选。以下是 V2 的开发期登记示例：它不读 2026，且没有测试段时强制保持研究状态。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py run \
+  --candidate-library v2_microstructure \
+  --start 2023-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter breadth_5_above_20 \
+  --open-cost 0.00012 --close-cost 0.00062 --research-only \
+  --iteration-label three_day_v2_development_preregistration
+```
+
+默认选择规则按开发期的年化收益与回撤综合排序。若担心单一市场年份主导总收益，可显式使用 `--selection-policy positive_year_stability`：它要求至少两个开发年度均为正，并按“最差年度累计净收益 − 0.5 × 全开发期最大回撤”选择。这是新的研究轮次，必须与默认规则分开记录、分开前瞻观察，不能事后改写原轮次的胜者。
+
+研究的 `TopK` 必须与要验证的组合数量一致。若准备验证 20 万元账户的“最多三只、每只 5%”执行规则，应明确使用 `--topk 3`；三只中必须至少三只具有完整的进/出场日线，不能在缺失报价时悄悄换成四只或把资金重分配。
+
+如果较晚的测试区间已经被看过，只能作为历史诊断，绝不能晋级或替代正在纸面观察的策略。以下命令使用你的实际费率（买入 0.012%，卖出 0.062%）进行这种诊断，并将结果强制标为 `research_only_not_promoted`：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py run \
+  --hold-days 3 --topk 3 --regime-filter breadth_5_above_20 \
+  --open-cost 0.00012 --close-cost 0.00062 --research-only \
+  --iteration-label three_day_top3_historical_diagnostic
+```
+
+可把收盘后计算出的市场广度作为独立的状态因子，例如只在质量股票池平均 5 日收益为正时做多：`--regime-filter breadth_5_positive`。未满足状态时的三日持有周期在回测中按持有现金的零收益计入，不会因为跳过交易而虚增年化收益。
+
+当某轮策略在注册表中通过初测后，筛选命令必须带上它对应的状态条件，例如：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py screen \
+  --candidate expanded_trend_ma_confirmation_q20_composite \
+  --regime-filter breadth_5_above_20 --topk 20
+```
+
+筛选结果会显式写入 `regime_active`。当它为 `false` 时，不产生候选名单，`plan` 也会拒绝生成下单计划；这代表策略规定的空仓，而不是数据故障。
+
+通过初测的策略不应马上被视为可实盘策略。每次收盘数据更新后，运行纸面观察器：它只在状态允许时追加一笔不可修改的模拟信号；三日后的本地日线齐全时，才用“下一日开盘买入、第三日收盘卖出”和研究成本结算实际样本外结果。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py monitor
+```
+
+信号和结算记录保存在 `data/experiments/short_horizon/three_day_paper_ledger.json`。若当日状态不满足策略条件，观察器只记录空仓状态，不创建纸面持仓。不要将纸面台账的未结算信号当作已实现收益。
+
+开发期胜者可以进入**独立的前瞻纸面观察**，但仍不是已晋级策略。必须先显式登记第一个真正未见过的收盘日；`shadow-monitor` 只读此登记，写入与主策略完全分离的 `three_day_shadow_paper_ledger.json`，不会生成 `plan` 或任何下单指令：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py shadow-register \
+  --iteration-id <development_only_iteration_id> --not-before 2026-07-14
+python scripts/a_share_short_horizon_factor_research.py shadow-monitor
+```
+
+若该迭代已有历史测试周期，或者未显式指定开始日期，登记会被拒绝。这样可以防止把已经看过的历史行情伪装成前瞻纸面收益。
+
+`report` 会将每个登记候选单独列出首个可用收盘日、信号数、结算数、待结算数和已结算累计净收益；不要把不同候选的收益混合成一个“组合结果”。
+
+每次研究或纸面观察后，可生成面向人工复盘的汇总日志；它汇总所有迭代的开发/测试表现、晋级状态以及纸面信号和结算数量：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py report
+```
+
+日志默认写入 `data/experiments/short_horizon/three_day_research_report.md`。它是注册表和纸面台账的派生视图；策略判断始终以不可覆盖的 JSON 原始记录为准。
+
+选择只使用 `--development-end` 以前的数据；测试段不参与因子权重或策略排名。一个开发期胜者只有在测试段至少有 20 个独立持有周期、累计净收益为正且最大回撤不差于 -20% 时，才会标为 `passed_initial_test`；否则仍是研究候选，不能进入后续实盘/模拟盘计划。每次新因子或新组合必须新开一轮并写明标签，不能在同一测试段反复调到满意为止。
+
+日常迭代顺序是：收盘后更新数据 → 运行三日研究 → 查看注册表中新旧轮次的开发/测试差异 → 仅将通过初测的策略用于下一阶段模拟盘观察。未来有新的、未见过的交易日时，才把它加入新的测试观察；不要用已看过的 2026 测试结果反复改权重。
 
 质量过滤的规则是：上一份已公告年报的加权 ROE 不低于 5%、归母净利润为正、营收同比和利润同比均为正。为避免未来函数，财报从**公告日后的下一个本地交易日**才生效。公共财报接口可能显示日后更正的历史数值，因此该处理比直接使用报告期安全，但仍不能替代商业级或交易所级的点时财务数据库。
 
@@ -181,14 +259,15 @@ python scripts/audit_a_share_dataset.py --require-restoration-factor
 
 ## 定时自动运行（macOS）
 
-本机时区与中国大陆一致。下列命令会安装两个 `launchd` 用户任务：工作日 18:30 增量更新，以及周五 20:00 的全量复权校正。
+本机时区与中国大陆一致。默认命令安装两个 `launchd` 用户任务：工作日 18:30 增量更新，以及周五 20:00 的全量复权校正。若要在数据更新后自动追加三日纸面观察，可显式加入工作日 19:30 的观察任务：
 
 ```bash
 python scripts/install_a_share_launchd.py install
+python scripts/install_a_share_launchd.py install --with-short-horizon-monitor
 python scripts/install_a_share_launchd.py status
 ```
 
-日志在 `data/logs/`。需要移除定时任务时：
+纸面观察任务会先检查 18:30 数据同步所持有的管线锁；若同步仍在进行，最多等待 45 分钟，避免用旧收盘数据漏记当日信号。随后依次运行已晋级策略的 `monitor`、已登记研究候选的 `shadow-monitor` 和 `report`；它不会自动重跑因子搜索、修改策略权重或生成下单计划。日志在 `data/logs/`。需要移除定时任务时：
 
 ```bash
 python scripts/install_a_share_launchd.py uninstall

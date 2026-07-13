@@ -45,6 +45,11 @@ DEFAULT_PROVIDER_URI = DATA_ROOT / "qlib" / "cn_a_share"
 DEFAULT_FUNDAMENTALS = DATA_ROOT / "raw" / "a_share" / "fundamentals" / "annual_quality.parquet"
 DEFAULT_FUNDAMENTAL_MANIFEST = DATA_ROOT / "metadata" / "annual_quality_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
+DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
+DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
+DEFAULT_SHADOW_OBSERVATION_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "shadow_observation_registry.json"
+DEFAULT_SHADOW_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_shadow_paper_ledger.json"
+DEFAULT_RESEARCH_REPORT = DEFAULT_EXPERIMENT_ROOT / "three_day_research_report.md"
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 
 EASTMONEY_DATACENTER_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get"
@@ -106,8 +111,11 @@ class AShareExecutionRules:
 
 # All candidates intentionally use the same accounting-quality gate.  This
 # makes their comparison about the short-horizon price-volume signal rather
-# than about a different quality universe.
-CANDIDATES = (
+# than about a different quality universe.  The five original candidates are
+# kept as stable baselines; the 95 expanded candidates are generated from
+# deterministic signal blueprints and quality overlays before any backtest is
+# run.  They are not tuned using the 2026 test period.
+BASELINE_CANDIDATES = (
     Candidate(
         name="quality_breakout",
         description="Five/ten-day continuation with volume and turnover expansion near a 20-day high.",
@@ -175,6 +183,288 @@ CANDIDATES = (
         },
     ),
 )
+
+
+EXPANDED_SIGNAL_BLUEPRINTS = (
+    Candidate(
+        name="reversal_trend_10",
+        description="Three-day reversal inside a ten-day trend near the twenty-day high.",
+        weights={"reversal_3": 0.30, "momentum_10": 0.25, "near_high_20": 0.15, "volume_dry_up": 0.15, "volatility_target": 0.15},
+    ),
+    Candidate(
+        name="reversal_trend_20",
+        description="Five-day reversal aligned with a twenty-day trend and moderate volatility.",
+        weights={"reversal_5": 0.30, "momentum_20": 0.25, "near_high_20": 0.15, "volume_dry_up": 0.15, "volatility_target_20": 0.15},
+    ),
+    Candidate(
+        name="gap_reclaim",
+        description="Gap-down reversal with intraday reclaim and contained range.",
+        weights={"gap_reversal": 0.20, "reversal_3": 0.25, "reversal_5": 0.20, "intraday_strength": 0.15, "trend_ma_5": 0.10, "amplitude_low": 0.10},
+    ),
+    Candidate(
+        name="drawdown_recovery",
+        description="Recovery from a twenty-day drawdown with short reversal and turnover confirmation.",
+        weights={"drawdown_20": 0.30, "reversal_3": 0.25, "intraday_strength": 0.15, "turnover_surge_3": 0.10, "volatility_target": 0.20},
+    ),
+    Candidate(
+        name="trend_5_20",
+        description="Five-, ten-, and twenty-day trend alignment near a short breakout.",
+        weights={"momentum_5": 0.25, "momentum_10": 0.25, "momentum_20": 0.20, "near_high_10": 0.15, "volatility_target": 0.15},
+    ),
+    Candidate(
+        name="trend_10_60",
+        description="Ten- to sixty-day continuation with volume confirmation.",
+        weights={"momentum_10": 0.30, "momentum_20": 0.25, "momentum_60": 0.20, "near_high_20": 0.10, "volume_surge": 0.15},
+    ),
+    Candidate(
+        name="trend_ma_confirmation",
+        description="Trend above five- and twenty-day moving averages with a calm range.",
+        weights={"trend_ma_5": 0.25, "trend_ma_20": 0.25, "momentum_10": 0.20, "near_high_20": 0.15, "amplitude_low": 0.15},
+    ),
+    Candidate(
+        name="breakout_10",
+        description="Ten-day breakout confirmed by short volume, turnover, and intraday strength.",
+        weights={"momentum_5": 0.20, "near_high_10": 0.30, "volume_surge_3": 0.20, "turnover_surge_3": 0.15, "intraday_strength": 0.15},
+    ),
+    Candidate(
+        name="breakout_20",
+        description="Twenty-day breakout confirmed by broad volume and moving-average trend.",
+        weights={"momentum_10": 0.20, "near_high_20": 0.30, "volume_surge": 0.20, "turnover_surge": 0.15, "trend_ma_20": 0.15},
+    ),
+    Candidate(
+        name="volume_dry_pullback",
+        description="Low-volume short pullback within a liquid ten-day uptrend.",
+        weights={"reversal_3": 0.25, "momentum_10": 0.25, "volume_dry_up": 0.25, "liquidity_5": 0.10, "near_high_20": 0.15},
+    ),
+    Candidate(
+        name="volume_confirmation",
+        description="Five- and twenty-day trend with persistent volume and turnover expansion.",
+        weights={"momentum_5": 0.20, "momentum_20": 0.20, "volume_surge": 0.25, "turnover_surge": 0.20, "near_high_20": 0.15},
+    ),
+    Candidate(
+        name="turnover_confirmation",
+        description="Ten-day trend with short turnover acceleration and liquid intraday strength.",
+        weights={"momentum_10": 0.20, "turnover_surge_3": 0.30, "liquidity_5": 0.20, "intraday_strength": 0.15, "volatility_target": 0.15},
+    ),
+    Candidate(
+        name="intraday_gap_strength",
+        description="Positive opening gap and intraday strength inside a five-day continuation.",
+        weights={"intraday_strength": 0.30, "gap_strength": 0.15, "momentum_5": 0.20, "near_high_10": 0.15, "turnover_surge": 0.10, "amplitude_low": 0.10},
+    ),
+    Candidate(
+        name="gap_reversal_pullback",
+        description="Gap-down pullback that remains above the twenty-day moving-average trend.",
+        weights={"gap_reversal": 0.25, "reversal_3": 0.25, "trend_ma_20": 0.20, "volume_dry_up": 0.15, "volatility_target": 0.15},
+    ),
+    Candidate(
+        name="low_range_trend",
+        description="Low-amplitude trend continuation with a ten- to twenty-day return signal.",
+        weights={"amplitude_low": 0.30, "momentum_10": 0.25, "momentum_20": 0.20, "trend_ma_20": 0.15, "volume_dry_up": 0.10},
+    ),
+    Candidate(
+        name="range_recovery",
+        description="Twenty-day drawdown reversal with a strong close and short liquidity surge.",
+        weights={"drawdown_20": 0.25, "reversal_5": 0.25, "intraday_strength": 0.20, "liquidity_5": 0.15, "turnover_surge_3": 0.15},
+    ),
+    Candidate(
+        name="volatility_middle",
+        description="Moderate-volatility trend close to its twenty-day high without a volume spike.",
+        weights={"volatility_target": 0.35, "momentum_10": 0.25, "near_high_20": 0.15, "turnover_surge": 0.10, "volume_dry_up": 0.15},
+    ),
+    Candidate(
+        name="liquidity_trend",
+        description="Liquid twenty-day trend with turnover expansion and contained amplitude.",
+        weights={"liquidity_5": 0.25, "momentum_20": 0.25, "turnover_surge": 0.20, "near_high_20": 0.15, "amplitude_low": 0.15},
+    ),
+    Candidate(
+        name="multi_horizon",
+        description="Diversified short reversal and five- to sixty-day momentum blend.",
+        weights={"reversal_3": 0.15, "momentum_5": 0.15, "momentum_10": 0.20, "momentum_20": 0.20, "momentum_60": 0.15, "near_high_20": 0.15},
+    ),
+)
+
+
+QUALITY_OVERLAYS = (
+    ("q05_composite", "quality_score", 0.05),
+    ("q10_roe", "quality_roe", 0.10),
+    ("q15_growth", "quality_growth", 0.15),
+    ("q20_composite", "quality_score", 0.20),
+    ("q25_profit", "quality_profit", 0.25),
+)
+
+
+def build_candidate_library() -> tuple[Candidate, ...]:
+    """Return the 100 predeclared combinations used by the strategy sweep."""
+
+    expanded: list[Candidate] = []
+    for blueprint in EXPANDED_SIGNAL_BLUEPRINTS:
+        if not math.isclose(sum(blueprint.weights.values()), 1.0, abs_tol=1e-9):
+            raise ValueError(f"blueprint weights must sum to one: {blueprint.name}")
+        for suffix, quality_factor, quality_weight in QUALITY_OVERLAYS:
+            weights = {factor: weight * (1.0 - quality_weight) for factor, weight in blueprint.weights.items()}
+            weights[quality_factor] = quality_weight
+            expanded.append(
+                Candidate(
+                    name=f"expanded_{blueprint.name}_{suffix}",
+                    description=f"{blueprint.description} Quality overlay: {quality_factor} at {quality_weight:.0%}.",
+                    weights=weights,
+                )
+            )
+    candidates = (*BASELINE_CANDIDATES, *expanded)
+    names = [candidate.name for candidate in candidates]
+    if len(candidates) != 100 or len(set(names)) != len(names):
+        raise RuntimeError("candidate library must contain exactly 100 uniquely named strategies")
+    return candidates
+
+
+CANDIDATES = build_candidate_library()
+
+# V2 is a separately named, predeclared expansion.  It is intentionally not a
+# replacement for V1: a later run records exactly which library was searched
+# and must earn its own forward evidence.  All inputs are known at the signal
+# close and use only daily OHLCV data already available in this repository.
+MICROSTRUCTURE_SIGNAL_BLUEPRINTS = (
+    Candidate(
+        name="micro_reversal_1",
+        description="One- and two-day pullback inside a twenty-day trend, closing near the session high on quiet volume.",
+        weights={"reversal_1": 0.32, "reversal_2": 0.18, "trend_ma_20": 0.20, "close_to_high": 0.15, "volume_dry_up": 0.15},
+    ),
+    Candidate(
+        name="two_day_reclaim",
+        description="Two-day pullback and gap-down reclaim confirmed by a strong close and fresh turnover.",
+        weights={"reversal_2": 0.30, "gap_reversal": 0.20, "intraday_strength": 0.15, "close_to_high": 0.20, "turnover_surge_1": 0.15},
+    ),
+    Candidate(
+        name="close_high_trend",
+        description="Close near the session high with five- and twenty-day trend confirmation.",
+        weights={"close_to_high": 0.30, "trend_ma_5": 0.20, "trend_ma_20": 0.20, "momentum_10": 0.20, "amplitude_low": 0.10},
+    ),
+    Candidate(
+        name="micro_breakout",
+        description="One- and five-day impulse with a strong close and one-day volume/turnover confirmation.",
+        weights={"momentum_1": 0.15, "momentum_5": 0.20, "close_to_high": 0.20, "volume_surge_1": 0.25, "turnover_surge_1": 0.20},
+    ),
+    Candidate(
+        name="quiet_long_trend",
+        description="Calm continuation above a sixty-day average with persistent medium-term momentum.",
+        weights={"trend_ma_60": 0.30, "momentum_20": 0.25, "momentum_60": 0.20, "amplitude_low_1": 0.15, "volume_dry_up": 0.10},
+    ),
+    Candidate(
+        name="volatility_compression",
+        description="Short volatility and range compression inside a twenty-day trend near the high.",
+        weights={"volatility_target_5": 0.25, "amplitude_low_1": 0.25, "trend_ma_20": 0.20, "near_high_20": 0.15, "volume_dry_up": 0.15},
+    ),
+    Candidate(
+        name="liquid_impulse",
+        description="Liquid two-day impulse with a strong close and current turnover expansion.",
+        weights={"turnover_surge_1": 0.25, "liquidity_5": 0.20, "momentum_2": 0.20, "close_to_high": 0.20, "intraday_strength": 0.15},
+    ),
+    Candidate(
+        name="gap_close_reclaim",
+        description="Gap-down reclaim followed by a close near the high with contained short volatility.",
+        weights={"gap_reversal": 0.25, "close_to_high": 0.25, "reversal_1": 0.20, "turnover_surge_1": 0.15, "volatility_target_5": 0.15},
+    ),
+    Candidate(
+        name="short_long_confluence",
+        description="Two-day impulse aligned with ten-day momentum and the sixty-day trend.",
+        weights={"momentum_2": 0.20, "momentum_10": 0.20, "trend_ma_60": 0.25, "close_to_high": 0.20, "volatility_target_5": 0.15},
+    ),
+    Candidate(
+        name="volume_climax_pullback",
+        description="One-day pullback in a twenty-day trend with fresh volume and turnover participation.",
+        weights={"reversal_1": 0.25, "volume_surge_1": 0.25, "turnover_surge_1": 0.20, "close_to_high": 0.15, "trend_ma_20": 0.15},
+    ),
+)
+
+
+def _expanded_candidates(blueprints: tuple[Candidate, ...], prefix: str = "expanded") -> tuple[Candidate, ...]:
+    """Cross deterministic signal blueprints with the shared quality overlays."""
+
+    expanded: list[Candidate] = []
+    for blueprint in blueprints:
+        if not math.isclose(sum(blueprint.weights.values()), 1.0, abs_tol=1e-9):
+            raise ValueError(f"blueprint weights must sum to one: {blueprint.name}")
+        for suffix, quality_factor, quality_weight in QUALITY_OVERLAYS:
+            weights = {factor: weight * (1.0 - quality_weight) for factor, weight in blueprint.weights.items()}
+            weights[quality_factor] = quality_weight
+            expanded.append(
+                Candidate(
+                    name=f"{prefix}_{blueprint.name}_{suffix}",
+                    description=f"{blueprint.description} Quality overlay: {quality_factor} at {quality_weight:.0%}.",
+                    weights=weights,
+                )
+            )
+    return tuple(expanded)
+
+
+V2_CANDIDATES = (*CANDIDATES, *_expanded_candidates(MICROSTRUCTURE_SIGNAL_BLUEPRINTS, prefix="expanded_v2"))
+if len(V2_CANDIDATES) != 150 or len({candidate.name for candidate in V2_CANDIDATES}) != len(V2_CANDIDATES):
+    raise RuntimeError("V2 candidate library must contain 150 uniquely named strategies")
+
+CANDIDATE_LIBRARIES = {
+    "v1": CANDIDATES,
+    "v2_microstructure": V2_CANDIDATES,
+}
+CANDIDATE_LIBRARY_DESCRIPTIONS = {
+    "v1": "5 fixed baselines plus 19 fixed signal blueprints crossed with 5 fixed quality overlays",
+    "v2_microstructure": (
+        "V1 plus 10 predeclared close-known microstructure blueprints (one/two-day reversal, close location, "
+        "one-day volume/turnover, short range/volatility and sixty-day trend) crossed with 5 quality overlays"
+    ),
+}
+
+
+def candidate_library(library_id: str) -> tuple[Candidate, ...]:
+    """Return one named immutable candidate library."""
+
+    try:
+        return CANDIDATE_LIBRARIES[library_id]
+    except KeyError as exc:
+        choices = ", ".join(sorted(CANDIDATE_LIBRARIES))
+        raise ValueError(f"unknown candidate_library {library_id!r}; choose one of: {choices}") from exc
+
+REGIME_FILTERS = {
+    "always": "Trade every eligible rebalance cohort.",
+    "breadth_5_positive": "Trade only when the eligible-universe mean five-day return is positive.",
+    "breadth_20_positive": "Trade only when the eligible-universe mean twenty-day return is positive.",
+    "breadth_5_above_20": "Trade only when five-day eligible-universe breadth exceeds twenty-day breadth.",
+}
+
+SELECTION_POLICIES = {
+    "pooled_return_drawdown": "maximize development annualized_return - 0.5 * abs(development max_drawdown)",
+    "positive_year_stability": (
+        "maximize the worst development calendar-year net cumulative return - 0.5 * abs(full-development max_drawdown); "
+        "requires at least two development years"
+    ),
+}
+
+
+def candidate_library_fingerprint(candidates: tuple[Candidate, ...] = CANDIDATES) -> str:
+    """Return a stable fingerprint for the exact predeclared strategy library."""
+
+    payload = [
+        {"name": candidate.name, "description": candidate.description, "weights": candidate.weights}
+        for candidate in candidates
+    ]
+    encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def apply_regime_filter(frame: pd.DataFrame, regime_filter: str) -> pd.DataFrame:
+    """Return signal rows allowed by a close-known market-breadth state."""
+
+    if regime_filter not in REGIME_FILTERS:
+        choices = ", ".join(sorted(REGIME_FILTERS))
+        raise ValueError(f"unknown regime_filter {regime_filter!r}; choose one of: {choices}")
+    if regime_filter == "always":
+        return frame
+    if regime_filter == "breadth_5_positive":
+        condition = frame["market_breadth_5"].gt(0.0)
+    elif regime_filter == "breadth_20_positive":
+        condition = frame["market_breadth_20"].gt(0.0)
+    else:
+        condition = frame["market_breadth_5"].gt(frame["market_breadth_20"])
+    return frame.loc[condition.fillna(False)].copy()
 
 
 def _timestamp() -> str:
@@ -605,14 +895,33 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
     fields = {
         "close": "$close",
         "open": "$open",
+        "momentum_1": "$close/Ref($close, 1) - 1",
+        "momentum_2": "$close/Ref($close, 2) - 1",
         "momentum_3": "$close/Ref($close, 3) - 1",
         "momentum_5": "$close/Ref($close, 5) - 1",
         "momentum_10": "$close/Ref($close, 10) - 1",
+        "momentum_20": "$close/Ref($close, 20) - 1",
+        "momentum_60": "$close/Ref($close, 60) - 1",
+        "trend_ma_5": "$close/Mean($close, 5) - 1",
+        "trend_ma_20": "$close/Mean($close, 20) - 1",
+        "trend_ma_60": "$close/Mean($close, 60) - 1",
+        "volume_surge_1": "$volume/Mean($volume, 20) - 1",
         "volume_surge": "Mean($volume, 5)/Mean($volume, 20) - 1",
+        "volume_surge_3": "Mean($volume, 3)/Mean($volume, 10) - 1",
         "turnover_surge": "Mean($turnover, 5)/Mean($turnover, 20) - 1",
+        "turnover_surge_3": "Mean($turnover, 3)/Mean($turnover, 10) - 1",
+        "turnover_surge_1": "$turnover/Mean($turnover, 20) - 1",
+        "liquidity_5": "Mean($turnover, 5)",
+        "volatility_5": "Std($close/Ref($close, 1) - 1, 5)",
         "volatility_10": "Std($close/Ref($close, 1) - 1, 10)",
+        "volatility_20": "Std($close/Ref($close, 1) - 1, 20)",
+        "amplitude_1": "$high/$low - 1",
+        "amplitude_5": "Mean($high/$low - 1, 5)",
+        "gap_1": "$open/Ref($close, 1) - 1",
+        "near_high_10": "$close/Max($high, 10) - 1",
         "near_high_20": "$close/Max($high, 20) - 1",
         "intraday_strength": "$close/$open - 1",
+        "close_to_high": "$close/$high",
     }
     frames: list[pd.DataFrame] = []
     expressions = list(fields.values())
@@ -633,14 +942,33 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
 
     result = frame.copy()
     raw_columns = [
+        "momentum_1",
+        "momentum_2",
         "momentum_3",
         "momentum_5",
         "momentum_10",
+        "momentum_20",
+        "momentum_60",
+        "trend_ma_5",
+        "trend_ma_20",
+        "trend_ma_60",
+        "volume_surge_1",
         "volume_surge",
+        "volume_surge_3",
         "turnover_surge",
+        "turnover_surge_3",
+        "turnover_surge_1",
+        "liquidity_5",
+        "volatility_5",
         "volatility_10",
+        "volatility_20",
+        "amplitude_1",
+        "amplitude_5",
+        "gap_1",
+        "near_high_10",
         "near_high_20",
         "intraday_strength",
+        "close_to_high",
         "roe",
         "revenue_yoy",
         "profit_yoy",
@@ -648,19 +976,54 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     eligible = result["quality_eligible"].fillna(False)
+    breadth = (
+        result.loc[eligible]
+        .groupby("datetime", sort=False)
+        .agg(market_breadth_5=("momentum_5", "mean"), market_breadth_20=("momentum_20", "mean"))
+    )
+    result = result.join(breadth, on="datetime")
     for column in raw_columns:
         ranked = result.loc[eligible].groupby("datetime", sort=False)[column].rank(pct=True)
         result.loc[eligible, f"rank_{column}"] = ranked
+    result["reversal_1"] = 1.0 - result["rank_momentum_1"]
+    result["reversal_2"] = 1.0 - result["rank_momentum_2"]
     result["reversal_3"] = 1.0 - result["rank_momentum_3"]
+    result["reversal_5"] = 1.0 - result["rank_momentum_5"]
+    result["reversal_10"] = 1.0 - result["rank_momentum_10"]
     result["volume_dry_up"] = 1.0 - result["rank_volume_surge"]
+    result["volatility_target_5"] = 1.0 - (result["rank_volatility_5"] - 0.50).abs()
     result["volatility_target"] = 1.0 - (result["rank_volatility_10"] - 0.65).abs()
+    result["volatility_target_20"] = 1.0 - (result["rank_volatility_20"] - 0.50).abs()
+    result["amplitude_low_1"] = 1.0 - result["rank_amplitude_1"]
+    result["amplitude_low"] = 1.0 - result["rank_amplitude_5"]
+    result["gap_reversal"] = 1.0 - result["rank_gap_1"]
+    result["gap_strength"] = result["rank_gap_1"]
+    result["drawdown_20"] = 1.0 - result["rank_near_high_20"]
+    result["quality_roe"] = result["rank_roe"]
+    result["quality_revenue"] = result["rank_revenue_yoy"]
+    result["quality_profit"] = result["rank_profit_yoy"]
+    result["quality_growth"] = result[["rank_revenue_yoy", "rank_profit_yoy"]].mean(axis=1)
     result["quality_score"] = result[["rank_roe", "rank_revenue_yoy", "rank_profit_yoy"]].mean(axis=1)
+    result["momentum_1"] = result["rank_momentum_1"]
+    result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_5"] = result["rank_momentum_5"]
     result["momentum_10"] = result["rank_momentum_10"]
+    result["momentum_20"] = result["rank_momentum_20"]
+    result["momentum_60"] = result["rank_momentum_60"]
+    result["trend_ma_5"] = result["rank_trend_ma_5"]
+    result["trend_ma_20"] = result["rank_trend_ma_20"]
+    result["trend_ma_60"] = result["rank_trend_ma_60"]
+    result["volume_surge_1"] = result["rank_volume_surge_1"]
     result["volume_surge"] = result["rank_volume_surge"]
+    result["volume_surge_3"] = result["rank_volume_surge_3"]
     result["turnover_surge"] = result["rank_turnover_surge"]
+    result["turnover_surge_3"] = result["rank_turnover_surge_3"]
+    result["turnover_surge_1"] = result["rank_turnover_surge_1"]
+    result["liquidity_5"] = result["rank_liquidity_5"]
+    result["near_high_10"] = result["rank_near_high_10"]
     result["near_high_20"] = result["rank_near_high_20"]
     result["intraday_strength"] = result["rank_intraday_strength"]
+    result["close_to_high"] = result["rank_close_to_high"]
     return result
 
 
@@ -678,6 +1041,19 @@ def score_candidate(ranked: pd.DataFrame, candidate: Candidate) -> pd.DataFrame:
     return result.dropna(subset=required)
 
 
+def minimum_required_holdings(topk: int) -> int:
+    """Require at least 80% of a declared basket, including baskets below five.
+
+    The previous fixed floor of five made a Top-3 strategy impossible to
+    evaluate or settle.  For a three-name execution policy, all three names
+    must have valid quotes; larger baskets retain the existing 80% rule.
+    """
+
+    if topk < 1:
+        raise ValueError("topk must be positive")
+    return max(1, math.ceil(topk * 0.8))
+
+
 def evaluate_candidate(
     scored: pd.DataFrame,
     candidate: Candidate,
@@ -686,8 +1062,9 @@ def evaluate_candidate(
     open_cost: float,
     close_cost: float,
     development_end: str,
+    regime_filter: str = "always",
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
-    """Run non-overlapping five-session cohorts from close signal to next-open entry.
+    """Run non-overlapping cohorts from close signal to next-open entry.
 
     A signal is formed after the market close.  The portfolio buys on the next
     session's open and sells on the close after ``hold_days`` sessions.  This
@@ -701,8 +1078,21 @@ def evaluate_candidate(
         raise ValueError("research window is too short for the requested holding period")
     date_to_position = {date: position for position, date in enumerate(calendar)}
     rebalances = calendar[: -(hold_days + 1) : hold_days]
-    pool = scored.loc[scored["datetime"].isin(rebalances)].copy()
-    pool = pool.sort_values(["datetime", "score", "instrument"], ascending=[True, False, True], kind="stable")
+    base_pool = scored.loc[scored["datetime"].isin(rebalances)].copy()
+    base_pool = base_pool.sort_values(["datetime", "score", "instrument"], ascending=[True, False, True], kind="stable")
+    minimum_holdings = minimum_required_holdings(topk)
+    base_selected = base_pool.groupby("datetime", sort=False).head(topk).copy()
+    base_selected["entry_date"] = base_selected["datetime"].map(lambda value: calendar[date_to_position[value] + 1])
+    base_selected["exit_date"] = base_selected["datetime"].map(lambda value: calendar[date_to_position[value] + hold_days])
+    cohort_index = (
+        base_selected.groupby(["datetime", "entry_date", "exit_date"], sort=True)
+        .agg(available_holdings=("instrument", "nunique"))
+        .reset_index()
+        .rename(columns={"datetime": "signal_date"})
+    )
+    cohort_index = cohort_index.loc[cohort_index["available_holdings"] >= minimum_holdings].copy()
+
+    pool = apply_regime_filter(base_pool, regime_filter)
     selected = pool.groupby("datetime", sort=False).head(topk).copy()
     selected["entry_date"] = selected["datetime"].map(lambda value: calendar[date_to_position[value] + 1])
     selected["exit_date"] = selected["datetime"].map(lambda value: calendar[date_to_position[value] + hold_days])
@@ -716,19 +1106,36 @@ def evaluate_candidate(
     trades = trades.loc[(trades["entry_open"] > 0) & (trades["exit_close"] > 0)].copy()
     trades["gross_return"] = trades["exit_close"] / trades["entry_open"] - 1.0
     trades["net_return"] = (1.0 - open_cost) * (1.0 + trades["gross_return"]) * (1.0 - close_cost) - 1.0
-    rounds = (
+    traded_rounds = (
         trades.groupby(["datetime", "entry_date", "exit_date"], sort=True)
         .agg(net_return=("net_return", "mean"), gross_return=("gross_return", "mean"), holdings=("instrument", "nunique"))
         .reset_index()
         .rename(columns={"datetime": "signal_date"})
     )
-    rounds = rounds.loc[rounds["holdings"] >= max(5, math.ceil(topk * 0.8))].copy()
+    rounds = cohort_index.merge(traded_rounds, on=["signal_date", "entry_date", "exit_date"], how="left")
+    active_dates = set(pool["datetime"].unique())
+    rounds["regime_active"] = rounds["signal_date"].isin(active_dates)
+    if regime_filter == "always":
+        rounds = rounds.loc[rounds["holdings"].ge(minimum_holdings)].copy()
+    else:
+        active_but_untradable = rounds["regime_active"] & ~rounds["holdings"].ge(minimum_holdings)
+        rounds = rounds.loc[~active_but_untradable].copy()
+        rounds["net_return"] = rounds["net_return"].fillna(0.0)
+        rounds["gross_return"] = rounds["gross_return"].fillna(0.0)
+        rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
     rounds["segment"] = np.where(rounds["signal_date"] <= pd.Timestamp(development_end), "development", "test")
+    development_rounds = rounds.loc[rounds["segment"] == "development"]
+    development_by_year = {
+        str(year): return_metrics(group, hold_days)
+        for year, group in development_rounds.groupby(development_rounds["signal_date"].dt.year, sort=True)
+    }
     summary = {
         "candidate": candidate.name,
         "description": candidate.description,
         "weights": candidate.weights,
-        "development": return_metrics(rounds.loc[rounds["segment"] == "development"], hold_days),
+        "regime_filter": regime_filter,
+        "development": return_metrics(development_rounds, hold_days),
+        "development_by_signal_year": development_by_year,
         "test": return_metrics(rounds.loc[rounds["segment"] == "test"], hold_days),
         "metrics_by_signal_year": {
             str(year): return_metrics(group, hold_days)
@@ -743,18 +1150,41 @@ def evaluate_candidate(
                 "gross_return": float(row.gross_return),
                 "net_return": float(row.net_return),
                 "holdings": int(row.holdings),
+                "regime_active": bool(row.regime_active),
             }
             for row in rounds.itertuples(index=False)
         ],
     }
     development = summary["development"]
-    # Precommitted selection function.  The test metrics are deliberately not
+    # Precommitted selection functions.  The test metrics are deliberately not
     # referenced here: they remain an untouched check on the winner.
-    summary["development_selection_score"] = (
+    pooled_score = (
         development["annualized_return"] - 0.5 * abs(development["max_drawdown"])
         if development["rounds"]
         else None
     )
+    year_returns = [
+        float(metrics["net_cumulative_return"])
+        for metrics in development_by_year.values()
+        if metrics.get("net_cumulative_return") is not None
+    ]
+    stability_score = (
+        min(year_returns) - 0.5 * abs(float(development["max_drawdown"]))
+        if len(year_returns) >= 2 and min(year_returns) > 0.0 and development.get("max_drawdown") is not None
+        else None
+    )
+    summary["development_stability"] = {
+        "calendar_year_count": len(year_returns),
+        "positive_calendar_year_count": sum(value > 0.0 for value in year_returns),
+        "worst_calendar_year_net_cumulative_return": min(year_returns) if year_returns else None,
+        "selection_score": stability_score,
+    }
+    summary["selection_scores"] = {
+        "pooled_return_drawdown": pooled_score,
+        "positive_year_stability": stability_score,
+    }
+    # Backward-compatible shorthand for the original policy.
+    summary["development_selection_score"] = pooled_score
     return rounds, summary
 
 
@@ -792,24 +1222,33 @@ def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | in
     }
 
 
-def choose_winner(summaries: list[dict[str, Any]]) -> str | None:
+def choose_winner(summaries: list[dict[str, Any]], selection_policy: str = "pooled_return_drawdown") -> str | None:
     """Choose only from development-period results; reject missing metrics."""
 
-    eligible = [item for item in summaries if item.get("development_selection_score") is not None]
+    if selection_policy not in SELECTION_POLICIES:
+        choices = ", ".join(sorted(SELECTION_POLICIES))
+        raise ValueError(f"unknown selection_policy {selection_policy!r}; choose one of: {choices}")
+
+    def score(item: dict[str, Any]) -> Any:
+        if selection_policy == "pooled_return_drawdown":
+            return (item.get("selection_scores") or {}).get(selection_policy, item.get("development_selection_score"))
+        return (item.get("selection_scores") or {}).get(selection_policy)
+
+    eligible = [item for item in summaries if score(item) is not None]
     if not eligible:
         return None
-    winner = max(eligible, key=lambda item: float(item["development_selection_score"]))
+    winner = max(eligible, key=lambda item: float(score(item)))
     return str(winner["candidate"])
 
 
-def candidate_by_name(name: str) -> Candidate:
+def candidate_by_name(name: str, library_id: str = "v1") -> Candidate:
     """Return a predefined candidate, rejecting arbitrary unrecorded weights."""
 
-    for candidate in CANDIDATES:
+    for candidate in candidate_library(library_id):
         if candidate.name == name:
             return candidate
-    choices = ", ".join(candidate.name for candidate in CANDIDATES)
-    raise ValueError(f"unknown candidate {name!r}; choose one of: {choices}")
+    choices = ", ".join(candidate.name for candidate in candidate_library(library_id))
+    raise ValueError(f"unknown candidate {name!r} in {library_id}; choose one of: {choices}")
 
 
 def latest_provider_date(provider_uri: Path) -> pd.Timestamp:
@@ -856,7 +1295,7 @@ def filter_st_candidates(screen: pd.DataFrame, metadata: dict[str, dict[str, Any
 def run_latest_screen(args: argparse.Namespace) -> dict[str, Any]:
     """Create an auditable latest-available candidate screen from local data."""
 
-    candidate = candidate_by_name(args.candidate)
+    candidate = candidate_by_name(args.candidate, args.candidate_library)
     provider_uri = Path(args.provider_uri).expanduser()
     fundamentals_path = Path(args.fundamentals).expanduser()
     latest_local_date = latest_provider_date(provider_uri)
@@ -868,11 +1307,16 @@ def run_latest_screen(args: argparse.Namespace) -> dict[str, Any]:
     ranked = rank_factor_frame(market)
     scored = score_candidate(ranked, candidate)
     as_of = pd.Timestamp(scored["datetime"].max())
-    screen = scored.loc[scored["datetime"] == as_of].sort_values(["score", "instrument"], ascending=[False, True])
+    latest_scored = scored.loc[scored["datetime"] == as_of].copy()
+    screened_by_regime = apply_regime_filter(scored, args.regime_filter)
+    regime_active = bool((screened_by_regime["datetime"] == as_of).any())
+    screen = screened_by_regime.loc[screened_by_regime["datetime"] == as_of].sort_values(
+        ["score", "instrument"], ascending=[False, True]
+    )
     metadata = _universe_metadata()
     screen = filter_st_candidates(screen, metadata, include_st=args.include_st)
     screen = screen.head(args.topk).copy()
-    if len(screen) < args.topk:
+    if regime_active and len(screen) < args.topk:
         raise RuntimeError(f"only {len(screen)} complete candidates exist on {as_of.date()}, need {args.topk}")
     factor_columns = list(candidate.weights)
     records: list[dict[str, Any]] = []
@@ -901,8 +1345,17 @@ def run_latest_screen(args: argparse.Namespace) -> dict[str, Any]:
         "as_of": as_of.date().isoformat(),
         "latest_local_provider_date": latest_local_date.date().isoformat(),
         "candidate": candidate.name,
+        "candidate_library": args.candidate_library,
         "description": candidate.description,
         "weights": candidate.weights,
+        "regime_filter": args.regime_filter,
+        "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+        "regime_active": regime_active,
+        "execution_allowed": regime_active,
+        "latest_market_breadth": {
+            "five_day": float(latest_scored["market_breadth_5"].iloc[0]),
+            "twenty_day": float(latest_scored["market_breadth_20"].iloc[0]),
+        },
         "universe": "buyable_main_chinext",
         "exclude_current_st": not args.include_st,
         "topk": args.topk,
@@ -931,6 +1384,8 @@ def run_execution_plan(args: argparse.Namespace) -> dict[str, Any]:
 
     screen_path = Path(args.screen_path).expanduser().resolve()
     screen = json.loads(screen_path.read_text(encoding="utf-8"))
+    if screen.get("execution_allowed") is False:
+        raise ValueError("screen regime is inactive; no order plan may be generated")
     candidates = list(screen.get("top_candidates") or [])[: args.topk]
     if not candidates:
         raise ValueError("screen file does not contain top_candidates")
@@ -984,12 +1439,604 @@ def write_experiment_record(root: Path, record: dict[str, Any]) -> Path:
     return destination
 
 
+def initial_test_gate(metrics: dict[str, Any]) -> tuple[bool, list[str]]:
+    """Apply a predeclared, deliberately modest promotion gate to test results."""
+
+    failures: list[str] = []
+    if int(metrics.get("rounds") or 0) < 20:
+        failures.append("fewer than 20 independent test cohorts")
+    if float(metrics.get("net_cumulative_return") or 0.0) <= 0.0:
+        failures.append("non-positive test cumulative return")
+    if float(metrics.get("max_drawdown") or 0.0) < -0.20:
+        failures.append("test maximum drawdown worse than -20%")
+    return not failures, failures
+
+
+def build_iteration_record(
+    *,
+    run_id: str,
+    label: str,
+    strategy: dict[str, Any],
+    study_path: Path,
+    winner: dict[str, Any],
+    candidate_count: int,
+    data: dict[str, Any],
+    promotion_eligible: bool = True,
+    candidate_library_id: str = "v1",
+    candidate_library_sha256: str | None = None,
+    selection_policy: str = "pooled_return_drawdown",
+) -> dict[str, Any]:
+    """Build one immutable research-cycle record from a development-selected winner."""
+
+    if selection_policy not in SELECTION_POLICIES:
+        choices = ", ".join(sorted(SELECTION_POLICIES))
+        raise ValueError(f"unknown selection_policy {selection_policy!r}; choose one of: {choices}")
+    passed, failures = initial_test_gate(winner["test"])
+    if not promotion_eligible:
+        failures = [
+            *failures,
+            "research-only diagnostic is not eligible for promotion because its test window is not a newly reserved validation set",
+        ]
+    return {
+        "iteration_id": run_id,
+        "label": label,
+        "candidate_library": {
+            "id": candidate_library_id,
+            "count": candidate_count,
+            "fingerprint_sha256": candidate_library_sha256
+            or candidate_library_fingerprint(candidate_library(candidate_library_id)),
+        },
+        "strategy": strategy,
+        "data": data,
+        "selection": {
+            "rule": SELECTION_POLICIES[selection_policy],
+            "policy": selection_policy,
+            "test_metrics_used_for_selection": False,
+            "winner": winner["candidate"],
+            "development_selection_score": (winner.get("selection_scores") or {}).get(
+                selection_policy, winner.get("development_selection_score")
+            ),
+            "development": winner["development"],
+            "development_stability": winner.get("development_stability"),
+        },
+        "initial_test": winner["test"],
+        "promotion": {
+            "status": "passed_initial_test" if passed and promotion_eligible else "research_only_not_promoted",
+            "eligible_for_promotion": promotion_eligible,
+            "criteria": {
+                "minimum_test_cohorts": 20,
+                "net_cumulative_return_gt": 0.0,
+                "max_drawdown_gte": -0.20,
+            },
+            "failures": failures,
+        },
+        "study_path": str(study_path.resolve()),
+        "recording_rule": "Append-only registry; later factor iterations must create a new record and preserve this one.",
+    }
+
+
+def append_strategy_registry(registry_path: Path, iteration: dict[str, Any]) -> Path:
+    """Append a completed research cycle without allowing historic replacement."""
+
+    registry_path = registry_path.expanduser()
+    if registry_path.exists():
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    else:
+        registry = {"schema_version": 1, "iterations": []}
+    if registry.get("schema_version") != 1 or not isinstance(registry.get("iterations"), list):
+        raise ValueError("strategy registry has an unsupported schema")
+    known_ids = {str(item.get("iteration_id")) for item in registry["iterations"]}
+    if str(iteration["iteration_id"]) in known_ids:
+        raise ValueError(f"strategy registry already contains iteration {iteration['iteration_id']}")
+    registry["iterations"].append(iteration)
+    _atomic_write_text(registry_path, json.dumps(registry, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return registry_path
+
+
+def promoted_iteration(registry_path: Path, iteration_id: str | None = None) -> dict[str, Any]:
+    """Load one passed-initial-test strategy, latest by default."""
+
+    registry = json.loads(registry_path.expanduser().read_text(encoding="utf-8"))
+    iterations = list(registry.get("iterations") or [])
+    if iteration_id is not None:
+        iterations = [item for item in iterations if item.get("iteration_id") == iteration_id]
+    for iteration in reversed(iterations):
+        if iteration.get("promotion", {}).get("status") == "passed_initial_test":
+            return iteration
+    detail = f" {iteration_id}" if iteration_id else ""
+    raise ValueError(f"no passed_initial_test strategy found in registry{detail}")
+
+
+def research_observation_iteration(registry_path: Path, iteration_id: str) -> dict[str, Any]:
+    """Return one explicit development-only iteration for forward paper observation.
+
+    This is deliberately separate from ``promoted_iteration``.  A shadow
+    observation is research evidence only and cannot become an execution plan
+    merely because the scheduler has collected a few returns.
+    """
+
+    registry = json.loads(registry_path.expanduser().read_text(encoding="utf-8"))
+    iterations = [item for item in registry.get("iterations", []) if item.get("iteration_id") == iteration_id]
+    if not iterations:
+        raise ValueError(f"research iteration not found: {iteration_id}")
+    iteration = iterations[-1]
+    promotion = iteration.get("promotion") or {}
+    data = iteration.get("data") or {}
+    test = iteration.get("initial_test") or {}
+    if promotion.get("status") != "research_only_not_promoted":
+        raise ValueError("shadow observation only accepts a research-only iteration")
+    if int(test.get("rounds") or 0) != 0 or data.get("calendar_end") != data.get("development_end"):
+        raise ValueError("shadow observation requires an iteration with no historical test window")
+    return iteration
+
+
+def load_shadow_observation_registry(path: Path) -> dict[str, Any]:
+    """Load the append-only list of development-only strategies under forward observation."""
+
+    path = path.expanduser()
+    if not path.exists():
+        return {"schema_version": 1, "observations": []}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != 1 or not isinstance(payload.get("observations"), list):
+        raise ValueError("shadow observation registry has an unsupported schema")
+    return payload
+
+
+def append_shadow_observation(
+    path: Path, *, iteration: dict[str, Any], not_before: str
+) -> dict[str, Any]:
+    """Append one explicit future-only paper observation plan."""
+
+    date = pd.Timestamp(not_before).normalize()
+    if pd.isna(date):
+        raise ValueError("not_before must be a valid ISO date")
+    registry = load_shadow_observation_registry(path)
+    known = {str(item.get("iteration_id")) for item in registry["observations"]}
+    iteration_id = str(iteration["iteration_id"])
+    if iteration_id in known:
+        raise ValueError(f"shadow observation already contains iteration {iteration_id}")
+    registry["observations"].append(
+        {
+            "iteration_id": iteration_id,
+            "candidate": iteration["selection"]["winner"],
+            "candidate_library": (iteration.get("strategy") or {}).get("candidate_library", "v1"),
+            "not_before": date.date().isoformat(),
+            "registered_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "rule": "Forward paper observation only; the date must be the first genuinely unseen signal close.",
+        }
+    )
+    _atomic_write_text(path, json.dumps(registry, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return registry
+
+
+def local_trading_calendar(provider_uri: Path, end: str | None = None) -> pd.DatetimeIndex:
+    """Read the local Qlib trading calendar without querying a network source."""
+
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    import qlib
+    from qlib.data import D
+
+    qlib.init(provider_uri=str(provider_uri.expanduser().resolve()), region="cn", kernels=1)
+    calendar = pd.DatetimeIndex(D.calendar(start_time=None, end_time=end, freq="day"))
+    return pd.DatetimeIndex(sorted(calendar.unique()))
+
+
+def load_open_close_quotes(provider_uri: Path, instruments: list[str], start: str, end: str) -> pd.DataFrame:
+    """Load the two close-known execution fields needed for paper settlement."""
+
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    import qlib
+    from qlib.data import D
+
+    if not instruments:
+        return pd.DataFrame(columns=["instrument", "datetime", "open", "close"])
+    qlib.init(provider_uri=str(provider_uri.expanduser().resolve()), region="cn", kernels=1)
+    quotes = D.features(instruments, ["$open", "$close"], start_time=start, end_time=end, freq="day")
+    return quotes.rename(columns={"$open": "open", "$close": "close"}).reset_index()
+
+
+def load_paper_ledger(ledger_path: Path) -> dict[str, Any]:
+    """Load the append-only signal and settlement ledger, creating its schema in memory if absent."""
+
+    ledger_path = ledger_path.expanduser()
+    if not ledger_path.exists():
+        return {"schema_version": 1, "signals": [], "settlements": []}
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    if ledger.get("schema_version") != 1:
+        raise ValueError("paper ledger has an unsupported schema")
+    if not isinstance(ledger.get("signals"), list) or not isinstance(ledger.get("settlements"), list):
+        raise ValueError("paper ledger is missing signals or settlements")
+    return ledger
+
+
+def paper_settlement(
+    signal: dict[str, Any], calendar: pd.DatetimeIndex, quotes: pd.DataFrame
+) -> dict[str, Any] | None:
+    """Settle a paper signal only when all required future local sessions are available."""
+
+    signal_date = pd.Timestamp(signal["signal_date"])
+    matching = np.flatnonzero(calendar == signal_date)
+    hold_days = int(signal["strategy"]["holding_period_trading_days"])
+    if len(matching) != 1 or matching[0] + hold_days >= len(calendar):
+        return None
+    entry_date = calendar[matching[0] + 1]
+    exit_date = calendar[matching[0] + hold_days]
+    instruments = [str(item["instrument"]) for item in signal["top_candidates"]]
+    entry = quotes.loc[quotes["datetime"] == entry_date, ["instrument", "open"]].rename(columns={"open": "entry_open"})
+    exit_quote = quotes.loc[quotes["datetime"] == exit_date, ["instrument", "close"]].rename(columns={"close": "exit_close"})
+    members = pd.DataFrame({"instrument": instruments}).merge(entry, on="instrument", how="left").merge(
+        exit_quote, on="instrument", how="left"
+    )
+    members = members.dropna(subset=["entry_open", "exit_close"])
+    members = members.loc[(members["entry_open"] > 0) & (members["exit_close"] > 0)].copy()
+    minimum_holdings = minimum_required_holdings(len(instruments))
+    if len(members) < minimum_holdings:
+        return None
+    members["gross_return"] = members["exit_close"] / members["entry_open"] - 1.0
+    strategy = signal["strategy"]
+    members["net_return"] = (
+        (1.0 - float(strategy["open_cost"]))
+        * (1.0 + members["gross_return"])
+        * (1.0 - float(strategy["close_cost"]))
+        - 1.0
+    )
+    return {
+        "signal_id": signal["signal_id"],
+        "signal_date": signal["signal_date"],
+        "entry_date": entry_date.date().isoformat(),
+        "exit_date": exit_date.date().isoformat(),
+        "holdings": int(len(members)),
+        "gross_return": float(members["gross_return"].mean()),
+        "net_return": float(members["net_return"].mean()),
+        "member_returns": [
+            {
+                "instrument": str(row.instrument),
+                "entry_open": float(row.entry_open),
+                "exit_close": float(row.exit_close),
+                "gross_return": float(row.gross_return),
+                "net_return": float(row.net_return),
+            }
+            for row in members.itertuples(index=False)
+        ],
+    }
+
+
+def run_paper_monitor(args: argparse.Namespace) -> dict[str, Any]:
+    """Append new eligible paper signals and settle older three-day signals."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    registry_path = Path(args.registry_path).expanduser()
+    ledger_path = Path(args.ledger_path).expanduser()
+    if getattr(args, "allow_research_only", False):
+        if not args.iteration_id:
+            raise ValueError("research-only paper observation requires --iteration-id")
+        iteration = research_observation_iteration(registry_path, args.iteration_id)
+    else:
+        iteration = promoted_iteration(registry_path, args.iteration_id)
+    strategy = dict(iteration["strategy"])
+    candidate = str(iteration["selection"]["winner"])
+    latest_date = pd.Timestamp(args.as_of) if args.as_of else latest_provider_date(provider_uri)
+    not_before = getattr(args, "not_before", None)
+    if not_before is not None and latest_date.normalize() < pd.Timestamp(not_before).normalize():
+        return {
+            "status": "not_started",
+            "as_of": latest_date.date().isoformat(),
+            "iteration_id": iteration["iteration_id"],
+            "not_before": pd.Timestamp(not_before).date().isoformat(),
+            "reason": "forward observation begins only on the registered unseen signal date",
+        }
+    calendar = local_trading_calendar(provider_uri, end=latest_date.date().isoformat())
+    ledger = load_paper_ledger(ledger_path)
+    settled_ids = {str(item.get("signal_id")) for item in ledger["settlements"]}
+    new_settlements: list[dict[str, Any]] = []
+    for signal in ledger["signals"]:
+        signal_id = str(signal.get("signal_id"))
+        if signal_id in settled_ids:
+            continue
+        instruments = [str(item["instrument"]) for item in signal.get("top_candidates", [])]
+        quotes = load_open_close_quotes(
+            provider_uri,
+            instruments,
+            start=str(signal["signal_date"]),
+            end=latest_date.date().isoformat(),
+        )
+        settlement = paper_settlement(signal, calendar, quotes)
+        if settlement is not None:
+            new_settlements.append(settlement)
+    ledger["settlements"].extend(new_settlements)
+
+    screen_args = argparse.Namespace(
+        provider_uri=str(provider_uri),
+        fundamentals=args.fundamentals,
+        experiment_root=args.experiment_root,
+        candidate=candidate,
+        candidate_library=strategy.get("candidate_library", "v1"),
+        regime_filter=strategy["regime_filter"],
+        as_of=latest_date.date().isoformat(),
+        start=None,
+        lookback_calendar_days=args.lookback_calendar_days,
+        topk=int(strategy["topk"]),
+        include_st=False,
+        max_quality_age_days=args.max_quality_age_days,
+        batch_size=args.batch_size,
+    )
+    screen = run_latest_screen(screen_args)
+    signal_id = f"{iteration['iteration_id']}:{screen['as_of']}"
+    known_signal_ids = {str(item.get("signal_id")) for item in ledger["signals"]}
+    new_signal: dict[str, Any] | None = None
+    if screen["execution_allowed"] and signal_id not in known_signal_ids:
+        new_signal = {
+            "signal_id": signal_id,
+            "iteration_id": iteration["iteration_id"],
+            "candidate": candidate,
+            "signal_date": screen["as_of"],
+            "strategy": strategy,
+            "screen_path": screen["screen_path"],
+            "top_candidates": screen["top_candidates"],
+            "recording_rule": "Paper-only signal; entry and exit are settled only after future local daily bars exist.",
+        }
+        ledger["signals"].append(new_signal)
+    _atomic_write_text(ledger_path, json.dumps(ledger, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "as_of": latest_date.date().isoformat(),
+        "iteration_id": iteration["iteration_id"],
+        "candidate": candidate,
+        "regime_filter": strategy["regime_filter"],
+        "screen_path": screen["screen_path"],
+        "execution_allowed": screen["execution_allowed"],
+        "new_signal": new_signal,
+        "new_settlements": new_settlements,
+        "ledger_path": str(ledger_path.resolve()),
+    }
+
+
+def register_shadow_observation(args: argparse.Namespace) -> dict[str, Any]:
+    """Register a development-only candidate for a future, separate paper ledger."""
+
+    iteration = research_observation_iteration(Path(args.registry_path), args.iteration_id)
+    path = Path(args.shadow_registry_path)
+    registry = append_shadow_observation(path, iteration=iteration, not_before=args.not_before)
+    return {
+        "status": "completed",
+        "iteration_id": iteration["iteration_id"],
+        "candidate": iteration["selection"]["winner"],
+        "not_before": registry["observations"][-1]["not_before"],
+        "shadow_registry_path": str(path.expanduser().resolve()),
+        "recording_rule": "Forward paper observation only; this does not promote or enable an execution plan.",
+    }
+
+
+def run_shadow_monitor(args: argparse.Namespace) -> dict[str, Any]:
+    """Collect forward paper evidence for every explicitly registered research candidate."""
+
+    plan_path = Path(args.shadow_registry_path)
+    plan = load_shadow_observation_registry(plan_path)
+    if not plan["observations"]:
+        return {
+            "status": "completed",
+            "observations": [],
+            "message": "no forward shadow observations are registered",
+            "shadow_registry_path": str(plan_path.expanduser().resolve()),
+        }
+    reports: list[dict[str, Any]] = []
+    for observation in plan["observations"]:
+        monitor_args = argparse.Namespace(**vars(args))
+        monitor_args.iteration_id = str(observation["iteration_id"])
+        monitor_args.ledger_path = args.shadow_ledger_path
+        monitor_args.allow_research_only = True
+        monitor_args.not_before = str(observation["not_before"])
+        reports.append(run_paper_monitor(monitor_args))
+    return {
+        "status": "completed",
+        "observation_count": len(reports),
+        "observations": reports,
+        "shadow_registry_path": str(plan_path.expanduser().resolve()),
+        "shadow_ledger_path": str(Path(args.shadow_ledger_path).expanduser().resolve()),
+        "recording_rule": "Separate forward paper evidence for research-only candidates; never an execution recommendation.",
+    }
+
+
+def _percent(value: Any) -> str:
+    """Format an optional decimal return for the human research log."""
+
+    return "—" if value is None else f"{float(value):+.2%}"
+
+
+def _paper_ledger_summary(ledger: dict[str, Any]) -> tuple[int, int, int, float]:
+    """Return signal, settlement, pending and compounded-return counts for one ledger."""
+
+    settlements = list(ledger.get("settlements") or [])
+    signals = list(ledger.get("signals") or [])
+    settled_ids = {str(item.get("signal_id")) for item in settlements}
+    pending = [item for item in signals if str(item.get("signal_id")) not in settled_ids]
+    equity = float(np.prod([1.0 + float(item["net_return"]) for item in settlements]) - 1.0) if settlements else 0.0
+    return len(signals), len(settlements), len(pending), equity
+
+
+def _shadow_observation_rows(plan: dict[str, Any], ledger: dict[str, Any]) -> list[dict[str, Any]]:
+    """Summarize separate forward evidence for each explicitly registered candidate."""
+
+    signals = list(ledger.get("signals") or [])
+    settlements = list(ledger.get("settlements") or [])
+    rows: list[dict[str, Any]] = []
+    for observation in plan.get("observations") or []:
+        iteration_id = str(observation.get("iteration_id", ""))
+        candidate_signals = [item for item in signals if str(item.get("iteration_id")) == iteration_id]
+        signal_ids = {str(item.get("signal_id")) for item in candidate_signals}
+        candidate_settlements = [item for item in settlements if str(item.get("signal_id")) in signal_ids]
+        settled_ids = {str(item.get("signal_id")) for item in candidate_settlements}
+        pending = [item for item in candidate_signals if str(item.get("signal_id")) not in settled_ids]
+        equity = (
+            float(np.prod([1.0 + float(item["net_return"]) for item in candidate_settlements]) - 1.0)
+            if candidate_settlements
+            else 0.0
+        )
+        rows.append(
+            {
+                "iteration_id": iteration_id,
+                "candidate": str(observation.get("candidate", "—")),
+                "candidate_library": str(observation.get("candidate_library", "—")),
+                "not_before": str(observation.get("not_before", "—")),
+                "signals": len(candidate_signals),
+                "settlements": len(candidate_settlements),
+                "pending": len(pending),
+                "net_cumulative_return": equity,
+            }
+        )
+    return rows
+
+
+def render_three_day_research_report(
+    registry: dict[str, Any],
+    ledger: dict[str, Any],
+    shadow_ledger: dict[str, Any] | None = None,
+    shadow_observation_registry: dict[str, Any] | None = None,
+) -> str:
+    """Render the append-only machine records into a concise human research log."""
+
+    iterations = list(registry.get("iterations") or [])
+    signals, settlements, pending, paper_equity = _paper_ledger_summary(ledger)
+    lines = [
+        "# 三日短线研究日志",
+        "",
+        "本报告由策略注册表和纸面台账生成。它记录研究证据，不构成买卖建议或收益承诺。",
+        "",
+        "## 策略迭代",
+        "",
+        "| 轮次 | 选择规则 | 持有期 / TopK | 状态条件 | 开发期胜者 | 开发期净收益 | 测试净收益 | 测试回撤 | 结论 |",
+        "| --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |",
+    ]
+    for item in iterations:
+        strategy = item.get("strategy") or {}
+        selection = item.get("selection") or {}
+        initial_test = item.get("initial_test") or {}
+        promotion = item.get("promotion") or {}
+        data = item.get("data") or {}
+        holding = strategy.get("holding_period_trading_days", "—")
+        topk = strategy.get("topk", "—")
+        regime = strategy.get("regime_filter", "always")
+        policy = selection.get("policy", strategy.get("selection_policy", "pooled_return_drawdown"))
+        status = str(promotion.get("status", "—"))
+        if promotion.get("eligible_for_promotion") is False:
+            is_development_preregistration = (
+                int(initial_test.get("rounds") or 0) == 0
+                and data.get("calendar_end") is not None
+                and data.get("development_end") is not None
+                and data.get("calendar_end") == data.get("development_end")
+            )
+            status += "（开发期预登记，前瞻观察）" if is_development_preregistration else "（历史诊断，不可晋级）"
+        lines.append(
+            "| {label} | {policy} | {holding} 日 / {topk} | {regime} | {winner} | {development} | {test} | {mdd} | {status} |".format(
+                label=item.get("label", item.get("iteration_id", "—")),
+                policy=policy,
+                holding=holding,
+                topk=topk,
+                regime=regime,
+                winner=selection.get("winner", "—"),
+                development=_percent((selection.get("development") or {}).get("net_cumulative_return")),
+                test=_percent(initial_test.get("net_cumulative_return")),
+                mdd=_percent(initial_test.get("max_drawdown")),
+                status=status,
+            )
+        )
+    if not iterations:
+        lines.append("| — | — | — | — | 尚无研究轮次 | — | — | — | — |")
+    lines.extend(
+        [
+            "",
+            "## 纸面样本外观察",
+            "",
+            f"- 已记录信号：{signals} 笔；已结算：{settlements} 笔；待结算：{pending} 笔。",
+            f"- 已结算纸面累计净收益：{_percent(paper_equity)}。",
+            "- 未结算信号不计入收益；状态不满足时不创建信号，代表策略空仓。",
+            "",
+        ]
+    )
+    if shadow_ledger is not None:
+        shadow_signals, shadow_settlements, shadow_pending, shadow_equity = _paper_ledger_summary(shadow_ledger)
+        lines.extend(
+            [
+                "## 研究候选前瞻纸面观察",
+                "",
+                f"- 已记录信号：{shadow_signals} 笔；已结算：{shadow_settlements} 笔；待结算：{shadow_pending} 笔。",
+                f"- 已结算纸面累计净收益：{_percent(shadow_equity)}。",
+                "- 此处只跟踪显式登记且从未见过收盘日开始的研究候选；它不能产生下单计划或取代已晋级策略。",
+                "",
+            ]
+        )
+        observation_rows = _shadow_observation_rows(shadow_observation_registry or {}, shadow_ledger)
+        if observation_rows:
+            lines.extend(
+                [
+                    "| 候选 | 候选库 | 首个可用收盘日 | 信号 | 已结算 | 待结算 | 已结算累计净收益 |",
+                    "| --- | --- | --- | ---: | ---: | ---: | ---: |",
+                ]
+            )
+            for row in observation_rows:
+                lines.append(
+                    "| {candidate} | {library} | {not_before} | {signals} | {settlements} | {pending} | {net_return} |".format(
+                        candidate=row["candidate"],
+                        library=row["candidate_library"],
+                        not_before=row["not_before"],
+                        signals=row["signals"],
+                        settlements=row["settlements"],
+                        pending=row["pending"],
+                        net_return=_percent(row["net_cumulative_return"]) if row["settlements"] else "—",
+                    )
+                )
+            lines.append("")
+    lines.extend(
+        [
+            "## 下一步规则",
+            "",
+            "1. 每次本地收盘数据更新后运行 `monitor`，只追加新的样本外信号或结算。",
+            "2. 新因子/权重必须作为新一轮写入注册表；不得改写已见测试段的结论。",
+            "3. 只有纸面样本继续积累且回撤、成本、可交易性都可接受时，才讨论扩大模拟仓位。",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
+    """Write a human-readable report from the immutable research records."""
+
+    registry_path = Path(args.registry_path).expanduser()
+    ledger_path = Path(args.ledger_path).expanduser()
+    registry = json.loads(registry_path.read_text(encoding="utf-8")) if registry_path.exists() else {"iterations": []}
+    ledger = load_paper_ledger(ledger_path)
+    shadow_ledger_path = Path(args.shadow_ledger_path).expanduser()
+    shadow_ledger = load_paper_ledger(shadow_ledger_path)
+    shadow_observation_registry_path = Path(args.shadow_observation_registry_path).expanduser()
+    shadow_observation_registry = load_shadow_observation_registry(shadow_observation_registry_path)
+    report = render_three_day_research_report(registry, ledger, shadow_ledger, shadow_observation_registry)
+    output = Path(args.output).expanduser()
+    _atomic_write_text(output, report)
+    return {
+        "status": "completed",
+        "registry_path": str(registry_path.resolve()),
+        "ledger_path": str(ledger_path.resolve()),
+        "shadow_ledger_path": str(shadow_ledger_path.resolve()),
+        "shadow_observation_registry_path": str(shadow_observation_registry_path.resolve()),
+        "report_path": str(output.resolve()),
+        "iterations": len(registry.get("iterations") or []),
+        "signals": len(ledger["signals"]),
+        "settlements": len(ledger["settlements"]),
+        "shadow_signals": len(shadow_ledger["signals"]),
+        "shadow_settlements": len(shadow_ledger["settlements"]),
+    }
+
+
 def run_research(args: argparse.Namespace) -> dict[str, Any]:
     """Run all candidate combinations and write a record for each one."""
 
     provider_uri = Path(args.provider_uri).expanduser()
     fundamental_path = Path(args.fundamentals).expanduser()
     experiment_root = Path(args.experiment_root).expanduser()
+    candidates = candidate_library(args.candidate_library)
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
     market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
@@ -999,6 +2046,13 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
         "run_id": run_id,
         "status": "completed",
         "purpose": "research_only_not_investment_advice",
+        "candidate_library": {
+            "id": args.candidate_library,
+            "count": len(candidates),
+            "construction": CANDIDATE_LIBRARY_DESCRIPTIONS[args.candidate_library],
+            "fingerprint_sha256": candidate_library_fingerprint(candidates),
+            "test_period_used_for_candidate_design": False,
+        },
         "strategy": {
             "universe": "buyable_main_chinext",
             "holding_period_trading_days": args.hold_days,
@@ -1009,6 +2063,10 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
             "exit": "local close after holding_period_trading_days",
             "open_cost": args.open_cost,
             "close_cost": args.close_cost,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+            "candidate_library": args.candidate_library,
+            "selection_policy": args.selection_policy,
         },
         "quality_gate": {
             "source": str(fundamental_path.resolve()),
@@ -1030,6 +2088,7 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
             "market_rows": int(len(market)),
             "eligible_rows": int(market["quality_eligible"].sum()),
             "development_end": args.development_end,
+            "test_window_is_newly_reserved": not args.research_only,
         },
         "limitations": [
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
@@ -1040,7 +2099,7 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
     }
     summaries: list[dict[str, Any]] = []
     records: list[tuple[dict[str, Any], Path]] = []
-    for candidate in CANDIDATES:
+    for candidate in candidates:
         scored = score_candidate(ranked, candidate)
         _, summary = evaluate_candidate(
             scored,
@@ -1050,35 +2109,68 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
             open_cost=args.open_cost,
             close_cost=args.close_cost,
             development_end=args.development_end,
+            regime_filter=args.regime_filter,
         )
         record = {**common, **summary, "candidate": candidate.name}
         destination = write_experiment_record(experiment_root, record)
         records.append((record, destination))
         summaries.append(summary)
         print(f"{candidate.name}: {destination}")
-    winner = choose_winner(summaries)
+    winner = choose_winner(summaries, args.selection_policy)
     for record, destination in records:
         record["selected_by_development"] = record["candidate"] == winner
         _atomic_write_text(destination, json.dumps(record, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    ranking = sorted(
+        records,
+        key=lambda item: float((item[0].get("selection_scores") or {}).get(args.selection_policy))
+        if (item[0].get("selection_scores") or {}).get(args.selection_policy) is not None
+        else float("-inf"),
+        reverse=True,
+    )
     study = {
         "run_id": run_id,
         "status": "completed",
-        "selection_rule": "maximize development annualized_return - 0.5 * abs(development max_drawdown)",
+        "candidate_library": args.candidate_library,
+        "candidate_count": len(candidates),
+        "candidate_construction": CANDIDATE_LIBRARY_DESCRIPTIONS[args.candidate_library],
+        "candidate_library_fingerprint_sha256": candidate_library_fingerprint(candidates),
+        "selection_policy": args.selection_policy,
+        "selection_rule": f"{SELECTION_POLICIES[args.selection_policy]}; no test metrics are used for selection",
         "winner_selected_on_development_only": winner,
-        "experiments": [
+        "ranking_by_development": [
             {
                 "candidate": record["candidate"],
                 "path": str(destination.resolve()),
-                "development_selection_score": record["development_selection_score"],
+                "development_selection_score": (record.get("selection_scores") or {}).get(args.selection_policy),
                 "development": record["development"],
+                "development_stability": record.get("development_stability"),
                 "test": record["test"],
             }
-            for record, destination in records
+            for record, destination in ranking
         ],
     }
     study_path = experiment_root / f"{run_id}_study.json"
     _atomic_write_text(study_path, json.dumps(study, ensure_ascii=False, indent=2, default=_json_default) + "\n")
     study["study_path"] = str(study_path.resolve())
+    winner_record = next(record for record, _ in records if record["candidate"] == winner)
+    label = args.iteration_label or f"hold_{args.hold_days}d_top_{args.topk}"
+    iteration = build_iteration_record(
+        run_id=run_id,
+        label=label,
+        strategy=common["strategy"],
+        study_path=study_path,
+        winner=winner_record,
+        candidate_count=len(candidates),
+        candidate_library_id=args.candidate_library,
+        candidate_library_sha256=candidate_library_fingerprint(candidates),
+        data=common["data"],
+        promotion_eligible=not args.research_only,
+        selection_policy=args.selection_policy,
+    )
+    registry_path = append_strategy_registry(Path(args.registry_path), iteration)
+    study["iteration_id"] = iteration["iteration_id"]
+    study["strategy_registry_path"] = str(registry_path.resolve())
+    _atomic_write_text(study_path, json.dumps(study, ensure_ascii=False, indent=2, default=_json_default) + "\n")
     return study
 
 
@@ -1099,18 +2191,30 @@ def parse_args() -> argparse.Namespace:
     run.add_argument("--start", default="2024-01-01")
     run.add_argument("--end", help="defaults to the local Qlib calendar end")
     run.add_argument("--development-end", default="2025-12-31")
-    run.add_argument("--hold-days", type=int, default=5)
+    run.add_argument("--hold-days", type=int, default=3, help="holding period in local trading days; 3 is the short-term research default")
     run.add_argument("--topk", type=int, default=30)
     run.add_argument("--open-cost", type=float, default=0.0015)
     run.add_argument("--close-cost", type=float, default=0.0025)
+    run.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
     run.add_argument("--max-quality-age-days", type=int, default=550)
     run.add_argument("--batch-size", type=int, default=500)
+    run.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), default="v1")
+    run.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
+    run.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
+    run.add_argument("--iteration-label", help="human-readable immutable label for this research cycle")
+    run.add_argument(
+        "--research-only",
+        action="store_true",
+        help="record a historical diagnostic without allowing promotion; use when the later window has already been reviewed",
+    )
 
     screen = subparsers.add_parser("screen", help="rank latest locally available candidates with a recorded factor mix")
     screen.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     screen.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
     screen.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     screen.add_argument("--candidate", default="quality_trend_pullback")
+    screen.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), default="v1")
+    screen.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
     screen.add_argument("--as-of", help="latest local daily session by default")
     screen.add_argument("--start", help="optional feature-history start; defaults to a local rolling lookback")
     screen.add_argument("--lookback-calendar-days", type=int, default=100)
@@ -1138,6 +2242,53 @@ def parse_args() -> argparse.Namespace:
     plan.add_argument("--max-gross-exposure", type=float, default=0.15)
     plan.add_argument("--target-weight", type=float, default=0.05)
     plan.add_argument("--output", help="optional JSON output path")
+
+    monitor = subparsers.add_parser(
+        "monitor", help="record eligible paper signals and settle completed three-day signals for the latest promoted strategy"
+    )
+    monitor.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    monitor.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    monitor.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    monitor.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
+    monitor.add_argument("--ledger-path", default=str(DEFAULT_PAPER_LEDGER))
+    monitor.add_argument("--iteration-id", help="use a specific passed-initial-test iteration instead of the latest one")
+    monitor.add_argument("--as-of", help="local provider date by default")
+    monitor.add_argument("--lookback-calendar-days", type=int, default=100)
+    monitor.add_argument("--max-quality-age-days", type=int, default=550)
+    monitor.add_argument("--batch-size", type=int, default=500)
+
+    shadow_register = subparsers.add_parser(
+        "shadow-register", help="register a development-only iteration for separate future paper observation"
+    )
+    shadow_register.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
+    shadow_register.add_argument("--shadow-registry-path", default=str(DEFAULT_SHADOW_OBSERVATION_REGISTRY))
+    shadow_register.add_argument("--iteration-id", required=True)
+    shadow_register.add_argument(
+        "--not-before",
+        required=True,
+        help="first genuinely unseen signal-close date, in YYYY-MM-DD form",
+    )
+
+    shadow_monitor = subparsers.add_parser(
+        "shadow-monitor", help="record and settle registered development-only candidates in a separate paper ledger"
+    )
+    shadow_monitor.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    shadow_monitor.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    shadow_monitor.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    shadow_monitor.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
+    shadow_monitor.add_argument("--shadow-registry-path", default=str(DEFAULT_SHADOW_OBSERVATION_REGISTRY))
+    shadow_monitor.add_argument("--shadow-ledger-path", default=str(DEFAULT_SHADOW_PAPER_LEDGER))
+    shadow_monitor.add_argument("--as-of", help="local provider date by default")
+    shadow_monitor.add_argument("--lookback-calendar-days", type=int, default=100)
+    shadow_monitor.add_argument("--max-quality-age-days", type=int, default=550)
+    shadow_monitor.add_argument("--batch-size", type=int, default=500)
+
+    report = subparsers.add_parser("report", help="render the three-day research registry and paper ledger as Markdown")
+    report.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
+    report.add_argument("--ledger-path", default=str(DEFAULT_PAPER_LEDGER))
+    report.add_argument("--shadow-ledger-path", default=str(DEFAULT_SHADOW_PAPER_LEDGER))
+    report.add_argument("--shadow-observation-registry-path", default=str(DEFAULT_SHADOW_OBSERVATION_REGISTRY))
+    report.add_argument("--output", default=str(DEFAULT_RESEARCH_REPORT))
     return parser.parse_args()
 
 
@@ -1149,6 +2300,14 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "plan":
         report = run_execution_plan(args)
+    elif args.command == "monitor":
+        report = run_paper_monitor(args)
+    elif args.command == "shadow-register":
+        report = register_shadow_observation(args)
+    elif args.command == "shadow-monitor":
+        report = run_shadow_monitor(args)
+    elif args.command == "report":
+        report = run_research_report(args)
     else:
         report = run_latest_screen(args)
     print(json.dumps(report, ensure_ascii=False, indent=2, default=_json_default))

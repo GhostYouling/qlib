@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Install or remove macOS launchd schedules for the A-share data pipeline.
+"""Install or remove macOS launchd schedules for A-share data and paper monitoring.
 
 The local time zone of this workspace (Asia/Singapore) is the same as mainland
 China time, so the default 18:30 weekday job runs after the A-share close.
 Friday 20:00 performs a full refresh to keep qfq-adjusted history current.
+An optional 19:30 weekday job records and settles the approved three-day
+paper strategy after the normal close-data refresh has had time to complete.
 """
 
 from __future__ import annotations
@@ -18,10 +20,12 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PIPELINE = REPO_ROOT / "scripts" / "a_share_data_pipeline.py"
+SHORT_HORIZON_MONITOR = REPO_ROOT / "scripts" / "run_a_share_short_horizon_monitor.py"
 DATA_DIR = REPO_ROOT / "data"
 AGENTS_DIR = Path.home() / "Library" / "LaunchAgents"
 DAILY_LABEL = "com.qlib.a-share-data.daily"
 FULL_LABEL = "com.qlib.a-share-data.full"
+MONITOR_LABEL = "com.qlib.a-share-short-horizon.monitor"
 
 
 def _job(label: str, arguments: list[str], calendar: list[dict[str, int]]) -> dict:
@@ -46,7 +50,27 @@ def _paths() -> dict[str, Path]:
     return {
         DAILY_LABEL: AGENTS_DIR / f"{DAILY_LABEL}.plist",
         FULL_LABEL: AGENTS_DIR / f"{FULL_LABEL}.plist",
+        MONITOR_LABEL: AGENTS_DIR / f"{MONITOR_LABEL}.plist",
     }
+
+
+def _jobs(with_short_horizon_monitor: bool) -> dict[str, dict]:
+    """Build launchd payloads without mutating a user's LaunchAgents directory."""
+
+    common = [sys.executable, str(PIPELINE), "sync", "--scope", "factor"]
+    jobs = {
+        DAILY_LABEL: _job(DAILY_LABEL, common, _calendar([2, 3, 4, 5, 6], 18, 30)),
+        # The full weekly refresh re-requests qfq history.  This corrects prior
+        # adjusted prices after ex-rights/ex-dividend events.
+        FULL_LABEL: _job(FULL_LABEL, [*common, "--force-full"], _calendar([6], 20, 0)),
+    }
+    if with_short_horizon_monitor:
+        jobs[MONITOR_LABEL] = _job(
+            MONITOR_LABEL,
+            [sys.executable, str(SHORT_HORIZON_MONITOR)],
+            _calendar([2, 3, 4, 5, 6], 19, 30),
+        )
+    return jobs
 
 
 def _bootout(path: Path) -> None:
@@ -58,19 +82,13 @@ def _bootout(path: Path) -> None:
     )
 
 
-def install(_: argparse.Namespace) -> int:
+def install(args: argparse.Namespace) -> int:
     if sys.platform != "darwin":
         raise RuntimeError("launchd scheduling is only available on macOS")
     (DATA_DIR / "logs").mkdir(parents=True, exist_ok=True)
     AGENTS_DIR.mkdir(parents=True, exist_ok=True)
     paths = _paths()
-    common = [sys.executable, str(PIPELINE), "sync", "--scope", "factor"]
-    jobs = {
-        DAILY_LABEL: _job(DAILY_LABEL, common, _calendar([2, 3, 4, 5, 6], 18, 30)),
-        # The full weekly refresh re-requests qfq history.  This corrects prior
-        # adjusted prices after ex-rights/ex-dividend events.
-        FULL_LABEL: _job(FULL_LABEL, [*common, "--force-full"], _calendar([6], 20, 0)),
-    }
+    jobs = _jobs(args.with_short_horizon_monitor)
     for label, payload in jobs.items():
         path = paths[label]
         _bootout(path)
@@ -102,10 +120,16 @@ def main(argv: list[str] | None = None) -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     for name, func, help_text in (
         ("install", install, "install weekday + weekly refresh schedules"),
-        ("uninstall", uninstall, "remove both schedules"),
-        ("status", status, "show whether both schedules are loaded"),
+        ("uninstall", uninstall, "remove data and short-horizon monitor schedules"),
+        ("status", status, "show whether data and short-horizon monitor schedules are loaded"),
     ):
         command = commands.add_parser(name, help=help_text)
+        if name == "install":
+            command.add_argument(
+                "--with-short-horizon-monitor",
+                action="store_true",
+                help="also install a weekday 19:30 three-day paper monitor",
+            )
         command.set_defaults(func=func)
     args = parser.parse_args(argv)
     return args.func(args)
