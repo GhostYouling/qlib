@@ -281,6 +281,65 @@ def test_billboard_join_uses_same_close_for_next_open_and_expires_old_events():
     assert not after_holiday["billboard_available"]
 
 
+def test_major_holder_normalization_uses_notice_date_and_explicit_direction_only():
+    rows = [
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-30",
+            "END_DATE": "2024-01-01",
+            "DIRECTION": "增持",
+            "CHANGE_NUM_SYMBOL": 100.0,
+            "CHANGE_FREE_RATIO": 0.50,
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-30",
+            "END_DATE": "2024-04-28",
+            "DIRECTION": "减持",
+            "CHANGE_NUM_SYMBOL": -20.0,
+            "CHANGE_FREE_RATIO": 0.20,
+        },
+    ]
+    normalized = RESEARCH.normalize_major_holder_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.MAJOR_HOLDER_EVENT_COLUMNS)
+    assert len(normalized) == 1
+    row = normalized.iloc[0]
+    assert row["instrument"] == "SZ000001"
+    assert row["announcement_date"] == pd.Timestamp("2024-04-30")
+    assert row["major_holder_net_change_free_ratio"] == pytest.approx(0.30)
+    assert row["major_holder_increase_free_ratio"] == pytest.approx(0.50)
+    assert row["major_holder_decrease_free_ratio"] == pytest.approx(0.20)
+    assert row["major_holder_event_count"] == pytest.approx(2.0)
+    assert "END_DATE" not in normalized.columns
+
+
+def test_major_holder_join_waits_for_next_session_and_expires_old_notices():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "major_holder_net_change_free_ratio": [0.50],
+            "major_holder_increase_free_ratio": [0.50],
+            "major_holder_decrease_free_ratio": [0.0],
+            "major_holder_event_count": [1.0],
+        }
+    )
+    joined = RESEARCH.attach_major_holder_events_asof(market, events, max_age_days=0)
+    announcement_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    effective = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    expired = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-07")].iloc[0]
+    assert not announcement_day["major_holder_available"]
+    assert effective["major_holder_available"]
+    assert effective["major_holder_effective_date"] == pd.Timestamp("2024-05-06")
+    assert not expired["major_holder_available"]
+
+
 def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
     ranked = pd.DataFrame({"billboard_deal_to_float": [0.10, 0.80, float("nan")]})
     result = RESEARCH.add_billboard_holdout_factor(ranked)
@@ -339,6 +398,9 @@ def test_rank_factor_frame_excludes_expired_event_values():
             "billboard_net_flow_to_deal": [0.50, 0.10],
             "billboard_age_days": [4.0, 0.0],
             "billboard_available": [False, True],
+            "major_holder_net_change_free_ratio": [0.50, 0.10],
+            "major_holder_age_days": [4.0, 0.0],
+            "major_holder_available": [False, True],
         }
     )
     ranked = RESEARCH.rank_factor_frame(frame)
@@ -346,8 +408,10 @@ def test_rank_factor_frame_excludes_expired_event_values():
     active = ranked.loc[ranked["instrument"] == "SZ000002"].iloc[0]
     assert pd.isna(expired["rank_forecast_profit_yoy"])
     assert pd.isna(expired["rank_billboard_net_flow_to_deal"])
+    assert pd.isna(expired["rank_major_holder_net_change_free_ratio"])
     assert active["rank_forecast_profit_yoy"] == pytest.approx(1.0)
     assert active["rank_billboard_net_flow_to_deal"] == pytest.approx(1.0)
+    assert active["rank_major_holder_net_change_free_ratio"] == pytest.approx(1.0)
 
 
 def test_winner_uses_development_only():

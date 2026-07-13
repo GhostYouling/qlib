@@ -168,6 +168,21 @@ python scripts/a_share_short_horizon_factor_research.py billboard-holdout \
 
 该命令只在“质量合格且三日内出现龙虎榜事件”的股票中比较 Top‑3 与末 3，结果不是每日全市场策略，更不会写入策略注册表、生成名单或允许晋级。即便留出期方向一致，也只能据此预登记下一阶段的完整事件策略，并使用新的未来日期做纸面观察。
 
+还可把**重要股东增减持公告**作为与量价独立的事件源。该数据的交易结束日可能早于公告日很多天，不能拿来反填信号；脚本只请求公告日、增/减持方向和变动占流通股比例，并严格从公告后的下一本地交易日才生效。它分别诊断净变动比例、增持比例、减持比例、同日事件数与新鲜度，窗口固定为 3 个日历日：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-major-holder-events \
+  --start-year 2019 --end-year 2026
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --major-holder-events data/raw/a_share/events/major_holder_changes.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --max-major-holder-age-days 3
+```
+
+该事件是对已发生交易的公开报告而非实时资金流；公共快照还可能修订或遗漏。因此，无论诊断结果如何，都不能把持股变动的历史交易日期、当前价格或交易均价加入评分；只有公告后留出期也支持的、预注册的完整策略才可能进入纸面观察。
+
 季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash

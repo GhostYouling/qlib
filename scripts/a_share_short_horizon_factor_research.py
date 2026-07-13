@@ -50,6 +50,8 @@ DEFAULT_PERFORMANCE_FORECASTS = DATA_ROOT / "raw" / "a_share" / "fundamentals" /
 DEFAULT_PERFORMANCE_FORECAST_MANIFEST = DATA_ROOT / "metadata" / "performance_forecasts_manifest.json"
 DEFAULT_BILLBOARD_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "daily_billboard.parquet"
 DEFAULT_BILLBOARD_EVENT_MANIFEST = DATA_ROOT / "metadata" / "daily_billboard_manifest.json"
+DEFAULT_MAJOR_HOLDER_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "major_holder_changes.parquet"
+DEFAULT_MAJOR_HOLDER_EVENT_MANIFEST = DATA_ROOT / "metadata" / "major_holder_changes_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
@@ -63,6 +65,7 @@ EASTMONEY_DATACENTER_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get
 EASTMONEY_REPORT = "RPT_LICO_FN_CPD"
 EASTMONEY_PERFORMANCE_FORECAST_REPORT = "RPT_PUBLIC_OP_NEWPREDICT"
 EASTMONEY_BILLBOARD_REPORT = "RPT_DAILYBILLBOARD_DETAILSNEW"
+EASTMONEY_MAJOR_HOLDER_REPORT = "RPT_SHARE_HOLDER_INCREASE"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -101,6 +104,21 @@ BILLBOARD_FACTOR_DIAGNOSTIC_COLUMNS = (
     "billboard_deal_to_float",
     "billboard_reason_count",
     "billboard_freshness",
+)
+MAJOR_HOLDER_EVENT_COLUMNS = (
+    "instrument",
+    "announcement_date",
+    "major_holder_net_change_free_ratio",
+    "major_holder_increase_free_ratio",
+    "major_holder_decrease_free_ratio",
+    "major_holder_event_count",
+)
+MAJOR_HOLDER_FACTOR_DIAGNOSTIC_COLUMNS = (
+    "major_holder_net_change_free_ratio",
+    "major_holder_increase_free_ratio",
+    "major_holder_decrease_free_ratio",
+    "major_holder_event_count",
+    "major_holder_freshness",
 )
 # This direction is deliberately not part of the development diagnostic
 # catalog.  It was formed after reading the completed 2019--2025 diagnostic,
@@ -1486,6 +1504,43 @@ def _eastmoney_billboard_request(
     raise RuntimeError(f"cannot fetch daily billboard {start_date} to {end_date} page {page_number}: {errors[-1]}")
 
 
+def _eastmoney_major_holder_request(
+    session: requests.Session, start_date: str, end_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one page of dated major-holder change notices.
+
+    The source's ``END_DATE``/``TRADE_DATE`` describes when a change occurred,
+    which may be long before it became public.  This request obtains only the
+    filing date plus disclosed direction and free-float ratio, so research can
+    use the strictly later local session rather than an unavailable trade date.
+    """
+
+    params = {
+        "reportName": EASTMONEY_MAJOR_HOLDER_REPORT,
+        "columns": "SECURITY_CODE,NOTICE_DATE,DIRECTION,CHANGE_FREE_RATIO",
+        "filter": f"(NOTICE_DATE>='{start_date}')(NOTICE_DATE<='{end_date}')",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "1,1",
+        "sortColumns": "NOTICE_DATE,SECURITY_CODE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(4):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(f"cannot fetch major-holder notices {start_date} to {end_date} page {page_number}: {errors[-1]}")
+
+
 def fetch_annual_report_rows(session: requests.Session, report_date: str) -> list[dict[str, Any]]:
     """Fetch all pages for one annual report period from the public endpoint."""
 
@@ -1527,6 +1582,21 @@ def fetch_billboard_rows(session: requests.Session, start_date: str, end_date: s
     rows = list(result.get("data") or [])
     for page_number in range(2, pages + 1):
         payload = _eastmoney_billboard_request(session, start_date, end_date, page_number=page_number)
+        rows.extend((payload.get("result") or {}).get("data") or [])
+    return rows
+
+
+def fetch_major_holder_rows(session: requests.Session, start_date: str, end_date: str) -> list[dict[str, Any]]:
+    """Fetch every major-holder change-notice page in one inclusive date range."""
+
+    first = _eastmoney_major_holder_request(session, start_date, end_date, page_number=1)
+    result = first["result"]
+    pages = int(result.get("pages") or 0)
+    if pages < 1:
+        return []
+    rows = list(result.get("data") or [])
+    for page_number in range(2, pages + 1):
+        payload = _eastmoney_major_holder_request(session, start_date, end_date, page_number=page_number)
         rows.extend((payload.get("result") or {}).get("data") or [])
     return rows
 
@@ -1648,6 +1718,52 @@ def normalize_billboard_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
         aggregated["billboard_reason_count"], errors="coerce"
     ).astype(float)
     return aggregated.sort_values(["instrument", "trade_date"], kind="stable").reset_index(drop=True)
+
+
+def normalize_major_holder_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Aggregate major-holder changes by the date they were publicly noticed.
+
+    ``CHANGE_FREE_RATIO`` is a disclosed percentage of freely tradable shares.
+    It is treated as a magnitude and signed only by the provider's explicit
+    ``DIRECTION`` label, not by the historical transaction date or the source
+    price.  This deliberately leaves all current quotes, execution prices,
+    and unannounced transaction dates out of the event snapshot.
+    """
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=MAJOR_HOLDER_EVENT_COLUMNS)
+    direction = raw.get("DIRECTION", pd.Series(index=raw.index, dtype="object")).astype("string")
+    ratio = pd.to_numeric(
+        raw.get("CHANGE_FREE_RATIO", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+    ).abs()
+    increase = ratio.where(direction.eq("增持"), 0.0)
+    decrease = ratio.where(direction.eq("减持"), 0.0)
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("SECURITY_CODE", pd.Series(dtype="object")).map(qlib_symbol),
+            "announcement_date": pd.to_datetime(raw.get("NOTICE_DATE"), errors="coerce"),
+            "major_holder_increase_free_ratio": increase,
+            "major_holder_decrease_free_ratio": decrease,
+        }
+    )
+    frame = frame.dropna(subset=["instrument", "announcement_date"])
+    frame["major_holder_net_change_free_ratio"] = (
+        frame["major_holder_increase_free_ratio"] - frame["major_holder_decrease_free_ratio"]
+    )
+    aggregated = (
+        frame.groupby(["instrument", "announcement_date"], as_index=False, sort=True)
+        .agg(
+            major_holder_net_change_free_ratio=("major_holder_net_change_free_ratio", "sum"),
+            major_holder_increase_free_ratio=("major_holder_increase_free_ratio", "sum"),
+            major_holder_decrease_free_ratio=("major_holder_decrease_free_ratio", "sum"),
+            major_holder_event_count=("instrument", "size"),
+        )
+        .loc[:, list(MAJOR_HOLDER_EVENT_COLUMNS)]
+    )
+    for column in MAJOR_HOLDER_EVENT_COLUMNS[2:]:
+        aggregated[column] = pd.to_numeric(aggregated[column], errors="coerce")
+    return aggregated.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
 
 
 def _eastmoney_session() -> requests.Session:
@@ -1852,6 +1968,54 @@ def sync_billboard_events(start_year: int, end_year: int, output: Path, manifest
     return result
 
 
+def sync_major_holder_events(start_year: int, end_year: int, output: Path, manifest: Path) -> dict[str, Any]:
+    """Download public major-holder change notices as an auditable event snapshot."""
+
+    if end_year < start_year:
+        raise ValueError("--end-year must not be earlier than --start-year")
+    session = _eastmoney_session()
+    frames: list[pd.DataFrame] = []
+    counts: dict[str, int] = {}
+    for year in range(start_year, end_year + 1):
+        start_date = f"{year}-01-01"
+        end_date = f"{year}-12-31"
+        rows = fetch_major_holder_rows(session, start_date, end_date)
+        normalized = normalize_major_holder_rows(rows)
+        frames.append(normalized)
+        counts[str(year)] = len(normalized)
+        print(f"{year}: {len(normalized)} normalized major-holder notice events")
+    merged = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=MAJOR_HOLDER_EVENT_COLUMNS)
+    merged = merged.sort_values(["instrument", "announcement_date"], kind="stable")
+    merged = merged.drop_duplicates(["instrument", "announcement_date"], keep="last").reset_index(drop=True)
+    if merged.empty:
+        raise RuntimeError("major-holder event sync produced no usable events")
+    _atomic_write_parquet(output, merged)
+    result = {
+        "status": "completed",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_MAJOR_HOLDER_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+        "event_frequency": "dated_major_holder_change_notice",
+        "years": list(range(start_year, end_year + 1)),
+        "rows_by_year": counts,
+        "rows_written": len(merged),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "The public source is queried as it exists today and may revise or omit historical change notices.",
+            "END_DATE and TRADE_DATE are transaction-period fields and are deliberately neither stored nor used for signal timing.",
+            "The join waits until the local trading day after NOTICE_DATE because the public source does not provide a reliable intraday filing timestamp.",
+            "The event is a report of holder transactions that can have occurred over a prior period; it is not a real-time order-flow signal.",
+            "This is a research event snapshot, not an exchange-grade point-in-time announcement database.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
 def merge_quarterly_fundamentals(input_paths: Iterable[Path], output: Path, manifest: Path) -> dict[str, Any]:
     """Atomically combine independently downloaded quarterly snapshot chunks.
 
@@ -1954,6 +2118,23 @@ def load_billboard_events(path: Path) -> pd.DataFrame:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     frame = frame.dropna(subset=["instrument", "trade_date"])
     return frame.sort_values(["instrument", "trade_date"], kind="stable").reset_index(drop=True)
+
+
+def load_major_holder_events(path: Path) -> pd.DataFrame:
+    """Load and validate the local major-holder notice event snapshot."""
+
+    if not path.exists():
+        raise FileNotFoundError(f"major-holder event snapshot does not exist: {path}; run sync-major-holder-events first")
+    frame = pd.read_parquet(path)
+    missing = sorted(set(MAJOR_HOLDER_EVENT_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(f"major-holder event snapshot is missing columns: {', '.join(missing)}")
+    frame = frame.loc[:, list(MAJOR_HOLDER_EVENT_COLUMNS)].copy()
+    frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
+    for column in MAJOR_HOLDER_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame = frame.dropna(subset=["instrument", "announcement_date"])
+    return frame.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
 
 
 def _first_trading_day_after(calendar: pd.DatetimeIndex, announced: pd.Series) -> pd.Series:
@@ -2196,6 +2377,74 @@ def attach_billboard_events_asof(
     return result
 
 
+def attach_major_holder_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach major-holder notices only after the following local session.
+
+    The provider exposes historical transaction dates, but those are not used:
+    a public notice can summarize activity that occurred days or months earlier.
+    It becomes available only after its ``announcement_date``, conservatively
+    on the next local trading day, and remains a short bounded-age event.
+    """
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    required_market = {"instrument", "datetime"}
+    if missing := sorted(required_market - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(MAJOR_HOLDER_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError(f"major-holder events are missing columns: {', '.join(missing)}")
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source_events = events.loc[:, list(MAJOR_HOLDER_EVENT_COLUMNS)].copy()
+    source_events["major_holder_effective_date"] = _first_trading_day_after(
+        calendar, source_events["announcement_date"]
+    )
+    source_events = source_events.dropna(subset=["major_holder_effective_date"])
+    source_events = source_events.sort_values(
+        ["instrument", "major_holder_effective_date", "announcement_date"], kind="stable"
+    ).drop_duplicates(["instrument", "major_holder_effective_date"], keep="last")
+
+    holder_columns = [
+        "major_holder_announcement_date",
+        "major_holder_net_change_free_ratio",
+        "major_holder_increase_free_ratio",
+        "major_holder_decrease_free_ratio",
+        "major_holder_event_count",
+        "major_holder_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"] = 1
+    daily["_row"] = np.arange(len(daily))
+    for column in ("major_holder_announcement_date", "major_holder_effective_date"):
+        daily[column] = pd.NaT
+    for column in holder_columns[1:-1]:
+        daily[column] = np.nan
+    event_rows = source_events.rename(
+        columns={
+            "major_holder_effective_date": "datetime",
+            "announcement_date": "major_holder_announcement_date",
+        }
+    )[["instrument", "datetime", *[column for column in holder_columns if column != "major_holder_effective_date"]]].copy()
+    event_rows["major_holder_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"] = 0
+    event_rows["_row"] = np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False)
+    combined = combined.sort_values(["instrument", "datetime", "_kind"], kind="stable")
+    combined[holder_columns] = combined.groupby("instrument", sort=False)[holder_columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *holder_columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["major_holder_age_days"] = (
+        pd.to_datetime(result["datetime"]) - pd.to_datetime(result["major_holder_effective_date"])
+    ).dt.days
+    result["major_holder_available"] = result["major_holder_announcement_date"].notna() & result[
+        "major_holder_age_days"
+    ].between(0, max_age_days)
+    return result
+
+
 def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size: int) -> pd.DataFrame:
     """Load the local buyable universe and precompute only non-forward factors."""
 
@@ -2358,6 +2607,18 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         if column in result.columns
     ]
     raw_columns.extend(billboard_raw_columns)
+    major_holder_raw_columns = [
+        column
+        for column in (
+            "major_holder_net_change_free_ratio",
+            "major_holder_increase_free_ratio",
+            "major_holder_decrease_free_ratio",
+            "major_holder_event_count",
+            "major_holder_age_days",
+        )
+        if column in result.columns
+    ]
+    raw_columns.extend(major_holder_raw_columns)
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     # Event rows are forward-filled only so each row retains the event context
@@ -2367,6 +2628,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     for available_column, event_columns in (
         ("forecast_available", forecast_raw_columns),
         ("billboard_available", billboard_raw_columns),
+        ("major_holder_available", major_holder_raw_columns),
     ):
         if available_column in result.columns:
             result.loc[~result[available_column].fillna(False), event_columns] = np.nan
@@ -2419,6 +2681,17 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
             result[column] = result[rank_column]
     if "rank_billboard_age_days" in result.columns:
         result["billboard_freshness"] = 1.0 - result["rank_billboard_age_days"]
+    for column in (
+        "major_holder_net_change_free_ratio",
+        "major_holder_increase_free_ratio",
+        "major_holder_decrease_free_ratio",
+        "major_holder_event_count",
+    ):
+        rank_column = f"rank_{column}"
+        if rank_column in result.columns:
+            result[column] = result[rank_column]
+    if "rank_major_holder_age_days" in result.columns:
+        result["major_holder_freshness"] = 1.0 - result["rank_major_holder_age_days"]
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_3"] = result["rank_momentum_3"]
@@ -4215,6 +4488,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         quality_gate = diagnostic.get("quality_gate") or {}
         forecast_events = diagnostic.get("performance_forecast_events") or {}
         billboard_events = diagnostic.get("daily_billboard_events") or {}
+        major_holder_events = diagnostic.get("major_holder_events") or {}
         top = ranking[0] if ranking else {}
         diagnostics.append(
             {
@@ -4224,6 +4498,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "fundamental_source": str(quality_gate.get("source", "—")),
                 "performance_forecast_source": str(forecast_events.get("source", "—")),
                 "billboard_event_source": str(billboard_events.get("source", "—")),
+                "major_holder_event_source": str(major_holder_events.get("source", "—")),
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
@@ -4734,6 +5009,7 @@ def render_three_day_research_report(
                             diagnostic["fundamental_source"],
                             diagnostic["performance_forecast_source"],
                             diagnostic["billboard_event_source"],
+                            diagnostic["major_holder_event_source"],
                         )
                         if source != "—"
                     )
@@ -5400,6 +5676,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     fundamental_path = Path(args.fundamentals).expanduser()
     forecast_path = Path(args.performance_forecasts).expanduser() if args.performance_forecasts else None
     billboard_path = Path(args.billboard_events).expanduser() if args.billboard_events else None
+    major_holder_path = Path(args.major_holder_events).expanduser() if args.major_holder_events else None
     experiment_root = Path(args.experiment_root).expanduser()
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -5419,6 +5696,11 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         market = attach_billboard_events_asof(
             market, billboard_events, max_age_days=args.max_billboard_age_days
         )
+    if major_holder_path is not None:
+        major_holder_events = load_major_holder_events(major_holder_path)
+        market = attach_major_holder_events_asof(
+            market, major_holder_events, max_age_days=args.max_major_holder_age_days
+        )
     ranked = rank_factor_frame(market)
     forward_returns = forward_factor_return_frame(ranked, args.hold_days)
     factor_catalog = [
@@ -5427,6 +5709,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *FACTOR_DIAGNOSTIC_COLUMNS,
             *FORECAST_FACTOR_DIAGNOSTIC_COLUMNS,
             *BILLBOARD_FACTOR_DIAGNOSTIC_COLUMNS,
+            *MAJOR_HOLDER_FACTOR_DIAGNOSTIC_COLUMNS,
         )
         if factor in ranked.columns
     ]
@@ -5490,6 +5773,21 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "future_return_fields_stored": False,
             }
             if billboard_path is not None
+            else None
+        ),
+        "major_holder_events": (
+            {
+                "source": str(major_holder_path.resolve()),
+                "sha256": file_sha256(major_holder_path),
+                "effective_date": "strictly next local trading day after announcement_date",
+                "max_major_holder_age_days": args.max_major_holder_age_days,
+                "available_rows": int(market["major_holder_available"].sum()),
+                "eligible_available_rows": int(
+                    (market["quality_eligible"].fillna(False) & market["major_holder_available"].fillna(False)).sum()
+                ),
+                "transaction_dates_stored": False,
+            }
+            if major_holder_path is not None
             else None
         ),
         "data": {
@@ -6888,6 +7186,15 @@ def parse_args() -> argparse.Namespace:
     sync_billboard.add_argument("--output", default=str(DEFAULT_BILLBOARD_EVENTS))
     sync_billboard.add_argument("--manifest", default=str(DEFAULT_BILLBOARD_EVENT_MANIFEST))
 
+    sync_major_holder = subparsers.add_parser(
+        "sync-major-holder-events",
+        help="download public major-holder increase/decrease notices for short-horizon event research",
+    )
+    sync_major_holder.add_argument("--start-year", type=int, default=2019)
+    sync_major_holder.add_argument("--end-year", type=int, default=2026)
+    sync_major_holder.add_argument("--output", default=str(DEFAULT_MAJOR_HOLDER_EVENTS))
+    sync_major_holder.add_argument("--manifest", default=str(DEFAULT_MAJOR_HOLDER_EVENT_MANIFEST))
+
     run = subparsers.add_parser("run", help="run the predeclared short-horizon factor sweep")
     run.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     run.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -6925,6 +7232,10 @@ def parse_args() -> argparse.Namespace:
         "--billboard-events",
         help="optional daily-billboard event snapshot; adds same-close event factors to the development-only diagnostic",
     )
+    factor_diagnostic.add_argument(
+        "--major-holder-events",
+        help="optional dated major-holder change notices; adds next-session event factors to the development-only diagnostic",
+    )
     factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     factor_diagnostic.add_argument("--start", default="2019-01-01")
     factor_diagnostic.add_argument("--end", default="2025-12-31")
@@ -6945,6 +7256,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="maximum calendar age for a daily billboard event; default matches the three-day holding horizon",
+    )
+    factor_diagnostic.add_argument(
+        "--max-major-holder-age-days",
+        type=int,
+        default=3,
+        help="maximum calendar age for a major-holder notice; default matches the three-day holding horizon",
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
@@ -7310,6 +7627,13 @@ def main() -> int:
         )
     elif args.command == "sync-billboard-events":
         report = sync_billboard_events(
+            args.start_year,
+            args.end_year,
+            Path(args.output),
+            Path(args.manifest),
+        )
+    elif args.command == "sync-major-holder-events":
+        report = sync_major_holder_events(
             args.start_year,
             args.end_year,
             Path(args.output),
