@@ -904,6 +904,46 @@ def test_shadow_observation_refuses_an_iteration_with_a_historical_test_window(t
         RESEARCH.research_observation_iteration(registry_path, "historical-diagnostic")
 
 
+def test_shadow_suspension_preserves_registration_and_monitor_skips_it(tmp_path, monkeypatch):
+    plan_path = tmp_path / "shadow_observations.json"
+    plan_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "observations": [
+                    {"iteration_id": "pending-review", "candidate": "candidate", "not_before": "2026-07-14"}
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    suspension_path = tmp_path / "suspensions.json"
+    suspended = RESEARCH.append_shadow_suspension(
+        suspension_path, iteration_id="pending-review", reason="metric correction review"
+    )
+    assert suspended["suspensions"][0]["iteration_id"] == "pending-review"
+    with pytest.raises(ValueError, match="already suspended"):
+        RESEARCH.append_shadow_suspension(
+            suspension_path, iteration_id="pending-review", reason="duplicate"
+        )
+    monkeypatch.setattr(RESEARCH, "run_paper_monitor", lambda *_: pytest.fail("suspended observation was monitored"))
+    result = RESEARCH.run_shadow_monitor(
+        SimpleNamespace(
+            shadow_registry_path=str(plan_path),
+            shadow_suspension_registry_path=str(suspension_path),
+            shadow_ledger_path=str(tmp_path / "shadow_ledger.json"),
+        )
+    )
+    assert result["observations"] == [
+        {
+            "status": "suspended",
+            "iteration_id": "pending-review",
+            "candidate": "candidate",
+            "reason": "metric correction review",
+        }
+    ]
+
+
 def test_research_report_renders_registry_and_only_counts_settled_paper_returns():
     registry = {
         "iterations": [
@@ -1213,6 +1253,18 @@ def test_return_metrics_include_cost_adjusted_cumulative_return():
     assert metrics["rounds"] == 2
     assert round(metrics["net_cumulative_return"], 6) == round(1.10 * 0.95 - 1.0, 6)
     assert metrics["max_drawdown"] < 0
+
+
+def test_return_metrics_counts_a_first_cohort_loss_as_drawdown():
+    rounds = pd.DataFrame(
+        {
+            "net_return": [-0.10, 0.05],
+            "gross_return": [-0.09, 0.06],
+            "holdings": [3, 3],
+        }
+    )
+    metrics = RESEARCH.return_metrics(rounds, hold_days=3)
+    assert metrics["max_drawdown"] == pytest.approx(-0.10)
 
 
 def test_a_share_fee_rules_apply_user_commission_and_sell_stamp_duty():

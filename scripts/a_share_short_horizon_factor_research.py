@@ -48,6 +48,7 @@ DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
 DEFAULT_SHADOW_OBSERVATION_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "shadow_observation_registry.json"
+DEFAULT_SHADOW_SUSPENSION_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "shadow_observation_suspensions.json"
 DEFAULT_SHADOW_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_shadow_paper_ledger.json"
 DEFAULT_RESEARCH_REPORT = DEFAULT_EXPERIMENT_ROOT / "three_day_research_report.md"
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
@@ -2435,7 +2436,11 @@ def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | in
     net = rounds["net_return"].astype(float)
     gross = rounds["gross_return"].astype(float)
     equity = (1.0 + net).cumprod()
-    drawdown = equity / equity.cummax() - 1.0
+    # Include the starting capital in the high-water mark.  Without this,
+    # a loss in the first evaluated cohort would incorrectly report zero
+    # drawdown because the first post-trade equity value became its own peak.
+    equity_with_initial = pd.concat([pd.Series([1.0]), equity.reset_index(drop=True)], ignore_index=True)
+    drawdown = equity_with_initial / equity_with_initial.cummax() - 1.0
     periods_per_year = 252.0 / hold_days
     traded = rounds["holdings"].fillna(0).gt(0) if "holdings" in rounds else net.ne(0.0)
     regime_active = rounds["regime_active"].fillna(False).astype(bool) if "regime_active" in rounds else traded
@@ -3009,6 +3014,40 @@ def append_shadow_observation(
     return registry
 
 
+def load_shadow_suspension_registry(path: Path) -> dict[str, Any]:
+    """Load append-only suspensions for forward shadow observations."""
+
+    path = path.expanduser()
+    if not path.exists():
+        return {"schema_version": 1, "suspensions": []}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != 1 or not isinstance(payload.get("suspensions"), list):
+        raise ValueError("shadow suspension registry has an unsupported schema")
+    return payload
+
+
+def append_shadow_suspension(path: Path, *, iteration_id: str, reason: str) -> dict[str, Any]:
+    """Append a suspension without rewriting the original forward registration."""
+
+    cleaned_reason = str(reason).strip()
+    if not cleaned_reason:
+        raise ValueError("shadow suspension reason must not be blank")
+    registry = load_shadow_suspension_registry(path)
+    known = {str(item.get("iteration_id")) for item in registry["suspensions"]}
+    if str(iteration_id) in known:
+        raise ValueError(f"shadow observation {iteration_id} is already suspended")
+    registry["suspensions"].append(
+        {
+            "iteration_id": str(iteration_id),
+            "reason": cleaned_reason,
+            "suspended_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "rule": "Suspension preserves the original registration and prevents new shadow signals until a corrected re-evaluation is registered.",
+        }
+    )
+    _atomic_write_text(path, json.dumps(registry, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return registry
+
+
 def local_trading_calendar(provider_uri: Path, end: str | None = None) -> pd.DatetimeIndex:
     """Read the local Qlib trading calendar without querying a network source."""
 
@@ -3209,11 +3248,36 @@ def register_shadow_observation(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def suspend_shadow_observation(args: argparse.Namespace) -> dict[str, Any]:
+    """Suspend a registered forward observation pending a documented review."""
+
+    iteration = research_observation_iteration(Path(args.registry_path), args.iteration_id)
+    observations = load_shadow_observation_registry(Path(args.shadow_registry_path))
+    registered = {str(item.get("iteration_id")) for item in observations["observations"]}
+    if str(iteration["iteration_id"]) not in registered:
+        raise ValueError("shadow suspension requires an existing forward observation registration")
+    path = Path(args.shadow_suspension_registry_path)
+    registry = append_shadow_suspension(path, iteration_id=str(iteration["iteration_id"]), reason=args.reason)
+    return {
+        "status": "suspended",
+        "iteration_id": str(iteration["iteration_id"]),
+        "candidate": iteration["selection"]["winner"],
+        "reason": registry["suspensions"][-1]["reason"],
+        "shadow_suspension_registry_path": str(path.expanduser().resolve()),
+        "recording_rule": "The original forward registration is preserved, but shadow-monitor will not create new signals for this iteration.",
+    }
+
+
 def run_shadow_monitor(args: argparse.Namespace) -> dict[str, Any]:
     """Collect forward paper evidence for every explicitly registered research candidate."""
 
     plan_path = Path(args.shadow_registry_path)
     plan = load_shadow_observation_registry(plan_path)
+    suspension_path = Path(
+        getattr(args, "shadow_suspension_registry_path", DEFAULT_SHADOW_SUSPENSION_REGISTRY)
+    )
+    suspension_registry = load_shadow_suspension_registry(suspension_path)
+    suspensions = {str(item.get("iteration_id")): item for item in suspension_registry["suspensions"]}
     if not plan["observations"]:
         return {
             "status": "completed",
@@ -3223,8 +3287,19 @@ def run_shadow_monitor(args: argparse.Namespace) -> dict[str, Any]:
         }
     reports: list[dict[str, Any]] = []
     for observation in plan["observations"]:
+        iteration_id = str(observation["iteration_id"])
+        if iteration_id in suspensions:
+            reports.append(
+                {
+                    "status": "suspended",
+                    "iteration_id": iteration_id,
+                    "candidate": observation.get("candidate"),
+                    "reason": suspensions[iteration_id].get("reason"),
+                }
+            )
+            continue
         monitor_args = argparse.Namespace(**vars(args))
-        monitor_args.iteration_id = str(observation["iteration_id"])
+        monitor_args.iteration_id = iteration_id
         monitor_args.ledger_path = args.shadow_ledger_path
         monitor_args.allow_research_only = True
         monitor_args.not_before = str(observation["not_before"])
@@ -3234,6 +3309,7 @@ def run_shadow_monitor(args: argparse.Namespace) -> dict[str, Any]:
         "observation_count": len(reports),
         "observations": reports,
         "shadow_registry_path": str(plan_path.expanduser().resolve()),
+        "shadow_suspension_registry_path": str(suspension_path.expanduser().resolve()),
         "shadow_ledger_path": str(Path(args.shadow_ledger_path).expanduser().resolve()),
         "recording_rule": "Separate forward paper evidence for research-only candidates; never an execution recommendation.",
     }
@@ -3675,6 +3751,7 @@ def render_three_day_research_report(
     cohort_risk_audits: list[dict[str, Any]] | None = None,
     risk_gate_audits: list[dict[str, Any]] | None = None,
     candidate_overlap_audits: list[dict[str, Any]] | None = None,
+    shadow_suspension_registry: dict[str, Any] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -4075,6 +4152,27 @@ def render_three_day_research_report(
                     )
                 )
             lines.append("")
+        suspensions = list((shadow_suspension_registry or {}).get("suspensions") or [])
+        if suspensions:
+            lines.extend(
+                [
+                    "### 已暂停的前瞻观察",
+                    "",
+                    "暂停不会删除原始登记或历史记录；在明确重新评估并新登记前，监控器不会为这些轮次创建新信号。",
+                    "",
+                    "| 轮次 | 原因 | 暂停时间 |",
+                    "| --- | --- | --- |",
+                ]
+            )
+            for suspension in suspensions:
+                lines.append(
+                    "| {iteration_id} | {reason} | {suspended_at} |".format(
+                        iteration_id=suspension.get("iteration_id", "—"),
+                        reason=suspension.get("reason", "—"),
+                        suspended_at=suspension.get("suspended_at", "—"),
+                    )
+                )
+            lines.append("")
     lines.extend(
         [
             "## 下一步规则",
@@ -4099,6 +4197,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     shadow_ledger = load_paper_ledger(shadow_ledger_path)
     shadow_observation_registry_path = Path(args.shadow_observation_registry_path).expanduser()
     shadow_observation_registry = load_shadow_observation_registry(shadow_observation_registry_path)
+    shadow_suspension_registry_path = Path(args.shadow_suspension_registry_path).expanduser()
+    shadow_suspension_registry = load_shadow_suspension_registry(shadow_suspension_registry_path)
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
@@ -4127,6 +4227,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         cohort_risk_audits,
         risk_gate_audits,
         candidate_overlap_audits,
+        shadow_suspension_registry,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -4136,12 +4237,14 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "ledger_path": str(ledger_path.resolve()),
         "shadow_ledger_path": str(shadow_ledger_path.resolve()),
         "shadow_observation_registry_path": str(shadow_observation_registry_path.resolve()),
+        "shadow_suspension_registry_path": str(shadow_suspension_registry_path.resolve()),
         "report_path": str(output.resolve()),
         "iterations": len(registry.get("iterations") or []),
         "signals": len(ledger["signals"]),
         "settlements": len(ledger["settlements"]),
         "shadow_signals": len(shadow_ledger["signals"]),
         "shadow_settlements": len(shadow_ledger["settlements"]),
+        "shadow_suspensions": len(shadow_suspension_registry["suspensions"]),
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
         "candidate_overlap_audits": len(candidate_overlap_audits),
@@ -5767,6 +5870,15 @@ def parse_args() -> argparse.Namespace:
         help="first genuinely unseen signal-close date, in YYYY-MM-DD form",
     )
 
+    shadow_suspend = subparsers.add_parser(
+        "shadow-suspend", help="suspend a registered forward observation without deleting its audit trail"
+    )
+    shadow_suspend.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
+    shadow_suspend.add_argument("--shadow-registry-path", default=str(DEFAULT_SHADOW_OBSERVATION_REGISTRY))
+    shadow_suspend.add_argument("--shadow-suspension-registry-path", default=str(DEFAULT_SHADOW_SUSPENSION_REGISTRY))
+    shadow_suspend.add_argument("--iteration-id", required=True)
+    shadow_suspend.add_argument("--reason", required=True)
+
     shadow_monitor = subparsers.add_parser(
         "shadow-monitor", help="record and settle registered development-only candidates in a separate paper ledger"
     )
@@ -5775,6 +5887,7 @@ def parse_args() -> argparse.Namespace:
     shadow_monitor.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     shadow_monitor.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
     shadow_monitor.add_argument("--shadow-registry-path", default=str(DEFAULT_SHADOW_OBSERVATION_REGISTRY))
+    shadow_monitor.add_argument("--shadow-suspension-registry-path", default=str(DEFAULT_SHADOW_SUSPENSION_REGISTRY))
     shadow_monitor.add_argument("--shadow-ledger-path", default=str(DEFAULT_SHADOW_PAPER_LEDGER))
     shadow_monitor.add_argument("--as-of", help="local provider date by default")
     shadow_monitor.add_argument("--lookback-calendar-days", type=int, default=100)
@@ -5787,6 +5900,7 @@ def parse_args() -> argparse.Namespace:
     report.add_argument("--ledger-path", default=str(DEFAULT_PAPER_LEDGER))
     report.add_argument("--shadow-ledger-path", default=str(DEFAULT_SHADOW_PAPER_LEDGER))
     report.add_argument("--shadow-observation-registry-path", default=str(DEFAULT_SHADOW_OBSERVATION_REGISTRY))
+    report.add_argument("--shadow-suspension-registry-path", default=str(DEFAULT_SHADOW_SUSPENSION_REGISTRY))
     report.add_argument("--output", default=str(DEFAULT_RESEARCH_REPORT))
     return parser.parse_args()
 
@@ -5821,6 +5935,8 @@ def main() -> int:
         report = run_paper_monitor(args)
     elif args.command == "shadow-register":
         report = register_shadow_observation(args)
+    elif args.command == "shadow-suspend":
+        report = suspend_shadow_observation(args)
     elif args.command == "shadow-monitor":
         report = run_shadow_monitor(args)
     elif args.command == "report":
