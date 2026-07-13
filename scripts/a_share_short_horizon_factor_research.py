@@ -659,6 +659,7 @@ DEFAULT_BASKET_CORRELATION_LOOKBACK = 20
 CORRELATION_DIAGNOSTIC_THRESHOLDS = (0.50, 0.70, 0.80, 0.90)
 DEFAULT_MAX_PAIRWISE_CORRELATION_CAPS = (0.50, 0.60, 0.70)
 DEFAULT_DIVERSIFICATION_CANDIDATE_POOL = 30
+RISK_GATE_LEVELS = (None, 0.20, 0.40)
 
 
 def candidate_library_fingerprint(candidates: tuple[Candidate, ...] = CANDIDATES) -> str:
@@ -1376,6 +1377,8 @@ def evaluate_candidate(
     max_pairwise_correlation: float | None = None,
     correlation_lookback: int = DEFAULT_BASKET_CORRELATION_LOOKBACK,
     diversification_candidate_pool: int = DEFAULT_DIVERSIFICATION_CANDIDATE_POOL,
+    min_volatility_low_20: float | None = None,
+    min_amplitude_low: float | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Run non-overlapping cohorts from close signal to next-open entry.
 
@@ -1405,7 +1408,13 @@ def evaluate_candidate(
     )
     cohort_index = cohort_index.loc[cohort_index["available_holdings"] >= minimum_holdings].copy()
 
-    pool = apply_regime_filter(base_pool, regime_filter)
+    risk_gate_configured = min_volatility_low_20 is not None or min_amplitude_low is not None
+    if max_pairwise_correlation is not None and risk_gate_configured:
+        raise ValueError("correlation diversification and selection risk gates must be audited as separate hypotheses")
+    regime_pool = apply_regime_filter(base_pool, regime_filter)
+    pool = regime_pool
+    if risk_gate_configured:
+        pool = apply_selection_risk_gates(pool, min_volatility_low_20, min_amplitude_low)
     diversification_status: pd.DataFrame | None = None
     if max_pairwise_correlation is None:
         selected = pool.groupby("datetime", sort=False).head(topk).copy()
@@ -1446,7 +1455,7 @@ def evaluate_candidate(
         .rename(columns={"datetime": "signal_date"})
     )
     rounds = cohort_index.merge(traded_rounds, on=["signal_date", "entry_date", "exit_date"], how="left")
-    active_dates = set(pool["datetime"].unique())
+    active_dates = set(regime_pool["datetime"].unique())
     rounds["regime_active"] = rounds["signal_date"].isin(active_dates)
     if diversification_status is not None:
         formed_dates = set(
@@ -1457,9 +1466,21 @@ def evaluate_candidate(
         rounds["gross_return"] = rounds["gross_return"].fillna(0.0)
         rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
         rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
+        rounds["risk_gate_basket_formed"] = True
+    elif risk_gate_configured:
+        rounds["risk_gate_basket_formed"] = rounds["holdings"].ge(minimum_holdings)
+        rounds["net_return"] = rounds["net_return"].fillna(0.0)
+        rounds["gross_return"] = rounds["gross_return"].fillna(0.0)
+        rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
+        rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
+        incomplete = ~rounds["risk_gate_basket_formed"]
+        rounds.loc[incomplete, ["net_return", "gross_return"]] = 0.0
+        rounds.loc[incomplete, ["holdings", "early_exit_holdings"]] = 0
+        rounds["diversification_basket_formed"] = True
     elif regime_filter == "always":
         rounds = rounds.loc[rounds["holdings"].ge(minimum_holdings)].copy()
         rounds["diversification_basket_formed"] = True
+        rounds["risk_gate_basket_formed"] = True
     else:
         active_but_untradable = rounds["regime_active"] & ~rounds["holdings"].ge(minimum_holdings)
         rounds = rounds.loc[~active_but_untradable].copy()
@@ -1468,6 +1489,7 @@ def evaluate_candidate(
         rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
         rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
         rounds["diversification_basket_formed"] = True
+        rounds["risk_gate_basket_formed"] = True
     rounds["segment"] = np.where(rounds["signal_date"] <= pd.Timestamp(development_end), "development", "test")
     development_rounds = rounds.loc[rounds["segment"] == "development"]
     development_by_year = {
@@ -1483,6 +1505,8 @@ def evaluate_candidate(
         "max_pairwise_correlation": max_pairwise_correlation,
         "correlation_lookback": correlation_lookback if max_pairwise_correlation is not None else None,
         "diversification_candidate_pool": diversification_candidate_pool if max_pairwise_correlation is not None else None,
+        "min_volatility_low_20": min_volatility_low_20,
+        "min_amplitude_low": min_amplitude_low,
         "development": return_metrics(development_rounds, hold_days),
         "development_by_signal_year": development_by_year,
         "test": return_metrics(rounds.loc[rounds["segment"] == "test"], hold_days),
@@ -1501,6 +1525,7 @@ def evaluate_candidate(
                 "holdings": int(row.holdings),
                 "early_exit_holdings": int(row.early_exit_holdings),
                 "diversification_basket_formed": bool(row.diversification_basket_formed),
+                "risk_gate_basket_formed": bool(row.risk_gate_basket_formed),
                 "regime_active": bool(row.regime_active),
             }
             for row in rounds.itertuples(index=False)
@@ -1566,6 +1591,51 @@ def selected_baskets_by_signal(
         if len(instruments) == topk:
             baskets[pd.Timestamp(date).date().isoformat()] = instruments
     return baskets
+
+
+def selected_basket_trade_details(
+    scored: pd.DataFrame,
+    baskets: dict[str, set[str]],
+    hold_days: int,
+    open_cost: float,
+    close_cost: float,
+) -> pd.DataFrame:
+    """Reconstruct per-stock close-known baskets and their scheduled three-day returns."""
+
+    if hold_days < 1:
+        raise ValueError("hold_days must be positive")
+    calendar = pd.DatetimeIndex(sorted(scored["datetime"].unique()))
+    date_to_position = {date: position for position, date in enumerate(calendar)}
+    pieces: list[pd.DataFrame] = []
+    for raw_signal_date, instruments in sorted(baskets.items()):
+        signal_date = pd.Timestamp(raw_signal_date)
+        if signal_date not in date_to_position or date_to_position[signal_date] + hold_days >= len(calendar):
+            continue
+        rows = scored.loc[
+            (scored["datetime"] == signal_date) & scored["instrument"].isin(instruments)
+        ].copy()
+        if len(rows) != len(instruments):
+            continue
+        rows["entry_date"] = calendar[date_to_position[signal_date] + 1]
+        rows["exit_date"] = calendar[date_to_position[signal_date] + hold_days]
+        pieces.append(rows)
+    if not pieces:
+        return pd.DataFrame()
+    selected = pd.concat(pieces, ignore_index=True)
+    quotes = scored[["datetime", "instrument", "open", "close"]].drop_duplicates(["datetime", "instrument"])
+    entry = quotes.rename(columns={"datetime": "entry_date", "open": "entry_open"})[
+        ["entry_date", "instrument", "entry_open"]
+    ]
+    exit_quote = quotes.rename(columns={"datetime": "exit_date", "close": "exit_close"})[
+        ["exit_date", "instrument", "exit_close"]
+    ]
+    details = selected.merge(entry, on=["entry_date", "instrument"], how="left")
+    details = details.merge(exit_quote, on=["exit_date", "instrument"], how="left")
+    details = details.dropna(subset=["entry_open", "exit_close"])
+    details = details.loc[(details["entry_open"] > 0.0) & (details["exit_close"] > 0.0)].copy()
+    details["gross_return"] = details["exit_close"] / details["entry_open"] - 1.0
+    details["net_return"] = (1.0 - open_cost) * (1.0 + details["gross_return"]) * (1.0 - close_cost) - 1.0
+    return details.sort_values(["datetime", "score", "instrument"], ascending=[True, False, True], kind="stable")
 
 
 def basket_overlap_metrics(left: dict[str, set[str]], right: dict[str, set[str]]) -> dict[str, float | int | None]:
@@ -1758,6 +1828,28 @@ def select_diversified_topk(
             selections.append(candidate_rows.loc[chosen_rows])
     selected = pd.concat(selections, ignore_index=False) if selections else candidate_rows.iloc[0:0].copy()
     return selected, pd.DataFrame(statuses)
+
+
+def validate_selection_risk_gate(value: float | None, factor_name: str) -> None:
+    """Validate an optional cross-sectional rank floor for a selected-stock risk feature."""
+
+    if value is not None and not 0.0 <= float(value) <= 1.0:
+        raise ValueError(f"{factor_name} gate must be between zero and one")
+
+
+def apply_selection_risk_gates(
+    frame: pd.DataFrame, min_volatility_low_20: float | None, min_amplitude_low: float | None
+) -> pd.DataFrame:
+    """Keep only names meeting explicitly configured close-known risk-rank floors."""
+
+    validate_selection_risk_gate(min_volatility_low_20, "volatility_low_20")
+    validate_selection_risk_gate(min_amplitude_low, "amplitude_low")
+    condition = pd.Series(True, index=frame.index)
+    if min_volatility_low_20 is not None:
+        condition &= frame["volatility_low_20"].ge(float(min_volatility_low_20))
+    if min_amplitude_low is not None:
+        condition &= frame["amplitude_low"].ge(float(min_amplitude_low))
+    return frame.loc[condition.fillna(False)].copy()
 
 
 def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | int | None]:
@@ -2657,6 +2749,68 @@ def load_diversification_audits(experiment_root: Path) -> list[dict[str, Any]]:
     return audits
 
 
+def load_cohort_risk_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read descriptive worst-cohort attribution records for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_cohort_risk_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        candidate = audit.get("candidate") or {}
+        data = audit.get("data") or {}
+        worst = list(audit.get("worst_cohorts") or [])
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate": str(candidate.get("name", "—")),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "worst_cohort_count": int(audit.get("worst_cohort_count") or len(worst)),
+                "worst_net_return": worst[0].get("net_return") if worst else None,
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
+def load_risk_gate_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read completed low-volatility/low-range eligibility-gate audits."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_risk_gate_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        ranking = list(audit.get("ranking_by_development") or [])
+        candidate = audit.get("candidate") or {}
+        data = audit.get("data") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate": str(candidate.get("name", "—")),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "selection_policy": str(audit.get("selection_policy", "—")),
+                "has_qualified_gate": bool(
+                    audit.get(
+                        "has_development_qualified_risk_gate",
+                        any(item.get("development_selection_score") is not None for item in ranking),
+                    )
+                ),
+                "gate_count": len(ranking),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def render_three_day_research_report(
     registry: dict[str, Any],
     ledger: dict[str, Any],
@@ -2667,6 +2821,8 @@ def render_three_day_research_report(
     loss_cap_audits: list[dict[str, Any]] | None = None,
     basket_correlation_audits: list[dict[str, Any]] | None = None,
     diversification_audits: list[dict[str, Any]] | None = None,
+    cohort_risk_audits: list[dict[str, Any]] | None = None,
+    risk_gate_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -2855,6 +3011,55 @@ def render_three_day_research_report(
                 )
             )
         lines.append("")
+    if cohort_risk_audits:
+        lines.extend(
+            [
+                "",
+                "## 最差 Cohort 风险归因",
+                "",
+                "归因仅描述已选出的历史最差 cohort 的同日特征排名，不能把个别股票或当前名称标签误作因果证据。",
+                "",
+                "| 审计 | 候选 | 历史范围 | 归因 Cohort 数 | 最差三日净收益 |",
+                "| --- | --- | --- | ---: | ---: |",
+            ]
+        )
+        for audit in cohort_risk_audits:
+            lines.append(
+                "| {run_id} | {candidate} | {start} 至 {end} | {count} | {worst} |".format(
+                    run_id=audit["run_id"],
+                    candidate=audit["candidate"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    count=audit["worst_cohort_count"],
+                    worst=_percent(audit["worst_net_return"]),
+                )
+            )
+        lines.append("")
+    if risk_gate_audits:
+        lines.extend(
+            [
+                "",
+                "## 波动/振幅资格门审计",
+                "",
+                "此审计比较固定候选的同日低波动与低振幅排名门槛；无法形成完整 TopK 时按空仓记录，结果不能修改前瞻策略。",
+                "",
+                "| 审计 | 候选 | 历史范围 | 选择规则 | 资格门结论 |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for audit in risk_gate_audits:
+            conclusion = "存在合格资格门" if audit["has_qualified_gate"] else f"无合格资格门（0/{audit['gate_count']}）"
+            lines.append(
+                "| {run_id} | {candidate} | {start} 至 {end} | {policy} | {conclusion} |".format(
+                    run_id=audit["run_id"],
+                    candidate=audit["candidate"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    policy=audit["selection_policy"],
+                    conclusion=conclusion,
+                )
+            )
+        lines.append("")
     lines.extend(
         [
             "",
@@ -2929,6 +3134,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     loss_cap_audits = load_loss_cap_audits(experiment_root)
     basket_correlation_audits = load_basket_correlation_audits(experiment_root)
     diversification_audits = load_diversification_audits(experiment_root)
+    cohort_risk_audits = load_cohort_risk_audits(experiment_root)
+    risk_gate_audits = load_risk_gate_audits(experiment_root)
     report = render_three_day_research_report(
         registry,
         ledger,
@@ -2939,6 +3146,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         loss_cap_audits,
         basket_correlation_audits,
         diversification_audits,
+        cohort_risk_audits,
+        risk_gate_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -2959,6 +3168,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "loss_cap_audits": len(loss_cap_audits),
         "basket_correlation_audits": len(basket_correlation_audits),
         "diversification_audits": len(diversification_audits),
+        "cohort_risk_audits": len(cohort_risk_audits),
+        "risk_gate_audits": len(risk_gate_audits),
     }
 
 
@@ -3183,6 +3394,270 @@ def run_basket_correlation_audit(args: argparse.Namespace) -> dict[str, Any]:
         "audit_path": str(destination.resolve()),
         "candidate": candidate.name,
         "correlation_summary": summary,
+    }
+
+
+def run_cohort_risk_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Attribute the worst scheduled cohorts to close-known selected-stock characteristics."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidate = candidate_by_name(args.candidate, args.candidate_library)
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    scored = score_candidate(ranked, candidate)
+    baskets = selected_baskets_by_signal(scored, args.hold_days, args.topk, args.regime_filter)
+    details = selected_basket_trade_details(scored, baskets, args.hold_days, args.open_cost, args.close_cost)
+    if details.empty:
+        raise RuntimeError("no complete selected basket trades are available for cohort risk attribution")
+    metadata = _universe_metadata()
+    details["name"] = details["instrument"].map(lambda value: metadata.get(str(value), {}).get("name", ""))
+    cohorts = (
+        details.groupby("datetime", sort=True)
+        .agg(net_return=("net_return", "mean"), gross_return=("gross_return", "mean"), holdings=("instrument", "nunique"))
+        .reset_index()
+        .rename(columns={"datetime": "signal_date"})
+    )
+    worst_cohorts = cohorts.nsmallest(args.worst_cohorts, "net_return")
+    worst_dates = set(worst_cohorts["signal_date"])
+    feature_columns = [
+        column
+        for column in ("liquidity_5", "volatility_low_20", "amplitude_low", "quality_score", "quality_revenue", "momentum_20")
+        if column in details.columns
+    ]
+    feature_summary = {
+        column: {
+            "all_selected_median": float(details[column].median()),
+            "worst_cohort_holdings_median": float(details.loc[details["datetime"].isin(worst_dates), column].median()),
+        }
+        for column in feature_columns
+    }
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "worst_cohort_risk_attribution_research_only_not_investment_advice",
+        "candidate": {
+            "name": candidate.name,
+            "description": candidate.description,
+            "weights": candidate.weights,
+            "candidate_library": args.candidate_library,
+        },
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "topk": args.topk,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "development_end": args.development_end,
+            "test_period_used_for_risk_attribution": False,
+        },
+        "worst_cohort_count": args.worst_cohorts,
+        "feature_rank_medians": feature_summary,
+        "worst_cohorts": [
+            {
+                "signal_date": cohort.signal_date.date().isoformat(),
+                "net_return": float(cohort.net_return),
+                "gross_return": float(cohort.gross_return),
+                "holdings": int(cohort.holdings),
+                "selected_stocks": [
+                    {
+                        "instrument": str(row.instrument),
+                        "name": str(row.name),
+                        "score": float(row.score),
+                        "entry_date": row.entry_date.date().isoformat(),
+                        "exit_date": row.exit_date.date().isoformat(),
+                        "gross_return": float(row.gross_return),
+                        "net_return": float(row.net_return),
+                        **{column: float(getattr(row, column)) for column in feature_columns},
+                    }
+                    for row in details.loc[details["datetime"] == cohort.signal_date]
+                    .sort_values(["score", "instrument"], ascending=[False, True], kind="stable")
+                    .itertuples(index=False)
+                ],
+            }
+            for cohort in worst_cohorts.itertuples(index=False)
+        ],
+        "limitations": [
+            "This is descriptive attribution of selected historical cohorts, not a causal test or a strategy-selection rule.",
+            "The reported feature values are same-day cross-sectional ranks, not absolute liquidity or volatility guarantees.",
+            "Names and ST flags are drawn from a current metadata snapshot and are not historical point-in-time classifications.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_cohort_risk_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate": candidate.name,
+        "worst_cohorts": [
+            {"signal_date": item["signal_date"], "net_return": item["net_return"]} for item in audit["worst_cohorts"]
+        ],
+        "feature_rank_medians": feature_summary,
+    }
+
+
+def run_risk_gate_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Compare a small cross-product of close-known low-volatility and low-range gates."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidate = candidate_by_name(args.candidate, args.candidate_library)
+    volatility_levels = args.min_volatility_low_20 or list(RISK_GATE_LEVELS)
+    amplitude_levels = args.min_amplitude_low or list(RISK_GATE_LEVELS)
+    for value in volatility_levels:
+        validate_selection_risk_gate(value, "volatility_low_20")
+    for value in amplitude_levels:
+        validate_selection_risk_gate(value, "amplitude_low")
+    configurations = [
+        (volatility, amplitude)
+        for volatility in dict.fromkeys(volatility_levels)
+        for amplitude in dict.fromkeys(amplitude_levels)
+    ]
+
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    scored = score_candidate(ranked, candidate)
+    records: list[tuple[float | None, float | None, dict[str, Any], int]] = []
+    for min_volatility_low_20, min_amplitude_low in configurations:
+        rounds, summary = evaluate_candidate(
+            scored,
+            candidate,
+            hold_days=args.hold_days,
+            topk=args.topk,
+            open_cost=args.open_cost,
+            close_cost=args.close_cost,
+            development_end=args.development_end,
+            regime_filter=args.regime_filter,
+            min_volatility_low_20=min_volatility_low_20,
+            min_amplitude_low=min_amplitude_low,
+        )
+        active_cash_cohorts = int((rounds["regime_active"] & ~rounds["risk_gate_basket_formed"]).sum())
+        records.append((min_volatility_low_20, min_amplitude_low, summary, active_cash_cohorts))
+
+    ranking = sorted(
+        records,
+        key=lambda item: float((item[2].get("selection_scores") or {}).get(args.selection_policy))
+        if (item[2].get("selection_scores") or {}).get(args.selection_policy) is not None
+        else float("-inf"),
+        reverse=True,
+    )
+    winning_record = next(
+        (
+            item
+            for item in ranking
+            if (item[2].get("selection_scores") or {}).get(args.selection_policy) is not None
+        ),
+        None,
+    )
+    winner = (
+        {
+            "min_volatility_low_20": winning_record[0],
+            "min_amplitude_low": winning_record[1],
+        }
+        if winning_record is not None
+        else None
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "selection_risk_gate_sensitivity_research_only_not_investment_advice",
+        "candidate": {
+            "name": candidate.name,
+            "description": candidate.description,
+            "weights": candidate.weights,
+            "candidate_library": args.candidate_library,
+        },
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+            "risk_gate_rule": (
+                "selected names must meet the configured same-close cross-sectional floors for volatility_low_20 "
+                "and amplitude_low; if a complete TopK basket cannot be formed, hold cash for that cohort"
+            ),
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "development_end": args.development_end,
+            "test_period_used_for_gate_selection": False,
+        },
+        "selection_policy": args.selection_policy,
+        "selection_rule": f"{SELECTION_POLICIES[args.selection_policy]}; no test metrics are used for gate ranking",
+        "winner_risk_gate_selected_on_development_only": winner,
+        "has_development_qualified_risk_gate": winning_record is not None,
+        "ranking_by_development": [
+            {
+                "min_volatility_low_20": min_volatility_low_20,
+                "min_amplitude_low": min_amplitude_low,
+                "development_selection_score": (summary.get("selection_scores") or {}).get(args.selection_policy),
+                "development": summary["development"],
+                "development_stability": summary.get("development_stability"),
+                "test": summary["test"],
+                "active_cash_cohorts_from_incomplete_risk_gate": active_cash_cohorts,
+            }
+            for min_volatility_low_20, min_amplitude_low, summary, active_cash_cohorts in ranking
+        ],
+        "limitations": [
+            "This is a risk-gate sensitivity audit, not authorization to alter an existing forward candidate.",
+            "The two risk features are cross-sectional ranks, not absolute volatility or intraday loss guarantees.",
+            "A missing complete eligible basket is modeled as cash, not as a partial basket or replacement allocation.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_risk_gate_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate": candidate.name,
+        "winner_risk_gate_selected_on_development_only": winner,
+        "has_development_qualified_risk_gate": winning_record is not None,
+        "ranking_by_development": audit["ranking_by_development"],
     }
 
 
@@ -3835,6 +4310,58 @@ def parse_args() -> argparse.Namespace:
     basket_correlation_audit.add_argument("--max-quality-age-days", type=int, default=550)
     basket_correlation_audit.add_argument("--batch-size", type=int, default=500)
 
+    cohort_risk_audit = subparsers.add_parser(
+        "cohort-risk-audit", help="attribute the worst selected three-day cohorts to close-known stock characteristics"
+    )
+    cohort_risk_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    cohort_risk_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    cohort_risk_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    cohort_risk_audit.add_argument("--candidate", required=True)
+    cohort_risk_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    cohort_risk_audit.add_argument("--start", default="2024-01-01")
+    cohort_risk_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
+    cohort_risk_audit.add_argument("--development-end", default="2025-12-31")
+    cohort_risk_audit.add_argument("--hold-days", type=int, default=3)
+    cohort_risk_audit.add_argument("--topk", type=int, default=3)
+    cohort_risk_audit.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
+    cohort_risk_audit.add_argument("--open-cost", type=float, default=0.0015)
+    cohort_risk_audit.add_argument("--close-cost", type=float, default=0.0025)
+    cohort_risk_audit.add_argument("--worst-cohorts", type=int, default=10)
+    cohort_risk_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    cohort_risk_audit.add_argument("--batch-size", type=int, default=500)
+
+    risk_gate_audit = subparsers.add_parser(
+        "risk-gate-audit", help="compare close-known low-volatility and low-range selection gate combinations"
+    )
+    risk_gate_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    risk_gate_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    risk_gate_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    risk_gate_audit.add_argument("--candidate", required=True)
+    risk_gate_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    risk_gate_audit.add_argument("--start", default="2024-01-01")
+    risk_gate_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
+    risk_gate_audit.add_argument("--development-end", default="2025-12-31")
+    risk_gate_audit.add_argument("--hold-days", type=int, default=3)
+    risk_gate_audit.add_argument("--topk", type=int, default=3)
+    risk_gate_audit.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
+    risk_gate_audit.add_argument("--open-cost", type=float, default=0.0015)
+    risk_gate_audit.add_argument("--close-cost", type=float, default=0.0025)
+    risk_gate_audit.add_argument(
+        "--min-volatility-low-20",
+        type=float,
+        action="append",
+        help="repeat volatility_low_20 rank floors; defaults to none, 0.20, and 0.40",
+    )
+    risk_gate_audit.add_argument(
+        "--min-amplitude-low",
+        type=float,
+        action="append",
+        help="repeat amplitude_low rank floors; defaults to none, 0.20, and 0.40",
+    )
+    risk_gate_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    risk_gate_audit.add_argument("--batch-size", type=int, default=500)
+    risk_gate_audit.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
+
     diversification_audit = subparsers.add_parser(
         "diversification-audit", help="compare complete-TopK trailing-correlation caps for one candidate"
     )
@@ -3964,6 +4491,10 @@ def main() -> int:
         report = run_candidate_overlap_audit(args)
     elif args.command == "basket-correlation-audit":
         report = run_basket_correlation_audit(args)
+    elif args.command == "cohort-risk-audit":
+        report = run_cohort_risk_audit(args)
+    elif args.command == "risk-gate-audit":
+        report = run_risk_gate_audit(args)
     elif args.command == "diversification-audit":
         report = run_diversification_audit(args)
     elif args.command == "plan":

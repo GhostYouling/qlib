@@ -172,6 +172,41 @@ def test_diversified_topk_skips_highly_correlated_name_and_requires_a_complete_b
         RESEARCH.select_diversified_topk(scored, 1, 2, "always", 1.1, 2, 3)
 
 
+def test_selection_risk_gates_require_close_known_low_volatility_and_low_range_ranks():
+    frame = pd.DataFrame(
+        {
+            "volatility_low_20": [0.10, 0.30, 0.50],
+            "amplitude_low": [0.50, 0.30, 0.60],
+        }
+    )
+    assert RESEARCH.apply_selection_risk_gates(frame, 0.20, None).index.tolist() == [1, 2]
+    assert RESEARCH.apply_selection_risk_gates(frame, None, 0.40).index.tolist() == [0, 2]
+    assert RESEARCH.apply_selection_risk_gates(frame, 0.20, 0.40).index.tolist() == [2]
+    with pytest.raises(ValueError, match="between zero and one"):
+        RESEARCH.apply_selection_risk_gates(frame, 1.01, None)
+
+
+def test_selected_basket_trade_details_uses_next_open_and_scheduled_exit_close():
+    dates = pd.to_datetime(["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"])
+    scored = pd.DataFrame(
+        {
+            "datetime": list(dates) * 2,
+            "instrument": ["A"] * 4 + ["B"] * 4,
+            "open": [10.0, 10.0, 11.0, 12.0, 20.0, 20.0, 19.0, 18.0],
+            "close": [10.0, 10.5, 11.0, 12.0, 20.0, 19.5, 19.0, 18.0],
+            "score": [0.9] * 4 + [0.8] * 4,
+        }
+    )
+    details = RESEARCH.selected_basket_trade_details(
+        scored, {"2025-01-02": {"A", "B"}}, hold_days=2, open_cost=0.0, close_cost=0.0
+    )
+    assert details["instrument"].tolist() == ["A", "B"]
+    assert details["entry_date"].tolist() == [pd.Timestamp("2025-01-03")] * 2
+    assert details["exit_date"].tolist() == [pd.Timestamp("2025-01-06")] * 2
+    assert details.loc[details["instrument"] == "A", "net_return"].item() == pytest.approx(0.10)
+    assert details.loc[details["instrument"] == "B", "net_return"].item() == pytest.approx(-0.05)
+
+
 def test_human_report_includes_no_eligible_pressure_scans_without_creating_a_winner():
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},

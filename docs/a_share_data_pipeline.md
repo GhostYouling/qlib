@@ -200,13 +200,36 @@ python scripts/a_share_short_horizon_factor_research.py diversification-audit \
   --selection-policy positive_year_stability_mdd20
 ```
 
+若风险控制的效果不明确，先用 `cohort-risk-audit` 归因最差完整三日 cohort。它逐只保留入场、退出、三日收益以及信号日的流动性、低波动、低振幅、质量和动量**横截面排名**；输出用于形成新假设，不能把个别名称反向变成交易黑名单。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py cohort-risk-audit \
+  --candidate expanded_v5_defensive_low_range_q15_composite \
+  --candidate-library v5_defensive \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter breadth_5_above_20 \
+  --open-cost 0.00012 --close-cost 0.00062 --worst-cohorts 10
+```
+
+`risk-gate-audit` 随后以一个小型、完整的资格门网格检验归因所得假设：`volatility_low_20` 和 `amplitude_low` 的最低横截面排名分别取无门、0.20、0.40，共 9 个组合。它们不改变因子分数；不满足门槛而凑不齐完整三只时，该周期空仓。若硬门显著恶化结果，应保留这个反证，而不是继续提高阈值。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py risk-gate-audit \
+  --candidate expanded_v5_defensive_low_range_q15_composite \
+  --candidate-library v5_defensive \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter breadth_5_above_20 \
+  --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20
+```
+
 若多个候选都进入前瞻观察，先运行 `candidate-overlap-audit` 判断它们是否实质上选了同一批股票。它报告同一信号日的平均 Jaccard 重叠、完全相同篮子比例及三日净收益序列相关性；高重叠代表候选之间的证据不应被当作独立样本。
 
 若补齐较早年度的年报，可把同一审计扩展到更长历史作为压力测试；结果必须额外标注为受“当前上市清单”幸存者偏差影响的稳健性证据，不能替代新的前瞻样本或用来追溯晋级。
 
 长历史压力扫描允许并应当记录 `no_eligible_candidate`：若没有候选同时满足预设的跨年度与回撤约束，系统不会勉强登记赢家、不会创建前瞻观察，也不应事后放松门槛来得到一个看似可用的策略。
 
-`report` 会在“未产生合格候选的压力扫描”章节列出这些淘汰结果，并在“市场状态审计”“收盘损失上限审计”“篮子相关性审计”和“相关性分散化审计”章节保留固定候选的敏感性比较及合格数量，使长历史失败不会被后续研究日志掩盖。任何审计即使出现开发期胜者，也只是一条研究记录，不能自动晋级。
+`report` 会在“未产生合格候选的压力扫描”章节列出这些淘汰结果，并在“市场状态审计”“收盘损失上限审计”“篮子相关性审计”“相关性分散化审计”“最差 Cohort 风险归因”和“波动/振幅资格门审计”章节保留固定候选的敏感性比较及合格数量，使长历史失败不会被后续研究日志掩盖。任何审计即使出现开发期胜者，也只是一条研究记录，不能自动晋级。
 
 当某轮策略在注册表中通过初测后，筛选命令必须带上它对应的状态条件，例如：
 
