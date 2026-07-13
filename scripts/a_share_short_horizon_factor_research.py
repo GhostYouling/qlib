@@ -955,6 +955,9 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "near_high_20",
     "drawdown_20",
     "intraday_strength",
+    "roe_change",
+    "revenue_yoy_acceleration",
+    "profit_yoy_acceleration",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -1475,6 +1478,35 @@ def _first_trading_day_after(calendar: pd.DatetimeIndex, announced: pd.Series) -
     return mapped
 
 
+FUNDAMENTAL_ACCELERATION_COLUMNS = (
+    "roe_change",
+    "revenue_yoy_acceleration",
+    "profit_yoy_acceleration",
+)
+
+
+def attach_fundamental_accelerations(events: pd.DataFrame) -> pd.DataFrame:
+    """Add year-over-year changes using only earlier annual reports per stock.
+
+    These values belong to the newer report and therefore become usable only
+    when that report itself is made effective after its announcement date in
+    ``attach_quality_asof``.  No later report is used to backfill an earlier
+    disclosure.
+    """
+
+    required = {"instrument", "report_date", "announcement_date", "roe", "revenue_yoy", "profit_yoy"}
+    if missing := sorted(required - set(events.columns)):
+        raise ValueError(f"fundamental events are missing columns: {', '.join(missing)}")
+    result = events.sort_values(["instrument", "report_date", "announcement_date"], kind="stable").copy()
+    for field, acceleration in (
+        ("roe", "roe_change"),
+        ("revenue_yoy", "revenue_yoy_acceleration"),
+        ("profit_yoy", "profit_yoy_acceleration"),
+    ):
+        result[acceleration] = result.groupby("instrument", sort=False)[field].diff()
+    return result
+
+
 def attach_quality_asof(market: pd.DataFrame, fundamentals: pd.DataFrame, max_age_days: int = 550) -> pd.DataFrame:
     """Attach only already-announced accounting data to every market row.
 
@@ -1488,20 +1520,29 @@ def attach_quality_asof(market: pd.DataFrame, fundamentals: pd.DataFrame, max_ag
         raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
     market = market.reset_index(drop=True).copy()
     calendar = pd.DatetimeIndex(sorted(pd.to_datetime(market["datetime"]).dropna().unique()))
-    events = fundamentals.copy()
+    events = attach_fundamental_accelerations(fundamentals)
     events["quality_effective_date"] = _first_trading_day_after(calendar, events["announcement_date"])
     events = events.dropna(subset=["quality_effective_date"])
     events = events.sort_values(
         ["instrument", "quality_effective_date", "report_date", "announcement_date"], kind="stable"
     ).drop_duplicates(["instrument", "quality_effective_date"], keep="last")
 
-    quality_columns = ["report_date", "announcement_date", "roe", "net_profit", "revenue_yoy", "profit_yoy", "quality_effective_date"]
+    quality_columns = [
+        "report_date",
+        "announcement_date",
+        "roe",
+        "net_profit",
+        "revenue_yoy",
+        "profit_yoy",
+        *FUNDAMENTAL_ACCELERATION_COLUMNS,
+        "quality_effective_date",
+    ]
     daily = market[["instrument", "datetime"]].copy()
     daily["_kind"] = 1
     daily["_row"] = np.arange(len(daily))
     for column in ("report_date", "announcement_date", "quality_effective_date"):
         daily[column] = pd.NaT
-    for column in ("roe", "net_profit", "revenue_yoy", "profit_yoy"):
+    for column in ("roe", "net_profit", "revenue_yoy", "profit_yoy", *FUNDAMENTAL_ACCELERATION_COLUMNS):
         daily[column] = np.nan
     event_rows = events.rename(columns={"quality_effective_date": "datetime"})[
         ["instrument", "datetime", *[column for column in quality_columns if column != "quality_effective_date"]]
@@ -1667,6 +1708,9 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "revenue_yoy",
         "profit_yoy",
         "quality_age_days",
+        "roe_change",
+        "revenue_yoy_acceleration",
+        "profit_yoy_acceleration",
     ]
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
@@ -1697,6 +1741,9 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["quality_freshness"] = 1.0 - result["rank_quality_age_days"]
     result["quality_growth"] = result[["rank_revenue_yoy", "rank_profit_yoy"]].mean(axis=1)
     result["quality_score"] = result[["rank_roe", "rank_revenue_yoy", "rank_profit_yoy"]].mean(axis=1)
+    result["roe_change"] = result["rank_roe_change"]
+    result["revenue_yoy_acceleration"] = result["rank_revenue_yoy_acceleration"]
+    result["profit_yoy_acceleration"] = result["rank_profit_yoy_acceleration"]
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_3"] = result["rank_momentum_3"]

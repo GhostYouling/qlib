@@ -146,6 +146,8 @@ python scripts/a_share_short_horizon_factor_research.py run \
 
 在设计下一轮候选前，可先运行 `factor-diagnostic`。它在**仅限开发期**的数据上，对所有已声明因子以及尚未进入候选库的短趋势、成交量/换手、流动性、波动形状、跳空反转、近期高点和日内强度字段，计算每个非重叠信号日的三日横截面 Rank IC、Top‑3 相对 Bottom‑3 的毛收益差，以及各自然年的汇总。它不产生策略、不会从因子排序自动选出赢家；后续组合仍必须预注册，并以未见日期验证。
 
+诊断还会纳入三个公告后基本面变化字段：本年年报相对上一年报的 ROE 变化、营收同比加速度和利润同比加速度。它们均在**新年报公告后的下一个本地交易日**才进入截面，第一份缺少前期年报的记录保持为空；因此它们适合检验“业绩改善是否有短期延续”，不把随后披露的财报反填到历史日期。
+
 ```bash
 python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
   --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \

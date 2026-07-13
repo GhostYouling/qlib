@@ -51,6 +51,33 @@ def test_quality_join_waits_until_next_trading_day():
     assert effective["quality_effective_date"] == pd.Timestamp("2024-05-06")
 
 
+def test_fundamental_acceleration_becomes_available_only_with_newer_announcement():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    fundamentals = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000001"],
+            "report_date": pd.to_datetime(["2022-12-31", "2023-12-31"]),
+            "announcement_date": pd.to_datetime(["2023-04-28", "2024-04-30"]),
+            "roe": [8.0, 10.0],
+            "net_profit": [1.0, 2.0],
+            "revenue_yoy": [5.0, 12.0],
+            "profit_yoy": [10.0, 25.0],
+        }
+    )
+    joined = RESEARCH.attach_quality_asof(market, fundamentals)
+    before = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    after = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    assert pd.isna(before["profit_yoy_acceleration"])
+    assert after["roe_change"] == pytest.approx(2.0)
+    assert after["revenue_yoy_acceleration"] == pytest.approx(7.0)
+    assert after["profit_yoy_acceleration"] == pytest.approx(15.0)
+
+
 def test_winner_uses_development_only():
     summaries = [
         {"candidate": "development_winner", "development_selection_score": 0.20, "test": {"annualized_return": -0.99}},
@@ -529,6 +556,9 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
         "gap_reversal",
         "drawdown_20",
         "intraday_strength",
+        "roe_change",
+        "revenue_yoy_acceleration",
+        "profit_yoy_acceleration",
     }
     assert expected.issubset(RESEARCH.FACTOR_DIAGNOSTIC_COLUMNS)
     assert expected.issubset(RESEARCH.EXPLORATORY_DIAGNOSTIC_FACTORS)
