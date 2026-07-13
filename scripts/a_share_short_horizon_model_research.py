@@ -38,7 +38,7 @@ DEFAULT_EXPERIMENT_ROOT = REPO_ROOT / "data" / "experiments" / "short_horizon"
 # Keep the model family immutable when the broader exploratory diagnostic
 # catalog grows.  A new model feature set needs its own explicitly named audit.
 DEFAULT_FEATURES = tuple(sorted({factor for candidate in research.V7_CANDIDATES for factor in candidate.weights}))
-MODEL_CONFIGURATIONS = ("ridge", "lgbm_shallow")
+MODEL_CONFIGURATIONS = ("ridge", "lgbm_shallow", "lgbm_ranker_shallow")
 # These are existing close-known market states from the factor-research
 # harness.  The compact set deliberately tests only: no gate, a broad positive
 # medium-term market state, and that same state with a pre-existing risk
@@ -66,6 +66,12 @@ MODEL_SPECS = {
     "lgbm_shallow": ModelConfiguration(
         name="lgbm_shallow",
         description="Shallow regularized gradient boosting over the same factor set to test limited interactions.",
+    ),
+    "lgbm_ranker_shallow": ModelConfiguration(
+        name="lgbm_ranker_shallow",
+        description=(
+            "Shallow LambdaRank boosting over within-signal-date forward-return quintiles, aligned to TopK ordering."
+        ),
     ),
 }
 
@@ -169,6 +175,30 @@ def build_training_frame(
     return joined.sort_values(["signal_date", "instrument"], kind="stable")
 
 
+def cross_sectional_relevance(frame: pd.DataFrame, buckets: int = 5) -> pd.DataFrame:
+    """Add deterministic within-date return buckets for the ranking-only model.
+
+    The feature sample is chosen before this function and does not depend on
+    labels.  Relevance is then calculated only from realized historical
+    returns within each training signal date; score-time rows never receive or
+    require this label.  ``method='first'`` makes ties deterministic by the
+    pre-existing signal-date/instrument ordering.
+    """
+
+    if buckets < 2:
+        raise ValueError("ranking relevance buckets must be at least two")
+    required = {"signal_date", "instrument", "forward_gross_return"}
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(f"training frame is missing ranking-label columns: {', '.join(missing)}")
+    result = frame.sort_values(["signal_date", "instrument"], kind="stable").copy()
+    ranks = result.groupby("signal_date", sort=False)["forward_gross_return"].rank(method="first", pct=True)
+    result["ranking_relevance"] = np.minimum(
+        buckets - 1, np.ceil(ranks.to_numpy(dtype=float, copy=False) * buckets).astype(int) - 1
+    )
+    return result
+
+
 def make_estimator(configuration: str):
     """Instantiate only one of the predeclared low-resource estimators."""
 
@@ -177,7 +207,25 @@ def make_estimator(configuration: str):
         from sklearn.linear_model import Ridge
 
         return Ridge(alpha=10.0)
-    from lightgbm import LGBMRegressor
+    from lightgbm import LGBMRanker, LGBMRegressor
+
+    if configuration == "lgbm_ranker_shallow":
+        return LGBMRanker(
+            objective="lambdarank",
+            metric="ndcg",
+            n_estimators=100,
+            learning_rate=0.04,
+            num_leaves=15,
+            max_depth=4,
+            min_child_samples=400,
+            colsample_bytree=0.8,
+            subsample=0.8,
+            subsample_freq=1,
+            reg_lambda=5.0,
+            random_state=17,
+            n_jobs=1,
+            verbosity=-1,
+        )
 
     return LGBMRegressor(
         objective="regression",
@@ -194,6 +242,22 @@ def make_estimator(configuration: str):
         n_jobs=1,
         verbosity=-1,
     )
+
+
+def fit_model(configuration: str, estimator: Any, train_features: pd.DataFrame, train: pd.DataFrame) -> None:
+    """Fit one fixed model while keeping rank labels confined to training dates."""
+
+    if configuration != "lgbm_ranker_shallow":
+        estimator.fit(train_features, train["forward_gross_return"].astype(float))
+        return
+    required = {"signal_date", "ranking_relevance"}
+    missing = sorted(required - set(train.columns))
+    if missing:
+        raise ValueError(f"ranker training frame is missing columns: {', '.join(missing)}")
+    groups = train.groupby("signal_date", sort=False).size().tolist()
+    if not groups or min(groups) < 2:
+        raise ValueError("ranker training needs at least two sampled stocks in every signal-date group")
+    estimator.fit(train_features, train["ranking_relevance"].astype(int), group=groups)
 
 
 def factor_feature_frame(ranked: pd.DataFrame, signal_dates: pd.DatetimeIndex, feature_columns: Iterable[str]) -> pd.DataFrame:
@@ -391,12 +455,14 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
             training_dates = signal_dates[signal_dates < evaluation_dates.min()][-args.train_window_rounds :]
             train = training.loc[training["signal_date"].isin(training_dates)].copy()
             train = deterministic_daily_sample(train, args.maximum_train_rows_per_signal)
+            if configuration == "lgbm_ranker_shallow":
+                train = cross_sectional_relevance(train)
             evaluation = features.loc[features["signal_date"].isin(evaluation_dates)].copy()
             if train.empty or evaluation.empty:
                 raise ValueError(f"{configuration} has no rows for {segment_name}")
             estimator = make_estimator(configuration)
             train_features = train[list(feature_columns)].astype(float).fillna(0.5)
-            estimator.fit(train_features, train["forward_gross_return"].astype(float))
+            fit_model(configuration, estimator, train_features, train)
             prediction = evaluation[["signal_date", "instrument"]].copy()
             prediction["score"] = estimator.predict(evaluation[list(feature_columns)].astype(float).fillna(0.5))
             prediction_diagnostics = score_diagnostics(prediction, labels)
@@ -484,7 +550,7 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
         "run_id": run_id,
         "status": "completed",
         "purpose": "three_day_walk_forward_model_research_only_not_investment_advice",
-        "model_family": "predeclared_ridge_and_shallow_lightgbm_with_compact_existing_market_gates",
+        "model_family": "predeclared_ridge_shallow_lightgbm_and_shallow_lambdarank_with_compact_existing_market_gates",
         "strategy": {
             "universe": "buyable_main_chinext",
             "holding_period_trading_days": args.hold_days,
@@ -500,6 +566,7 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
             "count": len(feature_columns),
             "names": list(feature_columns),
             "missing_value_fill": 0.5,
+            "ranker_target": "within-signal-date forward-gross-return quintiles" if "lgbm_ranker_shallow" in configurations else None,
         },
         "protocol": {
             "development_start": args.development_start,

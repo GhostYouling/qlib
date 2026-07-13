@@ -53,6 +53,28 @@ def test_deterministic_daily_sample_is_label_independent_and_capped():
     assert sampled[["signal_date", "instrument"]].equals(sampled_relabeled[["signal_date", "instrument"]])
 
 
+def test_ranker_relevance_uses_only_each_historical_signal_cross_section():
+    frame = pd.DataFrame(
+        {
+            "signal_date": pd.to_datetime(["2024-01-02"] * 4 + ["2024-01-05"] * 4),
+            "instrument": ["A", "B", "C", "D"] * 2,
+            "forward_gross_return": [0.01, 0.04, -0.01, 0.02, 0.50, 0.10, -0.20, 0.00],
+        }
+    )
+    relevance = MODEL.cross_sectional_relevance(frame, buckets=5)
+    first = relevance.loc[relevance["signal_date"] == pd.Timestamp("2024-01-02")]
+    second = relevance.loc[relevance["signal_date"] == pd.Timestamp("2024-01-05")]
+    assert first.set_index("instrument")["ranking_relevance"].to_dict() == {"A": 2, "B": 4, "C": 1, "D": 3}
+    assert second.set_index("instrument")["ranking_relevance"].to_dict() == {"A": 4, "B": 3, "C": 1, "D": 2}
+    with pytest.raises(ValueError, match="at least two"):
+        MODEL.cross_sectional_relevance(frame, buckets=1)
+
+
+def test_model_family_includes_the_predeclared_ranker_but_not_new_exploratory_features():
+    assert "lgbm_ranker_shallow" in MODEL.MODEL_CONFIGURATIONS
+    assert MODEL.validate_model_configuration("lgbm_ranker_shallow").name == "lgbm_ranker_shallow"
+
+
 def test_topk_model_rounds_hold_cash_if_a_selected_future_quote_is_missing():
     signal = pd.Timestamp("2024-01-02")
     predictions = pd.DataFrame(
