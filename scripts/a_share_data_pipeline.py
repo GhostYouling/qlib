@@ -409,8 +409,12 @@ def _atomic_write_parquet(data: pd.DataFrame, destination: Path) -> None:
 def merge_and_save_bars(path: Path, new_bars: pd.DataFrame, end: dt.date | None = None) -> pd.DataFrame:
     """Merge refreshed rows into a per-symbol source file, preserving latest data."""
 
+    expected_symbol = path.stem.upper()
+    new_bars = normalize_bar_symbols(new_bars, expected_symbol, source=f"new rows for {path.name}")
     if path.exists():
-        old_bars = pd.read_parquet(path)
+        old_bars = normalize_bar_symbols(
+            pd.read_parquet(path), expected_symbol, source=f"existing rows in {path.name}"
+        )
         combined = pd.concat([old_bars, new_bars], ignore_index=True)
     else:
         combined = new_bars.copy()
@@ -420,6 +424,65 @@ def merge_and_save_bars(path: Path, new_bars: pd.DataFrame, end: dt.date | None 
         combined = combined.loc[combined["date"] <= pd.Timestamp(end)].copy()
     _atomic_write_parquet(combined, path)
     return combined
+
+
+def normalize_bar_symbols(bars: pd.DataFrame, expected_symbol: str, *, source: str) -> pd.DataFrame:
+    """Return bars with a canonical symbol column, rejecting conflicting identities.
+
+    Source files are one symbol per filename. A recovery source may omit the
+    redundant ``symbol`` field, but it must never relabel another instrument.
+    """
+
+    normalized = bars.copy()
+    expected = expected_symbol.upper()
+    if "symbol" not in normalized:
+        normalized.insert(1, "symbol", expected)
+        return normalized
+    supplied = normalized["symbol"].astype("string").str.strip().str.upper()
+    conflicting = supplied.notna() & supplied.ne("") & supplied.ne(expected)
+    if conflicting.any():
+        examples = sorted(supplied.loc[conflicting].dropna().unique())[:3]
+        raise PipelineError(f"{source} has symbol values inconsistent with {expected}: {examples}")
+    normalized["symbol"] = expected
+    return normalized
+
+
+def normalize_source_symbols(max_examples: int = 20) -> dict[str, Any]:
+    """Restore missing redundant symbol fields without changing market values.
+
+    Non-empty mismatched codes are treated as a hard error instead of being
+    overwritten, so this repair cannot silently alter a stock's identity.
+    """
+
+    normalized_rows = 0
+    affected: list[dict[str, Any]] = []
+    files = sorted(RAW_DIR.glob("*.parquet"))
+    for path in files:
+        bars = pd.read_parquet(path)
+        expected = path.stem.upper()
+        if "symbol" not in bars:
+            missing = pd.Series(True, index=bars.index)
+        else:
+            supplied = bars["symbol"].astype("string").str.strip().str.upper()
+            conflicting = supplied.notna() & supplied.ne("") & supplied.ne(expected)
+            if conflicting.any():
+                examples = sorted(supplied.loc[conflicting].dropna().unique())[:3]
+                raise PipelineError(f"{path.name} has symbol values inconsistent with {expected}: {examples}")
+            missing = supplied.isna() | supplied.eq("")
+        if not missing.any():
+            continue
+        repaired = normalize_bar_symbols(bars, expected, source=f"existing rows in {path.name}")
+        _atomic_write_parquet(repaired, path)
+        count = int(missing.sum())
+        normalized_rows += count
+        affected.append({"symbol": expected, "rows_normalized": count})
+    return {
+        "raw_files_checked": len(files),
+        "symbols_affected": len(affected),
+        "rows_normalized": normalized_rows,
+        "affected_symbols": affected[:max_examples],
+        "affected_symbol_count_not_shown": max(0, len(affected) - max_examples),
+    }
 
 
 def migrate_csv_source_files() -> int:
@@ -820,7 +883,11 @@ def run_status(_: argparse.Namespace) -> int:
                 if line.strip():
                     calendar_end = line.strip()
     maintenance: dict[str, Any] | None = None
-    maintenance_candidates = [METADATA_DIR / "latest_sanitization.json", METADATA_DIR / "latest_session_prune.json"]
+    maintenance_candidates = [
+        METADATA_DIR / "latest_sanitization.json",
+        METADATA_DIR / "latest_session_prune.json",
+        METADATA_DIR / "latest_symbol_normalization.json",
+    ]
     existing_maintenance = [path for path in maintenance_candidates if path.exists()]
     if existing_maintenance:
         path = max(existing_maintenance, key=lambda item: item.stat().st_mtime)
@@ -894,6 +961,34 @@ def run_sanitize(args: argparse.Namespace) -> int:
     return 0
 
 
+def run_normalize_symbols(args: argparse.Namespace) -> int:
+    """Repair missing source symbol fields and rebuild Qlib only when needed."""
+
+    universe_path = METADATA_DIR / "universe_latest.json"
+    if not universe_path.exists():
+        raise PipelineError("no universe snapshot exists; run `sync` before `normalize-symbols`")
+    instruments = [Instrument(**item) for item in json.loads(universe_path.read_text(encoding="utf-8"))]
+    started = dt.datetime.now(dt.timezone.utc)
+    with PipelineLock(LOCK_PATH):
+        repair = normalize_source_symbols(max_examples=args.max_examples)
+        qlib_summary = (
+            materialize_qlib(instruments, workers=args.dump_workers)
+            if repair["rows_normalized"] and not args.skip_dump
+            else {}
+        )
+    manifest = {
+        "started_at": started.isoformat(),
+        "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "repair": repair,
+        "qlib": qlib_summary,
+        "limitations": ["Only missing or blank symbol fields are restored; price and date fields are unchanged."],
+    }
+    write_json(METADATA_DIR / "latest_symbol_normalization.json", manifest)
+    write_json(METADATA_DIR / "repairs" / f"normalize_symbols_{started.strftime('%Y%m%dT%H%M%SZ')}.json", manifest)
+    print(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
 def run_prune_session(args: argparse.Namespace) -> int:
     """Drop provisional daily bars and rebuild Qlib output without a network call."""
 
@@ -957,6 +1052,15 @@ def build_parser() -> argparse.ArgumentParser:
     sanitize.add_argument("--skip-dump", action="store_true", help="repair Parquet only; do not rebuild Qlib binaries")
     sanitize.add_argument("--max-examples", type=int, default=20, help="maximum affected-symbol details printed")
     sanitize.set_defaults(func=run_sanitize)
+    normalize_symbols = subparsers.add_parser(
+        "normalize-symbols", help="restore missing source symbol fields and rebuild Qlib binaries"
+    )
+    normalize_symbols.add_argument(
+        "--dump-workers", type=int, default=DEFAULT_WORKERS, help="Qlib binary materialization workers"
+    )
+    normalize_symbols.add_argument("--skip-dump", action="store_true", help="repair Parquet only; do not rebuild Qlib binaries")
+    normalize_symbols.add_argument("--max-examples", type=int, default=20, help="maximum affected-symbol details printed")
+    normalize_symbols.set_defaults(func=run_normalize_symbols)
     prune = subparsers.add_parser("prune-session", help="remove provisional daily bars after a safe cutoff")
     prune.add_argument("--end", help="completed-session cutoff; defaults to the latest safe local date")
     prune.add_argument("--dump-workers", type=int, default=DEFAULT_WORKERS, help="Qlib binary materialization workers")

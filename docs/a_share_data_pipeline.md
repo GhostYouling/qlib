@@ -79,6 +79,12 @@ python scripts/a_share_data_pipeline.py status
 
 公共当前股票清单适合维护今天的“可买范围”，但并不能保证已退市股票的完整历史。因此，以它训练长期回测会有幸存者偏差风险。严肃研究需要补充有上市/退市区间与公告时点的商业数据或合规数据源；这条管线已经按日保存清单快照和运行记录，为后续替换数据源保留了审计入口。
 
+若数据恢复或外部修补后审计报告提示原始 Parquet 的 `symbol` 字段为空，可运行纯本地修复。它只按文件名补齐缺失/空白代码；若发现非空代码与文件名不一致则立即失败，不会改写价格、日期或股票身份。修复清单写入 `data/metadata/repairs/`，并仅在确有修复时重建 Qlib 二进制。
+
+```bash
+python scripts/a_share_data_pipeline.py normalize-symbols
+```
+
 ## 因子就绪度测试
 
 在首次训练或修改数据源后，先运行低资源的 Alpha158 就绪度测试：它会从主板、创业板、科创板各确定性抽样 8 只股票，检查 OHLCV/VWAP、两日远期标签、158 个 Alpha158 技术特征与两个股票池。报告写入 `data/metadata/factor_readiness.json`。
@@ -168,6 +174,18 @@ python scripts/a_share_short_horizon_factor_research.py run \
   --open-cost 0.00012 --close-cost 0.00062 \
   --selection-policy positive_year_stability_mdd20 --research-only \
   --iteration-label v8_ten_day_reversal_historical_diagnostic
+```
+
+`v9_compression_reversal_ic` 紧接 V8 的开发期单因子诊断，但不重复被否定的长趋势权重。它将低 5 日振幅、低当日振幅、低 20 日波动、缩量和 10 日回撤拆为 4 个压缩/反转蓝图，并与同样 3 种质量模式交叉，共 12 个组合。因为这些字段是根据同一开发期诊断选出的，V9 只能做历史敏感性记录，绝不登记或产生前瞻选股名单。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py run \
+  --candidate-library v9_compression_reversal_ic \
+  --start 2019-01-01 --end 2026-07-13 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter always \
+  --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20 --research-only \
+  --iteration-label v9_compression_reversal_historical_diagnostic
 ```
 
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge 与浅层 LightGBM 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票。2023–2025 仅用于模型配置选择，2026 只作检查；任一配置必须每个开发年度为正且整体最大回撤不差于 −20% 才能在审计中标为合格。该命令只写入模型审计，绝不会登记策略或产生选股名单。
@@ -402,7 +420,7 @@ python scripts/a_share_data_pipeline.py prune-session
 
 ## 全量数据集验收
 
-在建模前或数据源/转储逻辑发生改变后，运行全量审计。它逐个读取全部 Parquet 文件、逐字段比对全部 Qlib 二进制值、检查日历和股票池，并抽样用 Qlib 读取器和东财最新日线复核。结果写入 `data/metadata/dataset_audit.json`。
+在建模前或数据源/转储逻辑发生改变后，运行全量审计。它逐个读取全部 Parquet 文件、逐字段比对全部 Qlib 二进制值、检查日历和股票池，并抽样用 Qlib 读取器和东财最新日线复核。审计还会将 `universe_latest.json` 的上市日期与每只本地股票的日线起止区间、`buyable_main_chinext`／`factor_main_chinext_star` 的 Qlib 区间逐一比对；这能证明本地保留股票不会在上市前或数据结束后被交易，并显示已结束交易区间的股票数量。它不能证明当前公共快照包含完整的历史退市名单，该限制会明确保留。结果写入 `data/metadata/dataset_audit.json`。
 
 ```bash
 python scripts/audit_a_share_dataset.py

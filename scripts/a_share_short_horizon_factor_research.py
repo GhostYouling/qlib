@@ -821,6 +821,65 @@ V8_TEN_DAY_REVERSION_CANDIDATES = build_v8_ten_day_reversion_candidates()
 if len({candidate.name for candidate in V8_TEN_DAY_REVERSION_CANDIDATES}) != 12:
     raise RuntimeError("V8 candidate library must contain 12 uniquely named strategies")
 
+# V9 isolates the strongest consistent development-only associations instead
+# of blending them with the previously rejected long-trend family. Low range,
+# low volatility and ten-day reversal are tested as a compact sensitivity grid.
+# The diagnostic has already seen the development period, so no V9 result can
+# be registered or promoted without a genuinely unseen future evaluation.
+COMPRESSION_REVERSION_SIGNAL_BLUEPRINTS = (
+    Candidate(
+        name="reversal_10_quiet_compression",
+        description="Ten-day pullback with quiet volume, low twenty-day volatility, and a narrow five-day range.",
+        weights={"reversal_10": 0.40, "volume_dry_up": 0.15, "volatility_low_20": 0.25, "amplitude_low": 0.20},
+    ),
+    Candidate(
+        name="reversal_10_quiet_one_day_compression",
+        description="Ten-day pullback with quiet volume, low twenty-day volatility, and a narrow current-day range.",
+        weights={"reversal_10": 0.40, "volume_dry_up": 0.15, "volatility_low_20": 0.20, "amplitude_low_1": 0.25},
+    ),
+    Candidate(
+        name="reversal_10_dual_compression",
+        description="Ten-day pullback with quiet volume and both five-day and one-day range compression.",
+        weights={"reversal_10": 0.35, "volume_dry_up": 0.10, "volatility_low_20": 0.20, "amplitude_low": 0.20, "amplitude_low_1": 0.15},
+    ),
+    Candidate(
+        name="quiet_dual_compression",
+        description="Pure quiet-volatility and dual-range-compression baseline, without a trend or reversal component.",
+        weights={"volume_dry_up": 0.20, "volatility_low_20": 0.30, "amplitude_low": 0.25, "amplitude_low_1": 0.25},
+    ),
+)
+
+
+def build_v9_compression_reversion_candidates() -> tuple[Candidate, ...]:
+    """Build a compact diagnostic-driven compression/reversion sensitivity grid."""
+
+    additions: list[Candidate] = []
+    for blueprint in COMPRESSION_REVERSION_SIGNAL_BLUEPRINTS:
+        if not math.isclose(sum(blueprint.weights.values()), 1.0, abs_tol=1e-9):
+            raise RuntimeError(f"V9 compression blueprint weights must sum to one: {blueprint.name}")
+        for suffix, quality_factor, quality_weight in REVERSION_IC_QUALITY_OVERLAYS:
+            weights = {factor: weight * (1.0 - quality_weight) for factor, weight in blueprint.weights.items()}
+            if quality_factor is not None:
+                weights[quality_factor] = quality_weight
+            additions.append(
+                Candidate(
+                    name=f"expanded_v9_{blueprint.name}_{suffix}",
+                    description=(
+                        f"{blueprint.description} Quality overlay: "
+                        f"{quality_factor or 'quality_gate_only'} at {quality_weight:.0%}."
+                    ),
+                    weights=weights,
+                )
+            )
+    if len(additions) != 12 or len({candidate.name for candidate in additions}) != len(additions):
+        raise RuntimeError("V9 compression grid must contain 12 new unique strategies")
+    return tuple(additions)
+
+
+V9_COMPRESSION_REVERSION_CANDIDATES = build_v9_compression_reversion_candidates()
+if len({candidate.name for candidate in V9_COMPRESSION_REVERSION_CANDIDATES}) != 12:
+    raise RuntimeError("V9 candidate library must contain 12 uniquely named strategies")
+
 CANDIDATE_LIBRARIES = {
     "v1": CANDIDATES,
     "v2_microstructure": V2_CANDIDATES,
@@ -830,6 +889,7 @@ CANDIDATE_LIBRARIES = {
     "v6_soft_risk": V6_CANDIDATES,
     "v7_reversion_ic": V7_CANDIDATES,
     "v8_reversal_10_ic": V8_TEN_DAY_REVERSION_CANDIDATES,
+    "v9_compression_reversal_ic": V9_COMPRESSION_REVERSION_CANDIDATES,
 }
 CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v1": "5 fixed baselines plus 19 fixed signal blueprints crossed with 5 fixed quality overlays",
@@ -860,6 +920,10 @@ CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v8_reversal_10_ic": (
         "12 diagnostic-driven historical sensitivity combinations: four ten-day-reversal/quiet-volume/gap blueprints "
         "crossed with quality-gate-only, 5% growth, and 10% composite quality modes"
+    ),
+    "v9_compression_reversal_ic": (
+        "12 diagnostic-driven historical sensitivity combinations: four low-volatility/range-compression and ten-day "
+        "reversal blueprints crossed with quality-gate-only, 5% growth, and 10% composite quality modes"
     ),
 }
 

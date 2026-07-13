@@ -548,6 +548,24 @@ def test_v8_ten_day_reversal_grid_is_small_predeclared_and_does_not_rewrite_v7()
     assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
 
 
+def test_v9_compression_reversal_grid_is_small_predeclared_and_keeps_v8_immutable():
+    assert len(RESEARCH.V8_TEN_DAY_REVERSION_CANDIDATES) == 12
+    additions = RESEARCH.V9_COMPRESSION_REVERSION_CANDIDATES
+    assert len(additions) == 12
+    assert len(RESEARCH.candidate_library("v9_compression_reversal_ic")) == 12
+    assert all(candidate.name.startswith("expanded_v9_") for candidate in additions)
+    dual = RESEARCH.candidate_by_name(
+        "expanded_v9_reversal_10_dual_compression_gate_only", "v9_compression_reversal_ic"
+    )
+    pure = RESEARCH.candidate_by_name(
+        "expanded_v9_quiet_dual_compression_q10_composite", "v9_compression_reversal_ic"
+    )
+    assert dual.weights["reversal_10"] == pytest.approx(0.35)
+    assert dual.weights["amplitude_low"] == pytest.approx(0.20)
+    assert pure.weights["quality_score"] == pytest.approx(0.10)
+    assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
+
+
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
     winner = {
         "candidate": "expanded_reversal_trend_20_q25_profit",

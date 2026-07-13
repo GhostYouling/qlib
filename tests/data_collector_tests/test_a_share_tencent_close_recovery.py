@@ -46,3 +46,38 @@ def test_parse_quote_line_rejects_missing_amount():
     invalid = _quote().replace("9.19/757620/693325381", "")
     with pytest.raises(ValueError, match="missing amount"):
         RECOVERY.parse_quote_line("sh600000", invalid, RECOVERY.dt.date(2026, 7, 13))
+
+
+def test_recovery_bar_is_written_with_canonical_symbol(monkeypatch, tmp_path):
+    quote = RECOVERY.parse_quote_line("sh600000", _quote(), RECOVERY.dt.date(2026, 7, 13))
+    assert quote is not None
+    universe = [
+        {
+            "symbol": "SH600000", "code": "600000", "name": "测试", "board": "main",
+            "listing_date": None, "market_cap": None, "float_market_cap": None, "is_st": False,
+        }
+    ]
+    snapshot = tmp_path / "universe.json"
+    snapshot.write_text(__import__("json").dumps(universe), encoding="utf-8")
+    captured = {}
+    monkeypatch.setattr(RECOVERY, "UNIVERSE_PATH", snapshot)
+    monkeypatch.setattr(RECOVERY, "PipelineLock", lambda _: _NoopLock())
+    monkeypatch.setattr(RECOVERY, "fetch_quotes", lambda *_: ({"sh600000": quote}, {}))
+    monkeypatch.setattr(RECOVERY, "materialize_qlib", lambda *_: {})
+    monkeypatch.setattr(RECOVERY, "_atomic_write_json", lambda *_: None)
+    monkeypatch.setattr(RECOVERY, "DATA_ROOT", tmp_path)
+    monkeypatch.setattr(RECOVERY, "RECOVERY_DIR", tmp_path / "recoveries")
+    monkeypatch.setattr(RECOVERY, "METADATA_DIR", tmp_path / "metadata")
+    def capture_merge(_path, bar, **_kwargs):
+        captured["symbol"] = bar.loc[0, "symbol"]
+    monkeypatch.setattr(RECOVERY, "merge_and_save_bars", capture_merge)
+    RECOVERY.run_recovery(RECOVERY.dt.date(2026, 7, 13), batch_size=1, dump_workers=1)
+    assert captured["symbol"] == "SH600000"
+
+
+class _NoopLock:
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return None

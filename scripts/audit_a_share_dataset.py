@@ -27,7 +27,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_ROOT = REPO_ROOT / "data"
 RAW_DIR = DATA_ROOT / "raw" / "a_share" / "daily"
 QLIB_DIR = DATA_ROOT / "qlib" / "cn_a_share"
+METADATA_DIR = DATA_ROOT / "metadata"
 DEFAULT_OUTPUT = DATA_ROOT / "metadata" / "dataset_audit.json"
+DEFAULT_UNIVERSE_SNAPSHOT = METADATA_DIR / "universe_latest.json"
 RAW_COLUMNS = (
     "date",
     "symbol",
@@ -88,6 +90,150 @@ def read_instrument_ranges(path: Path) -> dict[str, tuple[pd.Timestamp, pd.Times
             raise ValueError(f"inverted range for {symbol} in {path}")
         ranges[symbol] = (start, finish)
     return ranges
+
+
+def audit_temporal_universe_coverage(
+    snapshot_path: Path,
+    calendar: pd.DatetimeIndex,
+    instrument_ranges: dict[str, tuple[pd.Timestamp, pd.Timestamp]],
+    buyable_ranges: dict[str, tuple[pd.Timestamp, pd.Timestamp]],
+    factor_ranges: dict[str, tuple[pd.Timestamp, pd.Timestamp]],
+) -> tuple[dict[str, Any], list[str], list[str]]:
+    """Check point-in-time *ranges* for every locally retained instrument.
+
+    A current provider snapshot is not proof that no historical delisted stock
+    was ever omitted.  It can, however, prove the narrower and crucial
+    invariant that every retained stock is absent before its known listing date
+    and after the final locally available trading date, and that both custom
+    Qlib universes preserve those same date ranges.
+    """
+
+    errors: list[str] = []
+    limitations: list[str] = [
+        "The current universe snapshot can validate trading ranges for locally retained symbols, but it cannot prove complete historical listing/delisting coverage."
+    ]
+    if not snapshot_path.exists():
+        return (
+            {
+                "status": "unavailable",
+                "snapshot_path": str(snapshot_path),
+                "retained_instrument_count": len(instrument_ranges),
+            },
+            [f"universe snapshot does not exist: {snapshot_path}"],
+            limitations,
+        )
+    try:
+        records = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return (
+            {
+                "status": "unavailable",
+                "snapshot_path": str(snapshot_path),
+                "retained_instrument_count": len(instrument_ranges),
+            },
+            [f"cannot read universe snapshot: {type(exc).__name__}"],
+            limitations,
+        )
+    if not isinstance(records, list):
+        return (
+            {
+                "status": "unavailable",
+                "snapshot_path": str(snapshot_path),
+                "retained_instrument_count": len(instrument_ranges),
+            },
+            ["universe snapshot must be a list of records"],
+            limitations,
+        )
+
+    by_symbol: dict[str, dict[str, Any]] = {}
+    malformed = 0
+    duplicate_symbols: list[str] = []
+    for record in records:
+        if not isinstance(record, dict) or not record.get("symbol"):
+            malformed += 1
+            continue
+        symbol = str(record["symbol"]).upper()
+        if symbol in by_symbol:
+            duplicate_symbols.append(symbol)
+        by_symbol[symbol] = record
+    if malformed:
+        errors.append(f"universe snapshot has {malformed} malformed records")
+    if duplicate_symbols:
+        errors.append(f"universe snapshot has duplicate symbols: {len(set(duplicate_symbols))}")
+
+    snapshot_symbols = set(by_symbol)
+    retained_symbols = set(instrument_ranges)
+    missing_snapshot = retained_symbols - snapshot_symbols
+    extra_snapshot = snapshot_symbols - retained_symbols
+    if missing_snapshot:
+        errors.append(f"universe snapshot is missing {len(missing_snapshot)} retained instruments")
+    if extra_snapshot:
+        limitations.append(
+            f"The current snapshot has {len(extra_snapshot)} symbols without retained daily bars; they are excluded from the local Qlib universes and are not tradable research candidates."
+        )
+
+    listing_date_missing = 0
+    listing_date_invalid = 0
+    pre_listing_ranges: list[str] = []
+    for symbol, (start, _) in instrument_ranges.items():
+        record = by_symbol.get(symbol)
+        if record is None:
+            continue
+        raw_listing_date = record.get("listing_date")
+        if not raw_listing_date:
+            listing_date_missing += 1
+            continue
+        listing_date = pd.to_datetime(raw_listing_date, errors="coerce")
+        if pd.isna(listing_date):
+            listing_date_invalid += 1
+            continue
+        if start < pd.Timestamp(listing_date).normalize():
+            pre_listing_ranges.append(symbol)
+    if listing_date_invalid:
+        errors.append(f"universe snapshot has {listing_date_invalid} invalid listing dates")
+    if pre_listing_ranges:
+        errors.append(f"{len(pre_listing_ranges)} retained instruments start before their listed date")
+
+    buyable_range_mismatches = [
+        symbol for symbol, date_range in buyable_ranges.items() if instrument_ranges.get(symbol) != date_range
+    ]
+    factor_range_mismatches = [
+        symbol for symbol, date_range in factor_ranges.items() if instrument_ranges.get(symbol) != date_range
+    ]
+    if buyable_range_mismatches:
+        errors.append(f"{len(buyable_range_mismatches)} buyable ranges differ from instruments/all.txt")
+    if factor_range_mismatches:
+        errors.append(f"{len(factor_range_mismatches)} factor ranges differ from instruments/all.txt")
+
+    calendar_end = calendar[-1]
+    terminal_symbols = sorted(symbol for symbol, (_, finish) in instrument_ranges.items() if finish < calendar_end)
+    terminal_buyable = sorted(symbol for symbol in terminal_symbols if symbol in buyable_ranges)
+    return (
+        {
+            "status": "passed" if not errors else "failed",
+            "snapshot_path": str(snapshot_path.resolve()),
+            "snapshot_symbol_count": len(snapshot_symbols),
+            "retained_instrument_count": len(retained_symbols),
+            "snapshot_without_daily_bar_count": len(extra_snapshot),
+            "snapshot_without_daily_bar_examples": sorted(extra_snapshot)[:20],
+            "retained_without_snapshot_count": len(missing_snapshot),
+            "listing_date_coverage": float(
+                (len(retained_symbols) - listing_date_missing - listing_date_invalid) / len(retained_symbols)
+            )
+            if retained_symbols
+            else 0.0,
+            "listing_date_missing": listing_date_missing,
+            "listing_date_invalid": listing_date_invalid,
+            "pre_listing_range_count": len(pre_listing_ranges),
+            "terminal_range_count": len(terminal_symbols),
+            "terminal_buyable_range_count": len(terminal_buyable),
+            "buyable_range_mismatch_count": len(buyable_range_mismatches),
+            "factor_range_mismatch_count": len(factor_range_mismatches),
+            "terminal_range_examples": terminal_symbols[:20],
+        },
+        errors,
+        limitations,
+    )
 
 
 def _float_array(frame: pd.DataFrame, field: str) -> np.ndarray:
@@ -310,6 +456,12 @@ def run_audit(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     if not factor_star:
         failures.append("factor universe contains no STAR instruments")
 
+    temporal_universe, temporal_errors, temporal_limitations = audit_temporal_universe_coverage(
+        Path(args.universe_snapshot).expanduser().resolve(), calendar, instrument_ranges, buyable, factor
+    )
+    if temporal_errors:
+        failures.extend(temporal_errors)
+
     active_symbols = sorted(
         symbol for symbol, (_, finish) in instrument_ranges.items() if finish >= calendar[-1]
     )
@@ -323,7 +475,7 @@ def run_audit(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         failures.extend(source_errors)
 
     restoration_factor_files = list((qlib_dir / "features").glob("*/factor.day.bin"))
-    limitations: list[str] = []
+    limitations: list[str] = list(temporal_limitations)
     if len(restoration_factor_files) != len(raw_files):
         limitations.append(
             "Qlib restoration factors are absent; Alpha features are usable, but exact A-share lot-size backtests are not."
@@ -346,6 +498,7 @@ def run_audit(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "factor_main_chinext_star": len(factor),
             "factor_star_count": len(factor_star),
         },
+        "temporal_universe": temporal_universe,
         "qlib_binary": {"fields": list(FEATURE_FIELDS), "mismatch_fields": dict(mismatch_counts)},
         "runtime_reader": {"samples": sample_symbols, "errors": reader_errors},
         "source_tail": {"samples": source_symbols, "errors": source_errors},
@@ -364,6 +517,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--workers", type=int, default=3, help="parallel file-audit workers")
     parser.add_argument("--qlib-samples", type=int, default=32, help="Qlib runtime reader samples")
     parser.add_argument("--source-samples", type=int, default=24, help="public-source tail comparison samples; set 0 to skip")
+    parser.add_argument(
+        "--universe-snapshot",
+        default=str(DEFAULT_UNIVERSE_SNAPSHOT),
+        help="current provider universe snapshot used to validate locally retained trading ranges",
+    )
     parser.add_argument("--require-restoration-factor", action="store_true", help="fail if factor.day.bin is absent")
     parser.add_argument("--max-error-examples", type=int, default=20, help="maximum failed-symbol details in JSON")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="JSON report path")

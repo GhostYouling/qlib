@@ -170,7 +170,10 @@ def run_recovery(target: dt.date, batch_size: int, dump_workers: int) -> dict[st
         for source_symbol, quote in quotes.items():
             instrument = symbol_to_instrument[source_symbol]
             destination = DATA_ROOT / "raw" / "a_share" / "daily" / f"{instrument.symbol.lower()}.parquet"
-            bar = pd.DataFrame([quote])
+            # Tencent's compact quote does not carry Qlib's canonical symbol.
+            # Preserve it explicitly so raw Parquet remains independently
+            # auditable rather than relying on the filename alone.
+            bar = pd.DataFrame([{**quote, "symbol": instrument.symbol}])
             merge_and_save_bars(destination, bar, end=target)
             updated += 1
         if updated == 0:

@@ -73,6 +73,39 @@ def test_merge_and_save_bars_keeps_refreshed_row(tmp_path):
     assert pd.read_parquet(target)["close"].iloc[0] == 10.2
 
 
+def test_merge_and_save_bars_restores_missing_symbol_without_changing_identity(tmp_path):
+    target = tmp_path / "sh600519.parquet"
+    recovered = pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2026-07-13"]),
+            "open": [10.0], "high": [10.3], "low": [9.9], "close": [10.1],
+            "volume": [100.0], "amount": [101000.0], "vwap": [10.1],
+            "change": [0.1], "pct_chg": [1.0], "turnover": [1.0],
+        }
+    )
+    merged = PIPELINE.merge_and_save_bars(target, recovered)
+    assert merged["symbol"].tolist() == ["SH600519"]
+    assert pd.read_parquet(target)["symbol"].tolist() == ["SH600519"]
+
+
+def test_merge_and_save_bars_rejects_conflicting_symbol(tmp_path):
+    target = tmp_path / "sh600519.parquet"
+    conflicting = pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2026-07-13"]), "symbol": ["SZ000001"],
+            "open": [10.0], "high": [10.3], "low": [9.9], "close": [10.1],
+            "volume": [100.0], "amount": [101000.0], "vwap": [10.1],
+            "change": [0.1], "pct_chg": [1.0], "turnover": [1.0],
+        }
+    )
+    try:
+        PIPELINE.merge_and_save_bars(target, conflicting)
+    except PIPELINE.PipelineError as exc:
+        assert "inconsistent with SH600519" in str(exc)
+    else:
+        raise AssertionError("conflicting source identity must be rejected")
+
+
 def test_latest_completed_session_date_avoids_live_and_weekend_bars():
     assert PIPELINE.latest_completed_session_date(pd.Timestamp("2026-07-13 15:29").to_pydatetime()).isoformat() == "2026-07-10"
     assert PIPELINE.latest_completed_session_date(pd.Timestamp("2026-07-13 15:30").to_pydatetime()).isoformat() == "2026-07-13"
