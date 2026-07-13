@@ -54,6 +54,8 @@ DEFAULT_MAJOR_HOLDER_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "major_
 DEFAULT_MAJOR_HOLDER_EVENT_MANIFEST = DATA_ROOT / "metadata" / "major_holder_changes_manifest.json"
 DEFAULT_BLOCK_TRADE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "block_trades.parquet"
 DEFAULT_BLOCK_TRADE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "block_trades_manifest.json"
+DEFAULT_MARGIN_FINANCING_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "margin_financing_top_flows.parquet"
+DEFAULT_MARGIN_FINANCING_EVENT_MANIFEST = DATA_ROOT / "metadata" / "margin_financing_top_flows_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
@@ -69,6 +71,7 @@ EASTMONEY_PERFORMANCE_FORECAST_REPORT = "RPT_PUBLIC_OP_NEWPREDICT"
 EASTMONEY_BILLBOARD_REPORT = "RPT_DAILYBILLBOARD_DETAILSNEW"
 EASTMONEY_MAJOR_HOLDER_REPORT = "RPT_SHARE_HOLDER_INCREASE"
 EASTMONEY_BLOCK_TRADE_REPORT = "RPT_DATA_BLOCKTRADE"
+EASTMONEY_MARGIN_FINANCING_REPORT = "RPTA_WEB_RZRQ_GGMX"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -136,6 +139,21 @@ BLOCK_TRADE_FACTOR_DIAGNOSTIC_COLUMNS = (
     "block_trade_event_count",
     "block_trade_freshness",
 )
+MARGIN_FINANCING_EVENT_COLUMNS = (
+    "instrument",
+    "trade_date",
+    "margin_net_buy_to_market_cap",
+    "margin_buy_to_market_cap",
+    "margin_balance_to_market_cap",
+    "margin_financing_balance_growth",
+)
+MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS = (
+    "margin_net_buy_to_market_cap",
+    "margin_buy_to_market_cap",
+    "margin_balance_to_market_cap",
+    "margin_financing_balance_growth",
+)
+MARGIN_FINANCING_TOP_N = 100
 # This direction is deliberately not part of the development diagnostic
 # catalog.  It was formed after reading the completed 2019--2025 diagnostic,
 # so it may only be evaluated in a separately recorded post-development
@@ -1595,6 +1613,52 @@ def _eastmoney_block_trade_request(
     raise RuntimeError(f"cannot fetch block trades {start_date} to {end_date} page {page_number}: {errors[-1]}")
 
 
+def _eastmoney_margin_financing_top_flow_request(
+    session: requests.Session, trade_date: str, top_n: int
+) -> dict[str, Any]:
+    """Fetch one fixed top-N financing-flow page for one market session.
+
+    The provider includes ``RCHANGE3DCP``/``RCHANGE5DCP``/``RCHANGE10DCP`` in
+    its complete report.  Those are post-session outcomes, so this request
+    names only contemporaneous financing fields and market capitalization.
+    ``top_n`` is intentionally capped at the public API's 500-row page size:
+    the hypothesis is a stable, declared high-financing-flow event sample, not
+    a full-universe missing-data proxy.
+    """
+
+    if not 1 <= top_n <= 500:
+        raise ValueError("top_n must be between 1 and 500")
+    params = {
+        "reportName": EASTMONEY_MARGIN_FINANCING_REPORT,
+        "columns": "DATE,SCODE,RZJME,RZMRE,RZYE,SZ,FIN_BALANCE_GR,TRADE_MARKET_CODE",
+        "filter": f"(DATE='{trade_date}')",
+        "pageNumber": 1,
+        "pageSize": top_n,
+        "sortTypes": "-1",
+        "sortColumns": "RZJME",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(4):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            # A later local daily bar can precede the public margin update.  A
+            # no-data source response is evidence of that lag, not a download
+            # failure and must remain visible in the manifest.
+            if payload.get("success") is False and payload.get("code") == 9201:
+                return {"result": {"data": []}, "source_status": "not_published"}
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(f"cannot fetch margin-financing top flows for {trade_date}: {errors[-1]}")
+
+
 def fetch_annual_report_rows(session: requests.Session, report_date: str) -> list[dict[str, Any]]:
     """Fetch all pages for one annual report period from the public endpoint."""
 
@@ -1668,6 +1732,15 @@ def fetch_block_trade_rows(session: requests.Session, start_date: str, end_date:
         payload = _eastmoney_block_trade_request(session, start_date, end_date, page_number=page_number)
         rows.extend((payload.get("result") or {}).get("data") or [])
     return rows
+
+
+def fetch_margin_financing_top_flow_rows(
+    session: requests.Session, trade_date: str, top_n: int
+) -> list[dict[str, Any]]:
+    """Fetch the declared high-financing-flow event universe for one session."""
+
+    payload = _eastmoney_margin_financing_top_flow_request(session, trade_date, top_n)
+    return list((payload.get("result") or {}).get("data") or [])
 
 
 def normalize_fundamental_rows(rows: Iterable[dict[str, Any]], report_date: str) -> pd.DataFrame:
@@ -1874,6 +1947,79 @@ def normalize_block_trade_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
     for column in BLOCK_TRADE_EVENT_COLUMNS[2:]:
         aggregated[column] = pd.to_numeric(aggregated[column], errors="coerce")
     return aggregated.sort_values(["instrument", "trade_date"], kind="stable").reset_index(drop=True)
+
+
+def normalize_margin_financing_top_flow_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Reduce public financing data to same-close, size-normalized event fields.
+
+    The input is already the declared daily Top-N by financing net buy.  It is
+    *not* treated as an observation of no financing activity for omitted
+    stocks.  Ratio normalization uses the provider's same-session market cap
+    and excludes ETFs/non-A-share codes through ``qlib_symbol``.  No source
+    price, same-day return, or post-event return field is retained.
+    """
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=MARGIN_FINANCING_EVENT_COLUMNS)
+    net_buy = pd.to_numeric(raw.get("RZJME", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    buy = pd.to_numeric(raw.get("RZMRE", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    balance = pd.to_numeric(raw.get("RZYE", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    market_cap = pd.to_numeric(raw.get("SZ", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    with np.errstate(divide="ignore", invalid="ignore"):
+        net_buy_to_market_cap = net_buy / market_cap
+        buy_to_market_cap = buy / market_cap
+        balance_to_market_cap = balance / market_cap
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("SCODE", pd.Series(index=raw.index, dtype="object")).map(qlib_symbol),
+            "trade_date": pd.to_datetime(raw.get("DATE"), errors="coerce"),
+            "margin_net_buy_to_market_cap": net_buy_to_market_cap,
+            "margin_buy_to_market_cap": buy_to_market_cap,
+            "margin_balance_to_market_cap": balance_to_market_cap,
+            "margin_financing_balance_growth": pd.to_numeric(
+                raw.get("FIN_BALANCE_GR", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+        }
+    )
+    frame = frame.replace([np.inf, -np.inf], np.nan).dropna(subset=["instrument", "trade_date"])
+    for column in MARGIN_FINANCING_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    return (
+        frame.loc[:, list(MARGIN_FINANCING_EVENT_COLUMNS)]
+        .sort_values(["instrument", "trade_date"], kind="stable")
+        .drop_duplicates(["instrument", "trade_date"], keep="last")
+        .reset_index(drop=True)
+    )
+
+
+def merge_margin_financing_event_frames(existing: pd.DataFrame, fetched: pd.DataFrame) -> pd.DataFrame:
+    """Append a newer event retrieval without silently retaining duplicate days.
+
+    Daily public source rows can be corrected after an earlier download.  On an
+    explicit incremental refresh, newly fetched rows therefore replace an
+    existing instrument/date pair, while all untouched historical dates remain
+    in the auditable local snapshot.
+    """
+
+    frames: list[pd.DataFrame] = []
+    for frame in (existing, fetched):
+        if frame.empty:
+            continue
+        missing = sorted(set(MARGIN_FINANCING_EVENT_COLUMNS) - set(frame.columns))
+        if missing:
+            raise ValueError(f"margin-financing event frame is missing columns: {', '.join(missing)}")
+        frames.append(frame.loc[:, list(MARGIN_FINANCING_EVENT_COLUMNS)].copy())
+    if not frames:
+        return pd.DataFrame(columns=MARGIN_FINANCING_EVENT_COLUMNS)
+    merged = pd.concat(frames, ignore_index=True)
+    merged["trade_date"] = pd.to_datetime(merged["trade_date"], errors="coerce")
+    return (
+        merged.dropna(subset=["instrument", "trade_date"])
+        .sort_values(["instrument", "trade_date"], kind="stable")
+        .drop_duplicates(["instrument", "trade_date"], keep="last")
+        .reset_index(drop=True)
+    )
 
 
 def _eastmoney_session() -> requests.Session:
@@ -2173,6 +2319,111 @@ def sync_block_trade_events(start_year: int, end_year: int, output: Path, manife
     return result
 
 
+def sync_margin_financing_top_flow_events(
+    provider_uri: Path,
+    start: str,
+    end: str | None,
+    top_n: int,
+    output: Path,
+    manifest: Path,
+    merge_existing: bool = False,
+) -> dict[str, Any]:
+    """Download one fixed daily Top-N financing-flow snapshot from local sessions.
+
+    The local calendar determines which sessions are requested, so Chinese
+    market holidays are not mistaken for failed provider calls.  If the public
+    source has not yet published a local session, it is retained separately as
+    source lag; no stale row is invented for that session.
+    """
+
+    if not 1 <= top_n <= 500:
+        raise ValueError("top_n must be between 1 and 500")
+    start_date = pd.Timestamp(start).normalize()
+    if pd.isna(start_date):
+        raise ValueError("start must be a valid ISO date")
+    calendar = local_trading_calendar(provider_uri, end=end)
+    end_date = pd.Timestamp(end).normalize() if end is not None else calendar.max().normalize()
+    if pd.isna(end_date) or end_date < start_date:
+        raise ValueError("end must be a valid ISO date not earlier than start")
+    sessions = calendar[(calendar >= start_date) & (calendar <= end_date)]
+    if not len(sessions):
+        raise ValueError("no local trading sessions fall within the requested margin-financing range")
+    session = _eastmoney_session()
+    frames: list[pd.DataFrame] = []
+    unavailable_dates: list[str] = []
+    rows_by_year: dict[str, int] = {}
+    sessions_by_year: dict[str, int] = {}
+    for position, trade_date in enumerate(sessions, start=1):
+        date_text = pd.Timestamp(trade_date).date().isoformat()
+        raw = fetch_margin_financing_top_flow_rows(session, date_text, top_n)
+        normalized = normalize_margin_financing_top_flow_rows(raw)
+        year = str(pd.Timestamp(trade_date).year)
+        sessions_by_year[year] = sessions_by_year.get(year, 0) + 1
+        rows_by_year[year] = rows_by_year.get(year, 0) + len(normalized)
+        if normalized.empty:
+            unavailable_dates.append(date_text)
+        else:
+            frames.append(normalized)
+        if position % 50 == 0 or position == len(sessions):
+            print(
+                f"margin financing: {position}/{len(sessions)} sessions; "
+                f"{sum(len(frame) for frame in frames)} normalized stock/day events"
+            )
+        # The public endpoint is queried once per local market session.  Keep a
+        # small, fixed inter-request pause instead of parallelizing the source.
+        time.sleep(0.05)
+    fetched = (
+        pd.concat(frames, ignore_index=True)
+        if frames
+        else pd.DataFrame(columns=MARGIN_FINANCING_EVENT_COLUMNS)
+    )
+    fetched = merge_margin_financing_event_frames(pd.DataFrame(), fetched)
+    existing = load_margin_financing_events(output) if merge_existing and output.exists() else pd.DataFrame()
+    merged = merge_margin_financing_event_frames(existing, fetched)
+    if merged.empty:
+        raise RuntimeError("margin-financing top-flow sync produced no usable A-share events")
+    _atomic_write_parquet(output, merged)
+    result = {
+        "status": "completed",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_MARGIN_FINANCING_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+        "event_frequency": "daily_after_close_margin_financing_top_flow",
+        "selection_rule": {
+            "sort": "RZJME descending (same-session financing net buy amount)",
+            "top_n": top_n,
+            "not_observed_means_zero": False,
+        },
+        "requested_calendar_start": sessions.min().date().isoformat(),
+        "requested_calendar_end": sessions.max().date().isoformat(),
+        "sessions_requested": int(len(sessions)),
+        "sessions_by_year": sessions_by_year,
+        "fetched_rows_by_year": rows_by_year,
+        "rows_by_year": {
+            str(year): int(len(group))
+            for year, group in merged.groupby(pd.to_datetime(merged["trade_date"]).dt.year, sort=True)
+        },
+        "source_not_published_dates": unavailable_dates,
+        "merge_existing": merge_existing,
+        "existing_rows_before_merge": int(len(existing)),
+        "fetched_rows": int(len(fetched)),
+        "rows_written": len(merged),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "Only the predeclared top N financing net-buy rows per local session are retained; omitted stocks are not treated as zero flow.",
+            "The public report exposes RCHANGE3DCP/RCHANGE5DCP/RCHANGE10DCP post-session price changes. They are excluded from the request, storage, and scoring schema.",
+            "The source is a current public snapshot and can revise or omit historical rows; it is not an exchange-grade point-in-time financing database.",
+            "The event is treated as available after its session close for a next-local-session-open decision; the source does not provide a publication timestamp to prove an earlier availability.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
 def merge_quarterly_fundamentals(input_paths: Iterable[Path], output: Path, manifest: Path) -> dict[str, Any]:
     """Atomically combine independently downloaded quarterly snapshot chunks.
 
@@ -2306,6 +2557,25 @@ def load_block_trade_events(path: Path) -> pd.DataFrame:
     frame = frame.loc[:, list(BLOCK_TRADE_EVENT_COLUMNS)].copy()
     frame["trade_date"] = pd.to_datetime(frame["trade_date"], errors="coerce")
     for column in BLOCK_TRADE_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame = frame.dropna(subset=["instrument", "trade_date"])
+    return frame.sort_values(["instrument", "trade_date"], kind="stable").reset_index(drop=True)
+
+
+def load_margin_financing_events(path: Path) -> pd.DataFrame:
+    """Load and validate the fixed daily Top-N financing-flow event snapshot."""
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"margin-financing snapshot does not exist: {path}; run sync-margin-financing-events first"
+        )
+    frame = pd.read_parquet(path)
+    missing = sorted(set(MARGIN_FINANCING_EVENT_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(f"margin-financing snapshot is missing columns: {', '.join(missing)}")
+    frame = frame.loc[:, list(MARGIN_FINANCING_EVENT_COLUMNS)].copy()
+    frame["trade_date"] = pd.to_datetime(frame["trade_date"], errors="coerce")
+    for column in MARGIN_FINANCING_EVENT_COLUMNS[2:]:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     frame = frame.dropna(subset=["instrument", "trade_date"])
     return frame.sort_values(["instrument", "trade_date"], kind="stable").reset_index(drop=True)
@@ -2675,6 +2945,70 @@ def attach_block_trade_events_asof(
     return result
 
 
+def attach_margin_financing_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 0
+) -> pd.DataFrame:
+    """Attach same-close daily financing events for next-session-open decisions.
+
+    A session's financing ledger is treated as a post-close input.  Its rank
+    can therefore score the next local open, but not the session's own open.
+    The default zero-day age avoids silently carrying a daily flow into later
+    sessions; callers may only widen it through an explicit diagnostic option.
+    """
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    required_market = {"instrument", "datetime"}
+    if missing := sorted(required_market - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(MARGIN_FINANCING_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError(f"margin-financing events are missing columns: {', '.join(missing)}")
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source_events = events.loc[:, list(MARGIN_FINANCING_EVENT_COLUMNS)].copy()
+    source_events["margin_financing_effective_date"] = pd.to_datetime(source_events["trade_date"])
+    source_events = source_events.loc[
+        source_events["margin_financing_effective_date"].isin(calendar)
+    ].copy()
+    source_events = source_events.sort_values(
+        ["instrument", "margin_financing_effective_date", "trade_date"], kind="stable"
+    ).drop_duplicates(["instrument", "margin_financing_effective_date"], keep="last")
+    margin_columns = [
+        "margin_financing_trade_date",
+        "margin_net_buy_to_market_cap",
+        "margin_buy_to_market_cap",
+        "margin_balance_to_market_cap",
+        "margin_financing_balance_growth",
+        "margin_financing_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"] = 1
+    daily["_row"] = np.arange(len(daily))
+    for column in ("margin_financing_trade_date", "margin_financing_effective_date"):
+        daily[column] = pd.NaT
+    for column in margin_columns[1:-1]:
+        daily[column] = np.nan
+    event_rows = source_events.rename(
+        columns={"margin_financing_effective_date": "datetime", "trade_date": "margin_financing_trade_date"}
+    )[["instrument", "datetime", *[column for column in margin_columns if column != "margin_financing_effective_date"]]].copy()
+    event_rows["margin_financing_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"] = 0
+    event_rows["_row"] = np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False)
+    combined = combined.sort_values(["instrument", "datetime", "_kind"], kind="stable")
+    combined[margin_columns] = combined.groupby("instrument", sort=False)[margin_columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *margin_columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["margin_financing_age_days"] = (
+        pd.to_datetime(result["datetime"]) - pd.to_datetime(result["margin_financing_effective_date"])
+    ).dt.days
+    result["margin_financing_available"] = result["margin_financing_trade_date"].notna() & result[
+        "margin_financing_age_days"
+    ].between(0, max_age_days)
+    return result
+
+
 def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size: int) -> pd.DataFrame:
     """Load the local buyable universe and precompute only non-forward factors."""
 
@@ -2860,6 +3194,18 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         if column in result.columns
     ]
     raw_columns.extend(block_trade_raw_columns)
+    margin_financing_raw_columns = [
+        column
+        for column in (
+            "margin_net_buy_to_market_cap",
+            "margin_buy_to_market_cap",
+            "margin_balance_to_market_cap",
+            "margin_financing_balance_growth",
+            "margin_financing_age_days",
+        )
+        if column in result.columns
+    ]
+    raw_columns.extend(margin_financing_raw_columns)
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     # Event rows are forward-filled only so each row retains the event context
@@ -2871,6 +3217,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         ("billboard_available", billboard_raw_columns),
         ("major_holder_available", major_holder_raw_columns),
         ("block_trade_available", block_trade_raw_columns),
+        ("margin_financing_available", margin_financing_raw_columns),
     ):
         if available_column in result.columns:
             result.loc[~result[available_column].fillna(False), event_columns] = np.nan
@@ -2944,6 +3291,10 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
             result[column] = result[rank_column]
     if "rank_block_trade_age_days" in result.columns:
         result["block_trade_freshness"] = 1.0 - result["rank_block_trade_age_days"]
+    for column in MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS:
+        rank_column = f"rank_{column}"
+        if rank_column in result.columns:
+            result[column] = result[rank_column]
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_3"] = result["rank_momentum_3"]
@@ -4872,6 +5223,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         billboard_events = diagnostic.get("daily_billboard_events") or {}
         major_holder_events = diagnostic.get("major_holder_events") or {}
         block_trade_events = diagnostic.get("block_trade_events") or {}
+        margin_financing_events = diagnostic.get("margin_financing_events") or {}
         top = ranking[0] if ranking else {}
         diagnostics.append(
             {
@@ -4883,6 +5235,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "billboard_event_source": str(billboard_events.get("source", "—")),
                 "major_holder_event_source": str(major_holder_events.get("source", "—")),
                 "block_trade_event_source": str(block_trade_events.get("source", "—")),
+                "margin_financing_event_source": str(margin_financing_events.get("source", "—")),
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
@@ -5452,6 +5805,7 @@ def render_three_day_research_report(
                             diagnostic["billboard_event_source"],
                             diagnostic["major_holder_event_source"],
                             diagnostic["block_trade_event_source"],
+                            diagnostic["margin_financing_event_source"],
                         )
                         if source != "—"
                     )
@@ -6174,6 +6528,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     billboard_path = Path(args.billboard_events).expanduser() if args.billboard_events else None
     major_holder_path = Path(args.major_holder_events).expanduser() if args.major_holder_events else None
     block_trade_path = Path(args.block_trade_events).expanduser() if args.block_trade_events else None
+    margin_financing_path = Path(args.margin_financing_events).expanduser() if args.margin_financing_events else None
     experiment_root = Path(args.experiment_root).expanduser()
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -6203,6 +6558,11 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         market = attach_block_trade_events_asof(
             market, block_trade_events, max_age_days=args.max_block_trade_age_days
         )
+    if margin_financing_path is not None:
+        margin_financing_events = load_margin_financing_events(margin_financing_path)
+        market = attach_margin_financing_events_asof(
+            market, margin_financing_events, max_age_days=args.max_margin_financing_age_days
+        )
     ranked = rank_factor_frame(market)
     forward_returns = forward_factor_return_frame(ranked, args.hold_days)
     factor_catalog = [
@@ -6213,6 +6573,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *BILLBOARD_FACTOR_DIAGNOSTIC_COLUMNS,
             *MAJOR_HOLDER_FACTOR_DIAGNOSTIC_COLUMNS,
             *BLOCK_TRADE_FACTOR_DIAGNOSTIC_COLUMNS,
+            *MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS,
         )
         if factor in ranked.columns
     ]
@@ -6306,6 +6667,25 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "future_return_fields_stored": False,
             }
             if block_trade_path is not None
+            else None
+        ),
+        "margin_financing_events": (
+            {
+                "source": str(margin_financing_path.resolve()),
+                "sha256": file_sha256(margin_financing_path),
+                "effective_date": "same trade_date close, scored after close for next local session open",
+                "max_margin_financing_age_days": args.max_margin_financing_age_days,
+                "available_rows": int(market["margin_financing_available"].sum()),
+                "eligible_available_rows": int(
+                    (
+                        market["quality_eligible"].fillna(False)
+                        & market["margin_financing_available"].fillna(False)
+                    ).sum()
+                ),
+                "top_n_rule": "read from the event snapshot manifest; omitted stocks are not treated as zero flow",
+                "future_return_fields_stored": False,
+            }
+            if margin_financing_path is not None
             else None
         ),
         "data": {
@@ -7864,6 +8244,22 @@ def parse_args() -> argparse.Namespace:
     sync_block_trade.add_argument("--output", default=str(DEFAULT_BLOCK_TRADE_EVENTS))
     sync_block_trade.add_argument("--manifest", default=str(DEFAULT_BLOCK_TRADE_EVENT_MANIFEST))
 
+    sync_margin_financing = subparsers.add_parser(
+        "sync-margin-financing-events",
+        help="download a fixed daily Top-N public financing-flow event snapshot for short-horizon research",
+    )
+    sync_margin_financing.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    sync_margin_financing.add_argument("--start", default="2019-01-01")
+    sync_margin_financing.add_argument("--end", help="defaults to the latest local Qlib calendar session")
+    sync_margin_financing.add_argument("--top-n", type=int, default=MARGIN_FINANCING_TOP_N)
+    sync_margin_financing.add_argument("--output", default=str(DEFAULT_MARGIN_FINANCING_EVENTS))
+    sync_margin_financing.add_argument("--manifest", default=str(DEFAULT_MARGIN_FINANCING_EVENT_MANIFEST))
+    sync_margin_financing.add_argument(
+        "--merge-existing",
+        action="store_true",
+        help="replace matching instrument/date rows in an existing snapshot while preserving earlier dates",
+    )
+
     run = subparsers.add_parser("run", help="run the predeclared short-horizon factor sweep")
     run.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     run.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -7909,6 +8305,10 @@ def parse_args() -> argparse.Namespace:
         "--block-trade-events",
         help="optional daily block-trade snapshot; adds same-close event factors to the development-only diagnostic",
     )
+    factor_diagnostic.add_argument(
+        "--margin-financing-events",
+        help="optional fixed Top-N daily financing-flow snapshot; adds same-close event factors to the development-only diagnostic",
+    )
     factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     factor_diagnostic.add_argument("--start", default="2019-01-01")
     factor_diagnostic.add_argument("--end", default="2025-12-31")
@@ -7941,6 +8341,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="maximum calendar age for a block trade; default matches the three-day holding horizon",
+    )
+    factor_diagnostic.add_argument(
+        "--max-margin-financing-age-days",
+        type=int,
+        default=0,
+        help="maximum calendar age for a daily financing-flow event; default keeps only its same-close signal",
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
@@ -8352,6 +8758,16 @@ def main() -> int:
             args.end_year,
             Path(args.output),
             Path(args.manifest),
+        )
+    elif args.command == "sync-margin-financing-events":
+        report = sync_margin_financing_top_flow_events(
+            Path(args.provider_uri),
+            args.start,
+            args.end,
+            args.top_n,
+            Path(args.output),
+            Path(args.manifest),
+            args.merge_existing,
         )
     elif args.command == "run":
         report = run_research(args)

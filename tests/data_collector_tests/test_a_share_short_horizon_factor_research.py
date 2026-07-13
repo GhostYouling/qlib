@@ -395,6 +395,98 @@ def test_block_trade_join_uses_same_close_and_expires_after_calendar_window():
     assert not after_holiday["block_trade_available"]
 
 
+def test_margin_financing_normalization_uses_only_same_close_non_outcome_fields():
+    rows = [
+        {
+            "SCODE": "000001",
+            "DATE": "2024-04-30",
+            "RZJME": 20.0,
+            "RZMRE": 100.0,
+            "RZYE": 500.0,
+            "SZ": 1_000.0,
+            "FIN_BALANCE_GR": 2.5,
+            "RCHANGE3DCP": 99.0,
+            "RCHANGE5DCP": 88.0,
+        },
+        {
+            "SCODE": "159001",  # ETF: excluded by the A-share symbol mapper.
+            "DATE": "2024-04-30",
+            "RZJME": 100.0,
+            "RZMRE": 200.0,
+            "RZYE": 500.0,
+            "SZ": 1_000.0,
+            "FIN_BALANCE_GR": 5.0,
+            "RCHANGE10DCP": -99.0,
+        },
+    ]
+    normalized = RESEARCH.normalize_margin_financing_top_flow_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.MARGIN_FINANCING_EVENT_COLUMNS)
+    assert len(normalized) == 1
+    row = normalized.iloc[0]
+    assert row["instrument"] == "SZ000001"
+    assert row["margin_net_buy_to_market_cap"] == pytest.approx(0.02)
+    assert row["margin_buy_to_market_cap"] == pytest.approx(0.10)
+    assert row["margin_balance_to_market_cap"] == pytest.approx(0.50)
+    assert row["margin_financing_balance_growth"] == pytest.approx(2.5)
+    assert "RCHANGE3DCP" not in normalized.columns
+
+
+def test_margin_financing_join_uses_same_close_and_default_zero_age_window():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "trade_date": pd.to_datetime(["2024-04-30"]),
+            "margin_net_buy_to_market_cap": [0.02],
+            "margin_buy_to_market_cap": [0.10],
+            "margin_balance_to_market_cap": [0.50],
+            "margin_financing_balance_growth": [2.5],
+        }
+    )
+    joined = RESEARCH.attach_margin_financing_events_asof(market, events)
+    event_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    after_holiday = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    assert event_day["margin_financing_available"]
+    assert event_day["margin_financing_effective_date"] == pd.Timestamp("2024-04-30")
+    assert event_day["margin_net_buy_to_market_cap"] == pytest.approx(0.02)
+    assert not after_holiday["margin_financing_available"]
+
+
+def test_margin_financing_incremental_merge_replaces_only_refetched_stock_days():
+    existing = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000002"],
+            "trade_date": pd.to_datetime(["2024-04-29", "2024-04-30"]),
+            "margin_net_buy_to_market_cap": [0.01, 0.02],
+            "margin_buy_to_market_cap": [0.03, 0.04],
+            "margin_balance_to_market_cap": [0.05, 0.06],
+            "margin_financing_balance_growth": [1.0, 2.0],
+        }
+    )
+    fetched = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000003"],
+            "trade_date": pd.to_datetime(["2024-04-29", "2024-04-30"]),
+            "margin_net_buy_to_market_cap": [0.11, 0.12],
+            "margin_buy_to_market_cap": [0.13, 0.14],
+            "margin_balance_to_market_cap": [0.15, 0.16],
+            "margin_financing_balance_growth": [11.0, 12.0],
+        }
+    )
+    merged = RESEARCH.merge_margin_financing_event_frames(existing, fetched)
+    assert len(merged) == 3
+    assert merged.loc[
+        (merged["instrument"] == "SZ000001") & (merged["trade_date"] == pd.Timestamp("2024-04-29")),
+        "margin_net_buy_to_market_cap",
+    ].item() == pytest.approx(0.11)
+    assert "SZ000002" in set(merged["instrument"])
+
+
 def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
     ranked = pd.DataFrame({"billboard_deal_to_float": [0.10, 0.80, float("nan")]})
     result = RESEARCH.add_billboard_holdout_factor(ranked)
@@ -459,6 +551,9 @@ def test_rank_factor_frame_excludes_expired_event_values():
             "block_trade_premium_ratio": [0.50, 0.10],
             "block_trade_age_days": [4.0, 0.0],
             "block_trade_available": [False, True],
+            "margin_net_buy_to_market_cap": [0.50, 0.10],
+            "margin_financing_age_days": [1.0, 0.0],
+            "margin_financing_available": [False, True],
         }
     )
     ranked = RESEARCH.rank_factor_frame(frame)
@@ -468,10 +563,12 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert pd.isna(expired["rank_billboard_net_flow_to_deal"])
     assert pd.isna(expired["rank_major_holder_net_change_free_ratio"])
     assert pd.isna(expired["rank_block_trade_premium_ratio"])
+    assert pd.isna(expired["rank_margin_net_buy_to_market_cap"])
     assert active["rank_forecast_profit_yoy"] == pytest.approx(1.0)
     assert active["rank_billboard_net_flow_to_deal"] == pytest.approx(1.0)
     assert active["rank_major_holder_net_change_free_ratio"] == pytest.approx(1.0)
     assert active["rank_block_trade_premium_ratio"] == pytest.approx(1.0)
+    assert active["rank_margin_net_buy_to_market_cap"] == pytest.approx(1.0)
 
 
 def test_winner_uses_development_only():

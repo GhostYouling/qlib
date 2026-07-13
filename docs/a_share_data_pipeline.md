@@ -198,6 +198,28 @@ python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
 
 这只测试公开大宗成交在质量合格股票中的短期横截面关联，并不识别交易双方意图或可成交性；公开快照可能修订，且“当日收盘后可用于下一开盘”的时点需要交易所级发布流进一步验证。未通过跨年度稳定性时，不得通过切换折溢率方向、扩大窗口或补充事后价格字段来挽救结果。
 
+北向个股净买卖在 2024 年后不再是连续可得的日度公开字段，涨停池公开接口也不能提供可靠的历史快照；两者不能作为当前三日策略的前瞻因子源。下一类独立假设使用仍持续披露的**融资融券交易明细**：每个本地交易日只保留融资净买入额（`RZJME`）最高的固定前 100 只 A 股，再用当天市值归一化融资净买入、融资买入和融资余额，并保留融资余额增速。未进入前 100 的股票是“未观察”，绝不写成零流入；报表自带的 `RCHANGE3DCP`、`RCHANGE5DCP`、`RCHANGE10DCP` 后验涨跌幅在请求、存储和评分三处均排除。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-margin-financing-events \
+  --start 2019-01-01 --end 2026-07-13 --top-n 100
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --margin-financing-events data/raw/a_share/events/margin_financing_top_flows.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --max-margin-financing-age-days 0
+```
+
+融资明细在当日收盘形成，因此只用于下一本地交易日开盘前的评分；默认不会把它向后带入下一天。公共源可能滞后一两个本地交易日，清单会单列尚未发布的日期，不能用旧日流量冒充最新流量。即使诊断跨年通过，也必须继续经固定稳定性、Top‑3 可行性和新的未来纸面观察，不能直接生成选股名单。
+
+首次全历史快照完成后，后续只获取新日期并合并到同一文件；新抓到的相同“股票/日期”会覆盖旧快照行，未重新请求的历史行保持不变。每次更新仍需查看清单中的 `source_not_published_dates`：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-margin-financing-events \
+  --start 2026-01-01 --merge-existing
+```
+
 季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash
