@@ -138,7 +138,7 @@ python scripts/a_share_short_horizon_factor_research.py run \
   --selection-policy positive_year_stability_mdd20 --research-only
 ```
 
-在设计下一轮候选前，可先运行 `factor-diagnostic`。它在**仅限开发期**的数据上，对所有已声明因子计算每个非重叠信号日的三日横截面 Rank IC、Top‑3 相对 Bottom‑3 的毛收益差，以及各自然年的汇总。它不产生策略、不会从因子排序自动选出赢家；后续组合仍必须预注册，并以未见日期验证。
+在设计下一轮候选前，可先运行 `factor-diagnostic`。它在**仅限开发期**的数据上，对所有已声明因子以及尚未进入候选库的短趋势、成交量/换手、流动性、波动形状、跳空反转、近期高点和日内强度字段，计算每个非重叠信号日的三日横截面 Rank IC、Top‑3 相对 Bottom‑3 的毛收益差，以及各自然年的汇总。它不产生策略、不会从因子排序自动选出赢家；后续组合仍必须预注册，并以未见日期验证。
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
@@ -156,6 +156,18 @@ python scripts/a_share_short_horizon_factor_research.py run \
   --open-cost 0.00012 --close-cost 0.00062 \
   --selection-policy positive_year_stability_mdd20 --research-only \
   --iteration-label v7_ic_guided_historical_diagnostic
+```
+
+扩展后的开发期诊断把此前未入库的 10 日反转列为唯一新的正向信号（3 日动量方向相反），因此 `v8_reversal_10_ic` 只预注册 12 个“10 日回撤、缩量、跳空”敏感性组合。它不与已拒绝的旧库重新竞赛，也不允许登记或前瞻晋级；其作用只是检验这个不同的反转窗口能否改善三日持有的稳定性。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py run \
+  --candidate-library v8_reversal_10_ic \
+  --start 2019-01-01 --end 2026-07-13 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter always \
+  --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20 --research-only \
+  --iteration-label v8_ten_day_reversal_historical_diagnostic
 ```
 
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge 与浅层 LightGBM 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票。2023–2025 仅用于模型配置选择，2026 只作检查；任一配置必须每个开发年度为正且整体最大回撤不差于 −20% 才能在审计中标为合格。该命令只写入模型审计，绝不会登记策略或产生选股名单。

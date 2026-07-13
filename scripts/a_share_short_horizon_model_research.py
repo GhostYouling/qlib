@@ -35,7 +35,9 @@ from scripts import a_share_short_horizon_factor_research as research
 DEFAULT_PROVIDER_URI = REPO_ROOT / "data" / "qlib" / "cn_a_share"
 DEFAULT_FUNDAMENTALS = research.DEFAULT_FUNDAMENTALS
 DEFAULT_EXPERIMENT_ROOT = REPO_ROOT / "data" / "experiments" / "short_horizon"
-DEFAULT_FEATURES = tuple(research.FACTOR_DIAGNOSTIC_COLUMNS)
+# Keep the model family immutable when the broader exploratory diagnostic
+# catalog grows.  A new model feature set needs its own explicitly named audit.
+DEFAULT_FEATURES = tuple(sorted({factor for candidate in research.V7_CANDIDATES for factor in candidate.weights}))
 MODEL_CONFIGURATIONS = ("ridge", "lgbm_shallow")
 
 

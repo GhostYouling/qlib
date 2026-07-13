@@ -32,6 +32,13 @@ def test_model_audit_reuses_the_main_research_fundamental_snapshot_default():
     assert MODEL.DEFAULT_FUNDAMENTALS == MODEL.research.DEFAULT_FUNDAMENTALS
 
 
+def test_model_feature_set_is_immutable_when_exploratory_diagnostic_catalog_grows():
+    expected = {factor for candidate in MODEL.research.V7_CANDIDATES for factor in candidate.weights}
+    assert set(MODEL.DEFAULT_FEATURES) == expected
+    assert "momentum_3" in MODEL.research.FACTOR_DIAGNOSTIC_COLUMNS
+    assert "momentum_3" not in MODEL.DEFAULT_FEATURES
+
+
 def test_deterministic_daily_sample_is_label_independent_and_capped():
     rows = []
     for signal_date in pd.to_datetime(["2024-01-02", "2024-01-05"]):

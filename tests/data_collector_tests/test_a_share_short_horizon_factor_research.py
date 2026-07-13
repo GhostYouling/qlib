@@ -519,6 +519,35 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
     assert by_factor["bad"]["mean_rank_ic"] == pytest.approx(-1.0)
 
 
+def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields():
+    expected = {
+        "momentum_3",
+        "reversal_3",
+        "turnover_surge",
+        "liquidity_5",
+        "volatility_target_20",
+        "gap_reversal",
+        "drawdown_20",
+        "intraday_strength",
+    }
+    assert expected.issubset(RESEARCH.FACTOR_DIAGNOSTIC_COLUMNS)
+    assert expected.issubset(RESEARCH.EXPLORATORY_DIAGNOSTIC_FACTORS)
+
+
+def test_v8_ten_day_reversal_grid_is_small_predeclared_and_does_not_rewrite_v7():
+    assert len(RESEARCH.V7_CANDIDATES) == 258
+    additions = RESEARCH.V8_TEN_DAY_REVERSION_CANDIDATES
+    assert len(additions) == 12
+    assert len(RESEARCH.candidate_library("v8_reversal_10_ic")) == 12
+    assert all(candidate.name.startswith("expanded_v8_reversal_10_") for candidate in additions)
+    gate_only = RESEARCH.candidate_by_name("expanded_v8_reversal_10_dry_gap_gate_only", "v8_reversal_10_ic")
+    growth = RESEARCH.candidate_by_name("expanded_v8_reversal_10_dry_gap_q05_growth", "v8_reversal_10_ic")
+    assert gate_only.weights["reversal_10"] == pytest.approx(0.45)
+    assert "quality_growth" not in gate_only.weights
+    assert growth.weights["quality_growth"] == pytest.approx(0.05)
+    assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
+
+
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
     winner = {
         "candidate": "expanded_reversal_trend_20_q25_profit",

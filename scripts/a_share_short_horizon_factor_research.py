@@ -760,6 +760,67 @@ V7_CANDIDATES = (*V6_CANDIDATES, *V7_REVERSION_IC_CANDIDATES)
 if len(V7_CANDIDATES) != 258 or len({candidate.name for candidate in V7_CANDIDATES}) != len(V7_CANDIDATES):
     raise RuntimeError("V7 candidate library must contain 258 uniquely named strategies")
 
+# V8 tests a distinct signal horizon rather than retuning V7.  A
+# development-only expanded diagnostic found that the previously unused
+# ten-day reversal has a positive three-day Rank IC and a positive Top3-minus-
+# Bottom3 spread, while three-day momentum has the opposite direction.  The
+# four blueprints and three quality modes are fully declared before this
+# historical sensitivity run.  Results must remain research-only because the
+# development evidence has already informed this design.
+TEN_DAY_REVERSION_SIGNAL_BLUEPRINTS = (
+    Candidate(
+        name="reversal_10_dry_gap",
+        description="Ten-day pullback with quiet volume and a strong opening gap.",
+        weights={"reversal_10": 0.45, "volume_dry_up": 0.35, "gap_strength": 0.20},
+    ),
+    Candidate(
+        name="reversal_10_dry_gap_pullback",
+        description="Ten-day pullback with quiet volume, strong gap, and a less overextended close.",
+        weights={"reversal_10": 0.35, "volume_dry_up": 0.25, "gap_strength": 0.20, "close_pullback": 0.20},
+    ),
+    Candidate(
+        name="reversal_10_dry_gap_low_volatility",
+        description="Ten-day pullback with quiet volume, strong gap, and low twenty-day realized volatility.",
+        weights={"reversal_10": 0.35, "volume_dry_up": 0.25, "gap_strength": 0.15, "volatility_low_20": 0.25},
+    ),
+    Candidate(
+        name="reversal_10_dry_gap_short_reversal",
+        description="Ten-day pullback with quiet volume, strong gap, and a soft one-day pullback preference.",
+        weights={"reversal_10": 0.35, "volume_dry_up": 0.25, "gap_strength": 0.15, "reversal_1": 0.25},
+    ),
+)
+
+
+def build_v8_ten_day_reversion_candidates() -> tuple[Candidate, ...]:
+    """Build the compact diagnostic-driven ten-day-reversal sensitivity grid."""
+
+    additions: list[Candidate] = []
+    for blueprint in TEN_DAY_REVERSION_SIGNAL_BLUEPRINTS:
+        if not math.isclose(sum(blueprint.weights.values()), 1.0, abs_tol=1e-9):
+            raise RuntimeError(f"V8 ten-day-reversion blueprint weights must sum to one: {blueprint.name}")
+        for suffix, quality_factor, quality_weight in REVERSION_IC_QUALITY_OVERLAYS:
+            weights = {factor: weight * (1.0 - quality_weight) for factor, weight in blueprint.weights.items()}
+            if quality_factor is not None:
+                weights[quality_factor] = quality_weight
+            additions.append(
+                Candidate(
+                    name=f"expanded_v8_{blueprint.name}_{suffix}",
+                    description=(
+                        f"{blueprint.description} Quality overlay: "
+                        f"{quality_factor or 'quality_gate_only'} at {quality_weight:.0%}."
+                    ),
+                    weights=weights,
+                )
+            )
+    if len(additions) != 12 or len({candidate.name for candidate in additions}) != len(additions):
+        raise RuntimeError("V8 ten-day-reversion grid must contain 12 new unique strategies")
+    return tuple(additions)
+
+
+V8_TEN_DAY_REVERSION_CANDIDATES = build_v8_ten_day_reversion_candidates()
+if len({candidate.name for candidate in V8_TEN_DAY_REVERSION_CANDIDATES}) != 12:
+    raise RuntimeError("V8 candidate library must contain 12 uniquely named strategies")
+
 CANDIDATE_LIBRARIES = {
     "v1": CANDIDATES,
     "v2_microstructure": V2_CANDIDATES,
@@ -768,6 +829,7 @@ CANDIDATE_LIBRARIES = {
     "v5_defensive": V5_CANDIDATES,
     "v6_soft_risk": V6_CANDIDATES,
     "v7_reversion_ic": V7_CANDIDATES,
+    "v8_reversal_10_ic": V8_TEN_DAY_REVERSION_CANDIDATES,
 }
 CANDIDATE_LIBRARY_DESCRIPTIONS = {
     "v1": "5 fixed baselines plus 19 fixed signal blueprints crossed with 5 fixed quality overlays",
@@ -795,13 +857,48 @@ CANDIDATE_LIBRARY_DESCRIPTIONS = {
         "V6 plus twelve diagnostic-driven historical sensitivity combinations: four short-reversal/quiet-volume/gap "
         "blueprints crossed with quality-gate-only, 5% growth, and 10% composite quality modes"
     ),
+    "v8_reversal_10_ic": (
+        "12 diagnostic-driven historical sensitivity combinations: four ten-day-reversal/quiet-volume/gap blueprints "
+        "crossed with quality-gate-only, 5% growth, and 10% composite quality modes"
+    ),
 }
 
-# This diagnostic catalog is derived from the declared candidate libraries,
-# rather than from a result-dependent shortlist.  It is evidence for forming a
-# future library; it never selects or promotes an existing candidate.
+# These are existing close-known fields from ``rank_factor_frame`` that have
+# not all been used by a candidate library.  Keeping their directions explicit
+# in the diagnostic catalog lets us reject or motivate a later library from
+# development-only evidence instead of hand-picking a new formula first.
+EXPLORATORY_DIAGNOSTIC_FACTORS = (
+    "momentum_2",
+    "momentum_3",
+    "momentum_5",
+    "momentum_10",
+    "reversal_2",
+    "reversal_3",
+    "reversal_10",
+    "trend_ma_5",
+    "trend_ma_20",
+    "volume_surge_1",
+    "volume_surge_3",
+    "turnover_surge",
+    "turnover_surge_1",
+    "turnover_surge_3",
+    "liquidity_5",
+    "volatility_target_5",
+    "volatility_target",
+    "volatility_target_20",
+    "gap_reversal",
+    "near_high_10",
+    "near_high_20",
+    "drawdown_20",
+    "intraday_strength",
+)
+
+# This diagnostic catalog is fixed before a new candidate library exists.  It
+# combines prior-library factors with unused, close-known technical fields.
+# It is evidence for forming a future library; it never selects or promotes an
+# existing candidate.
 FACTOR_DIAGNOSTIC_COLUMNS = tuple(
-    sorted({factor for candidate in V7_CANDIDATES for factor in candidate.weights})
+    sorted({factor for candidate in V7_CANDIDATES for factor in candidate.weights} | set(EXPLORATORY_DIAGNOSTIC_FACTORS))
 )
 FACTOR_DIAGNOSTIC_BUCKET_COUNT = 5
 
@@ -1538,6 +1635,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["quality_score"] = result[["rank_roe", "rank_revenue_yoy", "rank_profit_yoy"]].mean(axis=1)
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
+    result["momentum_3"] = result["rank_momentum_3"]
     result["momentum_5"] = result["rank_momentum_5"]
     result["momentum_10"] = result["rank_momentum_10"]
     result["momentum_20"] = result["rank_momentum_20"]
