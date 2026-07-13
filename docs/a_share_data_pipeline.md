@@ -141,6 +141,21 @@ python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
 
 这是一项预先固定为“公告后 30 个日历日内”的开发期事件诊断；不要根据结果反复扩大窗口来寻找更好看的数值。公开源是当前快照，历史预告可被后续订正或遗漏，因此即使诊断方向稳定，也还需要独立的未见区间和前瞻纸面观察。
 
+若季度和业绩预告都没有形成稳定的三日关联，可独立测试每日收盘后公开的**龙虎榜**事件。脚本只保存净买入额、龙虎榜成交额和流通市值构造的三个比例，以及同日不同上榜原因数；同一股票/日的多个原因按各比例的中位数聚合，避免把重复披露误加总。数据源会同时提供 `D1/D2/D5/D10` 等后续收益字段，下载和存储时都明确排除，不能进入任何评分。事件在当日收盘后形成信号、下一本地交易日开盘前可用，且只保留 3 个日历日；过期事件即使仍为了审计保留在行中，也不会参与横截面排名。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-billboard-events \
+  --start-year 2019 --end-year 2026
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --billboard-events data/raw/a_share/events/daily_billboard.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --max-billboard-age-days 3
+```
+
+这同样只是单因子开发期诊断：当前公开接口可能回补、改写或漏掉历史上榜记录，且“当日收盘后可用于次日开盘”的时间假设尚未由交易所级逐笔披露源核验。因此通过诊断也只能进入独立未见区间和纸面观察，不能直接产生策略或实盘选股。
+
 季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash

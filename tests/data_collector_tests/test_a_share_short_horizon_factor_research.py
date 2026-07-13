@@ -222,6 +222,125 @@ def test_performance_forecast_join_waits_for_next_session_and_expires_old_events
     assert not expired["forecast_available"]
 
 
+def test_billboard_normalization_aggregates_same_day_reasons_without_future_return_fields():
+    rows = [
+        {
+            "SECURITY_CODE": "000001",
+            "TRADE_DATE": "2024-04-30",
+            "EXPLANATION": "日涨幅偏离值达到7%的前5只证券",
+            "BILLBOARD_NET_AMT": 100.0,
+            "BILLBOARD_DEAL_AMT": 200.0,
+            "FREE_MARKET_CAP": 1_000.0,
+            "D1_CLOSE_ADJCHRATE": 99.0,
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "TRADE_DATE": "2024-04-30",
+            "EXPLANATION": "日换手率达到20%的前5只证券",
+            "BILLBOARD_NET_AMT": -50.0,
+            "BILLBOARD_DEAL_AMT": 100.0,
+            "FREE_MARKET_CAP": 1_000.0,
+            "D1_CLOSE_ADJCHRATE": -99.0,
+        },
+    ]
+    normalized = RESEARCH.normalize_billboard_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.BILLBOARD_EVENT_COLUMNS)
+    assert len(normalized) == 1
+    row = normalized.iloc[0]
+    assert row["instrument"] == "SZ000001"
+    assert row["billboard_net_flow_to_float"] == pytest.approx(0.025)
+    assert row["billboard_net_flow_to_deal"] == pytest.approx(0.0)
+    assert row["billboard_deal_to_float"] == pytest.approx(0.15)
+    assert row["billboard_reason_count"] == pytest.approx(2.0)
+    assert "D1_CLOSE_ADJCHRATE" not in normalized.columns
+
+
+def test_billboard_join_uses_same_close_for_next_open_and_expires_old_events():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "trade_date": pd.to_datetime(["2024-04-30"]),
+            "billboard_net_flow_to_float": [0.01],
+            "billboard_net_flow_to_deal": [0.20],
+            "billboard_deal_to_float": [0.05],
+            "billboard_reason_count": [2.0],
+        }
+    )
+    joined = RESEARCH.attach_billboard_events_asof(market, events, max_age_days=3)
+    event_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    after_holiday = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    assert event_day["billboard_available"]
+    assert event_day["billboard_effective_date"] == pd.Timestamp("2024-04-30")
+    assert event_day["billboard_net_flow_to_deal"] == pytest.approx(0.20)
+    assert not after_holiday["billboard_available"]
+
+
+def test_rank_factor_frame_excludes_expired_event_values():
+    raw_columns = [
+        "momentum_1",
+        "momentum_2",
+        "momentum_3",
+        "momentum_5",
+        "momentum_10",
+        "momentum_20",
+        "momentum_60",
+        "trend_ma_5",
+        "trend_ma_20",
+        "trend_ma_60",
+        "volume_surge_1",
+        "volume_surge",
+        "volume_surge_3",
+        "turnover_surge",
+        "turnover_surge_3",
+        "turnover_surge_1",
+        "liquidity_5",
+        "volatility_5",
+        "volatility_10",
+        "volatility_20",
+        "amplitude_1",
+        "amplitude_5",
+        "gap_1",
+        "near_high_10",
+        "near_high_20",
+        "intraday_strength",
+        "close_to_high",
+        "roe",
+        "revenue_yoy",
+        "profit_yoy",
+        "quality_age_days",
+        "roe_change",
+        "revenue_yoy_acceleration",
+        "profit_yoy_acceleration",
+    ]
+    frame = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000002"],
+            "datetime": pd.to_datetime(["2024-04-30", "2024-04-30"]),
+            "quality_eligible": [True, True],
+            **{column: [1.0, 2.0] for column in raw_columns},
+            "forecast_profit_yoy": [100.0, 20.0],
+            "forecast_age_days": [31.0, 1.0],
+            "forecast_available": [False, True],
+            "billboard_net_flow_to_deal": [0.50, 0.10],
+            "billboard_age_days": [4.0, 0.0],
+            "billboard_available": [False, True],
+        }
+    )
+    ranked = RESEARCH.rank_factor_frame(frame)
+    expired = ranked.loc[ranked["instrument"] == "SZ000001"].iloc[0]
+    active = ranked.loc[ranked["instrument"] == "SZ000002"].iloc[0]
+    assert pd.isna(expired["rank_forecast_profit_yoy"])
+    assert pd.isna(expired["rank_billboard_net_flow_to_deal"])
+    assert active["rank_forecast_profit_yoy"] == pytest.approx(1.0)
+    assert active["rank_billboard_net_flow_to_deal"] == pytest.approx(1.0)
+
+
 def test_winner_uses_development_only():
     summaries = [
         {"candidate": "development_winner", "development_selection_score": 0.20, "test": {"annualized_return": -0.99}},
