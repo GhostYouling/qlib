@@ -52,6 +52,8 @@ DEFAULT_BILLBOARD_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "daily_bil
 DEFAULT_BILLBOARD_EVENT_MANIFEST = DATA_ROOT / "metadata" / "daily_billboard_manifest.json"
 DEFAULT_MAJOR_HOLDER_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "major_holder_changes.parquet"
 DEFAULT_MAJOR_HOLDER_EVENT_MANIFEST = DATA_ROOT / "metadata" / "major_holder_changes_manifest.json"
+DEFAULT_BLOCK_TRADE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "block_trades.parquet"
+DEFAULT_BLOCK_TRADE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "block_trades_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
@@ -66,6 +68,7 @@ EASTMONEY_REPORT = "RPT_LICO_FN_CPD"
 EASTMONEY_PERFORMANCE_FORECAST_REPORT = "RPT_PUBLIC_OP_NEWPREDICT"
 EASTMONEY_BILLBOARD_REPORT = "RPT_DAILYBILLBOARD_DETAILSNEW"
 EASTMONEY_MAJOR_HOLDER_REPORT = "RPT_SHARE_HOLDER_INCREASE"
+EASTMONEY_BLOCK_TRADE_REPORT = "RPT_DATA_BLOCKTRADE"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -119,6 +122,19 @@ MAJOR_HOLDER_FACTOR_DIAGNOSTIC_COLUMNS = (
     "major_holder_decrease_free_ratio",
     "major_holder_event_count",
     "major_holder_freshness",
+)
+BLOCK_TRADE_EVENT_COLUMNS = (
+    "instrument",
+    "trade_date",
+    "block_trade_premium_ratio",
+    "block_trade_turnover_rate",
+    "block_trade_event_count",
+)
+BLOCK_TRADE_FACTOR_DIAGNOSTIC_COLUMNS = (
+    "block_trade_premium_ratio",
+    "block_trade_turnover_rate",
+    "block_trade_event_count",
+    "block_trade_freshness",
 )
 # This direction is deliberately not part of the development diagnostic
 # catalog.  It was formed after reading the completed 2019--2025 diagnostic,
@@ -1541,6 +1557,42 @@ def _eastmoney_major_holder_request(
     raise RuntimeError(f"cannot fetch major-holder notices {start_date} to {end_date} page {page_number}: {errors[-1]}")
 
 
+def _eastmoney_block_trade_request(
+    session: requests.Session, start_date: str, end_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one page of daily block-trade records with only same-close inputs.
+
+    The provider offers CHANGE_RATE_1DAYS/5DAYS/10DAYS/20DAYS in the same
+    report.  Those are post-trade outcomes and are deliberately excluded from
+    the requested schema, along with raw prices and broker names.
+    """
+
+    params = {
+        "reportName": EASTMONEY_BLOCK_TRADE_REPORT,
+        "columns": "TRADE_DATE,SECURITY_CODE,PREMIUM_RATIO,DEAL_AMT,TURNOVER_RATE",
+        "filter": f"(TRADE_DATE>='{start_date}')(TRADE_DATE<='{end_date}')",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "1,1",
+        "sortColumns": "TRADE_DATE,SECURITY_CODE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(4):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(f"cannot fetch block trades {start_date} to {end_date} page {page_number}: {errors[-1]}")
+
+
 def fetch_annual_report_rows(session: requests.Session, report_date: str) -> list[dict[str, Any]]:
     """Fetch all pages for one annual report period from the public endpoint."""
 
@@ -1597,6 +1649,21 @@ def fetch_major_holder_rows(session: requests.Session, start_date: str, end_date
     rows = list(result.get("data") or [])
     for page_number in range(2, pages + 1):
         payload = _eastmoney_major_holder_request(session, start_date, end_date, page_number=page_number)
+        rows.extend((payload.get("result") or {}).get("data") or [])
+    return rows
+
+
+def fetch_block_trade_rows(session: requests.Session, start_date: str, end_date: str) -> list[dict[str, Any]]:
+    """Fetch every public block-trade page in one inclusive date range."""
+
+    first = _eastmoney_block_trade_request(session, start_date, end_date, page_number=1)
+    result = first["result"]
+    pages = int(result.get("pages") or 0)
+    if pages < 1:
+        return []
+    rows = list(result.get("data") or [])
+    for page_number in range(2, pages + 1):
+        payload = _eastmoney_block_trade_request(session, start_date, end_date, page_number=page_number)
         rows.extend((payload.get("result") or {}).get("data") or [])
     return rows
 
@@ -1764,6 +1831,47 @@ def normalize_major_holder_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
     for column in MAJOR_HOLDER_EVENT_COLUMNS[2:]:
         aggregated[column] = pd.to_numeric(aggregated[column], errors="coerce")
     return aggregated.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+
+
+def normalize_block_trade_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Aggregate block trades to same-close stock/day features without outcomes.
+
+    The premium/discount is weighted by disclosed deal amount, while turnover
+    ratio and count accumulate across all transactions of that stock/session.
+    Raw prices are not retained: only the provider's already-derived
+    contemporaneous premium and turnover ratio enter the event snapshot.
+    """
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=BLOCK_TRADE_EVENT_COLUMNS)
+    amount = pd.to_numeric(raw.get("DEAL_AMT", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    premium = pd.to_numeric(raw.get("PREMIUM_RATIO", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    turnover = pd.to_numeric(raw.get("TURNOVER_RATE", pd.Series(index=raw.index, dtype="float64")), errors="coerce")
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("SECURITY_CODE", pd.Series(dtype="object")).map(qlib_symbol),
+            "trade_date": pd.to_datetime(raw.get("TRADE_DATE"), errors="coerce"),
+            "_amount": amount,
+            "_premium_x_amount": premium * amount,
+            "_premium_weight": amount.where(premium.notna()),
+            "block_trade_turnover_rate": turnover,
+        }
+    )
+    frame = frame.replace([np.inf, -np.inf], np.nan).dropna(subset=["instrument", "trade_date"])
+    grouped = frame.groupby(["instrument", "trade_date"], as_index=False, sort=True).agg(
+        _amount=("_amount", "sum"),
+        _premium_x_amount=("_premium_x_amount", "sum"),
+        _premium_weight=("_premium_weight", "sum"),
+        block_trade_turnover_rate=("block_trade_turnover_rate", "sum"),
+        block_trade_event_count=("instrument", "size"),
+    )
+    with np.errstate(divide="ignore", invalid="ignore"):
+        grouped["block_trade_premium_ratio"] = grouped["_premium_x_amount"] / grouped["_premium_weight"]
+    aggregated = grouped.loc[:, list(BLOCK_TRADE_EVENT_COLUMNS)].replace([np.inf, -np.inf], np.nan)
+    for column in BLOCK_TRADE_EVENT_COLUMNS[2:]:
+        aggregated[column] = pd.to_numeric(aggregated[column], errors="coerce")
+    return aggregated.sort_values(["instrument", "trade_date"], kind="stable").reset_index(drop=True)
 
 
 def _eastmoney_session() -> requests.Session:
@@ -2016,6 +2124,53 @@ def sync_major_holder_events(start_year: int, end_year: int, output: Path, manif
     return result
 
 
+def sync_block_trade_events(start_year: int, end_year: int, output: Path, manifest: Path) -> dict[str, Any]:
+    """Download daily public block-trade aggregates as an auditable event snapshot."""
+
+    if end_year < start_year:
+        raise ValueError("--end-year must not be earlier than --start-year")
+    session = _eastmoney_session()
+    frames: list[pd.DataFrame] = []
+    counts: dict[str, int] = {}
+    for year in range(start_year, end_year + 1):
+        start_date = f"{year}-01-01"
+        end_date = f"{year}-12-31"
+        rows = fetch_block_trade_rows(session, start_date, end_date)
+        normalized = normalize_block_trade_rows(rows)
+        frames.append(normalized)
+        counts[str(year)] = len(normalized)
+        print(f"{year}: {len(normalized)} normalized block-trade stock/day events")
+    merged = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=BLOCK_TRADE_EVENT_COLUMNS)
+    merged = merged.sort_values(["instrument", "trade_date"], kind="stable")
+    merged = merged.drop_duplicates(["instrument", "trade_date"], keep="last").reset_index(drop=True)
+    if merged.empty:
+        raise RuntimeError("block-trade event sync produced no usable events")
+    _atomic_write_parquet(output, merged)
+    result = {
+        "status": "completed",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_BLOCK_TRADE_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+        "event_frequency": "daily_after_close_block_trade",
+        "years": list(range(start_year, end_year + 1)),
+        "rows_by_year": counts,
+        "rows_written": len(merged),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "The public source is queried as it exists today and may revise or omit historical block-trade entries.",
+            "The source exposes 1/5/10/20-day post-trade price-change fields; they are deliberately excluded from both request and storage.",
+            "The join treats trade_date as a post-close event available before the next local session open; this timing assumption should be checked against an exchange-grade dissemination feed before live use.",
+            "This is a research event snapshot, not an exchange-grade point-in-time block-trade database.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
 def merge_quarterly_fundamentals(input_paths: Iterable[Path], output: Path, manifest: Path) -> dict[str, Any]:
     """Atomically combine independently downloaded quarterly snapshot chunks.
 
@@ -2135,6 +2290,23 @@ def load_major_holder_events(path: Path) -> pd.DataFrame:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     frame = frame.dropna(subset=["instrument", "announcement_date"])
     return frame.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+
+
+def load_block_trade_events(path: Path) -> pd.DataFrame:
+    """Load and validate the local daily block-trade event snapshot."""
+
+    if not path.exists():
+        raise FileNotFoundError(f"block-trade snapshot does not exist: {path}; run sync-block-trade-events first")
+    frame = pd.read_parquet(path)
+    missing = sorted(set(BLOCK_TRADE_EVENT_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(f"block-trade snapshot is missing columns: {', '.join(missing)}")
+    frame = frame.loc[:, list(BLOCK_TRADE_EVENT_COLUMNS)].copy()
+    frame["trade_date"] = pd.to_datetime(frame["trade_date"], errors="coerce")
+    for column in BLOCK_TRADE_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame = frame.dropna(subset=["instrument", "trade_date"])
+    return frame.sort_values(["instrument", "trade_date"], kind="stable").reset_index(drop=True)
 
 
 def _first_trading_day_after(calendar: pd.DatetimeIndex, announced: pd.Series) -> pd.Series:
@@ -2445,6 +2617,62 @@ def attach_major_holder_events_asof(
     return result
 
 
+def attach_block_trade_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach same-close block-trade events for next-session-open decisions."""
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    required_market = {"instrument", "datetime"}
+    if missing := sorted(required_market - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(BLOCK_TRADE_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError(f"block-trade events are missing columns: {', '.join(missing)}")
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source_events = events.loc[:, list(BLOCK_TRADE_EVENT_COLUMNS)].copy()
+    source_events["block_trade_effective_date"] = pd.to_datetime(source_events["trade_date"])
+    source_events = source_events.loc[source_events["block_trade_effective_date"].isin(calendar)].copy()
+    source_events = source_events.sort_values(
+        ["instrument", "block_trade_effective_date", "trade_date"], kind="stable"
+    ).drop_duplicates(["instrument", "block_trade_effective_date"], keep="last")
+
+    block_columns = [
+        "block_trade_trade_date",
+        "block_trade_premium_ratio",
+        "block_trade_turnover_rate",
+        "block_trade_event_count",
+        "block_trade_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"] = 1
+    daily["_row"] = np.arange(len(daily))
+    for column in ("block_trade_trade_date", "block_trade_effective_date"):
+        daily[column] = pd.NaT
+    for column in block_columns[1:-1]:
+        daily[column] = np.nan
+    event_rows = source_events.rename(
+        columns={"block_trade_effective_date": "datetime", "trade_date": "block_trade_trade_date"}
+    )[["instrument", "datetime", *[column for column in block_columns if column != "block_trade_effective_date"]]].copy()
+    event_rows["block_trade_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"] = 0
+    event_rows["_row"] = np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False)
+    combined = combined.sort_values(["instrument", "datetime", "_kind"], kind="stable")
+    combined[block_columns] = combined.groupby("instrument", sort=False)[block_columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *block_columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["block_trade_age_days"] = (
+        pd.to_datetime(result["datetime"]) - pd.to_datetime(result["block_trade_effective_date"])
+    ).dt.days
+    result["block_trade_available"] = result["block_trade_trade_date"].notna() & result[
+        "block_trade_age_days"
+    ].between(0, max_age_days)
+    return result
+
+
 def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size: int) -> pd.DataFrame:
     """Load the local buyable universe and precompute only non-forward factors."""
 
@@ -2619,6 +2847,17 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         if column in result.columns
     ]
     raw_columns.extend(major_holder_raw_columns)
+    block_trade_raw_columns = [
+        column
+        for column in (
+            "block_trade_premium_ratio",
+            "block_trade_turnover_rate",
+            "block_trade_event_count",
+            "block_trade_age_days",
+        )
+        if column in result.columns
+    ]
+    raw_columns.extend(block_trade_raw_columns)
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     # Event rows are forward-filled only so each row retains the event context
@@ -2629,6 +2868,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         ("forecast_available", forecast_raw_columns),
         ("billboard_available", billboard_raw_columns),
         ("major_holder_available", major_holder_raw_columns),
+        ("block_trade_available", block_trade_raw_columns),
     ):
         if available_column in result.columns:
             result.loc[~result[available_column].fillna(False), event_columns] = np.nan
@@ -2692,6 +2932,16 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
             result[column] = result[rank_column]
     if "rank_major_holder_age_days" in result.columns:
         result["major_holder_freshness"] = 1.0 - result["rank_major_holder_age_days"]
+    for column in (
+        "block_trade_premium_ratio",
+        "block_trade_turnover_rate",
+        "block_trade_event_count",
+    ):
+        rank_column = f"rank_{column}"
+        if rank_column in result.columns:
+            result[column] = result[rank_column]
+    if "rank_block_trade_age_days" in result.columns:
+        result["block_trade_freshness"] = 1.0 - result["rank_block_trade_age_days"]
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_3"] = result["rank_momentum_3"]
@@ -4489,6 +4739,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         forecast_events = diagnostic.get("performance_forecast_events") or {}
         billboard_events = diagnostic.get("daily_billboard_events") or {}
         major_holder_events = diagnostic.get("major_holder_events") or {}
+        block_trade_events = diagnostic.get("block_trade_events") or {}
         top = ranking[0] if ranking else {}
         diagnostics.append(
             {
@@ -4499,6 +4750,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "performance_forecast_source": str(forecast_events.get("source", "—")),
                 "billboard_event_source": str(billboard_events.get("source", "—")),
                 "major_holder_event_source": str(major_holder_events.get("source", "—")),
+                "block_trade_event_source": str(block_trade_events.get("source", "—")),
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
@@ -5010,6 +5262,7 @@ def render_three_day_research_report(
                             diagnostic["performance_forecast_source"],
                             diagnostic["billboard_event_source"],
                             diagnostic["major_holder_event_source"],
+                            diagnostic["block_trade_event_source"],
                         )
                         if source != "—"
                     )
@@ -5677,6 +5930,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     forecast_path = Path(args.performance_forecasts).expanduser() if args.performance_forecasts else None
     billboard_path = Path(args.billboard_events).expanduser() if args.billboard_events else None
     major_holder_path = Path(args.major_holder_events).expanduser() if args.major_holder_events else None
+    block_trade_path = Path(args.block_trade_events).expanduser() if args.block_trade_events else None
     experiment_root = Path(args.experiment_root).expanduser()
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -5701,6 +5955,11 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         market = attach_major_holder_events_asof(
             market, major_holder_events, max_age_days=args.max_major_holder_age_days
         )
+    if block_trade_path is not None:
+        block_trade_events = load_block_trade_events(block_trade_path)
+        market = attach_block_trade_events_asof(
+            market, block_trade_events, max_age_days=args.max_block_trade_age_days
+        )
     ranked = rank_factor_frame(market)
     forward_returns = forward_factor_return_frame(ranked, args.hold_days)
     factor_catalog = [
@@ -5710,6 +5969,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *FORECAST_FACTOR_DIAGNOSTIC_COLUMNS,
             *BILLBOARD_FACTOR_DIAGNOSTIC_COLUMNS,
             *MAJOR_HOLDER_FACTOR_DIAGNOSTIC_COLUMNS,
+            *BLOCK_TRADE_FACTOR_DIAGNOSTIC_COLUMNS,
         )
         if factor in ranked.columns
     ]
@@ -5788,6 +6048,21 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "transaction_dates_stored": False,
             }
             if major_holder_path is not None
+            else None
+        ),
+        "block_trade_events": (
+            {
+                "source": str(block_trade_path.resolve()),
+                "sha256": file_sha256(block_trade_path),
+                "effective_date": "same trade_date close, scored after close for next local session open",
+                "max_block_trade_age_days": args.max_block_trade_age_days,
+                "available_rows": int(market["block_trade_available"].sum()),
+                "eligible_available_rows": int(
+                    (market["quality_eligible"].fillna(False) & market["block_trade_available"].fillna(False)).sum()
+                ),
+                "future_return_fields_stored": False,
+            }
+            if block_trade_path is not None
             else None
         ),
         "data": {
@@ -7195,6 +7470,15 @@ def parse_args() -> argparse.Namespace:
     sync_major_holder.add_argument("--output", default=str(DEFAULT_MAJOR_HOLDER_EVENTS))
     sync_major_holder.add_argument("--manifest", default=str(DEFAULT_MAJOR_HOLDER_EVENT_MANIFEST))
 
+    sync_block_trade = subparsers.add_parser(
+        "sync-block-trade-events",
+        help="download public daily block-trade aggregates for short-horizon event research",
+    )
+    sync_block_trade.add_argument("--start-year", type=int, default=2019)
+    sync_block_trade.add_argument("--end-year", type=int, default=2026)
+    sync_block_trade.add_argument("--output", default=str(DEFAULT_BLOCK_TRADE_EVENTS))
+    sync_block_trade.add_argument("--manifest", default=str(DEFAULT_BLOCK_TRADE_EVENT_MANIFEST))
+
     run = subparsers.add_parser("run", help="run the predeclared short-horizon factor sweep")
     run.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     run.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -7236,6 +7520,10 @@ def parse_args() -> argparse.Namespace:
         "--major-holder-events",
         help="optional dated major-holder change notices; adds next-session event factors to the development-only diagnostic",
     )
+    factor_diagnostic.add_argument(
+        "--block-trade-events",
+        help="optional daily block-trade snapshot; adds same-close event factors to the development-only diagnostic",
+    )
     factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     factor_diagnostic.add_argument("--start", default="2019-01-01")
     factor_diagnostic.add_argument("--end", default="2025-12-31")
@@ -7262,6 +7550,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="maximum calendar age for a major-holder notice; default matches the three-day holding horizon",
+    )
+    factor_diagnostic.add_argument(
+        "--max-block-trade-age-days",
+        type=int,
+        default=3,
+        help="maximum calendar age for a block trade; default matches the three-day holding horizon",
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
@@ -7634,6 +7928,13 @@ def main() -> int:
         )
     elif args.command == "sync-major-holder-events":
         report = sync_major_holder_events(
+            args.start_year,
+            args.end_year,
+            Path(args.output),
+            Path(args.manifest),
+        )
+    elif args.command == "sync-block-trade-events":
+        report = sync_block_trade_events(
             args.start_year,
             args.end_year,
             Path(args.output),

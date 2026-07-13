@@ -183,6 +183,21 @@ python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
 
 该事件是对已发生交易的公开报告而非实时资金流；公共快照还可能修订或遗漏。因此，无论诊断结果如何，都不能把持股变动的历史交易日期、当前价格或交易均价加入评分；只有公告后留出期也支持的、预注册的完整策略才可能进入纸面观察。
 
+大宗交易是另一种收盘后公开的日频事件。接口同时附带上榜后 1/5/10/20 日涨跌幅，脚本在**请求层**排除这些后验字段，只保存成交额加权折溢率、成交额/流通市值和同日笔数；事件于当日收盘形成、下一本地交易日开盘前可用于评分，保留 3 个日历日：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-block-trade-events \
+  --start-year 2019 --end-year 2026
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --block-trade-events data/raw/a_share/events/block_trades.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --max-block-trade-age-days 3
+```
+
+这只测试公开大宗成交在质量合格股票中的短期横截面关联，并不识别交易双方意图或可成交性；公开快照可能修订，且“当日收盘后可用于下一开盘”的时点需要交易所级发布流进一步验证。未通过跨年度稳定性时，不得通过切换折溢率方向、扩大窗口或补充事后价格字段来挽救结果。
+
 季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash

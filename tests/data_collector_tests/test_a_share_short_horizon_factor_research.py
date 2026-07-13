@@ -340,6 +340,61 @@ def test_major_holder_join_waits_for_next_session_and_expires_old_notices():
     assert not expired["major_holder_available"]
 
 
+def test_block_trade_normalization_weights_premium_and_excludes_forward_returns():
+    rows = [
+        {
+            "SECURITY_CODE": "000001",
+            "TRADE_DATE": "2024-04-30",
+            "PREMIUM_RATIO": 0.10,
+            "DEAL_AMT": 100.0,
+            "TURNOVER_RATE": 0.10,
+            "CHANGE_RATE_1DAYS": 99.0,
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "TRADE_DATE": "2024-04-30",
+            "PREMIUM_RATIO": -0.10,
+            "DEAL_AMT": 300.0,
+            "TURNOVER_RATE": 0.20,
+            "CHANGE_RATE_1DAYS": -99.0,
+        },
+    ]
+    normalized = RESEARCH.normalize_block_trade_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.BLOCK_TRADE_EVENT_COLUMNS)
+    assert len(normalized) == 1
+    row = normalized.iloc[0]
+    assert row["instrument"] == "SZ000001"
+    assert row["block_trade_premium_ratio"] == pytest.approx(-0.05)
+    assert row["block_trade_turnover_rate"] == pytest.approx(0.30)
+    assert row["block_trade_event_count"] == pytest.approx(2.0)
+    assert "CHANGE_RATE_1DAYS" not in normalized.columns
+
+
+def test_block_trade_join_uses_same_close_and_expires_after_calendar_window():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "trade_date": pd.to_datetime(["2024-04-30"]),
+            "block_trade_premium_ratio": [-0.05],
+            "block_trade_turnover_rate": [0.30],
+            "block_trade_event_count": [2.0],
+        }
+    )
+    joined = RESEARCH.attach_block_trade_events_asof(market, events, max_age_days=3)
+    event_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    after_holiday = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    assert event_day["block_trade_available"]
+    assert event_day["block_trade_effective_date"] == pd.Timestamp("2024-04-30")
+    assert event_day["block_trade_premium_ratio"] == pytest.approx(-0.05)
+    assert not after_holiday["block_trade_available"]
+
+
 def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
     ranked = pd.DataFrame({"billboard_deal_to_float": [0.10, 0.80, float("nan")]})
     result = RESEARCH.add_billboard_holdout_factor(ranked)
@@ -401,6 +456,9 @@ def test_rank_factor_frame_excludes_expired_event_values():
             "major_holder_net_change_free_ratio": [0.50, 0.10],
             "major_holder_age_days": [4.0, 0.0],
             "major_holder_available": [False, True],
+            "block_trade_premium_ratio": [0.50, 0.10],
+            "block_trade_age_days": [4.0, 0.0],
+            "block_trade_available": [False, True],
         }
     )
     ranked = RESEARCH.rank_factor_frame(frame)
@@ -409,9 +467,11 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert pd.isna(expired["rank_forecast_profit_yoy"])
     assert pd.isna(expired["rank_billboard_net_flow_to_deal"])
     assert pd.isna(expired["rank_major_holder_net_change_free_ratio"])
+    assert pd.isna(expired["rank_block_trade_premium_ratio"])
     assert active["rank_forecast_profit_yoy"] == pytest.approx(1.0)
     assert active["rank_billboard_net_flow_to_deal"] == pytest.approx(1.0)
     assert active["rank_major_holder_net_change_free_ratio"] == pytest.approx(1.0)
+    assert active["rank_block_trade_premium_ratio"] == pytest.approx(1.0)
 
 
 def test_winner_uses_development_only():
