@@ -188,6 +188,8 @@ python scripts/a_share_short_horizon_factor_research.py run \
 
 不要把某个状态规则当作默认真理。可对一个已记录候选运行 `regime-audit`，一次比较 `always`、两种单周期正广度、短期广度强于中期广度，以及三种更保守的确认条件：`breadth_5_and_20_positive`（双周期为正）、`breadth_5_positive_and_above_20`（短期为正且强于中期）和 `breadth_5_above_20_and_20_positive`（双周期为正且短期更强）。报告只按开发期排序并写入单独审计 JSON，不能用它回写已登记候选或把历史结果包装成前瞻收益。
 
+在广度审计不能稳定降低回撤后，状态库还预先声明了六个整体风险状态：正 20 日广度同时要求当日合格股票 20 日波动率中位数低于其**严格滞后一日**的 252 交易日中位数或 75 分位数；正广度同时要求一日横截面收益离散度低于严格滞后阈值；以及正广度叠加“多数股票站上 20 日均线”的两个组合条件。阈值至少需要 60 个历史交易日，缺少历史阈值时策略保持空仓。每个汇总都会同时记录总 cohort、实际成交 cohort、状态激活 cohort 及其比例，不能把多数时间空仓造成的低波动误读为策略本身有效。它们是统一的、收盘后可计算的风险状态敏感性网格，不是对历史结果挑出的止损规则；仍只能进行研究审计，且不自动获准前瞻使用。
+
 ```bash
 python scripts/a_share_short_horizon_factor_research.py regime-audit \
   --candidate expanded_v3_quiet_long_trend_q15_revenue \

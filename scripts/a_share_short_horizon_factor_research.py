@@ -827,6 +827,30 @@ REGIME_FILTERS = {
     "breadth_5_above_20_and_20_positive": (
         "Trade only when five-day eligible-universe breadth exceeds a positive twenty-day breadth."
     ),
+    "breadth_20_positive_and_volatility_below_trailing_p75": (
+        "Trade only when twenty-day eligible-universe breadth is positive and median twenty-day volatility "
+        "does not exceed its strictly trailing 252-session 75th percentile."
+    ),
+    "breadth_20_positive_and_volatility_below_trailing_p50": (
+        "Trade only when twenty-day eligible-universe breadth is positive and median twenty-day volatility "
+        "does not exceed its strictly trailing 252-session median."
+    ),
+    "breadth_20_positive_and_dispersion_below_trailing_p75": (
+        "Trade only when twenty-day eligible-universe breadth is positive and one-day cross-sectional return "
+        "dispersion does not exceed its strictly trailing 252-session 75th percentile."
+    ),
+    "breadth_20_positive_and_above_ma20_majority": (
+        "Trade only when twenty-day eligible-universe breadth is positive and a majority of eligible names "
+        "close above their twenty-day moving average."
+    ),
+    "breadth_20_positive_and_volatility_below_trailing_p75_and_above_ma20_majority": (
+        "Trade only when positive twenty-day breadth, below-trailing-75th-percentile median volatility, and "
+        "a majority above the twenty-day moving average all hold."
+    ),
+    "breadth_20_positive_and_volatility_below_trailing_p50_and_above_ma20_majority": (
+        "Trade only when positive twenty-day breadth, below-trailing-median median volatility, and a majority "
+        "above the twenty-day moving average all hold."
+    ),
 }
 
 SELECTION_POLICIES = {
@@ -904,8 +928,34 @@ def apply_regime_filter(frame: pd.DataFrame, regime_filter: str) -> pd.DataFrame
         condition = frame["market_breadth_5"].gt(0.0) & frame["market_breadth_20"].gt(0.0)
     elif regime_filter == "breadth_5_positive_and_above_20":
         condition = frame["market_breadth_5"].gt(0.0) & frame["market_breadth_5"].gt(frame["market_breadth_20"])
-    else:
+    elif regime_filter == "breadth_5_above_20_and_20_positive":
         condition = frame["market_breadth_5"].gt(frame["market_breadth_20"]) & frame["market_breadth_20"].gt(0.0)
+    elif regime_filter == "breadth_20_positive_and_volatility_below_trailing_p75":
+        condition = frame["market_breadth_20"].gt(0.0) & frame["market_volatility_20"].le(
+            frame["market_volatility_20_trailing_p75"]
+        )
+    elif regime_filter == "breadth_20_positive_and_volatility_below_trailing_p50":
+        condition = frame["market_breadth_20"].gt(0.0) & frame["market_volatility_20"].le(
+            frame["market_volatility_20_trailing_p50"]
+        )
+    elif regime_filter == "breadth_20_positive_and_dispersion_below_trailing_p75":
+        condition = frame["market_breadth_20"].gt(0.0) & frame["market_return_dispersion_1"].le(
+            frame["market_return_dispersion_1_trailing_p75"]
+        )
+    elif regime_filter == "breadth_20_positive_and_above_ma20_majority":
+        condition = frame["market_breadth_20"].gt(0.0) & frame["market_above_ma20_fraction"].gt(0.5)
+    elif regime_filter == "breadth_20_positive_and_volatility_below_trailing_p75_and_above_ma20_majority":
+        condition = (
+            frame["market_breadth_20"].gt(0.0)
+            & frame["market_volatility_20"].le(frame["market_volatility_20_trailing_p75"])
+            & frame["market_above_ma20_fraction"].gt(0.5)
+        )
+    else:
+        condition = (
+            frame["market_breadth_20"].gt(0.0)
+            & frame["market_volatility_20"].le(frame["market_volatility_20_trailing_p50"])
+            & frame["market_above_ma20_fraction"].gt(0.5)
+        )
     return frame.loc[condition.fillna(False)].copy()
 
 
@@ -1379,6 +1429,47 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
     return result.sort_values(["datetime", "instrument"], kind="stable").reset_index(drop=True)
 
 
+def market_state_frame(frame: pd.DataFrame, eligible: pd.Series) -> pd.DataFrame:
+    """Aggregate close-known market state and build strictly trailing risk thresholds."""
+
+    required = {
+        "datetime",
+        "momentum_1",
+        "momentum_5",
+        "momentum_20",
+        "volatility_20",
+        "trend_ma_20",
+    }
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(f"market state frame is missing columns: {', '.join(missing)}")
+    state = (
+        frame.loc[eligible.fillna(False)]
+        .groupby("datetime", sort=False)
+        .agg(
+            market_breadth_5=("momentum_5", "mean"),
+            market_breadth_20=("momentum_20", "mean"),
+            market_volatility_20=("volatility_20", "median"),
+            market_return_dispersion_1=("momentum_1", "std"),
+            market_above_ma20_fraction=("trend_ma_20", lambda values: values.gt(0.0).mean()),
+        )
+        .sort_index()
+    )
+    # A state at today's close can use today's realized market measures.  Its
+    # reference distribution, however, is fixed before the close: shift first,
+    # then calculate each rolling quantile.
+    state["market_volatility_20_trailing_p75"] = (
+        state["market_volatility_20"].shift(1).rolling(252, min_periods=60).quantile(0.75)
+    )
+    state["market_volatility_20_trailing_p50"] = (
+        state["market_volatility_20"].shift(1).rolling(252, min_periods=60).quantile(0.50)
+    )
+    state["market_return_dispersion_1_trailing_p75"] = (
+        state["market_return_dispersion_1"].shift(1).rolling(252, min_periods=60).quantile(0.75)
+    )
+    return state
+
+
 def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     """Turn raw factors into daily comparable [0, 1] scores without look-ahead."""
 
@@ -1419,12 +1510,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     eligible = result["quality_eligible"].fillna(False)
-    breadth = (
-        result.loc[eligible]
-        .groupby("datetime", sort=False)
-        .agg(market_breadth_5=("momentum_5", "mean"), market_breadth_20=("momentum_20", "mean"))
-    )
-    result = result.join(breadth, on="datetime")
+    result = result.join(market_state_frame(result, eligible), on="datetime")
     for column in raw_columns:
         ranked = result.loc[eligible].groupby("datetime", sort=False)[column].rank(pct=True)
         result.loc[eligible, f"rank_{column}"] = ranked
@@ -2124,6 +2210,10 @@ def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | in
     if rounds.empty:
         return {
             "rounds": 0,
+            "traded_rounds": 0,
+            "traded_round_rate": None,
+            "regime_active_rounds": 0,
+            "regime_active_rate": None,
             "gross_cumulative_return": None,
             "net_cumulative_return": None,
             "annualized_return": None,
@@ -2138,9 +2228,15 @@ def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | in
     equity = (1.0 + net).cumprod()
     drawdown = equity / equity.cummax() - 1.0
     periods_per_year = 252.0 / hold_days
+    traded = rounds["holdings"].fillna(0).gt(0) if "holdings" in rounds else net.ne(0.0)
+    regime_active = rounds["regime_active"].fillna(False).astype(bool) if "regime_active" in rounds else traded
     annualized_volatility = float(net.std(ddof=0) * math.sqrt(periods_per_year))
     return {
         "rounds": int(len(rounds)),
+        "traded_rounds": int(traded.sum()),
+        "traded_round_rate": float(traded.mean()),
+        "regime_active_rounds": int(regime_active.sum()),
+        "regime_active_rate": float(regime_active.mean()),
         "gross_cumulative_return": float((1.0 + gross).prod() - 1.0),
         "net_cumulative_return": float(equity.iloc[-1] - 1.0),
         "annualized_return": float(equity.iloc[-1] ** (periods_per_year / len(rounds)) - 1.0),

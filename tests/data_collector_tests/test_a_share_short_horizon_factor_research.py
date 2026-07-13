@@ -600,6 +600,71 @@ def test_market_breadth_regime_filter_is_close_known_and_validated():
         RESEARCH.apply_regime_filter(frame, "not_a_regime")
 
 
+def test_market_risk_state_regimes_require_close_known_trailing_thresholds():
+    frame = pd.DataFrame(
+        {
+            "market_breadth_20": [0.01, 0.01, 0.01, -0.01],
+            "market_volatility_20": [0.03, 0.01, 0.02, 0.01],
+            "market_volatility_20_trailing_p75": [float("nan"), 0.02, 0.02, 0.02],
+            "market_volatility_20_trailing_p50": [float("nan"), 0.015, 0.015, 0.015],
+            "market_return_dispersion_1": [0.01, 0.03, 0.02, 0.01],
+            "market_return_dispersion_1_trailing_p75": [float("nan"), 0.02, 0.02, 0.02],
+            "market_above_ma20_fraction": [0.8, 0.4, 0.7, 0.9],
+        }
+    )
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_20_positive_and_volatility_below_trailing_p75"
+    ).index.tolist() == [1, 2]
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_20_positive_and_volatility_below_trailing_p50"
+    ).index.tolist() == [1]
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_20_positive_and_dispersion_below_trailing_p75"
+    ).index.tolist() == [2]
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_20_positive_and_above_ma20_majority"
+    ).index.tolist() == [0, 2]
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_20_positive_and_volatility_below_trailing_p75_and_above_ma20_majority"
+    ).index.tolist() == [2]
+
+
+def test_market_state_thresholds_exclude_the_current_close_from_their_history():
+    dates = pd.date_range("2025-01-01", periods=61, freq="B")
+    frame = pd.DataFrame(
+        {
+            "datetime": dates,
+            "momentum_1": [0.01] * 61,
+            "momentum_5": [0.02] * 61,
+            "momentum_20": [0.03] * 61,
+            "volatility_20": [0.01] * 60 + [0.99],
+            "trend_ma_20": [0.01] * 61,
+        }
+    )
+    state = RESEARCH.market_state_frame(frame, pd.Series(True, index=frame.index))
+    latest = state.iloc[-1]
+    assert latest["market_volatility_20"] == pytest.approx(0.99)
+    assert latest["market_volatility_20_trailing_p75"] == pytest.approx(0.01)
+    assert latest["market_volatility_20_trailing_p50"] == pytest.approx(0.01)
+
+
+def test_return_metrics_exposes_state_activity_without_dropping_cash_cohorts():
+    rounds = pd.DataFrame(
+        {
+            "net_return": [0.01, 0.0, -0.02, 0.0],
+            "gross_return": [0.011, 0.0, -0.019, 0.0],
+            "holdings": [3, 0, 3, 0],
+            "regime_active": [True, False, True, False],
+        }
+    )
+    metrics = RESEARCH.return_metrics(rounds, hold_days=3)
+    assert metrics["rounds"] == 4
+    assert metrics["traded_rounds"] == 2
+    assert metrics["traded_round_rate"] == pytest.approx(0.5)
+    assert metrics["regime_active_rounds"] == 2
+    assert metrics["regime_active_rate"] == pytest.approx(0.5)
+
+
 def test_execution_plan_refuses_an_inactive_regime_screen(tmp_path):
     screen_path = tmp_path / "inactive_screen.json"
     screen_path.write_text(json.dumps({"execution_allowed": False, "top_candidates": []}), encoding="utf-8")
