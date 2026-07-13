@@ -655,6 +655,10 @@ SELECTION_POLICIES = {
 # the winner of a prior, looser stability rule.
 STRICT_DEVELOPMENT_MAX_DRAWDOWN = -0.20
 DEFAULT_CLOSE_LOSS_CAPS = (0.05, 0.08, 0.10)
+DEFAULT_BASKET_CORRELATION_LOOKBACK = 20
+CORRELATION_DIAGNOSTIC_THRESHOLDS = (0.50, 0.70, 0.80, 0.90)
+DEFAULT_MAX_PAIRWISE_CORRELATION_CAPS = (0.50, 0.60, 0.70)
+DEFAULT_DIVERSIFICATION_CANDIDATE_POOL = 30
 
 
 def candidate_library_fingerprint(candidates: tuple[Candidate, ...] = CANDIDATES) -> str:
@@ -1369,6 +1373,9 @@ def evaluate_candidate(
     development_end: str,
     regime_filter: str = "always",
     close_loss_cap: float | None = None,
+    max_pairwise_correlation: float | None = None,
+    correlation_lookback: int = DEFAULT_BASKET_CORRELATION_LOOKBACK,
+    diversification_candidate_pool: int = DEFAULT_DIVERSIFICATION_CANDIDATE_POOL,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Run non-overlapping cohorts from close signal to next-open entry.
 
@@ -1399,7 +1406,19 @@ def evaluate_candidate(
     cohort_index = cohort_index.loc[cohort_index["available_holdings"] >= minimum_holdings].copy()
 
     pool = apply_regime_filter(base_pool, regime_filter)
-    selected = pool.groupby("datetime", sort=False).head(topk).copy()
+    diversification_status: pd.DataFrame | None = None
+    if max_pairwise_correlation is None:
+        selected = pool.groupby("datetime", sort=False).head(topk).copy()
+    else:
+        selected, diversification_status = select_diversified_topk(
+            scored,
+            hold_days=hold_days,
+            topk=topk,
+            regime_filter=regime_filter,
+            max_pairwise_correlation=max_pairwise_correlation,
+            correlation_lookback=correlation_lookback,
+            candidate_pool=diversification_candidate_pool,
+        )
     selected["entry_date"] = selected["datetime"].map(lambda value: calendar[date_to_position[value] + 1])
     selected["exit_date"] = selected["datetime"].map(lambda value: calendar[date_to_position[value] + hold_days])
 
@@ -1429,8 +1448,18 @@ def evaluate_candidate(
     rounds = cohort_index.merge(traded_rounds, on=["signal_date", "entry_date", "exit_date"], how="left")
     active_dates = set(pool["datetime"].unique())
     rounds["regime_active"] = rounds["signal_date"].isin(active_dates)
-    if regime_filter == "always":
+    if diversification_status is not None:
+        formed_dates = set(
+            diversification_status.loc[diversification_status["diversification_basket_formed"], "datetime"].unique()
+        )
+        rounds["diversification_basket_formed"] = rounds["signal_date"].isin(formed_dates)
+        rounds["net_return"] = rounds["net_return"].fillna(0.0)
+        rounds["gross_return"] = rounds["gross_return"].fillna(0.0)
+        rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
+        rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
+    elif regime_filter == "always":
         rounds = rounds.loc[rounds["holdings"].ge(minimum_holdings)].copy()
+        rounds["diversification_basket_formed"] = True
     else:
         active_but_untradable = rounds["regime_active"] & ~rounds["holdings"].ge(minimum_holdings)
         rounds = rounds.loc[~active_but_untradable].copy()
@@ -1438,6 +1467,7 @@ def evaluate_candidate(
         rounds["gross_return"] = rounds["gross_return"].fillna(0.0)
         rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
         rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
+        rounds["diversification_basket_formed"] = True
     rounds["segment"] = np.where(rounds["signal_date"] <= pd.Timestamp(development_end), "development", "test")
     development_rounds = rounds.loc[rounds["segment"] == "development"]
     development_by_year = {
@@ -1450,6 +1480,9 @@ def evaluate_candidate(
         "weights": candidate.weights,
         "regime_filter": regime_filter,
         "close_loss_cap": close_loss_cap,
+        "max_pairwise_correlation": max_pairwise_correlation,
+        "correlation_lookback": correlation_lookback if max_pairwise_correlation is not None else None,
+        "diversification_candidate_pool": diversification_candidate_pool if max_pairwise_correlation is not None else None,
         "development": return_metrics(development_rounds, hold_days),
         "development_by_signal_year": development_by_year,
         "test": return_metrics(rounds.loc[rounds["segment"] == "test"], hold_days),
@@ -1467,6 +1500,7 @@ def evaluate_candidate(
                 "net_return": float(row.net_return),
                 "holdings": int(row.holdings),
                 "early_exit_holdings": int(row.early_exit_holdings),
+                "diversification_basket_formed": bool(row.diversification_basket_formed),
                 "regime_active": bool(row.regime_active),
             }
             for row in rounds.itertuples(index=False)
@@ -1552,6 +1586,178 @@ def basket_overlap_metrics(left: dict[str, set[str]], right: dict[str, set[str]]
         "exact_basket_rate": float(np.mean([left[date] == right[date] for date in common_dates])),
         "any_overlap_rate": float(np.mean([bool(left[date] & right[date]) for date in common_dates])),
     }
+
+
+def basket_correlation_rows(
+    scored: pd.DataFrame, baskets: dict[str, set[str]], lookback_days: int
+) -> pd.DataFrame:
+    """Measure close-known pairwise return correlation within each selected basket."""
+
+    if lookback_days < 2:
+        raise ValueError("correlation lookback_days must be at least two")
+    columns = [
+        "signal_date",
+        "basket_size",
+        "valid_return_days",
+        "mean_pairwise_correlation",
+        "max_pairwise_correlation",
+    ]
+    if not baskets:
+        return pd.DataFrame(columns=columns)
+    selected_instruments = sorted(set().union(*baskets.values()))
+    prices = (
+        scored.loc[scored["instrument"].isin(selected_instruments), ["datetime", "instrument", "close"]]
+        .pivot_table(index="datetime", columns="instrument", values="close", aggfunc="last")
+        .sort_index()
+    )
+    returns = prices.pct_change(fill_method=None)
+    rows: list[dict[str, Any]] = []
+    for raw_signal_date, instruments in sorted(baskets.items()):
+        signal_date = pd.Timestamp(raw_signal_date)
+        names = sorted(instruments)
+        window = returns.reindex(columns=names).loc[:signal_date].tail(lookback_days).dropna(how="any")
+        values: np.ndarray = np.array([], dtype=float)
+        if len(names) >= 2 and len(window) >= 2:
+            matrix = window.corr().to_numpy(dtype=float)
+            values = matrix[np.triu_indices_from(matrix, k=1)]
+            values = values[np.isfinite(values)]
+        rows.append(
+            {
+                "signal_date": signal_date,
+                "basket_size": len(names),
+                "valid_return_days": int(len(window)),
+                "mean_pairwise_correlation": float(values.mean()) if len(values) else np.nan,
+                "max_pairwise_correlation": float(values.max()) if len(values) else np.nan,
+            }
+        )
+    return pd.DataFrame(rows, columns=columns)
+
+
+def summarize_basket_correlation(rows: pd.DataFrame, rounds: pd.DataFrame, lookback_days: int) -> dict[str, Any]:
+    """Summarize concentration and realized cohort returns without selecting on them."""
+
+    if lookback_days < 2:
+        raise ValueError("correlation lookback_days must be at least two")
+    valid = rows.loc[rows["valid_return_days"].ge(lookback_days)].dropna(
+        subset=["mean_pairwise_correlation", "max_pairwise_correlation"]
+    ).copy()
+    summary: dict[str, Any] = {
+        "basket_count": int(len(rows)),
+        "valid_correlation_basket_count": int(len(valid)),
+        "required_return_days": lookback_days,
+        "mean_pairwise_correlation": float(valid["mean_pairwise_correlation"].mean()) if len(valid) else None,
+        "median_pairwise_correlation": float(valid["mean_pairwise_correlation"].median()) if len(valid) else None,
+        "mean_max_pairwise_correlation": float(valid["max_pairwise_correlation"].mean()) if len(valid) else None,
+        "max_pairwise_correlation_p90": float(valid["max_pairwise_correlation"].quantile(0.90)) if len(valid) else None,
+        "max_pairwise_correlation_max": float(valid["max_pairwise_correlation"].max()) if len(valid) else None,
+    }
+    cohort_returns = rounds[["signal_date", "net_return"]].copy()
+    joined = valid.merge(cohort_returns, on="signal_date", how="inner")
+    summary["max_correlation_to_three_day_return"] = (
+        float(joined["max_pairwise_correlation"].corr(joined["net_return"]))
+        if len(joined) >= 2
+        and joined["max_pairwise_correlation"].std(ddof=0) > 0.0
+        and joined["net_return"].std(ddof=0) > 0.0
+        else None
+    )
+    summary["return_by_max_correlation_threshold"] = [
+        {
+            "threshold": threshold,
+            "at_or_above_count": int((joined["max_pairwise_correlation"] >= threshold).sum()),
+            "at_or_above_mean_three_day_net_return": float(
+                joined.loc[joined["max_pairwise_correlation"] >= threshold, "net_return"].mean()
+            )
+            if (joined["max_pairwise_correlation"] >= threshold).any()
+            else None,
+            "below_count": int((joined["max_pairwise_correlation"] < threshold).sum()),
+            "below_mean_three_day_net_return": float(
+                joined.loc[joined["max_pairwise_correlation"] < threshold, "net_return"].mean()
+            )
+            if (joined["max_pairwise_correlation"] < threshold).any()
+            else None,
+        }
+        for threshold in CORRELATION_DIAGNOSTIC_THRESHOLDS
+    ]
+    return summary
+
+
+def validate_diversification_inputs(max_pairwise_correlation: float, correlation_lookback: int, candidate_pool: int, topk: int) -> None:
+    """Validate close-known correlation-constrained basket construction inputs."""
+
+    if not -1.0 <= float(max_pairwise_correlation) <= 1.0:
+        raise ValueError("max_pairwise_correlation must be between -1 and 1")
+    if correlation_lookback < 2:
+        raise ValueError("correlation_lookback must be at least two")
+    if candidate_pool < topk:
+        raise ValueError("diversification candidate_pool must be at least topk")
+
+
+def select_diversified_topk(
+    scored: pd.DataFrame,
+    hold_days: int,
+    topk: int,
+    regime_filter: str,
+    max_pairwise_correlation: float,
+    correlation_lookback: int,
+    candidate_pool: int,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Greedily form complete TopK baskets whose close-known pair correlations stay below a cap.
+
+    Each signal first considers only the highest factor-scored ``candidate_pool``
+    names.  If it cannot form all ``topk`` names using a complete trailing
+    return window, the whole cohort is intentionally left in cash.
+    """
+
+    validate_diversification_inputs(max_pairwise_correlation, correlation_lookback, candidate_pool, topk)
+    calendar = pd.DatetimeIndex(sorted(scored["datetime"].unique()))
+    if len(calendar) <= hold_days + 1:
+        raise ValueError("research window is too short for the requested holding period")
+    rebalances = calendar[: -(hold_days + 1) : hold_days]
+    pool = scored.loc[scored["datetime"].isin(rebalances)].copy()
+    pool = pool.sort_values(["datetime", "score", "instrument"], ascending=[True, False, True], kind="stable")
+    pool = apply_regime_filter(pool, regime_filter)
+    candidate_rows = pool.groupby("datetime", sort=False).head(candidate_pool).copy()
+    candidate_instruments = sorted(candidate_rows["instrument"].unique())
+    prices = (
+        scored.loc[scored["instrument"].isin(candidate_instruments), ["datetime", "instrument", "close"]]
+        .pivot_table(index="datetime", columns="instrument", values="close", aggfunc="last")
+        .sort_index()
+    )
+    returns = prices.pct_change(fill_method=None)
+    selections: list[pd.DataFrame] = []
+    statuses: list[dict[str, Any]] = []
+    for signal_date, group in candidate_rows.groupby("datetime", sort=True):
+        chosen: list[str] = []
+        chosen_rows: list[int] = []
+        for row in group.itertuples():
+            candidate = str(row.instrument)
+            candidate_history = returns.reindex(columns=[candidate]).loc[:signal_date].tail(correlation_lookback).dropna()
+            if len(candidate_history) != correlation_lookback:
+                continue
+            if chosen:
+                window = returns.reindex(columns=[*chosen, candidate]).loc[:signal_date].tail(correlation_lookback).dropna(how="any")
+                if len(window) != correlation_lookback:
+                    continue
+                pairwise = window.corr().loc[candidate, chosen].to_numpy(dtype=float)
+                if not np.isfinite(pairwise).all() or float(pairwise.max()) > max_pairwise_correlation:
+                    continue
+            chosen.append(candidate)
+            chosen_rows.append(row.Index)
+            if len(chosen) == topk:
+                break
+        formed = len(chosen) == topk
+        statuses.append(
+            {
+                "datetime": signal_date,
+                "diversification_basket_formed": formed,
+                "diversification_selected_holdings": len(chosen),
+                "diversification_candidates_considered": int(len(group)),
+            }
+        )
+        if formed:
+            selections.append(candidate_rows.loc[chosen_rows])
+    selected = pd.concat(selections, ignore_index=False) if selections else candidate_rows.iloc[0:0].copy()
+    return selected, pd.DataFrame(statuses)
 
 
 def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | int | None]:
@@ -2381,6 +2587,76 @@ def load_loss_cap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     return audits
 
 
+def load_basket_correlation_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read only full-window within-basket correlation diagnostics for the report."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_basket_correlation_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        summary = audit.get("correlation_summary") or {}
+        # Earlier exploratory diagnostics allowed partial return windows.  Do
+        # not mix those noisy figures with the full-window evidence.
+        if summary.get("required_return_days") is None:
+            continue
+        candidate = audit.get("candidate") or {}
+        data = audit.get("data") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate": str(candidate.get("name", "—")),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "lookback_days": int(summary["required_return_days"]),
+                "valid_basket_count": int(summary.get("valid_correlation_basket_count") or 0),
+                "max_correlation_p90": summary.get("max_pairwise_correlation_p90"),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
+def load_diversification_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read completed correlation-cap sensitivity audits for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_diversification_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        ranking = list(audit.get("ranking_by_development") or [])
+        candidate = audit.get("candidate") or {}
+        data = audit.get("data") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate": str(candidate.get("name", "—")),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "selection_policy": str(audit.get("selection_policy", "—")),
+                "winner_max_pairwise_correlation": audit.get(
+                    "winner_max_pairwise_correlation_selected_on_development_only"
+                ),
+                "has_qualified_cap": bool(
+                    audit.get(
+                        "has_development_qualified_diversification_cap",
+                        any(item.get("development_selection_score") is not None for item in ranking),
+                    )
+                ),
+                "cap_count": len(ranking),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def render_three_day_research_report(
     registry: dict[str, Any],
     ledger: dict[str, Any],
@@ -2389,6 +2665,8 @@ def render_three_day_research_report(
     no_eligible_studies: list[dict[str, Any]] | None = None,
     regime_audits: list[dict[str, Any]] | None = None,
     loss_cap_audits: list[dict[str, Any]] | None = None,
+    basket_correlation_audits: list[dict[str, Any]] | None = None,
+    diversification_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -2521,6 +2799,62 @@ def render_three_day_research_report(
                 )
             )
         lines.append("")
+    if basket_correlation_audits:
+        lines.extend(
+            [
+                "",
+                "## 篮子相关性审计",
+                "",
+                "仅保留具有完整回看窗口的相关性诊断；相关性是集中度代理，不能替代行业分类或直接成为交易规则。",
+                "",
+                "| 审计 | 候选 | 历史范围 | 回看日数 | 有效篮子 | 最大两两相关性 P90 |",
+                "| --- | --- | --- | ---: | ---: | ---: |",
+            ]
+        )
+        for audit in basket_correlation_audits:
+            p90 = "—" if audit["max_correlation_p90"] is None else f"{float(audit['max_correlation_p90']):.2f}"
+            lines.append(
+                "| {run_id} | {candidate} | {start} 至 {end} | {lookback} | {count} | {p90} |".format(
+                    run_id=audit["run_id"],
+                    candidate=audit["candidate"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    lookback=audit["lookback_days"],
+                    count=audit["valid_basket_count"],
+                    p90=p90,
+                )
+            )
+        lines.append("")
+    if diversification_audits:
+        lines.extend(
+            [
+                "",
+                "## 相关性分散化审计",
+                "",
+                "此审计只比较固定候选的完整 TopK 相关性上限；无法凑足完整低相关篮子时按空仓记录，结果不能修改前瞻策略。",
+                "",
+                "| 审计 | 候选 | 历史范围 | 选择规则 | 分散化上限结论 |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for audit in diversification_audits:
+            if not audit["has_qualified_cap"]:
+                conclusion = f"无合格上限（0/{audit['cap_count']}）"
+            elif audit["winner_max_pairwise_correlation"] is None:
+                conclusion = "无约束"
+            else:
+                conclusion = f"{float(audit['winner_max_pairwise_correlation']):.2f}"
+            lines.append(
+                "| {run_id} | {candidate} | {start} 至 {end} | {policy} | {conclusion} |".format(
+                    run_id=audit["run_id"],
+                    candidate=audit["candidate"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    policy=audit["selection_policy"],
+                    conclusion=conclusion,
+                )
+            )
+        lines.append("")
     lines.extend(
         [
             "",
@@ -2593,6 +2927,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     loss_cap_audits = load_loss_cap_audits(experiment_root)
+    basket_correlation_audits = load_basket_correlation_audits(experiment_root)
+    diversification_audits = load_diversification_audits(experiment_root)
     report = render_three_day_research_report(
         registry,
         ledger,
@@ -2601,6 +2937,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         no_eligible_studies,
         regime_audits,
         loss_cap_audits,
+        basket_correlation_audits,
+        diversification_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -2619,6 +2957,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "no_eligible_studies": len(no_eligible_studies),
         "regime_audits": len(regime_audits),
         "loss_cap_audits": len(loss_cap_audits),
+        "basket_correlation_audits": len(basket_correlation_audits),
+        "diversification_audits": len(diversification_audits),
     }
 
 
@@ -2733,6 +3073,255 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
         "audit_path": str(destination.resolve()),
         "candidate_count": len(candidates),
         "pairwise_overlap": pairs,
+    }
+
+
+def run_basket_correlation_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Measure whether one TopK basket is concentrated in correlated names.
+
+    This diagnostic intentionally does not alter ranking or execution.  It is
+    evidence for deciding whether a separately named diversification rule is
+    worth testing, not a promotion path for the fixed candidate.
+    """
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidate = candidate_by_name(args.candidate, args.candidate_library)
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    scored = score_candidate(ranked, candidate)
+    baskets = selected_baskets_by_signal(scored, args.hold_days, args.topk, args.regime_filter)
+    rounds, model_summary = evaluate_candidate(
+        scored,
+        candidate,
+        hold_days=args.hold_days,
+        topk=args.topk,
+        open_cost=args.open_cost,
+        close_cost=args.close_cost,
+        development_end=args.development_end,
+        regime_filter=args.regime_filter,
+    )
+    rows = basket_correlation_rows(scored, baskets, args.correlation_lookback)
+    summary = summarize_basket_correlation(rows, rounds, args.correlation_lookback)
+    cohort_rows = rows.merge(
+        rounds[["signal_date", "net_return", "regime_active"]], on="signal_date", how="left"
+    ).sort_values("signal_date", kind="stable")
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "basket_correlation_concentration_research_only_not_investment_advice",
+        "candidate": {
+            "name": candidate.name,
+            "description": candidate.description,
+            "weights": candidate.weights,
+            "candidate_library": args.candidate_library,
+        },
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+            "correlation_measure": (
+                f"pairwise Pearson correlation of daily close-to-close returns over the latest {args.correlation_lookback} "
+                "calendar observations ending at the signal close"
+            ),
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "development_end": args.development_end,
+            "test_period_used_for_correlation_diagnostic": False,
+        },
+        "candidate_development": model_summary["development"],
+        "candidate_development_stability": model_summary.get("development_stability"),
+        "correlation_summary": summary,
+        "cohorts": [
+            {
+                "signal_date": row.signal_date.date().isoformat(),
+                "basket_size": int(row.basket_size),
+                "valid_return_days": int(row.valid_return_days),
+                "mean_pairwise_correlation": None
+                if pd.isna(row.mean_pairwise_correlation)
+                else float(row.mean_pairwise_correlation),
+                "max_pairwise_correlation": None
+                if pd.isna(row.max_pairwise_correlation)
+                else float(row.max_pairwise_correlation),
+                "three_day_net_return": None if pd.isna(row.net_return) else float(row.net_return),
+                "regime_active": bool(row.regime_active) if pd.notna(row.regime_active) else False,
+            }
+            for row in cohort_rows.itertuples(index=False)
+        ],
+        "limitations": [
+            "Return correlation is a statistical concentration proxy, not an industry classification or proof of common economic exposure.",
+            "Twenty daily observations make the estimate noisy; this diagnostic does not itself filter or reorder a basket.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+            "Prices are qfq-adjusted and do not provide an exact executable or limit-up/limit-down simulation.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_basket_correlation_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate": candidate.name,
+        "correlation_summary": summary,
+    }
+
+
+def run_diversification_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Compare small, predeclared within-basket correlation caps for one candidate."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidate = candidate_by_name(args.candidate, args.candidate_library)
+    requested_caps = args.max_pairwise_correlation or list(DEFAULT_MAX_PAIRWISE_CORRELATION_CAPS)
+    for max_pairwise_correlation in requested_caps:
+        validate_diversification_inputs(
+            max_pairwise_correlation,
+            args.correlation_lookback,
+            args.diversification_candidate_pool,
+            args.topk,
+        )
+    caps: list[float | None] = [None, *sorted(set(float(value) for value in requested_caps))]
+
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    scored = score_candidate(ranked, candidate)
+    records: list[tuple[float | None, dict[str, Any], int]] = []
+    for max_pairwise_correlation in caps:
+        rounds, summary = evaluate_candidate(
+            scored,
+            candidate,
+            hold_days=args.hold_days,
+            topk=args.topk,
+            open_cost=args.open_cost,
+            close_cost=args.close_cost,
+            development_end=args.development_end,
+            regime_filter=args.regime_filter,
+            max_pairwise_correlation=max_pairwise_correlation,
+            correlation_lookback=args.correlation_lookback,
+            diversification_candidate_pool=args.diversification_candidate_pool,
+        )
+        active_cash_cohorts = int(
+            (rounds["regime_active"] & ~rounds["diversification_basket_formed"]).sum()
+        )
+        records.append((max_pairwise_correlation, summary, active_cash_cohorts))
+
+    ranking = sorted(
+        records,
+        key=lambda item: float((item[1].get("selection_scores") or {}).get(args.selection_policy))
+        if (item[1].get("selection_scores") or {}).get(args.selection_policy) is not None
+        else float("-inf"),
+        reverse=True,
+    )
+    winning_record = next(
+        (
+            item
+            for item in ranking
+            if (item[1].get("selection_scores") or {}).get(args.selection_policy) is not None
+        ),
+        None,
+    )
+    winner = winning_record[0] if winning_record is not None else None
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "basket_diversification_sensitivity_research_only_not_investment_advice",
+        "candidate": {
+            "name": candidate.name,
+            "description": candidate.description,
+            "weights": candidate.weights,
+            "candidate_library": args.candidate_library,
+        },
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+            "correlation_lookback": args.correlation_lookback,
+            "diversification_candidate_pool": args.diversification_candidate_pool,
+            "diversification_rule": (
+                "greedily take factor-ranked names from the top candidate pool only when every pair's trailing "
+                "close-to-close return correlation is at or below the cap; if a complete TopK basket cannot be "
+                "formed, hold cash for that cohort"
+            ),
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "development_end": args.development_end,
+            "test_period_used_for_cap_selection": False,
+        },
+        "selection_policy": args.selection_policy,
+        "selection_rule": f"{SELECTION_POLICIES[args.selection_policy]}; no test metrics are used for cap ranking",
+        "winner_max_pairwise_correlation_selected_on_development_only": winner,
+        "has_development_qualified_diversification_cap": winning_record is not None,
+        "ranking_by_development": [
+            {
+                "max_pairwise_correlation": max_pairwise_correlation,
+                "development_selection_score": (summary.get("selection_scores") or {}).get(args.selection_policy),
+                "development": summary["development"],
+                "development_stability": summary.get("development_stability"),
+                "test": summary["test"],
+                "active_cash_cohorts_from_incomplete_diversification": active_cash_cohorts,
+            }
+            for max_pairwise_correlation, summary, active_cash_cohorts in ranking
+        ],
+        "limitations": [
+            "This diversification sensitivity audit is not authorization to alter an existing forward candidate.",
+            "Return correlation is a short-window statistical proxy, not industry classification or proof of economic independence.",
+            "A missing complete low-correlation basket is modeled as cash, not as a partial basket or replacement allocation.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_diversification_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate": candidate.name,
+        "winner_max_pairwise_correlation_selected_on_development_only": winner,
+        "has_development_qualified_diversification_cap": winning_record is not None,
+        "ranking_by_development": audit["ranking_by_development"],
     }
 
 
@@ -3226,6 +3815,56 @@ def parse_args() -> argparse.Namespace:
     overlap_audit.add_argument("--max-quality-age-days", type=int, default=550)
     overlap_audit.add_argument("--batch-size", type=int, default=500)
 
+    basket_correlation_audit = subparsers.add_parser(
+        "basket-correlation-audit", help="measure within-basket return-correlation concentration for one candidate"
+    )
+    basket_correlation_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    basket_correlation_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    basket_correlation_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    basket_correlation_audit.add_argument("--candidate", required=True)
+    basket_correlation_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    basket_correlation_audit.add_argument("--start", default="2024-01-01")
+    basket_correlation_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
+    basket_correlation_audit.add_argument("--development-end", default="2025-12-31")
+    basket_correlation_audit.add_argument("--hold-days", type=int, default=3)
+    basket_correlation_audit.add_argument("--topk", type=int, default=3)
+    basket_correlation_audit.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
+    basket_correlation_audit.add_argument("--open-cost", type=float, default=0.0015)
+    basket_correlation_audit.add_argument("--close-cost", type=float, default=0.0025)
+    basket_correlation_audit.add_argument("--correlation-lookback", type=int, default=DEFAULT_BASKET_CORRELATION_LOOKBACK)
+    basket_correlation_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    basket_correlation_audit.add_argument("--batch-size", type=int, default=500)
+
+    diversification_audit = subparsers.add_parser(
+        "diversification-audit", help="compare complete-TopK trailing-correlation caps for one candidate"
+    )
+    diversification_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    diversification_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    diversification_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    diversification_audit.add_argument("--candidate", required=True)
+    diversification_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    diversification_audit.add_argument("--start", default="2024-01-01")
+    diversification_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
+    diversification_audit.add_argument("--development-end", default="2025-12-31")
+    diversification_audit.add_argument("--hold-days", type=int, default=3)
+    diversification_audit.add_argument("--topk", type=int, default=3)
+    diversification_audit.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
+    diversification_audit.add_argument("--open-cost", type=float, default=0.0015)
+    diversification_audit.add_argument("--close-cost", type=float, default=0.0025)
+    diversification_audit.add_argument(
+        "--max-pairwise-correlation",
+        type=float,
+        action="append",
+        help="repeat one or more correlation caps; defaults to 0.50, 0.60, and 0.70 plus uncapped baseline",
+    )
+    diversification_audit.add_argument("--correlation-lookback", type=int, default=DEFAULT_BASKET_CORRELATION_LOOKBACK)
+    diversification_audit.add_argument(
+        "--diversification-candidate-pool", type=int, default=DEFAULT_DIVERSIFICATION_CANDIDATE_POOL
+    )
+    diversification_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    diversification_audit.add_argument("--batch-size", type=int, default=500)
+    diversification_audit.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
+
     screen = subparsers.add_parser("screen", help="rank latest locally available candidates with a recorded factor mix")
     screen.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     screen.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -3323,6 +3962,10 @@ def main() -> int:
         report = run_loss_cap_audit(args)
     elif args.command == "candidate-overlap-audit":
         report = run_candidate_overlap_audit(args)
+    elif args.command == "basket-correlation-audit":
+        report = run_basket_correlation_audit(args)
+    elif args.command == "diversification-audit":
+        report = run_diversification_audit(args)
     elif args.command == "plan":
         report = run_execution_plan(args)
     elif args.command == "monitor":

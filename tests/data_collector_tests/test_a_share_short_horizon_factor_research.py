@@ -122,6 +122,56 @@ def test_basket_overlap_summary_counts_common_dates_and_pairwise_similarity():
     assert metrics["any_overlap_rate"] == pytest.approx(1.0)
 
 
+def test_basket_correlation_uses_only_trailing_close_known_returns():
+    dates = pd.to_datetime(["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"])
+    scored = pd.DataFrame(
+        {
+            "datetime": list(dates) * 3,
+            "instrument": ["A"] * 4 + ["B"] * 4 + ["C"] * 4,
+            "close": [100.0, 110.0, 99.0, 108.9, 100.0, 120.0, 96.0, 115.2, 100.0, 90.0, 99.0, 89.1],
+        }
+    )
+    rows = RESEARCH.basket_correlation_rows(scored, {"2025-01-07": {"A", "B", "C"}}, lookback_days=3)
+    row = rows.iloc[0]
+    assert row["valid_return_days"] == 3
+    assert row["mean_pairwise_correlation"] == pytest.approx(-1.0 / 3.0)
+    assert row["max_pairwise_correlation"] == pytest.approx(1.0)
+    summary = RESEARCH.summarize_basket_correlation(
+        rows, pd.DataFrame({"signal_date": dates[-1:], "net_return": [-0.02]}), lookback_days=3
+    )
+    assert summary["basket_count"] == 1
+    assert summary["valid_correlation_basket_count"] == 1
+    with pytest.raises(ValueError, match="at least two"):
+        RESEARCH.basket_correlation_rows(scored, {"2025-01-07": {"A", "B"}}, lookback_days=1)
+
+
+def test_diversified_topk_skips_highly_correlated_name_and_requires_a_complete_basket():
+    dates = pd.to_datetime(["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07", "2025-01-08"])
+    scored = pd.DataFrame(
+        {
+            "datetime": list(dates) * 3,
+            "instrument": ["A"] * 5 + ["B"] * 5 + ["C"] * 5,
+            "close": [100.0, 110.0, 99.0, 108.9, 98.01, 100.0, 120.0, 96.0, 115.2, 92.16, 100.0, 90.0, 99.0, 89.1, 98.01],
+            "score": [0.9] * 5 + [0.8] * 5 + [0.7] * 5,
+        }
+    )
+    selected, statuses = RESEARCH.select_diversified_topk(
+        scored,
+        hold_days=1,
+        topk=2,
+        regime_filter="always",
+        max_pairwise_correlation=0.5,
+        correlation_lookback=2,
+        candidate_pool=3,
+    )
+    latest_signal = dates[2]
+    assert statuses.loc[statuses["datetime"] == latest_signal, "diversification_basket_formed"].item()
+    assert set(selected.loc[selected["datetime"] == latest_signal, "instrument"]) == {"A", "C"}
+    assert not statuses.loc[statuses["datetime"] == dates[0], "diversification_basket_formed"].item()
+    with pytest.raises(ValueError, match="between -1 and 1"):
+        RESEARCH.select_diversified_topk(scored, 1, 2, "always", 1.1, 2, 3)
+
+
 def test_human_report_includes_no_eligible_pressure_scans_without_creating_a_winner():
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -559,6 +609,59 @@ def test_loss_cap_audits_are_retained_in_the_research_report_without_promotion(t
     assert "defensive_candidate" in report
     assert "无合格损失上限（0/2）" in report
     assert "原三日周期内保持现金" in report
+
+
+def test_correlation_audits_record_full_windows_and_unqualified_diversification(tmp_path):
+    (tmp_path / "old_basket_correlation_audit.json").write_text(
+        json.dumps({"status": "completed", "correlation_summary": {}}), encoding="utf-8"
+    )
+    (tmp_path / "full_basket_correlation_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "full-window",
+                "status": "completed",
+                "candidate": {"name": "defensive_candidate"},
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "correlation_summary": {
+                    "required_return_days": 20,
+                    "valid_correlation_basket_count": 12,
+                    "max_pairwise_correlation_p90": 0.68,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / "20260713T161805Z_diversification_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "diversification",
+                "status": "completed",
+                "candidate": {"name": "defensive_candidate"},
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "selection_policy": "positive_year_stability_mdd20",
+                "winner_max_pairwise_correlation_selected_on_development_only": None,
+                "has_development_qualified_diversification_cap": False,
+                "ranking_by_development": [
+                    {"development_selection_score": None},
+                    {"development_selection_score": None},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    correlation_audits = RESEARCH.load_basket_correlation_audits(tmp_path)
+    diversification_audits = RESEARCH.load_diversification_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        basket_correlation_audits=correlation_audits,
+        diversification_audits=diversification_audits,
+    )
+    assert len(correlation_audits) == 1
+    assert "篮子相关性审计" in report
+    assert "0.68" in report
+    assert "相关性分散化审计" in report
+    assert "无合格上限（0/2）" in report
 
 
 def test_research_report_labels_development_only_preregistration_for_forward_observation():
