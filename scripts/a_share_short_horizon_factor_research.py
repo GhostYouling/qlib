@@ -641,10 +641,11 @@ SELECTION_POLICIES = {
     "pooled_return_drawdown": "maximize development annualized_return - 0.5 * abs(development max_drawdown)",
     "positive_year_stability": (
         "maximize the worst development calendar-year net cumulative return - 0.5 * abs(full-development max_drawdown); "
-        "requires at least two development years"
+        "requires at least two development years and every observed development calendar year to be positive"
     ),
     "positive_year_stability_mdd20": (
-        "require at least two positive development calendar years and development max_drawdown no worse than -20%; "
+        "require at least two development years, every observed development calendar year to be positive, and "
+        "development max_drawdown no worse than -20%; "
         "then maximize the worst development calendar-year net cumulative return - 0.5 * abs(full-development max_drawdown)"
     ),
 }
@@ -653,6 +654,7 @@ SELECTION_POLICIES = {
 # separately named selection policy so a later research cycle cannot rewrite
 # the winner of a prior, looser stability rule.
 STRICT_DEVELOPMENT_MAX_DRAWDOWN = -0.20
+DEFAULT_CLOSE_LOSS_CAPS = (0.05, 0.08, 0.10)
 
 
 def candidate_library_fingerprint(candidates: tuple[Candidate, ...] = CANDIDATES) -> str:
@@ -676,6 +678,14 @@ def stability_score_with_drawdown_cap(
     if stability_score is None or max_drawdown is None or float(max_drawdown) < cap:
         return None
     return float(stability_score)
+
+
+def positive_year_stability_score(year_returns: list[float], max_drawdown: float | None) -> float | None:
+    """Score only a development sample with at least two, all-positive calendar years."""
+
+    if len(year_returns) < 2 or any(value <= 0.0 for value in year_returns) or max_drawdown is None:
+        return None
+    return float(min(year_returns) - 0.5 * abs(float(max_drawdown)))
 
 
 def apply_regime_filter(frame: pd.DataFrame, regime_filter: str) -> pd.DataFrame:
@@ -1291,6 +1301,64 @@ def minimum_required_holdings(topk: int) -> int:
     return max(1, math.ceil(topk * 0.8))
 
 
+def validate_close_loss_cap(close_loss_cap: float | None) -> None:
+    """Validate an optional close-confirmed loss cap expressed as a decimal."""
+
+    if close_loss_cap is not None and not 0.0 < float(close_loss_cap) < 1.0:
+        raise ValueError("close_loss_cap must be strictly between zero and one when supplied")
+
+
+def apply_close_loss_cap(trades: pd.DataFrame, quotes: pd.DataFrame, close_loss_cap: float | None) -> pd.DataFrame:
+    """Apply an assumed same-close exit after a close-confirmed loss breach.
+
+    The cap is deliberately based on a daily close, not an unobservable
+    intraday trigger.  Cash from an early exit remains idle until the cohort's
+    scheduled three-day exit, so it cannot be silently reallocated into an
+    untested replacement position.
+    """
+
+    validate_close_loss_cap(close_loss_cap)
+    required_trades = {"instrument", "entry_date", "exit_date", "entry_open", "planned_exit_close"}
+    missing_trades = sorted(required_trades - set(trades.columns))
+    if missing_trades:
+        raise ValueError(f"trades are missing columns for close-loss cap: {', '.join(missing_trades)}")
+    required_quotes = {"datetime", "instrument", "close"}
+    missing_quotes = sorted(required_quotes - set(quotes.columns))
+    if missing_quotes:
+        raise ValueError(f"quotes are missing columns for close-loss cap: {', '.join(missing_quotes)}")
+
+    result = trades.reset_index(drop=True).copy()
+    result["actual_exit_date"] = result["exit_date"]
+    result["actual_exit_close"] = result["planned_exit_close"]
+    result["close_loss_cap_triggered"] = False
+    if result.empty or close_loss_cap is None:
+        return result
+
+    result["_trade_id"] = np.arange(len(result))
+    paths = result[["_trade_id", "instrument", "entry_date", "exit_date", "entry_open"]].merge(
+        quotes[["datetime", "instrument", "close"]], on="instrument", how="inner", sort=False
+    )
+    paths = paths.loc[
+        paths["datetime"].ge(paths["entry_date"])
+        & paths["datetime"].le(paths["exit_date"])
+        & paths["entry_open"].gt(0.0)
+        & paths["close"].gt(0.0)
+    ].copy()
+    paths["gross_return_at_close"] = paths["close"] / paths["entry_open"] - 1.0
+    breaches = (
+        paths.loc[paths["gross_return_at_close"].le(-float(close_loss_cap))]
+        .sort_values(["_trade_id", "datetime"], kind="stable")
+        .drop_duplicates("_trade_id", keep="first")
+        .rename(columns={"datetime": "cap_exit_date", "close": "cap_exit_close"})
+    )
+    result = result.merge(breaches[["_trade_id", "cap_exit_date", "cap_exit_close"]], on="_trade_id", how="left", sort=False)
+    triggered = result["cap_exit_date"].notna()
+    result.loc[triggered, "actual_exit_date"] = result.loc[triggered, "cap_exit_date"]
+    result.loc[triggered, "actual_exit_close"] = result.loc[triggered, "cap_exit_close"]
+    result["close_loss_cap_triggered"] = triggered
+    return result.drop(columns=["_trade_id", "cap_exit_date", "cap_exit_close"])
+
+
 def evaluate_candidate(
     scored: pd.DataFrame,
     candidate: Candidate,
@@ -1300,6 +1368,7 @@ def evaluate_candidate(
     close_cost: float,
     development_end: str,
     regime_filter: str = "always",
+    close_loss_cap: float | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Run non-overlapping cohorts from close signal to next-open entry.
 
@@ -1336,16 +1405,24 @@ def evaluate_candidate(
 
     quotes = scored[["datetime", "instrument", "open", "close"]].drop_duplicates(["datetime", "instrument"])
     entry = quotes.rename(columns={"datetime": "entry_date", "open": "entry_open"})[["entry_date", "instrument", "entry_open"]]
-    exit_quote = quotes.rename(columns={"datetime": "exit_date", "close": "exit_close"})[["exit_date", "instrument", "exit_close"]]
+    exit_quote = quotes.rename(columns={"datetime": "exit_date", "close": "planned_exit_close"})[
+        ["exit_date", "instrument", "planned_exit_close"]
+    ]
     trades = selected.merge(entry, on=["entry_date", "instrument"], how="left")
     trades = trades.merge(exit_quote, on=["exit_date", "instrument"], how="left")
-    trades = trades.dropna(subset=["entry_open", "exit_close"])
-    trades = trades.loc[(trades["entry_open"] > 0) & (trades["exit_close"] > 0)].copy()
-    trades["gross_return"] = trades["exit_close"] / trades["entry_open"] - 1.0
+    trades = trades.dropna(subset=["entry_open", "planned_exit_close"])
+    trades = trades.loc[(trades["entry_open"] > 0) & (trades["planned_exit_close"] > 0)].copy()
+    trades = apply_close_loss_cap(trades, quotes, close_loss_cap)
+    trades["gross_return"] = trades["actual_exit_close"] / trades["entry_open"] - 1.0
     trades["net_return"] = (1.0 - open_cost) * (1.0 + trades["gross_return"]) * (1.0 - close_cost) - 1.0
     traded_rounds = (
         trades.groupby(["datetime", "entry_date", "exit_date"], sort=True)
-        .agg(net_return=("net_return", "mean"), gross_return=("gross_return", "mean"), holdings=("instrument", "nunique"))
+        .agg(
+            net_return=("net_return", "mean"),
+            gross_return=("gross_return", "mean"),
+            holdings=("instrument", "nunique"),
+            early_exit_holdings=("close_loss_cap_triggered", "sum"),
+        )
         .reset_index()
         .rename(columns={"datetime": "signal_date"})
     )
@@ -1360,6 +1437,7 @@ def evaluate_candidate(
         rounds["net_return"] = rounds["net_return"].fillna(0.0)
         rounds["gross_return"] = rounds["gross_return"].fillna(0.0)
         rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
+        rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
     rounds["segment"] = np.where(rounds["signal_date"] <= pd.Timestamp(development_end), "development", "test")
     development_rounds = rounds.loc[rounds["segment"] == "development"]
     development_by_year = {
@@ -1371,6 +1449,7 @@ def evaluate_candidate(
         "description": candidate.description,
         "weights": candidate.weights,
         "regime_filter": regime_filter,
+        "close_loss_cap": close_loss_cap,
         "development": return_metrics(development_rounds, hold_days),
         "development_by_signal_year": development_by_year,
         "test": return_metrics(rounds.loc[rounds["segment"] == "test"], hold_days),
@@ -1387,6 +1466,7 @@ def evaluate_candidate(
                 "gross_return": float(row.gross_return),
                 "net_return": float(row.net_return),
                 "holdings": int(row.holdings),
+                "early_exit_holdings": int(row.early_exit_holdings),
                 "regime_active": bool(row.regime_active),
             }
             for row in rounds.itertuples(index=False)
@@ -1405,11 +1485,7 @@ def evaluate_candidate(
         for metrics in development_by_year.values()
         if metrics.get("net_cumulative_return") is not None
     ]
-    stability_score = (
-        min(year_returns) - 0.5 * abs(float(development["max_drawdown"]))
-        if len(year_returns) >= 2 and min(year_returns) > 0.0 and development.get("max_drawdown") is not None
-        else None
-    )
+    stability_score = positive_year_stability_score(year_returns, development.get("max_drawdown"))
     strict_stability_score = stability_score_with_drawdown_cap(
         stability_score,
         development.get("max_drawdown"),
@@ -2267,6 +2343,44 @@ def load_regime_audits(experiment_root: Path) -> list[dict[str, Any]]:
     return audits
 
 
+def load_loss_cap_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read completed close-loss-cap sensitivity audits for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_loss_cap_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        ranking = list(audit.get("ranking_by_development") or [])
+        candidate = audit.get("candidate") or {}
+        data = audit.get("data") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate": str(candidate.get("name", "—")),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "selection_policy": str(audit.get("selection_policy", "—")),
+                "winner_close_loss_cap": audit.get("winner_close_loss_cap_selected_on_development_only"),
+                "has_qualified_loss_cap": bool(
+                    audit.get(
+                        "has_development_qualified_loss_cap",
+                        any(item.get("development_selection_score") is not None for item in ranking),
+                    )
+                ),
+                "cap_count": len(ranking),
+                "eligible_cap_count": sum(
+                    item.get("development_selection_score") is not None for item in ranking
+                ),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def render_three_day_research_report(
     registry: dict[str, Any],
     ledger: dict[str, Any],
@@ -2274,6 +2388,7 @@ def render_three_day_research_report(
     shadow_observation_registry: dict[str, Any] | None = None,
     no_eligible_studies: list[dict[str, Any]] | None = None,
     regime_audits: list[dict[str, Any]] | None = None,
+    loss_cap_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -2375,6 +2490,37 @@ def render_three_day_research_report(
                 )
             )
         lines.append("")
+    if loss_cap_audits:
+        lines.extend(
+            [
+                "",
+                "## 收盘损失上限审计",
+                "",
+                "此审计只比较固定候选在每日收盘确认损失后的假设性同收盘退出；提前卖出资金在原三日周期内保持现金，且结果不能自动修改前瞻策略。",
+                "",
+                "| 审计 | 候选 | 历史范围 | 选择规则 | 损失上限结论 |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for audit in loss_cap_audits:
+            winner = audit["winner_close_loss_cap"]
+            if not audit["has_qualified_loss_cap"]:
+                conclusion = f"无合格损失上限（0/{audit['cap_count']}）"
+            elif winner is None:
+                conclusion = "无上限"
+            else:
+                conclusion = f"{float(winner):.0%}"
+            lines.append(
+                "| {run_id} | {candidate} | {start} 至 {end} | {policy} | {conclusion} |".format(
+                    run_id=audit["run_id"],
+                    candidate=audit["candidate"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    policy=audit["selection_policy"],
+                    conclusion=conclusion,
+                )
+            )
+        lines.append("")
     lines.extend(
         [
             "",
@@ -2446,6 +2592,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
+    loss_cap_audits = load_loss_cap_audits(experiment_root)
     report = render_three_day_research_report(
         registry,
         ledger,
@@ -2453,6 +2600,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         shadow_observation_registry,
         no_eligible_studies,
         regime_audits,
+        loss_cap_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -2470,6 +2618,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_settlements": len(shadow_ledger["settlements"]),
         "no_eligible_studies": len(no_eligible_studies),
         "regime_audits": len(regime_audits),
+        "loss_cap_audits": len(loss_cap_audits),
     }
 
 
@@ -2696,6 +2845,137 @@ def run_regime_audit(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def run_loss_cap_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Compare close-confirmed loss caps for one fixed factor candidate.
+
+    This is an exploratory, research-only risk-control sensitivity audit.  It
+    never registers a strategy, even if an in-sample cap happens to qualify.
+    """
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidate = candidate_by_name(args.candidate, args.candidate_library)
+    requested_caps = args.close_loss_cap or list(DEFAULT_CLOSE_LOSS_CAPS)
+    for close_loss_cap in requested_caps:
+        validate_close_loss_cap(close_loss_cap)
+    caps: list[float | None] = [None, *sorted(set(float(value) for value in requested_caps))]
+
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    scored = score_candidate(ranked, candidate)
+    records: list[tuple[float | None, dict[str, Any], int]] = []
+    for close_loss_cap in caps:
+        rounds, summary = evaluate_candidate(
+            scored,
+            candidate,
+            hold_days=args.hold_days,
+            topk=args.topk,
+            open_cost=args.open_cost,
+            close_cost=args.close_cost,
+            development_end=args.development_end,
+            regime_filter=args.regime_filter,
+            close_loss_cap=close_loss_cap,
+        )
+        early_exit_holdings = int(rounds.get("early_exit_holdings", pd.Series(dtype="int64")).sum())
+        records.append((close_loss_cap, summary, early_exit_holdings))
+
+    ranking = sorted(
+        records,
+        key=lambda item: float((item[1].get("selection_scores") or {}).get(args.selection_policy))
+        if (item[1].get("selection_scores") or {}).get(args.selection_policy) is not None
+        else float("-inf"),
+        reverse=True,
+    )
+    winning_record = next(
+        (
+            item
+            for item in ranking
+            if (item[1].get("selection_scores") or {}).get(args.selection_policy) is not None
+        ),
+        None,
+    )
+    winner = winning_record[0] if winning_record is not None else None
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "close_loss_cap_sensitivity_research_only_not_investment_advice",
+        "candidate": {
+            "name": candidate.name,
+            "description": candidate.description,
+            "weights": candidate.weights,
+            "candidate_library": args.candidate_library,
+        },
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "scheduled_exit": "local close after holding_period_trading_days",
+            "close_loss_cap_rule": (
+                "when a holding's daily close from entry through scheduled exit is at or below "
+                "entry_open * (1 - close_loss_cap), assume exit at that same daily close; cash remains idle until "
+                "the scheduled cohort end"
+            ),
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "development_end": args.development_end,
+            "test_period_used_for_cap_selection": False,
+        },
+        "selection_policy": args.selection_policy,
+        "selection_rule": f"{SELECTION_POLICIES[args.selection_policy]}; no test metrics are used for cap ranking",
+        "winner_close_loss_cap_selected_on_development_only": winner,
+        "has_development_qualified_loss_cap": winning_record is not None,
+        "ranking_by_development": [
+            {
+                "close_loss_cap": close_loss_cap,
+                "development_selection_score": (summary.get("selection_scores") or {}).get(args.selection_policy),
+                "development": summary["development"],
+                "development_stability": summary.get("development_stability"),
+                "test": summary["test"],
+                "early_exit_holdings": early_exit_holdings,
+            }
+            for close_loss_cap, summary, early_exit_holdings in ranking
+        ],
+        "limitations": [
+            "This is a loss-cap sensitivity audit, not authorization to apply a cap to an existing forward candidate.",
+            "An assumed same-close exit is a market-on-close approximation, not proof that an order would fill at that price.",
+            "The qfq price data cannot simulate limit-up/limit-down availability, restoration factors, dividends, lot sizing, or exact taxes.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_loss_cap_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate": candidate.name,
+        "winner_close_loss_cap_selected_on_development_only": winner,
+        "has_development_qualified_loss_cap": winning_record is not None,
+        "ranking_by_development": audit["ranking_by_development"],
+    }
+
+
 def run_research(args: argparse.Namespace) -> dict[str, Any]:
     """Run all candidate combinations and write a record for each one."""
 
@@ -2901,6 +3181,32 @@ def parse_args() -> argparse.Namespace:
     regime_audit.add_argument("--batch-size", type=int, default=500)
     regime_audit.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
 
+    loss_cap_audit = subparsers.add_parser(
+        "loss-cap-audit", help="compare close-confirmed loss caps for one recorded factor candidate"
+    )
+    loss_cap_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    loss_cap_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    loss_cap_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    loss_cap_audit.add_argument("--candidate", required=True)
+    loss_cap_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    loss_cap_audit.add_argument("--start", default="2024-01-01")
+    loss_cap_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
+    loss_cap_audit.add_argument("--development-end", default="2025-12-31")
+    loss_cap_audit.add_argument("--hold-days", type=int, default=3)
+    loss_cap_audit.add_argument("--topk", type=int, default=3)
+    loss_cap_audit.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
+    loss_cap_audit.add_argument("--open-cost", type=float, default=0.0015)
+    loss_cap_audit.add_argument("--close-cost", type=float, default=0.0025)
+    loss_cap_audit.add_argument(
+        "--close-loss-cap",
+        type=float,
+        action="append",
+        help="repeat one or more daily-close loss caps; defaults to 0.05, 0.08, and 0.10 plus the uncapped baseline",
+    )
+    loss_cap_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    loss_cap_audit.add_argument("--batch-size", type=int, default=500)
+    loss_cap_audit.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
+
     overlap_audit = subparsers.add_parser(
         "candidate-overlap-audit", help="measure basket and return-series overlap across recorded candidates"
     )
@@ -3013,6 +3319,8 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "regime-audit":
         report = run_regime_audit(args)
+    elif args.command == "loss-cap-audit":
+        report = run_loss_cap_audit(args)
     elif args.command == "candidate-overlap-audit":
         report = run_candidate_overlap_audit(args)
     elif args.command == "plan":

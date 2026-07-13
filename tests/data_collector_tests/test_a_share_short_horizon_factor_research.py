@@ -159,6 +159,46 @@ def test_strict_stability_policy_requires_a_development_drawdown_at_or_above_min
     assert RESEARCH.choose_winner(summaries, "positive_year_stability_mdd20") == "risk_capped"
 
 
+def test_positive_year_stability_requires_every_development_year_to_be_positive():
+    assert RESEARCH.positive_year_stability_score([0.03, 0.01], -0.08) == pytest.approx(-0.03)
+    assert RESEARCH.positive_year_stability_score([0.03, -0.01, 0.08], -0.08) is None
+    assert RESEARCH.positive_year_stability_score([0.03], -0.08) is None
+    assert RESEARCH.positive_year_stability_score([0.03, 0.01], None) is None
+
+
+def test_close_loss_cap_uses_the_first_breaching_daily_close_without_reallocating():
+    trades = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000002"],
+            "entry_date": pd.to_datetime(["2025-01-02", "2025-01-02"]),
+            "exit_date": pd.to_datetime(["2025-01-06", "2025-01-06"]),
+            "entry_open": [100.0, 100.0],
+            "planned_exit_close": [101.0, 99.0],
+        }
+    )
+    quotes = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 3 + ["SZ000002"] * 3,
+            "datetime": pd.to_datetime(
+                ["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-02", "2025-01-03", "2025-01-06"]
+            ),
+            "close": [98.0, 94.0, 101.0, 96.0, 97.0, 99.0],
+        }
+    )
+    capped = RESEARCH.apply_close_loss_cap(trades, quotes, 0.05)
+    first, second = capped.itertuples(index=False)
+    assert first.close_loss_cap_triggered
+    assert first.actual_exit_date == pd.Timestamp("2025-01-03")
+    assert first.actual_exit_close == pytest.approx(94.0)
+    assert not second.close_loss_cap_triggered
+    assert second.actual_exit_date == pd.Timestamp("2025-01-06")
+    assert second.actual_exit_close == pytest.approx(99.0)
+    uncapped = RESEARCH.apply_close_loss_cap(trades, quotes, None)
+    assert not uncapped["close_loss_cap_triggered"].any()
+    with pytest.raises(ValueError, match="strictly between zero and one"):
+        RESEARCH.apply_close_loss_cap(trades, quotes, 0.0)
+
+
 def test_candidate_lookup_rejects_unrecorded_factor_mix():
     assert RESEARCH.candidate_by_name("quality_trend_pullback").weights["momentum_10"] == 0.25
     assert RESEARCH.candidate_by_name("expanded_multi_horizon_q25_profit").weights["quality_profit"] == 0.25
@@ -491,6 +531,34 @@ def test_regime_audits_are_retained_in_the_research_report_without_promotion(tmp
     assert "defensive_candidate" in report
     assert "无合格状态（0/2）" in report
     assert "不能回写既有策略" in report
+
+
+def test_loss_cap_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
+    (tmp_path / "20260713T160011Z_loss_cap_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "20260713T160011Z",
+                "status": "completed",
+                "candidate": {"name": "defensive_candidate"},
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "selection_policy": "positive_year_stability_mdd20",
+                "winner_close_loss_cap_selected_on_development_only": None,
+                "ranking_by_development": [
+                    {"close_loss_cap": None, "development_selection_score": None},
+                    {"close_loss_cap": 0.05, "development_selection_score": None},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_loss_cap_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, loss_cap_audits=audits
+    )
+    assert "收盘损失上限审计" in report
+    assert "defensive_candidate" in report
+    assert "无合格损失上限（0/2）" in report
+    assert "原三日周期内保持现金" in report
 
 
 def test_research_report_labels_development_only_preregistration_for_forward_observation():

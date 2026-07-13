@@ -136,9 +136,9 @@ python scripts/a_share_short_horizon_factor_research.py run \
   --iteration-label three_day_v2_development_preregistration
 ```
 
-默认选择规则按开发期的年化收益与回撤综合排序。若担心单一市场年份主导总收益，可显式使用 `--selection-policy positive_year_stability`：它要求至少两个开发年度均为正，并按“最差年度累计净收益 − 0.5 × 全开发期最大回撤”选择。这是新的研究轮次，必须与默认规则分开记录、分开前瞻观察，不能事后改写原轮次的胜者。
+默认选择规则按开发期的年化收益与回撤综合排序。若担心单一市场年份主导总收益，可显式使用 `--selection-policy positive_year_stability`：开发期至少包含两个年度，且**每个**开发年度均为正，再按“最差年度累计净收益 − 0.5 × 全开发期最大回撤”选择。这是新的研究轮次，必须与默认规则分开记录、分开前瞻观察，不能事后改写原轮次的胜者。
 
-若要把开发期回撤作为硬风险约束，可使用 `--selection-policy positive_year_stability_mdd20`：除上述年度稳定性条件外，开发期最大回撤必须不差于 **-20%**，再按相同稳定性分数选优。它和较宽松规则是两个独立的研究假设；仅在已有历史段表现较好不构成晋级，仍需从未见过的收盘日开始积累前瞻纸面样本。
+若要把开发期回撤作为硬风险约束，可使用 `--selection-policy positive_year_stability_mdd20`：除上述“至少两个年度且每年为正”的稳定性条件外，开发期最大回撤必须不差于 **-20%**，再按相同稳定性分数选优。它和较宽松规则是两个独立的研究假设；仅在已有历史段表现较好不构成晋级，仍需从未见过的收盘日开始积累前瞻纸面样本。
 
 研究的 `TopK` 必须与要验证的组合数量一致。若准备验证 20 万元账户的“最多三只、每只 5%”执行规则，应明确使用 `--topk 3`；三只中必须至少三只具有完整的进/出场日线，不能在缺失报价时悄悄换成四只或把资金重分配。
 
@@ -164,13 +164,25 @@ python scripts/a_share_short_horizon_factor_research.py regime-audit \
   --selection-policy positive_year_stability_mdd20
 ```
 
+若需要检验三日持仓中的个股尾部损失，可对固定候选运行 `loss-cap-audit`。它把无上限与 5%/8%/10% 的**收盘确认**损失上限并列比较：从入场日起，若某只股票的日收盘相对入场开盘跌破上限，则假设按该收盘退出，资金在本周期余下时间保持现金。它不是盘中止损成交，也不模拟跌停无法卖出；因此只能作为研究敏感性审计，绝不能直接应用到已有前瞻策略。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py loss-cap-audit \
+  --candidate expanded_v5_defensive_low_range_q15_composite \
+  --candidate-library v5_defensive \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter breadth_5_above_20 \
+  --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20
+```
+
 若多个候选都进入前瞻观察，先运行 `candidate-overlap-audit` 判断它们是否实质上选了同一批股票。它报告同一信号日的平均 Jaccard 重叠、完全相同篮子比例及三日净收益序列相关性；高重叠代表候选之间的证据不应被当作独立样本。
 
 若补齐较早年度的年报，可把同一审计扩展到更长历史作为压力测试；结果必须额外标注为受“当前上市清单”幸存者偏差影响的稳健性证据，不能替代新的前瞻样本或用来追溯晋级。
 
 长历史压力扫描允许并应当记录 `no_eligible_candidate`：若没有候选同时满足预设的跨年度与回撤约束，系统不会勉强登记赢家、不会创建前瞻观察，也不应事后放松门槛来得到一个看似可用的策略。
 
-`report` 会在“未产生合格候选的压力扫描”章节列出这些淘汰结果，并在“市场状态审计”章节列出每次固定候选的广度状态比较及合格状态数量，使长历史失败不会被后续研究日志掩盖。状态审计即使出现开发期胜者，也只是一条研究记录，不能自动晋级。
+`report` 会在“未产生合格候选的压力扫描”章节列出这些淘汰结果，并在“市场状态审计”和“收盘损失上限审计”章节保留固定候选的敏感性比较及合格数量，使长历史失败不会被后续研究日志掩盖。任何审计即使出现开发期胜者，也只是一条研究记录，不能自动晋级。
 
 当某轮策略在注册表中通过初测后，筛选命令必须带上它对应的状态条件，例如：
 
