@@ -655,6 +655,7 @@ SELECTION_POLICIES = {
 # the winner of a prior, looser stability rule.
 STRICT_DEVELOPMENT_MAX_DRAWDOWN = -0.20
 DEFAULT_CLOSE_LOSS_CAPS = (0.05, 0.08, 0.10)
+DEFAULT_ENTRY_GAP_CAPS = (0.02, 0.04, 0.06)
 DEFAULT_BASKET_CORRELATION_LOOKBACK = 20
 CORRELATION_DIAGNOSTIC_THRESHOLDS = (0.50, 0.70, 0.80, 0.90)
 DEFAULT_MAX_PAIRWISE_CORRELATION_CAPS = (0.50, 0.60, 0.70)
@@ -1313,6 +1314,13 @@ def validate_close_loss_cap(close_loss_cap: float | None) -> None:
         raise ValueError("close_loss_cap must be strictly between zero and one when supplied")
 
 
+def validate_entry_gap_cap(max_entry_gap: float | None) -> None:
+    """Validate an optional next-open entry-gap ceiling expressed as a decimal."""
+
+    if max_entry_gap is not None and not 0.0 < float(max_entry_gap) < 1.0:
+        raise ValueError("max_entry_gap must be strictly between zero and one when supplied")
+
+
 def apply_close_loss_cap(trades: pd.DataFrame, quotes: pd.DataFrame, close_loss_cap: float | None) -> pd.DataFrame:
     """Apply an assumed same-close exit after a close-confirmed loss breach.
 
@@ -1379,6 +1387,7 @@ def evaluate_candidate(
     diversification_candidate_pool: int = DEFAULT_DIVERSIFICATION_CANDIDATE_POOL,
     min_volatility_low_20: float | None = None,
     min_amplitude_low: float | None = None,
+    max_entry_gap: float | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Run non-overlapping cohorts from close signal to next-open entry.
 
@@ -1389,6 +1398,7 @@ def evaluate_candidate(
 
     if hold_days < 1 or topk < 1:
         raise ValueError("--hold-days and --topk must both be positive")
+    validate_entry_gap_cap(max_entry_gap)
     calendar = pd.DatetimeIndex(sorted(scored["datetime"].unique()))
     if len(calendar) <= hold_days + 1:
         raise ValueError("research window is too short for the requested holding period")
@@ -1409,8 +1419,13 @@ def evaluate_candidate(
     cohort_index = cohort_index.loc[cohort_index["available_holdings"] >= minimum_holdings].copy()
 
     risk_gate_configured = min_volatility_low_20 is not None or min_amplitude_low is not None
+    entry_gap_configured = max_entry_gap is not None
     if max_pairwise_correlation is not None and risk_gate_configured:
         raise ValueError("correlation diversification and selection risk gates must be audited as separate hypotheses")
+    if entry_gap_configured and (
+        close_loss_cap is not None or max_pairwise_correlation is not None or risk_gate_configured
+    ):
+        raise ValueError("entry-gap caps must be audited separately from other execution and selection hypotheses")
     regime_pool = apply_regime_filter(base_pool, regime_filter)
     pool = regime_pool
     if risk_gate_configured:
@@ -1439,7 +1454,29 @@ def evaluate_candidate(
     trades = selected.merge(entry, on=["entry_date", "instrument"], how="left")
     trades = trades.merge(exit_quote, on=["exit_date", "instrument"], how="left")
     trades = trades.dropna(subset=["entry_open", "planned_exit_close"])
-    trades = trades.loc[(trades["entry_open"] > 0) & (trades["planned_exit_close"] > 0)].copy()
+    trades = trades.loc[
+        (trades["close"] > 0) & (trades["entry_open"] > 0) & (trades["planned_exit_close"] > 0)
+    ].copy()
+    trades["entry_gap_return"] = trades["entry_open"] / trades["close"] - 1.0
+    entry_gap_status: pd.DataFrame | None = None
+    if entry_gap_configured:
+        entry_gap_status = (
+            trades.groupby("datetime", sort=True)
+            .agg(
+                entry_gap_holdings=("instrument", "nunique"),
+                maximum_entry_gap_return=("entry_gap_return", "max"),
+            )
+            .reset_index()
+            .rename(columns={"datetime": "signal_date"})
+        )
+        entry_gap_status["entry_gap_basket_formed"] = (
+            entry_gap_status["entry_gap_holdings"].ge(minimum_holdings)
+            & entry_gap_status["maximum_entry_gap_return"].le(float(max_entry_gap))
+        )
+        permitted_dates = set(
+            entry_gap_status.loc[entry_gap_status["entry_gap_basket_formed"], "signal_date"].unique()
+        )
+        trades = trades.loc[trades["datetime"].isin(permitted_dates)].copy()
     trades = apply_close_loss_cap(trades, quotes, close_loss_cap)
     trades["gross_return"] = trades["actual_exit_close"] / trades["entry_open"] - 1.0
     trades["net_return"] = (1.0 - open_cost) * (1.0 + trades["gross_return"]) * (1.0 - close_cost) - 1.0
@@ -1455,6 +1492,14 @@ def evaluate_candidate(
         .rename(columns={"datetime": "signal_date"})
     )
     rounds = cohort_index.merge(traded_rounds, on=["signal_date", "entry_date", "exit_date"], how="left")
+    rounds["market_data_basket_formed"] = rounds["holdings"].ge(minimum_holdings)
+    if entry_gap_status is not None:
+        rounds = rounds.merge(
+            entry_gap_status[["signal_date", "entry_gap_basket_formed"]], on="signal_date", how="left"
+        )
+        rounds["entry_gap_basket_formed"] = rounds["entry_gap_basket_formed"].fillna(False).astype(bool)
+    else:
+        rounds["entry_gap_basket_formed"] = True
     active_dates = set(regime_pool["datetime"].unique())
     rounds["regime_active"] = rounds["signal_date"].isin(active_dates)
     if diversification_status is not None:
@@ -1467,6 +1512,16 @@ def evaluate_candidate(
         rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
         rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
         rounds["risk_gate_basket_formed"] = True
+    elif entry_gap_configured:
+        rounds["net_return"] = rounds["net_return"].fillna(0.0)
+        rounds["gross_return"] = rounds["gross_return"].fillna(0.0)
+        rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
+        rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
+        incomplete = ~rounds["entry_gap_basket_formed"]
+        rounds.loc[incomplete, ["net_return", "gross_return"]] = 0.0
+        rounds.loc[incomplete, ["holdings", "early_exit_holdings"]] = 0
+        rounds["diversification_basket_formed"] = True
+        rounds["risk_gate_basket_formed"] = True
     elif risk_gate_configured:
         rounds["risk_gate_basket_formed"] = rounds["holdings"].ge(minimum_holdings)
         rounds["net_return"] = rounds["net_return"].fillna(0.0)
@@ -1478,7 +1533,17 @@ def evaluate_candidate(
         rounds.loc[incomplete, ["holdings", "early_exit_holdings"]] = 0
         rounds["diversification_basket_formed"] = True
     elif regime_filter == "always":
-        rounds = rounds.loc[rounds["holdings"].ge(minimum_holdings)].copy()
+        # A signal that cannot form a complete basket because a future open or
+        # exit close is unavailable must remain on the calendar as cash.  The
+        # old behavior dropped the entire cohort, making it incomparable with
+        # execution-gate audits that already kept such cohorts as cash.
+        rounds["net_return"] = rounds["net_return"].fillna(0.0)
+        rounds["gross_return"] = rounds["gross_return"].fillna(0.0)
+        rounds["holdings"] = rounds["holdings"].fillna(0).astype(int)
+        rounds["early_exit_holdings"] = rounds["early_exit_holdings"].fillna(0).astype(int)
+        incomplete = ~rounds["market_data_basket_formed"]
+        rounds.loc[incomplete, ["net_return", "gross_return"]] = 0.0
+        rounds.loc[incomplete, ["holdings", "early_exit_holdings"]] = 0
         rounds["diversification_basket_formed"] = True
         rounds["risk_gate_basket_formed"] = True
     else:
@@ -1507,6 +1572,7 @@ def evaluate_candidate(
         "diversification_candidate_pool": diversification_candidate_pool if max_pairwise_correlation is not None else None,
         "min_volatility_low_20": min_volatility_low_20,
         "min_amplitude_low": min_amplitude_low,
+        "max_entry_gap": max_entry_gap,
         "development": return_metrics(development_rounds, hold_days),
         "development_by_signal_year": development_by_year,
         "test": return_metrics(rounds.loc[rounds["segment"] == "test"], hold_days),
@@ -1524,8 +1590,10 @@ def evaluate_candidate(
                 "net_return": float(row.net_return),
                 "holdings": int(row.holdings),
                 "early_exit_holdings": int(row.early_exit_holdings),
+                "market_data_basket_formed": bool(row.market_data_basket_formed),
                 "diversification_basket_formed": bool(row.diversification_basket_formed),
                 "risk_gate_basket_formed": bool(row.risk_gate_basket_formed),
+                "entry_gap_basket_formed": bool(row.entry_gap_basket_formed),
                 "regime_active": bool(row.regime_active),
             }
             for row in rounds.itertuples(index=False)
@@ -1600,7 +1668,7 @@ def selected_basket_trade_details(
     open_cost: float,
     close_cost: float,
 ) -> pd.DataFrame:
-    """Reconstruct per-stock close-known baskets and their scheduled three-day returns."""
+    """Reconstruct selected baskets, their next-open gaps, and scheduled returns."""
 
     if hold_days < 1:
         raise ValueError("hold_days must be positive")
@@ -1632,7 +1700,12 @@ def selected_basket_trade_details(
     details = selected.merge(entry, on=["entry_date", "instrument"], how="left")
     details = details.merge(exit_quote, on=["exit_date", "instrument"], how="left")
     details = details.dropna(subset=["entry_open", "exit_close"])
-    details = details.loc[(details["entry_open"] > 0.0) & (details["exit_close"] > 0.0)].copy()
+    details = details.loc[
+        (details["close"] > 0.0) & (details["entry_open"] > 0.0) & (details["exit_close"] > 0.0)
+    ].copy()
+    # This is observable only once the entry session opens.  It is retained
+    # separately from the close-known factor ranks for execution attribution.
+    details["entry_gap_return"] = details["entry_open"] / details["close"] - 1.0
     details["gross_return"] = details["exit_close"] / details["entry_open"] - 1.0
     details["net_return"] = (1.0 - open_cost) * (1.0 + details["gross_return"]) * (1.0 - close_cost) - 1.0
     return details.sort_values(["datetime", "score", "instrument"], ascending=[True, False, True], kind="stable")
@@ -2679,6 +2752,41 @@ def load_loss_cap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     return audits
 
 
+def load_entry_gap_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read completed next-open entry-gap sensitivity audits for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_entry_gap_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        ranking = list(audit.get("ranking_by_development") or [])
+        candidate = audit.get("candidate") or {}
+        data = audit.get("data") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate": str(candidate.get("name", "—")),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "selection_policy": str(audit.get("selection_policy", "—")),
+                "winner_max_entry_gap": audit.get("winner_max_entry_gap_selected_on_development_only"),
+                "has_qualified_entry_gap": bool(
+                    audit.get(
+                        "has_development_qualified_entry_gap",
+                        any(item.get("development_selection_score") is not None for item in ranking),
+                    )
+                ),
+                "cap_count": len(ranking),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_basket_correlation_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read only full-window within-basket correlation diagnostics for the report."""
 
@@ -2819,6 +2927,7 @@ def render_three_day_research_report(
     no_eligible_studies: list[dict[str, Any]] | None = None,
     regime_audits: list[dict[str, Any]] | None = None,
     loss_cap_audits: list[dict[str, Any]] | None = None,
+    entry_gap_audits: list[dict[str, Any]] | None = None,
     basket_correlation_audits: list[dict[str, Any]] | None = None,
     diversification_audits: list[dict[str, Any]] | None = None,
     cohort_risk_audits: list[dict[str, Any]] | None = None,
@@ -2944,6 +3053,36 @@ def render_three_day_research_report(
                 conclusion = "无上限"
             else:
                 conclusion = f"{float(winner):.0%}"
+            lines.append(
+                "| {run_id} | {candidate} | {start} 至 {end} | {policy} | {conclusion} |".format(
+                    run_id=audit["run_id"],
+                    candidate=audit["candidate"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    policy=audit["selection_policy"],
+                    conclusion=conclusion,
+                )
+            )
+        lines.append("")
+    if entry_gap_audits:
+        lines.extend(
+            [
+                "",
+                "## 次日开盘跳空审计",
+                "",
+                "此审计只在次日开盘后检查完整 TopK 的实际跳空；任一股票超过上限则整组空仓，不替换为未检验的第四只。它是执行敏感性研究，不能修改前瞻策略。",
+                "",
+                "| 审计 | 候选 | 历史范围 | 选择规则 | 跳空上限结论 |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for audit in entry_gap_audits:
+            if not audit["has_qualified_entry_gap"]:
+                conclusion = f"无合格跳空上限（0/{audit['cap_count']}）"
+            elif audit["winner_max_entry_gap"] is None:
+                conclusion = "无跳空上限"
+            else:
+                conclusion = f"开发期最优上限 {audit['winner_max_entry_gap']:.0%}"
             lines.append(
                 "| {run_id} | {candidate} | {start} 至 {end} | {policy} | {conclusion} |".format(
                     run_id=audit["run_id"],
@@ -3132,6 +3271,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     loss_cap_audits = load_loss_cap_audits(experiment_root)
+    entry_gap_audits = load_entry_gap_audits(experiment_root)
     basket_correlation_audits = load_basket_correlation_audits(experiment_root)
     diversification_audits = load_diversification_audits(experiment_root)
     cohort_risk_audits = load_cohort_risk_audits(experiment_root)
@@ -3144,6 +3284,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         no_eligible_studies,
         regime_audits,
         loss_cap_audits,
+        entry_gap_audits,
         basket_correlation_audits,
         diversification_audits,
         cohort_risk_audits,
@@ -3166,6 +3307,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "no_eligible_studies": len(no_eligible_studies),
         "regime_audits": len(regime_audits),
         "loss_cap_audits": len(loss_cap_audits),
+        "entry_gap_audits": len(entry_gap_audits),
         "basket_correlation_audits": len(basket_correlation_audits),
         "diversification_audits": len(diversification_audits),
         "cohort_risk_audits": len(cohort_risk_audits),
@@ -3435,6 +3577,14 @@ def run_cohort_risk_audit(args: argparse.Namespace) -> dict[str, Any]:
         }
         for column in feature_columns
     }
+    entry_execution_summary = {
+        "entry_gap_return": {
+            "all_selected_median": float(details["entry_gap_return"].median()),
+            "worst_cohort_holdings_median": float(
+                details.loc[details["datetime"].isin(worst_dates), "entry_gap_return"].median()
+            ),
+        }
+    }
     run_id = _timestamp()
     audit = {
         "run_id": run_id,
@@ -3473,6 +3623,7 @@ def run_cohort_risk_audit(args: argparse.Namespace) -> dict[str, Any]:
         },
         "worst_cohort_count": args.worst_cohorts,
         "feature_rank_medians": feature_summary,
+        "entry_execution_medians": entry_execution_summary,
         "worst_cohorts": [
             {
                 "signal_date": cohort.signal_date.date().isoformat(),
@@ -3486,6 +3637,7 @@ def run_cohort_risk_audit(args: argparse.Namespace) -> dict[str, Any]:
                         "score": float(row.score),
                         "entry_date": row.entry_date.date().isoformat(),
                         "exit_date": row.exit_date.date().isoformat(),
+                        "entry_gap_return": float(row.entry_gap_return),
                         "gross_return": float(row.gross_return),
                         "net_return": float(row.net_return),
                         **{column: float(getattr(row, column)) for column in feature_columns},
@@ -3500,6 +3652,7 @@ def run_cohort_risk_audit(args: argparse.Namespace) -> dict[str, Any]:
         "limitations": [
             "This is descriptive attribution of selected historical cohorts, not a causal test or a strategy-selection rule.",
             "The reported feature values are same-day cross-sectional ranks, not absolute liquidity or volatility guarantees.",
+            "Entry gap is observable only at the next session's open, so it is an execution variable rather than a close-known factor.",
             "Names and ST flags are drawn from a current metadata snapshot and are not historical point-in-time classifications.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
             "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
@@ -3515,6 +3668,7 @@ def run_cohort_risk_audit(args: argparse.Namespace) -> dict[str, Any]:
             {"signal_date": item["signal_date"], "net_return": item["net_return"]} for item in audit["worst_cohorts"]
         ],
         "feature_rank_medians": feature_summary,
+        "entry_execution_medians": entry_execution_summary,
     }
 
 
@@ -4040,6 +4194,138 @@ def run_loss_cap_audit(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def run_entry_gap_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Compare predeclared next-open entry-gap ceilings for one fixed candidate.
+
+    The decision is intentionally made at the next session's open: if any of
+    the scheduled TopK names gaps above the ceiling, the whole cohort holds
+    cash.  This preserves a complete-basket assumption and avoids replacing a
+    rejected name with an untested fourth choice.
+    """
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidate = candidate_by_name(args.candidate, args.candidate_library)
+    requested_caps = args.max_entry_gap or list(DEFAULT_ENTRY_GAP_CAPS)
+    for max_entry_gap in requested_caps:
+        validate_entry_gap_cap(max_entry_gap)
+    caps: list[float | None] = [None, *sorted(set(float(value) for value in requested_caps))]
+
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    scored = score_candidate(ranked, candidate)
+    records: list[tuple[float | None, dict[str, Any], int]] = []
+    for max_entry_gap in caps:
+        rounds, summary = evaluate_candidate(
+            scored,
+            candidate,
+            hold_days=args.hold_days,
+            topk=args.topk,
+            open_cost=args.open_cost,
+            close_cost=args.close_cost,
+            development_end=args.development_end,
+            regime_filter=args.regime_filter,
+            max_entry_gap=max_entry_gap,
+        )
+        cash_cohorts = int((rounds["regime_active"] & rounds["holdings"].eq(0)).sum())
+        records.append((max_entry_gap, summary, cash_cohorts))
+
+    ranking = sorted(
+        records,
+        key=lambda item: float((item[1].get("selection_scores") or {}).get(args.selection_policy))
+        if (item[1].get("selection_scores") or {}).get(args.selection_policy) is not None
+        else float("-inf"),
+        reverse=True,
+    )
+    winning_record = next(
+        (
+            item
+            for item in ranking
+            if (item[1].get("selection_scores") or {}).get(args.selection_policy) is not None
+        ),
+        None,
+    )
+    winner = winning_record[0] if winning_record is not None else None
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "next_open_entry_gap_sensitivity_research_only_not_investment_advice",
+        "candidate": {
+            "name": candidate.name,
+            "description": candidate.description,
+            "weights": candidate.weights,
+            "candidate_library": args.candidate_library,
+        },
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "scheduled_exit": "local close after holding_period_trading_days",
+            "entry_gap_rule": (
+                "at the next-session open, form the scheduled complete TopK basket only when every selected name has "
+                "entry_open / signal_close - 1 at or below max_entry_gap; otherwise the entire cohort holds cash"
+            ),
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "development_end": args.development_end,
+            "test_period_used_for_entry_gap_selection": False,
+        },
+        "selection_policy": args.selection_policy,
+        "selection_rule": f"{SELECTION_POLICIES[args.selection_policy]}; no test metrics are used for entry-gap ranking",
+        "winner_max_entry_gap_selected_on_development_only": winner,
+        "has_development_qualified_entry_gap": winning_record is not None,
+        "ranking_by_development": [
+            {
+                "max_entry_gap": max_entry_gap,
+                "development_selection_score": (summary.get("selection_scores") or {}).get(args.selection_policy),
+                "development": summary["development"],
+                "development_stability": summary.get("development_stability"),
+                "test": summary["test"],
+                "cash_cohorts": cash_cohorts,
+            }
+            for max_entry_gap, summary, cash_cohorts in ranking
+        ],
+        "limitations": [
+            "This is an execution sensitivity audit, not authorization to apply an entry-gap ceiling to an existing forward candidate.",
+            "The next-session opening price is observable only after the close-based signal; a rapid market move can make a real order unavailable or different from the adjusted open.",
+            "The qfq price data cannot simulate opening-auction fill priority, limit-up/limit-down availability, restoration factors, dividends, lot sizing, or exact taxes.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_entry_gap_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate": candidate.name,
+        "winner_max_entry_gap_selected_on_development_only": winner,
+        "has_development_qualified_entry_gap": winning_record is not None,
+        "ranking_by_development": audit["ranking_by_development"],
+    }
+
+
 def run_research(args: argparse.Namespace) -> dict[str, Any]:
     """Run all candidate combinations and write a record for each one."""
 
@@ -4271,6 +4557,32 @@ def parse_args() -> argparse.Namespace:
     loss_cap_audit.add_argument("--batch-size", type=int, default=500)
     loss_cap_audit.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
 
+    entry_gap_audit = subparsers.add_parser(
+        "entry-gap-audit", help="compare complete-TopK next-open entry-gap ceilings for one recorded factor candidate"
+    )
+    entry_gap_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    entry_gap_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    entry_gap_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    entry_gap_audit.add_argument("--candidate", required=True)
+    entry_gap_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    entry_gap_audit.add_argument("--start", default="2024-01-01")
+    entry_gap_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
+    entry_gap_audit.add_argument("--development-end", default="2025-12-31")
+    entry_gap_audit.add_argument("--hold-days", type=int, default=3)
+    entry_gap_audit.add_argument("--topk", type=int, default=3)
+    entry_gap_audit.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
+    entry_gap_audit.add_argument("--open-cost", type=float, default=0.0015)
+    entry_gap_audit.add_argument("--close-cost", type=float, default=0.0025)
+    entry_gap_audit.add_argument(
+        "--max-entry-gap",
+        type=float,
+        action="append",
+        help="repeat one or more next-open gap ceilings; defaults to 0.02, 0.04, and 0.06 plus the uncapped baseline",
+    )
+    entry_gap_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    entry_gap_audit.add_argument("--batch-size", type=int, default=500)
+    entry_gap_audit.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
+
     overlap_audit = subparsers.add_parser(
         "candidate-overlap-audit", help="measure basket and return-series overlap across recorded candidates"
     )
@@ -4487,6 +4799,8 @@ def main() -> int:
         report = run_regime_audit(args)
     elif args.command == "loss-cap-audit":
         report = run_loss_cap_audit(args)
+    elif args.command == "entry-gap-audit":
+        report = run_entry_gap_audit(args)
     elif args.command == "candidate-overlap-audit":
         report = run_candidate_overlap_audit(args)
     elif args.command == "basket-correlation-audit":

@@ -203,8 +203,74 @@ def test_selected_basket_trade_details_uses_next_open_and_scheduled_exit_close()
     assert details["instrument"].tolist() == ["A", "B"]
     assert details["entry_date"].tolist() == [pd.Timestamp("2025-01-03")] * 2
     assert details["exit_date"].tolist() == [pd.Timestamp("2025-01-06")] * 2
+    assert details["entry_gap_return"].tolist() == pytest.approx([0.0, 0.0])
     assert details.loc[details["instrument"] == "A", "net_return"].item() == pytest.approx(0.10)
     assert details.loc[details["instrument"] == "B", "net_return"].item() == pytest.approx(-0.05)
+
+
+def test_entry_gap_cap_holds_cash_for_the_entire_incomplete_topk_cohort():
+    dates = pd.to_datetime(["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"])
+    rows = []
+    for instrument, opening_prices in {
+        "A": [10.0, 10.0, 10.0, 10.0],
+        "B": [10.0, 10.0, 10.0, 10.0],
+        "C": [10.0, 11.0, 10.0, 10.0],
+    }.items():
+        for date, opening_price in zip(dates, opening_prices):
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "open": opening_price,
+                    "close": 10.0,
+                    "score": {"A": 0.9, "B": 0.8, "C": 0.7}[instrument],
+                }
+            )
+    rounds, _ = RESEARCH.evaluate_candidate(
+        pd.DataFrame(rows),
+        RESEARCH.Candidate("entry_gap_test", "test", {"quality_score": 1.0}),
+        hold_days=1,
+        topk=3,
+        open_cost=0.0,
+        close_cost=0.0,
+        development_end="2025-12-31",
+        max_entry_gap=0.04,
+    )
+    assert rounds["entry_gap_basket_formed"].tolist() == [False, True]
+    assert rounds["holdings"].tolist() == [0, 3]
+    assert rounds["net_return"].tolist() == pytest.approx([0.0, 0.0])
+    with pytest.raises(ValueError, match="strictly between zero and one"):
+        RESEARCH.validate_entry_gap_cap(0.0)
+
+
+def test_missing_future_quote_remains_as_a_cash_cohort_instead_of_being_dropped():
+    dates = pd.to_datetime(["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"])
+    rows = []
+    for instrument in ("A", "B", "C"):
+        for date in dates:
+            if instrument == "C" and date == pd.Timestamp("2025-01-03"):
+                continue
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "open": 10.0,
+                    "close": 10.0,
+                    "score": {"A": 0.9, "B": 0.8, "C": 0.7}[instrument],
+                }
+            )
+    rounds, _ = RESEARCH.evaluate_candidate(
+        pd.DataFrame(rows),
+        RESEARCH.Candidate("missing_quote_test", "test", {"quality_score": 1.0}),
+        hold_days=1,
+        topk=3,
+        open_cost=0.0,
+        close_cost=0.0,
+        development_end="2025-12-31",
+    )
+    assert rounds["market_data_basket_formed"].tolist() == [False]
+    assert rounds["holdings"].tolist() == [0]
+    assert rounds["net_return"].tolist() == pytest.approx([0.0])
 
 
 def test_human_report_includes_no_eligible_pressure_scans_without_creating_a_winner():
@@ -644,6 +710,34 @@ def test_loss_cap_audits_are_retained_in_the_research_report_without_promotion(t
     assert "defensive_candidate" in report
     assert "无合格损失上限（0/2）" in report
     assert "原三日周期内保持现金" in report
+
+
+def test_entry_gap_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
+    (tmp_path / "20260713T164955Z_entry_gap_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "20260713T164955Z",
+                "status": "completed",
+                "candidate": {"name": "defensive_candidate"},
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2026-07-13"},
+                "selection_policy": "positive_year_stability_mdd20",
+                "winner_max_entry_gap_selected_on_development_only": None,
+                "has_development_qualified_entry_gap": False,
+                "ranking_by_development": [
+                    {"max_entry_gap": None, "development_selection_score": None},
+                    {"max_entry_gap": 0.02, "development_selection_score": None},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_entry_gap_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, entry_gap_audits=audits
+    )
+    assert "次日开盘跳空审计" in report
+    assert "defensive_candidate" in report
+    assert "无合格跳空上限（0/2）" in report
 
 
 def test_correlation_audits_record_full_windows_and_unqualified_diversification(tmp_path):

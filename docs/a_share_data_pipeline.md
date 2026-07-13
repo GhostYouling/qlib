@@ -176,6 +176,18 @@ python scripts/a_share_short_horizon_factor_research.py loss-cap-audit \
   --selection-policy positive_year_stability_mdd20
 ```
 
+若最差 cohort 归因显示高开入场值得单独检验，可运行 `entry-gap-audit`。它并列比较无上限与次日开盘跳空 2%/4%/6% 上限：在开盘后，只有三只原定股票都不高于上限时才形成完整篮子；任一股票超过上限就整组空仓，绝不替换成事后挑出的第四只。跳空在开盘前不可知，因而这是执行敏感性审计，不是收盘信号因子或自动前瞻策略变更。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py entry-gap-audit \
+  --candidate expanded_v5_defensive_low_range_q15_composite \
+  --candidate-library v5_defensive \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --regime-filter always \
+  --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20
+```
+
 若怀疑 Top‑3 实际上集中于同一价格波动簇，先运行 `basket-correlation-audit`，而不是从股票名称猜测行业。它逐个信号日计算三只股票截至该日收盘的 20 日两两收益相关性；只把**完整 20 日窗口**纳入汇总。相关性只是一种统计集中度代理，不会自动成为选股规则。
 
 ```bash
@@ -211,7 +223,7 @@ python scripts/a_share_short_horizon_factor_research.py cohort-risk-audit \
   --open-cost 0.00012 --close-cost 0.00062 --worst-cohorts 10
 ```
 
-`risk-gate-audit` 随后以一个小型、完整的资格门网格检验归因所得假设：`volatility_low_20` 和 `amplitude_low` 的最低横截面排名分别取无门、0.20、0.40，共 9 个组合。它们不改变因子分数；不满足门槛而凑不齐完整三只时，该周期空仓。若硬门显著恶化结果，应保留这个反证，而不是继续提高阈值。
+`risk-gate-audit` 随后以一个小型、完整的资格门网格检验归因所得假设：`volatility_low_20` 和 `amplitude_low` 的最低横截面排名分别取无门、0.20、0.40，共 9 个组合。它们不改变因子分数；不满足门槛而凑不齐完整三只时，该周期空仓。若硬门显著恶化结果，应保留这个反证，而不是继续提高阈值。`cohort-risk-audit` 还会记录从信号日收盘到次日开盘的实际入场跳空；它是开盘时才可观察的执行变量，不会混入收盘已知的因子排名。
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py risk-gate-audit \
@@ -229,7 +241,7 @@ python scripts/a_share_short_horizon_factor_research.py risk-gate-audit \
 
 长历史压力扫描允许并应当记录 `no_eligible_candidate`：若没有候选同时满足预设的跨年度与回撤约束，系统不会勉强登记赢家、不会创建前瞻观察，也不应事后放松门槛来得到一个看似可用的策略。
 
-`report` 会在“未产生合格候选的压力扫描”章节列出这些淘汰结果，并在“市场状态审计”“收盘损失上限审计”“篮子相关性审计”“相关性分散化审计”“最差 Cohort 风险归因”和“波动/振幅资格门审计”章节保留固定候选的敏感性比较及合格数量，使长历史失败不会被后续研究日志掩盖。任何审计即使出现开发期胜者，也只是一条研究记录，不能自动晋级。
+`report` 会在“未产生合格候选的压力扫描”章节列出这些淘汰结果，并在“市场状态审计”“收盘损失上限审计”“次日开盘跳空审计”“篮子相关性审计”“相关性分散化审计”“最差 Cohort 风险归因”和“波动/振幅资格门审计”章节保留固定候选的敏感性比较及合格数量，使长历史失败不会被后续研究日志掩盖。任何审计即使出现开发期胜者，也只是一条研究记录，不能自动晋级。
 
 当某轮策略在注册表中通过初测后，筛选命令必须带上它对应的状态条件，例如：
 
