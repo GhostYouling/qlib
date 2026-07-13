@@ -220,6 +220,22 @@ python scripts/a_share_short_horizon_factor_research.py sync-margin-financing-ev
   --start 2026-01-01 --merge-existing
 ```
 
+机构调研明细源虽然带有公告日，但接口每页上限 50 条，并在约第 52 页持续返回 `9701`（服务器繁忙）；完整 2019–2025 快照无法稳定取得。因此它被记录为**来源不可用**，不得以短期片段替代完整开发期，更不能进入选股评分。
+
+下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-repurchase-plan-events
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --repurchase-events data/raw/a_share/events/repurchase_plans.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --max-repurchase-age-days 3
+```
+
+回购计划事件在质量门后每年只有很少的非重叠 cohort；即使某一汇总指标看起来积极，也必须通过现有的至少 200 个 cohort、跨年度 Rank IC 与 Top‑3 可行性审计，不能凭小样本晋级。
+
 季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash

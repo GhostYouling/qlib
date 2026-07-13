@@ -56,6 +56,10 @@ DEFAULT_BLOCK_TRADE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "block_t
 DEFAULT_BLOCK_TRADE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "block_trades_manifest.json"
 DEFAULT_MARGIN_FINANCING_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "margin_financing_top_flows.parquet"
 DEFAULT_MARGIN_FINANCING_EVENT_MANIFEST = DATA_ROOT / "metadata" / "margin_financing_top_flows_manifest.json"
+DEFAULT_INSTITUTIONAL_SURVEY_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "institutional_surveys.parquet"
+DEFAULT_INSTITUTIONAL_SURVEY_EVENT_MANIFEST = DATA_ROOT / "metadata" / "institutional_surveys_manifest.json"
+DEFAULT_REPURCHASE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "repurchase_plans.parquet"
+DEFAULT_REPURCHASE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "repurchase_plans_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
@@ -72,6 +76,8 @@ EASTMONEY_BILLBOARD_REPORT = "RPT_DAILYBILLBOARD_DETAILSNEW"
 EASTMONEY_MAJOR_HOLDER_REPORT = "RPT_SHARE_HOLDER_INCREASE"
 EASTMONEY_BLOCK_TRADE_REPORT = "RPT_DATA_BLOCKTRADE"
 EASTMONEY_MARGIN_FINANCING_REPORT = "RPTA_WEB_RZRQ_GGMX"
+EASTMONEY_INSTITUTIONAL_SURVEY_REPORT = "RPT_ORG_SURVEY"
+EASTMONEY_REPURCHASE_REPORT = "RPTA_WEB_GETHGLIST_NEW"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -152,6 +158,28 @@ MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS = (
     "margin_buy_to_market_cap",
     "margin_balance_to_market_cap",
     "margin_financing_balance_growth",
+)
+INSTITUTIONAL_SURVEY_EVENT_COLUMNS = (
+    "instrument",
+    "announcement_date",
+    "institutional_survey_org_count",
+    "institutional_survey_event_count",
+)
+INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS = (
+    "institutional_survey_org_count",
+    "institutional_survey_event_count",
+    "institutional_survey_freshness",
+)
+REPURCHASE_EVENT_COLUMNS = (
+    "instrument",
+    "announcement_date",
+    "repurchase_planned_share_ratio",
+    "repurchase_planned_amount",
+)
+REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS = (
+    "repurchase_planned_share_ratio",
+    "repurchase_planned_amount",
+    "repurchase_freshness",
 )
 MARGIN_FINANCING_TOP_N = 100
 # This direction is deliberately not part of the development diagnostic
@@ -1659,6 +1687,93 @@ def _eastmoney_margin_financing_top_flow_request(
     raise RuntimeError(f"cannot fetch margin-financing top flows for {trade_date}: {errors[-1]}")
 
 
+def _eastmoney_institutional_survey_request(
+    session: requests.Session, start_date: str, end_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one page of dated institutional-survey disclosures.
+
+    ``RPT_ORG_SURVEYNEW`` is the smaller summary report exposed on the web
+    page, but it retains only a short recent history.  The detailed report has
+    the required long history.  Its ``NUMBERNEW=1`` marker leaves one detail
+    row per disclosed survey while retaining the disclosure's aggregate
+    ``SUM``.  Request only issuer code, public notice date, received-date
+    range, and reported institution count.  Participant names, current
+    prices, and any post-event performance fields are neither requested nor
+    stored.
+    """
+
+    params = {
+        "reportName": EASTMONEY_INSTITUTIONAL_SURVEY_REPORT,
+        "columns": "SECURITY_CODE,NOTICE_DATE,RECEIVE_START_DATE,RECEIVE_END_DATE,SUM",
+        "filter": (
+            f"(NUMBERNEW=\"1\")(IS_SOURCE=\"1\")"
+            f"(NOTICE_DATE>='{start_date}')(NOTICE_DATE<='{end_date}')"
+        ),
+        "pageNumber": page_number,
+        # This report rejects larger page sizes with a 9701 server-busy
+        # response.  Keep its documented/observed 50-row page contract.
+        "pageSize": 50,
+        "sortTypes": "1,1,1,1",
+        "sortColumns": "NOTICE_DATE,RECEIVE_START_DATE,SECURITY_CODE,NUMBERNEW",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(6):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if payload.get("success") is False and payload.get("code") == 9201:
+                return {"result": {"data": [], "pages": 0}}
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError(
+                    "Eastmoney response does not contain a result object: "
+                    f"code={payload.get('code')}, message={payload.get('message')}"
+                )
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(
+        f"cannot fetch institutional-survey notices {start_date} to {end_date} page {page_number}: {errors[-1]}"
+    )
+
+
+def _eastmoney_repurchase_request(session: requests.Session, page_number: int) -> dict[str, Any]:
+    """Fetch one historical repurchase-plan page without post-plan outcomes.
+
+    ``UPDATEDATE``, implementation progress, and completed repurchase amount
+    can be changed after the initial plan and are intentionally excluded.  The
+    dated plan fields retained here are the initial record date, proposed
+    maximum share ratio, and proposed maximum cash amount.
+    """
+
+    params = {
+        "reportName": EASTMONEY_REPURCHASE_REPORT,
+        "columns": "DIM_SCODE,DIM_DATE,ZSZSX,JESX",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "-1,-1,-1",
+        "sortColumns": "UPD,DIM_DATE,DIM_SCODE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(4):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(f"cannot fetch repurchase-plan page {page_number}: {errors[-1]}")
+
+
 def fetch_annual_report_rows(session: requests.Session, report_date: str) -> list[dict[str, Any]]:
     """Fetch all pages for one annual report period from the public endpoint."""
 
@@ -1989,6 +2104,149 @@ def normalize_margin_financing_top_flow_rows(rows: Iterable[dict[str, Any]]) -> 
         frame.loc[:, list(MARGIN_FINANCING_EVENT_COLUMNS)]
         .sort_values(["instrument", "trade_date"], kind="stable")
         .drop_duplicates(["instrument", "trade_date"], keep="last")
+        .reset_index(drop=True)
+    )
+
+
+def _institutional_survey_detail_frame(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Collapse repeated participant rows to one dated survey event.
+
+    The detailed Eastmoney report emits one row per received institution while
+    repeating ``SUM`` for the disclosure.  The source does not expose a stable
+    survey identifier, so the conservative event key is issuer plus public
+    notice date and disclosed received-date range.  This helper retains no
+    participant identity and is kept separate so sync pagination cannot double
+    count a disclosure split between two API pages.
+    """
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(
+            columns=[
+                "instrument",
+                "announcement_date",
+                "receive_start_date",
+                "receive_end_date",
+                "institutional_survey_org_count",
+            ]
+        )
+    start = pd.to_datetime(
+        raw.get("RECEIVE_START_DATE", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+    )
+    end = pd.to_datetime(
+        raw.get("RECEIVE_END_DATE", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+    )
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("SECURITY_CODE", pd.Series(index=raw.index, dtype="object")).map(qlib_symbol),
+            "announcement_date": pd.to_datetime(
+                raw.get("NOTICE_DATE", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+            ),
+            "receive_start_date": start,
+            "receive_end_date": end.fillna(start),
+            "institutional_survey_org_count": pd.to_numeric(
+                raw.get("SUM", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+        }
+    )
+    frame = frame.dropna(subset=["instrument", "announcement_date", "receive_start_date"])
+    return (
+        frame.groupby(
+            ["instrument", "announcement_date", "receive_start_date", "receive_end_date"],
+            as_index=False,
+            sort=True,
+            dropna=False,
+        )["institutional_survey_org_count"]
+        .max()
+        .sort_values(["instrument", "announcement_date", "receive_start_date"], kind="stable")
+        .reset_index(drop=True)
+    )
+
+
+def normalize_institutional_survey_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Aggregate public institutional-survey notices without participant data.
+
+    The per-event maximum of source ``SUM`` is the reported number of received
+    institutions, rather than the count of duplicated detail rows.  If a
+    company discloses multiple received-date ranges on one notice date, their
+    reported counts are summed and the separate events are retained as a
+    second, independent intensity field.  Missing reported counts stay missing
+    rather than being imputed as no institutional attention.
+    """
+
+    details = _institutional_survey_detail_frame(rows)
+    return aggregate_institutional_survey_details(details)
+
+
+def aggregate_institutional_survey_details(details: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate page-level institutional-survey events to score-time rows."""
+
+    required = {
+        "instrument",
+        "announcement_date",
+        "receive_start_date",
+        "receive_end_date",
+        "institutional_survey_org_count",
+    }
+    if missing := sorted(required - set(details.columns)):
+        raise ValueError("institutional-survey detail frame is missing columns: " + ", ".join(missing))
+    if details.empty:
+        return pd.DataFrame(columns=INSTITUTIONAL_SURVEY_EVENT_COLUMNS)
+    source = details.loc[:, sorted(required)].copy()
+    for column in ("announcement_date", "receive_start_date", "receive_end_date"):
+        source[column] = pd.to_datetime(source[column], errors="coerce")
+    source["institutional_survey_org_count"] = pd.to_numeric(
+        source["institutional_survey_org_count"], errors="coerce"
+    )
+    source = source.dropna(subset=["instrument", "announcement_date", "receive_start_date"])
+    events = (
+        source.groupby(
+            ["instrument", "announcement_date", "receive_start_date", "receive_end_date"],
+            as_index=False,
+            sort=True,
+            dropna=False,
+        )["institutional_survey_org_count"]
+        .max()
+    )
+    result = (
+        events.groupby(["instrument", "announcement_date"], as_index=False, sort=True)
+        .agg(
+            institutional_survey_org_count=("institutional_survey_org_count", lambda values: values.sum(min_count=1)),
+            institutional_survey_event_count=("receive_start_date", "size"),
+        )
+        .loc[:, list(INSTITUTIONAL_SURVEY_EVENT_COLUMNS)]
+    )
+    result["institutional_survey_event_count"] = pd.to_numeric(
+        result["institutional_survey_event_count"], errors="coerce"
+    ).astype(float)
+    return result.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+
+
+def normalize_repurchase_plan_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Reduce public repurchase plans to first-plan-date, non-outcome fields."""
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=REPURCHASE_EVENT_COLUMNS)
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("DIM_SCODE", pd.Series(index=raw.index, dtype="object")).map(qlib_symbol),
+            "announcement_date": pd.to_datetime(
+                raw.get("DIM_DATE", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+            ),
+            "repurchase_planned_share_ratio": pd.to_numeric(
+                raw.get("ZSZSX", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+            "repurchase_planned_amount": pd.to_numeric(
+                raw.get("JESX", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+        }
+    )
+    frame = frame.dropna(subset=["instrument", "announcement_date"])
+    return (
+        frame.loc[:, list(REPURCHASE_EVENT_COLUMNS)]
+        .sort_values(["instrument", "announcement_date"], kind="stable")
+        .drop_duplicates(["instrument", "announcement_date"], keep="first")
         .reset_index(drop=True)
     )
 
@@ -2424,6 +2682,156 @@ def sync_margin_financing_top_flow_events(
     return result
 
 
+def sync_institutional_survey_events(
+    start_year: int, end_year: int, output: Path, manifest: Path
+) -> dict[str, Any]:
+    """Download long-history institutional-survey notice aggregates.
+
+    The detailed public report is paginated.  Its fixed ``NUMBERNEW=1`` filter
+    selects one row per disclosure, then each page is normalized immediately
+    and only non-identifying event aggregates are kept in memory.  A final
+    re-aggregation across all pages prevents an event split by pagination from
+    being counted twice.
+    """
+
+    if end_year < start_year:
+        raise ValueError("--end-year must not be earlier than --start-year")
+    session = _eastmoney_session()
+    detail_frames: list[pd.DataFrame] = []
+    pages_by_year: dict[str, int] = {}
+    source_detail_rows_by_year: dict[str, int] = {}
+    for year in range(start_year, end_year + 1):
+        start_date = f"{year}-01-01"
+        end_date = f"{year}-12-31"
+        first = _eastmoney_institutional_survey_request(session, start_date, end_date, page_number=1)
+        result = first["result"]
+        pages = int(result.get("pages") or 0)
+        pages_by_year[str(year)] = pages
+        source_rows = 0
+        for page_number in range(1, pages + 1):
+            payload = first if page_number == 1 else _eastmoney_institutional_survey_request(
+                session, start_date, end_date, page_number=page_number
+            )
+            rows = list((payload.get("result") or {}).get("data") or [])
+            source_rows += len(rows)
+            normalized = _institutional_survey_detail_frame(rows)
+            if not normalized.empty:
+                detail_frames.append(normalized)
+            if page_number % 100 == 0 or page_number == pages:
+                print(
+                    f"institutional surveys {year}: {page_number}/{pages} pages; "
+                    f"{source_rows} source detail rows"
+                )
+            # The detailed report begins returning 9701 (server busy) when
+            # paged too quickly.  Keep the history sync single-threaded and
+            # deliberately below that observed limit; retry backoff above is
+            # retained for transient provider pressure.
+            time.sleep(1.25)
+        source_detail_rows_by_year[str(year)] = source_rows
+    details = (
+        pd.concat(detail_frames, ignore_index=True)
+        if detail_frames
+        else pd.DataFrame(
+            columns=[
+                "instrument",
+                "announcement_date",
+                "receive_start_date",
+                "receive_end_date",
+                "institutional_survey_org_count",
+            ]
+        )
+    )
+    merged = aggregate_institutional_survey_details(details)
+    if merged.empty:
+        raise RuntimeError("institutional-survey sync produced no usable A-share notice events")
+    _atomic_write_parquet(output, merged)
+    result = {
+        "status": "completed",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_INSTITUTIONAL_SURVEY_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+        "event_frequency": "dated_institutional_survey_notice",
+        "years": list(range(start_year, end_year + 1)),
+        "pages_by_year": pages_by_year,
+        "source_detail_rows_by_year": source_detail_rows_by_year,
+        "rows_by_announcement_year": {
+            str(year): int(len(group))
+            for year, group in merged.groupby(pd.to_datetime(merged["announcement_date"]).dt.year, sort=True)
+        },
+        "rows_written": len(merged),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "The public source is queried as it exists today and may revise or omit historical survey notices.",
+            "The compact survey-statistics report retains only short recent history, so this snapshot aggregates the long-history detailed report by issuer, NOTICE_DATE, and received-date range.",
+            "The request fixes NUMBERNEW=1 to retain a single detailed row per disclosure; participant names and identities are neither requested nor stored, while SUM is retained as the provider's reported institution count.",
+            "The join waits until the local trading day after NOTICE_DATE because the source has no reliable intraday publication timestamp.",
+            "This is a research event snapshot, not an exchange-grade point-in-time announcement database.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
+def sync_repurchase_plan_events(output: Path, manifest: Path) -> dict[str, Any]:
+    """Download the complete public repurchase-plan list as a dated snapshot."""
+
+    session = _eastmoney_session()
+    first = _eastmoney_repurchase_request(session, page_number=1)
+    result = first["result"]
+    pages = int(result.get("pages") or 0)
+    if pages < 1:
+        raise RuntimeError("repurchase-plan source reported no pages")
+    frames: list[pd.DataFrame] = []
+    source_rows = 0
+    for page_number in range(1, pages + 1):
+        payload = first if page_number == 1 else _eastmoney_repurchase_request(session, page_number)
+        rows = list((payload.get("result") or {}).get("data") or [])
+        source_rows += len(rows)
+        normalized = normalize_repurchase_plan_rows(rows)
+        if not normalized.empty:
+            frames.append(normalized)
+    merged = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=REPURCHASE_EVENT_COLUMNS)
+    merged = (
+        merged.sort_values(["instrument", "announcement_date"], kind="stable")
+        .drop_duplicates(["instrument", "announcement_date"], keep="first")
+        .reset_index(drop=True)
+    )
+    if merged.empty:
+        raise RuntimeError("repurchase-plan sync produced no usable A-share plan events")
+    _atomic_write_parquet(output, merged)
+    report = {
+        "status": "completed",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_REPURCHASE_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+        "event_frequency": "dated_repurchase_plan_announcement",
+        "pages": pages,
+        "source_rows": source_rows,
+        "rows_by_announcement_year": {
+            str(year): int(len(group))
+            for year, group in merged.groupby(pd.to_datetime(merged["announcement_date"]).dt.year, sort=True)
+        },
+        "rows_written": len(merged),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "The source is a current public snapshot and may revise or omit historical plans.",
+            "DIM_DATE is treated as the initial public plan-record date and is made effective only on the strictly next local trading session.",
+            "UPDATEDATE, implementation progress, completed share count, and completed repurchase amount are excluded because they can reflect later information.",
+            "This is a research event snapshot, not an exchange-grade point-in-time disclosure database.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(report, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return report
+
+
 def merge_quarterly_fundamentals(input_paths: Iterable[Path], output: Path, manifest: Path) -> dict[str, Any]:
     """Atomically combine independently downloaded quarterly snapshot chunks.
 
@@ -2579,6 +2987,43 @@ def load_margin_financing_events(path: Path) -> pd.DataFrame:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     frame = frame.dropna(subset=["instrument", "trade_date"])
     return frame.sort_values(["instrument", "trade_date"], kind="stable").reset_index(drop=True)
+
+
+def load_institutional_survey_events(path: Path) -> pd.DataFrame:
+    """Load the non-identifying institutional-survey notice event snapshot."""
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"institutional-survey snapshot does not exist: {path}; run sync-institutional-survey-events first"
+        )
+    frame = pd.read_parquet(path)
+    missing = sorted(set(INSTITUTIONAL_SURVEY_EVENT_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(f"institutional-survey snapshot is missing columns: {', '.join(missing)}")
+    frame = frame.loc[:, list(INSTITUTIONAL_SURVEY_EVENT_COLUMNS)].copy()
+    frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
+    for column in INSTITUTIONAL_SURVEY_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame = frame.dropna(subset=["instrument", "announcement_date"])
+    return frame.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+
+
+def load_repurchase_plan_events(path: Path) -> pd.DataFrame:
+    """Load the dated non-outcome repurchase-plan event snapshot."""
+
+    if not path.exists():
+        raise FileNotFoundError(f"repurchase-plan snapshot does not exist: {path}; run sync-repurchase-plan-events first")
+    frame = pd.read_parquet(path)
+    missing = sorted(set(REPURCHASE_EVENT_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(f"repurchase-plan snapshot is missing columns: {', '.join(missing)}")
+    frame = frame.loc[:, list(REPURCHASE_EVENT_COLUMNS)].copy()
+    frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
+    for column in REPURCHASE_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    return frame.dropna(subset=["instrument", "announcement_date"]).sort_values(
+        ["instrument", "announcement_date"], kind="stable"
+    ).reset_index(drop=True)
 
 
 def _first_trading_day_after(calendar: pd.DatetimeIndex, announced: pd.Series) -> pd.Series:
@@ -3009,6 +3454,120 @@ def attach_margin_financing_events_asof(
     return result
 
 
+def attach_institutional_survey_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach dated institutional-survey notices strictly after public notice.
+
+    A survey's received dates can precede its public filing.  Its score-time
+    availability is therefore based only on ``announcement_date`` and begins
+    on the next local session, never on the survey date itself.
+    """
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    required_market = {"instrument", "datetime"}
+    if missing := sorted(required_market - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(INSTITUTIONAL_SURVEY_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError(f"institutional-survey events are missing columns: {', '.join(missing)}")
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source_events = events.loc[:, list(INSTITUTIONAL_SURVEY_EVENT_COLUMNS)].copy()
+    source_events["institutional_survey_effective_date"] = _first_trading_day_after(
+        calendar, source_events["announcement_date"]
+    )
+    source_events = source_events.dropna(subset=["institutional_survey_effective_date"])
+    source_events = source_events.sort_values(
+        ["instrument", "institutional_survey_effective_date", "announcement_date"], kind="stable"
+    ).drop_duplicates(["instrument", "institutional_survey_effective_date"], keep="last")
+
+    survey_columns = [
+        "institutional_survey_announcement_date",
+        "institutional_survey_org_count",
+        "institutional_survey_event_count",
+        "institutional_survey_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"] = 1
+    daily["_row"] = np.arange(len(daily))
+    for column in ("institutional_survey_announcement_date", "institutional_survey_effective_date"):
+        daily[column] = pd.NaT
+    for column in survey_columns[1:-1]:
+        daily[column] = np.nan
+    event_rows = source_events.rename(
+        columns={
+            "institutional_survey_effective_date": "datetime",
+            "announcement_date": "institutional_survey_announcement_date",
+        }
+    )[["instrument", "datetime", *[column for column in survey_columns if column != "institutional_survey_effective_date"]]].copy()
+    event_rows["institutional_survey_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"] = 0
+    event_rows["_row"] = np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False)
+    combined = combined.sort_values(["instrument", "datetime", "_kind"], kind="stable")
+    combined[survey_columns] = combined.groupby("instrument", sort=False)[survey_columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *survey_columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["institutional_survey_age_days"] = (
+        pd.to_datetime(result["datetime"]) - pd.to_datetime(result["institutional_survey_effective_date"])
+    ).dt.days
+    result["institutional_survey_available"] = result["institutional_survey_announcement_date"].notna() & result[
+        "institutional_survey_age_days"
+    ].between(0, max_age_days)
+    return result
+
+
+def attach_repurchase_plan_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach initial repurchase-plan disclosures strictly after DIM_DATE."""
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    if missing := sorted({"instrument", "datetime"} - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(REPURCHASE_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError(f"repurchase-plan events are missing columns: {', '.join(missing)}")
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source = events.loc[:, list(REPURCHASE_EVENT_COLUMNS)].copy()
+    source["repurchase_effective_date"] = _first_trading_day_after(calendar, source["announcement_date"])
+    source = source.dropna(subset=["repurchase_effective_date"]).sort_values(
+        ["instrument", "repurchase_effective_date", "announcement_date"], kind="stable"
+    ).drop_duplicates(["instrument", "repurchase_effective_date"], keep="last")
+    columns = [
+        "repurchase_announcement_date", "repurchase_planned_share_ratio", "repurchase_planned_amount",
+        "repurchase_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"], daily["_row"] = 1, np.arange(len(daily))
+    for column in ("repurchase_announcement_date", "repurchase_effective_date"):
+        daily[column] = pd.NaT
+    for column in columns[1:-1]:
+        daily[column] = np.nan
+    event_rows = source.rename(columns={"repurchase_effective_date": "datetime", "announcement_date": "repurchase_announcement_date"})[
+        ["instrument", "datetime", *[column for column in columns if column != "repurchase_effective_date"]]
+    ].copy()
+    event_rows["repurchase_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"], event_rows["_row"] = 0, np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False).sort_values(
+        ["instrument", "datetime", "_kind"], kind="stable"
+    )
+    combined[columns] = combined.groupby("instrument", sort=False)[columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["repurchase_age_days"] = (
+        pd.to_datetime(result["datetime"]) - pd.to_datetime(result["repurchase_effective_date"])
+    ).dt.days
+    result["repurchase_available"] = result["repurchase_announcement_date"].notna() & result[
+        "repurchase_age_days"
+    ].between(0, max_age_days)
+    return result
+
+
 def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size: int) -> pd.DataFrame:
     """Load the local buyable universe and precompute only non-forward factors."""
 
@@ -3206,6 +3765,26 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         if column in result.columns
     ]
     raw_columns.extend(margin_financing_raw_columns)
+    institutional_survey_raw_columns = [
+        column
+        for column in (
+            "institutional_survey_org_count",
+            "institutional_survey_event_count",
+            "institutional_survey_age_days",
+        )
+        if column in result.columns
+    ]
+    raw_columns.extend(institutional_survey_raw_columns)
+    repurchase_raw_columns = [
+        column
+        for column in (
+            "repurchase_planned_share_ratio",
+            "repurchase_planned_amount",
+            "repurchase_age_days",
+        )
+        if column in result.columns
+    ]
+    raw_columns.extend(repurchase_raw_columns)
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     # Event rows are forward-filled only so each row retains the event context
@@ -3218,6 +3797,8 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         ("major_holder_available", major_holder_raw_columns),
         ("block_trade_available", block_trade_raw_columns),
         ("margin_financing_available", margin_financing_raw_columns),
+        ("institutional_survey_available", institutional_survey_raw_columns),
+        ("repurchase_available", repurchase_raw_columns),
     ):
         if available_column in result.columns:
             result.loc[~result[available_column].fillna(False), event_columns] = np.nan
@@ -3295,6 +3876,18 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         rank_column = f"rank_{column}"
         if rank_column in result.columns:
             result[column] = result[rank_column]
+    for column in ("institutional_survey_org_count", "institutional_survey_event_count"):
+        rank_column = f"rank_{column}"
+        if rank_column in result.columns:
+            result[column] = result[rank_column]
+    if "rank_institutional_survey_age_days" in result.columns:
+        result["institutional_survey_freshness"] = 1.0 - result["rank_institutional_survey_age_days"]
+    for column in ("repurchase_planned_share_ratio", "repurchase_planned_amount"):
+        rank_column = f"rank_{column}"
+        if rank_column in result.columns:
+            result[column] = result[rank_column]
+    if "rank_repurchase_age_days" in result.columns:
+        result["repurchase_freshness"] = 1.0 - result["rank_repurchase_age_days"]
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_3"] = result["rank_momentum_3"]
@@ -5224,6 +5817,8 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         major_holder_events = diagnostic.get("major_holder_events") or {}
         block_trade_events = diagnostic.get("block_trade_events") or {}
         margin_financing_events = diagnostic.get("margin_financing_events") or {}
+        institutional_survey_events = diagnostic.get("institutional_survey_events") or {}
+        repurchase_events = diagnostic.get("repurchase_events") or {}
         top = ranking[0] if ranking else {}
         diagnostics.append(
             {
@@ -5236,6 +5831,8 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "major_holder_event_source": str(major_holder_events.get("source", "—")),
                 "block_trade_event_source": str(block_trade_events.get("source", "—")),
                 "margin_financing_event_source": str(margin_financing_events.get("source", "—")),
+                "institutional_survey_event_source": str(institutional_survey_events.get("source", "—")),
+                "repurchase_event_source": str(repurchase_events.get("source", "—")),
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
@@ -5806,6 +6403,8 @@ def render_three_day_research_report(
                             diagnostic["major_holder_event_source"],
                             diagnostic["block_trade_event_source"],
                             diagnostic["margin_financing_event_source"],
+                            diagnostic["institutional_survey_event_source"],
+                            diagnostic["repurchase_event_source"],
                         )
                         if source != "—"
                     )
@@ -6529,6 +7128,10 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     major_holder_path = Path(args.major_holder_events).expanduser() if args.major_holder_events else None
     block_trade_path = Path(args.block_trade_events).expanduser() if args.block_trade_events else None
     margin_financing_path = Path(args.margin_financing_events).expanduser() if args.margin_financing_events else None
+    institutional_survey_path = (
+        Path(args.institutional_survey_events).expanduser() if args.institutional_survey_events else None
+    )
+    repurchase_path = Path(args.repurchase_events).expanduser() if args.repurchase_events else None
     experiment_root = Path(args.experiment_root).expanduser()
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -6563,6 +7166,16 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         market = attach_margin_financing_events_asof(
             market, margin_financing_events, max_age_days=args.max_margin_financing_age_days
         )
+    if institutional_survey_path is not None:
+        institutional_survey_events = load_institutional_survey_events(institutional_survey_path)
+        market = attach_institutional_survey_events_asof(
+            market, institutional_survey_events, max_age_days=args.max_institutional_survey_age_days
+        )
+    if repurchase_path is not None:
+        repurchase_events = load_repurchase_plan_events(repurchase_path)
+        market = attach_repurchase_plan_events_asof(
+            market, repurchase_events, max_age_days=args.max_repurchase_age_days
+        )
     ranked = rank_factor_frame(market)
     forward_returns = forward_factor_return_frame(ranked, args.hold_days)
     factor_catalog = [
@@ -6574,6 +7187,8 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *MAJOR_HOLDER_FACTOR_DIAGNOSTIC_COLUMNS,
             *BLOCK_TRADE_FACTOR_DIAGNOSTIC_COLUMNS,
             *MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS,
+            *INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS,
+            *REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS,
         )
         if factor in ranked.columns
     ]
@@ -6686,6 +7301,39 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "future_return_fields_stored": False,
             }
             if margin_financing_path is not None
+            else None
+        ),
+        "institutional_survey_events": (
+            {
+                "source": str(institutional_survey_path.resolve()),
+                "sha256": file_sha256(institutional_survey_path),
+                "effective_date": "strictly next local trading day after announcement_date",
+                "max_institutional_survey_age_days": args.max_institutional_survey_age_days,
+                "available_rows": int(market["institutional_survey_available"].sum()),
+                "eligible_available_rows": int(
+                    (
+                        market["quality_eligible"].fillna(False)
+                        & market["institutional_survey_available"].fillna(False)
+                    ).sum()
+                ),
+                "participant_identities_stored": False,
+            }
+            if institutional_survey_path is not None
+            else None
+        ),
+        "repurchase_events": (
+            {
+                "source": str(repurchase_path.resolve()),
+                "sha256": file_sha256(repurchase_path),
+                "effective_date": "strictly next local trading day after DIM_DATE",
+                "max_repurchase_age_days": args.max_repurchase_age_days,
+                "available_rows": int(market["repurchase_available"].sum()),
+                "eligible_available_rows": int(
+                    (market["quality_eligible"].fillna(False) & market["repurchase_available"].fillna(False)).sum()
+                ),
+                "future_implementation_fields_stored": False,
+            }
+            if repurchase_path is not None
             else None
         ),
         "data": {
@@ -8260,6 +8908,24 @@ def parse_args() -> argparse.Namespace:
         help="replace matching instrument/date rows in an existing snapshot while preserving earlier dates",
     )
 
+    sync_institutional_survey = subparsers.add_parser(
+        "sync-institutional-survey-events",
+        help="experimental source probe; not eligible for research until a complete historical snapshot succeeds",
+    )
+    sync_institutional_survey.add_argument("--start-year", type=int, default=2019)
+    sync_institutional_survey.add_argument("--end-year", type=int, default=2026)
+    sync_institutional_survey.add_argument("--output", default=str(DEFAULT_INSTITUTIONAL_SURVEY_EVENTS))
+    sync_institutional_survey.add_argument(
+        "--manifest", default=str(DEFAULT_INSTITUTIONAL_SURVEY_EVENT_MANIFEST)
+    )
+
+    sync_repurchase = subparsers.add_parser(
+        "sync-repurchase-plan-events",
+        help="download dated public initial repurchase plans for short-horizon event research",
+    )
+    sync_repurchase.add_argument("--output", default=str(DEFAULT_REPURCHASE_EVENTS))
+    sync_repurchase.add_argument("--manifest", default=str(DEFAULT_REPURCHASE_EVENT_MANIFEST))
+
     run = subparsers.add_parser("run", help="run the predeclared short-horizon factor sweep")
     run.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     run.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -8309,6 +8975,14 @@ def parse_args() -> argparse.Namespace:
         "--margin-financing-events",
         help="optional fixed Top-N daily financing-flow snapshot; adds same-close event factors to the development-only diagnostic",
     )
+    factor_diagnostic.add_argument(
+        "--institutional-survey-events",
+        help="optional dated institutional-survey notice snapshot; adds next-session event factors to the development-only diagnostic",
+    )
+    factor_diagnostic.add_argument(
+        "--repurchase-events",
+        help="optional initial repurchase-plan snapshot; adds next-session plan factors to the development-only diagnostic",
+    )
     factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     factor_diagnostic.add_argument("--start", default="2019-01-01")
     factor_diagnostic.add_argument("--end", default="2025-12-31")
@@ -8347,6 +9021,18 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=0,
         help="maximum calendar age for a daily financing-flow event; default keeps only its same-close signal",
+    )
+    factor_diagnostic.add_argument(
+        "--max-institutional-survey-age-days",
+        type=int,
+        default=3,
+        help="maximum calendar age for an institutional-survey notice; default matches the three-day holding horizon",
+    )
+    factor_diagnostic.add_argument(
+        "--max-repurchase-age-days",
+        type=int,
+        default=3,
+        help="maximum calendar age for an initial repurchase plan; default matches the three-day holding horizon",
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
@@ -8769,6 +9455,15 @@ def main() -> int:
             Path(args.manifest),
             args.merge_existing,
         )
+    elif args.command == "sync-institutional-survey-events":
+        report = sync_institutional_survey_events(
+            args.start_year,
+            args.end_year,
+            Path(args.output),
+            Path(args.manifest),
+        )
+    elif args.command == "sync-repurchase-plan-events":
+        report = sync_repurchase_plan_events(Path(args.output), Path(args.manifest))
     elif args.command == "run":
         report = run_research(args)
     elif args.command == "factor-diagnostic":

@@ -487,6 +487,121 @@ def test_margin_financing_incremental_merge_replaces_only_refetched_stock_days()
     assert "SZ000002" in set(merged["instrument"])
 
 
+def test_institutional_survey_normalization_uses_notice_date_and_deduplicates_participants():
+    rows = [
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-30",
+            "RECEIVE_START_DATE": "2024-04-29",
+            "RECEIVE_END_DATE": "2024-04-29",
+            "SUM": 5,
+            "RECEIVE_OBJECT": "not stored",
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-30",
+            "RECEIVE_START_DATE": "2024-04-29",
+            "RECEIVE_END_DATE": "2024-04-29",
+            "SUM": 5,
+            "RECEIVE_OBJECT": "also not stored",
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-30",
+            "RECEIVE_START_DATE": "2024-04-30",
+            "RECEIVE_END_DATE": None,
+            "SUM": 2,
+        },
+        {
+            "SECURITY_CODE": "159001",  # ETF: excluded by the A-share symbol mapper.
+            "NOTICE_DATE": "2024-04-30",
+            "RECEIVE_START_DATE": "2024-04-30",
+            "RECEIVE_END_DATE": "2024-04-30",
+            "SUM": 99,
+        },
+    ]
+    normalized = RESEARCH.normalize_institutional_survey_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.INSTITUTIONAL_SURVEY_EVENT_COLUMNS)
+    assert len(normalized) == 1
+    row = normalized.iloc[0]
+    assert row["instrument"] == "SZ000001"
+    assert row["announcement_date"] == pd.Timestamp("2024-04-30")
+    assert row["institutional_survey_org_count"] == pytest.approx(7.0)
+    assert row["institutional_survey_event_count"] == pytest.approx(2.0)
+    assert "RECEIVE_OBJECT" not in normalized.columns
+
+
+def test_institutional_survey_join_waits_until_strictly_after_notice_date():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "institutional_survey_org_count": [7.0],
+            "institutional_survey_event_count": [2.0],
+        }
+    )
+    joined = RESEARCH.attach_institutional_survey_events_asof(market, events, max_age_days=3)
+    notice_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    effective_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    assert not notice_day["institutional_survey_available"]
+    assert effective_day["institutional_survey_available"]
+    assert effective_day["institutional_survey_effective_date"] == pd.Timestamp("2024-05-06")
+    assert effective_day["institutional_survey_org_count"] == pytest.approx(7.0)
+
+
+def test_repurchase_plan_normalization_excludes_later_implementation_fields():
+    rows = [
+        {
+            "DIM_SCODE": "000001",
+            "DIM_DATE": "2024-04-30",
+            "ZSZSX": 1.25,
+            "JESX": 100_000_000.0,
+            "UPDATEDATE": "2025-01-01",
+            "REPURPROGRESS": "006",
+            "REPURAMOUNT": 90_000_000.0,
+        },
+        {"DIM_SCODE": "159001", "DIM_DATE": "2024-04-30", "ZSZSX": 9.0, "JESX": 1.0},
+    ]
+    normalized = RESEARCH.normalize_repurchase_plan_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.REPURCHASE_EVENT_COLUMNS)
+    assert len(normalized) == 1
+    row = normalized.iloc[0]
+    assert row["instrument"] == "SZ000001"
+    assert row["repurchase_planned_share_ratio"] == pytest.approx(1.25)
+    assert row["repurchase_planned_amount"] == pytest.approx(100_000_000.0)
+    assert "REPURAMOUNT" not in normalized.columns
+
+
+def test_repurchase_plan_join_waits_until_strictly_after_announcement_date():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "repurchase_planned_share_ratio": [1.25],
+            "repurchase_planned_amount": [100_000_000.0],
+        }
+    )
+    joined = RESEARCH.attach_repurchase_plan_events_asof(market, events, max_age_days=3)
+    notice_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    effective_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    assert not notice_day["repurchase_available"]
+    assert effective_day["repurchase_available"]
+    assert effective_day["repurchase_effective_date"] == pd.Timestamp("2024-05-06")
+    assert effective_day["repurchase_planned_share_ratio"] == pytest.approx(1.25)
+
+
 def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
     ranked = pd.DataFrame({"billboard_deal_to_float": [0.10, 0.80, float("nan")]})
     result = RESEARCH.add_billboard_holdout_factor(ranked)
@@ -554,6 +669,9 @@ def test_rank_factor_frame_excludes_expired_event_values():
             "margin_net_buy_to_market_cap": [0.50, 0.10],
             "margin_financing_age_days": [1.0, 0.0],
             "margin_financing_available": [False, True],
+            "institutional_survey_org_count": [50.0, 10.0],
+            "institutional_survey_age_days": [4.0, 0.0],
+            "institutional_survey_available": [False, True],
         }
     )
     ranked = RESEARCH.rank_factor_frame(frame)
@@ -564,11 +682,13 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert pd.isna(expired["rank_major_holder_net_change_free_ratio"])
     assert pd.isna(expired["rank_block_trade_premium_ratio"])
     assert pd.isna(expired["rank_margin_net_buy_to_market_cap"])
+    assert pd.isna(expired["rank_institutional_survey_org_count"])
     assert active["rank_forecast_profit_yoy"] == pytest.approx(1.0)
     assert active["rank_billboard_net_flow_to_deal"] == pytest.approx(1.0)
     assert active["rank_major_holder_net_change_free_ratio"] == pytest.approx(1.0)
     assert active["rank_block_trade_premium_ratio"] == pytest.approx(1.0)
     assert active["rank_margin_net_buy_to_market_cap"] == pytest.approx(1.0)
+    assert active["rank_institutional_survey_org_count"] == pytest.approx(1.0)
 
 
 def test_winner_uses_development_only():
