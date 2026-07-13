@@ -162,6 +162,8 @@ python scripts/a_share_short_horizon_factor_research.py regime-audit \
   --selection-policy positive_year_stability_mdd20
 ```
 
+若多个候选都进入前瞻观察，先运行 `candidate-overlap-audit` 判断它们是否实质上选了同一批股票。它报告同一信号日的平均 Jaccard 重叠、完全相同篮子比例及三日净收益序列相关性；高重叠代表候选之间的证据不应被当作独立样本。
+
 当某轮策略在注册表中通过初测后，筛选命令必须带上它对应的状态条件，例如：
 
 ```bash

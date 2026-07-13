@@ -1329,6 +1329,52 @@ def evaluate_candidate(
     return rounds, summary
 
 
+def selected_baskets_by_signal(
+    scored: pd.DataFrame,
+    hold_days: int,
+    topk: int,
+    regime_filter: str,
+) -> dict[str, set[str]]:
+    """Return close-known TopK baskets on each active non-overlapping signal date."""
+
+    if hold_days < 1 or topk < 1:
+        raise ValueError("--hold-days and --topk must both be positive")
+    calendar = pd.DatetimeIndex(sorted(scored["datetime"].unique()))
+    if len(calendar) <= hold_days + 1:
+        raise ValueError("research window is too short for the requested holding period")
+    rebalances = calendar[: -(hold_days + 1) : hold_days]
+    pool = scored.loc[scored["datetime"].isin(rebalances)].copy()
+    pool = pool.sort_values(["datetime", "score", "instrument"], ascending=[True, False, True], kind="stable")
+    pool = apply_regime_filter(pool, regime_filter)
+    selected = pool.groupby("datetime", sort=False).head(topk)
+    baskets: dict[str, set[str]] = {}
+    for date, group in selected.groupby("datetime", sort=True):
+        instruments = set(group["instrument"].astype(str))
+        if len(instruments) == topk:
+            baskets[pd.Timestamp(date).date().isoformat()] = instruments
+    return baskets
+
+
+def basket_overlap_metrics(left: dict[str, set[str]], right: dict[str, set[str]]) -> dict[str, float | int | None]:
+    """Summarize pairwise TopK overlap only on dates where both baskets exist."""
+
+    common_dates = sorted(set(left) & set(right))
+    if not common_dates:
+        return {
+            "common_signal_dates": 0,
+            "mean_jaccard": None,
+            "exact_basket_rate": None,
+            "any_overlap_rate": None,
+        }
+    jaccard = [len(left[date] & right[date]) / len(left[date] | right[date]) for date in common_dates]
+    return {
+        "common_signal_dates": len(common_dates),
+        "mean_jaccard": float(np.mean(jaccard)),
+        "exact_basket_rate": float(np.mean([left[date] == right[date] for date in common_dates])),
+        "any_overlap_rate": float(np.mean([bool(left[date] & right[date]) for date in common_dates])),
+    }
+
+
 def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | int | None]:
     """Calculate net return, risk and drawdown from non-overlapping cohorts."""
 
@@ -2198,6 +2244,112 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Measure whether several recorded candidates are genuinely distinct baskets."""
+
+    names = list(dict.fromkeys(args.candidate))
+    if len(names) < 2:
+        raise ValueError("--candidate must be supplied at least twice")
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidates = [candidate_by_name(name, args.candidate_library) for name in names]
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    results: dict[str, dict[str, Any]] = {}
+    for candidate in candidates:
+        scored = score_candidate(ranked, candidate)
+        baskets = selected_baskets_by_signal(scored, args.hold_days, args.topk, args.regime_filter)
+        rounds, _ = evaluate_candidate(
+            scored,
+            candidate,
+            hold_days=args.hold_days,
+            topk=args.topk,
+            open_cost=args.open_cost,
+            close_cost=args.close_cost,
+            development_end=args.development_end,
+            regime_filter=args.regime_filter,
+        )
+        returns = rounds.set_index("signal_date")["net_return"].astype(float)
+        results[candidate.name] = {"candidate": candidate, "baskets": baskets, "returns": returns}
+
+    pairs: list[dict[str, Any]] = []
+    for left_position, left_name in enumerate(names):
+        for right_name in names[left_position + 1 :]:
+            left = results[left_name]
+            right = results[right_name]
+            overlap = basket_overlap_metrics(left["baskets"], right["baskets"])
+            common_returns = pd.concat(
+                [left["returns"].rename("left"), right["returns"].rename("right")], axis=1, join="inner"
+            ).dropna()
+            return_correlation = (
+                float(common_returns["left"].corr(common_returns["right"]))
+                if len(common_returns) >= 2
+                and common_returns["left"].std(ddof=0) > 0.0
+                and common_returns["right"].std(ddof=0) > 0.0
+                else None
+            )
+            pairs.append(
+                {
+                    "left_candidate": left_name,
+                    "right_candidate": right_name,
+                    **overlap,
+                    "common_return_cohorts": int(len(common_returns)),
+                    "cohort_net_return_correlation": return_correlation,
+                }
+            )
+
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "candidate_overlap_research_only_not_investment_advice",
+        "candidate_library": args.candidate_library,
+        "candidates": [
+            {
+                "name": candidate.name,
+                "description": candidate.description,
+                "weights": candidate.weights,
+                "active_complete_baskets": len(results[candidate.name]["baskets"]),
+                "return_cohorts": int(len(results[candidate.name]["returns"])),
+            }
+            for candidate in candidates
+        ],
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "topk": args.topk,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "development_end": args.development_end,
+            "test_period_used_for_pair_assessment": False,
+        },
+        "pairwise_overlap": pairs,
+        "limitations": [
+            "Basket overlap is a similarity diagnostic, not a strategy-selection or promotion rule.",
+            "Only complete active TopK baskets are compared; inactive regimes are intentionally absent from basket overlap.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_candidate_overlap_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate_count": len(candidates),
+        "pairwise_overlap": pairs,
+    }
+
+
 def run_regime_audit(args: argparse.Namespace) -> dict[str, Any]:
     """Compare every close-known regime rule for one recorded factor mix.
 
@@ -2504,6 +2656,25 @@ def parse_args() -> argparse.Namespace:
     regime_audit.add_argument("--batch-size", type=int, default=500)
     regime_audit.add_argument("--selection-policy", choices=sorted(SELECTION_POLICIES), default="pooled_return_drawdown")
 
+    overlap_audit = subparsers.add_parser(
+        "candidate-overlap-audit", help="measure basket and return-series overlap across recorded candidates"
+    )
+    overlap_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    overlap_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    overlap_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    overlap_audit.add_argument("--candidate", action="append", required=True, help="repeat for each candidate to compare")
+    overlap_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), required=True)
+    overlap_audit.add_argument("--start", default="2024-01-01")
+    overlap_audit.add_argument("--end", help="defaults to the local Qlib calendar end")
+    overlap_audit.add_argument("--development-end", default="2025-12-31")
+    overlap_audit.add_argument("--hold-days", type=int, default=3)
+    overlap_audit.add_argument("--topk", type=int, default=3)
+    overlap_audit.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="always")
+    overlap_audit.add_argument("--open-cost", type=float, default=0.0015)
+    overlap_audit.add_argument("--close-cost", type=float, default=0.0025)
+    overlap_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    overlap_audit.add_argument("--batch-size", type=int, default=500)
+
     screen = subparsers.add_parser("screen", help="rank latest locally available candidates with a recorded factor mix")
     screen.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     screen.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -2596,6 +2767,8 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "regime-audit":
         report = run_regime_audit(args)
+    elif args.command == "candidate-overlap-audit":
+        report = run_candidate_overlap_audit(args)
     elif args.command == "plan":
         report = run_execution_plan(args)
     elif args.command == "monitor":

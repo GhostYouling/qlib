@@ -104,6 +104,16 @@ def test_regime_ranking_uses_development_score_only_and_keeps_unqualified_rules_
     assert [item[0] for item in ranked] == ["breadth_5_above_20", "always", "breadth_20_positive"]
 
 
+def test_basket_overlap_summary_counts_common_dates_and_pairwise_similarity():
+    left = {"2025-01-01": {"A", "B", "C"}, "2025-01-06": {"D", "E", "F"}}
+    right = {"2025-01-01": {"A", "B", "G"}, "2025-01-06": {"D", "E", "F"}, "2025-01-09": {"X", "Y", "Z"}}
+    metrics = RESEARCH.basket_overlap_metrics(left, right)
+    assert metrics["common_signal_dates"] == 2
+    assert metrics["mean_jaccard"] == pytest.approx(0.75)
+    assert metrics["exact_basket_rate"] == pytest.approx(0.5)
+    assert metrics["any_overlap_rate"] == pytest.approx(1.0)
+
+
 def test_strict_stability_policy_requires_a_development_drawdown_at_or_above_minus_twenty_percent():
     assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.20) == pytest.approx(0.02)
     assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.200001) is None
