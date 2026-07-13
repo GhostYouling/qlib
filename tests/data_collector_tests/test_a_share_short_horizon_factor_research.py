@@ -76,6 +76,25 @@ def test_stability_selection_prefers_the_best_worst_development_year_without_tes
     assert RESEARCH.choose_winner(summaries, "positive_year_stability") == "stable"
 
 
+def test_strict_stability_policy_requires_a_development_drawdown_at_or_above_minus_twenty_percent():
+    assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.20) == pytest.approx(0.02)
+    assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.200001) is None
+    assert RESEARCH.stability_score_with_drawdown_cap(None, -0.05) is None
+    summaries = [
+        {
+            "candidate": "too_much_drawdown",
+            "selection_scores": {"positive_year_stability_mdd20": None},
+            "test": {"net_cumulative_return": 9.0},
+        },
+        {
+            "candidate": "risk_capped",
+            "selection_scores": {"positive_year_stability_mdd20": 0.01},
+            "test": {"net_cumulative_return": -9.0},
+        },
+    ]
+    assert RESEARCH.choose_winner(summaries, "positive_year_stability_mdd20") == "risk_capped"
+
+
 def test_candidate_lookup_rejects_unrecorded_factor_mix():
     assert RESEARCH.candidate_by_name("quality_trend_pullback").weights["momentum_10"] == 0.25
     assert RESEARCH.candidate_by_name("expanded_multi_horizon_q25_profit").weights["quality_profit"] == 0.25

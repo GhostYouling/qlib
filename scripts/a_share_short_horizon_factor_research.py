@@ -436,7 +436,16 @@ SELECTION_POLICIES = {
         "maximize the worst development calendar-year net cumulative return - 0.5 * abs(full-development max_drawdown); "
         "requires at least two development years"
     ),
+    "positive_year_stability_mdd20": (
+        "require at least two positive development calendar years and development max_drawdown no worse than -20%; "
+        "then maximize the worst development calendar-year net cumulative return - 0.5 * abs(full-development max_drawdown)"
+    ),
 }
+
+# This cap matches the initial-test risk gate.  It is deliberately part of a
+# separately named selection policy so a later research cycle cannot rewrite
+# the winner of a prior, looser stability rule.
+STRICT_DEVELOPMENT_MAX_DRAWDOWN = -0.20
 
 
 def candidate_library_fingerprint(candidates: tuple[Candidate, ...] = CANDIDATES) -> str:
@@ -448,6 +457,18 @@ def candidate_library_fingerprint(candidates: tuple[Candidate, ...] = CANDIDATES
     ]
     encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def stability_score_with_drawdown_cap(
+    stability_score: float | None,
+    max_drawdown: float | None,
+    cap: float = STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+) -> float | None:
+    """Keep a stability score only when its development drawdown satisfies ``cap``."""
+
+    if stability_score is None or max_drawdown is None or float(max_drawdown) < cap:
+        return None
+    return float(stability_score)
 
 
 def apply_regime_filter(frame: pd.DataFrame, regime_filter: str) -> pd.DataFrame:
@@ -1173,15 +1194,22 @@ def evaluate_candidate(
         if len(year_returns) >= 2 and min(year_returns) > 0.0 and development.get("max_drawdown") is not None
         else None
     )
+    strict_stability_score = stability_score_with_drawdown_cap(
+        stability_score,
+        development.get("max_drawdown"),
+    )
     summary["development_stability"] = {
         "calendar_year_count": len(year_returns),
         "positive_calendar_year_count": sum(value > 0.0 for value in year_returns),
         "worst_calendar_year_net_cumulative_return": min(year_returns) if year_returns else None,
         "selection_score": stability_score,
+        "max_drawdown_cap": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+        "passes_max_drawdown_cap": strict_stability_score is not None,
     }
     summary["selection_scores"] = {
         "pooled_return_drawdown": pooled_score,
         "positive_year_stability": stability_score,
+        "positive_year_stability_mdd20": strict_stability_score,
     }
     # Backward-compatible shorthand for the original policy.
     summary["development_selection_score"] = pooled_score
