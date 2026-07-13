@@ -2630,6 +2630,117 @@ def development_selection_score(item: dict[str, Any], selection_policy: str) -> 
     return None if score is None else float(score)
 
 
+def summarize_development_window(rounds: pd.DataFrame, hold_days: int) -> dict[str, Any]:
+    """Calculate the precommitted selection fields for an arbitrary completed cohort window.
+
+    Walk-forward selection needs exactly the same annual-stability and drawdown
+    logic as a normal study, but its training window changes by fold.  Keeping
+    this calculation in one helper makes it explicit that only completed
+    cohorts in the fold's historical window may choose a candidate.
+    """
+
+    development = return_metrics(rounds, hold_days)
+    by_year = {
+        str(year): return_metrics(group, hold_days)
+        for year, group in rounds.groupby(rounds["signal_date"].dt.year, sort=True)
+    }
+    year_returns = [
+        float(metrics["net_cumulative_return"])
+        for metrics in by_year.values()
+        if metrics.get("net_cumulative_return") is not None
+    ]
+    stability_score = positive_year_stability_score(year_returns, development.get("max_drawdown"))
+    strict_stability_score = stability_score_with_drawdown_cap(
+        stability_score,
+        development.get("max_drawdown"),
+    )
+    return {
+        "development": development,
+        "development_by_signal_year": by_year,
+        "development_stability": {
+            "calendar_year_count": len(year_returns),
+            "positive_calendar_year_count": sum(value > 0.0 for value in year_returns),
+            "worst_calendar_year_net_cumulative_return": min(year_returns) if year_returns else None,
+            "selection_score": stability_score,
+            "max_drawdown_cap": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+            "passes_max_drawdown_cap": strict_stability_score is not None,
+        },
+        "selection_scores": {
+            "pooled_return_drawdown": (
+                development["annualized_return"] - 0.5 * abs(development["max_drawdown"])
+                if development["rounds"]
+                else None
+            ),
+            "positive_year_stability": stability_score,
+            "positive_year_stability_mdd20": strict_stability_score,
+        },
+    }
+
+
+def completed_rounds_in_window(rounds: pd.DataFrame, start: pd.Timestamp, end: pd.Timestamp) -> pd.DataFrame:
+    """Keep only signals whose scheduled exits are fully inside one historical window."""
+
+    start = pd.Timestamp(start).normalize()
+    end = pd.Timestamp(end).normalize()
+    if end < start:
+        raise ValueError("walk-forward window end must not precede its start")
+    return rounds.loc[
+        rounds["signal_date"].ge(start)
+        & rounds["signal_date"].le(end)
+        & rounds["exit_date"].le(end)
+    ].copy()
+
+
+def walk_forward_fold_result(
+    candidate_rounds: dict[str, pd.DataFrame],
+    *,
+    train_start: pd.Timestamp,
+    train_end: pd.Timestamp,
+    test_start: pd.Timestamp,
+    test_end: pd.Timestamp,
+    hold_days: int,
+    selection_policy: str,
+) -> tuple[dict[str, Any], pd.DataFrame]:
+    """Select on one completed training window and return the untouched next-window cohorts."""
+
+    if test_start <= train_end:
+        raise ValueError("walk-forward test window must begin after its training window")
+    candidates: list[dict[str, Any]] = []
+    for candidate, rounds in candidate_rounds.items():
+        training_rounds = completed_rounds_in_window(rounds, train_start, train_end)
+        summary = summarize_development_window(training_rounds, hold_days)
+        candidates.append({"candidate": candidate, **summary})
+    winner = choose_winner(candidates, selection_policy)
+    winner_summary = next((item for item in candidates if item["candidate"] == winner), None)
+    test_rounds = (
+        completed_rounds_in_window(candidate_rounds[winner], test_start, test_end)
+        if winner is not None
+        else pd.DataFrame()
+    )
+    return (
+        {
+            "train_start": pd.Timestamp(train_start).date().isoformat(),
+            "train_end": pd.Timestamp(train_end).date().isoformat(),
+            "test_start": pd.Timestamp(test_start).date().isoformat(),
+            "test_end": pd.Timestamp(test_end).date().isoformat(),
+            "candidate_count": len(candidates),
+            "eligible_candidate_count": sum(
+                development_selection_score(item, selection_policy) is not None for item in candidates
+            ),
+            "winner_selected_on_training_only": winner,
+            "winner_training_selection_score": (
+                development_selection_score(winner_summary, selection_policy) if winner_summary is not None else None
+            ),
+            "winner_training": winner_summary["development"] if winner_summary is not None else None,
+            "winner_training_stability": (
+                winner_summary["development_stability"] if winner_summary is not None else None
+            ),
+            "test": return_metrics(test_rounds, hold_days),
+        },
+        test_rounds,
+    )
+
+
 def rank_regimes_by_development(
     summaries: list[tuple[str, dict[str, Any]]], selection_policy: str
 ) -> list[tuple[str, dict[str, Any], float | None]]:
@@ -3332,11 +3443,16 @@ def _paper_ledger_summary(ledger: dict[str, Any]) -> tuple[int, int, int, float]
     return len(signals), len(settlements), len(pending), equity
 
 
-def _shadow_observation_rows(plan: dict[str, Any], ledger: dict[str, Any]) -> list[dict[str, Any]]:
+def _shadow_observation_rows(
+    plan: dict[str, Any], ledger: dict[str, Any], suspension_registry: dict[str, Any] | None = None
+) -> list[dict[str, Any]]:
     """Summarize separate forward evidence for each explicitly registered candidate."""
 
     signals = list(ledger.get("signals") or [])
     settlements = list(ledger.get("settlements") or [])
+    suspended = {
+        str(item.get("iteration_id")) for item in (suspension_registry or {}).get("suspensions") or []
+    }
     rows: list[dict[str, Any]] = []
     for observation in plan.get("observations") or []:
         iteration_id = str(observation.get("iteration_id", ""))
@@ -3356,6 +3472,7 @@ def _shadow_observation_rows(plan: dict[str, Any], ledger: dict[str, Any]) -> li
                 "candidate": str(observation.get("candidate", "—")),
                 "candidate_library": str(observation.get("candidate_library", "—")),
                 "not_before": str(observation.get("not_before", "—")),
+                "status": "已暂停" if iteration_id in suspended else "前瞻观察中",
                 "signals": len(candidate_signals),
                 "settlements": len(candidate_settlements),
                 "pending": len(pending),
@@ -3415,6 +3532,43 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
             }
         )
     return diagnostics
+
+
+def load_walk_forward_selection_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read expanding-window selection audits for the human research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_walk_forward_selection_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        library = audit.get("candidate_library") or {}
+        data = audit.get("data") or {}
+        protocol = audit.get("protocol") or {}
+        aggregate = audit.get("aggregate_selected_out_of_sample") or {}
+        folds = list(audit.get("folds") or [])
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "candidate_library": str(library.get("id", "—")),
+                "candidate_count": int(library.get("count") or 0),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "first_test_year": protocol.get("first_test_year"),
+                "last_test_year": protocol.get("last_test_year"),
+                "fold_count": len(folds),
+                "qualified_fold_count": sum(
+                    fold.get("winner_selected_on_training_only") is not None for fold in folds
+                ),
+                "aggregate_net_return": aggregate.get("net_cumulative_return"),
+                "aggregate_max_drawdown": aggregate.get("max_drawdown"),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
 
 
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
@@ -3752,6 +3906,7 @@ def render_three_day_research_report(
     risk_gate_audits: list[dict[str, Any]] | None = None,
     candidate_overlap_audits: list[dict[str, Any]] | None = None,
     shadow_suspension_registry: dict[str, Any] | None = None,
+    walk_forward_selection_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -3847,6 +4002,37 @@ def render_three_day_research_report(
                     count=diagnostic["factor_count"],
                     factor=diagnostic["top_factor"],
                     mean_ic=formatted_ic,
+                )
+            )
+        lines.append("")
+    if walk_forward_selection_audits:
+        lines.extend(
+            [
+                "",
+                "## 滚动候选选择审计",
+                "",
+                "每个自然年测试段只使用此前完整持有周期的历史数据从候选库选胜者；下一年结果不参与该轮选择。它不能自动晋级或替换前瞻候选，但否定结果可作为明确暂停观察的证据。",
+                "",
+                "| 审计 | 因子库 / 数量 | 历史范围 | 测试年度 | 有合格胜者的折数 | 汇总样本外净收益 | 汇总样本外回撤 |",
+                "| --- | --- | --- | --- | ---: | ---: | ---: |",
+            ]
+        )
+        for audit in walk_forward_selection_audits:
+            test_years = "—"
+            if audit["first_test_year"] is not None and audit["last_test_year"] is not None:
+                test_years = f"{audit['first_test_year']}–{audit['last_test_year']}"
+            lines.append(
+                "| {run_id} | {library} / {count} | {start} 至 {end} | {years} | {qualified}/{folds} | {net} | {mdd} |".format(
+                    run_id=audit["run_id"],
+                    library=audit["candidate_library"],
+                    count=audit["candidate_count"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    years=test_years,
+                    qualified=audit["qualified_fold_count"],
+                    folds=audit["fold_count"],
+                    net=_percent(audit["aggregate_net_return"]),
+                    mdd=_percent(audit["aggregate_max_drawdown"]),
                 )
             )
         lines.append("")
@@ -4131,20 +4317,24 @@ def render_three_day_research_report(
                 "",
             ]
         )
-        observation_rows = _shadow_observation_rows(shadow_observation_registry or {}, shadow_ledger)
+        observation_rows = _shadow_observation_rows(
+            shadow_observation_registry or {}, shadow_ledger, shadow_suspension_registry
+        )
         if observation_rows:
             lines.extend(
                 [
-                    "| 候选 | 候选库 | 首个可用收盘日 | 信号 | 已结算 | 待结算 | 已结算累计净收益 |",
-                    "| --- | --- | --- | ---: | ---: | ---: | ---: |",
+                    "| 轮次 | 候选 | 候选库 | 首个可用收盘日 | 状态 | 信号 | 已结算 | 待结算 | 已结算累计净收益 |",
+                    "| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: |",
                 ]
             )
             for row in observation_rows:
                 lines.append(
-                    "| {candidate} | {library} | {not_before} | {signals} | {settlements} | {pending} | {net_return} |".format(
+                    "| {iteration_id} | {candidate} | {library} | {not_before} | {status} | {signals} | {settlements} | {pending} | {net_return} |".format(
+                        iteration_id=row["iteration_id"],
                         candidate=row["candidate"],
                         library=row["candidate_library"],
                         not_before=row["not_before"],
+                        status=row["status"],
                         signals=row["signals"],
                         settlements=row["settlements"],
                         pending=row["pending"],
@@ -4202,6 +4392,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
+    walk_forward_selection_audits = load_walk_forward_selection_audits(experiment_root)
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -4228,6 +4419,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         risk_gate_audits,
         candidate_overlap_audits,
         shadow_suspension_registry,
+        walk_forward_selection_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -4247,6 +4439,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_suspensions": len(shadow_suspension_registry["suspensions"]),
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
+        "walk_forward_selection_audits": len(walk_forward_selection_audits),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
         "model_audits": len(model_audits),
@@ -5410,6 +5603,147 @@ def run_entry_gap_audit(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def run_walk_forward_selection_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Audit a factor library with expanding, calendar-year training windows.
+
+    Each fold selects exactly one candidate using only cohorts whose exits were
+    known by that fold's training end.  The next calendar year's completed
+    cohorts are then held out as a genuine historical validation slice.  This
+    is an audit of a strategy family, never a new forward registration or an
+    authorization to replace a current paper observation.
+    """
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    candidates = candidate_library(args.candidate_library)
+    if args.first_test_year > args.last_test_year:
+        raise ValueError("first_test_year must not exceed last_test_year")
+
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    calendar_start = pd.Timestamp(market["datetime"].min()).normalize()
+    calendar_end = pd.Timestamp(market["datetime"].max()).normalize()
+    if args.first_test_year - calendar_start.year < 2:
+        raise ValueError("walk-forward audit requires at least two full prior calendar years of training data")
+    if args.last_test_year > calendar_end.year:
+        raise ValueError("last_test_year exceeds the locally available daily-data calendar")
+
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    candidate_rounds: dict[str, pd.DataFrame] = {}
+    for candidate in candidates:
+        scored = score_candidate(ranked, candidate)
+        rounds, _ = evaluate_candidate(
+            scored,
+            candidate,
+            hold_days=args.hold_days,
+            topk=args.topk,
+            open_cost=args.open_cost,
+            close_cost=args.close_cost,
+            development_end=calendar_end.date().isoformat(),
+            regime_filter=args.regime_filter,
+        )
+        candidate_rounds[candidate.name] = rounds
+
+    folds: list[dict[str, Any]] = []
+    selected_test_rounds: list[pd.DataFrame] = []
+    for test_year in range(args.first_test_year, args.last_test_year + 1):
+        train_end = pd.Timestamp(f"{test_year - 1}-12-31")
+        test_start = pd.Timestamp(f"{test_year}-01-01")
+        test_end = min(pd.Timestamp(f"{test_year}-12-31"), calendar_end)
+        fold, test_rounds = walk_forward_fold_result(
+            candidate_rounds,
+            train_start=calendar_start,
+            train_end=train_end,
+            test_start=test_start,
+            test_end=test_end,
+            hold_days=args.hold_days,
+            selection_policy=args.selection_policy,
+        )
+        folds.append(fold)
+        if not test_rounds.empty:
+            selected_test_rounds.append(test_rounds.assign(walk_forward_test_year=test_year))
+
+    combined_test_rounds = (
+        pd.concat(selected_test_rounds, ignore_index=True).sort_values("signal_date", kind="stable")
+        if selected_test_rounds
+        else pd.DataFrame()
+    )
+    run_id = _timestamp()
+    aggregate = return_metrics(combined_test_rounds, args.hold_days)
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "expanding_window_candidate_selection_audit_research_only_not_investment_advice",
+        "candidate_library": {
+            "id": args.candidate_library,
+            "count": len(candidates),
+            "construction": CANDIDATE_LIBRARY_DESCRIPTIONS[args.candidate_library],
+            "fingerprint_sha256": candidate_library_fingerprint(candidates),
+        },
+        "strategy": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+            "regime_filter": args.regime_filter,
+            "regime_filter_description": REGIME_FILTERS[args.regime_filter],
+        },
+        "selection_policy": args.selection_policy,
+        "selection_rule": (
+            f"{SELECTION_POLICIES[args.selection_policy]}; each fold selects only on completed training cohorts, "
+            "and its following calendar-year test metrics are excluded from selection"
+        ),
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": calendar_start.date().isoformat(),
+            "calendar_end": calendar_end.date().isoformat(),
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "test_period_used_for_candidate_selection": False,
+        },
+        "protocol": {
+            "first_test_year": args.first_test_year,
+            "last_test_year": args.last_test_year,
+            "training_window": "expanding from the requested calendar start through the prior calendar year",
+            "fold_boundary_rule": "only cohorts with scheduled exits inside each train or test window are included",
+        },
+        "folds": folds,
+        "aggregate_selected_out_of_sample": aggregate,
+        "unique_fold_winners": sorted(
+            {str(fold["winner_selected_on_training_only"]) for fold in folds if fold["winner_selected_on_training_only"]}
+        ),
+        "limitations": [
+            "This audit checks historical candidate-selection stability; it does not promote a candidate or create a forward signal.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+            "Prices are qfq-adjusted and cannot prove limit-up/limit-down, suspension, lot-size, dividend, or exact-tax execution.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_walk_forward_selection_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "candidate_library": args.candidate_library,
+        "fold_count": len(folds),
+        "qualified_fold_count": sum(fold["winner_selected_on_training_only"] is not None for fold in folds),
+        "unique_fold_winners": audit["unique_fold_winners"],
+        "aggregate_selected_out_of_sample": aggregate,
+    }
+
+
 def run_research(args: argparse.Namespace) -> dict[str, Any]:
     """Run all candidate combinations and write a record for each one."""
 
@@ -5611,6 +5945,29 @@ def parse_args() -> argparse.Namespace:
     factor_diagnostic.add_argument("--close-cost", type=float, default=0.0025)
     factor_diagnostic.add_argument("--max-quality-age-days", type=int, default=550)
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
+
+    walk_forward_selection_audit = subparsers.add_parser(
+        "walk-forward-selection-audit",
+        help="select a candidate library on expanding historical windows and test each next calendar year",
+    )
+    walk_forward_selection_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    walk_forward_selection_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    walk_forward_selection_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    walk_forward_selection_audit.add_argument("--start", default="2019-01-01")
+    walk_forward_selection_audit.add_argument("--end", default="2025-12-31")
+    walk_forward_selection_audit.add_argument("--first-test-year", type=int, default=2021)
+    walk_forward_selection_audit.add_argument("--last-test-year", type=int, default=2025)
+    walk_forward_selection_audit.add_argument("--hold-days", type=int, default=3)
+    walk_forward_selection_audit.add_argument("--topk", type=int, default=3)
+    walk_forward_selection_audit.add_argument("--regime-filter", choices=sorted(REGIME_FILTERS), default="breadth_5_above_20")
+    walk_forward_selection_audit.add_argument("--open-cost", type=float, default=0.00012)
+    walk_forward_selection_audit.add_argument("--close-cost", type=float, default=0.00062)
+    walk_forward_selection_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    walk_forward_selection_audit.add_argument("--batch-size", type=int, default=500)
+    walk_forward_selection_audit.add_argument("--candidate-library", choices=sorted(CANDIDATE_LIBRARIES), default="v2_microstructure")
+    walk_forward_selection_audit.add_argument(
+        "--selection-policy", choices=sorted(SELECTION_POLICIES), default="positive_year_stability_mdd20"
+    )
 
     regime_audit = subparsers.add_parser(
         "regime-audit", help="compare all predeclared close-known market regimes for one recorded candidate"
@@ -5913,6 +6270,8 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "factor-diagnostic":
         report = run_factor_diagnostic(args)
+    elif args.command == "walk-forward-selection-audit":
+        report = run_walk_forward_selection_audit(args)
     elif args.command == "regime-audit":
         report = run_regime_audit(args)
     elif args.command == "loss-cap-audit":

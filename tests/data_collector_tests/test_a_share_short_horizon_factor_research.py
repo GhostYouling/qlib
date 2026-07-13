@@ -338,6 +338,37 @@ def test_strict_stability_policy_requires_a_development_drawdown_at_or_above_min
     assert RESEARCH.choose_winner(summaries, "positive_year_stability_mdd20") == "risk_capped"
 
 
+def test_walk_forward_fold_selects_only_on_completed_training_cohorts():
+    def rounds(training_return: float, test_return: float) -> pd.DataFrame:
+        return pd.DataFrame(
+            {
+                "signal_date": pd.to_datetime(["2019-06-03", "2020-06-01", "2021-06-01", "2020-12-30"]),
+                "exit_date": pd.to_datetime(["2019-06-05", "2020-06-03", "2021-06-03", "2021-01-05"]),
+                "net_return": [training_return, training_return, test_return, 0.50],
+                "gross_return": [training_return, training_return, test_return, 0.50],
+                "holdings": [3, 3, 3, 3],
+            }
+        )
+
+    fold, selected_test_rounds = RESEARCH.walk_forward_fold_result(
+        {
+            "train_winner": rounds(0.10, -0.10),
+            "test_winner_only": rounds(0.05, 0.90),
+        },
+        train_start=pd.Timestamp("2019-01-01"),
+        train_end=pd.Timestamp("2020-12-31"),
+        test_start=pd.Timestamp("2021-01-01"),
+        test_end=pd.Timestamp("2021-12-31"),
+        hold_days=3,
+        selection_policy="positive_year_stability_mdd20",
+    )
+    assert fold["winner_selected_on_training_only"] == "train_winner"
+    assert fold["eligible_candidate_count"] == 2
+    assert fold["winner_training"]["rounds"] == 2
+    assert fold["test"]["net_cumulative_return"] == pytest.approx(-0.10)
+    assert selected_test_rounds["signal_date"].tolist() == [pd.Timestamp("2021-06-01")]
+
+
 def test_positive_year_stability_requires_every_development_year_to_be_positive():
     assert RESEARCH.positive_year_stability_score([0.03, 0.01], -0.08) == pytest.approx(-0.03)
     assert RESEARCH.positive_year_stability_score([0.03, -0.01, 0.08], -0.08) is None
@@ -966,6 +997,34 @@ def test_research_report_renders_registry_and_only_counts_settled_paper_returns(
     assert "已结算纸面累计净收益：+3.00%" in report
 
 
+def test_walk_forward_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
+    (tmp_path / "20260714T000000Z_walk_forward_selection_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "walk-forward-v2",
+                "status": "completed",
+                "candidate_library": {"id": "v2_microstructure", "count": 150},
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "protocol": {"first_test_year": 2021, "last_test_year": 2025},
+                "folds": [
+                    {"winner_selected_on_training_only": "candidate"},
+                    {"winner_selected_on_training_only": None},
+                ],
+                "aggregate_selected_out_of_sample": {"net_cumulative_return": 0.12, "max_drawdown": -0.08},
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_walk_forward_selection_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, walk_forward_selection_audits=audits
+    )
+    assert "滚动候选选择审计" in report
+    assert "walk-forward-v2" in report
+    assert "1/2" in report
+    assert "不能自动晋级或替换前瞻候选" in report
+
+
 def test_research_report_marks_non_promotable_historical_diagnostics():
     registry = {
         "iterations": [
@@ -1230,8 +1289,8 @@ def test_shadow_observation_report_breaks_out_each_candidate_instead_of_pooling_
     )
     assert "candidate_one" in report
     assert "candidate_two" in report
-    assert "| candidate_one | v2_microstructure | 2026-07-14 | 1 | 1 | 0 | +3.00% |" in report
-    assert "| candidate_two | v2_microstructure | 2026-07-14 | 1 | 0 | 1 | — |" in report
+    assert "| first | candidate_one | v2_microstructure | 2026-07-14 | 前瞻观察中 | 1 | 1 | 0 | +3.00% |" in report
+    assert "| second | candidate_two | v2_microstructure | 2026-07-14 | 前瞻观察中 | 1 | 0 | 1 | — |" in report
 
 
 def test_current_st_names_are_excluded_from_screen_by_default():

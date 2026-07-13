@@ -202,6 +202,20 @@ python scripts/a_share_short_horizon_model_research.py \
 
 模型预测会在与未来收益合并**之前**形成完整 Top‑3；若其中任一股票后来缺少进出场报价，整组按现金记录而不会用第四只股票替换。汇总同时展示实际持仓周期比例，避免低频空仓被误读为模型优势。
 
+在继续扩展因子库前，可先运行“滚动候选选择审计”检验现有策略族是否经得起反复的时间切分。它在每个测试年度开始前，只用此前至少两个完整自然年的**已完成持有周期**从整库选出一个候选，再以紧接的完整年度作为隔离测试；跨年但在边界之后才退出的 cohort 不会进入训练。它不生成策略登记、纸面信号或选股名单：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py walk-forward-selection-audit \
+  --candidate-library v2_microstructure \
+  --start 2019-01-01 --end 2025-12-31 \
+  --first-test-year 2021 --last-test-year 2025 \
+  --hold-days 3 --topk 3 --regime-filter breadth_5_above_20 \
+  --open-cost 0.00012 --close-cost 0.00062 \
+  --selection-policy positive_year_stability_mdd20
+```
+
+该审计的每个下一年收益都不参与该折的候选选择；合并的样本外指标仅用于判断策略族的稳定性，不能被用来事后挑选胜者或替换已经登记的前瞻观察。若审计明确否定某个策略族，可以追加暂停记录，但不能改写过去的登记或收益记录。
+
 新假设应先固定为新库，再仅在开发期内筛选。以下是 V2 的开发期登记示例：它不读 2026，且没有测试段时强制保持研究状态。
 
 ```bash
@@ -363,7 +377,7 @@ python scripts/a_share_short_horizon_factor_research.py shadow-monitor
 
 若该迭代已有历史测试周期，或者未显式指定开始日期，登记会被拒绝。这样可以防止把已经看过的历史行情伪装成前瞻纸面收益。
 
-若发现收益、成本或风险指标的实现有误，不能删除或覆写已经登记的前瞻观察。应先暂停该轮次，再使用修正后的实现重跑**仅开发期**研究，并将新得到的迭代 ID 作为独立观察重新登记：
+若发现收益、成本或风险指标的实现有误，或新的时间隔离稳健性审计否定了研究假设，不能删除或覆写已经登记的前瞻观察。应先暂停该轮次，再使用修正后的实现或新的、预先声明的假设重跑研究，并将新得到的迭代 ID 作为独立观察重新登记：
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py shadow-suspend \
