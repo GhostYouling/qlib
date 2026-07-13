@@ -77,6 +77,47 @@ def test_topk_model_rounds_hold_cash_if_a_selected_future_quote_is_missing():
     assert metrics["traded_rounds"] == 0
 
 
+def test_topk_model_rounds_hold_cash_when_a_close_known_regime_is_inactive():
+    first, second = pd.to_datetime(["2024-01-02", "2024-01-05"])
+    predictions = pd.DataFrame(
+        {
+            "signal_date": [first] * 3 + [second] * 3,
+            "instrument": ["A", "B", "C"] * 2,
+            "score": [0.9, 0.8, 0.7] * 2,
+        }
+    )
+    labels = pd.DataFrame(
+        {
+            "signal_date": [first] * 3 + [second] * 3,
+            "instrument": ["A", "B", "C"] * 2,
+            "forward_gross_return": [0.03, 0.02, 0.01] * 2,
+        }
+    )
+    rounds, metrics = MODEL.score_topk_rounds(
+        predictions,
+        labels,
+        pd.DatetimeIndex([first, second]),
+        topk=3,
+        open_cost=0.0,
+        close_cost=0.0,
+        active_signal_dates=pd.DatetimeIndex([second]),
+    )
+    assert rounds["regime_active"].tolist() == [False, True]
+    assert rounds["holdings"].tolist() == [0, 3]
+    assert rounds["net_return"].tolist() == pytest.approx([0.0, 0.02])
+    assert metrics["rounds"] == 2
+    assert metrics["traded_rounds"] == 1
+
+
+def test_active_regime_dates_rejects_unknown_market_gate():
+    with pytest.raises(ValueError, match="unknown model regime_filter"):
+        MODEL.active_regime_dates(
+            pd.DataFrame({"datetime": pd.to_datetime(["2024-01-02"]), "quality_eligible": [True]}),
+            pd.DatetimeIndex([pd.Timestamp("2024-01-02")]),
+            "not_a_real_gate",
+        )
+
+
 def test_model_selection_requires_all_development_years_positive_and_drawdown_gate():
     years = [
         {"topk": {"net_cumulative_return": 0.04}},

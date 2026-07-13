@@ -39,6 +39,15 @@ DEFAULT_EXPERIMENT_ROOT = REPO_ROOT / "data" / "experiments" / "short_horizon"
 # catalog grows.  A new model feature set needs its own explicitly named audit.
 DEFAULT_FEATURES = tuple(sorted({factor for candidate in research.V7_CANDIDATES for factor in candidate.weights}))
 MODEL_CONFIGURATIONS = ("ridge", "lgbm_shallow")
+# These are existing close-known market states from the factor-research
+# harness.  The compact set deliberately tests only: no gate, a broad positive
+# medium-term market state, and that same state with a pre-existing risk
+# filter.  It is not an unrestricted post-hoc regime sweep.
+MODEL_REGIME_FILTERS = (
+    "always",
+    "breadth_20_positive",
+    "breadth_20_positive_and_volatility_below_trailing_p75",
+)
 
 
 @dataclass(frozen=True)
@@ -203,6 +212,23 @@ def factor_feature_frame(ranked: pd.DataFrame, signal_dates: pd.DatetimeIndex, f
     return frame.sort_values(["signal_date", "instrument"], kind="stable")
 
 
+def active_regime_dates(ranked: pd.DataFrame, signal_dates: pd.DatetimeIndex, regime_filter: str) -> pd.DatetimeIndex:
+    """Return close-known signal dates allowed by one predeclared market gate."""
+
+    if regime_filter not in research.REGIME_FILTERS:
+        choices = ", ".join(sorted(research.REGIME_FILTERS))
+        raise ValueError(f"unknown model regime_filter {regime_filter!r}; choose one of: {choices}")
+    required = {"datetime", "quality_eligible"}
+    missing = sorted(required - set(ranked.columns))
+    if missing:
+        raise ValueError(f"ranked market frame is missing regime fields: {', '.join(missing)}")
+    signal_rows = ranked.loc[
+        ranked["quality_eligible"].fillna(False) & ranked["datetime"].isin(signal_dates)
+    ].copy()
+    active = research.apply_regime_filter(signal_rows, regime_filter)
+    return pd.DatetimeIndex(sorted(pd.to_datetime(active["datetime"]).unique()))
+
+
 def score_topk_rounds(
     predictions: pd.DataFrame,
     labels: pd.DataFrame,
@@ -210,6 +236,7 @@ def score_topk_rounds(
     topk: int,
     open_cost: float,
     close_cost: float,
+    active_signal_dates: pd.DatetimeIndex | None = None,
 ) -> tuple[pd.DataFrame, dict[str, float | int | None]]:
     """Score complete TopK baskets; incomplete future-quote baskets remain cash.
 
@@ -224,8 +251,15 @@ def score_topk_rounds(
     missing_predictions = sorted(required_predictions - set(predictions.columns))
     if missing_predictions:
         raise ValueError(f"predictions are missing columns: {', '.join(missing_predictions)}")
+    active_dates = (
+        pd.DatetimeIndex(signal_dates)
+        if active_signal_dates is None
+        else pd.DatetimeIndex(sorted(pd.to_datetime(active_signal_dates).unique()))
+    )
+    active_dates = active_dates.intersection(pd.DatetimeIndex(signal_dates))
     selected = (
-        predictions.sort_values(["signal_date", "score", "instrument"], ascending=[True, False, True], kind="stable")
+        predictions.loc[predictions["signal_date"].isin(active_dates)]
+        .sort_values(["signal_date", "score", "instrument"], ascending=[True, False, True], kind="stable")
         .groupby("signal_date", sort=False)
         .head(topk)
         .copy()
@@ -245,12 +279,16 @@ def score_topk_rounds(
         )
         .reindex(signal_dates)
     )
-    complete = basket["selected_holdings"].eq(topk) & basket["complete_returns"].eq(topk)
+    basket["regime_active"] = basket.index.isin(active_dates)
+    complete = (
+        basket["regime_active"]
+        & basket["selected_holdings"].eq(topk)
+        & basket["complete_returns"].eq(topk)
+    )
     basket["holdings"] = np.where(complete, topk, 0)
     basket["gross_return"] = basket["gross_return"].where(complete, 0.0).fillna(0.0)
     basket["net_return"] = (1.0 - open_cost) * (1.0 + basket["gross_return"]) * (1.0 - close_cost) - 1.0
     basket.loc[~complete, "net_return"] = 0.0
-    basket["regime_active"] = True
     rounds = basket.reset_index(names="signal_date")
     return rounds, research.return_metrics(rounds, hold_days=3)
 
@@ -322,6 +360,13 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
         validate_model_configuration(configuration)
     if len(set(configurations)) != len(configurations):
         raise ValueError("each model configuration may be supplied only once")
+    regime_filters = tuple(args.regime_filter or MODEL_REGIME_FILTERS)
+    for regime_filter in regime_filters:
+        if regime_filter not in research.REGIME_FILTERS:
+            choices = ", ".join(sorted(research.REGIME_FILTERS))
+            raise ValueError(f"unknown model regime_filter {regime_filter!r}; choose one of: {choices}")
+    if len(set(regime_filters)) != len(regime_filters):
+        raise ValueError("each model regime_filter may be supplied only once")
 
     fundamentals = research.load_fundamentals(fundamental_path)
     market = research.load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -334,10 +379,14 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
     labels = research.forward_factor_return_frame(ranked, args.hold_days)
     training = build_training_frame(features, labels, feature_columns)
     segments = annual_evaluation_segments(signal_dates, args.development_start, args.development_end)
+    active_dates_by_regime = {
+        regime_filter: active_regime_dates(ranked, signal_dates, regime_filter)
+        for regime_filter in regime_filters
+    }
     records: list[dict[str, Any]] = []
     for configuration in configurations:
-        fold_records: list[dict[str, Any]] = []
-        fold_rounds: list[pd.DataFrame] = []
+        fold_records_by_regime: dict[str, list[dict[str, Any]]] = {regime_filter: [] for regime_filter in regime_filters}
+        fold_rounds_by_regime: dict[str, list[pd.DataFrame]] = {regime_filter: [] for regime_filter in regime_filters}
         for segment_name, evaluation_dates in segments:
             training_dates = signal_dates[signal_dates < evaluation_dates.min()][-args.train_window_rounds :]
             train = training.loc[training["signal_date"].isin(training_dates)].copy()
@@ -350,57 +399,72 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
             estimator.fit(train_features, train["forward_gross_return"].astype(float))
             prediction = evaluation[["signal_date", "instrument"]].copy()
             prediction["score"] = estimator.predict(evaluation[list(feature_columns)].astype(float).fillna(0.5))
-            rounds, topk = score_topk_rounds(
-                prediction, labels, evaluation_dates, args.topk, args.open_cost, args.close_cost
-            )
-            rounds["segment"] = segment_name
-            fold_rounds.append(rounds)
-            fold_records.append(
+            prediction_diagnostics = score_diagnostics(prediction, labels)
+            for regime_filter in regime_filters:
+                active_dates = active_dates_by_regime[regime_filter].intersection(evaluation_dates)
+                rounds, topk = score_topk_rounds(
+                    prediction,
+                    labels,
+                    evaluation_dates,
+                    args.topk,
+                    args.open_cost,
+                    args.close_cost,
+                    active_signal_dates=active_dates,
+                )
+                rounds["segment"] = segment_name
+                fold_rounds_by_regime[regime_filter].append(rounds)
+                fold_records_by_regime[regime_filter].append(
+                    {
+                        "segment": segment_name,
+                        "signal_start": evaluation_dates.min().date().isoformat(),
+                        "signal_end": evaluation_dates.max().date().isoformat(),
+                        "training_signal_start": training_dates.min().date().isoformat(),
+                        "training_signal_end": training_dates.max().date().isoformat(),
+                        "training_rows": int(len(train)),
+                        "evaluation_rows": int(len(evaluation)),
+                        "regime_active_rounds": int(len(active_dates)),
+                        "topk": topk,
+                        "prediction": prediction_diagnostics,
+                    }
+                )
+        for regime_filter in regime_filters:
+            fold_records = fold_records_by_regime[regime_filter]
+            development_folds = [record for record in fold_records if record["segment"].startswith("development_")]
+            all_rounds = pd.concat(fold_rounds_by_regime[regime_filter], ignore_index=True)
+            development_rounds = all_rounds.loc[all_rounds["segment"].str.startswith("development_")].copy()
+            test_rounds = all_rounds.loc[all_rounds["segment"].eq("test")].copy()
+            development = research.return_metrics(development_rounds, args.hold_days)
+            test = research.return_metrics(test_rounds, args.hold_days)
+            selection_score = configuration_selection_score(development_folds, development)
+            records.append(
                 {
-                    "segment": segment_name,
-                    "signal_start": evaluation_dates.min().date().isoformat(),
-                    "signal_end": evaluation_dates.max().date().isoformat(),
-                    "training_signal_start": training_dates.min().date().isoformat(),
-                    "training_signal_end": training_dates.max().date().isoformat(),
-                    "training_rows": int(len(train)),
-                    "evaluation_rows": int(len(evaluation)),
-                    "topk": topk,
-                    "prediction": score_diagnostics(prediction, labels),
+                    "configuration": configuration,
+                    "regime_filter": regime_filter,
+                    "regime_filter_description": research.REGIME_FILTERS[regime_filter],
+                    "model_key": f"{configuration}__{regime_filter}",
+                    "configuration_description": validate_model_configuration(configuration).description,
+                    "development_selection_score": selection_score,
+                    "development": development,
+                    "test": test,
+                    "development_stability": {
+                        "calendar_year_count": len(development_folds),
+                        "positive_calendar_year_count": sum(
+                            float(record["topk"]["net_cumulative_return"] or 0.0) > 0.0
+                            for record in development_folds
+                        ),
+                        "worst_calendar_year_net_cumulative_return": min(
+                            (record["topk"]["net_cumulative_return"] for record in development_folds),
+                            default=None,
+                        ),
+                        "max_drawdown_cap": research.STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+                        "passes_max_drawdown_cap": (
+                            development.get("max_drawdown") is not None
+                            and float(development["max_drawdown"]) >= research.STRICT_DEVELOPMENT_MAX_DRAWDOWN
+                        ),
+                    },
+                    "folds": fold_records,
                 }
             )
-        development_folds = [record for record in fold_records if record["segment"].startswith("development_")]
-        all_rounds = pd.concat(fold_rounds, ignore_index=True)
-        development_rounds = all_rounds.loc[all_rounds["segment"].str.startswith("development_")].copy()
-        test_rounds = all_rounds.loc[all_rounds["segment"].eq("test")].copy()
-        development = research.return_metrics(development_rounds, args.hold_days)
-        test = research.return_metrics(test_rounds, args.hold_days)
-        selection_score = configuration_selection_score(development_folds, development)
-        records.append(
-            {
-                "configuration": configuration,
-                "configuration_description": validate_model_configuration(configuration).description,
-                "development_selection_score": selection_score,
-                "development": development,
-                "test": test,
-                "development_stability": {
-                    "calendar_year_count": len(development_folds),
-                    "positive_calendar_year_count": sum(
-                        float(record["topk"]["net_cumulative_return"] or 0.0) > 0.0
-                        for record in development_folds
-                    ),
-                    "worst_calendar_year_net_cumulative_return": min(
-                        (record["topk"]["net_cumulative_return"] for record in development_folds),
-                        default=None,
-                    ),
-                    "max_drawdown_cap": research.STRICT_DEVELOPMENT_MAX_DRAWDOWN,
-                    "passes_max_drawdown_cap": (
-                        development.get("max_drawdown") is not None
-                        and float(development["max_drawdown"]) >= research.STRICT_DEVELOPMENT_MAX_DRAWDOWN
-                    ),
-                },
-                "folds": fold_records,
-            }
-        )
 
     ranking = sorted(
         records,
@@ -412,7 +476,7 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
         reverse=True,
     )
     winner = next(
-        (record["configuration"] for record in ranking if record["development_selection_score"] is not None),
+        (record["model_key"] for record in ranking if record["development_selection_score"] is not None),
         None,
     )
     run_id = _timestamp()
@@ -420,7 +484,7 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
         "run_id": run_id,
         "status": "completed",
         "purpose": "three_day_walk_forward_model_research_only_not_investment_advice",
-        "model_family": "predeclared_ridge_and_shallow_lightgbm",
+        "model_family": "predeclared_ridge_and_shallow_lightgbm_with_compact_existing_market_gates",
         "strategy": {
             "universe": "buyable_main_chinext",
             "holding_period_trading_days": args.hold_days,
@@ -444,6 +508,8 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
             "train_window_rounds": args.train_window_rounds,
             "maximum_train_rows_per_signal": args.maximum_train_rows_per_signal,
             "training_sample": "deterministic per-signal hash sample independent of labels",
+            "regime_filters": list(regime_filters),
+            "regime_filter_selection": "three predeclared close-known states; test period does not select a gate",
             "test_period_used_for_configuration_selection": False,
         },
         "quality_gate": {
@@ -485,7 +551,9 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
         "winner_configuration_selected_on_development_only": winner,
         "ranking_by_development": [
             {
+                "model_key": record["model_key"],
                 "configuration": record["configuration"],
+                "regime_filter": record["regime_filter"],
                 "development_selection_score": record["development_selection_score"],
                 "development": record["development"],
                 "test": record["test"],
@@ -513,6 +581,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--train-window-rounds", type=int, default=336)
     parser.add_argument("--maximum-train-rows-per-signal", type=int, default=384)
     parser.add_argument("--configuration", action="append", choices=sorted(MODEL_SPECS))
+    parser.add_argument(
+        "--regime-filter",
+        action="append",
+        choices=sorted(research.REGIME_FILTERS),
+        help="repeat a predeclared close-known market gate; defaults to the compact model-gate audit set",
+    )
     return parser.parse_args()
 
 
