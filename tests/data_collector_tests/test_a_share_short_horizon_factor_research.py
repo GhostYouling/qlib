@@ -58,6 +58,14 @@ def test_winner_uses_development_only():
     assert RESEARCH.choose_winner(summaries) == "development_winner"
 
 
+def test_no_development_candidate_is_selected_when_every_policy_score_is_missing():
+    summaries = [
+        {"candidate": "one", "selection_scores": {"positive_year_stability_mdd20": None}},
+        {"candidate": "two", "selection_scores": {"positive_year_stability_mdd20": None}},
+    ]
+    assert RESEARCH.choose_winner(summaries, "positive_year_stability_mdd20") is None
+
+
 def test_stability_selection_prefers_the_best_worst_development_year_without_test_metrics():
     summaries = [
         {
@@ -112,6 +120,24 @@ def test_basket_overlap_summary_counts_common_dates_and_pairwise_similarity():
     assert metrics["mean_jaccard"] == pytest.approx(0.75)
     assert metrics["exact_basket_rate"] == pytest.approx(0.5)
     assert metrics["any_overlap_rate"] == pytest.approx(1.0)
+
+
+def test_human_report_includes_no_eligible_pressure_scans_without_creating_a_winner():
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        no_eligible_studies=[
+            {
+                "run_id": "long-history",
+                "candidate_library": "v4_freshness",
+                "candidate_count": 176,
+                "selection_policy": "positive_year_stability_mdd20",
+            }
+        ],
+    )
+    assert "未产生合格候选的压力扫描" in report
+    assert "long-history" in report
+    assert "无合格候选" in report
 
 
 def test_strict_stability_policy_requires_a_development_drawdown_at_or_above_minus_twenty_percent():

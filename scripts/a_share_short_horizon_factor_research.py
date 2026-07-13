@@ -2103,11 +2103,36 @@ def _shadow_observation_rows(plan: dict[str, Any], ledger: dict[str, Any]) -> li
     return rows
 
 
+def load_no_eligible_studies(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read completed sweeps that correctly found no development-eligible strategy."""
+
+    studies: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_study.json")):
+        try:
+            study = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if study.get("status") != "no_eligible_candidate":
+            continue
+        studies.append(
+            {
+                "run_id": str(study.get("run_id", path.stem)),
+                "candidate_library": str(study.get("candidate_library", "—")),
+                "candidate_count": int(study.get("candidate_count") or 0),
+                "selection_policy": str(study.get("selection_policy", "—")),
+                "reason": str(study.get("reason", "No candidate satisfied the development-only policy.")),
+                "path": str(path.resolve()),
+            }
+        )
+    return studies
+
+
 def render_three_day_research_report(
     registry: dict[str, Any],
     ledger: dict[str, Any],
     shadow_ledger: dict[str, Any] | None = None,
     shadow_observation_registry: dict[str, Any] | None = None,
+    no_eligible_studies: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -2158,6 +2183,28 @@ def render_three_day_research_report(
         )
     if not iterations:
         lines.append("| — | — | — | — | 尚无研究轮次 | — | — | — | — |")
+    if no_eligible_studies:
+        lines.extend(
+            [
+                "",
+                "## 未产生合格候选的压力扫描",
+                "",
+                "这些扫描严格按开发期规则执行且没有登记赢家；它们是淘汰证据，不能通过放松规则事后改写。",
+                "",
+                "| 扫描 | 候选库 / 数量 | 选择规则 | 结论 |",
+                "| --- | --- | --- | --- |",
+            ]
+        )
+        for study in no_eligible_studies:
+            lines.append(
+                "| {run_id} | {library} / {count} | {policy} | 无合格候选 |".format(
+                    run_id=study["run_id"],
+                    library=study["candidate_library"],
+                    count=study["candidate_count"],
+                    policy=study["selection_policy"],
+                )
+            )
+        lines.append("")
     lines.extend(
         [
             "",
@@ -2226,7 +2273,15 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     shadow_ledger = load_paper_ledger(shadow_ledger_path)
     shadow_observation_registry_path = Path(args.shadow_observation_registry_path).expanduser()
     shadow_observation_registry = load_shadow_observation_registry(shadow_observation_registry_path)
-    report = render_three_day_research_report(registry, ledger, shadow_ledger, shadow_observation_registry)
+    experiment_root = Path(args.experiment_root).expanduser()
+    no_eligible_studies = load_no_eligible_studies(experiment_root)
+    report = render_three_day_research_report(
+        registry,
+        ledger,
+        shadow_ledger,
+        shadow_observation_registry,
+        no_eligible_studies,
+    )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
     return {
@@ -2241,6 +2296,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "settlements": len(ledger["settlements"]),
         "shadow_signals": len(shadow_ledger["signals"]),
         "shadow_settlements": len(shadow_ledger["settlements"]),
+        "no_eligible_studies": len(no_eligible_studies),
     }
 
 
@@ -2262,7 +2318,7 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
     for candidate in candidates:
         scored = score_candidate(ranked, candidate)
         baskets = selected_baskets_by_signal(scored, args.hold_days, args.topk, args.regime_filter)
-        rounds, _ = evaluate_candidate(
+        rounds, summary = evaluate_candidate(
             scored,
             candidate,
             hold_days=args.hold_days,
@@ -2273,7 +2329,12 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
             regime_filter=args.regime_filter,
         )
         returns = rounds.set_index("signal_date")["net_return"].astype(float)
-        results[candidate.name] = {"candidate": candidate, "baskets": baskets, "returns": returns}
+        results[candidate.name] = {
+            "candidate": candidate,
+            "baskets": baskets,
+            "returns": returns,
+            "summary": summary,
+        }
 
     pairs: list[dict[str, Any]] = []
     for left_position, left_name in enumerate(names):
@@ -2314,6 +2375,9 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
                 "weights": candidate.weights,
                 "active_complete_baskets": len(results[candidate.name]["baskets"]),
                 "return_cohorts": int(len(results[candidate.name]["returns"])),
+                "development": results[candidate.name]["summary"]["development"],
+                "development_stability": results[candidate.name]["summary"].get("development_stability"),
+                "test": results[candidate.name]["summary"]["test"],
             }
             for candidate in candidates
         ],
@@ -2581,6 +2645,14 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
     study_path = experiment_root / f"{run_id}_study.json"
     _atomic_write_text(study_path, json.dumps(study, ensure_ascii=False, indent=2, default=_json_default) + "\n")
     study["study_path"] = str(study_path.resolve())
+    if winner is None:
+        study["status"] = "no_eligible_candidate"
+        study["reason"] = (
+            "No candidate satisfied the development-only selection policy; no strategy iteration was registered "
+            "and no forward observation can be created from this sweep."
+        )
+        _atomic_write_text(study_path, json.dumps(study, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+        return study
     winner_record = next(record for record, _ in records if record["candidate"] == winner)
     label = args.iteration_label or f"hold_{args.hold_days}d_top_{args.topk}"
     iteration = build_iteration_record(
@@ -2751,6 +2823,7 @@ def parse_args() -> argparse.Namespace:
     shadow_monitor.add_argument("--batch-size", type=int, default=500)
 
     report = subparsers.add_parser("report", help="render the three-day research registry and paper ledger as Markdown")
+    report.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     report.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
     report.add_argument("--ledger-path", default=str(DEFAULT_PAPER_LEDGER))
     report.add_argument("--shadow-ledger-path", default=str(DEFAULT_SHADOW_PAPER_LEDGER))
