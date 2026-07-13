@@ -973,6 +973,55 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
     assert by_factor["bad"]["mean_rank_ic"] == pytest.approx(-1.0)
 
 
+def test_pure_factor_aggregation_reproduces_the_diagnostic_topk_timing_and_costs():
+    dates = pd.date_range("2025-01-02", periods=5, freq="B")
+    rows = []
+    for date_position, date in enumerate(dates):
+        for instrument_position in range(6):
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": f"S{instrument_position}",
+                    "open": 100.0,
+                    # Each signal's one-day exit has the same increasing
+                    # return ordering as the close-known factor ranks.
+                    "close": 100.0 if date_position == 0 else 100.0 + instrument_position,
+                    "quality_eligible": True,
+                    "amplitude_low": (instrument_position + 1) / 6.0,
+                }
+            )
+    ranked = pd.DataFrame(rows)
+    forward_returns = RESEARCH.forward_factor_return_frame(ranked, hold_days=1)
+    diagnostic = RESEARCH.summarize_factor_diagnostics(
+        forward_returns,
+        ["amplitude_low"],
+        hold_days=1,
+        topk=3,
+        open_cost=0.001,
+        close_cost=0.002,
+    )[0]
+    candidate = RESEARCH.Candidate(
+        name="pure_amplitude_low",
+        description="Pure-factor timing parity check.",
+        weights={"amplitude_low": 1.0},
+    )
+    _, aggregate = RESEARCH.evaluate_candidate(
+        RESEARCH.score_candidate(ranked, candidate),
+        candidate,
+        hold_days=1,
+        topk=3,
+        open_cost=0.001,
+        close_cost=0.002,
+        development_end=dates[-1].date().isoformat(),
+        regime_filter="always",
+    )
+    assert aggregate["development"]["rounds"] == diagnostic["topk"]["rounds"]
+    assert aggregate["development"]["net_cumulative_return"] == pytest.approx(
+        diagnostic["topk"]["net_cumulative_return"]
+    )
+    assert aggregate["development"]["max_drawdown"] == pytest.approx(diagnostic["topk"]["max_drawdown"])
+
+
 def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields():
     expected = {
         "momentum_3",
@@ -989,6 +1038,101 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
     }
     assert expected.issubset(RESEARCH.FACTOR_DIAGNOSTIC_COLUMNS)
     assert expected.issubset(RESEARCH.EXPLORATORY_DIAGNOSTIC_FACTORS)
+
+
+def test_factor_stability_decision_requires_positive_rank_ic_in_every_observed_year():
+    stable = {
+        "factor": "amplitude_low",
+        "cohorts": 240,
+        "mean_rank_ic": 0.03,
+        "positive_rank_ic_rate": 0.56,
+        "mean_top_minus_bottom_gross_return": 0.004,
+        "by_signal_year": {
+            str(year): {"mean_rank_ic": 0.01 + year * 0.0}
+            for year in range(2019, 2024)
+        },
+    }
+    decision = RESEARCH.factor_stability_decision(
+        stable, minimum_calendar_years=5, minimum_cohorts=200
+    )
+    assert decision["passed"]
+    assert decision["observed_calendar_years"] == ["2019", "2020", "2021", "2022", "2023"]
+
+    unstable = {
+        **stable,
+        "by_signal_year": {**stable["by_signal_year"], "2021": {"mean_rank_ic": -0.001}},
+    }
+    rejected = RESEARCH.factor_stability_decision(
+        unstable, minimum_calendar_years=5, minimum_cohorts=200
+    )
+    assert not rejected["passed"]
+    assert "non-positive annual mean Rank IC: 2021" in rejected["failures"]
+
+
+def test_factor_stability_audits_are_retained_without_strategy_promotion(tmp_path):
+    (tmp_path / "20260714T000000Z_factor_stability_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "factor-stability",
+                "status": "completed",
+                "input_diagnostic": {"run_id": "factor-diagnostic"},
+                "policy": {"minimum_calendar_years": 5, "minimum_cohorts": 200},
+                "factor_decisions": [
+                    {"factor": "amplitude_low", "passed": True},
+                    {"factor": "reversal_10", "passed": False},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_factor_stability_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, factor_stability_audits=audits
+    )
+    assert "开发期因子稳定性审计" in report
+    assert "amplitude_low" in report
+    assert "绝不自动选股" in report
+
+
+def test_factor_topk_viability_requires_drawdown_and_annual_portfolio_stability():
+    summary = {
+        "factor": "amplitude_low",
+        "cohorts": 240,
+        "mean_rank_ic": 0.03,
+        "positive_rank_ic_rate": 0.56,
+        "mean_top_minus_bottom_gross_return": 0.004,
+        "by_signal_year": {
+            str(year): {"mean_rank_ic": 0.01, "topk_net_cumulative_return": 0.05}
+            for year in range(2019, 2024)
+        },
+        "topk": {"rounds": 240, "net_cumulative_return": 0.50, "max_drawdown": -0.15, "median_holdings": 3},
+    }
+    assert RESEARCH.factor_topk_viability_decision(summary)["passed"]
+    rejected = RESEARCH.factor_topk_viability_decision(
+        {**summary, "topk": {**summary["topk"], "max_drawdown": -0.21}}
+    )
+    assert not rejected["passed"]
+    assert "TopK maximum drawdown worse than -20%" in rejected["failures"]
+
+
+def test_factor_topk_viability_audits_are_retained_without_strategy_promotion(tmp_path):
+    (tmp_path / "20260714T000000Z_factor_topk_viability_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "topk-viability",
+                "status": "completed",
+                "input_diagnostic": {"run_id": "factor-diagnostic"},
+                "factor_decisions": [{"factor": "amplitude_low", "passed": False}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_factor_topk_viability_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, factor_topk_viability_audits=audits
+    )
+    assert "单因子 Top‑3 组合可行性审计" in report
+    assert "| topk-viability | factor-diagnostic | 1 | 无 |" in report
 
 
 def test_v8_ten_day_reversal_grid_is_small_predeclared_and_does_not_rewrite_v7():

@@ -258,6 +258,34 @@ python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
   --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062
 ```
 
+为避免只按一次平均 Rank IC 追逐偶然结果，应对已保存的诊断运行固定的跨年度稳定性审计。默认门槛不可按结果调整：至少 5 个自然年和 200 个非重叠 cohort、总体平均 Rank IC 为正、正 Rank IC cohort 占比高于 50%、Top‑3 相对末 3 的平均毛收益差为正，并且每个已观察自然年的平均 Rank IC 都为正。审计只记录“可提出独立假设”的因子，**不会**选择权重、生成策略、登记前瞻观察或给出选股名单：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<run_id>_factor_diagnostic.json
+```
+
+如只复核一个已声明因子，可显式限定名称，仍使用同一套门槛：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<run_id>_factor_diagnostic.json \
+  --factor amplitude_low
+```
+
+结果写成独立、追加式的 `*_factor_stability_audit.json`，`report` 只汇总其审计结论。通过的因子仍必须另行预注册为完整策略，并从真正未见的未来收盘日开始积累纸面样本。
+
+Rank IC 稳定也不等于反复持有 Top‑3 可以承受回撤。因此在组合任何通过关联审计的因子前，使用第二个固定门槛复核诊断本身的 Top‑3 重建：它要求关联审计通过、每个已观察自然年的 Top‑3 **净**累计收益为正、整体净累计收益为正，并且最大回撤不差于 −20%。成本、买入/卖出时点直接取自输入诊断，不能通过本命令改写：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<run_id>_factor_diagnostic.json \
+  --factor amplitude_low --factor amplitude_low_1 \
+  --factor volatility_low_20 --factor volume_dry_up
+```
+
+这是开发期的单因子淘汰器，不是独立回测，也不是策略晋级。若它没有留下因子，不能为了寻找通过结果而改阈值或立刻换权重；应保留失败记录并研究一个预先声明、与既有量价字段独立的假设。
+
 `v7_reversion_ic` 是一次明确标为**诊断驱动的历史敏感性研究**：它保留 V6 的候选，另加入 12 个“5 日回撤、缩量、高开强度、收盘回撤”组合，并分别使用仅质量门、5% 增长质量和 10% 综合质量。该方向来自开发期单因子诊断，因而即使长历史表现较好，也只能作为已见样本上的研究记录，不能自动登记前瞻观察或替换既有候选。
 
 ```bash

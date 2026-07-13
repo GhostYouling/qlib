@@ -1117,6 +1117,8 @@ SELECTION_POLICIES = {
 # separately named selection policy so a later research cycle cannot rewrite
 # the winner of a prior, looser stability rule.
 STRICT_DEVELOPMENT_MAX_DRAWDOWN = -0.20
+FACTOR_STABILITY_MIN_CALENDAR_YEARS = 5
+FACTOR_STABILITY_MIN_COHORTS = 200
 DEFAULT_CLOSE_LOSS_CAPS = (0.05, 0.08, 0.10)
 DEFAULT_ENTRY_GAP_CAPS = (0.02, 0.04, 0.06)
 DEFAULT_BASKET_CORRELATION_LOOKBACK = 20
@@ -3816,6 +3818,136 @@ def summarize_factor_diagnostics(
     )
 
 
+def factor_stability_decision(
+    summary: dict[str, Any],
+    *,
+    minimum_calendar_years: int = FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+    minimum_cohorts: int = FACTOR_STABILITY_MIN_COHORTS,
+) -> dict[str, Any]:
+    """Apply one fixed development-only screen to a factor diagnostic summary.
+
+    The screen is deliberately stricter than a positive pooled Rank IC.  It
+    asks for enough non-overlapping cohorts, a positive overall association and
+    descriptive TopK spread, plus a positive mean Rank IC in every observed
+    calendar year.  Passing this screen records a hypothesis worth a separate,
+    predeclared strategy test; it never selects or promotes a strategy.
+    """
+
+    if minimum_calendar_years < 1 or minimum_cohorts < 1:
+        raise ValueError("minimum_calendar_years and minimum_cohorts must both be positive")
+    annual = dict(summary.get("by_signal_year") or {})
+    annual_mean_rank_ic: dict[str, float | None] = {}
+    for year, metrics in sorted(annual.items()):
+        value = (metrics or {}).get("mean_rank_ic") if isinstance(metrics, dict) else None
+        annual_mean_rank_ic[str(year)] = float(value) if value is not None and np.isfinite(value) else None
+    failures: list[str] = []
+    cohorts = int(summary.get("cohorts") or 0)
+    mean_rank_ic = summary.get("mean_rank_ic")
+    positive_rank_ic_rate = summary.get("positive_rank_ic_rate")
+    spread = summary.get("mean_top_minus_bottom_gross_return")
+    if cohorts < minimum_cohorts:
+        failures.append(f"fewer than {minimum_cohorts} non-overlapping cohorts")
+    if len(annual_mean_rank_ic) < minimum_calendar_years:
+        failures.append(f"fewer than {minimum_calendar_years} observed calendar years")
+    if mean_rank_ic is None or not np.isfinite(mean_rank_ic) or float(mean_rank_ic) <= 0.0:
+        failures.append("non-positive pooled mean Rank IC")
+    if positive_rank_ic_rate is None or not np.isfinite(positive_rank_ic_rate) or float(positive_rank_ic_rate) <= 0.50:
+        failures.append("positive Rank IC rate is not above 50%")
+    if spread is None or not np.isfinite(spread) or float(spread) <= 0.0:
+        failures.append("non-positive mean TopK-minus-BottomK gross spread")
+    non_positive_years = [
+        year for year, value in annual_mean_rank_ic.items() if value is None or value <= 0.0
+    ]
+    if non_positive_years:
+        failures.append("non-positive annual mean Rank IC: " + ", ".join(non_positive_years))
+    return {
+        "factor": str(summary.get("factor", "")),
+        "passed": not failures,
+        "failures": failures,
+        "observed_calendar_years": list(annual_mean_rank_ic),
+        "annual_mean_rank_ic": annual_mean_rank_ic,
+        "metrics": {
+            "cohorts": cohorts,
+            "mean_rank_ic": None if mean_rank_ic is None else float(mean_rank_ic),
+            "positive_rank_ic_rate": None if positive_rank_ic_rate is None else float(positive_rank_ic_rate),
+            "mean_top_minus_bottom_gross_return": None if spread is None else float(spread),
+        },
+        "criteria": {
+            "minimum_calendar_years": minimum_calendar_years,
+            "minimum_cohorts": minimum_cohorts,
+            "mean_rank_ic_gt": 0.0,
+            "positive_rank_ic_rate_gt": 0.50,
+            "mean_top_minus_bottom_gross_return_gt": 0.0,
+            "every_observed_calendar_year_mean_rank_ic_gt": 0.0,
+        },
+    }
+
+
+def factor_topk_viability_decision(
+    summary: dict[str, Any],
+    *,
+    minimum_calendar_years: int = FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+    minimum_cohorts: int = FACTOR_STABILITY_MIN_COHORTS,
+) -> dict[str, Any]:
+    """Screen a stable single factor as the exact diagnostic TopK basket.
+
+    A Rank IC measures a cross-sectional relationship, not whether repeatedly
+    holding the TopK names can survive costs and drawdowns.  This second screen
+    therefore requires the association screen first, then applies the same
+    three-day TopK timing and costs retained in the diagnostic.  It remains a
+    development-only rejection/triage tool rather than a strategy promotion
+    mechanism.
+    """
+
+    association = factor_stability_decision(
+        summary,
+        minimum_calendar_years=minimum_calendar_years,
+        minimum_cohorts=minimum_cohorts,
+    )
+    topk = dict(summary.get("topk") or {})
+    annual = dict(summary.get("by_signal_year") or {})
+    annual_topk_net_returns: dict[str, float | None] = {}
+    for year, metrics in sorted(annual.items()):
+        value = (metrics or {}).get("topk_net_cumulative_return") if isinstance(metrics, dict) else None
+        annual_topk_net_returns[str(year)] = float(value) if value is not None and np.isfinite(value) else None
+    failures = [f"association screen failed: {failure}" for failure in association["failures"]]
+    rounds = int(topk.get("rounds") or 0)
+    net_return = topk.get("net_cumulative_return")
+    max_drawdown = topk.get("max_drawdown")
+    if rounds < minimum_cohorts:
+        failures.append(f"fewer than {minimum_cohorts} executable TopK cohorts")
+    if net_return is None or not np.isfinite(net_return) or float(net_return) <= 0.0:
+        failures.append("non-positive TopK net cumulative return after diagnostic costs")
+    if max_drawdown is None or not np.isfinite(max_drawdown) or float(max_drawdown) < STRICT_DEVELOPMENT_MAX_DRAWDOWN:
+        failures.append(f"TopK maximum drawdown worse than {STRICT_DEVELOPMENT_MAX_DRAWDOWN:.0%}")
+    non_positive_years = [
+        year for year, value in annual_topk_net_returns.items() if value is None or value <= 0.0
+    ]
+    if non_positive_years:
+        failures.append("non-positive annual TopK net cumulative return: " + ", ".join(non_positive_years))
+    return {
+        "factor": str(summary.get("factor", "")),
+        "passed": not failures,
+        "association_screen_passed": association["passed"],
+        "failures": failures,
+        "observed_calendar_years": list(annual_topk_net_returns),
+        "annual_topk_net_cumulative_return": annual_topk_net_returns,
+        "topk_metrics": {
+            "rounds": rounds,
+            "net_cumulative_return": None if net_return is None else float(net_return),
+            "max_drawdown": None if max_drawdown is None else float(max_drawdown),
+            "median_holdings": topk.get("median_holdings"),
+        },
+        "criteria": {
+            "requires_factor_association_stability_screen": True,
+            "minimum_executable_topk_cohorts": minimum_cohorts,
+            "topk_net_cumulative_return_gt": 0.0,
+            "topk_max_drawdown_gte": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+            "every_observed_calendar_year_topk_net_cumulative_return_gt": 0.0,
+        },
+    }
+
+
 def choose_winner(summaries: list[dict[str, Any]], selection_policy: str = "pooled_return_drawdown") -> str | None:
     """Choose only from development-period results; reject missing metrics."""
 
@@ -4760,6 +4892,61 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
     return diagnostics
 
 
+def load_factor_stability_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read fixed-policy development factor-stability audits for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_factor_stability_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        decisions = list(audit.get("factor_decisions") or [])
+        qualified = [str(item.get("factor")) for item in decisions if item.get("passed")]
+        source = audit.get("input_diagnostic") or {}
+        policy = audit.get("policy") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "input_diagnostic_run_id": str(source.get("run_id", "—")),
+                "factor_count": len(decisions),
+                "qualified_factors": qualified,
+                "minimum_calendar_years": policy.get("minimum_calendar_years"),
+                "minimum_cohorts": policy.get("minimum_cohorts"),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
+def load_factor_topk_viability_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read development-only TopK viability screens for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_factor_topk_viability_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        decisions = list(audit.get("factor_decisions") or [])
+        qualified = [str(item.get("factor")) for item in decisions if item.get("passed")]
+        source = audit.get("input_diagnostic") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "input_diagnostic_run_id": str(source.get("run_id", "—")),
+                "factor_count": len(decisions),
+                "qualified_factors": qualified,
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_event_factor_holdouts(experiment_root: Path) -> list[dict[str, Any]]:
     """Read explicitly post-development event-factor holdouts for the log."""
 
@@ -5165,6 +5352,8 @@ def render_three_day_research_report(
     shadow_suspension_registry: dict[str, Any] | None = None,
     walk_forward_selection_audits: list[dict[str, Any]] | None = None,
     event_factor_holdouts: list[dict[str, Any]] | None = None,
+    factor_stability_audits: list[dict[str, Any]] | None = None,
+    factor_topk_viability_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -5272,6 +5461,54 @@ def render_three_day_research_report(
                     count=diagnostic["factor_count"],
                     factor=diagnostic["top_factor"],
                     mean_ic=formatted_ic,
+                )
+            )
+        lines.append("")
+    if factor_stability_audits:
+        lines.extend(
+            [
+                "",
+                "## 开发期因子稳定性审计",
+                "",
+                "审计以固定门槛筛除偶然的单因子关联：至少 5 个自然年、200 个非重叠 cohort、总体 Rank IC 与 Top3‑末3 收益差为正、Rank IC 正值比例高于 50%，且每个已观察自然年的平均 Rank IC 均为正。通过只表示可以另行预注册策略测试，绝不自动选股、登记或晋级。",
+                "",
+                "| 审计 | 输入诊断 | 审计因子数 | 通过因子 | 最低年份 / Cohort |",
+                "| --- | --- | ---: | --- | --- |",
+            ]
+        )
+        for audit in factor_stability_audits:
+            qualified = "、".join(audit["qualified_factors"]) or "无"
+            lines.append(
+                "| {run_id} | {source} | {count} | {qualified} | {years} / {cohorts} |".format(
+                    run_id=audit["run_id"],
+                    source=audit["input_diagnostic_run_id"],
+                    count=audit["factor_count"],
+                    qualified=qualified,
+                    years=audit["minimum_calendar_years"] if audit["minimum_calendar_years"] is not None else "—",
+                    cohorts=audit["minimum_cohorts"] if audit["minimum_cohorts"] is not None else "—",
+                )
+            )
+        lines.append("")
+    if factor_topk_viability_audits:
+        lines.extend(
+            [
+                "",
+                "## 单因子 Top‑3 组合可行性审计",
+                "",
+                "本节把通过关联稳定性审计的因子按诊断中同一收盘信号、次日开盘买入、第 3 日收盘卖出及研究成本形成 Top‑3 篮子。它要求关联审计通过、逐年 Top‑3 净累计收益为正、整体净累计收益为正且最大回撤不差于 −20%。结果只用于淘汰/分流，绝不自动形成策略或选股名单。",
+                "",
+                "| 审计 | 输入诊断 | 审计因子数 | 可行因子 |",
+                "| --- | --- | ---: | --- |",
+            ]
+        )
+        for audit in factor_topk_viability_audits:
+            qualified = "、".join(audit["qualified_factors"]) or "无"
+            lines.append(
+                "| {run_id} | {source} | {count} | {qualified} |".format(
+                    run_id=audit["run_id"],
+                    source=audit["input_diagnostic_run_id"],
+                    count=audit["factor_count"],
+                    qualified=qualified,
                 )
             )
         lines.append("")
@@ -5691,6 +5928,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
+    factor_stability_audits = load_factor_stability_audits(experiment_root)
+    factor_topk_viability_audits = load_factor_topk_viability_audits(experiment_root)
     event_factor_holdouts = load_event_factor_holdouts(experiment_root)
     walk_forward_selection_audits = load_walk_forward_selection_audits(experiment_root)
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
@@ -5721,6 +5960,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         shadow_suspension_registry,
         walk_forward_selection_audits,
         event_factor_holdouts,
+        factor_stability_audits,
+        factor_topk_viability_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -5740,6 +5981,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_suspensions": len(shadow_suspension_registry["suspensions"]),
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
+        "factor_stability_audits": len(factor_stability_audits),
+        "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
         "walk_forward_selection_audits": len(walk_forward_selection_audits),
         "candidate_overlap_audits": len(candidate_overlap_audits),
@@ -6091,6 +6334,148 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         "audit_path": str(destination.resolve()),
         "factor_count": len(summaries),
         "top_factors_by_development_rank_ic": summaries[: min(10, len(summaries))],
+    }
+
+
+def run_factor_stability_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Persist the fixed-policy development screen for one factor diagnostic."""
+
+    diagnostic_path = Path(args.diagnostic).expanduser()
+    if not diagnostic_path.exists():
+        raise FileNotFoundError(f"factor diagnostic not found: {diagnostic_path}")
+    try:
+        diagnostic = json.loads(diagnostic_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"factor diagnostic is not valid JSON: {diagnostic_path}") from error
+    if diagnostic.get("status") != "completed":
+        raise ValueError("factor stability audit requires a completed factor diagnostic")
+    ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
+    if not ranking:
+        raise ValueError("factor diagnostic contains no factor summaries")
+    requested_factors = list(getattr(args, "factor", None) or [])
+    available = {str(item.get("factor")): item for item in ranking}
+    if requested_factors:
+        missing = sorted(set(requested_factors) - set(available))
+        if missing:
+            raise ValueError("requested factor is absent from the diagnostic: " + ", ".join(missing))
+        summaries = [available[factor] for factor in requested_factors]
+    else:
+        summaries = ranking
+    decisions = [
+        factor_stability_decision(
+            summary,
+            minimum_calendar_years=args.minimum_calendar_years,
+            minimum_cohorts=args.minimum_cohorts,
+        )
+        for summary in summaries
+    ]
+    run_id = _timestamp()
+    experiment_root = Path(args.experiment_root).expanduser()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "development_only_factor_stability_screen_research_not_investment_advice",
+        "input_diagnostic": {
+            "run_id": str(diagnostic.get("run_id", diagnostic_path.stem)),
+            "path": str(diagnostic_path.resolve()),
+            "sha256": file_sha256(diagnostic_path),
+            "calendar_start": (diagnostic.get("data") or {}).get("calendar_start"),
+            "calendar_end": (diagnostic.get("data") or {}).get("calendar_end"),
+            "development_end": (diagnostic.get("data") or {}).get("development_end"),
+        },
+        "policy": {
+            "minimum_calendar_years": args.minimum_calendar_years,
+            "minimum_cohorts": args.minimum_cohorts,
+            "mean_rank_ic_gt": 0.0,
+            "positive_rank_ic_rate_gt": 0.50,
+            "mean_top_minus_bottom_gross_return_gt": 0.0,
+            "every_observed_calendar_year_mean_rank_ic_gt": 0.0,
+            "selection_or_promotion_allowed": False,
+        },
+        "requested_factors": requested_factors or None,
+        "factor_decisions": decisions,
+        "qualified_factors": [decision["factor"] for decision in decisions if decision["passed"]],
+        "limitations": [
+            "This applies a fixed screen to development-only factor associations; it does not select factor weights or a trading strategy.",
+            "A passing factor still requires a separately predeclared full-strategy evaluation and genuinely future paper observations before any execution discussion.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical diagnostics.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_factor_stability_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "input_diagnostic_run_id": audit["input_diagnostic"]["run_id"],
+        "factor_count": len(decisions),
+        "qualified_factors": audit["qualified_factors"],
+    }
+
+
+def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Persist the development-only TopK viability screen for a factor diagnostic."""
+
+    diagnostic_path = Path(args.diagnostic).expanduser()
+    if not diagnostic_path.exists():
+        raise FileNotFoundError(f"factor diagnostic not found: {diagnostic_path}")
+    try:
+        diagnostic = json.loads(diagnostic_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"factor diagnostic is not valid JSON: {diagnostic_path}") from error
+    if diagnostic.get("status") != "completed":
+        raise ValueError("factor TopK viability audit requires a completed factor diagnostic")
+    ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
+    if not ranking:
+        raise ValueError("factor diagnostic contains no factor summaries")
+    requested_factors = list(getattr(args, "factor", None) or [])
+    available = {str(item.get("factor")): item for item in ranking}
+    if requested_factors:
+        missing = sorted(set(requested_factors) - set(available))
+        if missing:
+            raise ValueError("requested factor is absent from the diagnostic: " + ", ".join(missing))
+        summaries = [available[factor] for factor in requested_factors]
+    else:
+        summaries = ranking
+    decisions = [factor_topk_viability_decision(summary) for summary in summaries]
+    run_id = _timestamp()
+    experiment_root = Path(args.experiment_root).expanduser()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "development_only_single_factor_topk_viability_screen_research_not_investment_advice",
+        "input_diagnostic": {
+            "run_id": str(diagnostic.get("run_id", diagnostic_path.stem)),
+            "path": str(diagnostic_path.resolve()),
+            "sha256": file_sha256(diagnostic_path),
+            "calendar_start": (diagnostic.get("data") or {}).get("calendar_start"),
+            "calendar_end": (diagnostic.get("data") or {}).get("calendar_end"),
+            "development_end": (diagnostic.get("data") or {}).get("development_end"),
+        },
+        "policy": {
+            "factor_association_stability_screen": "factor_stability_decision with fixed default thresholds",
+            "minimum_executable_topk_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "topk_net_cumulative_return_gt": 0.0,
+            "topk_max_drawdown_gte": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+            "every_observed_calendar_year_topk_net_cumulative_return_gt": 0.0,
+            "selection_or_promotion_allowed": False,
+        },
+        "requested_factors": requested_factors or None,
+        "factor_decisions": decisions,
+        "qualified_factors": [decision["factor"] for decision in decisions if decision["passed"]],
+        "limitations": [
+            "This screen uses the factor diagnostic's development-only TopK reconstruction and is not an independent strategy test.",
+            "Passing it still requires a separately predeclared full-strategy evaluation and genuinely future paper observations before any execution discussion.",
+            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_factor_topk_viability_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "input_diagnostic_run_id": audit["input_diagnostic"]["run_id"],
+        "factor_count": len(decisions),
+        "qualified_factors": audit["qualified_factors"],
     }
 
 
@@ -7559,6 +7944,34 @@ def parse_args() -> argparse.Namespace:
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
+    factor_stability_audit = subparsers.add_parser(
+        "factor-stability-audit",
+        help="apply one fixed development-only cross-year stability screen to a saved factor diagnostic",
+    )
+    factor_stability_audit.add_argument("--diagnostic", required=True)
+    factor_stability_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    factor_stability_audit.add_argument(
+        "--factor",
+        action="append",
+        help="optional exact factor name to audit; repeat to restrict the saved diagnostic",
+    )
+    factor_stability_audit.add_argument(
+        "--minimum-calendar-years", type=int, default=FACTOR_STABILITY_MIN_CALENDAR_YEARS
+    )
+    factor_stability_audit.add_argument("--minimum-cohorts", type=int, default=FACTOR_STABILITY_MIN_COHORTS)
+
+    factor_topk_viability_audit = subparsers.add_parser(
+        "factor-topk-viability-audit",
+        help="screen saved factor diagnostics as exact development-only TopK baskets after research costs",
+    )
+    factor_topk_viability_audit.add_argument("--diagnostic", required=True)
+    factor_topk_viability_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    factor_topk_viability_audit.add_argument(
+        "--factor",
+        action="append",
+        help="optional exact factor name to audit; repeat to restrict the saved diagnostic",
+    )
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -7944,6 +8357,10 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "factor-diagnostic":
         report = run_factor_diagnostic(args)
+    elif args.command == "factor-stability-audit":
+        report = run_factor_stability_audit(args)
+    elif args.command == "factor-topk-viability-audit":
+        report = run_factor_topk_viability_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":
