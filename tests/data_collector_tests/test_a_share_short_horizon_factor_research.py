@@ -650,6 +650,63 @@ def test_holder_count_join_waits_until_strictly_after_notice_date():
     assert effective_day["holder_count_change_ratio"] == pytest.approx(-5.0)
 
 
+def test_pledge_normalization_uses_notice_date_and_excludes_current_state_fields():
+    rows = [
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-30",
+            "PF_NUM": 1_000_000.0,
+            "PF_TSR": 0.50,
+            "CLOSE_PRICE": 99.0,
+            "WARNING_LINE": 1.0,
+            "UNFREEZE_STATE": "已解押",
+        },
+        {
+            "SECURITY_CODE": "000001",
+            "NOTICE_DATE": "2024-04-30",
+            "PF_NUM": 2_000_000.0,
+            "PF_TSR": 0.75,
+            "TRADE_DATE": "2026-07-13",
+        },
+        {"SECURITY_CODE": "159001", "NOTICE_DATE": "2024-04-30", "PF_NUM": 9.0},
+    ]
+    normalized = RESEARCH.normalize_pledge_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.PLEDGE_EVENT_COLUMNS)
+    assert len(normalized) == 1
+    row = normalized.iloc[0]
+    assert row["instrument"] == "SZ000001"
+    assert row["announcement_date"] == pd.Timestamp("2024-04-30")
+    assert row["pledge_share_count"] == pytest.approx(3_000_000.0)
+    assert row["pledge_total_share_ratio"] == pytest.approx(1.25)
+    assert row["pledge_event_count"] == pytest.approx(2.0)
+    assert "CLOSE_PRICE" not in normalized.columns
+
+
+def test_pledge_join_waits_until_strictly_after_notice_date():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "pledge_share_count": [3_000_000.0],
+            "pledge_total_share_ratio": [1.25],
+            "pledge_event_count": [2.0],
+        }
+    )
+    joined = RESEARCH.attach_pledge_events_asof(market, events, max_age_days=3)
+    notice_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    effective_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    assert not notice_day["pledge_available"]
+    assert effective_day["pledge_available"]
+    assert effective_day["pledge_effective_date"] == pd.Timestamp("2024-05-06")
+    assert effective_day["pledge_total_share_ratio"] == pytest.approx(1.25)
+
+
 def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
     ranked = pd.DataFrame({"billboard_deal_to_float": [0.10, 0.80, float("nan")]})
     result = RESEARCH.add_billboard_holdout_factor(ranked)
