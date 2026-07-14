@@ -135,6 +135,9 @@ DEFAULT_RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT = (
 DEFAULT_RESTRICTED_SHARE_UNLOCK_CAPACITY_SPEC = (
     REPO_ROOT / "docs" / "a_share_restricted_share_unlock_capacity_preregistration.json"
 )
+DEFAULT_RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_SPEC = (
+    REPO_ROOT / "docs" / "a_share_restricted_share_unlock_diagnostic_preregistration.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -443,6 +446,9 @@ ANALYST_RATING_CAPACITY_PURPOSE = (
 )
 RESTRICTED_SHARE_UNLOCK_CAPACITY_PURPOSE = (
     "restricted_share_unlock_capacity_gate_without_price_or_forward_returns"
+)
+RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_PURPOSE = (
+    "development_only_preregistered_restricted_share_unlock_research_not_investment_advice"
 )
 ANALYST_RATING_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_analyst_rating_research_not_investment_advice"
@@ -3504,6 +3510,176 @@ def require_unconsumed_analyst_rating_diagnostic(experiment_root: Path) -> None:
         record = load_json_record(path)
         if record.get("purpose") == ANALYST_RATING_DIAGNOSTIC_PURPOSE:
             raise ValueError(f"analyst-rating diagnostic is already consumed: {path}")
+
+
+def load_restricted_share_unlock_diagnostic_preregistration(
+    path: Path = DEFAULT_RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_SPEC,
+) -> dict[str, Any]:
+    """Enforce the capacity-qualified one-time restricted-unlock diagnostic."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(
+        path, kind="a_share_restricted_share_unlock_diagnostic_preregistration"
+    )
+    capacity = spec.get("capacity_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    factor = spec.get("factor") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("diagnostic_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_no_return_capacity_pass_before_accepted_price_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T19:11:48Z"
+        and capacity
+        == {
+            "run_id": "20260714T191131Z",
+            "path": (
+                "data/experiments/short_horizon/"
+                "20260714T191131Z_restricted_share_unlock_capacity_audit.json"
+            ),
+            "sha256": (
+                "23b8dae5e8e8c354a9125e609274ca2fc4505b49a52e2d2b79ff605fcc0f26aa"
+            ),
+            "factor": RESTRICTED_SHARE_UNLOCK_FACTOR_NAME,
+            "potential_complete_cohorts": 244,
+            "forward_return_fields_read": False,
+            "source_admitted_for_return_diagnostic": True,
+        }
+        and set(snapshots) == {"quarterly_quality", "restricted_share_unlocks"}
+        and snapshots["restricted_share_unlocks"].get("maximum_age_days") == 3
+        and snapshots["restricted_share_unlocks"].get("effective_date")
+        == "unlock date close, or first local trading-session close on or after a non-trading unlock date"
+        and factor
+        == {
+            "name": RESTRICTED_SHARE_UNLOCK_FACTOR_NAME,
+            "raw_column": "restricted_unlock_total_share_ratio",
+            "raw_direction": "lower_is_better",
+            "score_formula": (
+                "1 - cross_sectional_percentile_rank(restricted_unlock_total_share_ratio)"
+            ),
+            "maximum_event_age_days": 3,
+        }
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "capacity_gate_passed_before_return_read": True,
+            "single_factor_only": True,
+            "accepted_price_returns_observed_before_registration": False,
+            "prior_restricted_share_unlock_price_diagnostic_exists": False,
+            "one_completed_diagnostic_only": True,
+            "preserve_source_and_quarterly_quality_snapshots": True,
+            "no_direction_formula_age_date_cost_quality_source_or_factor_override": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_a_new_prospective_combination_registration": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError(
+            "restricted-share unlock diagnostic preregistration does not match the frozen protocol"
+        )
+    return spec
+
+
+def validate_restricted_share_unlock_diagnostic_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Verify unlock inputs and the exact no-return capacity authorization."""
+
+    snapshots = spec.get("source_snapshots") or {}
+    evidence: dict[str, Any] = {"source_snapshots": {}}
+    for name, link in snapshots.items():
+        source_path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not source_path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"restricted-share unlock diagnostic input is missing: {name}")
+        source_sha256 = file_sha256(source_path)
+        manifest_sha256 = file_sha256(manifest_path)
+        if source_sha256 != str(link.get("sha256") or ""):
+            raise ValueError(f"restricted-share unlock diagnostic source mismatch: {source_path}")
+        if manifest_sha256 != str(link.get("manifest_sha256") or ""):
+            raise ValueError(
+                f"restricted-share unlock diagnostic manifest mismatch: {manifest_path}"
+            )
+        manifest = load_json_record(manifest_path)
+        if manifest.get("status") != "completed" or manifest.get("sha256") != source_sha256:
+            raise ValueError(f"restricted-share unlock manifest rejects its source: {manifest_path}")
+        evidence["source_snapshots"][name] = {
+            "path": str(source_path),
+            "sha256": source_sha256,
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": manifest_sha256,
+        }
+
+    capacity_link = spec.get("capacity_audit") or {}
+    capacity_path = resolve_repository_record_path(str(capacity_link.get("path") or ""))
+    if not capacity_path.exists() or file_sha256(capacity_path) != str(
+        capacity_link.get("sha256") or ""
+    ):
+        raise ValueError("restricted-share unlock capacity audit fingerprint mismatch")
+    capacity = load_json_record(capacity_path)
+    source_capacity = capacity.get("source_capacity") or {}
+    factor_capacity = (source_capacity.get("factor_capacity") or {}).get(
+        RESTRICTED_SHARE_UNLOCK_FACTOR_NAME
+    ) or {}
+    capacity_sources = (
+        ((capacity.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "source_snapshots"
+        )
+        or {}
+    )
+    if (
+        capacity.get("run_id") != capacity_link.get("run_id")
+        or capacity.get("purpose") != RESTRICTED_SHARE_UNLOCK_CAPACITY_PURPOSE
+        or capacity.get("factor_catalog") != [RESTRICTED_SHARE_UNLOCK_FACTOR_NAME]
+        or capacity.get("forward_return_fields_read") is not False
+        or (capacity.get("data") or {}).get("price_fields_loaded") != []
+        or capacity.get("source_admitted_for_return_diagnostic") is not True
+        or source_capacity.get("source_admitted_for_return_rebuild") is not True
+        or factor_capacity.get("capacity_gate_passed") is not True
+        or factor_capacity.get("potential_complete_cohorts")
+        != capacity_link.get("potential_complete_cohorts")
+        or any(
+            (capacity_sources.get(name) or {}).get("sha256") != snapshots[name]["sha256"]
+            for name in snapshots
+        )
+    ):
+        raise ValueError(
+            "restricted-share unlock capacity audit does not authorize the frozen diagnostic"
+        )
+    evidence["capacity_audit"] = {
+        "run_id": capacity.get("run_id"),
+        "path": str(capacity_path),
+        "sha256": file_sha256(capacity_path),
+        "forward_return_fields_read": False,
+        "factor_capacity": factor_capacity,
+    }
+    return evidence
+
+
+def require_unconsumed_restricted_share_unlock_diagnostic(experiment_root: Path) -> None:
+    """Prevent a second accepted-price read of restricted-share unlock events."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_PURPOSE:
+            raise ValueError(f"restricted-share unlock diagnostic is already consumed: {path}")
 
 
 def load_institutional_survey_event_diagnostic_preregistration(
@@ -8167,6 +8343,75 @@ def attach_analyst_rating_events_asof(
     return result
 
 
+def attach_restricted_share_unlock_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach realized unlock pressure at the unlock-date close or next session close."""
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    if missing := sorted({"instrument", "datetime"} - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError("restricted-share unlock events are missing columns: " + ", ".join(missing))
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source_events = events.loc[:, list(RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)].copy()
+    source_events["restricted_share_unlock_effective_date"] = _first_trading_day_on_or_after(
+        calendar, source_events["event_date"]
+    )
+    source_events = source_events.dropna(subset=["restricted_share_unlock_effective_date"])
+    source_events = source_events.sort_values(
+        ["instrument", "restricted_share_unlock_effective_date", "event_date"], kind="stable"
+    ).drop_duplicates(["instrument", "restricted_share_unlock_effective_date"], keep="last")
+    attached_columns = [
+        "restricted_share_unlock_event_date",
+        "restricted_unlock_total_share_ratio",
+        "restricted_unlock_actual_shares",
+        "restricted_share_unlock_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"] = 1
+    daily["_row"] = np.arange(len(daily))
+    daily["restricted_share_unlock_event_date"] = pd.NaT
+    daily["restricted_share_unlock_effective_date"] = pd.NaT
+    daily["restricted_unlock_total_share_ratio"] = np.nan
+    daily["restricted_unlock_actual_shares"] = np.nan
+    event_rows = source_events.rename(
+        columns={
+            "restricted_share_unlock_effective_date": "datetime",
+            "event_date": "restricted_share_unlock_event_date",
+        }
+    )[
+        [
+            "instrument",
+            "datetime",
+            "restricted_share_unlock_event_date",
+            "restricted_unlock_total_share_ratio",
+            "restricted_unlock_actual_shares",
+        ]
+    ].copy()
+    event_rows["restricted_share_unlock_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"] = 0
+    event_rows["_row"] = np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False)
+    combined = combined.sort_values(["instrument", "datetime", "_kind"], kind="stable")
+    combined[attached_columns] = combined.groupby("instrument", sort=False)[
+        attached_columns
+    ].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *attached_columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["restricted_share_unlock_age_days"] = (
+        pd.to_datetime(result["datetime"])
+        - pd.to_datetime(result["restricted_share_unlock_effective_date"])
+    ).dt.days
+    result["restricted_share_unlock_available"] = result[
+        "restricted_share_unlock_event_date"
+    ].notna() & result["restricted_share_unlock_age_days"].between(0, max_age_days)
+    return result
+
+
 def attach_repurchase_plan_events_asof(
     market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
 ) -> pd.DataFrame:
@@ -8836,6 +9081,12 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         column for column in (ANALYST_RATING_FACTOR_NAME,) if column in result.columns
     ]
     raw_columns.extend(analyst_rating_raw_columns)
+    restricted_share_unlock_raw_columns = [
+        column
+        for column in ("restricted_unlock_total_share_ratio",)
+        if column in result.columns
+    ]
+    raw_columns.extend(restricted_share_unlock_raw_columns)
     repurchase_raw_columns = [
         column
         for column in (
@@ -8915,6 +9166,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         ("institutional_survey_available", institutional_survey_raw_columns),
         ("institutional_survey_timing_available", institutional_survey_timing_raw_columns),
         ("analyst_rating_available", analyst_rating_raw_columns),
+        ("restricted_share_unlock_available", restricted_share_unlock_raw_columns),
         ("repurchase_available", repurchase_raw_columns),
         ("holder_count_available", holder_count_raw_columns),
         ("pledge_available", pledge_raw_columns),
@@ -9025,6 +9277,10 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         )
     if f"rank_{ANALYST_RATING_FACTOR_NAME}" in result.columns:
         result[ANALYST_RATING_FACTOR_NAME] = result[f"rank_{ANALYST_RATING_FACTOR_NAME}"]
+    if "rank_restricted_unlock_total_share_ratio" in result.columns:
+        result[RESTRICTED_SHARE_UNLOCK_FACTOR_NAME] = (
+            1.0 - result["rank_restricted_unlock_total_share_ratio"]
+        )
     for column in ("repurchase_planned_share_ratio", "repurchase_planned_amount"):
         rank_column = f"rank_{column}"
         if rank_column in result.columns:
@@ -15865,6 +16121,12 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     analyst_rating_path = (
         Path(analyst_rating_value).expanduser() if analyst_rating_value else None
     )
+    restricted_share_unlock_value = getattr(args, "restricted_share_unlock_events", None)
+    restricted_share_unlock_path = (
+        Path(restricted_share_unlock_value).expanduser()
+        if restricted_share_unlock_value
+        else None
+    )
     repurchase_path = Path(args.repurchase_events).expanduser() if args.repurchase_events else None
     holder_count_path = Path(args.holder_count_events).expanduser() if args.holder_count_events else None
     pledge_path = Path(args.pledge_events).expanduser() if args.pledge_events else None
@@ -15926,6 +16188,15 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             analyst_rating_events,
             max_age_days=getattr(args, "max_analyst_rating_age_days", 3),
         )
+    if restricted_share_unlock_path is not None:
+        restricted_share_unlock_events = load_restricted_share_unlock_events(
+            restricted_share_unlock_path
+        )
+        market = attach_restricted_share_unlock_events_asof(
+            market,
+            restricted_share_unlock_events,
+            max_age_days=getattr(args, "max_restricted_share_unlock_age_days", 3),
+        )
     if repurchase_path is not None:
         repurchase_events = load_repurchase_plan_events(repurchase_path)
         market = attach_repurchase_plan_events_asof(
@@ -15958,6 +16229,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS,
             INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME,
             ANALYST_RATING_FACTOR_NAME,
+            RESTRICTED_SHARE_UNLOCK_FACTOR_NAME,
             *REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS,
             *HOLDER_COUNT_FACTOR_DIAGNOSTIC_COLUMNS,
             *PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS,
@@ -16157,6 +16429,31 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "price_or_valuation_fields_stored": False,
             }
             if analyst_rating_path is not None
+            else None
+        ),
+        "restricted_share_unlock_events": (
+            {
+                "source": str(restricted_share_unlock_path.resolve()),
+                "sha256": file_sha256(restricted_share_unlock_path),
+                "effective_date": (
+                    "unlock date close, or first local trading-session close on or after a "
+                    "non-trading unlock date"
+                ),
+                "max_restricted_share_unlock_age_days": getattr(
+                    args, "max_restricted_share_unlock_age_days", 3
+                ),
+                "available_rows": int(market["restricted_share_unlock_available"].sum()),
+                "eligible_available_rows": int(
+                    (
+                        market["quality_eligible"].fillna(False)
+                        & market["restricted_share_unlock_available"].fillna(False)
+                    ).sum()
+                ),
+                "score_direction": "lower raw actual unlock share ratio is better",
+                "market_value_or_return_fields_stored": False,
+                "shareholder_identities_stored": False,
+            }
+            if restricted_share_unlock_path is not None
             else None
         ),
         "repurchase_events": (
@@ -16715,6 +17012,94 @@ def run_analyst_rating_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         or audit.get("selection_or_promotion_allowed") is not False
     ):
         raise RuntimeError("completed analyst-rating diagnostic does not match its frozen protocol")
+    return result
+
+
+def run_restricted_share_unlock_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Diagnose the capacity-qualified restricted-share unlock factor exactly once."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_restricted_share_unlock_diagnostic_preregistration()
+    source_evidence = validate_restricted_share_unlock_diagnostic_sources(spec)
+    require_unconsumed_restricted_share_unlock_diagnostic(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=str(resolve_repository_record_path(snapshots["quarterly_quality"]["path"])),
+        performance_forecasts=None,
+        billboard_events=None,
+        major_holder_events=None,
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=None,
+        institutional_survey_timing_events=None,
+        analyst_rating_events=None,
+        restricted_share_unlock_events=str(
+            resolve_repository_record_path(snapshots["restricted_share_unlocks"]["path"])
+        ),
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=contract["maximum_quality_age_days"],
+        max_forecast_age_days=30,
+        max_billboard_age_days=3,
+        max_major_holder_age_days=3,
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=3,
+        max_institutional_survey_timing_age_days=3,
+        max_analyst_rating_age_days=3,
+        max_restricted_share_unlock_age_days=snapshots["restricted_share_unlocks"][
+            "maximum_age_days"
+        ],
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=3,
+        max_dividend_plan_age_days=3,
+        batch_size=args.batch_size,
+        factor=[RESTRICTED_SHARE_UNLOCK_FACTOR_NAME],
+        diagnostic_purpose=RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "accepted_price_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    unlock_metadata = audit.get("restricted_share_unlock_events") or {}
+    if (
+        audit.get("purpose") != RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_PURPOSE
+        or audit.get("factor_catalog") != [RESTRICTED_SHARE_UNLOCK_FACTOR_NAME]
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or (audit.get("quality_gate") or {}).get("sha256")
+        != snapshots["quarterly_quality"]["sha256"]
+        or unlock_metadata.get("max_restricted_share_unlock_age_days")
+        != snapshots["restricted_share_unlocks"]["maximum_age_days"]
+        or unlock_metadata.get("sha256") != snapshots["restricted_share_unlocks"]["sha256"]
+        or unlock_metadata.get("score_direction")
+        != "lower raw actual unlock share ratio is better"
+        or unlock_metadata.get("market_value_or_return_fields_stored") is not False
+        or unlock_metadata.get("shareholder_identities_stored") is not False
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError(
+            "completed restricted-share unlock diagnostic does not match its frozen protocol"
+        )
     return result
 
 
@@ -19154,6 +19539,18 @@ def parse_args() -> argparse.Namespace:
     )
     analyst_rating_diagnostic.add_argument("--batch-size", type=int, default=500)
 
+    restricted_share_unlock_diagnostic = subparsers.add_parser(
+        "restricted-share-unlock-diagnostic",
+        help="diagnose the capacity-qualified restricted-share unlock factor exactly once",
+    )
+    restricted_share_unlock_diagnostic.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    restricted_share_unlock_diagnostic.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    restricted_share_unlock_diagnostic.add_argument("--batch-size", type=int, default=500)
+
     intraday_demand = subparsers.add_parser(
         "intraday-demand-persistence-diagnostic",
         help="diagnose the frozen five-session open-to-close demand factor exactly once",
@@ -19818,6 +20215,8 @@ def main() -> int:
         report = run_institutional_survey_timing_diagnostic(args)
     elif args.command == "analyst-rating-diagnostic":
         report = run_analyst_rating_diagnostic(args)
+    elif args.command == "restricted-share-unlock-diagnostic":
+        report = run_restricted_share_unlock_diagnostic(args)
     elif args.command == "intraday-demand-persistence-diagnostic":
         report = run_intraday_demand_persistence_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
