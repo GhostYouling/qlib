@@ -100,6 +100,12 @@ SIGNED_EFFICIENCY_RATIO_10_EXPRESSION = (
 RETURN_TURNOVER_CORRELATION_10_EXPRESSION = (
     "Corr($close/Ref($close, 1) - 1, $turnover, 10)"
 )
+COMPRESSION_CONSENSUS_MIN_COMPONENTS = (
+    "amplitude_low",
+    "amplitude_low_1",
+    "volatility_low_20",
+    "volume_dry_up",
+)
 
 EASTMONEY_DATACENTER_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get"
 EASTMONEY_REPORT = "RPT_LICO_FN_CPD"
@@ -1177,6 +1183,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "close_above_vwap_1",
     "signed_efficiency_ratio_10",
     "return_turnover_correlation_10",
+    "compression_consensus_min",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -4640,6 +4647,16 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["volatility_low_20"] = 1.0 - result["rank_volatility_20"]
     result["amplitude_low_1"] = 1.0 - result["rank_amplitude_1"]
     result["amplitude_low"] = 1.0 - result["rank_amplitude_5"]
+    # Non-compensating aggregation of the only four close-known price-volume
+    # directions that passed the fixed cross-year single-factor stability
+    # audit.  V9 tested a weighted sum, which permits one weak component to be
+    # offset by another; the row-wise minimum requires all four ranks to be
+    # jointly strong.  Because the inputs were selected on this development
+    # period, this remains a historical sensitivity factor, never promotion
+    # evidence by itself.
+    result["compression_consensus_min"] = result[
+        list(COMPRESSION_CONSENSUS_MIN_COMPONENTS)
+    ].min(axis=1, skipna=False)
     result["gap_reversal"] = 1.0 - result["rank_gap_1"]
     result["gap_strength"] = result["rank_gap_1"]
     result["close_pullback"] = 1.0 - result["rank_close_to_high"]

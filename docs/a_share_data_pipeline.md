@@ -559,6 +559,29 @@ python scripts/a_share_short_horizon_factor_research.py quarterly-event-capacity
 
 营收同比加速的正式容量审计已记录为 `20260714T090242Z_quarterly_event_capacity_audit.json`。在 1,699 个开发期交易日形成的 565 个非重叠三日网格中，质量合格、正营收同比加速且当时处于可交易活动区间的公司共形成 3,660 行候选，但只有 **122/200** 个日期能组成完整 Top‑3：2020–2025 分别为 13、25、24、21、20、19 个。`capacity_gate_passed=false` 且 `forward_return_fields_read=false`，因此营收加速事件在读取任何收益前被淘汰；不实现收益回测，也不降低样本门槛或改用重叠持仓。
 
+在密集日线聚合方向，V9 的 `quiet_dual_compression` 已经测试 `amplitude_low`、`amplitude_low_1`、`volatility_low_20` 和 `volume_dry_up` 的加权和，但加权和允许一个弱项被其他强项补偿。下一项唯一预注册聚合为非补偿式 `compression_consensus_min`：
+
+```text
+min(amplitude_low, amplitude_low_1, volatility_low_20, volume_dry_up)
+```
+
+四项均为当日横截面 `[0,1]` 百分位，高值只有在五日振幅、单日振幅、20 日波动和五日相对量能都同时偏低时才成立；任一分量缺失则聚合缺失。公式固定为逐行最小值，不测试均值、几何平均、乘积、分位门槛或不同输入。方向固定为高值，假设“多维安静压缩”在未来三日具有正向释放。四个输入本身来自同一 2019–2025 单因子稳定性筛选，因此本轮明确属于**历史敏感性诊断**：即使通过，也不能晋级、登记前瞻信号或产生选股。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --factor compression_consensus_min
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor compression_consensus_min
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor compression_consensus_min
+```
+
+仍沿用至少 5 年、200 个非重叠 cohort、总体与逐年 IC/Top‑3 收益为正、正 IC 比例超过 50%、Top‑3/Bottom‑3 毛差为正和最大回撤不差于 −20% 的门槛。失败即停止该聚合，不改聚合函数或阈值重测。
+
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge、浅层 LightGBM 回归和浅层 LightGBM LambdaRank 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票；LambdaRank 只在训练样本内按每个信号日的后续收益分为五档，直接学习横截面排序，绝不把未来标签带入评分时点。
 
 默认审计还将每种模型与三个**预先固定、收盘可知**的市场状态组合：始终交易、20 日广度为正、以及“20 日广度为正且波动不高于严格追溯的 75 分位”。这不是在全部状态中事后挑选；三种状态均来自已有的因子研究定义，并在同一开发期规则下和模型一起参与选择。停用状态时该轮完整按现金记录，不会用别的日期或股票替换。

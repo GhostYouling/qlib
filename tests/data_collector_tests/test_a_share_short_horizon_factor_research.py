@@ -871,6 +871,8 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert active["signed_efficiency_ratio_10"] == pytest.approx(1.0)
     assert expired["return_turnover_correlation_10"] == pytest.approx(0.5)
     assert active["return_turnover_correlation_10"] == pytest.approx(1.0)
+    assert expired["compression_consensus_min"] == pytest.approx(0.5)
+    assert active["compression_consensus_min"] == pytest.approx(0.0)
 
 
 def test_winner_uses_development_only():
@@ -1440,6 +1442,7 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
         "close_above_vwap_1",
         "signed_efficiency_ratio_10",
         "return_turnover_correlation_10",
+        "compression_consensus_min",
     }
     assert expected.issubset(RESEARCH.FACTOR_DIAGNOSTIC_COLUMNS)
     assert expected.issubset(RESEARCH.EXPLORATORY_DIAGNOSTIC_FACTORS)
@@ -1448,6 +1451,12 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
     )
     assert RESEARCH.RETURN_TURNOVER_CORRELATION_10_EXPRESSION == (
         "Corr($close/Ref($close, 1) - 1, $turnover, 10)"
+    )
+    assert RESEARCH.COMPRESSION_CONSENSUS_MIN_COMPONENTS == (
+        "amplitude_low",
+        "amplitude_low_1",
+        "volatility_low_20",
+        "volume_dry_up",
     )
 
 
