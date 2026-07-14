@@ -75,6 +75,7 @@ DEFAULT_SHADOW_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_shadow_paper_
 DEFAULT_PROSPECTIVE_FACTOR_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "prospective_factor_registry.json"
 DEFAULT_PROSPECTIVE_FACTOR_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_prospective_factor_ledger.json"
 DEFAULT_RESEARCH_REPORT = DEFAULT_EXPERIMENT_ROOT / "three_day_research_report.md"
+DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS = REPO_ROOT / "docs" / "a_share_factor_diagnostic_invalidations.json"
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 
 PROSPECTIVE_VWAP_FACTOR = "close_below_vwap_1"
@@ -8099,10 +8100,40 @@ def load_no_eligible_studies(experiment_root: Path) -> list[dict[str, Any]]:
     return studies
 
 
-def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
+def load_factor_diagnostic_invalidations(
+    path: Path = DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS,
+) -> dict[str, dict[str, Any]]:
+    """Load the versioned registry that supersedes immutable bad diagnostics."""
+
+    source = path.expanduser()
+    if not source.exists():
+        return {}
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    entries = payload.get("invalidations") if isinstance(payload, dict) else None
+    if not isinstance(entries, list):
+        raise ValueError("factor diagnostic invalidation registry must contain an invalidations list")
+    result: dict[str, dict[str, Any]] = {}
+    for item in entries:
+        if not isinstance(item, dict):
+            raise ValueError("factor diagnostic invalidation entries must be objects")
+        run_id = str(item.get("diagnostic_run_id") or "").strip()
+        reason = str(item.get("reason") or "").strip()
+        if not run_id or not reason:
+            raise ValueError("factor diagnostic invalidation requires diagnostic_run_id and reason")
+        if run_id in result:
+            raise ValueError(f"duplicate factor diagnostic invalidation: {run_id}")
+        result[run_id] = item
+    return result
+
+
+def load_factor_diagnostics(
+    experiment_root: Path,
+    invalidation_path: Path = DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS,
+) -> list[dict[str, Any]]:
     """Read development-only single-factor diagnostics for the research log."""
 
     diagnostics: list[dict[str, Any]] = []
+    invalidations = load_factor_diagnostic_invalidations(invalidation_path)
     for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
         try:
             diagnostic = json.loads(path.read_text(encoding="utf-8"))
@@ -8125,9 +8156,14 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         dividend_plan_events = diagnostic.get("dividend_plan_events") or {}
         top = ranking[0] if ranking else {}
         top_tail = top.get("topk_tail_risk") or {}
+        run_id = str(diagnostic.get("run_id", path.stem))
+        invalidation = invalidations.get(run_id)
+        expected_sha256 = str((invalidation or {}).get("source_sha256", "")).strip()
+        if expected_sha256 and file_sha256(path) != expected_sha256:
+            raise ValueError(f"factor diagnostic invalidation fingerprint mismatch: {run_id}")
         diagnostics.append(
             {
-                "run_id": str(diagnostic.get("run_id", path.stem)),
+                "run_id": run_id,
                 "calendar_start": str(data.get("calendar_start", "—")),
                 "calendar_end": str(data.get("calendar_end", "—")),
                 "fundamental_source": str(quality_gate.get("source", "—")),
@@ -8146,6 +8182,9 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
                 "top_factor_p05_net_return": top_tail.get("p05_net_return"),
                 "top_factor_worst_net_return": top_tail.get("worst_net_return"),
+                "evidence_status": "invalidated" if invalidation else "valid",
+                "invalidation_reason": str((invalidation or {}).get("reason", "")),
+                "replacement_run_id": str((invalidation or {}).get("replacement_run_id", "")),
                 "path": str(path.resolve()),
             }
         )
@@ -8156,6 +8195,7 @@ def load_factor_stability_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read fixed-policy development factor-stability audits for the research log."""
 
     audits: list[dict[str, Any]] = []
+    invalidations = load_factor_diagnostic_invalidations()
     for path in sorted(experiment_root.expanduser().glob("*_factor_stability_audit.json")):
         try:
             audit = json.loads(path.read_text(encoding="utf-8"))
@@ -8167,10 +8207,12 @@ def load_factor_stability_audits(experiment_root: Path) -> list[dict[str, Any]]:
         qualified = [str(item.get("factor")) for item in decisions if item.get("passed")]
         source = audit.get("input_diagnostic") or {}
         policy = audit.get("policy") or {}
+        source_run_id = str(source.get("run_id", "—"))
         audits.append(
             {
                 "run_id": str(audit.get("run_id", path.stem)),
-                "input_diagnostic_run_id": str(source.get("run_id", "—")),
+                "input_diagnostic_run_id": source_run_id,
+                "input_evidence_status": "invalidated" if source_run_id in invalidations else "valid",
                 "factor_count": len(decisions),
                 "qualified_factors": qualified,
                 "minimum_calendar_years": policy.get("minimum_calendar_years"),
@@ -8185,6 +8227,7 @@ def load_factor_topk_viability_audits(experiment_root: Path) -> list[dict[str, A
     """Read development-only TopK viability screens for the research log."""
 
     audits: list[dict[str, Any]] = []
+    invalidations = load_factor_diagnostic_invalidations()
     for path in sorted(experiment_root.expanduser().glob("*_factor_topk_viability_audit.json")):
         try:
             audit = json.loads(path.read_text(encoding="utf-8"))
@@ -8195,10 +8238,12 @@ def load_factor_topk_viability_audits(experiment_root: Path) -> list[dict[str, A
         decisions = list(audit.get("factor_decisions") or [])
         qualified = [str(item.get("factor")) for item in decisions if item.get("passed")]
         source = audit.get("input_diagnostic") or {}
+        source_run_id = str(source.get("run_id", "—"))
         audits.append(
             {
                 "run_id": str(audit.get("run_id", path.stem)),
-                "input_diagnostic_run_id": str(source.get("run_id", "—")),
+                "input_diagnostic_run_id": source_run_id,
+                "input_evidence_status": "invalidated" if source_run_id in invalidations else "valid",
                 "factor_count": len(decisions),
                 "qualified_factors": qualified,
                 "path": str(path.resolve()),
@@ -8835,8 +8880,8 @@ def render_three_day_research_report(
                 "",
                 "诊断只描述每个已声明因子与其后完整三日收益的横截面秩相关；它不选择策略，不能替代组合的独立测试或前瞻观察。",
                 "",
-                "| 诊断 | 财务 / 事件快照 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC | TopK 净收益 P5 | 最差 TopK |",
-                "| --- | --- | --- | ---: | --- | ---: | ---: | ---: |",
+                "| 诊断 | 证据状态 | 财务 / 事件快照 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC | TopK 净收益 P5 | 最差 TopK |",
+                "| --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: |",
             ]
         )
         for diagnostic in factor_diagnostics:
@@ -8844,9 +8889,15 @@ def render_three_day_research_report(
             formatted_ic = "—" if mean_ic is None else f"{float(mean_ic):.4f}"
             p05 = diagnostic["top_factor_p05_net_return"]
             worst = diagnostic["top_factor_worst_net_return"]
+            evidence_status = (
+                f"无效 → {diagnostic['replacement_run_id'] or '待替代'}"
+                if diagnostic["evidence_status"] == "invalidated"
+                else "有效"
+            )
             lines.append(
-                "| {run_id} | {fundamentals} | {start} 至 {end} | {count} | {factor} | {mean_ic} | {p05} | {worst} |".format(
+                "| {run_id} | {evidence_status} | {fundamentals} | {start} 至 {end} | {count} | {factor} | {mean_ic} | {p05} | {worst} |".format(
                     run_id=diagnostic["run_id"],
+                    evidence_status=evidence_status,
                     fundamentals=" / ".join(
                         Path(source).name
                         for source in (
@@ -8883,16 +8934,17 @@ def render_three_day_research_report(
                 "",
                 "审计以固定门槛筛除偶然的单因子关联：至少 5 个自然年、200 个非重叠 cohort、总体 Rank IC 与 Top3‑末3 收益差为正、Rank IC 正值比例高于 50%，且每个已观察自然年的平均 Rank IC 均为正。通过只表示可以另行预注册策略测试，绝不自动选股、登记或晋级。",
                 "",
-                "| 审计 | 输入诊断 | 审计因子数 | 通过因子 | 最低年份 / Cohort |",
-                "| --- | --- | ---: | --- | --- |",
+                "| 审计 | 输入诊断 | 输入状态 | 审计因子数 | 通过因子 | 最低年份 / Cohort |",
+                "| --- | --- | --- | ---: | --- | --- |",
             ]
         )
         for audit in factor_stability_audits:
             qualified = "、".join(audit["qualified_factors"]) or "无"
             lines.append(
-                "| {run_id} | {source} | {count} | {qualified} | {years} / {cohorts} |".format(
+                "| {run_id} | {source} | {source_status} | {count} | {qualified} | {years} / {cohorts} |".format(
                     run_id=audit["run_id"],
                     source=audit["input_diagnostic_run_id"],
+                    source_status="无效输入" if audit.get("input_evidence_status") == "invalidated" else "有效",
                     count=audit["factor_count"],
                     qualified=qualified,
                     years=audit["minimum_calendar_years"] if audit["minimum_calendar_years"] is not None else "—",
@@ -8908,16 +8960,17 @@ def render_three_day_research_report(
                 "",
                 "本节把通过关联稳定性审计的因子按诊断中同一收盘信号、次日开盘买入、第 3 日收盘卖出及研究成本形成 Top‑3 篮子。它要求关联审计通过、逐年 Top‑3 净累计收益为正、整体净累计收益为正且最大回撤不差于 −20%。结果只用于淘汰/分流，绝不自动形成策略或选股名单。",
                 "",
-                "| 审计 | 输入诊断 | 审计因子数 | 可行因子 |",
-                "| --- | --- | ---: | --- |",
+                "| 审计 | 输入诊断 | 输入状态 | 审计因子数 | 可行因子 |",
+                "| --- | --- | --- | ---: | --- |",
             ]
         )
         for audit in factor_topk_viability_audits:
             qualified = "、".join(audit["qualified_factors"]) or "无"
             lines.append(
-                "| {run_id} | {source} | {count} | {qualified} |".format(
+                "| {run_id} | {source} | {source_status} | {count} | {qualified} |".format(
                     run_id=audit["run_id"],
                     source=audit["input_diagnostic_run_id"],
+                    source_status="无效输入" if audit.get("input_evidence_status") == "invalidated" else "有效",
                     count=audit["factor_count"],
                     qualified=qualified,
                 )

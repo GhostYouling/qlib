@@ -1578,7 +1578,7 @@ def test_factor_topk_viability_audits_are_retained_without_strategy_promotion(tm
         {"iterations": []}, {"signals": [], "settlements": []}, factor_topk_viability_audits=audits
     )
     assert "单因子 Top‑3 组合可行性审计" in report
-    assert "| topk-viability | factor-diagnostic | 1 | 无 |" in report
+    assert "| topk-viability | factor-diagnostic | 有效 | 1 | 无 |" in report
 
 
 def test_v8_ten_day_reversal_grid_is_small_predeclared_and_does_not_rewrite_v7():
@@ -2729,7 +2729,23 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
         ),
         encoding="utf-8",
     )
-    diagnostics = RESEARCH.load_factor_diagnostics(tmp_path)
+    invalidations = tmp_path / "invalidations.json"
+    invalidations.write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "invalidations": [
+                    {
+                        "diagnostic_run_id": "factor-diagnostic",
+                        "reason": "fixture semantic mismatch",
+                        "replacement_run_id": "factor-diagnostic-fixed",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    diagnostics = RESEARCH.load_factor_diagnostics(tmp_path, invalidations)
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []}, {"signals": [], "settlements": []}, factor_diagnostics=diagnostics
     )
@@ -2738,6 +2754,7 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
     assert "0.0312" in report
     assert "-8.00%" in report
     assert "-15.00%" in report
+    assert "无效 → factor-diagnostic-fixed" in report
 
 
 def test_billboard_holdouts_are_retained_as_non_promotable_event_evidence(tmp_path):
