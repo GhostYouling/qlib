@@ -363,6 +363,8 @@ INTRADAY_DEMAND_PERSISTENCE_PURPOSE = (
     "development_only_preregistered_intraday_demand_persistence_research_not_investment_advice"
 )
 MARGIN_FINANCING_TOP_N = 100
+INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION = 40
+INSTITUTIONAL_SURVEY_PAGE_PAUSE_SECONDS = 0.25
 # This direction is deliberately not part of the development diagnostic
 # catalog.  It was formed after reading the completed 2019--2025 diagnostic,
 # so it may only be evaluated in a separately recorded post-development
@@ -4385,16 +4387,142 @@ def sync_margin_financing_top_flow_events(
     return result
 
 
+def institutional_survey_month_ranges(start_year: int, end_year: int) -> list[tuple[str, str]]:
+    """Return non-overlapping inclusive month partitions for a year range."""
+
+    if end_year < start_year:
+        raise ValueError("--end-year must not be earlier than --start-year")
+    starts = pd.date_range(f"{start_year}-01-01", f"{end_year}-12-01", freq="MS")
+    return [
+        (
+            pd.Timestamp(start).date().isoformat(),
+            (pd.Timestamp(start) + pd.offsets.MonthEnd(0)).date().isoformat(),
+        )
+        for start in starts
+    ]
+
+
+def fetch_institutional_survey_partition_details(
+    session: requests.Session,
+    start_date: str,
+    end_date: str,
+    *,
+    maximum_pages: int = INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION,
+    page_pause_seconds: float = INSTITUTIONAL_SURVEY_PAGE_PAUSE_SECONDS,
+) -> tuple[list[pd.DataFrame], list[dict[str, Any]]]:
+    """Fetch one verified date range, bisecting before unsafe page offsets."""
+
+    start = pd.Timestamp(start_date).normalize()
+    end = pd.Timestamp(end_date).normalize()
+    if pd.isna(start) or pd.isna(end) or end < start:
+        raise ValueError("institutional-survey partition must use a valid inclusive date range")
+    if maximum_pages < 1:
+        raise ValueError("institutional-survey maximum_pages must be positive")
+    if page_pause_seconds < 0:
+        raise ValueError("institutional-survey page pause must be non-negative")
+
+    start_text = start.date().isoformat()
+    end_text = end.date().isoformat()
+    first = _eastmoney_institutional_survey_request(
+        session, start_text, end_text, page_number=1
+    )
+    first_result = first.get("result") or {}
+    pages = int(first_result.get("pages") or 0)
+    advertised_count = int(first_result.get("count") or 0)
+    if pages > maximum_pages:
+        if start == end:
+            raise RuntimeError(
+                f"institutional-survey single-date partition exceeds the safe page ceiling: "
+                f"{start_text}, pages={pages}, ceiling={maximum_pages}"
+            )
+        if page_pause_seconds:
+            time.sleep(page_pause_seconds)
+        midpoint = start + (end - start) // 2
+        left_frames, left_records = fetch_institutional_survey_partition_details(
+            session,
+            start_text,
+            midpoint.date().isoformat(),
+            maximum_pages=maximum_pages,
+            page_pause_seconds=page_pause_seconds,
+        )
+        right_frames, right_records = fetch_institutional_survey_partition_details(
+            session,
+            (midpoint + pd.Timedelta(days=1)).date().isoformat(),
+            end_text,
+            maximum_pages=maximum_pages,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return left_frames + right_frames, left_records + right_records
+
+    if pages < 1:
+        if advertised_count != 0:
+            raise RuntimeError(
+                f"institutional-survey partition reported rows without pages: "
+                f"{start_text} to {end_text}, count={advertised_count}"
+            )
+        return [], [
+            {
+                "start": start_text,
+                "end": end_text,
+                "pages": 0,
+                "advertised_source_rows": 0,
+                "source_rows": 0,
+                "count_verified": True,
+            }
+        ]
+
+    frames: list[pd.DataFrame] = []
+    source_rows = 0
+    for page_number in range(1, pages + 1):
+        payload = (
+            first
+            if page_number == 1
+            else _eastmoney_institutional_survey_request(
+                session, start_text, end_text, page_number=page_number
+            )
+        )
+        result = payload.get("result") or {}
+        current_pages = int(result.get("pages") or 0)
+        current_count = int(result.get("count") or 0)
+        if current_pages != pages or current_count != advertised_count:
+            raise RuntimeError(
+                f"institutional-survey partition changed during pagination: "
+                f"{start_text} to {end_text}, page={page_number}"
+            )
+        rows = list(result.get("data") or [])
+        source_rows += len(rows)
+        normalized = _institutional_survey_detail_frame(rows)
+        if not normalized.empty:
+            frames.append(normalized)
+        if page_pause_seconds:
+            time.sleep(page_pause_seconds)
+    if source_rows != advertised_count:
+        raise RuntimeError(
+            f"institutional-survey partition row-count mismatch: {start_text} to {end_text}, "
+            f"advertised={advertised_count}, fetched={source_rows}"
+        )
+    return frames, [
+        {
+            "start": start_text,
+            "end": end_text,
+            "pages": pages,
+            "advertised_source_rows": advertised_count,
+            "source_rows": source_rows,
+            "count_verified": True,
+        }
+    ]
+
+
 def sync_institutional_survey_events(
     start_year: int, end_year: int, output: Path, manifest: Path
 ) -> dict[str, Any]:
     """Download long-history institutional-survey notice aggregates.
 
-    The detailed public report is paginated.  Its fixed ``NUMBERNEW=1`` filter
-    selects one row per disclosure, then each page is normalized immediately
-    and only non-identifying event aggregates are kept in memory.  A final
-    re-aggregation across all pages prevents an event split by pagination from
-    being counted twice.
+    The detailed public report is paginated.  Annual requests fail at high
+    page offsets, so the fixed intake begins with calendar months and bisects
+    any month above the safe page ceiling.  Every accepted partition verifies
+    its advertised row count before the final snapshot is written.  Each page
+    is normalized immediately so participant identities never enter storage.
     """
 
     if end_year < start_year:
@@ -4403,34 +4531,26 @@ def sync_institutional_survey_events(
     detail_frames: list[pd.DataFrame] = []
     pages_by_year: dict[str, int] = {}
     source_detail_rows_by_year: dict[str, int] = {}
-    for year in range(start_year, end_year + 1):
-        start_date = f"{year}-01-01"
-        end_date = f"{year}-12-31"
-        first = _eastmoney_institutional_survey_request(session, start_date, end_date, page_number=1)
-        result = first["result"]
-        pages = int(result.get("pages") or 0)
-        pages_by_year[str(year)] = pages
-        source_rows = 0
-        for page_number in range(1, pages + 1):
-            payload = first if page_number == 1 else _eastmoney_institutional_survey_request(
-                session, start_date, end_date, page_number=page_number
-            )
-            rows = list((payload.get("result") or {}).get("data") or [])
-            source_rows += len(rows)
-            normalized = _institutional_survey_detail_frame(rows)
-            if not normalized.empty:
-                detail_frames.append(normalized)
-            if page_number % 100 == 0 or page_number == pages:
-                print(
-                    f"institutional surveys {year}: {page_number}/{pages} pages; "
-                    f"{source_rows} source detail rows"
-                )
-            # The detailed report begins returning 9701 (server busy) when
-            # paged too quickly.  Keep the history sync single-threaded and
-            # deliberately below that observed limit; retry backoff above is
-            # retained for transient provider pressure.
-            time.sleep(1.25)
-        source_detail_rows_by_year[str(year)] = source_rows
+    partition_records: list[dict[str, Any]] = []
+    for month_start, month_end in institutional_survey_month_ranges(start_year, end_year):
+        frames, records = fetch_institutional_survey_partition_details(
+            session,
+            month_start,
+            month_end,
+            maximum_pages=INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION,
+            page_pause_seconds=INSTITUTIONAL_SURVEY_PAGE_PAUSE_SECONDS,
+        )
+        detail_frames.extend(frames)
+        partition_records.extend(records)
+        month_pages = sum(int(record["pages"]) for record in records)
+        month_rows = sum(int(record["source_rows"]) for record in records)
+        year = month_start[:4]
+        pages_by_year[year] = pages_by_year.get(year, 0) + month_pages
+        source_detail_rows_by_year[year] = source_detail_rows_by_year.get(year, 0) + month_rows
+        print(
+            f"institutional surveys {month_start[:7]}: {len(records)} verified partitions, "
+            f"{month_pages} pages, {month_rows} source detail rows"
+        )
     details = (
         pd.concat(detail_frames, ignore_index=True)
         if detail_frames
@@ -4458,6 +4578,14 @@ def sync_institutional_survey_events(
         },
         "event_frequency": "dated_institutional_survey_notice",
         "years": list(range(start_year, end_year + 1)),
+        "partition_policy": {
+            "initial_partition": "calendar_month",
+            "maximum_pages_per_partition": INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION,
+            "oversized_partition_policy": "bisect_calendar_dates_until_within_page_ceiling",
+            "advertised_source_count_must_equal_rows_fetched": True,
+            "partial_snapshot_written_on_failure": False,
+        },
+        "verified_partitions": partition_records,
         "pages_by_year": pages_by_year,
         "source_detail_rows_by_year": source_detail_rows_by_year,
         "rows_by_announcement_year": {

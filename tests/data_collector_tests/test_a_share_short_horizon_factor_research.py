@@ -805,6 +805,135 @@ def test_institutional_survey_normalization_uses_notice_date_and_deduplicates_pa
     assert "RECEIVE_OBJECT" not in normalized.columns
 
 
+def test_institutional_survey_month_partitions_cover_years_without_overlap():
+    ranges = RESEARCH.institutional_survey_month_ranges(2024, 2025)
+    assert len(ranges) == 24
+    assert ranges[0] == ("2024-01-01", "2024-01-31")
+    assert ranges[1] == ("2024-02-01", "2024-02-29")
+    assert ranges[-1] == ("2025-12-01", "2025-12-31")
+    for left, right in zip(ranges, ranges[1:]):
+        assert pd.Timestamp(left[1]) + pd.Timedelta(days=1) == pd.Timestamp(right[0])
+
+
+def test_institutional_survey_partition_bisects_before_unsafe_page_offsets(monkeypatch):
+    calls = []
+
+    def fake_request(session, start_date, end_date, page_number):
+        calls.append((start_date, end_date, page_number))
+        if start_date == "2024-01-01" and end_date == "2024-01-31":
+            return {"result": {"pages": 41, "count": 2050, "data": [{"discarded": True}]}}
+        rows = [
+            {
+                "SECURITY_CODE": "000001",
+                "NOTICE_DATE": start_date,
+                "RECEIVE_START_DATE": start_date,
+                "RECEIVE_END_DATE": start_date,
+                "SUM": 2,
+            }
+        ]
+        return {"result": {"pages": 1, "count": 1, "data": rows}}
+
+    monkeypatch.setattr(RESEARCH, "_eastmoney_institutional_survey_request", fake_request)
+    frames, records = RESEARCH.fetch_institutional_survey_partition_details(
+        object(),
+        "2024-01-01",
+        "2024-01-31",
+        maximum_pages=40,
+        page_pause_seconds=0.0,
+    )
+    assert calls == [
+        ("2024-01-01", "2024-01-31", 1),
+        ("2024-01-01", "2024-01-16", 1),
+        ("2024-01-17", "2024-01-31", 1),
+    ]
+    assert [(record["start"], record["end"]) for record in records] == [
+        ("2024-01-01", "2024-01-16"),
+        ("2024-01-17", "2024-01-31"),
+    ]
+    assert all(record["count_verified"] for record in records)
+    assert sum(record["source_rows"] for record in records) == 2
+    assert sum(len(frame) for frame in frames) == 2
+
+
+def test_institutional_survey_partition_rejects_incomplete_pagination(monkeypatch):
+    def fake_request(session, start_date, end_date, page_number):
+        rows = [
+            {
+                "SECURITY_CODE": "000001",
+                "NOTICE_DATE": start_date,
+                "RECEIVE_START_DATE": start_date,
+                "RECEIVE_END_DATE": start_date,
+                "SUM": 2,
+            }
+        ] if page_number == 1 else []
+        return {"result": {"pages": 2, "count": 3, "data": rows}}
+
+    monkeypatch.setattr(RESEARCH, "_eastmoney_institutional_survey_request", fake_request)
+    with pytest.raises(RuntimeError, match="row-count mismatch"):
+        RESEARCH.fetch_institutional_survey_partition_details(
+            object(),
+            "2024-01-01",
+            "2024-01-31",
+            maximum_pages=40,
+            page_pause_seconds=0.0,
+        )
+
+
+def test_institutional_survey_sync_writes_only_after_verified_partitions(tmp_path, monkeypatch):
+    details = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "announcement_date": pd.to_datetime(["2024-01-10"]),
+            "receive_start_date": pd.to_datetime(["2024-01-09"]),
+            "receive_end_date": pd.to_datetime(["2024-01-09"]),
+            "institutional_survey_org_count": [5.0],
+        }
+    )
+    monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
+    monkeypatch.setattr(
+        RESEARCH,
+        "institutional_survey_month_ranges",
+        lambda start_year, end_year: [("2024-01-01", "2024-01-31")],
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "fetch_institutional_survey_partition_details",
+        lambda *args, **kwargs: (
+            [details],
+            [
+                {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "pages": 1,
+                    "advertised_source_rows": 1,
+                    "source_rows": 1,
+                    "count_verified": True,
+                }
+            ],
+        ),
+    )
+    output = tmp_path / "institutional_surveys.parquet"
+    manifest = tmp_path / "institutional_surveys_manifest.json"
+    result = RESEARCH.sync_institutional_survey_events(2024, 2024, output, manifest)
+    assert result["status"] == "completed"
+    assert result["rows_written"] == 1
+    assert result["pages_by_year"] == {"2024": 1}
+    assert result["source_detail_rows_by_year"] == {"2024": 1}
+    assert result["verified_partitions"][0]["count_verified"] is True
+    assert output.exists() and manifest.exists()
+
+    def fail_partition(*args, **kwargs):
+        raise RuntimeError("incomplete partition")
+
+    monkeypatch.setattr(RESEARCH, "fetch_institutional_survey_partition_details", fail_partition)
+    failed_output = tmp_path / "failed.parquet"
+    failed_manifest = tmp_path / "failed.json"
+    with pytest.raises(RuntimeError, match="incomplete partition"):
+        RESEARCH.sync_institutional_survey_events(2024, 2024, failed_output, failed_manifest)
+    assert not failed_output.exists()
+    assert not failed_manifest.exists()
+
+
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {
