@@ -1500,7 +1500,10 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
         "($close/Ref($close, 10) - 1)/Sum(Abs($close/Ref($close, 1) - 1), 10)"
     )
     assert RESEARCH.RETURN_TURNOVER_CORRELATION_10_EXPRESSION == (
-        "Corr($close/Ref($close, 1) - 1, $turnover, 10)"
+        "(Corr($close/Ref($close, 1) - 1, $turnover, 10)) + 0*Ref($close, 10)"
+    )
+    assert RESEARCH.complete_rolling_window_expression("Mean($volume, 5)", 4) == (
+        "(Mean($volume, 5)) + 0*Ref($close, 4)"
     )
     assert RESEARCH.MAX_RETURN_20_EXPRESSION == (
         "Max($close/Ref($close, 1) - 1, 20) + 0*Ref($close, 20)"

@@ -95,11 +95,21 @@ PROSPECTIVE_VWAP_TOPK = 3
 PROSPECTIVE_VWAP_HOLD_DAYS = 3
 PROSPECTIVE_VWAP_OPEN_COST = 0.00012
 PROSPECTIVE_VWAP_CLOSE_COST = 0.00062
+
+
+def complete_rolling_window_expression(expression: str, required_prior_sessions: int) -> str:
+    """Require the declared local history without changing complete-window values."""
+
+    if required_prior_sessions < 1:
+        raise ValueError("required_prior_sessions must be positive")
+    return f"({expression}) + 0*Ref($close, {required_prior_sessions})"
+
+
 SIGNED_EFFICIENCY_RATIO_10_EXPRESSION = (
     "($close/Ref($close, 10) - 1)/Sum(Abs($close/Ref($close, 1) - 1), 10)"
 )
-RETURN_TURNOVER_CORRELATION_10_EXPRESSION = (
-    "Corr($close/Ref($close, 1) - 1, $turnover, 10)"
+RETURN_TURNOVER_CORRELATION_10_EXPRESSION = complete_rolling_window_expression(
+    "Corr($close/Ref($close, 1) - 1, $turnover, 10)", 10
 )
 # Qlib's rolling ``Max`` accepts a partial history by default.  Multiplying a
 # 20-session reference by zero makes the expression missing until that
@@ -4384,33 +4394,51 @@ def load_market_data(
         # The fraction of positive close-to-close sessions is a path-quality
         # measure, not a magnitude measure like five-day momentum.  It is
         # formed at the signal close and is available before next-open entry.
-        "up_day_ratio_5": "Mean($close>Ref($close, 1), 5)",
+        "up_day_ratio_5": complete_rolling_window_expression(
+            "Mean($close>Ref($close, 1), 5)", 5
+        ),
         "momentum_10": "$close/Ref($close, 10) - 1",
         "momentum_20": "$close/Ref($close, 20) - 1",
         "momentum_60": "$close/Ref($close, 60) - 1",
-        "trend_ma_5": "$close/Mean($close, 5) - 1",
-        "trend_ma_20": "$close/Mean($close, 20) - 1",
-        "trend_ma_60": "$close/Mean($close, 60) - 1",
-        "volume_surge_1": "$volume/Mean($volume, 20) - 1",
-        "volume_surge": "Mean($volume, 5)/Mean($volume, 20) - 1",
-        "volume_surge_3": "Mean($volume, 3)/Mean($volume, 10) - 1",
-        "turnover_surge": "Mean($turnover, 5)/Mean($turnover, 20) - 1",
-        "turnover_surge_3": "Mean($turnover, 3)/Mean($turnover, 10) - 1",
-        "turnover_surge_1": "$turnover/Mean($turnover, 20) - 1",
-        "liquidity_5": "Mean($turnover, 5)",
+        "trend_ma_5": complete_rolling_window_expression("$close/Mean($close, 5) - 1", 4),
+        "trend_ma_20": complete_rolling_window_expression("$close/Mean($close, 20) - 1", 19),
+        "trend_ma_60": complete_rolling_window_expression("$close/Mean($close, 60) - 1", 59),
+        "volume_surge_1": complete_rolling_window_expression("$volume/Mean($volume, 20) - 1", 19),
+        "volume_surge": complete_rolling_window_expression(
+            "Mean($volume, 5)/Mean($volume, 20) - 1", 19
+        ),
+        "volume_surge_3": complete_rolling_window_expression(
+            "Mean($volume, 3)/Mean($volume, 10) - 1", 9
+        ),
+        "turnover_surge": complete_rolling_window_expression(
+            "Mean($turnover, 5)/Mean($turnover, 20) - 1", 19
+        ),
+        "turnover_surge_3": complete_rolling_window_expression(
+            "Mean($turnover, 3)/Mean($turnover, 10) - 1", 9
+        ),
+        "turnover_surge_1": complete_rolling_window_expression(
+            "$turnover/Mean($turnover, 20) - 1", 19
+        ),
+        "liquidity_5": complete_rolling_window_expression("Mean($turnover, 5)", 4),
         # Eastmoney's daily amount is in RMB and turnover is a percentage of
         # free float.  Their ratio differs from free-float market value only
         # by the common 100x percentage conversion, which does not affect a
         # same-day cross-sectional rank.  Both inputs are known at the close.
         "free_float_cap_proxy": "$amount/$turnover",
-        "volatility_5": "Std($close/Ref($close, 1) - 1, 5)",
-        "volatility_10": "Std($close/Ref($close, 1) - 1, 10)",
-        "volatility_20": "Std($close/Ref($close, 1) - 1, 20)",
+        "volatility_5": complete_rolling_window_expression(
+            "Std($close/Ref($close, 1) - 1, 5)", 5
+        ),
+        "volatility_10": complete_rolling_window_expression(
+            "Std($close/Ref($close, 1) - 1, 10)", 10
+        ),
+        "volatility_20": complete_rolling_window_expression(
+            "Std($close/Ref($close, 1) - 1, 20)", 20
+        ),
         "amplitude_1": "$high/$low - 1",
-        "amplitude_5": "Mean($high/$low - 1, 5)",
+        "amplitude_5": complete_rolling_window_expression("Mean($high/$low - 1, 5)", 4),
         "gap_1": "$open/Ref($close, 1) - 1",
-        "near_high_10": "$close/Max($high, 10) - 1",
-        "near_high_20": "$close/Max($high, 20) - 1",
+        "near_high_10": complete_rolling_window_expression("$close/Max($high, 10) - 1", 9),
+        "near_high_20": complete_rolling_window_expression("$close/Max($high, 20) - 1", 19),
         "intraday_strength": "$close/$open - 1",
         "close_to_high": "$close/$high",
         # Same-session close relative to the day's transaction-weighted
@@ -4439,8 +4467,8 @@ def load_market_data(
         # finish nearer their high than their low.  This is a close-known
         # daily proxy for accumulation, not a substitute for licensed order
         # flow or Level-2 data.
-        "signed_volume_pressure_5": (
-            "Sum($volume*(2*$close-$high-$low)/($high-$low), 5)/Sum($volume, 5)"
+        "signed_volume_pressure_5": complete_rolling_window_expression(
+            "Sum($volume*(2*$close-$high-$low)/($high-$low), 5)/Sum($volume, 5)", 4
         ),
     }
     frames: list[pd.DataFrame] = []
