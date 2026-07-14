@@ -9,6 +9,7 @@ can always identify its provider, retrieval time, and raw input files.
 
 Supported providers
 -------------------
+* ``baostock``: anonymous raw five-minute OHLCV/amount candidate history.
 * ``tushare``: minute OHLCV plus end-of-day moneyflow/limit-list/top-list.
 * ``jqdata``: minute OHLCV plus separately licensed professional daily moneyflow.
 * ``rqdata``: minute OHLCV.
@@ -49,6 +50,7 @@ DEFAULT_MINUTE_FACTOR_SPEC = REPO_ROOT / "docs" / "a_share_minute_factor_preregi
 DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
+DEFAULT_BAOSTOCK_5M_CONTRACT = REPO_ROOT / "docs" / "a_share_baostock_5m_data_contract.json"
 DEFAULT_FACTOR_UNIVERSE = (
     DATA_ROOT / "qlib" / "cn_a_share" / "instruments" / "factor_main_chinext_star.txt"
 )
@@ -56,12 +58,14 @@ DEFAULT_LOCAL_CALENDAR = DATA_ROOT / "qlib" / "cn_a_share" / "calendars" / "day.
 
 DEFAULT_ACCEPTANCE_SYMBOLS = ("600519", "000001", "300750", "688981")
 PROVIDER_REQUIREMENTS = {
+    "baostock": {"package": "baostock", "environment": ()},
     "tushare": {"package": "tushare", "environment": ("TUSHARE_TOKEN",)},
     "jqdata": {"package": "jqdatasdk", "environment": ("JQDATA_USERNAME", "JQDATA_PASSWORD")},
     "rqdata": {"package": "rqdatac", "environment": ("RQDATA_USERNAME", "RQDATA_PASSWORD")},
 }
 EVENT_DATASETS = ("moneyflow", "limit-list", "top-list")
 MINUTE_FEATURE_EXPECTED_BARS = 240
+MINUTE_EXPECTED_BARS_BY_FREQUENCY = {"1m": 240, "5m": 48}
 MINUTE_FEATURE_NAMES = (
     "late_return_30m",
     "late_amount_share_30m",
@@ -73,6 +77,9 @@ MINUTE_FEATURE_DIRECTIONS = ("higher", "higher", "higher", "higher", "lower")
 REQUIRED_DAILY_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 JQDATA_MONEYFLOW_CONTRACT_SHA256 = (
     "1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004"
+)
+BAOSTOCK_5M_CONTRACT_SHA256 = (
+    "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f"
 )
 JQDATA_MONEYFLOW_RAW_FIELDS = (
     "inflow_xl",
@@ -165,6 +172,8 @@ def vendor_symbol(code: str, provider: str) -> str:
         return f"{code}.{'SH' if symbol.startswith('SH') else 'SZ'}"
     if provider in {"jqdata", "rqdata"}:
         return f"{code}.{'XSHG' if symbol.startswith('SH') else 'XSHE'}"
+    if provider == "baostock":
+        return f"{'sh' if symbol.startswith('SH') else 'sz'}.{code}"
     raise RichDataError(f"unknown provider: {provider}")
 
 
@@ -365,12 +374,11 @@ def _relative_error(actual: float, expected: float) -> float | None:
 def minute_daily_reconciliation(frame: pd.DataFrame) -> dict[str, Any]:
     """Compare minute aggregates with local daily data without mixing prices.
 
-    Local daily prices are qfq while incoming minute prices are explicitly raw.
-    Absolute prices and close-to-close returns therefore are not comparable at
-    an ex-right/ex-dividend boundary.  Same-day OHLC/close ratios are invariant
-    to one day's price scale and can be reconciled safely.  Volume and amount
-    ratios are retained to discover provider unit conventions before factors
-    use the data.
+    Incoming minute prices and volumes are explicitly raw.  The accepted daily
+    pipeline preserves matching ``raw_*`` fields alongside factor-adjusted
+    research columns, so reconciliation must use the raw fields directly.
+    Comparing against adjusted ``volume`` would multiply the inferred source
+    unit by the current adjustment factor and can reject otherwise exact data.
     """
 
     if frame.empty:
@@ -380,6 +388,29 @@ def minute_daily_reconciliation(frame: pd.DataFrame) -> dict[str, Any]:
     if not path.exists():
         return {"status": "unavailable", "reason": f"missing_local_daily:{path}", "days": []}
     daily = pd.read_parquet(path)
+    required_daily = {
+        "date",
+        "raw_open",
+        "raw_high",
+        "raw_low",
+        "raw_close",
+        "raw_volume",
+        "amount",
+        "price_basis",
+    }
+    if missing := sorted(required_daily - set(daily.columns)):
+        return {
+            "status": "unavailable",
+            "reason": "local_daily_missing_raw_contract:" + ",".join(missing),
+            "days": [],
+        }
+    bases = set(daily["price_basis"].dropna().astype(str))
+    if bases != {REQUIRED_DAILY_PRICE_BASIS}:
+        return {
+            "status": "failed",
+            "reason": f"unaccepted_local_daily_price_basis:{sorted(bases)}",
+            "days": [],
+        }
     daily["date"] = pd.to_datetime(daily["date"]).dt.normalize()
     daily = daily.set_index("date")
     work = frame.assign(trade_date=frame["datetime"].dt.normalize())
@@ -398,10 +429,14 @@ def minute_daily_reconciliation(frame: pd.DataFrame) -> dict[str, Any]:
             "close": minute_close,
         }
         price_relative_errors = {
-            field: _relative_error(minute_ohlc[field] / minute_close, float(reference[field]) / float(reference["close"]))
-            for field in ("open", "high", "low")
+            field: _relative_error(minute_ohlc[field], float(reference[f"raw_{field}"]))
+            for field in ("open", "high", "low", "close")
         }
-        volume_ratio = float(group["volume"].sum() / float(reference["volume"])) if float(reference["volume"]) else None
+        volume_ratio = (
+            float(group["volume"].sum() / float(reference["raw_volume"]))
+            if float(reference["raw_volume"])
+            else None
+        )
         amount_ratio = float(group["amount"].sum() / float(reference["amount"])) if float(reference["amount"]) else None
         price_ok = all(error is not None and error <= 0.002 for error in price_relative_errors.values())
         amount_ok = amount_ratio is not None and abs(amount_ratio - 1.0) <= 0.005
@@ -426,7 +461,11 @@ def minute_daily_reconciliation(frame: pd.DataFrame) -> dict[str, Any]:
         status = "unavailable"
     else:
         status = "failed"
-    return {"status": status, "daily_price_basis": "qfq_ratio_only", "days": days}
+    return {
+        "status": status,
+        "daily_price_basis": "raw_unadjusted_to_raw_daily",
+        "days": days,
+    }
 
 
 def minute_acceptance_report(frame: pd.DataFrame) -> dict[str, Any]:
@@ -447,6 +486,49 @@ def _import_tushare() -> Any:
 
     ts.set_token(os.environ["TUSHARE_TOKEN"])
     return ts
+
+
+def fetch_baostock_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
+    """Fetch only the frozen anonymous raw five-minute BaoStock fields."""
+
+    if frequency != "5m":
+        raise RichDataError("the frozen BaoStock intraday contract supports only 5m bars")
+    import baostock as bs
+
+    fields = "date,time,code,open,high,low,close,volume,amount,adjustflag"
+    login = bs.login()
+    if str(login.error_code) != "0":
+        raise RichDataError(f"BaoStock anonymous login failed: {login.error_msg}")
+    try:
+        response = bs.query_history_k_data_plus(
+            vendor_symbol(code, "baostock"),
+            fields,
+            start_date=start.isoformat(),
+            end_date=end.isoformat(),
+            frequency="5",
+            adjustflag="3",
+        )
+        if str(response.error_code) != "0":
+            raise RichDataError(f"BaoStock five-minute query failed for {code}: {response.error_msg}")
+        rows: list[list[str]] = []
+        while response.next():
+            rows.append(response.get_row_data())
+        frame = pd.DataFrame(rows, columns=response.fields)
+    finally:
+        bs.logout()
+    if frame.empty:
+        return frame
+    expected_fields = fields.split(",")
+    if list(frame.columns) != expected_fields:
+        raise RichDataError("BaoStock five-minute response changed its frozen field schema")
+    if set(frame["adjustflag"].astype(str)) != {"3"}:
+        raise RichDataError("BaoStock five-minute response is not entirely raw unadjusted data")
+    frame["datetime"] = pd.to_datetime(
+        frame["time"], format="%Y%m%d%H%M%S%f", errors="coerce"
+    )
+    if frame["datetime"].isna().any():
+        raise RichDataError("BaoStock five-minute response contains an invalid timestamp")
+    return frame
 
 
 def fetch_tushare_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
@@ -527,6 +609,7 @@ def fetch_rqdata_minutes(code: str, start: dt.date, end: dt.date, frequency: str
 
 
 MINUTE_FETCHERS: dict[str, Callable[[str, dt.date, dt.date, str], pd.DataFrame]] = {
+    "baostock": fetch_baostock_minutes,
     "tushare": fetch_tushare_minutes,
     "jqdata": fetch_jqdata_minutes,
     "rqdata": fetch_rqdata_minutes,
@@ -742,6 +825,47 @@ def load_jqdata_moneyflow_contract(
     return contract
 
 
+def load_baostock_5m_contract(
+    path: Path = DEFAULT_BAOSTOCK_5M_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen post-probe, pre-acceptance BaoStock contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != BAOSTOCK_5M_CONTRACT_SHA256:
+        raise RichDataError("BaoStock five-minute contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_baostock_5m_data_contract")
+    source = contract.get("source") or {}
+    timestamp = contract.get("timestamp_contract") or {}
+    acceptance = contract.get("formal_acceptance") or {}
+    bulk = contract.get("bulk_snapshot_contract") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_no_return_feasibility_probe_before_formal_acceptance_bulk_snapshot_or_factor_values"
+        or contract.get("frozen_at") != "2026-07-14T20:57:08Z"
+        or source.get("provider") != "baostock"
+        or source.get("sdk_version") != "0.9.3"
+        or source.get("source_frequency") != "5"
+        or source.get("canonical_frequency") != "5m"
+        or source.get("adjustflag") != "3"
+        or source.get("requested_fields")
+        != ["date", "time", "code", "open", "high", "low", "close", "volume", "amount", "adjustflag"]
+        or timestamp.get("source_label") != "bar_end"
+        or timestamp.get("expected_bars_per_complete_regular_session") != 48
+        or acceptance.get("trade_date") != "2026-07-10"
+        or acceptance.get("symbols") != ["600519", "000001", "300750", "688981"]
+        or acceptance.get("required_rows_per_symbol") != 48
+        or acceptance.get("raw_ohlc_max_relative_error_to_local_raw_daily") != 0.002
+        or bulk.get("development_start") != "2020-01-01"
+        or bulk.get("development_end") != "2025-12-31"
+        or bulk.get("minimum_potential_non_overlapping_three_session_cohorts") != 200
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("BaoStock five-minute contract does not match the frozen protocol")
+    return contract
+
+
 def load_factor_universe_intervals(
     path: Path = DEFAULT_FACTOR_UNIVERSE,
 ) -> pd.DataFrame:
@@ -838,6 +962,7 @@ def write_minute_snapshot(
     end: dt.date,
     rows_by_code: dict[str, pd.DataFrame],
     acceptance_by_code: dict[str, dict[str, Any]] | None = None,
+    data_contract: dict[str, Any] | None = None,
 ) -> Path:
     """Persist one immutable minute-data snapshot and its complete manifest."""
 
@@ -875,24 +1000,42 @@ def write_minute_snapshot(
             else "not_run" if acceptance_by_code is None else "automatic_checks_failed"
         ),
     }
+    if data_contract is not None:
+        manifest["data_contract"] = data_contract
     run_manifest_path = RUNS_ROOT / f"{run_id}.json"
     atomic_write_json(manifest, run_manifest_path)
     return run_manifest_path
 
 
-def expected_minute_times(bar_label: str) -> tuple[dt.time, ...]:
-    """Return the exact 240 regular-session timestamps for one label convention."""
+def expected_minute_times(
+    bar_label: str, frequency: str = "1m"
+) -> tuple[dt.time, ...]:
+    """Return exact regular-session timestamps for one supported bar contract."""
 
     if bar_label not in {"start", "end"}:
         raise RichDataError("bar label must be 'start' or 'end'")
+    if frequency not in MINUTE_EXPECTED_BARS_BY_FREQUENCY:
+        raise RichDataError(f"unsupported alignment frequency: {frequency}")
+    minutes = int(frequency.removesuffix("m"))
+    bars_per_half = 120 // minutes
     anchor = pd.Timestamp("2000-01-03")
     bar_ends = pd.DatetimeIndex(
         [
-            *pd.date_range(anchor + pd.Timedelta(hours=9, minutes=31), periods=120, freq="1min"),
-            *pd.date_range(anchor + pd.Timedelta(hours=13, minutes=1), periods=120, freq="1min"),
+            *pd.date_range(
+                anchor + pd.Timedelta(hours=9, minutes=30 + minutes),
+                periods=bars_per_half,
+                freq=f"{minutes}min",
+            ),
+            *pd.date_range(
+                anchor + pd.Timedelta(hours=13, minutes=minutes),
+                periods=bars_per_half,
+                freq=f"{minutes}min",
+            ),
         ]
     )
-    timestamps = bar_ends - (pd.Timedelta(minutes=1) if bar_label == "start" else pd.Timedelta(0))
+    timestamps = bar_ends - (
+        pd.Timedelta(minutes=minutes) if bar_label == "start" else pd.Timedelta(0)
+    )
     return tuple(value.time() for value in timestamps)
 
 
@@ -949,15 +1092,17 @@ def confirm_minute_alignment(
         raise RichDataError("volume unit must be 'shares' or 'lots'")
     snapshot_path = snapshot_path.expanduser().resolve()
     snapshot = load_json_record(snapshot_path, kind="a_share_rich_data_snapshot")
-    if snapshot.get("dataset") != "minutes" or snapshot.get("frequency") != "1m":
-        raise RichDataError("minute alignment confirmation requires a 1m minute snapshot")
+    frequency = str(snapshot.get("frequency") or "")
+    if snapshot.get("dataset") != "minutes" or frequency not in MINUTE_EXPECTED_BARS_BY_FREQUENCY:
+        raise RichDataError("minute alignment confirmation requires a supported minute snapshot")
     if snapshot.get("acceptance_status") != "automatic_checks_passed_pending_time_alignment":
         raise RichDataError("minute snapshot has not passed automatic acceptance checks")
     files = list(snapshot.get("files") or [])
     if not files:
         raise RichDataError("minute snapshot contains no files")
 
-    expected_times = expected_minute_times(bar_label)
+    expected_times = expected_minute_times(bar_label, frequency)
+    expected_bars = MINUTE_EXPECTED_BARS_BY_FREQUENCY[frequency]
     complete_session_evidence: list[dict[str, Any]] = []
     for file_record in files:
         frame = load_snapshot_frame(file_record)
@@ -977,10 +1122,10 @@ def confirm_minute_alignment(
         work = frame.assign(_datetime=timestamps, _trade_date=timestamps.dt.normalize())
         for trade_date, group in work.groupby("_trade_date", sort=True):
             observed_times = tuple(group.sort_values("_datetime")["_datetime"].dt.time)
-            if len(observed_times) == MINUTE_FEATURE_EXPECTED_BARS:
+            if len(observed_times) == expected_bars:
                 if observed_times != expected_times:
                     raise RichDataError(
-                        f"declared {bar_label}-label convention conflicts with a 240-bar session on "
+                        f"declared {bar_label}-label convention conflicts with a {expected_bars}-bar session on "
                         f"{pd.Timestamp(trade_date).date().isoformat()}"
                     )
                 complete_session_evidence.append(
@@ -992,7 +1137,9 @@ def confirm_minute_alignment(
                     }
                 )
     if not complete_session_evidence:
-        raise RichDataError("alignment confirmation needs at least one exact 240-bar session as boundary evidence")
+        raise RichDataError(
+            f"alignment confirmation needs at least one exact {expected_bars}-bar session as boundary evidence"
+        )
     inferred_units = confirmation_volume_units(snapshot)
     if inferred_units != {volume_unit}:
         raise RichDataError(
@@ -1000,7 +1147,8 @@ def confirm_minute_alignment(
             f"declared={volume_unit}, inferred={sorted(inferred_units)}"
         )
 
-    run_id = new_run_id(f"{snapshot['provider']}_1m_alignment")
+    interval_minutes = int(frequency.removesuffix("m"))
+    run_id = new_run_id(f"{snapshot['provider']}_{frequency}_alignment")
     record = {
         "schema_version": 1,
         "kind": "a_share_minute_alignment_confirmation",
@@ -1008,9 +1156,11 @@ def confirm_minute_alignment(
         "run_id": run_id,
         "confirmed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "provider": snapshot["provider"],
-        "frequency": "1m",
+        "frequency": frequency,
         "bar_timestamp_label": bar_label,
-        "normalization_to_bar_end": "add_one_minute" if bar_label == "start" else "identity",
+        "normalization_to_bar_end": (
+            f"add_{interval_minutes}_minutes" if bar_label == "start" else "identity"
+        ),
         "volume_unit": volume_unit,
         "reviewed_boundaries": True,
         "complete_session_evidence": complete_session_evidence,
@@ -1330,6 +1480,8 @@ def sync_minutes(
 
     if frequency not in {"1m", "5m", "15m", "30m", "60m"}:
         raise RichDataError("frequency must be one of 1m, 5m, 15m, 30m, 60m")
+    if provider == "baostock" and frequency != "5m":
+        raise RichDataError("the frozen BaoStock intraday contract supports only 5m bars")
     require_provider(provider)
     validate_range(start, end, allow_large=allow_large, unit_count=len(codes))
     fetcher = MINUTE_FETCHERS[provider]
@@ -1347,6 +1499,63 @@ def sync_minutes(
         end,
         rows_by_code,
         acceptance_by_code if acceptance else None,
+    )
+
+
+def baostock_5m_acceptance_report(
+    frame: pd.DataFrame, contract: dict[str, Any]
+) -> dict[str, Any]:
+    """Apply exact 48-bar end-label checks on top of raw daily reconciliation."""
+
+    report = minute_acceptance_report(frame)
+    acceptance = contract["formal_acceptance"]
+    expected_times = expected_minute_times("end", "5m")
+    observed_times = tuple(pd.to_datetime(frame["datetime"]).dt.time) if not frame.empty else ()
+    exact = (
+        len(frame) == int(acceptance["required_rows_per_symbol"])
+        and observed_times == expected_times
+    )
+    report["baostock_5m_contract"] = {
+        "required_rows": int(acceptance["required_rows_per_symbol"]),
+        "observed_rows": int(len(frame)),
+        "expected_bar_label": "end",
+        "exact_timestamp_grid_passed": exact,
+        "forward_return_fields_read": False,
+    }
+    if not exact:
+        report["status"] = "automatic_checks_failed"
+    return report
+
+
+def sync_baostock_5m_acceptance() -> Path:
+    """Persist the one fixed no-return BaoStock five-minute acceptance snapshot."""
+
+    contract = load_baostock_5m_contract()
+    acceptance = contract["formal_acceptance"]
+    trade_date = dt.date.fromisoformat(str(acceptance["trade_date"]))
+    codes = [str(code) for code in acceptance["symbols"]]
+    require_provider("baostock")
+    validate_range(trade_date, trade_date, allow_large=False, unit_count=len(codes))
+    rows_by_code: dict[str, pd.DataFrame] = {}
+    acceptance_by_code: dict[str, dict[str, Any]] = {}
+    for code in codes:
+        raw = fetch_baostock_minutes(code, trade_date, trade_date, "5m")
+        frame = canonicalize_minute_bars(raw, "baostock", code, trade_date, trade_date)
+        rows_by_code[code] = frame
+        acceptance_by_code[code] = baostock_5m_acceptance_report(frame, contract)
+    return write_minute_snapshot(
+        "baostock",
+        "5m",
+        trade_date,
+        trade_date,
+        rows_by_code,
+        acceptance_by_code,
+        data_contract={
+            "path": manifest_path(DEFAULT_BAOSTOCK_5M_CONTRACT.resolve()),
+            "sha256": file_digest(DEFAULT_BAOSTOCK_5M_CONTRACT),
+            "kind": contract["kind"],
+            "forward_return_fields_read": False,
+        },
     )
 
 
@@ -1742,6 +1951,11 @@ def build_parser() -> argparse.ArgumentParser:
     acceptance.add_argument("--symbols", type=parse_symbols, default=list(DEFAULT_ACCEPTANCE_SYMBOLS))
     acceptance.add_argument("--frequency", default="1m")
 
+    subparsers.add_parser(
+        "acceptance-baostock-5m",
+        help="run the frozen four-symbol BaoStock five-minute acceptance",
+    )
+
     events = subparsers.add_parser("sync-tushare-events", help="download Tushare event tables after the close")
     events.add_argument("--datasets", default="moneyflow,limit-list,top-list")
     events.add_argument("--start", type=parse_date, required=True)
@@ -1807,6 +2021,8 @@ def main(argv: list[str] | None = None) -> int:
             )
         elif args.command == "acceptance":
             manifest = sync_minutes(args.provider, args.symbols, args.date, args.date, args.frequency, False, acceptance=True)
+        elif args.command == "acceptance-baostock-5m":
+            manifest = sync_baostock_5m_acceptance()
         elif args.command == "sync-tushare-events":
             datasets = [item.strip() for item in args.datasets.split(",") if item.strip()]
             manifest = sync_tushare_events(datasets, args.start, args.end, args.allow_large)
@@ -1842,6 +2058,7 @@ def main(argv: list[str] | None = None) -> int:
         "confirm-minute-alignment": "stored_alignment_confirmation",
         "build-minute-features": "stored_research_features",
         "acceptance-jqdata-moneyflow": "stored_entitlement_acceptance",
+        "acceptance-baostock-5m": "stored_five_minute_acceptance",
         "sync-jqdata-moneyflow": "stored_pending_no_return_capacity",
     }.get(args.command, "stored_pending_acceptance")
     print(json.dumps({"manifest": str(manifest), "status": command_status}, ensure_ascii=False))

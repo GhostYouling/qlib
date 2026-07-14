@@ -81,6 +81,8 @@ def write_accepted_snapshot(tmp_path: Path, frame: pd.DataFrame) -> Path:
 
 
 def test_vendor_symbol_mapping_and_symbol_validation():
+    assert RICH.vendor_symbol("600519", "baostock") == "sh.600519"
+    assert RICH.vendor_symbol("000001", "baostock") == "sz.000001"
     assert RICH.vendor_symbol("600519", "tushare") == "600519.SH"
     assert RICH.vendor_symbol("000001", "jqdata") == "000001.XSHE"
     assert RICH.vendor_symbol("688981", "rqdata") == "688981.XSHG"
@@ -95,6 +97,75 @@ def test_provider_status_never_returns_credential_values(monkeypatch):
     rendered = str(availability)
     assert "this-is-a-secret" not in rendered
     assert availability.missing_environment == ()
+    assert RICH.provider_availability("baostock").missing_environment == ()
+
+
+def test_baostock_5m_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_baostock_5m_contract()
+    assert contract["source"]["requested_fields"] == [
+        "date", "time", "code", "open", "high", "low", "close", "volume", "amount", "adjustflag"
+    ]
+    assert contract["formal_acceptance"]["trade_date"] == "2026-07-10"
+    assert contract["timestamp_contract"]["expected_bars_per_complete_regular_session"] == 48
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(RICH.DEFAULT_BAOSTOCK_5M_CONTRACT.read_text())
+    changed["source"]["adjustflag"] = "2"
+    changed_path = tmp_path / "changed_baostock_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_baostock_5m_contract(changed_path)
+
+
+def test_baostock_5m_request_uses_only_raw_frozen_fields(monkeypatch):
+    captured = {}
+
+    class Response:
+        error_code = "0"
+        error_msg = "success"
+        fields = [
+            "date", "time", "code", "open", "high", "low", "close", "volume", "amount", "adjustflag"
+        ]
+
+        def __init__(self):
+            self.rows = iter(
+                [["2026-07-10", "20260710093500000", "sh.600519", "10", "10", "10", "10", "100", "1000", "3"]]
+            )
+            self.current = None
+
+        def next(self):
+            self.current = next(self.rows, None)
+            return self.current is not None
+
+        def get_row_data(self):
+            return self.current
+
+    def query(symbol, fields, **kwargs):
+        captured.update({"symbol": symbol, "fields": fields, **kwargs})
+        return Response()
+
+    fake = SimpleNamespace(
+        login=lambda: SimpleNamespace(error_code="0", error_msg="success"),
+        logout=lambda: SimpleNamespace(error_code="0", error_msg="success"),
+        query_history_k_data_plus=query,
+    )
+    monkeypatch.setitem(sys.modules, "baostock", fake)
+    frame = RICH.fetch_baostock_minutes(
+        "600519", dt.date(2026, 7, 10), dt.date(2026, 7, 10), "5m"
+    )
+    assert captured == {
+        "symbol": "sh.600519",
+        "fields": "date,time,code,open,high,low,close,volume,amount,adjustflag",
+        "start_date": "2026-07-10",
+        "end_date": "2026-07-10",
+        "frequency": "5",
+        "adjustflag": "3",
+    }
+    assert frame["datetime"].dt.strftime("%H:%M:%S").tolist() == ["09:35:00"]
+    with pytest.raises(RICH.RichDataError, match="only 5m"):
+        RICH.fetch_baostock_minutes(
+            "600519", dt.date(2026, 7, 10), dt.date(2026, 7, 10), "1m"
+        )
 
 
 def test_jqdata_moneyflow_contract_is_fingerprint_frozen(tmp_path):
@@ -354,7 +425,7 @@ def test_canonicalize_minutes_rejects_invalid_ohlc():
         RICH.canonicalize_minute_bars(raw, "rqdata", "000001", dt.date(2026, 7, 13), dt.date(2026, 7, 13))
 
 
-def test_minute_acceptance_uses_scale_invariant_daily_price_checks(tmp_path, monkeypatch):
+def test_minute_acceptance_reconciles_only_against_raw_daily_fields(tmp_path, monkeypatch):
     monkeypatch.setattr(RICH, "DAILY_RAW_DIR", tmp_path / "daily")
     frame = pd.DataFrame(
         {
@@ -370,11 +441,14 @@ def test_minute_acceptance_uses_scale_invariant_daily_price_checks(tmp_path, mon
         {
             "date": pd.to_datetime(["2026-07-13"]), "symbol": ["SH600519"],
             "open": [20.0], "high": [20.6], "low": [19.6], "close": [20.2],
-            "volume": [3.0], "amount": [30.0],
+            "volume": [1.5], "amount": [30.0],
+            "raw_open": [10.0], "raw_high": [10.3], "raw_low": [9.8], "raw_close": [10.1],
+            "raw_volume": [3.0], "price_basis": [RICH.REQUIRED_DAILY_PRICE_BASIS],
         }
     ).to_parquet(tmp_path / "daily" / "sh600519.parquet", index=False)
     report = RICH.minute_acceptance_report(frame)
     assert report["status"] == "automatic_checks_passed_pending_time_alignment"
+    assert report["daily_reconciliation"]["daily_price_basis"] == "raw_unadjusted_to_raw_daily"
     assert report["daily_reconciliation"]["days"][0]["inferred_volume_unit"] == "lots"
 
 
@@ -442,6 +516,45 @@ def test_expected_minute_times_are_exact_for_start_and_end_labels():
     assert (end[0], end[119], end[120], end[-1]) == (
         dt.time(9, 31), dt.time(11, 30), dt.time(13, 1), dt.time(15, 0)
     )
+    five_start = RICH.expected_minute_times("start", "5m")
+    five_end = RICH.expected_minute_times("end", "5m")
+    assert len(five_start) == len(five_end) == 48
+    assert (five_start[0], five_start[23], five_start[24], five_start[-1]) == (
+        dt.time(9, 30), dt.time(11, 25), dt.time(13, 0), dt.time(14, 55)
+    )
+    assert (five_end[0], five_end[23], five_end[24], five_end[-1]) == (
+        dt.time(9, 35), dt.time(11, 30), dt.time(13, 5), dt.time(15, 0)
+    )
+
+
+def test_baostock_5m_acceptance_requires_exact_end_label_grid(monkeypatch):
+    contract = RICH.load_baostock_5m_contract()
+    times = RICH.expected_minute_times("end", "5m")
+    frame = pd.DataFrame(
+        {
+            "datetime": [pd.Timestamp.combine(dt.date(2026, 7, 10), value) for value in times],
+            "symbol": "SH600519",
+            "source_symbol": "sh.600519",
+            "open": 10.0,
+            "high": 10.0,
+            "low": 10.0,
+            "close": 10.0,
+            "volume": 100.0,
+            "amount": 1000.0,
+            "provider": "baostock",
+        }
+    )
+    monkeypatch.setattr(
+        RICH,
+        "minute_daily_reconciliation",
+        lambda source: {"status": "passed", "days": [{"status": "passed"}]},
+    )
+    accepted = RICH.baostock_5m_acceptance_report(frame, contract)
+    assert accepted["status"] == "automatic_checks_passed_pending_time_alignment"
+    assert accepted["baostock_5m_contract"]["exact_timestamp_grid_passed"] is True
+    rejected = RICH.baostock_5m_acceptance_report(frame.iloc[:-1], contract)
+    assert rejected["status"] == "automatic_checks_failed"
+    assert rejected["baostock_5m_contract"]["exact_timestamp_grid_passed"] is False
 
 
 def test_frozen_minute_factor_spec_rejects_direction_changes(tmp_path):
@@ -499,6 +612,60 @@ def test_alignment_confirmation_requires_review_and_matching_semantics(tmp_path)
     assert record["complete_session_evidence"][0]["first_bar"].endswith("09:31:00")
     assert record["complete_session_evidence"][0]["last_bar"].endswith("15:00:00")
     assert record["forward_return_fields_read"] is False
+
+
+def test_alignment_confirmation_supports_exact_baostock_5m_grid(tmp_path):
+    times = RICH.expected_minute_times("end", "5m")
+    frame = pd.DataFrame(
+        {
+            "datetime": [pd.Timestamp.combine(dt.date(2026, 7, 10), value) for value in times],
+            "symbol": "SH600519",
+            "source_symbol": "sh.600519",
+            "open": 10.0,
+            "high": 10.0,
+            "low": 10.0,
+            "close": 10.0,
+            "volume": 100.0,
+            "amount": 1000.0,
+            "provider": "baostock",
+        }
+    )
+    data_path = tmp_path / "accepted_5m.parquet"
+    RICH.atomic_write_frame(frame, data_path)
+    snapshot = {
+        "kind": "a_share_rich_data_snapshot",
+        "dataset": "minutes",
+        "provider": "baostock",
+        "frequency": "5m",
+        "prices": "raw_unadjusted",
+        "run_id": "accepted-5m-test",
+        "files": [
+            {
+                "path": str(data_path),
+                "sha256": RICH.frame_digest(frame),
+                "acceptance": {
+                    "daily_reconciliation": {
+                        "status": "passed",
+                        "days": [{"status": "passed", "inferred_volume_unit": "shares"}],
+                    }
+                },
+            }
+        ],
+        "acceptance_status": "automatic_checks_passed_pending_time_alignment",
+    }
+    snapshot_path = tmp_path / "accepted_5m.json"
+    RICH.atomic_write_json(snapshot, snapshot_path)
+    result = RICH.confirm_minute_alignment(
+        snapshot_path,
+        bar_label="end",
+        volume_unit="shares",
+        reviewed_boundaries=True,
+        output=tmp_path / "alignment_5m.json",
+    )
+    record = RICH.json.loads(result.read_text())
+    assert record["frequency"] == "5m"
+    assert record["normalization_to_bar_end"] == "identity"
+    assert record["complete_session_evidence"][0]["first_bar"].endswith("09:35:00")
 
 
 def test_minute_features_require_exact_complete_session_and_never_fill_gaps():
