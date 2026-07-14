@@ -2147,6 +2147,71 @@ def test_limit_like_event_audits_are_retained_without_strategy_promotion(tmp_pat
     assert "不通过（停止）" in report
 
 
+def test_quarterly_profit_acceleration_event_uses_only_newly_effective_positive_reports():
+    dates = pd.bdate_range("2024-05-06", periods=6)
+    rows = []
+    for position, date in enumerate(dates):
+        for instrument, acceleration in (
+            ("SZ000001", 2.0),
+            ("SZ000002", 5.0),
+            ("SZ000003", 3.0),
+            ("SZ000004", -4.0),
+        ):
+            newly_effective = position == 0 and instrument != "SZ000004"
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "open": 10.0,
+                    "close": 11.0 if position == 3 else 10.0,
+                    "quality_eligible": True,
+                    "quality_effective_date": date if newly_effective else dates[0] - pd.Timedelta(days=1),
+                    "profit_yoy_acceleration": acceleration,
+                }
+            )
+    rounds, status = RESEARCH.quarterly_profit_acceleration_event_rounds(
+        pd.DataFrame(rows), hold_days=3, topk=3, open_cost=0.0, close_cost=0.0
+    )
+    assert status == {
+        "eligible_rebalance_cohorts": 1,
+        "event_rebalance_cohorts": 1,
+        "complete_executable_cohorts": 1,
+        "discarded_incomplete_or_unquoted_event_cohorts": 0,
+    }
+    assert len(rounds) == 1
+    assert rounds.iloc[0]["holdings"] == 3
+    assert rounds.iloc[0]["net_return"] == pytest.approx(0.10)
+
+
+def test_quarterly_profit_acceleration_event_audits_are_retained_without_strategy_promotion(tmp_path):
+    (tmp_path / "20260714T000000Z_quarterly_profit_acceleration_event_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "quarterly-acceleration",
+                "status": "completed",
+                "data": {
+                    "calendar_start": "2019-01-02",
+                    "calendar_end": "2025-12-31",
+                    "event_rebalance_cohorts": 240,
+                    "test_period_used": False,
+                },
+                "result": {
+                    "passed": True,
+                    "performance": {"rounds": 205, "net_cumulative_return": 0.12, "max_drawdown": -0.15},
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_quarterly_profit_acceleration_event_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, quarterly_profit_acceleration_event_audits=audits
+    )
+    assert "季度利润加速公告事件审计" in report
+    assert "quarterly-acceleration" in report
+    assert "通过（仍不可直接选股）" in report
+
+
 def test_research_report_marks_non_promotable_historical_diagnostics():
     registry = {
         "iterations": [

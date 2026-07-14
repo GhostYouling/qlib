@@ -5847,8 +5847,8 @@ def limit_like_event_rounds(
     return rounds, status
 
 
-def limit_like_event_decision(rounds: pd.DataFrame, hold_days: int) -> dict[str, Any]:
-    """Apply a fixed direct-event viability gate without selecting a strategy."""
+def direct_event_basket_decision(rounds: pd.DataFrame, hold_days: int) -> dict[str, Any]:
+    """Apply one fixed direct-event viability gate without selecting a strategy."""
 
     performance = return_metrics(rounds, hold_days)
     by_year = {
@@ -5885,6 +5885,12 @@ def limit_like_event_decision(rounds: pd.DataFrame, hold_days: int) -> dict[str,
             "every_observed_calendar_year_net_cumulative_return_gt": 0.0,
         },
     }
+
+
+def limit_like_event_decision(rounds: pd.DataFrame, hold_days: int) -> dict[str, Any]:
+    """Apply the shared direct-event gate to the limit-like continuation hypothesis."""
+
+    return direct_event_basket_decision(rounds, hold_days)
 
 
 def run_limit_like_event_audit(args: argparse.Namespace) -> dict[str, Any]:
@@ -5965,6 +5971,190 @@ def run_limit_like_event_audit(args: argparse.Namespace) -> dict[str, Any]:
     }
     experiment_root.mkdir(parents=True, exist_ok=True)
     destination = experiment_root / f"{run_id}_limit_like_event_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "passed": decision["passed"],
+        "executable_event_cohorts": decision["performance"]["rounds"],
+        "net_cumulative_return": decision["performance"]["net_cumulative_return"],
+        "max_drawdown": decision["performance"]["max_drawdown"],
+    }
+
+
+def quarterly_profit_acceleration_event_rounds(
+    market: pd.DataFrame,
+    *,
+    hold_days: int,
+    topk: int,
+    open_cost: float,
+    close_cost: float,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Evaluate newly effective positive quarterly profit-acceleration events.
+
+    An announcement becomes visible only on ``quality_effective_date`` (the
+    next local session after its public date).  On that first safe close, the
+    event requires a positive same-fiscal-quarter profit-yoy acceleration and
+    a quality-qualified issuer.  The three greatest raw accelerations form a
+    next-open, three-day basket; no stale report and no non-event name fills a
+    missing basket.
+    """
+
+    if hold_days < 1 or topk < 1:
+        raise ValueError("hold_days and topk must both be positive")
+    required = {
+        "datetime",
+        "instrument",
+        "open",
+        "close",
+        "quality_eligible",
+        "quality_effective_date",
+        "profit_yoy_acceleration",
+    }
+    missing = sorted(required - set(market.columns))
+    if missing:
+        raise ValueError("quarterly acceleration event audit is missing fields: " + ", ".join(missing))
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(market["datetime"]).dropna().unique()))
+    if len(calendar) <= hold_days + 1:
+        raise ValueError("research window is too short for the requested holding period")
+    date_to_position = {date: position for position, date in enumerate(calendar)}
+    rebalances = calendar[: -(hold_days + 1) : hold_days]
+    base = market.loc[
+        market["quality_eligible"].fillna(False) & market["datetime"].isin(rebalances)
+    ].copy()
+    base["quality_effective_date"] = pd.to_datetime(base["quality_effective_date"], errors="coerce")
+    base["profit_yoy_acceleration"] = pd.to_numeric(base["profit_yoy_acceleration"], errors="coerce")
+    events = base.loc[
+        base["quality_effective_date"].eq(base["datetime"])
+        & base["profit_yoy_acceleration"].gt(0.0)
+    ].copy()
+    events = events.sort_values(
+        ["datetime", "profit_yoy_acceleration", "instrument"],
+        ascending=[True, False, True],
+        kind="stable",
+    )
+    selected = events.groupby("datetime", sort=False).head(topk).copy()
+    selected["entry_date"] = selected["datetime"].map(lambda value: calendar[date_to_position[value] + 1])
+    selected["exit_date"] = selected["datetime"].map(lambda value: calendar[date_to_position[value] + hold_days])
+    quotes = market[["datetime", "instrument", "open", "close"]].drop_duplicates(["datetime", "instrument"])
+    entry = quotes.rename(columns={"datetime": "entry_date", "open": "entry_open"})[
+        ["entry_date", "instrument", "entry_open"]
+    ]
+    exit_quote = quotes.rename(columns={"datetime": "exit_date", "close": "exit_close"})[
+        ["exit_date", "instrument", "exit_close"]
+    ]
+    trades = selected.merge(entry, on=["entry_date", "instrument"], how="left")
+    trades = trades.merge(exit_quote, on=["exit_date", "instrument"], how="left")
+    trades = trades.dropna(subset=["entry_open", "exit_close"])
+    trades = trades.loc[(trades["entry_open"] > 0.0) & (trades["exit_close"] > 0.0)].copy()
+    trades["gross_return"] = trades["exit_close"] / trades["entry_open"] - 1.0
+    trades["net_return"] = (1.0 - open_cost) * (1.0 + trades["gross_return"]) * (1.0 - close_cost) - 1.0
+    minimum_holdings = minimum_required_holdings(topk)
+    rounds = (
+        trades.groupby(["datetime", "entry_date", "exit_date"], as_index=False, sort=True)
+        .agg(
+            gross_return=("gross_return", "mean"),
+            net_return=("net_return", "mean"),
+            holdings=("instrument", "nunique"),
+        )
+        .rename(columns={"datetime": "signal_date"})
+    )
+    rounds = rounds.loc[rounds["holdings"] >= minimum_holdings].copy()
+    rounds["regime_active"] = True
+    rounds = rounds.sort_values("signal_date", kind="stable").reset_index(drop=True)
+    event_dates = events["datetime"].nunique()
+    status = {
+        "eligible_rebalance_cohorts": int(len(rebalances)),
+        "event_rebalance_cohorts": int(event_dates),
+        "complete_executable_cohorts": int(len(rounds)),
+        "discarded_incomplete_or_unquoted_event_cohorts": int(max(event_dates - len(rounds), 0)),
+    }
+    return rounds, status
+
+
+def quarterly_profit_acceleration_event_decision(rounds: pd.DataFrame, hold_days: int) -> dict[str, Any]:
+    """Apply the shared direct-event gate to newly effective quarterly reports."""
+
+    return direct_event_basket_decision(rounds, hold_days)
+
+
+def run_quarterly_profit_acceleration_event_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Run one fixed development-only quarterly announcement drift audit."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    if market["datetime"].max() > pd.Timestamp(args.development_end):
+        raise ValueError(
+            "quarterly-profit-acceleration-event-audit is development-only; pass --end no later than --development-end"
+        )
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    rounds, cohort_status = quarterly_profit_acceleration_event_rounds(
+        market,
+        hold_days=args.hold_days,
+        topk=args.topk,
+        open_cost=args.open_cost,
+        close_cost=args.close_cost,
+    )
+    decision = quarterly_profit_acceleration_event_decision(rounds, args.hold_days)
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "development_only_quarterly_profit_acceleration_event_audit_research_not_investment_advice",
+        "hypothesis": {
+            "name": "newly_effective_positive_quarterly_profit_acceleration_drift",
+            "statement": (
+                "On the first safe close after a newly announced quarterly report, quality-qualified issuers with "
+                "positive same-fiscal-quarter profit-yoy acceleration are ranked by raw acceleration; the top three "
+                "form a next-open to third-close drift basket."
+            ),
+            "direction": "continuation",
+        },
+        "definition": {
+            "report_availability": "strictly next local trading day after announcement_date",
+            "event_signal_date": "quality_effective_date close",
+            "profit_yoy_acceleration_gt": 0.0,
+            "within_event_selection": "descending raw same-fiscal-quarter profit_yoy_acceleration, then instrument",
+            "incomplete_baskets": "discarded; stale-report and non-event stocks never fill a basket",
+        },
+        "strategy_timing": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "signal_time": "quality_effective_date market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "development_end": args.development_end,
+            "test_period_used": False,
+            **cohort_status,
+        },
+        "result": decision,
+        "limitations": [
+            "This is a fixed development-only event audit, not a strategy registration, stock list, or trading recommendation.",
+            "Quarterly public records can be revised or incomplete; this is not an exchange-grade point-in-time filing database.",
+            "The one-session availability delay is conservative and cannot prove the original publication timestamp.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_quarterly_profit_acceleration_event_audit.json"
     _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
     return {
         "status": "completed",
@@ -7408,6 +7598,37 @@ def load_limit_like_event_audits(experiment_root: Path) -> list[dict[str, Any]]:
     return audits
 
 
+def load_quarterly_profit_acceleration_event_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read fixed quarterly-announcement drift audits for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_quarterly_profit_acceleration_event_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        data = audit.get("data") or {}
+        result = audit.get("result") or {}
+        performance = result.get("performance") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "event_cohorts": int(performance.get("rounds") or 0),
+                "event_signal_cohorts": int(data.get("event_rebalance_cohorts") or 0),
+                "net_cumulative_return": performance.get("net_cumulative_return"),
+                "max_drawdown": performance.get("max_drawdown"),
+                "passed": bool(result.get("passed", False)),
+                "test_period_used": bool(data.get("test_period_used", False)),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -7749,6 +7970,7 @@ def render_three_day_research_report(
     factor_topk_viability_audits: list[dict[str, Any]] | None = None,
     selection_multiplicity_audits: list[dict[str, Any]] | None = None,
     limit_like_event_audits: list[dict[str, Any]] | None = None,
+    quarterly_profit_acceleration_event_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -8017,6 +8239,33 @@ def render_three_day_research_report(
             ]
         )
         for audit in limit_like_event_audits:
+            lines.append(
+                "| {run_id} | {start} 至 {end} | {signals} / {cohorts} | {net} | {mdd} | {conclusion} | {uses_test} |".format(
+                    run_id=audit["run_id"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    signals=audit["event_signal_cohorts"],
+                    cohorts=audit["event_cohorts"],
+                    net=_percent(audit["net_cumulative_return"]),
+                    mdd=_percent(audit["max_drawdown"]),
+                    conclusion="通过（仍不可直接选股）" if audit["passed"] else "不通过（停止）",
+                    uses_test="是（无效记录）" if audit["test_period_used"] else "否",
+                )
+            )
+        lines.append("")
+    if quarterly_profit_acceleration_event_audits:
+        lines.extend(
+            [
+                "",
+                "## 季度利润加速公告事件审计",
+                "",
+                "该审计只在公告后下一本地交易日的首个安全收盘形成信号：质量合格且同财季利润同比加速为正的公司按原始加速幅度取完整 Top‑3，次日开盘进入、第 3 日收盘退出。它不使用公告当日、陈旧报告或非事件股票补篮子；通过也只能形成新的独立前瞻假设。",
+                "",
+                "| 审计 | 开发期 | 事件日 / 可执行 Cohort | 净累计收益 | 最大回撤 | 固定门槛结论 | 测试期参与 |",
+                "| --- | --- | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        for audit in quarterly_profit_acceleration_event_audits:
             lines.append(
                 "| {run_id} | {start} 至 {end} | {signals} / {cohorts} | {net} | {mdd} | {conclusion} | {uses_test} |".format(
                     run_id=audit["run_id"],
@@ -8393,6 +8642,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     walk_forward_selection_audits = load_walk_forward_selection_audits(experiment_root)
     selection_multiplicity_audits = load_selection_multiplicity_audits(experiment_root)
     limit_like_event_audits = load_limit_like_event_audits(experiment_root)
+    quarterly_profit_acceleration_event_audits = load_quarterly_profit_acceleration_event_audits(experiment_root)
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -8425,6 +8675,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         factor_topk_viability_audits,
         selection_multiplicity_audits,
         limit_like_event_audits,
+        quarterly_profit_acceleration_event_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -8450,6 +8701,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "walk_forward_selection_audits": len(walk_forward_selection_audits),
         "selection_multiplicity_audits": len(selection_multiplicity_audits),
         "limit_like_event_audits": len(limit_like_event_audits),
+        "quarterly_profit_acceleration_event_audits": len(quarterly_profit_acceleration_event_audits),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
         "model_audits": len(model_audits),
@@ -10732,6 +10984,27 @@ def parse_args() -> argparse.Namespace:
     limit_like_event_audit.add_argument("--max-quality-age-days", type=int, default=550)
     limit_like_event_audit.add_argument("--batch-size", type=int, default=500)
 
+    quarterly_profit_acceleration_event_audit = subparsers.add_parser(
+        "quarterly-profit-acceleration-event-audit",
+        help="test the fixed development-only quarterly profit-acceleration drift event",
+    )
+    quarterly_profit_acceleration_event_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    quarterly_profit_acceleration_event_audit.add_argument(
+        "--fundamentals", default=str(DEFAULT_QUARTERLY_FUNDAMENTALS)
+    )
+    quarterly_profit_acceleration_event_audit.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    quarterly_profit_acceleration_event_audit.add_argument("--start", default="2019-01-01")
+    quarterly_profit_acceleration_event_audit.add_argument("--end", default="2025-12-31")
+    quarterly_profit_acceleration_event_audit.add_argument("--development-end", default="2025-12-31")
+    quarterly_profit_acceleration_event_audit.add_argument("--hold-days", type=int, default=3)
+    quarterly_profit_acceleration_event_audit.add_argument("--topk", type=int, default=3)
+    quarterly_profit_acceleration_event_audit.add_argument("--open-cost", type=float, default=0.00012)
+    quarterly_profit_acceleration_event_audit.add_argument("--close-cost", type=float, default=0.00062)
+    quarterly_profit_acceleration_event_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    quarterly_profit_acceleration_event_audit.add_argument("--batch-size", type=int, default=500)
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -11155,6 +11428,8 @@ def main() -> int:
         report = run_selection_multiplicity_audit(args)
     elif args.command == "limit-like-event-audit":
         report = run_limit_like_event_audit(args)
+    elif args.command == "quarterly-profit-acceleration-event-audit":
+        report = run_quarterly_profit_acceleration_event_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":
