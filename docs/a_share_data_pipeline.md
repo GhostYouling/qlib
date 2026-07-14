@@ -353,7 +353,13 @@ python scripts/a_share_short_horizon_factor_research.py analyst-rating-capacity-
 
 唯一一次容量审计已完成为 `20260714T183854Z_analyst_rating_capacity_audit.json`（SHA-256 `1d0973d5560db6ba76c46e1925f0e5eddfb90bf3e7a08b55da917f1c7a77c105`）。三日事件展开后有 61,515 行候选值，季度质量与上市门槛后保留 24,413 行、542 个有值事件日，最终形成 **224/200** 个潜在完整 cohort；2019–2025 分别为 30、42、42、38、22、26、24。审计明确记录 `price_fields_loaded=[]`、`open_close_or_forward_return_fields_read=false` 和 `selection_or_promotion_allowed=false`。来源获准另行冻结一次固定收益诊断，但这 224 个 cohort 只是容量，不是收益、稳定性或可交易性证据。
 
-唯一一次收益诊断已在读取行情前冻结为 `docs/a_share_analyst_rating_diagnostic_preregistration.json`。它只允许 `analyst_rating_upgrade_share` 高值方向，固定 2019–2025、事件年龄 3 天、Top‑3、开/平仓成本 0.012%/0.062%、550 日季度质量与上市满 20 会话，并绑定容量审计、事件快照和质量快照 SHA-256。实现时必须提供不暴露语义参数的专用命令，完成后运行完整默认稳定性与 Top‑3 可行性审计；不得使用通用多因子诊断顺带查看其他研报字段。
+唯一一次收益诊断已在读取行情前冻结为 `docs/a_share_analyst_rating_diagnostic_preregistration.json`。它只允许 `analyst_rating_upgrade_share` 高值方向，固定 2019–2025、事件年龄 3 天、Top‑3、开/平仓成本 0.012%/0.062%、550 日季度质量与上市满 20 会话，并绑定容量审计、事件快照和质量快照 SHA-256。专用命令不暴露日期、方向、因子、年龄、成本、质量或 Top‑3 等语义参数：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py analyst-rating-diagnostic
+```
+
+命令会先再次验证预注册、容量审计和两个输入快照的指纹，只把调高占比接入次日生效、3 个自然日过期的截面排名；报告数量只保留为事件审计上下文，不参与排名。完成后必须对产物运行完整默认稳定性与 Top‑3 可行性审计；不得使用通用多因子诊断顺带查看其他研报字段。
 
 下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
 

@@ -120,6 +120,9 @@ DEFAULT_ANALYST_RATING_DATA_CONTRACT = (
 DEFAULT_ANALYST_RATING_CAPACITY_SPEC = (
     REPO_ROOT / "docs" / "a_share_analyst_rating_capacity_preregistration.json"
 )
+DEFAULT_ANALYST_RATING_DIAGNOSTIC_SPEC = (
+    REPO_ROOT / "docs" / "a_share_analyst_rating_diagnostic_preregistration.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -416,6 +419,9 @@ INSTITUTIONAL_SURVEY_TIMING_CAPACITY_PURPOSE = (
 )
 ANALYST_RATING_CAPACITY_PURPOSE = (
     "analyst_rating_capacity_gate_without_price_or_forward_returns"
+)
+ANALYST_RATING_DIAGNOSTIC_PURPOSE = (
+    "development_only_preregistered_analyst_rating_research_not_investment_advice"
 )
 INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_institutional_survey_timing_research_not_investment_advice"
@@ -3093,6 +3099,168 @@ def require_unconsumed_institutional_survey_timing_diagnostic(experiment_root: P
         record = load_json_record(path)
         if record.get("purpose") == INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE:
             raise ValueError(f"institutional-survey timing diagnostic is already consumed: {path}")
+
+
+def load_analyst_rating_diagnostic_preregistration(
+    path: Path = DEFAULT_ANALYST_RATING_DIAGNOSTIC_SPEC,
+) -> dict[str, Any]:
+    """Enforce the capacity-qualified one-time analyst-rating diagnostic."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_analyst_rating_diagnostic_preregistration")
+    capacity = spec.get("capacity_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    factor = spec.get("factor") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("diagnostic_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_no_return_capacity_pass_before_accepted_price_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T18:39:41Z"
+        and capacity
+        == {
+            "run_id": "20260714T183854Z",
+            "path": (
+                "data/experiments/short_horizon/"
+                "20260714T183854Z_analyst_rating_capacity_audit.json"
+            ),
+            "sha256": (
+                "1d0973d5560db6ba76c46e1925f0e5eddfb90bf3e7a08b55da917f1c7a77c105"
+            ),
+            "factor": ANALYST_RATING_FACTOR_NAME,
+            "potential_complete_cohorts": 224,
+            "forward_return_fields_read": False,
+            "source_admitted_for_return_diagnostic": True,
+        }
+        and set(snapshots) == {"quarterly_quality", "analyst_rating_changes"}
+        and snapshots["analyst_rating_changes"].get("maximum_age_days") == 3
+        and snapshots["analyst_rating_changes"].get("effective_date")
+        == "strictly next local trading day after announcement_date"
+        and factor
+        == {
+            "name": ANALYST_RATING_FACTOR_NAME,
+            "raw_column": ANALYST_RATING_FACTOR_NAME,
+            "raw_direction": "higher_is_better",
+            "score_formula": (
+                "cross_sectional_percentile_rank(analyst_rating_upgrade_share)"
+            ),
+            "maximum_event_age_days": 3,
+        }
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "capacity_gate_passed_before_return_read": True,
+            "single_factor_only": True,
+            "accepted_price_returns_observed_before_registration": False,
+            "prior_analyst_rating_price_diagnostic_exists": False,
+            "one_completed_diagnostic_only": True,
+            "preserve_source_and_quarterly_quality_snapshots": True,
+            "no_direction_formula_age_date_cost_quality_source_or_factor_override": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_a_new_prospective_combination_registration": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("analyst-rating diagnostic preregistration does not match the frozen protocol")
+    return spec
+
+
+def validate_analyst_rating_diagnostic_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Verify analyst-rating inputs and the exact no-return capacity authorization."""
+
+    snapshots = spec.get("source_snapshots") or {}
+    evidence: dict[str, Any] = {"source_snapshots": {}}
+    for name, link in snapshots.items():
+        source_path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not source_path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"analyst-rating diagnostic input is missing: {name}")
+        source_sha256 = file_sha256(source_path)
+        manifest_sha256 = file_sha256(manifest_path)
+        if source_sha256 != str(link.get("sha256") or ""):
+            raise ValueError(f"analyst-rating diagnostic source mismatch: {source_path}")
+        if manifest_sha256 != str(link.get("manifest_sha256") or ""):
+            raise ValueError(f"analyst-rating diagnostic manifest mismatch: {manifest_path}")
+        manifest = load_json_record(manifest_path)
+        if manifest.get("status") != "completed" or manifest.get("sha256") != source_sha256:
+            raise ValueError(f"analyst-rating manifest rejects its source: {manifest_path}")
+        evidence["source_snapshots"][name] = {
+            "path": str(source_path),
+            "sha256": source_sha256,
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": manifest_sha256,
+        }
+
+    capacity_link = spec.get("capacity_audit") or {}
+    capacity_path = resolve_repository_record_path(str(capacity_link.get("path") or ""))
+    if not capacity_path.exists() or file_sha256(capacity_path) != str(
+        capacity_link.get("sha256") or ""
+    ):
+        raise ValueError("analyst-rating capacity audit fingerprint mismatch")
+    capacity = load_json_record(capacity_path)
+    source_capacity = capacity.get("source_capacity") or {}
+    factor_capacity = (source_capacity.get("factor_capacity") or {}).get(
+        ANALYST_RATING_FACTOR_NAME
+    ) or {}
+    capacity_sources = (
+        ((capacity.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "source_snapshots"
+        )
+        or {}
+    )
+    if (
+        capacity.get("run_id") != capacity_link.get("run_id")
+        or capacity.get("purpose") != ANALYST_RATING_CAPACITY_PURPOSE
+        or capacity.get("factor_catalog") != [ANALYST_RATING_FACTOR_NAME]
+        or capacity.get("forward_return_fields_read") is not False
+        or (capacity.get("data") or {}).get("price_fields_loaded") != []
+        or capacity.get("source_admitted_for_return_diagnostic") is not True
+        or source_capacity.get("source_admitted_for_return_rebuild") is not True
+        or factor_capacity.get("capacity_gate_passed") is not True
+        or factor_capacity.get("potential_complete_cohorts")
+        != capacity_link.get("potential_complete_cohorts")
+        or any(
+            (capacity_sources.get(name) or {}).get("sha256") != snapshots[name]["sha256"]
+            for name in snapshots
+        )
+    ):
+        raise ValueError("analyst-rating capacity audit does not authorize the frozen diagnostic")
+    evidence["capacity_audit"] = {
+        "run_id": capacity.get("run_id"),
+        "path": str(capacity_path),
+        "sha256": file_sha256(capacity_path),
+        "forward_return_fields_read": False,
+        "factor_capacity": factor_capacity,
+    }
+    return evidence
+
+
+def require_unconsumed_analyst_rating_diagnostic(experiment_root: Path) -> None:
+    """Prevent a second accepted-price read of analyst-rating events."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == ANALYST_RATING_DIAGNOSTIC_PURPOSE:
+            raise ValueError(f"analyst-rating diagnostic is already consumed: {path}")
 
 
 def load_institutional_survey_event_diagnostic_preregistration(
@@ -7319,6 +7487,75 @@ def attach_institutional_survey_timing_events_asof(
     return result
 
 
+def attach_analyst_rating_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach rating-upgrade shares strictly after their public report date."""
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    if missing := sorted({"instrument", "datetime"} - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(ANALYST_RATING_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError("analyst-rating events are missing columns: " + ", ".join(missing))
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source_events = events.loc[:, list(ANALYST_RATING_EVENT_COLUMNS)].copy()
+    source_events["analyst_rating_effective_date"] = _first_trading_day_after(
+        calendar, source_events["announcement_date"]
+    )
+    source_events = source_events.dropna(subset=["analyst_rating_effective_date"])
+    source_events = source_events.sort_values(
+        ["instrument", "analyst_rating_effective_date", "announcement_date"], kind="stable"
+    ).drop_duplicates(["instrument", "analyst_rating_effective_date"], keep="last")
+    attached_columns = [
+        "analyst_rating_announcement_date",
+        ANALYST_RATING_FACTOR_NAME,
+        "analyst_valid_rating_report_count",
+        "analyst_rating_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"] = 1
+    daily["_row"] = np.arange(len(daily))
+    daily["analyst_rating_announcement_date"] = pd.NaT
+    daily["analyst_rating_effective_date"] = pd.NaT
+    daily[ANALYST_RATING_FACTOR_NAME] = np.nan
+    daily["analyst_valid_rating_report_count"] = np.nan
+    event_rows = source_events.rename(
+        columns={
+            "analyst_rating_effective_date": "datetime",
+            "announcement_date": "analyst_rating_announcement_date",
+        }
+    )[
+        [
+            "instrument",
+            "datetime",
+            "analyst_rating_announcement_date",
+            ANALYST_RATING_FACTOR_NAME,
+            "analyst_valid_rating_report_count",
+        ]
+    ].copy()
+    event_rows["analyst_rating_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"] = 0
+    event_rows["_row"] = np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False)
+    combined = combined.sort_values(["instrument", "datetime", "_kind"], kind="stable")
+    combined[attached_columns] = combined.groupby("instrument", sort=False)[
+        attached_columns
+    ].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *attached_columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["analyst_rating_age_days"] = (
+        pd.to_datetime(result["datetime"])
+        - pd.to_datetime(result["analyst_rating_effective_date"])
+    ).dt.days
+    result["analyst_rating_available"] = result["analyst_rating_announcement_date"].notna() & result[
+        "analyst_rating_age_days"
+    ].between(0, max_age_days)
+    return result
+
+
 def attach_repurchase_plan_events_asof(
     market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
 ) -> pd.DataFrame:
@@ -7984,6 +8221,10 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         if column in result.columns
     ]
     raw_columns.extend(institutional_survey_timing_raw_columns)
+    analyst_rating_raw_columns = [
+        column for column in (ANALYST_RATING_FACTOR_NAME,) if column in result.columns
+    ]
+    raw_columns.extend(analyst_rating_raw_columns)
     repurchase_raw_columns = [
         column
         for column in (
@@ -8062,6 +8303,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         ("margin_financing_available", margin_financing_raw_columns),
         ("institutional_survey_available", institutional_survey_raw_columns),
         ("institutional_survey_timing_available", institutional_survey_timing_raw_columns),
+        ("analyst_rating_available", analyst_rating_raw_columns),
         ("repurchase_available", repurchase_raw_columns),
         ("holder_count_available", holder_count_raw_columns),
         ("pledge_available", pledge_raw_columns),
@@ -8170,6 +8412,8 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         result[INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME] = (
             1.0 - result["rank_institutional_survey_disclosure_lag_days"]
         )
+    if f"rank_{ANALYST_RATING_FACTOR_NAME}" in result.columns:
+        result[ANALYST_RATING_FACTOR_NAME] = result[f"rank_{ANALYST_RATING_FACTOR_NAME}"]
     for column in ("repurchase_planned_share_ratio", "repurchase_planned_amount"):
         rank_column = f"rank_{column}"
         if rank_column in result.columns:
@@ -14821,6 +15065,10 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         if institutional_survey_timing_value
         else None
     )
+    analyst_rating_value = getattr(args, "analyst_rating_events", None)
+    analyst_rating_path = (
+        Path(analyst_rating_value).expanduser() if analyst_rating_value else None
+    )
     repurchase_path = Path(args.repurchase_events).expanduser() if args.repurchase_events else None
     holder_count_path = Path(args.holder_count_events).expanduser() if args.holder_count_events else None
     pledge_path = Path(args.pledge_events).expanduser() if args.pledge_events else None
@@ -14875,6 +15123,13 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             institutional_survey_timing_events,
             max_age_days=getattr(args, "max_institutional_survey_timing_age_days", 3),
         )
+    if analyst_rating_path is not None:
+        analyst_rating_events = load_analyst_rating_events(analyst_rating_path)
+        market = attach_analyst_rating_events_asof(
+            market,
+            analyst_rating_events,
+            max_age_days=getattr(args, "max_analyst_rating_age_days", 3),
+        )
     if repurchase_path is not None:
         repurchase_events = load_repurchase_plan_events(repurchase_path)
         market = attach_repurchase_plan_events_asof(
@@ -14906,6 +15161,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS,
             *INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS,
             INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME,
+            ANALYST_RATING_FACTOR_NAME,
             *REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS,
             *HOLDER_COUNT_FACTOR_DIAGNOSTIC_COLUMNS,
             *PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS,
@@ -15085,6 +15341,26 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "participant_identities_stored": False,
             }
             if institutional_survey_timing_path is not None
+            else None
+        ),
+        "analyst_rating_events": (
+            {
+                "source": str(analyst_rating_path.resolve()),
+                "sha256": file_sha256(analyst_rating_path),
+                "effective_date": "strictly next local trading day after announcement_date",
+                "max_analyst_rating_age_days": getattr(args, "max_analyst_rating_age_days", 3),
+                "available_rows": int(market["analyst_rating_available"].sum()),
+                "eligible_available_rows": int(
+                    (
+                        market["quality_eligible"].fillna(False)
+                        & market["analyst_rating_available"].fillna(False)
+                    ).sum()
+                ),
+                "score_direction": "higher raw upgrade share is better",
+                "report_text_or_broker_identity_stored": False,
+                "price_or_valuation_fields_stored": False,
+            }
+            if analyst_rating_path is not None
             else None
         ),
         "repurchase_events": (
@@ -15562,6 +15838,87 @@ def run_institutional_survey_timing_diagnostic(args: argparse.Namespace) -> dict
         raise RuntimeError(
             "completed institutional-survey timing diagnostic does not match its frozen protocol"
         )
+    return result
+
+
+def run_analyst_rating_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Diagnose the capacity-qualified rating-upgrade-share factor exactly once."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_analyst_rating_diagnostic_preregistration()
+    source_evidence = validate_analyst_rating_diagnostic_sources(spec)
+    require_unconsumed_analyst_rating_diagnostic(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=str(resolve_repository_record_path(snapshots["quarterly_quality"]["path"])),
+        performance_forecasts=None,
+        billboard_events=None,
+        major_holder_events=None,
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=None,
+        institutional_survey_timing_events=None,
+        analyst_rating_events=str(
+            resolve_repository_record_path(snapshots["analyst_rating_changes"]["path"])
+        ),
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=contract["maximum_quality_age_days"],
+        max_forecast_age_days=30,
+        max_billboard_age_days=3,
+        max_major_holder_age_days=3,
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=3,
+        max_institutional_survey_timing_age_days=3,
+        max_analyst_rating_age_days=snapshots["analyst_rating_changes"]["maximum_age_days"],
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=3,
+        max_dividend_plan_age_days=3,
+        batch_size=args.batch_size,
+        factor=[ANALYST_RATING_FACTOR_NAME],
+        diagnostic_purpose=ANALYST_RATING_DIAGNOSTIC_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_ANALYST_RATING_DIAGNOSTIC_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_ANALYST_RATING_DIAGNOSTIC_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "accepted_price_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    rating_metadata = audit.get("analyst_rating_events") or {}
+    if (
+        audit.get("purpose") != ANALYST_RATING_DIAGNOSTIC_PURPOSE
+        or audit.get("factor_catalog") != [ANALYST_RATING_FACTOR_NAME]
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or (audit.get("quality_gate") or {}).get("sha256")
+        != snapshots["quarterly_quality"]["sha256"]
+        or rating_metadata.get("max_analyst_rating_age_days")
+        != snapshots["analyst_rating_changes"]["maximum_age_days"]
+        or rating_metadata.get("sha256") != snapshots["analyst_rating_changes"]["sha256"]
+        or rating_metadata.get("score_direction") != "higher raw upgrade share is better"
+        or rating_metadata.get("report_text_or_broker_identity_stored") is not False
+        or rating_metadata.get("price_or_valuation_fields_stored") is not False
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError("completed analyst-rating diagnostic does not match its frozen protocol")
     return result
 
 
@@ -17826,6 +18183,10 @@ def parse_args() -> argparse.Namespace:
         help="optional dated institutional-survey disclosure-lag snapshot",
     )
     factor_diagnostic.add_argument(
+        "--analyst-rating-events",
+        help="optional dated analyst rating-upgrade-share snapshot",
+    )
+    factor_diagnostic.add_argument(
         "--repurchase-events",
         help="optional initial repurchase-plan snapshot; adds next-session plan factors to the development-only diagnostic",
     )
@@ -17891,6 +18252,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="maximum calendar age for a survey disclosure-lag event",
+    )
+    factor_diagnostic.add_argument(
+        "--max-analyst-rating-age-days",
+        type=int,
+        default=3,
+        help="maximum calendar age for an analyst rating-upgrade event",
     )
     factor_diagnostic.add_argument(
         "--max-repurchase-age-days",
@@ -17975,6 +18342,16 @@ def parse_args() -> argparse.Namespace:
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
     institutional_survey_timing_diagnostic.add_argument("--batch-size", type=int, default=500)
+
+    analyst_rating_diagnostic = subparsers.add_parser(
+        "analyst-rating-diagnostic",
+        help="diagnose the capacity-qualified analyst rating-upgrade-share factor exactly once",
+    )
+    analyst_rating_diagnostic.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    analyst_rating_diagnostic.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    analyst_rating_diagnostic.add_argument("--batch-size", type=int, default=500)
 
     intraday_demand = subparsers.add_parser(
         "intraday-demand-persistence-diagnostic",
@@ -18625,6 +19002,8 @@ def main() -> int:
         report = run_institutional_survey_event_diagnostic(args)
     elif args.command == "institutional-survey-timing-diagnostic":
         report = run_institutional_survey_timing_diagnostic(args)
+    elif args.command == "analyst-rating-diagnostic":
+        report = run_analyst_rating_diagnostic(args)
     elif args.command == "intraday-demand-persistence-diagnostic":
         report = run_intraday_demand_persistence_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
