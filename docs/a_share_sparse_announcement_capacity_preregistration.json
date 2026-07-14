@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "kind": "a_share_sparse_announcement_capacity_preregistration",
+  "status": "frozen_before_accepted_price_returns_observed",
+  "preregistered_at": "2026-07-14T16:26:30Z",
+  "purpose": "Measure the no-return cohort capacity of the original repurchase, holder-count, pledge, and dividend announcement factors before deciding which legacy-price sources deserve one accepted-price rebuild.",
+  "source_snapshots": {
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "repurchase_plans": {
+      "path": "data/raw/a_share/events/repurchase_plans.parquet",
+      "sha256": "2a1a3dcb186e6355b956b68e889bde13bdd95241d1a9a387b35595aa28258915",
+      "manifest_path": "data/metadata/repurchase_plans_manifest.json",
+      "manifest_sha256": "833a0c78edb1e98fa478b94938db507f3759305b7587ee422b2990b3b090b4e1",
+      "maximum_age_days": 3
+    },
+    "holder_count_changes": {
+      "path": "data/raw/a_share/events/holder_count_changes.parquet",
+      "sha256": "e14a0beb393bc713f6b6e5820da395430308eb117460541b3769116c8a265414",
+      "manifest_path": "data/metadata/holder_count_changes_manifest.json",
+      "manifest_sha256": "1d38b782968786f274ab57429f19bc967054a0e9f0a97459f21e9ac07ee2a988",
+      "maximum_age_days": 3
+    },
+    "share_pledges": {
+      "path": "data/raw/a_share/events/share_pledges.parquet",
+      "sha256": "b498ee3bdf9e01bc4a42536145712d853ff554c83c8388e7ebdeb54696b476de",
+      "manifest_path": "data/metadata/share_pledges_manifest.json",
+      "manifest_sha256": "3b278f54e30aa397993bfb7fc6b836e36bd2e93c508629ac1fad2da2846d395d",
+      "maximum_age_days": 3
+    },
+    "dividend_plans": {
+      "path": "data/raw/a_share/events/dividend_plans.parquet",
+      "sha256": "9483726c509afef2eba88ed32abc341cda564dba1d4f1210816151f414088866",
+      "manifest_path": "data/metadata/dividend_plans_manifest.json",
+      "manifest_sha256": "e79981a15f00739f3319f03a1fd45de8292050f1f8301d169d2356a727faf5cc",
+      "maximum_age_days": 3
+    }
+  },
+  "superseded_legacy_diagnostics": [
+    {
+      "run_id": "20260713T233314Z",
+      "path": "data/experiments/short_horizon/20260713T233314Z_factor_diagnostic.json",
+      "sha256": "4062298f804c6d45e83850f0b34cf38f83ada1da50beeefa6bb0049622d1eaae",
+      "source": "repurchase_plans"
+    },
+    {
+      "run_id": "20260713T234343Z",
+      "path": "data/experiments/short_horizon/20260713T234343Z_factor_diagnostic.json",
+      "sha256": "1414097565183652b97f98df568e5cb985af791e21a105d3ee8cf01acd1e04a8",
+      "source": "holder_count_changes"
+    },
+    {
+      "run_id": "20260713T235418Z",
+      "path": "data/experiments/short_horizon/20260713T235418Z_factor_diagnostic.json",
+      "sha256": "c8a7378926a1e96fb554e8a96b5d7a4ac7509a0901251a5c8d244d975eb6d261",
+      "source": "share_pledges"
+    },
+    {
+      "run_id": "20260714T000612Z",
+      "path": "data/experiments/short_horizon/20260714T000612Z_factor_diagnostic.json",
+      "sha256": "d571fb2b5f234f8c788b31804ab6f94b3442cbb62ee74d566afe530d3c96773b",
+      "source": "dividend_plans"
+    }
+  ],
+  "factor_catalog": [
+    "repurchase_planned_share_ratio",
+    "repurchase_planned_amount",
+    "repurchase_freshness",
+    "holder_count_change_ratio",
+    "holder_count_change_absolute",
+    "holder_count_freshness",
+    "pledge_share_count",
+    "pledge_total_share_ratio",
+    "pledge_event_count",
+    "pledge_freshness",
+    "dividend_cash_per_ten",
+    "dividend_share_ratio",
+    "dividend_plan_event_count",
+    "dividend_plan_freshness"
+  ],
+  "source_factor_catalog": {
+    "repurchase_plans": [
+      "repurchase_planned_share_ratio",
+      "repurchase_planned_amount",
+      "repurchase_freshness"
+    ],
+    "holder_count_changes": [
+      "holder_count_change_ratio",
+      "holder_count_change_absolute",
+      "holder_count_freshness"
+    ],
+    "share_pledges": [
+      "pledge_share_count",
+      "pledge_total_share_ratio",
+      "pledge_event_count",
+      "pledge_freshness"
+    ],
+    "dividend_plans": [
+      "dividend_cash_per_ten",
+      "dividend_share_ratio",
+      "dividend_plan_event_count",
+      "dividend_plan_freshness"
+    ]
+  },
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_factor_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "event_availability": "strictly next local trading day after announcement_date",
+    "price_basis_required_for_later_return_rebuild": "close_known_raw_pct_chg_chain_v1"
+  },
+  "capacity_policy": {
+    "open_close_or_forward_return_fields_allowed": false,
+    "count_only_quality_and_listing_seasoned_active_names": true,
+    "source_admitted_if_any_original_factor_meets_minimum_cohorts": true,
+    "admitted_source_must_rebuild_all_original_factors_together": true,
+    "failed_source_must_stop_without_return_rebuild": true,
+    "no_factor_direction_age_date_topk_or_minimum_cohort_override": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -1855,6 +1855,80 @@ def test_announcement_event_rebuild_is_one_frozen_full_catalog(tmp_path, monkeyp
         RESEARCH.run_announcement_event_rebuild_diagnostic(args)
 
 
+def test_sparse_announcement_capacity_protocol_is_frozen(tmp_path):
+    spec = RESEARCH.load_sparse_announcement_capacity_preregistration()
+    assert tuple(spec["factor_catalog"]) == RESEARCH.SPARSE_ANNOUNCEMENT_FACTOR_NAMES
+    assert spec["run_contract"]["minimum_valid_names_per_factor_cohort"] == 6
+    assert spec["run_contract"]["minimum_required_cohorts"] == 200
+    assert spec["capacity_policy"]["open_close_or_forward_return_fields_allowed"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC.read_text(encoding="utf-8")
+    )
+    changed["run_contract"]["minimum_required_cohorts"] = 20
+    changed_path = tmp_path / "changed_sparse_announcement_capacity.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_sparse_announcement_capacity_preregistration(changed_path)
+
+
+def test_sparse_announcement_capacity_counts_factor_ready_cohorts_without_prices():
+    full_calendar = pd.bdate_range("2018-11-01", "2019-01-31")
+    research_calendar = pd.bdate_range("2019-01-02", periods=10)
+    instruments = [f"SZ{index:06d}" for index in range(1, 7)]
+    intervals = {
+        instrument: [(full_calendar[0], full_calendar[-1])] for instrument in instruments
+    }
+    fundamentals = pd.DataFrame(
+        {
+            "instrument": instruments,
+            "report_date": pd.Timestamp("2018-09-30"),
+            "announcement_date": pd.Timestamp("2018-12-14"),
+            "roe": 10.0,
+            "net_profit": 100.0,
+            "revenue_yoy": 10.0,
+            "profit_yoy": 10.0,
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": instruments,
+            "announcement_date": pd.Timestamp("2019-01-01"),
+            "repurchase_planned_share_ratio": range(1, 7),
+            "repurchase_planned_amount": range(10, 70, 10),
+        }
+    )
+    capacity = RESEARCH.sparse_announcement_source_capacity(
+        events,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        source_name="repurchase_plans",
+        event_columns=RESEARCH.REPURCHASE_EVENT_COLUMNS,
+        factor_raw_columns={
+            "repurchase_planned_share_ratio": "repurchase_planned_share_ratio",
+            "repurchase_planned_amount": "repurchase_planned_amount",
+            "repurchase_freshness": "event_age_days",
+        },
+        max_age_days=3,
+        hold_days=3,
+        topk=3,
+        minimum_required_cohorts=1,
+        maximum_quality_age_days=550,
+    )
+    assert capacity["factor_capacity"]["repurchase_planned_share_ratio"][
+        "potential_complete_cohorts"
+    ] == 1
+    assert capacity["factor_capacity"]["repurchase_planned_amount"][
+        "potential_complete_cohorts"
+    ] == 1
+    assert capacity["factor_capacity"]["repurchase_freshness"][
+        "potential_complete_cohorts"
+    ] == 0
+    assert capacity["source_admitted_for_return_rebuild"] is True
+
+
 def test_minute_factor_direction_is_ranked_after_quality_and_listing_gates(tmp_path):
     symbols = tuple(f"SZ{index:06d}" for index in range(1, 52))
     _, features = make_minute_feature_chain(tmp_path, symbols=symbols)

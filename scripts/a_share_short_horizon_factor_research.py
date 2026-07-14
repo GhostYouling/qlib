@@ -84,6 +84,9 @@ DEFAULT_TRANSACTION_EVENT_REBUILD_SPEC = (
 DEFAULT_ANNOUNCEMENT_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_announcement_event_rebuild_preregistration.json"
 )
+DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC = (
+    REPO_ROOT / "docs" / "a_share_sparse_announcement_capacity_preregistration.json"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -326,6 +329,21 @@ DIVIDEND_PLAN_FACTOR_DIAGNOSTIC_COLUMNS = (
     "dividend_share_ratio",
     "dividend_plan_event_count",
     "dividend_plan_freshness",
+)
+SPARSE_ANNOUNCEMENT_FACTOR_NAMES = (
+    *REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS,
+    *HOLDER_COUNT_FACTOR_DIAGNOSTIC_COLUMNS,
+    *PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS,
+    *DIVIDEND_PLAN_FACTOR_DIAGNOSTIC_COLUMNS,
+)
+SPARSE_ANNOUNCEMENT_SOURCE_FACTORS = {
+    "repurchase_plans": REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS,
+    "holder_count_changes": HOLDER_COUNT_FACTOR_DIAGNOSTIC_COLUMNS,
+    "share_pledges": PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS,
+    "dividend_plans": DIVIDEND_PLAN_FACTOR_DIAGNOSTIC_COLUMNS,
+}
+SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE = (
+    "sparse_announcement_factor_capacity_gate_without_price_or_forward_returns"
 )
 MARGIN_FINANCING_TOP_N = 100
 # This direction is deliberately not part of the development diagnostic
@@ -2077,6 +2095,138 @@ def require_unconsumed_announcement_event_rebuild(experiment_root: Path) -> None
         record = load_json_record(path)
         if record.get("purpose") == ANNOUNCEMENT_EVENT_REBUILD_PURPOSE:
             raise ValueError(f"accepted-price announcement-event rebuild is already consumed: {path}")
+
+
+def load_sparse_announcement_capacity_preregistration(
+    path: Path = DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC,
+) -> dict[str, Any]:
+    """Enforce the no-return capacity protocol for four sparse announcement sources."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_sparse_announcement_capacity_preregistration")
+    snapshots = spec.get("source_snapshots") or {}
+    legacy = list(spec.get("superseded_legacy_diagnostics") or [])
+    source_catalog = spec.get("source_factor_catalog") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("capacity_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status") == "frozen_before_accepted_price_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T16:26:30Z"
+        and tuple(spec.get("factor_catalog") or []) == SPARSE_ANNOUNCEMENT_FACTOR_NAMES
+        and set(snapshots)
+        == {
+            "quarterly_quality",
+            "repurchase_plans",
+            "holder_count_changes",
+            "share_pledges",
+            "dividend_plans",
+        }
+        and all(snapshots[name].get("maximum_age_days") == 3 for name in SPARSE_ANNOUNCEMENT_SOURCE_FACTORS)
+        and {
+            name: tuple(source_catalog.get(name) or [])
+            for name in SPARSE_ANNOUNCEMENT_SOURCE_FACTORS
+        }
+        == SPARSE_ANNOUNCEMENT_SOURCE_FACTORS
+        and [item.get("run_id") for item in legacy]
+        == ["20260713T233314Z", "20260713T234343Z", "20260713T235418Z", "20260714T000612Z"]
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "minimum_valid_names_per_factor_cohort": 6,
+            "minimum_distinct_factor_values_per_cohort": 2,
+            "minimum_required_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "event_availability": "strictly next local trading day after announcement_date",
+            "price_basis_required_for_later_return_rebuild": REQUIRED_PRICE_BASIS,
+        }
+        and policy
+        == {
+            "open_close_or_forward_return_fields_allowed": False,
+            "count_only_quality_and_listing_seasoned_active_names": True,
+            "source_admitted_if_any_original_factor_meets_minimum_cohorts": True,
+            "admitted_source_must_rebuild_all_original_factors_together": True,
+            "failed_source_must_stop_without_return_rebuild": True,
+            "no_factor_direction_age_date_topk_or_minimum_cohort_override": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("sparse-announcement capacity preregistration does not match the frozen protocol")
+    return spec
+
+
+def validate_sparse_announcement_capacity_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Fingerprint-bind sparse announcement snapshots and invalid legacy diagnostics."""
+
+    snapshots = spec.get("source_snapshots") or {}
+    evidence: dict[str, Any] = {"source_snapshots": {}, "superseded_legacy_diagnostics": []}
+    for name, link in snapshots.items():
+        path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"sparse-announcement source or manifest is missing: {name}")
+        source_sha256 = file_sha256(path)
+        manifest_sha256 = file_sha256(manifest_path)
+        if source_sha256 != str(link.get("sha256") or ""):
+            raise ValueError(f"sparse-announcement source fingerprint mismatch: {path}")
+        if manifest_sha256 != str(link.get("manifest_sha256") or ""):
+            raise ValueError(f"sparse-announcement manifest fingerprint mismatch: {manifest_path}")
+        manifest = load_json_record(manifest_path)
+        if manifest.get("status") != "completed" or manifest.get("sha256") != source_sha256:
+            raise ValueError(f"sparse-announcement manifest does not accept its snapshot: {manifest_path}")
+        evidence["source_snapshots"][name] = {
+            "path": str(path),
+            "sha256": source_sha256,
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": manifest_sha256,
+        }
+
+    metadata_keys = {
+        "repurchase_plans": "repurchase_events",
+        "holder_count_changes": "holder_count_events",
+        "share_pledges": "pledge_events",
+        "dividend_plans": "dividend_plan_events",
+    }
+    for link in spec.get("superseded_legacy_diagnostics") or []:
+        path = resolve_repository_record_path(str(link.get("path") or ""))
+        if not path.exists():
+            raise FileNotFoundError(f"superseded sparse-announcement diagnostic is missing: {path}")
+        if file_sha256(path) != str(link.get("sha256") or ""):
+            raise ValueError(f"superseded sparse-announcement diagnostic fingerprint mismatch: {path}")
+        record = load_json_record(path)
+        source_name = str(link.get("source") or "")
+        factors = set(SPARSE_ANNOUNCEMENT_SOURCE_FACTORS.get(source_name, ()))
+        metadata = record.get(metadata_keys.get(source_name, "")) or {}
+        if (
+            str(record.get("run_id")) != str(link.get("run_id"))
+            or not factors
+            or not factors.issubset(set(record.get("factor_catalog") or []))
+            or metadata.get("sha256") != snapshots[source_name].get("sha256")
+            or (record.get("quality_gate") or {}).get("sha256")
+            != snapshots["quarterly_quality"].get("sha256")
+            or (record.get("data") or {}).get("price_basis") == REQUIRED_PRICE_BASIS
+            or (record.get("data") or {}).get("minimum_listing_sessions") == MIN_LISTING_SESSIONS
+        ):
+            raise ValueError(f"superseded sparse-announcement diagnostic is not frozen legacy evidence: {path}")
+        evidence["superseded_legacy_diagnostics"].append(
+            {
+                "run_id": record.get("run_id"),
+                "source": source_name,
+                "path": str(path),
+                "sha256": file_sha256(path),
+                "evidence_status": "invalid_legacy_price_basis_and_missing_listing_gate",
+            }
+        )
+    return evidence
 
 
 def _load_fingerprinted_json_link(
@@ -4633,7 +4783,13 @@ def apply_listing_seasoning_gate(
     return result
 
 
-def attach_quality_asof(market: pd.DataFrame, fundamentals: pd.DataFrame, max_age_days: int = 550) -> pd.DataFrame:
+def attach_quality_asof(
+    market: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    max_age_days: int = 550,
+    *,
+    availability_calendar: Iterable[Any] | None = None,
+) -> pd.DataFrame:
     """Attach only already-announced accounting data to every market row.
 
     The operation is performed on a combined per-instrument timeline instead
@@ -4645,7 +4801,14 @@ def attach_quality_asof(market: pd.DataFrame, fundamentals: pd.DataFrame, max_ag
     if missing := sorted(required_market - set(market.columns)):
         raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
     market = market.reset_index(drop=True).copy()
-    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(market["datetime"]).dropna().unique()))
+    calendar_values = (
+        pd.to_datetime(list(availability_calendar))
+        if availability_calendar is not None
+        else pd.to_datetime(market["datetime"]).dropna().unique()
+    )
+    calendar = pd.DatetimeIndex(calendar_values).normalize().unique().sort_values()
+    if calendar.empty:
+        raise ValueError("quality availability calendar must contain at least one session")
     events = attach_fundamental_accelerations(fundamentals)
     events["quality_effective_date"] = _first_trading_day_after(calendar, events["announcement_date"])
     events = events.dropna(subset=["quality_effective_date"])
@@ -7575,6 +7738,347 @@ def local_market_instrument_intervals(
     return calendar, {
         str(instrument): [(pd.Timestamp(span_start), pd.Timestamp(span_end)) for span_start, span_end in spans]
         for instrument, spans in intervals.items()
+    }
+
+
+def local_market_capacity_context(
+    provider_uri: Path,
+    *,
+    market: str,
+    start: str,
+    end: str,
+) -> tuple[
+    pd.DatetimeIndex,
+    pd.DatetimeIndex,
+    dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+]:
+    """Load calendars and full listing spans without requesting any price field."""
+
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    import qlib
+    from qlib.data import D
+
+    provider_uri = provider_uri.expanduser().resolve()
+    require_research_price_basis(provider_uri)
+    qlib.init(provider_uri=str(provider_uri), region="cn", kernels=1)
+    full_calendar = pd.DatetimeIndex(D.calendar(freq="day")).normalize().unique().sort_values()
+    research_calendar = pd.DatetimeIndex(
+        D.calendar(start_time=start, end_time=end, freq="day")
+    ).normalize().unique().sort_values()
+    raw_intervals = D.list_instruments(D.instruments(market=market), as_list=False)
+    intervals = {
+        str(instrument): [
+            (pd.Timestamp(span_start).normalize(), pd.Timestamp(span_end).normalize())
+            for span_start, span_end in spans
+        ]
+        for instrument, spans in raw_intervals.items()
+    }
+    if full_calendar.empty or research_calendar.empty or not intervals:
+        raise RuntimeError("capacity audit requires non-empty calendars and instrument spans")
+    return full_calendar, research_calendar, intervals
+
+
+def sparse_announcement_source_capacity(
+    events: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    research_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    source_name: str,
+    event_columns: Iterable[str],
+    factor_raw_columns: dict[str, str],
+    max_age_days: int,
+    hold_days: int,
+    topk: int,
+    minimum_required_cohorts: int,
+    maximum_quality_age_days: int,
+) -> dict[str, Any]:
+    """Count factor-ready event cohorts without accepting or loading any price outcome."""
+
+    expected_factors = tuple(SPARSE_ANNOUNCEMENT_SOURCE_FACTORS.get(source_name, ()))
+    if not expected_factors or tuple(factor_raw_columns) != expected_factors:
+        raise ValueError(f"unknown or incomplete sparse-announcement source catalog: {source_name}")
+    if max_age_days < 0 or hold_days < 1 or topk < 1 or minimum_required_cohorts < 1:
+        raise ValueError("capacity age, holding period, TopK, and minimum cohorts must be valid")
+    minimum_names = max(2, 2 * topk)
+    sessions = pd.DatetimeIndex(research_calendar).normalize().unique().sort_values()
+    availability_calendar = pd.DatetimeIndex(full_calendar).normalize().unique().sort_values()
+    if len(sessions) <= hold_days + 1:
+        raise ValueError("capacity research calendar is too short")
+    rebalances = sessions[: -(hold_days + 1) : hold_days]
+    required_event_columns = tuple(event_columns)
+    if missing := sorted(set(required_event_columns) - set(events.columns)):
+        raise ValueError(f"{source_name} capacity events are missing columns: {', '.join(missing)}")
+
+    source = events.loc[:, list(required_event_columns)].copy()
+    source["announcement_date"] = pd.to_datetime(source["announcement_date"]).dt.normalize()
+    source["event_effective_date"] = _first_trading_day_after(
+        availability_calendar, source["announcement_date"]
+    )
+    source = source.dropna(subset=["instrument", "announcement_date", "event_effective_date"])
+    source = source.sort_values(
+        ["instrument", "event_effective_date", "announcement_date"], kind="stable"
+    ).drop_duplicates(["instrument", "event_effective_date"], keep="last")
+    source = source.loc[
+        source["event_effective_date"].le(rebalances[-1])
+        & source["event_effective_date"].add(pd.Timedelta(days=max_age_days)).ge(rebalances[0])
+    ].copy()
+
+    expanded: list[dict[str, Any]] = []
+    payload_columns = [column for column in required_event_columns if column != "announcement_date"]
+    for row in source.itertuples(index=False):
+        effective_date = pd.Timestamp(row.event_effective_date).normalize()
+        first = int(rebalances.searchsorted(effective_date, side="left"))
+        last = int(
+            rebalances.searchsorted(
+                effective_date + pd.Timedelta(days=max_age_days), side="right"
+            )
+        )
+        payload = {column: getattr(row, column) for column in payload_columns}
+        for rebalance_date in rebalances[first:last]:
+            expanded.append(
+                {
+                    **payload,
+                    "datetime": pd.Timestamp(rebalance_date),
+                    "event_effective_date": effective_date,
+                    "event_age_days": int((pd.Timestamp(rebalance_date) - effective_date).days),
+                }
+            )
+    candidate_columns = [
+        "instrument",
+        "datetime",
+        "event_effective_date",
+        "event_age_days",
+        *[column for column in payload_columns if column != "instrument"],
+    ]
+    candidates = pd.DataFrame(expanded, columns=candidate_columns)
+    if candidates.empty:
+        factor_capacity = {
+            factor: {
+                "potential_complete_cohorts": 0,
+                "potential_complete_cohorts_by_year": {},
+                "capacity_gate_passed": False,
+            }
+            for factor in expected_factors
+        }
+        return {
+            "source": source_name,
+            "source_event_rows": int(len(events)),
+            "candidate_event_rows": 0,
+            "quality_and_listing_eligible_event_rows": 0,
+            "factor_capacity": factor_capacity,
+            "source_admitted_for_return_rebuild": False,
+        }
+
+    candidates = candidates.sort_values(
+        ["instrument", "datetime", "event_effective_date"], kind="stable"
+    ).drop_duplicates(["instrument", "datetime"], keep="last")
+
+    def active_on_date(row: Any) -> bool:
+        signal_date = pd.Timestamp(row.datetime).normalize()
+        return any(
+            start <= signal_date <= end
+            for start, end in instrument_intervals.get(str(row.instrument), [])
+        )
+
+    candidates["instrument_active"] = [active_on_date(row) for row in candidates.itertuples(index=False)]
+    candidates = candidates.loc[candidates["instrument_active"]].copy()
+    candidates = attach_listing_age_sessions(candidates, instrument_intervals, availability_calendar)
+    candidates = attach_quality_asof(
+        candidates,
+        fundamentals,
+        max_age_days=maximum_quality_age_days,
+        availability_calendar=availability_calendar,
+    )
+    eligible = candidates.loc[candidates["quality_eligible"].fillna(False)].copy()
+
+    factor_capacity: dict[str, dict[str, Any]] = {}
+    for factor, raw_column in factor_raw_columns.items():
+        if raw_column not in eligible.columns:
+            raise ValueError(f"capacity raw factor column is missing: {raw_column}")
+        valid = eligible.loc[pd.to_numeric(eligible[raw_column], errors="coerce").notna()].copy()
+        valid["_factor_value"] = pd.to_numeric(valid[raw_column], errors="coerce")
+        cross_sections = valid.groupby("datetime", sort=True).agg(
+            valid_names=("instrument", "nunique"),
+            distinct_factor_values=("_factor_value", "nunique"),
+        )
+        complete = cross_sections.loc[
+            cross_sections["valid_names"].ge(minimum_names)
+            & cross_sections["distinct_factor_values"].ge(2)
+        ]
+        by_year = {
+            str(int(year)): int(count)
+            for year, count in complete.groupby(complete.index.year).size().items()
+        }
+        cohort_count = int(len(complete))
+        factor_capacity[factor] = {
+            "raw_column": raw_column,
+            "valid_factor_rows": int(len(valid)),
+            "event_dates_with_any_valid_name": int(len(cross_sections)),
+            "potential_complete_cohorts": cohort_count,
+            "potential_complete_cohorts_by_year": by_year,
+            "capacity_gate_passed": cohort_count >= minimum_required_cohorts,
+        }
+    admitted = any(item["capacity_gate_passed"] for item in factor_capacity.values())
+    return {
+        "source": source_name,
+        "source_event_rows": int(len(events)),
+        "candidate_event_rows": int(len(candidates)),
+        "quality_and_listing_eligible_event_rows": int(len(eligible)),
+        "factor_capacity": factor_capacity,
+        "source_admitted_for_return_rebuild": admitted,
+    }
+
+
+def require_unconsumed_sparse_announcement_capacity(experiment_root: Path) -> None:
+    """Prevent duplicate evidence for the same immutable no-return capacity protocol."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_sparse_announcement_capacity_audit.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE:
+            raise ValueError(f"sparse-announcement capacity protocol is already consumed: {path}")
+
+
+def run_sparse_announcement_capacity_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen four-source capacity gate without reading any price field."""
+
+    spec = load_sparse_announcement_capacity_preregistration()
+    source_evidence = validate_sparse_announcement_capacity_sources(spec)
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_sparse_announcement_capacity(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    provider_uri = Path(args.provider_uri).expanduser()
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market="buyable_main_chinext",
+        start=contract["start"],
+        end=contract["end"],
+    )
+    fundamentals = load_fundamentals(
+        resolve_repository_record_path(snapshots["quarterly_quality"]["path"])
+    )
+    source_inputs = {
+        "repurchase_plans": (
+            load_repurchase_plan_events(
+                resolve_repository_record_path(snapshots["repurchase_plans"]["path"])
+            ),
+            REPURCHASE_EVENT_COLUMNS,
+            {
+                "repurchase_planned_share_ratio": "repurchase_planned_share_ratio",
+                "repurchase_planned_amount": "repurchase_planned_amount",
+                "repurchase_freshness": "event_age_days",
+            },
+        ),
+        "holder_count_changes": (
+            load_holder_count_events(
+                resolve_repository_record_path(snapshots["holder_count_changes"]["path"])
+            ),
+            HOLDER_COUNT_EVENT_COLUMNS,
+            {
+                "holder_count_change_ratio": "holder_count_change_ratio",
+                "holder_count_change_absolute": "holder_count_change_absolute",
+                "holder_count_freshness": "event_age_days",
+            },
+        ),
+        "share_pledges": (
+            load_pledge_events(
+                resolve_repository_record_path(snapshots["share_pledges"]["path"])
+            ),
+            PLEDGE_EVENT_COLUMNS,
+            {
+                "pledge_share_count": "pledge_share_count",
+                "pledge_total_share_ratio": "pledge_total_share_ratio",
+                "pledge_event_count": "pledge_event_count",
+                "pledge_freshness": "event_age_days",
+            },
+        ),
+        "dividend_plans": (
+            load_dividend_plan_events(
+                resolve_repository_record_path(snapshots["dividend_plans"]["path"])
+            ),
+            DIVIDEND_PLAN_EVENT_COLUMNS,
+            {
+                "dividend_cash_per_ten": "dividend_cash_per_ten",
+                "dividend_share_ratio": "dividend_share_ratio",
+                "dividend_plan_event_count": "dividend_plan_event_count",
+                "dividend_plan_freshness": "event_age_days",
+            },
+        ),
+    }
+    source_capacity = {
+        source_name: sparse_announcement_source_capacity(
+            events,
+            fundamentals,
+            full_calendar,
+            research_calendar,
+            intervals,
+            source_name=source_name,
+            event_columns=event_columns,
+            factor_raw_columns=factor_raw_columns,
+            max_age_days=snapshots[source_name]["maximum_age_days"],
+            hold_days=contract["holding_period_trading_days"],
+            topk=contract["topk"],
+            minimum_required_cohorts=contract["minimum_required_cohorts"],
+            maximum_quality_age_days=contract["maximum_quality_age_days"],
+        )
+        for source_name, (events, event_columns, factor_raw_columns) in source_inputs.items()
+    }
+    admitted_sources = [
+        source_name
+        for source_name in SPARSE_ANNOUNCEMENT_SOURCE_FACTORS
+        if source_capacity[source_name]["source_admitted_for_return_rebuild"]
+    ]
+    rejected_sources = [
+        source_name for source_name in SPARSE_ANNOUNCEMENT_SOURCE_FACTORS if source_name not in admitted_sources
+    ]
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE,
+        "preregistration": {
+            "path": str(DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": list(SPARSE_ANNOUNCEMENT_FACTOR_NAMES),
+        "run_contract": contract,
+        "source_capacity": source_capacity,
+        "admitted_sources_for_return_rebuild": admitted_sources,
+        "rejected_sources_without_return_rebuild": rejected_sources,
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "full_calendar_start": full_calendar.min().date().isoformat(),
+            "research_calendar_start": research_calendar.min().date().isoformat(),
+            "research_calendar_end": research_calendar.max().date().isoformat(),
+            "instrument_span_count": int(len(intervals)),
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Capacity is an upper bound before next-open and exit-close completeness; passing does not imply association or tradability.",
+            "The public event snapshots can contain later revisions and are not exchange-grade point-in-time disclosures.",
+            "The current listing universe can introduce survivorship bias even though full provider spans season listings.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_sparse_announcement_capacity_audit.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "admitted_sources_for_return_rebuild": admitted_sources,
+        "rejected_sources_without_return_rebuild": rejected_sources,
+        "forward_return_fields_read": False,
     }
 
 
@@ -14581,6 +15085,15 @@ def parse_args() -> argparse.Namespace:
         "--minimum-cohorts", type=int, default=QUARTERLY_EVENT_CAPACITY_MIN_COHORTS
     )
 
+    sparse_announcement_capacity = subparsers.add_parser(
+        "sparse-announcement-capacity-audit",
+        help="run the frozen four-source announcement-factor capacity gate without price outcomes",
+    )
+    sparse_announcement_capacity.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    sparse_announcement_capacity.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -15055,6 +15568,8 @@ def main() -> int:
         report = run_quarterly_profit_acceleration_event_audit(args)
     elif args.command == "quarterly-event-capacity-audit":
         report = run_quarterly_event_capacity_audit(args)
+    elif args.command == "sparse-announcement-capacity-audit":
+        report = run_sparse_announcement_capacity_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":
