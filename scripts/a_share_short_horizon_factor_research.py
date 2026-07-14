@@ -1160,6 +1160,11 @@ FACTOR_DIAGNOSTIC_BUCKET_COUNT = 5
 SELECTION_MULTIPLICITY_DEFAULT_BOOTSTRAP_REPLICATES = 1000
 SELECTION_MULTIPLICITY_DEFAULT_BLOCK_COHORTS = 5
 SELECTION_MULTIPLICITY_DEFAULT_SEED = 17
+LIMIT_LIKE_MAIN_RETURN_THRESHOLD = 0.095
+LIMIT_LIKE_CHINEXT_RETURN_THRESHOLD = 0.195
+LIMIT_LIKE_CLOSE_TO_HIGH_MIN = 0.995
+LIMIT_LIKE_EVENT_MIN_COHORTS = 200
+LIMIT_LIKE_EVENT_MAX_DRAWDOWN = -0.20
 
 
 def candidate_library(library_id: str) -> tuple[Candidate, ...]:
@@ -5722,6 +5727,255 @@ def run_selection_multiplicity_audit(args: argparse.Namespace) -> dict[str, Any]
     }
 
 
+def limit_like_return_threshold(instruments: pd.Series) -> pd.Series:
+    """Return the fixed daily-return hurdle for a limit-like close event.
+
+    This is deliberately a *limit-like* heuristic rather than an exchange
+    limit-up flag: the daily Qlib quotes cannot model every board rule, ST
+    exception, corporate-action adjustment, or order-book fill.  ChiNext
+    symbols use the 19.5% hurdle; the remaining buyable main-board symbols use
+    9.5%.  STAR symbols are outside the holding universe.
+    """
+
+    normalized = instruments.astype(str)
+    chinext = normalized.str.startswith(("SZ300", "SZ301"), na=False)
+    return pd.Series(
+        np.where(chinext, LIMIT_LIKE_CHINEXT_RETURN_THRESHOLD, LIMIT_LIKE_MAIN_RETURN_THRESHOLD),
+        index=instruments.index,
+        dtype=float,
+    )
+
+
+def limit_like_event_mask(frame: pd.DataFrame) -> pd.Series:
+    """Identify fixed close-known strong-close events without future price use."""
+
+    required = {"instrument", "momentum_1", "close_to_high"}
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError("limit-like event frame is missing columns: " + ", ".join(missing))
+    momentum = pd.to_numeric(frame["momentum_1"], errors="coerce")
+    close_to_high = pd.to_numeric(frame["close_to_high"], errors="coerce")
+    threshold = limit_like_return_threshold(frame["instrument"])
+    return momentum.ge(threshold) & close_to_high.ge(LIMIT_LIKE_CLOSE_TO_HIGH_MIN)
+
+
+def limit_like_event_rounds(
+    ranked: pd.DataFrame,
+    *,
+    hold_days: int,
+    topk: int,
+    open_cost: float,
+    close_cost: float,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Evaluate the fixed limit-like continuation basket on non-overlapping cohorts.
+
+    On each eligible signal close, eligible limit-like events are ranked only
+    by same-close one-day turnover surge.  The first ``topk`` form one basket,
+    which enters at the next local open and exits on the close after
+    ``hold_days`` sessions.  Fewer than a complete declared basket are cash,
+    not silently filled with non-event stocks.
+    """
+
+    if hold_days < 1 or topk < 1:
+        raise ValueError("hold_days and topk must both be positive")
+    required = {
+        "datetime",
+        "instrument",
+        "open",
+        "close",
+        "momentum_1",
+        "close_to_high",
+        "turnover_surge_1",
+        "quality_eligible",
+    }
+    missing = sorted(required - set(ranked.columns))
+    if missing:
+        raise ValueError("limit-like event audit is missing fields: " + ", ".join(missing))
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(ranked["datetime"]).dropna().unique()))
+    if len(calendar) <= hold_days + 1:
+        raise ValueError("research window is too short for the requested holding period")
+    date_to_position = {date: position for position, date in enumerate(calendar)}
+    rebalances = calendar[: -(hold_days + 1) : hold_days]
+    base = ranked.loc[
+        ranked["quality_eligible"].fillna(False) & ranked["datetime"].isin(rebalances)
+    ].copy()
+    base["limit_like_event"] = limit_like_event_mask(base)
+    events = base.loc[base["limit_like_event"]].copy()
+    events["turnover_surge_1"] = pd.to_numeric(events["turnover_surge_1"], errors="coerce")
+    events = events.dropna(subset=["turnover_surge_1"])
+    events = events.sort_values(
+        ["datetime", "turnover_surge_1", "momentum_1", "instrument"],
+        ascending=[True, False, False, True],
+        kind="stable",
+    )
+    selected = events.groupby("datetime", sort=False).head(topk).copy()
+    selected["entry_date"] = selected["datetime"].map(lambda value: calendar[date_to_position[value] + 1])
+    selected["exit_date"] = selected["datetime"].map(lambda value: calendar[date_to_position[value] + hold_days])
+    quotes = ranked[["datetime", "instrument", "open", "close"]].drop_duplicates(["datetime", "instrument"])
+    entry = quotes.rename(columns={"datetime": "entry_date", "open": "entry_open"})[
+        ["entry_date", "instrument", "entry_open"]
+    ]
+    exit_quote = quotes.rename(columns={"datetime": "exit_date", "close": "exit_close"})[
+        ["exit_date", "instrument", "exit_close"]
+    ]
+    trades = selected.merge(entry, on=["entry_date", "instrument"], how="left")
+    trades = trades.merge(exit_quote, on=["exit_date", "instrument"], how="left")
+    trades = trades.dropna(subset=["entry_open", "exit_close"])
+    trades = trades.loc[(trades["entry_open"] > 0.0) & (trades["exit_close"] > 0.0)].copy()
+    trades["gross_return"] = trades["exit_close"] / trades["entry_open"] - 1.0
+    trades["net_return"] = (1.0 - open_cost) * (1.0 + trades["gross_return"]) * (1.0 - close_cost) - 1.0
+    minimum_holdings = minimum_required_holdings(topk)
+    rounds = (
+        trades.groupby(["datetime", "entry_date", "exit_date"], as_index=False, sort=True)
+        .agg(
+            gross_return=("gross_return", "mean"),
+            net_return=("net_return", "mean"),
+            holdings=("instrument", "nunique"),
+        )
+        .rename(columns={"datetime": "signal_date"})
+    )
+    rounds = rounds.loc[rounds["holdings"] >= minimum_holdings].copy()
+    rounds["regime_active"] = True
+    rounds = rounds.sort_values("signal_date", kind="stable").reset_index(drop=True)
+    event_dates = events["datetime"].nunique()
+    status = {
+        "eligible_rebalance_cohorts": int(len(rebalances)),
+        "event_rebalance_cohorts": int(event_dates),
+        "complete_executable_cohorts": int(len(rounds)),
+        "discarded_incomplete_or_unquoted_event_cohorts": int(max(event_dates - len(rounds), 0)),
+    }
+    return rounds, status
+
+
+def limit_like_event_decision(rounds: pd.DataFrame, hold_days: int) -> dict[str, Any]:
+    """Apply a fixed direct-event viability gate without selecting a strategy."""
+
+    performance = return_metrics(rounds, hold_days)
+    by_year = {
+        str(year): return_metrics(group, hold_days)
+        for year, group in rounds.groupby(rounds["signal_date"].dt.year, sort=True)
+    }
+    annual_net_returns = {
+        year: metrics.get("net_cumulative_return") for year, metrics in by_year.items()
+    }
+    failures: list[str] = []
+    if performance["rounds"] < LIMIT_LIKE_EVENT_MIN_COHORTS:
+        failures.append(f"fewer than {LIMIT_LIKE_EVENT_MIN_COHORTS} executable event cohorts")
+    if performance["net_cumulative_return"] is None or performance["net_cumulative_return"] <= 0.0:
+        failures.append("non-positive event-basket net cumulative return")
+    if performance["max_drawdown"] is None or performance["max_drawdown"] < LIMIT_LIKE_EVENT_MAX_DRAWDOWN:
+        failures.append(f"event-basket maximum drawdown worse than {LIMIT_LIKE_EVENT_MAX_DRAWDOWN:.0%}")
+    if len(by_year) < FACTOR_STABILITY_MIN_CALENDAR_YEARS:
+        failures.append(f"fewer than {FACTOR_STABILITY_MIN_CALENDAR_YEARS} observed calendar years")
+    non_positive_years = [
+        year for year, value in annual_net_returns.items() if value is None or float(value) <= 0.0
+    ]
+    if non_positive_years:
+        failures.append("non-positive annual event-basket net cumulative return: " + ", ".join(non_positive_years))
+    return {
+        "passed": not failures,
+        "failures": failures,
+        "performance": performance,
+        "by_signal_year": by_year,
+        "criteria": {
+            "minimum_executable_event_cohorts": LIMIT_LIKE_EVENT_MIN_COHORTS,
+            "net_cumulative_return_gt": 0.0,
+            "max_drawdown_gte": LIMIT_LIKE_EVENT_MAX_DRAWDOWN,
+            "minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "every_observed_calendar_year_net_cumulative_return_gt": 0.0,
+        },
+    }
+
+
+def run_limit_like_event_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Run one fixed development-only strong-close event hypothesis audit."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    if market["datetime"].max() > pd.Timestamp(args.development_end):
+        raise ValueError(
+            "limit-like-event-audit is development-only; pass --end no later than --development-end"
+        )
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = rank_factor_frame(market)
+    rounds, cohort_status = limit_like_event_rounds(
+        ranked,
+        hold_days=args.hold_days,
+        topk=args.topk,
+        open_cost=args.open_cost,
+        close_cost=args.close_cost,
+    )
+    decision = limit_like_event_decision(rounds, args.hold_days)
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "development_only_limit_like_strong_close_event_audit_research_not_investment_advice",
+        "hypothesis": {
+            "name": "limit_like_strong_close_high_turnover_continuation",
+            "statement": (
+                "Among quality-eligible stocks with a fixed limit-like same-close return and close-near-high event, "
+                "the three highest same-day turnover-surges form a next-open to third-close continuation basket."
+            ),
+            "direction": "continuation",
+        },
+        "definition": {
+            "main_board_daily_return_gte": LIMIT_LIKE_MAIN_RETURN_THRESHOLD,
+            "chinext_daily_return_gte": LIMIT_LIKE_CHINEXT_RETURN_THRESHOLD,
+            "chinext_symbol_prefixes": ["SZ300", "SZ301"],
+            "close_to_high_gte": LIMIT_LIKE_CLOSE_TO_HIGH_MIN,
+            "within_event_selection": "descending same-close turnover_surge_1, then momentum_1, then instrument",
+            "incomplete_baskets": "discarded; non-event stocks never fill a basket",
+        },
+        "strategy_timing": {
+            "universe": "buyable_main_chinext",
+            "holding_period_trading_days": args.hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "topk": args.topk,
+            "signal_time": "market close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "open_cost": args.open_cost,
+            "close_cost": args.close_cost,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": args.max_quality_age_days,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "development_end": args.development_end,
+            "test_period_used": False,
+            **cohort_status,
+        },
+        "result": decision,
+        "limitations": [
+            "This is a fixed development-only event audit, not a strategy registration, stock list, or trading recommendation.",
+            "Limit-like events are inferred from qfq daily price fields and are not official exchange limit-up flags.",
+            "The audit cannot determine whether a next-open order would be blocked by a limit, suspension, queue, or liquidity condition.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_limit_like_event_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "passed": decision["passed"],
+        "executable_event_cohorts": decision["performance"]["rounds"],
+        "net_cumulative_return": decision["performance"]["net_cumulative_return"],
+        "max_drawdown": decision["performance"]["max_drawdown"],
+    }
+
+
 def forward_factor_return_frame(ranked: pd.DataFrame, hold_days: int) -> pd.DataFrame:
     """Pair every close-known eligible signal with its next-open three-day return.
 
@@ -7123,6 +7377,37 @@ def load_selection_multiplicity_audits(experiment_root: Path) -> list[dict[str, 
     return audits
 
 
+def load_limit_like_event_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read fixed strong-close event audits for the human research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_limit_like_event_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        data = audit.get("data") or {}
+        result = audit.get("result") or {}
+        performance = result.get("performance") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "event_cohorts": int(performance.get("rounds") or 0),
+                "event_signal_cohorts": int(data.get("event_rebalance_cohorts") or 0),
+                "net_cumulative_return": performance.get("net_cumulative_return"),
+                "max_drawdown": performance.get("max_drawdown"),
+                "passed": bool(result.get("passed", False)),
+                "test_period_used": bool(data.get("test_period_used", False)),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -7463,6 +7748,7 @@ def render_three_day_research_report(
     factor_stability_audits: list[dict[str, Any]] | None = None,
     factor_topk_viability_audits: list[dict[str, Any]] | None = None,
     selection_multiplicity_audits: list[dict[str, Any]] | None = None,
+    limit_like_event_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -7714,6 +8000,33 @@ def render_three_day_research_report(
                     convention=audit["drawdown_convention"],
                     replicates=audit["replicates"],
                     block=audit["block_cohorts"],
+                    uses_test="是（无效记录）" if audit["test_period_used"] else "否",
+                )
+            )
+        lines.append("")
+    if limit_like_event_audits:
+        lines.extend(
+            [
+                "",
+                "## 限价样强势收盘事件审计",
+                "",
+                "该审计固定使用主板 9.5% / 创业板 19.5% 同日收益、收盘距日高不超过 0.5%，仅在事件内按同日换手异常度取完整 Top‑3，次日开盘进入、第 3 日收盘退出。它不是官方涨停识别，不能模拟次日开盘封板、停牌或排队成交；结果只用于淘汰或形成后续独立前瞻假设。",
+                "",
+                "| 审计 | 开发期 | 事件日 / 可执行 Cohort | 净累计收益 | 最大回撤 | 固定门槛结论 | 测试期参与 |",
+                "| --- | --- | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        for audit in limit_like_event_audits:
+            lines.append(
+                "| {run_id} | {start} 至 {end} | {signals} / {cohorts} | {net} | {mdd} | {conclusion} | {uses_test} |".format(
+                    run_id=audit["run_id"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    signals=audit["event_signal_cohorts"],
+                    cohorts=audit["event_cohorts"],
+                    net=_percent(audit["net_cumulative_return"]),
+                    mdd=_percent(audit["max_drawdown"]),
+                    conclusion="通过（仍不可直接选股）" if audit["passed"] else "不通过（停止）",
                     uses_test="是（无效记录）" if audit["test_period_used"] else "否",
                 )
             )
@@ -8079,6 +8392,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     event_factor_holdouts = load_event_factor_holdouts(experiment_root)
     walk_forward_selection_audits = load_walk_forward_selection_audits(experiment_root)
     selection_multiplicity_audits = load_selection_multiplicity_audits(experiment_root)
+    limit_like_event_audits = load_limit_like_event_audits(experiment_root)
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -8110,6 +8424,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         factor_stability_audits,
         factor_topk_viability_audits,
         selection_multiplicity_audits,
+        limit_like_event_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -8134,6 +8449,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "event_factor_holdouts": len(event_factor_holdouts),
         "walk_forward_selection_audits": len(walk_forward_selection_audits),
         "selection_multiplicity_audits": len(selection_multiplicity_audits),
+        "limit_like_event_audits": len(limit_like_event_audits),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
         "model_audits": len(model_audits),
@@ -10399,6 +10715,23 @@ def parse_args() -> argparse.Namespace:
     )
     selection_multiplicity_audit.add_argument("--seed", type=int, default=SELECTION_MULTIPLICITY_DEFAULT_SEED)
 
+    limit_like_event_audit = subparsers.add_parser(
+        "limit-like-event-audit",
+        help="test the fixed development-only limit-like strong-close continuation event",
+    )
+    limit_like_event_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    limit_like_event_audit.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    limit_like_event_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    limit_like_event_audit.add_argument("--start", default="2019-01-01")
+    limit_like_event_audit.add_argument("--end", default="2025-12-31")
+    limit_like_event_audit.add_argument("--development-end", default="2025-12-31")
+    limit_like_event_audit.add_argument("--hold-days", type=int, default=3)
+    limit_like_event_audit.add_argument("--topk", type=int, default=3)
+    limit_like_event_audit.add_argument("--open-cost", type=float, default=0.00012)
+    limit_like_event_audit.add_argument("--close-cost", type=float, default=0.00062)
+    limit_like_event_audit.add_argument("--max-quality-age-days", type=int, default=550)
+    limit_like_event_audit.add_argument("--batch-size", type=int, default=500)
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -10820,6 +11153,8 @@ def main() -> int:
         report = run_factor_topk_viability_audit(args)
     elif args.command == "selection-multiplicity-audit":
         report = run_selection_multiplicity_audit(args)
+    elif args.command == "limit-like-event-audit":
+        report = run_limit_like_event_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":

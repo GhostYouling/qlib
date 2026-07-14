@@ -2068,6 +2068,85 @@ def test_selection_multiplicity_infers_legacy_drawdown_only_for_historical_repro
     assert RESEARCH.pooled_return_drawdown_scores(returns, 3, observed)[0] < legacy_scores[0]
 
 
+def test_limit_like_event_mask_uses_distinct_main_and_chinext_hurdles():
+    frame = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ300001", "SZ300002", "SZ000002"],
+            "momentum_1": [0.096, 0.196, 0.194, 0.12],
+            "close_to_high": [0.996, 0.999, 0.999, 0.994],
+        }
+    )
+    assert RESEARCH.limit_like_event_mask(frame).tolist() == [True, True, False, False]
+
+
+def test_limit_like_event_rounds_select_turnover_ranked_complete_next_open_basket():
+    dates = pd.bdate_range("2024-01-02", periods=6)
+    rows = []
+    for position, date in enumerate(dates):
+        for instrument, turnover in (
+            ("SZ000001", 2.0),
+            ("SZ000002", 4.0),
+            ("SZ000003", 3.0),
+            ("SZ300001", 5.0),
+        ):
+            is_event = position == 0 and instrument != "SZ300001"
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "open": 10.0,
+                    "close": 11.0 if position == 3 else 10.0,
+                    "momentum_1": 0.10 if is_event else 0.01,
+                    "close_to_high": 0.999 if is_event else 0.98,
+                    "turnover_surge_1": turnover,
+                    "quality_eligible": True,
+                }
+            )
+    rounds, status = RESEARCH.limit_like_event_rounds(
+        pd.DataFrame(rows), hold_days=3, topk=3, open_cost=0.0, close_cost=0.0
+    )
+    assert status == {
+        "eligible_rebalance_cohorts": 1,
+        "event_rebalance_cohorts": 1,
+        "complete_executable_cohorts": 1,
+        "discarded_incomplete_or_unquoted_event_cohorts": 0,
+    }
+    assert len(rounds) == 1
+    assert rounds.iloc[0]["holdings"] == 3
+    assert rounds.iloc[0]["gross_return"] == pytest.approx(0.10)
+    assert rounds.iloc[0]["net_return"] == pytest.approx(0.10)
+    assert "fewer than 200 executable event cohorts" in RESEARCH.limit_like_event_decision(rounds, 3)["failures"]
+
+
+def test_limit_like_event_audits_are_retained_without_strategy_promotion(tmp_path):
+    (tmp_path / "20260714T000000Z_limit_like_event_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "limit-like",
+                "status": "completed",
+                "data": {
+                    "calendar_start": "2019-01-02",
+                    "calendar_end": "2025-12-31",
+                    "event_rebalance_cohorts": 220,
+                    "test_period_used": False,
+                },
+                "result": {
+                    "passed": False,
+                    "performance": {"rounds": 205, "net_cumulative_return": -0.02, "max_drawdown": -0.22},
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_limit_like_event_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, limit_like_event_audits=audits
+    )
+    assert "限价样强势收盘事件审计" in report
+    assert "limit-like" in report
+    assert "不通过（停止）" in report
+
+
 def test_research_report_marks_non_promotable_historical_diagnostics():
     registry = {
         "iterations": [
