@@ -436,6 +436,26 @@ python scripts/a_share_short_horizon_factor_research.py run \
   --iteration-label v9_compression_reversal_historical_diagnostic
 ```
 
+在分钟/资金流授权尚未完成时，下一项独立预注册假设为 `signed_volume_pressure_5`。它先计算每日收盘位置
+`(2×close−high−low)/(high−low)`，再用当日成交量对最近 5 个交易日加权；高值表示成交量持续集中在收盘靠近日内高点的交易日。方向固定为“正压力代表短期买方积累，预期次日开盘至第 3 个交易日收盘收益更高”。这里只测试 5 日窗口、正方向和一个因子，不改成 3/10 日、不反向，也不与旧候选库组合。高低价相等导致的无定义值保持缺失。
+
+该因子仍只是日线资金流代理，不冒充逐笔资金流或 Level‑2。先使用固定的 2019–2025 开发期、质量可用股票、非重叠三日 cohort 和既有交易成本，单独运行诊断及两道门槛；`--factor` 保证本轮不查看其他旧因子排名来形成新的组合：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --factor signed_volume_pressure_5
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor signed_volume_pressure_5
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor signed_volume_pressure_5
+```
+
+只有跨年至少 5 年、至少 200 个 cohort、总体与逐年 Rank IC 均为正、正 IC 比例超过 50%、Top‑3 相对 Bottom‑3 毛差为正，并且 Top‑3 每年及总体扣费收益为正、最大回撤不差于 −20%，才允许提出下一项预注册组合。失败则原方向淘汰，不用反向或替代窗口重测。
+
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge、浅层 LightGBM 回归和浅层 LightGBM LambdaRank 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票；LambdaRank 只在训练样本内按每个信号日的后续收益分为五档，直接学习横截面排序，绝不把未来标签带入评分时点。
 
 默认审计还将每种模型与三个**预先固定、收盘可知**的市场状态组合：始终交易、20 日广度为正、以及“20 日广度为正且波动不高于严格追溯的 75 分位”。这不是在全部状态中事后挑选；三种状态均来自已有的因子研究定义，并在同一开发期规则下和模型一起参与选择。停用状态时该轮完整按现金记录，不会用别的日期或股票替换。

@@ -805,6 +805,7 @@ def test_rank_factor_frame_excludes_expired_event_values():
         "near_high_20",
         "intraday_strength",
         "close_to_high",
+        "signed_volume_pressure_5",
         "roe",
         "revenue_yoy",
         "profit_yoy",
@@ -858,6 +859,8 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert active["free_float_cap_small"] == pytest.approx(0.0)
     assert expired["up_day_consistency_5"] == pytest.approx(0.5)
     assert active["up_day_consistency_5"] == pytest.approx(1.0)
+    assert expired["signed_volume_pressure_5"] == pytest.approx(0.5)
+    assert active["signed_volume_pressure_5"] == pytest.approx(1.0)
 
 
 def test_winner_uses_development_only():
@@ -1423,6 +1426,7 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
         "profit_yoy_acceleration",
         "free_float_cap_small",
         "up_day_consistency_5",
+        "signed_volume_pressure_5",
     }
     assert expected.issubset(RESEARCH.FACTOR_DIAGNOSTIC_COLUMNS)
     assert expected.issubset(RESEARCH.EXPLORATORY_DIAGNOSTIC_FACTORS)

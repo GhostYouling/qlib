@@ -1147,6 +1147,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "profit_yoy_acceleration",
     "free_float_cap_small",
     "up_day_consistency_5",
+    "signed_volume_pressure_5",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -4308,6 +4309,14 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
         "near_high_20": "$close/Max($high, 20) - 1",
         "intraday_strength": "$close/$open - 1",
         "close_to_high": "$close/$high",
+        # Five-day close-location value weighted by each session's volume.
+        # The sign is positive when volume repeatedly trades on bars that
+        # finish nearer their high than their low.  This is a close-known
+        # daily proxy for accumulation, not a substitute for licensed order
+        # flow or Level-2 data.
+        "signed_volume_pressure_5": (
+            "Sum($volume*(2*$close-$high-$low)/($high-$low), 5)/Sum($volume, 5)"
+        ),
     }
     frames: list[pd.DataFrame] = []
     expressions = list(fields.values())
@@ -4398,6 +4407,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "near_high_20",
         "intraday_strength",
         "close_to_high",
+        "signed_volume_pressure_5",
         "roe",
         "revenue_yoy",
         "profit_yoy",
@@ -4518,6 +4528,12 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     # rank that could dominate a factor diagnostic.
     result["free_float_cap_proxy"] = result["free_float_cap_proxy"].where(
         np.isfinite(result["free_float_cap_proxy"])
+    )
+    # A flat bar has a zero high-low denominator in the source expression.
+    # Keep such observations missing rather than letting +/-inf obtain an
+    # artificial extreme rank.
+    result["signed_volume_pressure_5"] = result["signed_volume_pressure_5"].where(
+        np.isfinite(result["signed_volume_pressure_5"])
     )
     # Event rows are forward-filled only so each row retains the event context
     # for auditing.  Once the explicitly declared event window expires, those
@@ -4664,6 +4680,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["near_high_20"] = result["rank_near_high_20"]
     result["intraday_strength"] = result["rank_intraday_strength"]
     result["close_to_high"] = result["rank_close_to_high"]
+    result["signed_volume_pressure_5"] = result["rank_signed_volume_pressure_5"]
     return result
 
 
@@ -8975,6 +8992,14 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         )
         if factor in ranked.columns
     ]
+    requested_factors = list(getattr(args, "factor", None) or [])
+    if requested_factors:
+        missing = sorted(set(requested_factors) - set(factor_catalog))
+        if missing:
+            raise ValueError("requested factor is absent from the diagnostic catalog: " + ", ".join(missing))
+        # Preserve the user's first-seen order while preventing a duplicated
+        # factor from masquerading as another independent test.
+        factor_catalog = list(dict.fromkeys(requested_factors))
     summaries = summarize_factor_diagnostics(
         forward_returns,
         factor_catalog,
@@ -10923,6 +10948,11 @@ def parse_args() -> argparse.Namespace:
         help="maximum calendar age for an initial dividend plan; default matches the three-day holding horizon",
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
+    factor_diagnostic.add_argument(
+        "--factor",
+        action="append",
+        help="optional exact predeclared factor to diagnose; repeat to run an explicitly isolated factor set",
+    )
 
     factor_stability_audit = subparsers.add_parser(
         "factor-stability-audit",
