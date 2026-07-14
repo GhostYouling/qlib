@@ -147,6 +147,9 @@ DEFAULT_RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_SPEC = (
 DEFAULT_INSIDER_OPEN_MARKET_DATA_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_insider_open_market_data_contract.json"
 )
+DEFAULT_INSIDER_OPEN_MARKET_CAPACITY_SPEC = (
+    REPO_ROOT / "docs" / "a_share_insider_open_market_capacity_preregistration.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -469,6 +472,7 @@ ANNOUNCEMENT_CAPACITY_SOURCE_FACTORS = {
     "institutional_survey_timing": (INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME,),
     "analyst_rating_changes": (ANALYST_RATING_FACTOR_NAME,),
     "restricted_share_unlocks": (RESTRICTED_SHARE_UNLOCK_FACTOR_NAME,),
+    "insider_open_market_transactions": (INSIDER_OPEN_MARKET_FACTOR_NAME,),
 }
 SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE = (
     "sparse_announcement_factor_capacity_gate_without_price_or_forward_returns"
@@ -484,6 +488,9 @@ ANALYST_RATING_CAPACITY_PURPOSE = (
 )
 RESTRICTED_SHARE_UNLOCK_CAPACITY_PURPOSE = (
     "restricted_share_unlock_capacity_gate_without_price_or_forward_returns"
+)
+INSIDER_OPEN_MARKET_CAPACITY_PURPOSE = (
+    "insider_open_market_capacity_gate_without_price_or_forward_returns"
 )
 RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_restricted_share_unlock_research_not_investment_advice"
@@ -2779,6 +2786,194 @@ def validate_restricted_share_unlock_capacity_sources(spec: dict[str, Any]) -> d
         "partition_counts_reconciled": True,
         "event_start": events["event_date"].min().date().isoformat(),
         "event_end": events["event_date"].max().date().isoformat(),
+    }
+    return evidence
+
+
+def load_insider_open_market_capacity_preregistration(
+    path: Path = DEFAULT_INSIDER_OPEN_MARKET_CAPACITY_SPEC,
+) -> dict[str, Any]:
+    """Enforce the frozen no-return insider direct-market capacity protocol."""
+
+    spec = load_json_record(
+        path.expanduser().resolve(), kind="a_share_insider_open_market_capacity_preregistration"
+    )
+    snapshots = spec.get("source_snapshots") or {}
+    acceptance = spec.get("snapshot_acceptance") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("capacity_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_insider_snapshot_before_price_or_forward_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T19:42:15Z"
+        and set(snapshots) == {"quarterly_quality", "insider_open_market_transactions"}
+        and snapshots["insider_open_market_transactions"].get("maximum_age_days") == 3
+        and snapshots["insider_open_market_transactions"].get("effective_date")
+        == "precomputed close of the third local trading session strictly after source TDATE"
+        and acceptance
+        == {
+            "event_rows": 64609,
+            "verified_partitions": 84,
+            "pages": 242,
+            "source_rows": 99431,
+            "valid_direct_market_rows": 83441,
+            "buy_rows": 21218,
+            "sell_rows": 62223,
+            "missing_or_non_a_share_rows_excluded": 1773,
+            "non_direct_market_reason_rows_excluded": 14206,
+            "direction_sign_inconsistent_or_zero_rows_excluded": 11,
+            "calendar_mapping_rows_excluded": 0,
+            "duplicate_event_keys": 0,
+            "missing_values": 0,
+            "out_of_range_buy_share_rows": 0,
+            "non_positive_or_non_integer_event_count_rows": 0,
+            "availability_mapping_errors": 0,
+            "distinct_buy_share_values": 16,
+            "transaction_start": "2019-01-02",
+            "transaction_end": "2025-12-31",
+            "event_start": "2019-01-07",
+            "event_end": "2026-01-07",
+            "all_requested_transaction_years_covered": True,
+            "price_fields_loaded": [],
+            "forward_return_fields_read": False,
+        }
+        and tuple(spec.get("factor_catalog") or []) == (INSIDER_OPEN_MARKET_FACTOR_NAME,)
+        and spec.get("factor_raw_columns")
+        == {INSIDER_OPEN_MARKET_FACTOR_NAME: INSIDER_OPEN_MARKET_FACTOR_NAME}
+        and spec.get("later_diagnostic_direction_if_capacity_passes")
+        == "higher_direct_market_buy_share_is_better"
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "minimum_valid_names_per_factor_cohort": 6,
+            "minimum_distinct_factor_values_per_cohort": 2,
+            "minimum_required_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "event_availability": (
+                "precomputed close of the third local trading session strictly after source TDATE"
+            ),
+            "price_basis_required_for_later_return_diagnostic": REQUIRED_PRICE_BASIS,
+        }
+        and policy
+        == {
+            "open_close_or_forward_return_fields_allowed": False,
+            "count_only_quality_and_listing_seasoned_active_names": True,
+            "failed_factor_must_stop_without_return_diagnostic": True,
+            "one_completed_capacity_audit_only": True,
+            "no_direction_formula_age_date_topk_or_minimum_cohort_override": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError(
+            "insider open-market capacity preregistration does not match the frozen protocol"
+        )
+    return spec
+
+
+def validate_insider_open_market_capacity_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Verify insider snapshot rows, partitions, fingerprints, timing, and data contract."""
+
+    contract_link = spec.get("data_contract") or {}
+    contract_path = resolve_repository_record_path(str(contract_link.get("path") or ""))
+    contract = load_insider_open_market_data_contract(contract_path)
+    if (
+        file_sha256(contract_path) != str(contract_link.get("sha256") or "")
+        or contract.get("preregistered_at") != contract_link.get("preregistered_at")
+    ):
+        raise ValueError("insider open-market data contract link does not match")
+
+    snapshots = spec["source_snapshots"]
+    evidence: dict[str, Any] = {"source_snapshots": {}}
+    manifests: dict[str, dict[str, Any]] = {}
+    paths: dict[str, Path] = {}
+    for name, link in snapshots.items():
+        source_path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not source_path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"insider open-market capacity input is missing: {name}")
+        source_sha = file_sha256(source_path)
+        manifest_sha = file_sha256(manifest_path)
+        manifest = load_json_record(manifest_path)
+        if (
+            source_sha != str(link.get("sha256") or "")
+            or manifest_sha != str(link.get("manifest_sha256") or "")
+            or manifest.get("status") != "completed"
+            or manifest.get("sha256") != source_sha
+        ):
+            raise ValueError(f"insider open-market capacity fingerprint mismatch: {name}")
+        paths[name] = source_path
+        manifests[name] = manifest
+        evidence["source_snapshots"][name] = {
+            "path": str(source_path),
+            "sha256": source_sha,
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": manifest_sha,
+        }
+
+    manifest = manifests["insider_open_market_transactions"]
+    partitions = list(manifest.get("verified_partitions") or [])
+    expected_start = pd.Timestamp("2019-01-01")
+    pages = 0
+    source_rows = 0
+    for partition in partitions:
+        start = pd.Timestamp(partition.get("start"))
+        end = pd.Timestamp(partition.get("end"))
+        part_pages = int(partition.get("pages") or 0)
+        part_rows = int(partition.get("source_rows") or 0)
+        if (
+            start != expected_start
+            or end < start
+            or part_pages < 1
+            or part_pages > INSIDER_OPEN_MARKET_MAX_PAGES_PER_PARTITION
+            or partition.get("count_verified") is not True
+            or part_rows != int(partition.get("advertised_source_rows") or 0)
+        ):
+            raise ValueError("insider open-market manifest contains an invalid partition")
+        expected_start = end + pd.Timedelta(days=1)
+        pages += part_pages
+        source_rows += part_rows
+    acceptance = spec["snapshot_acceptance"]
+    quality = manifest.get("normalization_quality") or {}
+    events = load_insider_open_market_events(paths["insider_open_market_transactions"])
+    checked_quality_fields = (
+        "valid_direct_market_rows",
+        "buy_rows",
+        "sell_rows",
+        "missing_or_non_a_share_rows_excluded",
+        "non_direct_market_reason_rows_excluded",
+        "direction_sign_inconsistent_or_zero_rows_excluded",
+        "calendar_mapping_rows_excluded",
+        "availability_mapping_errors",
+        "distinct_buy_share_values",
+    )
+    if (
+        expected_start != pd.Timestamp("2026-01-01")
+        or len(partitions) != acceptance["verified_partitions"]
+        or pages != acceptance["pages"]
+        or source_rows != acceptance["source_rows"]
+        or len(events) != acceptance["event_rows"]
+        or any(quality.get(field) != acceptance[field] for field in checked_quality_fields)
+        or manifest.get("transaction_start") != acceptance["transaction_start"]
+        or manifest.get("transaction_end") != acceptance["transaction_end"]
+        or events["event_date"].min() != pd.Timestamp(acceptance["event_start"])
+        or events["event_date"].max() != pd.Timestamp(acceptance["event_end"])
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+    ):
+        raise ValueError("insider open-market snapshot fails frozen row-level acceptance")
+    evidence["insider_open_market_acceptance"] = {
+        **acceptance,
+        "partition_counts_reconciled": True,
     }
     return evidence
 
@@ -8113,6 +8308,42 @@ def load_restricted_share_unlock_events(path: Path) -> pd.DataFrame:
     return frame.sort_values(["instrument", "event_date"], kind="stable").reset_index(drop=True)
 
 
+def load_insider_open_market_events(path: Path) -> pd.DataFrame:
+    """Load and validate the frozen identity-free insider direct-market aggregates."""
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"insider open-market snapshot does not exist: {path}; "
+            "run sync-insider-open-market-events first"
+        )
+    frame = pd.read_parquet(path)
+    if tuple(frame.columns) != INSIDER_OPEN_MARKET_EVENT_COLUMNS:
+        raise ValueError("insider open-market snapshot columns do not match the frozen contract")
+    frame = frame.loc[:, list(INSIDER_OPEN_MARKET_EVENT_COLUMNS)].copy()
+    frame["event_date"] = pd.to_datetime(frame["event_date"], errors="coerce")
+    frame["insider_open_market_latest_transaction_date"] = pd.to_datetime(
+        frame["insider_open_market_latest_transaction_date"], errors="coerce"
+    )
+    frame["insider_open_market_buy_share"] = pd.to_numeric(
+        frame["insider_open_market_buy_share"], errors="coerce"
+    )
+    frame["insider_open_market_event_count"] = pd.to_numeric(
+        frame["insider_open_market_event_count"], errors="coerce"
+    )
+    if frame[list(INSIDER_OPEN_MARKET_EVENT_COLUMNS)].isna().any().any():
+        raise ValueError("insider open-market snapshot contains missing values")
+    if frame.duplicated(["instrument", "event_date"]).any():
+        raise ValueError("insider open-market snapshot contains duplicate event keys")
+    if not frame["insider_open_market_buy_share"].between(0.0, 1.0).all():
+        raise ValueError("insider open-market buy share falls outside [0, 1]")
+    counts = frame["insider_open_market_event_count"]
+    if not counts.gt(0.0).all() or not np.equal(counts, np.floor(counts)).all():
+        raise ValueError("insider open-market event count must be a positive integer")
+    if not frame["insider_open_market_latest_transaction_date"].lt(frame["event_date"]).all():
+        raise ValueError("insider open-market transaction date must precede event availability")
+    return frame.sort_values(["instrument", "event_date"], kind="stable").reset_index(drop=True)
+
+
 def load_repurchase_plan_events(path: Path) -> pd.DataFrame:
     """Load the dated non-outcome repurchase-plan event snapshot."""
 
@@ -12271,6 +12502,115 @@ def run_restricted_share_unlock_capacity_audit(args: argparse.Namespace) -> dict
     }
     experiment_root.mkdir(parents=True, exist_ok=True)
     destination = experiment_root / f"{run_id}_restricted_share_unlock_capacity_audit.json"
+    _atomic_write_text(
+        destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n"
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity["factor_capacity"],
+        "source_admitted_for_return_diagnostic": admitted,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_insider_open_market_capacity(experiment_root: Path) -> None:
+    """Prevent duplicate evidence for the immutable insider direct-market capacity gate."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob("*_insider_open_market_capacity_audit.json")
+    ):
+        if load_json_record(path).get("purpose") == INSIDER_OPEN_MARKET_CAPACITY_PURPOSE:
+            raise ValueError(f"insider open-market capacity protocol is already consumed: {path}")
+
+
+def run_insider_open_market_capacity_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen insider direct-market capacity gate without reading prices."""
+
+    spec = load_insider_open_market_capacity_preregistration()
+    source_evidence = validate_insider_open_market_capacity_sources(spec)
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_insider_open_market_capacity(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    provider_uri = Path(args.provider_uri).expanduser()
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market="buyable_main_chinext",
+        start=contract["start"],
+        end=contract["end"],
+    )
+    fundamentals = load_fundamentals(
+        resolve_repository_record_path(snapshots["quarterly_quality"]["path"])
+    )
+    events = load_insider_open_market_events(
+        resolve_repository_record_path(
+            snapshots["insider_open_market_transactions"]["path"]
+        )
+    )
+    capacity = sparse_announcement_source_capacity(
+        events,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        source_name="insider_open_market_transactions",
+        event_columns=INSIDER_OPEN_MARKET_EVENT_COLUMNS,
+        factor_raw_columns=spec["factor_raw_columns"],
+        max_age_days=snapshots["insider_open_market_transactions"]["maximum_age_days"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        minimum_required_cohorts=contract["minimum_required_cohorts"],
+        maximum_quality_age_days=contract["maximum_quality_age_days"],
+        event_date_column="event_date",
+        strictly_after_event_date=False,
+    )
+    admitted = capacity["source_admitted_for_return_rebuild"]
+    decision = (
+        "eligible_for_separately_preregistered_three_day_return_diagnostic"
+        if admitted
+        else "rejected_before_return_diagnostic_insufficient_independent_cohorts"
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": INSIDER_OPEN_MARKET_CAPACITY_PURPOSE,
+        "preregistration": {
+            "path": str(DEFAULT_INSIDER_OPEN_MARKET_CAPACITY_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_INSIDER_OPEN_MARKET_CAPACITY_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [INSIDER_OPEN_MARKET_FACTOR_NAME],
+        "later_diagnostic_direction_if_capacity_passes": spec[
+            "later_diagnostic_direction_if_capacity_passes"
+        ],
+        "run_contract": contract,
+        "source_capacity": capacity,
+        "source_admitted_for_return_diagnostic": admitted,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "full_calendar_start": full_calendar.min().date().isoformat(),
+            "research_calendar_start": research_calendar.min().date().isoformat(),
+            "research_calendar_end": research_calendar.max().date().isoformat(),
+            "instrument_span_count": int(len(intervals)),
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Capacity is an upper bound before next-open and exit-close completeness; passing does not imply association or tradability.",
+            "The source lacks a uniform historical cross-exchange filing timestamp, so availability is synthetically delayed to the third local session close after transaction date.",
+            "A filing beyond the reporting window can still make synthetic availability earlier than actual publication.",
+            "The current listing universe can introduce survivorship bias even though full provider spans season listings.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_insider_open_market_capacity_audit.json"
     _atomic_write_text(
         destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n"
     )
@@ -20421,6 +20761,17 @@ def parse_args() -> argparse.Namespace:
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
+    insider_open_market_capacity = subparsers.add_parser(
+        "insider-open-market-capacity-audit",
+        help="run the frozen insider direct-market capacity gate without price outcomes",
+    )
+    insider_open_market_capacity.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    insider_open_market_capacity.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -20925,6 +21276,8 @@ def main() -> int:
         report = run_analyst_rating_capacity_audit(args)
     elif args.command == "restricted-share-unlock-capacity-audit":
         report = run_restricted_share_unlock_capacity_audit(args)
+    elif args.command == "insider-open-market-capacity-audit":
+        report = run_insider_open_market_capacity_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":
