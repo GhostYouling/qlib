@@ -97,6 +97,9 @@ PROSPECTIVE_VWAP_CLOSE_COST = 0.00062
 SIGNED_EFFICIENCY_RATIO_10_EXPRESSION = (
     "($close/Ref($close, 10) - 1)/Sum(Abs($close/Ref($close, 1) - 1), 10)"
 )
+RETURN_TURNOVER_CORRELATION_10_EXPRESSION = (
+    "Corr($close/Ref($close, 1) - 1, $turnover, 10)"
+)
 
 EASTMONEY_DATACENTER_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get"
 EASTMONEY_REPORT = "RPT_LICO_FN_CPD"
@@ -1173,6 +1176,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "signed_volume_pressure_5",
     "close_above_vwap_1",
     "signed_efficiency_ratio_10",
+    "return_turnover_correlation_10",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -4345,6 +4349,11 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
         # large endpoint return; the ten-session, positive direction is fixed
         # before its isolated development diagnostic is run.
         "signed_efficiency_ratio_10": SIGNED_EFFICIENCY_RATIO_10_EXPRESSION,
+        # Ten-session price-participation confirmation.  A high correlation
+        # means turnover tends to be higher on positive-return sessions and
+        # lower on negative-return sessions.  This interaction is distinct
+        # from the turnover-level and turnover-surge factors already tested.
+        "return_turnover_correlation_10": RETURN_TURNOVER_CORRELATION_10_EXPRESSION,
         # Five-day close-location value weighted by each session's volume.
         # The sign is positive when volume repeatedly trades on bars that
         # finish nearer their high than their low.  This is a close-known
@@ -4445,6 +4454,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "close_to_high",
         "close_above_vwap_1",
         "signed_efficiency_ratio_10",
+        "return_turnover_correlation_10",
         "signed_volume_pressure_5",
         "roe",
         "revenue_yoy",
@@ -4578,6 +4588,9 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     )
     result["signed_efficiency_ratio_10"] = result["signed_efficiency_ratio_10"].where(
         np.isfinite(result["signed_efficiency_ratio_10"])
+    )
+    result["return_turnover_correlation_10"] = result["return_turnover_correlation_10"].where(
+        np.isfinite(result["return_turnover_correlation_10"])
     )
     # Event rows are forward-filled only so each row retains the event context
     # for auditing.  Once the explicitly declared event window expires, those
@@ -4726,6 +4739,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["close_to_high"] = result["rank_close_to_high"]
     result["close_above_vwap_1"] = result["rank_close_above_vwap_1"]
     result["signed_efficiency_ratio_10"] = result["rank_signed_efficiency_ratio_10"]
+    result["return_turnover_correlation_10"] = result["rank_return_turnover_correlation_10"]
     result["signed_volume_pressure_5"] = result["rank_signed_volume_pressure_5"]
     return result
 

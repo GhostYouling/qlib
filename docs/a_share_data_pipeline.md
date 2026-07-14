@@ -519,6 +519,31 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 该假设已按预注册版本完成。`20260714T084753Z_factor_diagnostic.json` 仅包含 `signed_efficiency_ratio_10`：560 个非重叠 cohort 的平均 Rank IC 为 **−0.0279**，正 IC 比例 **40.5%**，Top‑3 相对 Bottom‑3 的平均毛差为 **−0.17%**；2019–2025 每一年的平均 Rank IC 都为负。Top‑3 扣费累计收益为 **−86.93%**、最大回撤为 **−96.88%**；虽然 2019、2020 和 2025 年的 Top‑3 扣费收益为正，其余四年为负，且逐年横截面方向全部失败。`20260714T084806Z` 的稳定性与 Top‑3 可行性审计均没有合格因子，因此 10 日高效率上涨延续方向被淘汰；不得改测负方向、绝对效率、其他窗口或与旧因子组合来恢复它。
 
+覆盖盘点确认已有 87 个唯一因子进入过历史诊断，单字段动量、振幅、波动、换手水平、换手变化和主要公告事件已多次覆盖。下一项机制独立的假设预注册为 `return_turnover_correlation_10`：
+
+```text
+Corr(close / Ref(close, 1) - 1, turnover, 10)
+```
+
+它在每只股票内部计算最近 10 个交易日“日收益与当日换手率”的相关系数。高值表示上涨日的成交参与通常高于下跌日，方向固定为“需求参与确认可能延续至下一交易日开盘到第 3 个交易日收盘”。这不是当前换手相对均值的 `turnover_surge`，也不是只看价格路径的动量或效率比率。只测试 10 日、高值方向和一个因子；不测试负方向、5/20 日窗口、收益与成交量的替代表达式，也不与已有低波动因子组合。相关系数不可计算或非有限时保持缺失。
+
+检验继续锁定 2019–2025、560 个左右的非重叠三日 cohort、Top‑3 和买入 0.012% / 卖出 0.062% 成本：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --factor return_turnover_correlation_10
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor return_turnover_correlation_10
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor return_turnover_correlation_10
+```
+
+沿用跨年至少 5 年、至少 200 cohort、总体与逐年 IC 为正、正 IC 比例超过 50%、Top‑3/Bottom‑3 毛差为正，以及 Top‑3 总体与逐年扣费收益为正、最大回撤不差于 −20% 的固定门槛。失败即淘汰；通过也只允许进入下一轮预注册组合设计，不直接生成选股或前瞻信号。
+
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge、浅层 LightGBM 回归和浅层 LightGBM LambdaRank 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票；LambdaRank 只在训练样本内按每个信号日的后续收益分为五档，直接学习横截面排序，绝不把未来标签带入评分时点。
 
 默认审计还将每种模型与三个**预先固定、收盘可知**的市场状态组合：始终交易、20 日广度为正、以及“20 日广度为正且波动不高于严格追溯的 75 分位”。这不是在全部状态中事后挑选；三种状态均来自已有的因子研究定义，并在同一开发期规则下和模型一起参与选择。停用状态时该轮完整按现金记录，不会用别的日期或股票替换。
