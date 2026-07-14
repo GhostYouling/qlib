@@ -291,7 +291,15 @@ python scripts/a_share_short_horizon_factor_research.py sync-institutional-surve
 python scripts/a_share_short_horizon_factor_research.py institutional-survey-capacity-audit
 ```
 
-审计必须明确记录 `price_fields_loaded=[]`、`forward_return_fields_read=false` 和 `selection_or_promotion_allowed=false`。任一原始因子达到 200 才允许另写一次三因子共同收益诊断的预注册；若全部不足则停止来源。容量通过也不能直接形成选股、反向、改窗口、筛年份或组合。
+唯一一次容量审计已完成为 `20260714T172717Z_institutional_survey_capacity_audit.json`，明确记录 `price_fields_loaded=[]`、`forward_return_fields_read=false` 和 `selection_or_promotion_allowed=false`。机构数量、同日事件数和新鲜度分别形成 **507、402、495** 个潜在完整 cohort，三项均跨 2019–2025 每年覆盖并超过 200，因此来源获准进入一次固定收益诊断；这仍不代表因子有效。
+
+三因子共同诊断在读取行情前另行冻结为 `docs/a_share_institutional_survey_event_diagnostic_preregistration.json`，并绑定容量审计、两份输入快照与清单的 SHA-256。专用命令不暴露因子、方向、事件年龄、日期、成本、质量源或 TopK 覆盖，且只能成功完成一次：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py institutional-survey-event-diagnostic
+```
+
+完成后必须对全部三项运行默认稳定性与 Top‑3 可行性审计；只有同时通过两门的因子才可另行登记新的前瞻组合研究。不能直接形成选股、反向、改窗口、筛年份或组合。
 
 下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
 

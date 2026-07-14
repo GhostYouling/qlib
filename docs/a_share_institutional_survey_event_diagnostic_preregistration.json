@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "kind": "a_share_institutional_survey_event_diagnostic_preregistration",
+  "status": "frozen_after_no_return_capacity_pass_before_accepted_price_returns_observed",
+  "preregistered_at": "2026-07-14T17:27:48Z",
+  "purpose": "Diagnose all three original higher-is-better institutional-survey announcement factors exactly once after the no-return capacity, point-in-time daily-price, and 20-session listing gates.",
+  "capacity_audit": {
+    "run_id": "20260714T172717Z",
+    "path": "data/experiments/short_horizon/20260714T172717Z_institutional_survey_capacity_audit.json",
+    "sha256": "a738d5cf309ff653b2adc82a89080de0611650a8d445e3026a2529d701e60359",
+    "admitted_source": "institutional_surveys",
+    "factor_capacity": {
+      "institutional_survey_org_count": 507,
+      "institutional_survey_event_count": 402,
+      "institutional_survey_freshness": 495
+    },
+    "forward_return_fields_read": false
+  },
+  "source_snapshots": {
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "institutional_surveys": {
+      "path": "data/raw/a_share/events/institutional_surveys.parquet",
+      "sha256": "d55491709c9b6c89a759e0048593885d96b55848c5a3ea74617b4c84e61c3299",
+      "manifest_path": "data/metadata/institutional_surveys_manifest.json",
+      "manifest_sha256": "1210c6ee9bd838033ef0fc8ccd58a943a2f2e655f40b504dd46419b6399362a2",
+      "maximum_age_days": 3,
+      "effective_date": "strictly next local trading day after announcement_date",
+      "required_announcement_start": "2019-01-01",
+      "required_announcement_end": "2025-12-31"
+    }
+  },
+  "factor_catalog": [
+    "institutional_survey_org_count",
+    "institutional_survey_event_count",
+    "institutional_survey_freshness"
+  ],
+  "factor_direction": "higher",
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "stability_minimum_calendar_years": 5,
+    "stability_minimum_cohorts": 200
+  },
+  "diagnostic_policy": {
+    "capacity_gate_passed_before_return_read": true,
+    "run_all_source_factors_together": true,
+    "accepted_price_returns_observed_before_registration": false,
+    "prior_institutional_survey_price_diagnostic_exists": false,
+    "one_completed_diagnostic_only": true,
+    "preserve_original_quarterly_quality_and_event_snapshots": true,
+    "no_direction_formula_age_cost_quality_source_or_factor_subset_override": true,
+    "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": true,
+    "passing_both_gates_only_allows_a_new_prospective_combination_registration": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

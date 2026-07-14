@@ -90,6 +90,9 @@ DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC = (
 DEFAULT_INSTITUTIONAL_SURVEY_CAPACITY_SPEC = (
     REPO_ROOT / "docs" / "a_share_institutional_survey_capacity_preregistration.json"
 )
+DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC = (
+    REPO_ROOT / "docs" / "a_share_institutional_survey_event_diagnostic_preregistration.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -363,6 +366,9 @@ SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE = (
 )
 INSTITUTIONAL_SURVEY_CAPACITY_PURPOSE = (
     "institutional_survey_factor_capacity_gate_without_price_or_forward_returns"
+)
+INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE = (
+    "development_only_preregistered_institutional_survey_event_research_not_investment_advice"
 )
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
@@ -2427,6 +2433,144 @@ def validate_institutional_survey_capacity_sources(spec: dict[str, Any]) -> dict
         "partition_counts_reconciled": True,
     }
     return evidence
+
+
+def load_institutional_survey_event_diagnostic_preregistration(
+    path: Path = DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC,
+) -> dict[str, Any]:
+    """Enforce the capacity-qualified one-time institutional-survey diagnostic."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_institutional_survey_event_diagnostic_preregistration")
+    capacity = spec.get("capacity_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("diagnostic_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_no_return_capacity_pass_before_accepted_price_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T17:27:48Z"
+        and tuple(spec.get("factor_catalog") or [])
+        == INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+        and spec.get("factor_direction") == "higher"
+        and set(snapshots) == {"quarterly_quality", "institutional_surveys"}
+        and snapshots["institutional_surveys"].get("maximum_age_days") == 3
+        and snapshots["institutional_surveys"].get("effective_date")
+        == "strictly next local trading day after announcement_date"
+        and snapshots["institutional_surveys"].get("required_announcement_start") == "2019-01-01"
+        and snapshots["institutional_surveys"].get("required_announcement_end") == "2025-12-31"
+        and capacity.get("run_id") == "20260714T172717Z"
+        and capacity.get("admitted_source") == "institutional_surveys"
+        and capacity.get("factor_capacity")
+        == {
+            "institutional_survey_org_count": 507,
+            "institutional_survey_event_count": 402,
+            "institutional_survey_freshness": 495,
+        }
+        and capacity.get("forward_return_fields_read") is False
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "capacity_gate_passed_before_return_read": True,
+            "run_all_source_factors_together": True,
+            "accepted_price_returns_observed_before_registration": False,
+            "prior_institutional_survey_price_diagnostic_exists": False,
+            "one_completed_diagnostic_only": True,
+            "preserve_original_quarterly_quality_and_event_snapshots": True,
+            "no_direction_formula_age_cost_quality_source_or_factor_subset_override": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_a_new_prospective_combination_registration": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError(
+            "institutional-survey event diagnostic preregistration does not match the frozen protocol"
+        )
+    return spec
+
+
+def validate_institutional_survey_event_diagnostic_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Verify snapshots and the no-return capacity authorization before reading returns."""
+
+    snapshots = spec.get("source_snapshots") or {}
+    evidence = validate_institutional_survey_capacity_sources({"source_snapshots": snapshots})
+    capacity_link = spec.get("capacity_audit") or {}
+    capacity_path = resolve_repository_record_path(str(capacity_link.get("path") or ""))
+    if not capacity_path.exists() or file_sha256(capacity_path) != str(capacity_link.get("sha256") or ""):
+        raise ValueError("institutional-survey capacity audit is missing or has a fingerprint mismatch")
+    capacity = load_json_record(capacity_path)
+    source_capacity = capacity.get("source_capacity") or {}
+    factor_capacity = source_capacity.get("factor_capacity") or {}
+    expected_counts = capacity_link.get("factor_capacity") or {}
+    capacity_source_evidence = (
+        ((capacity.get("preregistration") or {}).get("source_evidence") or {}).get("source_snapshots")
+        or {}
+    )
+    if (
+        capacity.get("run_id") != capacity_link.get("run_id")
+        or capacity.get("purpose") != INSTITUTIONAL_SURVEY_CAPACITY_PURPOSE
+        or tuple(capacity.get("factor_catalog") or [])
+        != INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+        or capacity.get("forward_return_fields_read") is not False
+        or (capacity.get("data") or {}).get("price_fields_loaded") != []
+        or (capacity.get("data") or {}).get("open_close_or_forward_return_fields_read") is not False
+        or capacity.get("selection_or_promotion_allowed") is not False
+        or capacity.get("source_admitted_for_return_diagnostic") is not True
+        or source_capacity.get("source_admitted_for_return_rebuild") is not True
+        or tuple(factor_capacity) != INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+        or {
+            factor: int((factor_capacity.get(factor) or {}).get("potential_complete_cohorts") or 0)
+            for factor in INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+        }
+        != expected_counts
+        or not all(
+            (factor_capacity.get(factor) or {}).get("capacity_gate_passed") is True
+            for factor in INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+        )
+        or any(
+            (capacity_source_evidence.get(name) or {}).get("sha256") != snapshots[name]["sha256"]
+            for name in snapshots
+        )
+    ):
+        raise ValueError(
+            "institutional-survey capacity audit does not authorize the frozen event diagnostic"
+        )
+    evidence["capacity_audit"] = {
+        "run_id": capacity.get("run_id"),
+        "path": str(capacity_path),
+        "sha256": file_sha256(capacity_path),
+        "forward_return_fields_read": False,
+        "factor_capacity": factor_capacity,
+    }
+    return evidence
+
+
+def require_unconsumed_institutional_survey_event_diagnostic(experiment_root: Path) -> None:
+    """Prevent a second accepted-price read of the institutional-survey catalog."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE:
+            raise ValueError(f"institutional-survey event diagnostic is already consumed: {path}")
 
 
 def load_pledge_event_rebuild_preregistration(
@@ -13619,6 +13763,85 @@ def run_pledge_event_rebuild_diagnostic(args: argparse.Namespace) -> dict[str, A
     return result
 
 
+def run_institutional_survey_event_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Diagnose all three capacity-qualified institutional-survey factors once."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_institutional_survey_event_diagnostic_preregistration()
+    source_evidence = validate_institutional_survey_event_diagnostic_sources(spec)
+    require_unconsumed_institutional_survey_event_diagnostic(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=str(resolve_repository_record_path(snapshots["quarterly_quality"]["path"])),
+        performance_forecasts=None,
+        billboard_events=None,
+        major_holder_events=None,
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=str(
+            resolve_repository_record_path(snapshots["institutional_surveys"]["path"])
+        ),
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=contract["maximum_quality_age_days"],
+        max_forecast_age_days=30,
+        max_billboard_age_days=3,
+        max_major_holder_age_days=3,
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=snapshots["institutional_surveys"]["maximum_age_days"],
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=3,
+        max_dividend_plan_age_days=3,
+        batch_size=args.batch_size,
+        factor=list(INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS),
+        diagnostic_purpose=INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "accepted_price_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    if (
+        audit.get("purpose") != INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE
+        or tuple(audit.get("factor_catalog") or [])
+        != INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or (audit.get("quality_gate") or {}).get("sha256")
+        != snapshots["quarterly_quality"]["sha256"]
+        or (audit.get("institutional_survey_events") or {}).get(
+            "max_institutional_survey_age_days"
+        )
+        != snapshots["institutional_surveys"]["maximum_age_days"]
+        or (audit.get("institutional_survey_events") or {}).get("sha256")
+        != snapshots["institutional_surveys"]["sha256"]
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError(
+            "completed institutional-survey event diagnostic does not match its frozen protocol"
+        )
+    return result
+
+
 def run_intraday_demand_persistence_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the frozen five-session intraday-demand factor exactly once."""
 
@@ -15986,6 +16209,18 @@ def parse_args() -> argparse.Namespace:
     pledge_event_rebuild.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     pledge_event_rebuild.add_argument("--batch-size", type=int, default=500)
 
+    institutional_survey_event_diagnostic = subparsers.add_parser(
+        "institutional-survey-event-diagnostic",
+        help="diagnose all three capacity-qualified institutional-survey factors once",
+    )
+    institutional_survey_event_diagnostic.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    institutional_survey_event_diagnostic.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    institutional_survey_event_diagnostic.add_argument("--batch-size", type=int, default=500)
+
     intraday_demand = subparsers.add_parser(
         "intraday-demand-persistence-diagnostic",
         help="diagnose the frozen five-session open-to-close demand factor exactly once",
@@ -16607,6 +16842,8 @@ def main() -> int:
         report = run_announcement_event_rebuild_diagnostic(args)
     elif args.command == "pledge-event-rebuild-diagnostic":
         report = run_pledge_event_rebuild_diagnostic(args)
+    elif args.command == "institutional-survey-event-diagnostic":
+        report = run_institutional_survey_event_diagnostic(args)
     elif args.command == "intraday-demand-persistence-diagnostic":
         report = run_intraday_demand_persistence_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":

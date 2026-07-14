@@ -2129,6 +2129,81 @@ def test_institutional_survey_capacity_audit_reads_no_price_and_is_one_time(
         RESEARCH.run_institutional_survey_capacity_audit(args)
 
 
+def test_institutional_survey_event_diagnostic_is_capacity_bound_and_one_time(
+    tmp_path, monkeypatch
+):
+    spec = RESEARCH.load_institutional_survey_event_diagnostic_preregistration()
+    assert tuple(spec["factor_catalog"]) == RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+    assert spec["capacity_audit"]["factor_capacity"] == {
+        "institutional_survey_org_count": 507,
+        "institutional_survey_event_count": 402,
+        "institutional_survey_freshness": 495,
+    }
+    assert spec["diagnostic_policy"]["accepted_price_returns_observed_before_registration"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC.read_text(encoding="utf-8")
+    )
+    changed["run_contract"]["topk"] = 5
+    changed_path = tmp_path / "changed_institutional_survey_event_diagnostic.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_institutional_survey_event_diagnostic_preregistration(changed_path)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_institutional_survey_event_diagnostic_sources",
+        lambda loaded: {"source_snapshots": {}, "capacity_audit": {}},
+    )
+    captured = {}
+
+    def fake_diagnostic(args):
+        captured.update(vars(args))
+        run_id = "institutional-survey-diagnostic"
+        path = tmp_path / f"{run_id}_factor_diagnostic.json"
+        write_json_record(
+            path,
+            {
+                "run_id": run_id,
+                "status": "completed",
+                "purpose": RESEARCH.INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE,
+                "factor_catalog": list(RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS),
+                "data": {
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                    "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
+                },
+                "quality_gate": {
+                    "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
+                },
+                "institutional_survey_events": {
+                    "sha256": spec["source_snapshots"]["institutional_surveys"]["sha256"],
+                    "max_institutional_survey_age_days": 3,
+                },
+                "selection_or_promotion_allowed": False,
+            },
+        )
+        return {"status": "completed", "audit_path": str(path), "factor_count": 3}
+
+    monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
+    args = SimpleNamespace(
+        provider_uri="provider",
+        experiment_root=str(tmp_path),
+        batch_size=123,
+    )
+    result = RESEARCH.run_institutional_survey_event_diagnostic(args)
+    assert result["factor_count"] == 3
+    assert captured["factor"] == list(RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS)
+    assert captured["hold_days"] == 3
+    assert captured["topk"] == 3
+    assert captured["open_cost"] == pytest.approx(0.00012)
+    assert captured["close_cost"] == pytest.approx(0.00062)
+    assert captured["max_quality_age_days"] == 550
+    assert captured["max_institutional_survey_age_days"] == 3
+    assert captured["diagnostic_purpose"] == RESEARCH.INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_institutional_survey_event_diagnostic(args)
+
+
 def test_pledge_event_rebuild_is_capacity_bound_and_one_time(tmp_path, monkeypatch):
     spec = RESEARCH.load_pledge_event_rebuild_preregistration()
     assert tuple(spec["factor_catalog"]) == RESEARCH.PLEDGE_EVENT_REBUILD_FACTOR_NAMES
