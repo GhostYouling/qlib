@@ -1066,6 +1066,35 @@ def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     assert effective_day["institutional_survey_org_count"] == pytest.approx(7.0)
 
 
+def test_institutional_survey_timing_join_waits_until_strictly_after_notice_date():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-10"]
+            ),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "institutional_survey_latest_receive_end_date": pd.to_datetime(["2024-04-29"]),
+            "institutional_survey_disclosure_lag_days": [1.0],
+        }
+    )
+    joined = RESEARCH.attach_institutional_survey_timing_events_asof(
+        market, events, max_age_days=3
+    )
+    notice = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    effective = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
+    expired = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-10")].iloc[0]
+    assert not notice["institutional_survey_timing_available"]
+    assert effective["institutional_survey_timing_available"]
+    assert effective["institutional_survey_disclosure_lag_days"] == pytest.approx(1.0)
+    assert not expired["institutional_survey_timing_available"]
+
+
 def test_repurchase_plan_normalization_excludes_later_implementation_fields():
     rows = [
         {
@@ -1354,6 +1383,8 @@ def test_rank_factor_frame_excludes_expired_event_values():
             "institutional_survey_org_count": [50.0, 10.0],
             "institutional_survey_age_days": [4.0, 0.0],
             "institutional_survey_available": [False, True],
+            "institutional_survey_disclosure_lag_days": [0.0, 2.0],
+            "institutional_survey_timing_available": [True, True],
         }
     )
     ranked = RESEARCH.rank_factor_frame(frame)
@@ -1371,6 +1402,8 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert active["rank_block_trade_premium_ratio"] == pytest.approx(1.0)
     assert active["rank_margin_net_buy_to_market_cap"] == pytest.approx(1.0)
     assert active["rank_institutional_survey_org_count"] == pytest.approx(1.0)
+    assert expired["institutional_survey_prompt_disclosure"] == pytest.approx(0.5)
+    assert active["institutional_survey_prompt_disclosure"] == pytest.approx(0.0)
     assert expired["free_float_cap_small"] == pytest.approx(0.5)
     assert active["free_float_cap_small"] == pytest.approx(0.0)
     assert expired["up_day_consistency_5"] == pytest.approx(0.5)
@@ -2306,6 +2339,74 @@ def test_institutional_survey_timing_capacity_is_frozen_and_one_time(tmp_path, m
     assert audit["selection_or_promotion_allowed"] is False
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_institutional_survey_timing_capacity_audit(args)
+
+
+def test_institutional_survey_timing_diagnostic_is_capacity_bound_and_one_time(
+    tmp_path, monkeypatch
+):
+    spec = RESEARCH.load_institutional_survey_timing_diagnostic_preregistration()
+    assert spec["factor"]["name"] == RESEARCH.INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME
+    assert spec["factor"]["raw_direction"] == "lower_is_better"
+    assert spec["capacity_audit"]["potential_complete_cohorts"] == 507
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC.read_text(encoding="utf-8")
+    )
+    changed["factor"]["raw_direction"] = "higher_is_better"
+    changed_path = tmp_path / "changed_timing_diagnostic.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_institutional_survey_timing_diagnostic_preregistration(changed_path)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_institutional_survey_timing_diagnostic_sources",
+        lambda loaded: {"source_snapshots": {}, "capacity_audit": {}},
+    )
+    captured = {}
+
+    def fake_diagnostic(args):
+        captured.update(vars(args))
+        run_id = "institutional-survey-timing-diagnostic"
+        path = tmp_path / f"{run_id}_factor_diagnostic.json"
+        write_json_record(
+            path,
+            {
+                "run_id": run_id,
+                "status": "completed",
+                "purpose": RESEARCH.INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE,
+                "factor_catalog": [RESEARCH.INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME],
+                "data": {
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                    "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
+                },
+                "quality_gate": {
+                    "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
+                },
+                "institutional_survey_timing_events": {
+                    "sha256": spec["source_snapshots"]["institutional_survey_timing"]["sha256"],
+                    "max_institutional_survey_timing_age_days": 3,
+                    "score_direction": "lower raw disclosure lag is better",
+                },
+                "selection_or_promotion_allowed": False,
+            },
+        )
+        return {"status": "completed", "audit_path": str(path), "factor_count": 1}
+
+    monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
+    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path), batch_size=123)
+    result = RESEARCH.run_institutional_survey_timing_diagnostic(args)
+    assert result["factor_count"] == 1
+    assert captured["factor"] == [RESEARCH.INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME]
+    assert captured["max_institutional_survey_timing_age_days"] == 3
+    assert captured["hold_days"] == 3
+    assert captured["topk"] == 3
+    assert captured["open_cost"] == pytest.approx(0.00012)
+    assert captured["close_cost"] == pytest.approx(0.00062)
+    assert captured["diagnostic_purpose"] == RESEARCH.INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_institutional_survey_timing_diagnostic(args)
 
 
 def test_institutional_survey_event_diagnostic_is_capacity_bound_and_one_time(

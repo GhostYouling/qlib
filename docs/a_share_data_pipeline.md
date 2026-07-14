@@ -319,7 +319,15 @@ python scripts/a_share_short_horizon_factor_research.py sync-institutional-surve
 python scripts/a_share_short_horizon_factor_research.py institutional-survey-timing-capacity-audit
 ```
 
-它固定使用 2019–2025 非重叠三日网格、Top‑3、每截面至少 6 个有效名字和 2 个不同时滞、550 日季度质量、上市满 20 会话与至少 200 个潜在 cohort。容量不足即停止；容量通过也只允许另行预注册一次“低原始时滞”收益诊断。
+容量审计已完成为 `20260714T180635Z_institutional_survey_timing_capacity_audit.json`：质量与上市门禁后有 22,032 行有效事件值、539 个有值事件日和 **507/200** 个潜在完整 cohort，2019–2025 分别为 48、71、80、80、78、77、73；审计明确记录 `price_fields_loaded=[]` 与 `forward_return_fields_read=false`。
+
+唯一一次收益诊断在读取行情前另行冻结为 `docs/a_share_institutional_survey_timing_diagnostic_preregistration.json`。它只运行 `institutional_survey_prompt_disclosure = 1 − rank(披露时滞)`，方向固定为低原始时滞、事件年龄 3 天，并绑定容量审计、timing 快照和季度质量指纹：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py institutional-survey-timing-diagnostic
+```
+
+完成后必须运行完整默认稳定性和 Top‑3 可行性审计。容量通过不代表有效；不能改为高时滞、修改聚合日期、截尾 355 天极值、挑年份或与刚淘汰的机构数量因子组合。
 
 下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
 

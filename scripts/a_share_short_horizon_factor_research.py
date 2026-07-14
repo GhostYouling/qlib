@@ -105,6 +105,9 @@ DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT = (
 DEFAULT_INSTITUTIONAL_SURVEY_TIMING_CAPACITY_SPEC = (
     REPO_ROOT / "docs" / "a_share_institutional_survey_timing_capacity_preregistration.json"
 )
+DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC = (
+    REPO_ROOT / "docs" / "a_share_institutional_survey_timing_diagnostic_preregistration.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -389,6 +392,9 @@ INSTITUTIONAL_SURVEY_CAPACITY_PURPOSE = (
 )
 INSTITUTIONAL_SURVEY_TIMING_CAPACITY_PURPOSE = (
     "institutional_survey_timing_capacity_gate_without_price_or_forward_returns"
+)
+INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE = (
+    "development_only_preregistered_institutional_survey_timing_research_not_investment_advice"
 )
 INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_institutional_survey_event_research_not_investment_advice"
@@ -2694,6 +2700,159 @@ def validate_institutional_survey_timing_capacity_sources(spec: dict[str, Any]) 
         "announcement_end": events["announcement_date"].max().date().isoformat(),
     }
     return evidence
+
+
+def load_institutional_survey_timing_diagnostic_preregistration(
+    path: Path = DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC,
+) -> dict[str, Any]:
+    """Enforce the capacity-qualified one-time prompt-disclosure diagnostic."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_institutional_survey_timing_diagnostic_preregistration")
+    capacity = spec.get("capacity_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    factor = spec.get("factor") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("diagnostic_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_no_return_capacity_pass_before_accepted_price_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T18:07:25Z"
+        and capacity.get("run_id") == "20260714T180635Z"
+        and capacity.get("factor") == INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME
+        and capacity.get("potential_complete_cohorts") == 507
+        and capacity.get("forward_return_fields_read") is False
+        and set(snapshots) == {"quarterly_quality", "institutional_survey_timing"}
+        and snapshots["institutional_survey_timing"].get("maximum_age_days") == 3
+        and snapshots["institutional_survey_timing"].get("effective_date")
+        == "strictly next local trading day after announcement_date"
+        and factor
+        == {
+            "name": INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME,
+            "raw_column": "institutional_survey_disclosure_lag_days",
+            "raw_direction": "lower_is_better",
+            "score_formula": (
+                "1 - cross_sectional_percentile_rank("
+                "institutional_survey_disclosure_lag_days)"
+            ),
+            "event_availability": "strictly next local trading day after announcement_date",
+        }
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "capacity_gate_passed_before_return_read": True,
+            "accepted_price_returns_observed_before_registration": False,
+            "prior_prompt_disclosure_price_diagnostic_exists": False,
+            "one_completed_diagnostic_only": True,
+            "preserve_frozen_factor_formula_direction_and_snapshots": True,
+            "no_direction_formula_age_cost_quality_source_date_or_topk_override": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_a_new_prospective_registration": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError(
+            "institutional-survey timing diagnostic preregistration does not match the frozen protocol"
+        )
+    return spec
+
+
+def validate_institutional_survey_timing_diagnostic_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Verify timing inputs and the exact no-return capacity authorization."""
+
+    snapshots = spec.get("source_snapshots") or {}
+    evidence: dict[str, Any] = {"source_snapshots": {}}
+    for name, link in snapshots.items():
+        source_path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not source_path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"institutional-survey timing diagnostic input is missing: {name}")
+        source_sha256 = file_sha256(source_path)
+        manifest_sha256 = file_sha256(manifest_path)
+        if source_sha256 != str(link.get("sha256") or ""):
+            raise ValueError(f"institutional-survey timing diagnostic source mismatch: {source_path}")
+        if manifest_sha256 != str(link.get("manifest_sha256") or ""):
+            raise ValueError(f"institutional-survey timing diagnostic manifest mismatch: {manifest_path}")
+        manifest = load_json_record(manifest_path)
+        if manifest.get("status") != "completed" or manifest.get("sha256") != source_sha256:
+            raise ValueError(f"institutional-survey timing manifest rejects its source: {manifest_path}")
+        evidence["source_snapshots"][name] = {
+            "path": str(source_path),
+            "sha256": source_sha256,
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": manifest_sha256,
+        }
+
+    capacity_link = spec.get("capacity_audit") or {}
+    capacity_path = resolve_repository_record_path(str(capacity_link.get("path") or ""))
+    if not capacity_path.exists() or file_sha256(capacity_path) != str(capacity_link.get("sha256") or ""):
+        raise ValueError("institutional-survey timing capacity audit fingerprint mismatch")
+    capacity = load_json_record(capacity_path)
+    source_capacity = capacity.get("source_capacity") or {}
+    factor_capacity = (source_capacity.get("factor_capacity") or {}).get(
+        INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME
+    ) or {}
+    capacity_sources = (
+        ((capacity.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "source_snapshots"
+        )
+        or {}
+    )
+    if (
+        capacity.get("run_id") != capacity_link.get("run_id")
+        or capacity.get("purpose") != INSTITUTIONAL_SURVEY_TIMING_CAPACITY_PURPOSE
+        or capacity.get("factor_catalog") != [INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME]
+        or capacity.get("forward_return_fields_read") is not False
+        or (capacity.get("data") or {}).get("price_fields_loaded") != []
+        or capacity.get("source_admitted_for_return_diagnostic") is not True
+        or source_capacity.get("source_admitted_for_return_rebuild") is not True
+        or factor_capacity.get("capacity_gate_passed") is not True
+        or factor_capacity.get("potential_complete_cohorts")
+        != capacity_link.get("potential_complete_cohorts")
+        or any(
+            (capacity_sources.get(name) or {}).get("sha256") != snapshots[name]["sha256"]
+            for name in snapshots
+        )
+    ):
+        raise ValueError(
+            "institutional-survey timing capacity audit does not authorize the frozen diagnostic"
+        )
+    evidence["capacity_audit"] = {
+        "run_id": capacity.get("run_id"),
+        "path": str(capacity_path),
+        "sha256": file_sha256(capacity_path),
+        "forward_return_fields_read": False,
+        "factor_capacity": factor_capacity,
+    }
+    return evidence
+
+
+def require_unconsumed_institutional_survey_timing_diagnostic(experiment_root: Path) -> None:
+    """Prevent a second accepted-price read of prompt-disclosure timing."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE:
+            raise ValueError(f"institutional-survey timing diagnostic is already consumed: {path}")
 
 
 def load_institutional_survey_event_diagnostic_preregistration(
@@ -6490,6 +6649,81 @@ def attach_institutional_survey_events_asof(
     return result
 
 
+def attach_institutional_survey_timing_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach disclosure lags only after the corresponding public notice."""
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    if missing := sorted({"instrument", "datetime"} - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError(
+            "institutional-survey timing events are missing columns: " + ", ".join(missing)
+        )
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source_events = events.loc[:, list(INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS)].copy()
+    source_events["institutional_survey_timing_effective_date"] = _first_trading_day_after(
+        calendar, source_events["announcement_date"]
+    )
+    source_events = source_events.dropna(subset=["institutional_survey_timing_effective_date"])
+    source_events = source_events.sort_values(
+        ["instrument", "institutional_survey_timing_effective_date", "announcement_date"],
+        kind="stable",
+    ).drop_duplicates(["instrument", "institutional_survey_timing_effective_date"], keep="last")
+    timing_columns = [
+        "institutional_survey_timing_announcement_date",
+        "institutional_survey_latest_receive_end_date",
+        "institutional_survey_disclosure_lag_days",
+        "institutional_survey_timing_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"] = 1
+    daily["_row"] = np.arange(len(daily))
+    for column in (
+        "institutional_survey_timing_announcement_date",
+        "institutional_survey_latest_receive_end_date",
+        "institutional_survey_timing_effective_date",
+    ):
+        daily[column] = pd.NaT
+    daily["institutional_survey_disclosure_lag_days"] = np.nan
+    event_rows = source_events.rename(
+        columns={
+            "institutional_survey_timing_effective_date": "datetime",
+            "announcement_date": "institutional_survey_timing_announcement_date",
+        }
+    )[
+        [
+            "instrument",
+            "datetime",
+            *[
+                column
+                for column in timing_columns
+                if column != "institutional_survey_timing_effective_date"
+            ],
+        ]
+    ].copy()
+    event_rows["institutional_survey_timing_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"] = 0
+    event_rows["_row"] = np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False)
+    combined = combined.sort_values(["instrument", "datetime", "_kind"], kind="stable")
+    combined[timing_columns] = combined.groupby("instrument", sort=False)[timing_columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *timing_columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["institutional_survey_timing_age_days"] = (
+        pd.to_datetime(result["datetime"])
+        - pd.to_datetime(result["institutional_survey_timing_effective_date"])
+    ).dt.days
+    result["institutional_survey_timing_available"] = result[
+        "institutional_survey_timing_announcement_date"
+    ].notna() & result["institutional_survey_timing_age_days"].between(0, max_age_days)
+    return result
+
+
 def attach_repurchase_plan_events_asof(
     market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
 ) -> pd.DataFrame:
@@ -7149,6 +7383,12 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         if column in result.columns
     ]
     raw_columns.extend(institutional_survey_raw_columns)
+    institutional_survey_timing_raw_columns = [
+        column
+        for column in ("institutional_survey_disclosure_lag_days",)
+        if column in result.columns
+    ]
+    raw_columns.extend(institutional_survey_timing_raw_columns)
     repurchase_raw_columns = [
         column
         for column in (
@@ -7226,6 +7466,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         ("block_trade_available", block_trade_raw_columns),
         ("margin_financing_available", margin_financing_raw_columns),
         ("institutional_survey_available", institutional_survey_raw_columns),
+        ("institutional_survey_timing_available", institutional_survey_timing_raw_columns),
         ("repurchase_available", repurchase_raw_columns),
         ("holder_count_available", holder_count_raw_columns),
         ("pledge_available", pledge_raw_columns),
@@ -7330,6 +7571,10 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
             result[column] = result[rank_column]
     if "rank_institutional_survey_age_days" in result.columns:
         result["institutional_survey_freshness"] = 1.0 - result["rank_institutional_survey_age_days"]
+    if "rank_institutional_survey_disclosure_lag_days" in result.columns:
+        result[INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME] = (
+            1.0 - result["rank_institutional_survey_disclosure_lag_days"]
+        )
     for column in ("repurchase_planned_share_ratio", "repurchase_planned_amount"):
         rank_column = f"rank_{column}"
         if rank_column in result.columns:
@@ -13873,6 +14118,12 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     institutional_survey_path = (
         Path(args.institutional_survey_events).expanduser() if args.institutional_survey_events else None
     )
+    institutional_survey_timing_value = getattr(args, "institutional_survey_timing_events", None)
+    institutional_survey_timing_path = (
+        Path(institutional_survey_timing_value).expanduser()
+        if institutional_survey_timing_value
+        else None
+    )
     repurchase_path = Path(args.repurchase_events).expanduser() if args.repurchase_events else None
     holder_count_path = Path(args.holder_count_events).expanduser() if args.holder_count_events else None
     pledge_path = Path(args.pledge_events).expanduser() if args.pledge_events else None
@@ -13918,6 +14169,15 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         market = attach_institutional_survey_events_asof(
             market, institutional_survey_events, max_age_days=args.max_institutional_survey_age_days
         )
+    if institutional_survey_timing_path is not None:
+        institutional_survey_timing_events = load_institutional_survey_timing_events(
+            institutional_survey_timing_path
+        )
+        market = attach_institutional_survey_timing_events_asof(
+            market,
+            institutional_survey_timing_events,
+            max_age_days=getattr(args, "max_institutional_survey_timing_age_days", 3),
+        )
     if repurchase_path is not None:
         repurchase_events = load_repurchase_plan_events(repurchase_path)
         market = attach_repurchase_plan_events_asof(
@@ -13948,6 +14208,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *BLOCK_TRADE_FACTOR_DIAGNOSTIC_COLUMNS,
             *MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS,
             *INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS,
+            INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME,
             *REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS,
             *HOLDER_COUNT_FACTOR_DIAGNOSTIC_COLUMNS,
             *PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS,
@@ -14106,6 +14367,27 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "participant_identities_stored": False,
             }
             if institutional_survey_path is not None
+            else None
+        ),
+        "institutional_survey_timing_events": (
+            {
+                "source": str(institutional_survey_timing_path.resolve()),
+                "sha256": file_sha256(institutional_survey_timing_path),
+                "effective_date": "strictly next local trading day after announcement_date",
+                "max_institutional_survey_timing_age_days": getattr(
+                    args, "max_institutional_survey_timing_age_days", 3
+                ),
+                "available_rows": int(market["institutional_survey_timing_available"].sum()),
+                "eligible_available_rows": int(
+                    (
+                        market["quality_eligible"].fillna(False)
+                        & market["institutional_survey_timing_available"].fillna(False)
+                    ).sum()
+                ),
+                "score_direction": "lower raw disclosure lag is better",
+                "participant_identities_stored": False,
+            }
+            if institutional_survey_timing_path is not None
             else None
         ),
         "repurchase_events": (
@@ -14501,6 +14783,87 @@ def run_institutional_survey_event_diagnostic(args: argparse.Namespace) -> dict[
     ):
         raise RuntimeError(
             "completed institutional-survey event diagnostic does not match its frozen protocol"
+        )
+    return result
+
+
+def run_institutional_survey_timing_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Diagnose the capacity-qualified prompt-disclosure factor exactly once."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_institutional_survey_timing_diagnostic_preregistration()
+    source_evidence = validate_institutional_survey_timing_diagnostic_sources(spec)
+    require_unconsumed_institutional_survey_timing_diagnostic(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=str(resolve_repository_record_path(snapshots["quarterly_quality"]["path"])),
+        performance_forecasts=None,
+        billboard_events=None,
+        major_holder_events=None,
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=None,
+        institutional_survey_timing_events=str(
+            resolve_repository_record_path(snapshots["institutional_survey_timing"]["path"])
+        ),
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=contract["maximum_quality_age_days"],
+        max_forecast_age_days=30,
+        max_billboard_age_days=3,
+        max_major_holder_age_days=3,
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=3,
+        max_institutional_survey_timing_age_days=snapshots["institutional_survey_timing"][
+            "maximum_age_days"
+        ],
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=3,
+        max_dividend_plan_age_days=3,
+        batch_size=args.batch_size,
+        factor=[INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME],
+        diagnostic_purpose=INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "accepted_price_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    timing_metadata = audit.get("institutional_survey_timing_events") or {}
+    if (
+        audit.get("purpose") != INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE
+        or audit.get("factor_catalog") != [INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME]
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or (audit.get("quality_gate") or {}).get("sha256")
+        != snapshots["quarterly_quality"]["sha256"]
+        or timing_metadata.get("max_institutional_survey_timing_age_days")
+        != snapshots["institutional_survey_timing"]["maximum_age_days"]
+        or timing_metadata.get("sha256") != snapshots["institutional_survey_timing"]["sha256"]
+        or timing_metadata.get("score_direction") != "lower raw disclosure lag is better"
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError(
+            "completed institutional-survey timing diagnostic does not match its frozen protocol"
         )
     return result
 
@@ -16757,6 +17120,10 @@ def parse_args() -> argparse.Namespace:
         help="optional dated institutional-survey notice snapshot; adds next-session event factors to the development-only diagnostic",
     )
     factor_diagnostic.add_argument(
+        "--institutional-survey-timing-events",
+        help="optional dated institutional-survey disclosure-lag snapshot",
+    )
+    factor_diagnostic.add_argument(
         "--repurchase-events",
         help="optional initial repurchase-plan snapshot; adds next-session plan factors to the development-only diagnostic",
     )
@@ -16816,6 +17183,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="maximum calendar age for an institutional-survey notice; default matches the three-day holding horizon",
+    )
+    factor_diagnostic.add_argument(
+        "--max-institutional-survey-timing-age-days",
+        type=int,
+        default=3,
+        help="maximum calendar age for a survey disclosure-lag event",
     )
     factor_diagnostic.add_argument(
         "--max-repurchase-age-days",
@@ -16888,6 +17261,18 @@ def parse_args() -> argparse.Namespace:
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
     institutional_survey_event_diagnostic.add_argument("--batch-size", type=int, default=500)
+
+    institutional_survey_timing_diagnostic = subparsers.add_parser(
+        "institutional-survey-timing-diagnostic",
+        help="diagnose the capacity-qualified prompt-disclosure factor exactly once",
+    )
+    institutional_survey_timing_diagnostic.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    institutional_survey_timing_diagnostic.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    institutional_survey_timing_diagnostic.add_argument("--batch-size", type=int, default=500)
 
     intraday_demand = subparsers.add_parser(
         "intraday-demand-persistence-diagnostic",
@@ -17525,6 +17910,8 @@ def main() -> int:
         report = run_pledge_event_rebuild_diagnostic(args)
     elif args.command == "institutional-survey-event-diagnostic":
         report = run_institutional_survey_event_diagnostic(args)
+    elif args.command == "institutional-survey-timing-diagnostic":
+        report = run_institutional_survey_timing_diagnostic(args)
     elif args.command == "intraday-demand-persistence-diagnostic":
         report = run_intraday_demand_persistence_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
