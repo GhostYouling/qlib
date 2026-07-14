@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "kind": "a_share_securities_lending_data_contract",
+  "status": "frozen_before_full_securities_lending_snapshot_or_price_returns_observed",
+  "preregistered_at": "2026-07-14T20:02:00Z",
+  "purpose": "Create and capacity-screen one daily securities-lending net-cover factor without reading any price or forward-return field.",
+  "source": {
+    "provider": "Eastmoney public consolidated exchange margin-trading detail",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPTA_WEB_RZRQ_GGMX",
+    "requested_fields": [
+      "DATE",
+      "SCODE",
+      "RQYL",
+      "RQMCL",
+      "RQCHL"
+    ],
+    "trade_start": "2019-01-01",
+    "trade_end": "2025-12-31",
+    "official_publication_basis": {
+      "shanghai": "The exchange publishes prior-session single-security margin data before the next trading session; disclosed securities-lending fields include sell volume and balance.",
+      "shenzhen": "The exchange publishes prior-session single-security margin data before the next trading session; member reports include sell volume, repayment volume, and balance."
+    },
+    "explicitly_forbidden_fields": [
+      "SNAME",
+      "SZ",
+      "RCHANGE3DCP",
+      "RCHANGE5DCP",
+      "RCHANGE10DCP",
+      "SPJ",
+      "ZDF",
+      "RZJME",
+      "RZMRE",
+      "RZYE",
+      "FIN_BALANCE_GR"
+    ],
+    "identity_price_market_cap_financing_or_return_fields_requested_or_stored": false
+  },
+  "point_in_time_policy": {
+    "source_time_field": "DATE trading session",
+    "official_availability": "prior-session single-security data published before the following trading session opens",
+    "signal_assignment": "DATE close for a following-local-session-open entry; the value is not used for a same-session trade",
+    "entry": "following local trading-session open",
+    "maximum_event_age_days": 0,
+    "publication_delay_risk": "A provider or exchange publication delay beyond the normal pre-open window can make an event unavailable for that next open; the daily public source has no machine-verifiable historical release timestamp."
+  },
+  "regulatory_regime_context": {
+    "context_only_not_a_filter_or_factor": true,
+    "events": [
+      {
+        "date": "2024-01-29",
+        "change": "restricted-share lending was suspended"
+      },
+      {
+        "date": "2024-03-18",
+        "change": "market-oriented securities-lending transfer availability was delayed"
+      },
+      {
+        "date": "2024-07-11",
+        "change": "securities-lending transfer business was suspended"
+      },
+      {
+        "date": "2024-07-22",
+        "change": "minimum securities-lending margin ratios were increased"
+      }
+    ],
+    "policy": "Use the unchanged factor over every 2019-2025 year. Do not filter, split, reweight, invert, or retune around regulatory dates after observing returns."
+  },
+  "snapshot_contract": {
+    "output": "data/raw/a_share/events/securities_lending_activity.parquet",
+    "manifest": "data/metadata/securities_lending_activity_manifest.json",
+    "columns": [
+      "instrument",
+      "trade_date",
+      "securities_lending_balance_shares",
+      "securities_lending_sell_shares",
+      "securities_lending_repay_shares",
+      "securities_lending_net_cover_ratio"
+    ],
+    "event_key": [
+      "instrument",
+      "trade_date"
+    ],
+    "factor_formula": "(RQCHL - RQMCL) / (RQCHL + RQMCL)",
+    "zero_activity_policy": "Rows with RQMCL + RQCHL equal to zero remain missing and are excluded from the event snapshot; zero balance is otherwise valid.",
+    "negative_or_missing_policy": "Rows with missing contracted values or negative RQYL, RQMCL, or RQCHL are excluded and counted; values are never clipped, absolutized, or imputed.",
+    "clipping_winsorization_or_imputation": null,
+    "partition_policy": {
+      "partition": "one local trading session",
+      "page_size": 500,
+      "maximum_pages_per_session": 20,
+      "fixed_fetch_workers": 4,
+      "advertised_source_count_must_equal_rows_fetched": true,
+      "every_local_session_must_have_a_published_source_partition": true,
+      "partial_snapshot_written_on_failure": false,
+      "streamed_atomic_parquet_write": true
+    }
+  },
+  "factor": {
+    "name": "securities_lending_net_cover_ratio",
+    "raw_column": "securities_lending_net_cover_ratio",
+    "direction": "higher_net_cover_ratio_is_better",
+    "score_formula_if_capacity_passes": "cross_sectional_percentile_rank(securities_lending_net_cover_ratio)",
+    "maximum_event_age_days": 0,
+    "mechanism": "More securities returned relative to new short sales may indicate short covering and less incremental short pressure before the following session."
+  },
+  "acceptance": {
+    "all_daily_partitions_count_verified": true,
+    "continuous_local_trading_sessions_required": true,
+    "duplicate_event_keys_allowed": 0,
+    "missing_snapshot_values_allowed": 0,
+    "raw_share_counts_must_be_nonnegative": true,
+    "net_cover_ratio_range": [
+      -1.0,
+      1.0
+    ],
+    "every_requested_trade_year_required": true,
+    "source_and_manifest_sha256_required": true
+  },
+  "capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "one_completed_capacity_audit_only": true,
+    "failed_capacity_must_stop_without_return_diagnostic": true,
+    "selection_or_promotion_allowed": false
+  },
+  "sample_field_audit_before_freeze": {
+    "price_market_cap_financing_or_forward_return_fields_read": false,
+    "months": [
+      "2019-06",
+      "2024-06",
+      "2025-06"
+    ],
+    "local_sessions": [
+      19,
+      19,
+      20
+    ],
+    "pages": [
+      38,
+      152,
+      180
+    ],
+    "advertised_and_received_source_rows": [
+      18943,
+      73301,
+      82190
+    ],
+    "target_a_share_rows": [
+      17898,
+      62934,
+      68272
+    ],
+    "valid_nonnegative_rows": [
+      17881,
+      62866,
+      68220
+    ],
+    "positive_activity_rows": [
+      15227,
+      47668,
+      38789
+    ],
+    "negative_rows_excluded": [
+      17,
+      68,
+      52
+    ],
+    "minimum_active_names_per_session": [
+      746,
+      2382,
+      1836
+    ],
+    "minimum_distinct_factor_values_per_session": [
+      582,
+      1820,
+      972
+    ],
+    "sessions_with_at_least_six_names_and_two_values": [
+      19,
+      19,
+      20
+    ],
+    "source_count_reconciliation_errors": [
+      0,
+      0,
+      0
+    ]
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

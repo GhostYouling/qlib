@@ -1498,6 +1498,191 @@ def test_insider_open_market_sync_writes_only_frozen_aggregates(tmp_path, monkey
     assert manifest.exists()
 
 
+def test_securities_lending_contract_is_fingerprint_frozen(tmp_path):
+    contract = RESEARCH.load_securities_lending_data_contract()
+    assert contract["factor"]["name"] == RESEARCH.SECURITIES_LENDING_FACTOR_NAME
+    assert contract["factor"]["direction"] == "higher_net_cover_ratio_is_better"
+    assert contract["source"]["requested_fields"] == [
+        "DATE",
+        "SCODE",
+        "RQYL",
+        "RQMCL",
+        "RQCHL",
+    ]
+    assert contract["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_SECURITIES_LENDING_DATA_CONTRACT.read_text(encoding="utf-8")
+    )
+    changed["factor"]["direction"] = "lower_net_cover_ratio_is_better"
+    changed_path = tmp_path / "changed_securities_lending_contract.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_securities_lending_data_contract(changed_path)
+
+
+def test_securities_lending_request_uses_only_frozen_non_financing_fields():
+    captured = {}
+
+    class Response:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {"result": {"pages": 1, "count": 1, "data": []}}
+
+    class Session:
+        def get(self, url, params, timeout):
+            captured.update({"url": url, "params": params, "timeout": timeout})
+            return Response()
+
+    RESEARCH._eastmoney_securities_lending_request(Session(), "2024-04-30", 1)
+    assert captured["params"]["columns"] == "DATE,SCODE,RQYL,RQMCL,RQCHL"
+    assert captured["params"]["reportName"] == RESEARCH.EASTMONEY_MARGIN_FINANCING_REPORT
+    requested = set(captured["params"]["columns"].split(","))
+    forbidden = set(
+        RESEARCH.load_securities_lending_data_contract()["source"][
+            "explicitly_forbidden_fields"
+        ]
+    )
+    assert requested.isdisjoint(forbidden)
+
+
+def test_securities_lending_normalization_uses_frozen_formula_and_exclusions():
+    rows = [
+        {"DATE": "2024-04-30", "SCODE": "000001", "RQYL": 100, "RQMCL": 30, "RQCHL": 70},
+        {"DATE": "2024-04-30", "SCODE": "600000", "RQYL": 50, "RQMCL": 5, "RQCHL": 0},
+        {"DATE": "2024-04-30", "SCODE": "300001", "RQYL": 0, "RQMCL": 0, "RQCHL": 0},
+        {"DATE": "2024-04-30", "SCODE": "000002", "RQYL": 10, "RQMCL": -1, "RQCHL": 2},
+        {"DATE": "2024-04-30", "SCODE": "920106", "RQYL": 10, "RQMCL": 1, "RQCHL": 2},
+        {"DATE": "2024-04-30", "SCODE": "000003", "RQYL": None, "RQMCL": 1, "RQCHL": 2},
+    ]
+    normalized, quality = RESEARCH.normalize_securities_lending_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.SECURITIES_LENDING_EVENT_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600000", "SZ000001"]
+    assert normalized.loc[
+        normalized["instrument"] == "SZ000001",
+        "securities_lending_net_cover_ratio",
+    ].item() == pytest.approx(0.4)
+    assert normalized.loc[
+        normalized["instrument"] == "SH600000",
+        "securities_lending_net_cover_ratio",
+    ].item() == pytest.approx(-1.0)
+    assert quality == {
+        "input_source_rows": 6,
+        "missing_or_non_a_share_rows_excluded": 2,
+        "negative_raw_count_rows_excluded": 1,
+        "zero_activity_rows_excluded": 1,
+        "rows_written": 2,
+    }
+    assert not ({"RZJME", "RZMRE", "RZYE", "SPJ", "ZDF"} & set(normalized.columns))
+
+
+def test_securities_lending_session_rejects_incomplete_pagination(monkeypatch):
+    def fake_request(session, trade_date, page_number):
+        rows = [
+            {"DATE": trade_date, "SCODE": "000001", "RQYL": 10, "RQMCL": 1, "RQCHL": 2}
+        ]
+        return {"result": {"pages": 2, "count": 3, "data": rows}}
+
+    monkeypatch.setattr(RESEARCH, "_eastmoney_securities_lending_request", fake_request)
+    with pytest.raises(RuntimeError, match="row-count mismatch"):
+        RESEARCH.fetch_securities_lending_session(
+            object(), "2024-04-30", maximum_pages=20, page_pause_seconds=0.0
+        )
+
+
+def test_securities_lending_sync_streams_only_frozen_schema(tmp_path, monkeypatch):
+    contract = json.loads(json.dumps(RESEARCH.load_securities_lending_data_contract()))
+    contract["source"]["trade_start"] = "2024-04-29"
+    contract["source"]["trade_end"] = "2024-04-30"
+    calendar = pd.DatetimeIndex(pd.to_datetime(["2024-04-29", "2024-04-30"]))
+    monkeypatch.setattr(RESEARCH, "load_securities_lending_data_contract", lambda: contract)
+    monkeypatch.setattr(
+        RESEARCH, "local_trading_calendar", lambda provider_uri, end=None: calendar
+    )
+    monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
+
+    def fake_fetch(session, trade_date, **kwargs):
+        rows = [
+            {"DATE": trade_date, "SCODE": "000001", "RQYL": 100, "RQMCL": 30, "RQCHL": 70},
+            {"DATE": trade_date, "SCODE": "600000", "RQYL": 50, "RQMCL": 5, "RQCHL": 0},
+        ]
+        frame, quality = RESEARCH.normalize_securities_lending_rows(rows)
+        return frame, {
+            "trade_date": trade_date,
+            "pages": 1,
+            "advertised_source_rows": 2,
+            "source_rows": 2,
+            **quality,
+            "active_a_share_rows": 2,
+            "distinct_factor_values": 2,
+            "count_verified": True,
+        }
+
+    monkeypatch.setattr(RESEARCH, "fetch_securities_lending_session", fake_fetch)
+    output = tmp_path / "securities_lending_activity.parquet"
+    manifest = tmp_path / "securities_lending_activity_manifest.json"
+    result = RESEARCH.sync_securities_lending_events(output, manifest, tmp_path)
+    assert result["status"] == "completed"
+    assert result["sessions_verified"] == 2
+    assert result["rows_written"] == 4
+    assert result["source"]["forbidden_fields_requested_or_stored"] == []
+    assert result["price_fields_loaded"] == []
+    assert result["forward_return_fields_read"] is False
+    stored = pd.read_parquet(output)
+    assert stored.columns.tolist() == list(RESEARCH.SECURITIES_LENDING_EVENT_COLUMNS)
+    assert stored["trade_date"].nunique() == 2
+    assert manifest.exists()
+    assert result["manifest_sha256"] == RESEARCH.file_sha256(manifest)
+
+
+def test_securities_lending_sync_leaves_no_partial_snapshot_on_failure(tmp_path, monkeypatch):
+    contract = json.loads(json.dumps(RESEARCH.load_securities_lending_data_contract()))
+    contract["source"]["trade_start"] = "2024-04-29"
+    contract["source"]["trade_end"] = "2024-04-30"
+    calendar = pd.DatetimeIndex(pd.to_datetime(["2024-04-29", "2024-04-30"]))
+    monkeypatch.setattr(RESEARCH, "load_securities_lending_data_contract", lambda: contract)
+    monkeypatch.setattr(
+        RESEARCH, "local_trading_calendar", lambda provider_uri, end=None: calendar
+    )
+    monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
+
+    def fake_fetch(session, trade_date, **kwargs):
+        if trade_date == "2024-04-30":
+            raise RuntimeError("simulated incomplete partition")
+        frame, quality = RESEARCH.normalize_securities_lending_rows(
+            [
+                {
+                    "DATE": trade_date,
+                    "SCODE": "000001",
+                    "RQYL": 100,
+                    "RQMCL": 30,
+                    "RQCHL": 70,
+                }
+            ]
+        )
+        return frame, {
+            "trade_date": trade_date,
+            "pages": 1,
+            "advertised_source_rows": 1,
+            "source_rows": 1,
+            **quality,
+            "active_a_share_rows": 1,
+            "distinct_factor_values": 1,
+            "count_verified": True,
+        }
+
+    monkeypatch.setattr(RESEARCH, "fetch_securities_lending_session", fake_fetch)
+    output = tmp_path / "securities_lending_activity.parquet"
+    manifest = tmp_path / "securities_lending_activity_manifest.json"
+    with pytest.raises(RuntimeError, match="simulated incomplete partition"):
+        RESEARCH.sync_securities_lending_events(output, manifest, tmp_path)
+    assert not output.exists()
+    assert not manifest.exists()
+    assert not list(tmp_path.glob("*.parquet"))
+
+
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {

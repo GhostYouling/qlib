@@ -23,6 +23,7 @@ adjusted-price historical research backtest.
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import datetime as dt
 import gc
 import hashlib
@@ -30,6 +31,7 @@ import json
 import math
 import sys
 import tempfile
+import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -82,6 +84,12 @@ DEFAULT_INSIDER_OPEN_MARKET_EVENTS = (
 )
 DEFAULT_INSIDER_OPEN_MARKET_EVENT_MANIFEST = (
     DATA_ROOT / "metadata" / "insider_open_market_transactions_manifest.json"
+)
+DEFAULT_SECURITIES_LENDING_EVENTS = (
+    DATA_ROOT / "raw" / "a_share" / "events" / "securities_lending_activity.parquet"
+)
+DEFAULT_SECURITIES_LENDING_EVENT_MANIFEST = (
+    DATA_ROOT / "metadata" / "securities_lending_activity_manifest.json"
 )
 DEFAULT_REPURCHASE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "repurchase_plans.parquet"
 DEFAULT_REPURCHASE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "repurchase_plans_manifest.json"
@@ -152,6 +160,9 @@ DEFAULT_INSIDER_OPEN_MARKET_CAPACITY_SPEC = (
 )
 DEFAULT_INSIDER_OPEN_MARKET_DIAGNOSTIC_SPEC = (
     REPO_ROOT / "docs" / "a_share_insider_open_market_diagnostic_preregistration.json"
+)
+DEFAULT_SECURITIES_LENDING_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_securities_lending_data_contract.json"
 )
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
@@ -404,6 +415,15 @@ INSIDER_OPEN_MARKET_REASON_WHITELIST = (
     "买入",
     "卖出",
 )
+SECURITIES_LENDING_EVENT_COLUMNS = (
+    "instrument",
+    "trade_date",
+    "securities_lending_balance_shares",
+    "securities_lending_sell_shares",
+    "securities_lending_repay_shares",
+    "securities_lending_net_cover_ratio",
+)
+SECURITIES_LENDING_FACTOR_NAME = "securities_lending_net_cover_ratio"
 INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS = (
     "institutional_survey_org_count",
     "institutional_survey_event_count",
@@ -522,6 +542,9 @@ RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT_SHA256 = (
 INSIDER_OPEN_MARKET_DATA_CONTRACT_SHA256 = (
     "2c46dbc6ffbc04b50758d84ec52b60c80f097f3d0825c9532ce164090e40eced"
 )
+SECURITIES_LENDING_DATA_CONTRACT_SHA256 = (
+    "3d13a0b464a5123d12c545942cba6ba39e95756bdc87f8845e15cb8a624a012c"
+)
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
     "development_only_preregistered_pledge_event_rebuild_research_not_investment_advice"
@@ -539,6 +562,9 @@ RESTRICTED_SHARE_UNLOCK_MAX_PAGES_PER_PARTITION = 80
 RESTRICTED_SHARE_UNLOCK_PAGE_PAUSE_SECONDS = 0.05
 INSIDER_OPEN_MARKET_MAX_PAGES_PER_PARTITION = 80
 INSIDER_OPEN_MARKET_PAGE_PAUSE_SECONDS = 0.05
+SECURITIES_LENDING_MAX_PAGES_PER_SESSION = 20
+SECURITIES_LENDING_FETCH_WORKERS = 4
+SECURITIES_LENDING_PAGE_PAUSE_SECONDS = 0.01
 # This direction is deliberately not part of the development diagnostic
 # catalog.  It was formed after reading the completed 2019--2025 diagnostic,
 # so it may only be evaluated in a separately recorded post-development
@@ -2450,6 +2476,52 @@ def load_insider_open_market_data_contract(
         or contract.get("selection_or_promotion_allowed") is not False
     ):
         raise ValueError("insider open-market data contract does not match the frozen protocol")
+    return contract
+
+
+def load_securities_lending_data_contract(
+    path: Path = DEFAULT_SECURITIES_LENDING_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-snapshot securities-lending activity contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != SECURITIES_LENDING_DATA_CONTRACT_SHA256:
+        raise ValueError("securities-lending data contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_securities_lending_data_contract")
+    source = contract.get("source") or {}
+    point_in_time = contract.get("point_in_time_policy") or {}
+    regime = contract.get("regulatory_regime_context") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    partition = snapshot.get("partition_policy") or {}
+    factor = contract.get("factor") or {}
+    capacity = contract.get("capacity_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_full_securities_lending_snapshot_or_price_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-14T20:02:00Z"
+        or source.get("endpoint") != EASTMONEY_DATACENTER_URL
+        or source.get("report_name") != EASTMONEY_MARGIN_FINANCING_REPORT
+        or source.get("requested_fields") != ["DATE", "SCODE", "RQYL", "RQMCL", "RQCHL"]
+        or tuple(snapshot.get("columns") or ()) != SECURITIES_LENDING_EVENT_COLUMNS
+        or snapshot.get("factor_formula") != "(RQCHL - RQMCL) / (RQCHL + RQMCL)"
+        or partition.get("maximum_pages_per_session")
+        != SECURITIES_LENDING_MAX_PAGES_PER_SESSION
+        or partition.get("fixed_fetch_workers") != SECURITIES_LENDING_FETCH_WORKERS
+        or point_in_time.get("maximum_event_age_days") != 0
+        or regime.get("context_only_not_a_filter_or_factor") is not True
+        or factor.get("name") != SECURITIES_LENDING_FACTOR_NAME
+        or factor.get("raw_column") != SECURITIES_LENDING_FACTOR_NAME
+        or factor.get("direction") != "higher_net_cover_ratio_is_better"
+        or factor.get("maximum_event_age_days") != 0
+        or capacity.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("securities-lending data contract does not match the frozen protocol")
     return contract
 
 
@@ -5205,6 +5277,42 @@ def _eastmoney_margin_financing_top_flow_request(
     raise RuntimeError(f"cannot fetch margin-financing top flows for {trade_date}: {errors[-1]}")
 
 
+def _eastmoney_securities_lending_request(
+    session: requests.Session, trade_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one full-market securities-lending page without financing, prices, or returns."""
+
+    params = {
+        "reportName": EASTMONEY_MARGIN_FINANCING_REPORT,
+        "columns": "DATE,SCODE,RQYL,RQMCL,RQCHL",
+        "filter": f"(DATE='{trade_date}')",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "1",
+        "sortColumns": "SCODE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(5):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if payload.get("success") is False and payload.get("code") == 9201:
+                raise ValueError("required historical securities-lending session is not published")
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney securities-lending response lacks a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(
+        f"cannot fetch securities-lending activity for {trade_date} page {page_number}: "
+        f"{errors[-1]}"
+    )
+
+
 def _eastmoney_institutional_survey_request(
     session: requests.Session, start_date: str, end_date: str, page_number: int
 ) -> dict[str, Any]:
@@ -5843,6 +5951,79 @@ def normalize_margin_financing_top_flow_rows(rows: Iterable[dict[str, Any]]) -> 
         .drop_duplicates(["instrument", "trade_date"], keep="last")
         .reset_index(drop=True)
     )
+
+
+def normalize_securities_lending_rows(
+    rows: Iterable[dict[str, Any]],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Normalize the frozen full-market lending counts and exclude zero activity."""
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=SECURITIES_LENDING_EVENT_COLUMNS), {
+            "input_source_rows": 0,
+            "missing_or_non_a_share_rows_excluded": 0,
+            "negative_raw_count_rows_excluded": 0,
+            "zero_activity_rows_excluded": 0,
+            "rows_written": 0,
+        }
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("SCODE", pd.Series(index=raw.index, dtype="object")).map(
+                qlib_symbol
+            ),
+            "trade_date": pd.to_datetime(
+                raw.get("DATE", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+            ).dt.normalize(),
+            "securities_lending_balance_shares": pd.to_numeric(
+                raw.get("RQYL", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+            "securities_lending_sell_shares": pd.to_numeric(
+                raw.get("RQMCL", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+            "securities_lending_repay_shares": pd.to_numeric(
+                raw.get("RQCHL", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+        }
+    )
+    contracted = list(SECURITIES_LENDING_EVENT_COLUMNS[:5])
+    complete_key = frame[contracted].notna().all(axis=1)
+    missing_or_non_a_share = int((~complete_key).sum())
+    complete = frame.loc[complete_key].copy()
+    raw_count_columns = [
+        "securities_lending_balance_shares",
+        "securities_lending_sell_shares",
+        "securities_lending_repay_shares",
+    ]
+    nonnegative = complete[raw_count_columns].ge(0.0).all(axis=1)
+    negative = int((~nonnegative).sum())
+    valid = complete.loc[nonnegative].copy()
+    activity = (
+        valid["securities_lending_sell_shares"]
+        + valid["securities_lending_repay_shares"]
+    )
+    active = activity.gt(0.0)
+    zero_activity = int((~active).sum())
+    valid = valid.loc[active].copy()
+    active_total = activity.loc[active]
+    valid[raw_count_columns] = valid[raw_count_columns].astype("float64")
+    valid[SECURITIES_LENDING_FACTOR_NAME] = (
+        valid["securities_lending_repay_shares"]
+        - valid["securities_lending_sell_shares"]
+    ) / active_total
+    result = (
+        valid.loc[:, list(SECURITIES_LENDING_EVENT_COLUMNS)]
+        .sort_values(["trade_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    stats = {
+        "input_source_rows": int(len(frame)),
+        "missing_or_non_a_share_rows_excluded": missing_or_non_a_share,
+        "negative_raw_count_rows_excluded": negative,
+        "zero_activity_rows_excluded": zero_activity,
+        "rows_written": int(len(result)),
+    }
+    return result, stats
 
 
 def _institutional_survey_detail_frame(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
@@ -7318,6 +7499,110 @@ def fetch_insider_open_market_partition_details(
     ]
 
 
+def fetch_securities_lending_session(
+    session: requests.Session,
+    trade_date: str,
+    *,
+    maximum_pages: int = SECURITIES_LENDING_MAX_PAGES_PER_SESSION,
+    page_pause_seconds: float = SECURITIES_LENDING_PAGE_PAUSE_SECONDS,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Fetch, normalize, and count-verify one frozen full-market session."""
+
+    date = pd.Timestamp(trade_date).normalize()
+    if pd.isna(date):
+        raise ValueError("securities-lending trade_date must be a valid date")
+    if maximum_pages < 1:
+        raise ValueError("securities-lending maximum_pages must be positive")
+    if page_pause_seconds < 0:
+        raise ValueError("securities-lending page pause must be non-negative")
+    date_text = date.date().isoformat()
+    first = _eastmoney_securities_lending_request(session, date_text, 1)
+    first_result = first["result"]
+    pages = int(first_result.get("pages") or 0)
+    advertised_count = int(first_result.get("count") or 0)
+    if pages < 1 or advertised_count < 1:
+        raise RuntimeError(
+            f"securities-lending source has no published rows for local session {date_text}"
+        )
+    if pages > maximum_pages:
+        raise RuntimeError(
+            "securities-lending single-session partition exceeds the frozen page ceiling: "
+            f"{date_text}, pages={pages}, ceiling={maximum_pages}"
+        )
+
+    raw_rows: list[dict[str, Any]] = []
+    for page_number in range(1, pages + 1):
+        payload = (
+            first
+            if page_number == 1
+            else _eastmoney_securities_lending_request(session, date_text, page_number)
+        )
+        result = payload["result"]
+        if int(result.get("pages") or 0) != pages or int(result.get("count") or 0) != advertised_count:
+            raise RuntimeError(
+                f"securities-lending pagination metadata changed during fetch: {date_text}"
+            )
+        rows = result.get("data") or []
+        if not isinstance(rows, list):
+            raise RuntimeError(f"securities-lending page data is not a list: {date_text}")
+        raw_rows.extend(rows)
+        if page_pause_seconds and page_number < pages:
+            time.sleep(page_pause_seconds)
+    if len(raw_rows) != advertised_count:
+        raise RuntimeError(
+            f"securities-lending session row-count mismatch: {date_text}, "
+            f"advertised={advertised_count}, fetched={len(raw_rows)}"
+        )
+
+    normalized, stats = normalize_securities_lending_rows(raw_rows)
+    reconciled = (
+        int(stats["missing_or_non_a_share_rows_excluded"])
+        + int(stats["negative_raw_count_rows_excluded"])
+        + int(stats["zero_activity_rows_excluded"])
+        + int(stats["rows_written"])
+    )
+    if reconciled != len(raw_rows):
+        raise RuntimeError(
+            f"securities-lending normalization does not reconcile to source rows: {date_text}"
+        )
+    if normalized.empty:
+        raise RuntimeError(
+            f"securities-lending session has no positive-activity A-share rows: {date_text}"
+        )
+    if tuple(normalized.columns) != SECURITIES_LENDING_EVENT_COLUMNS:
+        raise RuntimeError("securities-lending normalized columns violate the frozen contract")
+    if not normalized["trade_date"].eq(date).all():
+        raise RuntimeError(
+            f"securities-lending source returned a different trade date for {date_text}"
+        )
+    if normalized.duplicated(["instrument", "trade_date"]).any():
+        raise RuntimeError(
+            f"securities-lending session contains duplicate event keys: {date_text}"
+        )
+    if normalized[list(SECURITIES_LENDING_EVENT_COLUMNS)].isna().any().any():
+        raise RuntimeError(f"securities-lending session contains missing values: {date_text}")
+    raw_columns = [
+        "securities_lending_balance_shares",
+        "securities_lending_sell_shares",
+        "securities_lending_repay_shares",
+    ]
+    if not normalized[raw_columns].ge(0.0).all().all():
+        raise RuntimeError(f"securities-lending session contains negative raw counts: {date_text}")
+    if not normalized[SECURITIES_LENDING_FACTOR_NAME].between(-1.0, 1.0).all():
+        raise RuntimeError(f"securities-lending ratio falls outside [-1, 1]: {date_text}")
+    record = {
+        "trade_date": date_text,
+        "pages": pages,
+        "advertised_source_rows": advertised_count,
+        "source_rows": len(raw_rows),
+        **stats,
+        "active_a_share_rows": int(len(normalized)),
+        "distinct_factor_values": int(normalized[SECURITIES_LENDING_FACTOR_NAME].nunique()),
+        "count_verified": True,
+    }
+    return normalized, record
+
+
 def sync_analyst_rating_events(
     output: Path = DEFAULT_ANALYST_RATING_EVENTS,
     manifest: Path = DEFAULT_ANALYST_RATING_EVENT_MANIFEST,
@@ -7760,6 +8045,232 @@ def sync_insider_open_market_events(
         manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n"
     )
     return result
+
+
+def sync_securities_lending_events(
+    output: Path = DEFAULT_SECURITIES_LENDING_EVENTS,
+    manifest: Path = DEFAULT_SECURITIES_LENDING_EVENT_MANIFEST,
+    provider_uri: Path = DEFAULT_PROVIDER_URI,
+) -> dict[str, Any]:
+    """Stream the frozen 2019--2025 full-market lending snapshot without prices."""
+
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    contract = load_securities_lending_data_contract()
+    source_contract = contract["source"]
+    start = pd.Timestamp(source_contract["trade_start"]).normalize()
+    end = pd.Timestamp(source_contract["trade_end"]).normalize()
+    calendar = local_trading_calendar(provider_uri, end=end.date().isoformat())
+    sessions = calendar[(calendar >= start) & (calendar <= end)]
+    if sessions.empty:
+        raise RuntimeError("securities-lending sync requires a non-empty local trading calendar")
+    requested_years = list(range(start.year, end.year + 1))
+    calendar_years = sorted(pd.DatetimeIndex(sessions).year.unique().tolist())
+    if calendar_years != requested_years:
+        raise RuntimeError(
+            "local trading calendar does not cover every frozen securities-lending year"
+        )
+
+    output = output.expanduser()
+    manifest = manifest.expanduser()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    manifest.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        suffix=".parquet", dir=output.parent, delete=False
+    ) as handle:
+        temporary_output = Path(handle.name)
+    temporary_output.unlink()
+    temporary_manifest: Path | None = None
+    schema = pa.schema(
+        [
+            pa.field("instrument", pa.string(), nullable=False),
+            pa.field("trade_date", pa.timestamp("ns"), nullable=False),
+            pa.field("securities_lending_balance_shares", pa.float64(), nullable=False),
+            pa.field("securities_lending_sell_shares", pa.float64(), nullable=False),
+            pa.field("securities_lending_repay_shares", pa.float64(), nullable=False),
+            pa.field("securities_lending_net_cover_ratio", pa.float64(), nullable=False),
+        ]
+    )
+    writer: pq.ParquetWriter | None = None
+    executor: concurrent.futures.ThreadPoolExecutor | None = None
+    completed = False
+    records: list[dict[str, Any]] = []
+    rows_by_year: dict[str, int] = {}
+    pages_by_year: dict[str, int] = {}
+    source_rows_by_year: dict[str, int] = {}
+    quality_keys = (
+        "missing_or_non_a_share_rows_excluded",
+        "negative_raw_count_rows_excluded",
+        "zero_activity_rows_excluded",
+        "rows_written",
+    )
+    quality_totals = {key: 0 for key in quality_keys}
+    thread_state = threading.local()
+
+    def fetch_one(value: pd.Timestamp) -> tuple[pd.DataFrame, dict[str, Any]]:
+        if not hasattr(thread_state, "session"):
+            thread_state.session = _eastmoney_session()
+        return fetch_securities_lending_session(
+            thread_state.session,
+            pd.Timestamp(value).date().isoformat(),
+            maximum_pages=SECURITIES_LENDING_MAX_PAGES_PER_SESSION,
+            page_pause_seconds=SECURITIES_LENDING_PAGE_PAUSE_SECONDS,
+        )
+
+    try:
+        writer = pq.ParquetWriter(temporary_output, schema, compression="zstd")
+        executor = concurrent.futures.ThreadPoolExecutor(
+            max_workers=SECURITIES_LENDING_FETCH_WORKERS,
+            thread_name_prefix="securities-lending",
+        )
+        results = executor.map(fetch_one, sessions)
+        for position, (frame, record) in enumerate(results, start=1):
+            expected_date = pd.Timestamp(sessions[position - 1]).date().isoformat()
+            if record["trade_date"] != expected_date:
+                raise RuntimeError("securities-lending worker returned an out-of-order session")
+            table = pa.Table.from_pandas(
+                frame.loc[:, list(SECURITIES_LENDING_EVENT_COLUMNS)],
+                schema=schema,
+                preserve_index=False,
+                safe=True,
+            )
+            writer.write_table(table)
+            records.append(record)
+            year = expected_date[:4]
+            rows_by_year[year] = rows_by_year.get(year, 0) + int(record["rows_written"])
+            pages_by_year[year] = pages_by_year.get(year, 0) + int(record["pages"])
+            source_rows_by_year[year] = source_rows_by_year.get(year, 0) + int(
+                record["source_rows"]
+            )
+            for key in quality_keys:
+                quality_totals[key] += int(record[key])
+            if position % 25 == 0 or position == len(sessions):
+                print(
+                    f"securities lending: {position}/{len(sessions)} verified sessions; "
+                    f"{sum(rows_by_year.values())} active A-share rows"
+                )
+        executor.shutdown(wait=True)
+        executor = None
+        writer.close()
+        writer = None
+
+        if len(records) != len(sessions) or not all(record["count_verified"] for record in records):
+            raise RuntimeError("securities-lending snapshot lacks a verified local session")
+        source_rows = int(sum(source_rows_by_year.values()))
+        reconciled_rows = (
+            quality_totals["missing_or_non_a_share_rows_excluded"]
+            + quality_totals["negative_raw_count_rows_excluded"]
+            + quality_totals["zero_activity_rows_excluded"]
+            + quality_totals["rows_written"]
+        )
+        if source_rows != reconciled_rows:
+            raise RuntimeError("securities-lending full-snapshot row counts do not reconcile")
+        parquet = pq.ParquetFile(temporary_output)
+        rows_written = int(parquet.metadata.num_rows)
+        if rows_written != quality_totals["rows_written"] or rows_written < 1:
+            raise RuntimeError("securities-lending streamed Parquet row count is invalid")
+        if tuple(parquet.schema_arrow.names) != SECURITIES_LENDING_EVENT_COLUMNS:
+            raise RuntimeError("securities-lending streamed Parquet schema is invalid")
+        if sorted(int(year) for year in rows_by_year) != requested_years:
+            raise RuntimeError("securities-lending snapshot does not cover every requested year")
+
+        ready_records = [
+            record
+            for record in records
+            if int(record["active_a_share_rows"]) >= 6
+            and int(record["distinct_factor_values"]) >= 2
+        ]
+        output_sha256 = file_sha256(temporary_output)
+        result = {
+            "status": "completed",
+            "data_contract": {
+                "path": str(DEFAULT_SECURITIES_LENDING_DATA_CONTRACT.resolve()),
+                "sha256": file_sha256(DEFAULT_SECURITIES_LENDING_DATA_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+                "forward_return_fields_read": False,
+            },
+            "source": {
+                "provider": source_contract["provider"],
+                "endpoint": EASTMONEY_DATACENTER_URL,
+                "report_name": EASTMONEY_MARGIN_FINANCING_REPORT,
+                "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "requested_fields": source_contract["requested_fields"],
+                "forbidden_fields_requested_or_stored": [],
+                "identity_price_market_cap_financing_or_return_fields_requested_or_stored": [],
+            },
+            "event_frequency": "daily_after_close_securities_lending_activity",
+            "trade_years": requested_years,
+            "requested_calendar_start": sessions.min().date().isoformat(),
+            "requested_calendar_end": sessions.max().date().isoformat(),
+            "sessions_requested": int(len(sessions)),
+            "sessions_verified": int(len(records)),
+            "partition_policy": contract["snapshot_contract"]["partition_policy"],
+            "verified_sessions": records,
+            "pages_by_trade_year": pages_by_year,
+            "source_rows_by_trade_year": source_rows_by_year,
+            "rows_by_trade_year": rows_by_year,
+            "normalization_quality": {
+                "source_rows": source_rows,
+                **quality_totals,
+                "source_row_reconciliation_errors": 0,
+                "duplicate_event_keys": 0,
+                "missing_snapshot_values": 0,
+                "negative_stored_raw_count_rows": 0,
+                "out_of_range_factor_rows": 0,
+                "all_daily_partitions_count_verified": True,
+                "dates_with_at_least_six_names_and_two_values_before_quality_or_listing_gates": len(
+                    ready_records
+                ),
+                "such_dates_by_year": {
+                    str(year): int(count)
+                    for year, count in pd.Series(
+                        [pd.Timestamp(record["trade_date"]).year for record in ready_records],
+                        dtype="int64",
+                    ).value_counts(sort=False).sort_index().items()
+                },
+            },
+            "rows_written": rows_written,
+            "trade_start": records[0]["trade_date"],
+            "trade_end": records[-1]["trade_date"],
+            "output": str(output.resolve()),
+            "sha256": output_sha256,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+            "point_in_time_policy": contract["point_in_time_policy"],
+            "regulatory_regime_context": contract["regulatory_regime_context"],
+            "limitations": [
+                "The public consolidated table is queried as it exists today and may revise historical rows.",
+                "Historical machine-verifiable publication timestamps are unavailable; the signal assumes prior-session data was published before the following session opened.",
+                "Rows with zero sell-plus-repay activity remain missing and are excluded rather than imputed.",
+                "Regulatory dates are retained as context only and cannot be used to filter, split, invert, or retune this frozen candidate.",
+                "This is a capacity candidate only until a separate no-return gate is frozen and passed.",
+            ],
+        }
+        manifest_content = (
+            json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n"
+        )
+        with tempfile.NamedTemporaryFile(
+            "w", encoding="utf-8", dir=manifest.parent, delete=False
+        ) as handle:
+            handle.write(manifest_content)
+            temporary_manifest = Path(handle.name)
+        temporary_output.replace(output)
+        temporary_manifest.replace(manifest)
+        result["manifest_sha256"] = file_sha256(manifest)
+        completed = True
+        return result
+    finally:
+        if executor is not None:
+            executor.shutdown(wait=False, cancel_futures=True)
+        if writer is not None:
+            writer.close()
+        if not completed:
+            temporary_output.unlink(missing_ok=True)
+            if temporary_manifest is not None:
+                temporary_manifest.unlink(missing_ok=True)
 
 
 def sync_institutional_survey_events(
@@ -20782,6 +21293,16 @@ def parse_args() -> argparse.Namespace:
         help="build the frozen 2019-2025 conservatively dated insider direct-market snapshot",
     )
 
+    sync_securities_lending = subparsers.add_parser(
+        "sync-securities-lending-events",
+        help="stream the frozen 2019-2025 full-market securities-lending activity snapshot",
+    )
+    sync_securities_lending.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    sync_securities_lending.add_argument("--output", default=str(DEFAULT_SECURITIES_LENDING_EVENTS))
+    sync_securities_lending.add_argument(
+        "--manifest", default=str(DEFAULT_SECURITIES_LENDING_EVENT_MANIFEST)
+    )
+
     sync_repurchase = subparsers.add_parser(
         "sync-repurchase-plan-events",
         help="download dated public initial repurchase plans for short-horizon event research",
@@ -21721,6 +22242,10 @@ def main() -> int:
         report = sync_restricted_share_unlock_events()
     elif args.command == "sync-insider-open-market-events":
         report = sync_insider_open_market_events()
+    elif args.command == "sync-securities-lending-events":
+        report = sync_securities_lending_events(
+            Path(args.output), Path(args.manifest), Path(args.provider_uri)
+        )
     elif args.command == "sync-repurchase-plan-events":
         report = sync_repurchase_plan_events(Path(args.output), Path(args.manifest))
     elif args.command == "sync-holder-count-events":
