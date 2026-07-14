@@ -351,6 +351,8 @@ python scripts/a_share_short_horizon_factor_research.py analyst-rating-capacity-
 
 该命令通过交易日历和上市活动区间计算容量，不加载任何行情字段。只有达到 200 个潜在完整 cohort 才能另行冻结一次收益诊断；容量通过本身不代表评级调高有效。
 
+唯一一次容量审计已完成为 `20260714T183854Z_analyst_rating_capacity_audit.json`（SHA-256 `1d0973d5560db6ba76c46e1925f0e5eddfb90bf3e7a08b55da917f1c7a77c105`）。三日事件展开后有 61,515 行候选值，季度质量与上市门槛后保留 24,413 行、542 个有值事件日，最终形成 **224/200** 个潜在完整 cohort；2019–2025 分别为 30、42、42、38、22、26、24。审计明确记录 `price_fields_loaded=[]`、`open_close_or_forward_return_fields_read=false` 和 `selection_or_promotion_allowed=false`。来源获准另行冻结一次固定收益诊断，但这 224 个 cohort 只是容量，不是收益、稳定性或可交易性证据。
+
 下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
 
 ```bash
