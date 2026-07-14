@@ -1811,6 +1811,11 @@ def test_promoted_iteration_selects_the_latest_passed_record(tmp_path):
     assert RESEARCH.promoted_iteration(registry_path, "passed")["iteration_id"] == "passed"
 
 
+def test_paper_monitor_requires_an_explicit_unseen_start_date():
+    with pytest.raises(ValueError, match="requires --not-before"):
+        RESEARCH.run_paper_monitor(SimpleNamespace())
+
+
 def test_development_only_iteration_can_be_explicitly_registered_for_separate_forward_observation(tmp_path):
     iteration = {
         "iteration_id": "v2-development-only",

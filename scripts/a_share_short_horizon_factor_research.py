@@ -6262,6 +6262,18 @@ def paper_settlement(
 def run_paper_monitor(args: argparse.Namespace) -> dict[str, Any]:
     """Append new eligible paper signals and settle older three-day signals."""
 
+    # A promoted result's historical test window is still already-observed
+    # evidence.  Do not let a bare monitor invocation silently turn its final
+    # historical date into a paper signal; the caller must record the first
+    # genuinely unseen signal close before the ledger is touched.
+    not_before = getattr(args, "not_before", None)
+    if not_before is None:
+        raise ValueError(
+            "paper monitor requires --not-before with the first genuinely unseen signal-close date"
+        )
+    not_before_date = pd.Timestamp(not_before).normalize()
+    if pd.isna(not_before_date):
+        raise ValueError("paper monitor --not-before must be a valid ISO date")
     provider_uri = Path(args.provider_uri).expanduser()
     registry_path = Path(args.registry_path).expanduser()
     ledger_path = Path(args.ledger_path).expanduser()
@@ -6274,13 +6286,12 @@ def run_paper_monitor(args: argparse.Namespace) -> dict[str, Any]:
     strategy = dict(iteration["strategy"])
     candidate = str(iteration["selection"]["winner"])
     latest_date = pd.Timestamp(args.as_of) if args.as_of else latest_provider_date(provider_uri)
-    not_before = getattr(args, "not_before", None)
-    if not_before is not None and latest_date.normalize() < pd.Timestamp(not_before).normalize():
+    if latest_date.normalize() < not_before_date:
         return {
             "status": "not_started",
             "as_of": latest_date.date().isoformat(),
             "iteration_id": iteration["iteration_id"],
-            "not_before": pd.Timestamp(not_before).date().isoformat(),
+            "not_before": not_before_date.date().isoformat(),
             "reason": "forward observation begins only on the registered unseen signal date",
         }
     calendar = local_trading_calendar(provider_uri, end=latest_date.date().isoformat())
@@ -10195,6 +10206,11 @@ def parse_args() -> argparse.Namespace:
     monitor.add_argument("--registry-path", default=str(DEFAULT_STRATEGY_REGISTRY))
     monitor.add_argument("--ledger-path", default=str(DEFAULT_PAPER_LEDGER))
     monitor.add_argument("--iteration-id", help="use a specific passed-initial-test iteration instead of the latest one")
+    monitor.add_argument(
+        "--not-before",
+        required=True,
+        help="first genuinely unseen signal-close date, in YYYY-MM-DD form; prevents historical paper-signal backfill",
+    )
     monitor.add_argument("--as-of", help="local provider date by default")
     monitor.add_argument("--lookback-calendar-days", type=int, default=100)
     monitor.add_argument("--max-quality-age-days", type=int, default=550)
