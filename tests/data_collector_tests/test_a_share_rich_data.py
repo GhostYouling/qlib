@@ -1,5 +1,6 @@
 """Offline contract tests for credentialed A-share rich-data ingestion."""
 
+import copy
 import datetime as dt
 import importlib.util
 import sys
@@ -78,6 +79,48 @@ def write_accepted_snapshot(tmp_path: Path, frame: pd.DataFrame) -> Path:
     manifest_path = tmp_path / "accepted_snapshot.json"
     RICH.atomic_write_json(manifest, manifest_path)
     return manifest_path
+
+
+def complete_baostock_5m_frame(trade_dates: list[str]) -> pd.DataFrame:
+    frames = []
+    times = RICH.expected_minute_times("end", "5m")
+    for trade_date in trade_dates:
+        datetimes = [
+            pd.Timestamp.combine(pd.Timestamp(trade_date).date(), value) for value in times
+        ]
+        close = pd.Series(
+            [10.0 + index * 0.001 for index in range(len(datetimes))], dtype=float
+        )
+        volume = pd.Series(
+            [100.0 + index for index in range(len(datetimes))], dtype=float
+        )
+        frames.append(
+            pd.DataFrame(
+                {
+                    "datetime": datetimes,
+                    "symbol": "SH600519",
+                    "source_symbol": "sh.600519",
+                    "open": close,
+                    "high": close + 0.01,
+                    "low": close - 0.01,
+                    "close": close,
+                    "volume": volume,
+                    "amount": volume * close,
+                    "provider": "baostock",
+                }
+            )
+        )
+    return pd.concat(frames, ignore_index=True)
+
+
+def permissive_baostock_source_chain() -> dict:
+    chain = copy.deepcopy(RICH.load_baostock_5m_source_chain())
+    bulk = chain["contract"]["bulk_snapshot_contract"]
+    bulk["median_eligible_universe_coverage_min"] = 1.0
+    bulk["p05_eligible_universe_coverage_min"] = 1.0
+    bulk["minimum_names_per_factor_cross_section"] = 1
+    bulk["minimum_potential_non_overlapping_three_session_cohorts"] = 1
+    return chain
 
 
 def test_vendor_symbol_mapping_and_symbol_validation():
@@ -166,6 +209,37 @@ def test_baostock_5m_request_uses_only_raw_frozen_fields(monkeypatch):
         RICH.fetch_baostock_minutes(
             "600519", dt.date(2026, 7, 10), dt.date(2026, 7, 10), "1m"
         )
+
+
+def test_baostock_5m_canonicalization_rejects_duplicate_timestamps():
+    frame = complete_baostock_5m_frame(["2026-07-10"])
+    duplicated = pd.concat([frame, frame.iloc[[0]]], ignore_index=True)
+    with pytest.raises(RICH.RichDataError, match="forbids silent deduplication"):
+        RICH.canonicalize_baostock_5m_bars(
+            duplicated,
+            "600519",
+            dt.date(2026, 7, 10),
+            dt.date(2026, 7, 10),
+        )
+
+
+def test_baostock_5m_source_chain_and_pit_year_partitioning_are_frozen():
+    chain = RICH.load_baostock_5m_source_chain()
+    assert chain["acceptance"]["run_id"] == "20260714T210140Z_baostock_5m_be9dfe63"
+    assert chain["alignment"]["bar_timestamp_label"] == "end"
+    intervals = pd.DataFrame(
+        {
+            "instrument": ["SH600519"],
+            "start_date": pd.to_datetime(["2019-12-15"]),
+            "end_date": pd.to_datetime(["2021-02-03"]),
+        }
+    )
+    assert RICH.baostock_5m_partition_tasks(
+        intervals, dt.date(2020, 1, 1), dt.date(2021, 12, 31)
+    ) == [
+        ("600519", "2020-01-01", "2020-12-31", 2020),
+        ("600519", "2021-01-01", "2021-02-03", 2021),
+    ]
 
 
 def test_jqdata_moneyflow_contract_is_fingerprint_frozen(tmp_path):
@@ -555,6 +629,109 @@ def test_baostock_5m_acceptance_requires_exact_end_label_grid(monkeypatch):
     rejected = RICH.baostock_5m_acceptance_report(frame.iloc[:-1], contract)
     assert rejected["status"] == "automatic_checks_failed"
     assert rejected["baostock_5m_contract"]["exact_timestamp_grid_passed"] is False
+
+
+def test_baostock_5m_full_sync_stops_at_disk_gate_before_downloader(
+    tmp_path, monkeypatch
+):
+    universe = tmp_path / "universe.txt"
+    universe.write_text("SH600519\t2020-01-02\t2020-01-07\n", encoding="utf-8")
+    calendar = tmp_path / "calendar.txt"
+    calendar.write_text(
+        "2020-01-02\n2020-01-03\n2020-01-06\n2020-01-07\n", encoding="utf-8"
+    )
+    called = False
+
+    def forbidden_download(tasks, workers):
+        nonlocal called
+        called = True
+        return iter(())
+
+    monkeypatch.setattr(RICH, "require_baostock_5m_runtime", lambda: None)
+    monkeypatch.setattr(
+        RICH, "BAOSTOCK_5M_MINIMUM_FREE_BYTES", 10**30
+    )
+    monkeypatch.setattr(RICH, "download_baostock_5m_partitions", forbidden_download)
+    with pytest.raises(RICH.RichDataError, match="before any network request"):
+        RICH.sync_baostock_5m_history(
+            allow_large=True,
+            data_root=tmp_path / "external",
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+    assert called is False
+
+
+def test_baostock_5m_full_sync_is_external_atomic_and_no_return(
+    tmp_path, monkeypatch
+):
+    dates = ["2020-01-02", "2020-01-03", "2020-01-06", "2020-01-07"]
+    universe = tmp_path / "universe.txt"
+    universe.write_text("SH600519\t2020-01-02\t2020-01-07\n", encoding="utf-8")
+    calendar = tmp_path / "calendar.txt"
+    calendar.write_text("\n".join(dates) + "\n", encoding="utf-8")
+    frame = complete_baostock_5m_frame(dates)
+    chain = permissive_baostock_source_chain()
+    monkeypatch.setattr(RICH, "load_baostock_5m_source_chain", lambda path: chain)
+    monkeypatch.setattr(RICH, "require_baostock_5m_runtime", lambda: None)
+    monkeypatch.setattr(RICH, "BAOSTOCK_5M_MINIMUM_FREE_BYTES", 1)
+    monkeypatch.setattr(RICH.importlib.metadata, "version", lambda package: "0.9.3")
+    monkeypatch.setattr(
+        RICH,
+        "download_baostock_5m_partitions",
+        lambda tasks, workers: iter([("600519", 2020, frame)]),
+    )
+    data_root = tmp_path / "external"
+    manifest_path = RICH.sync_baostock_5m_history(
+        allow_large=True,
+        data_root=data_root,
+        universe_path=universe,
+        calendar_path=calendar,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    stored = Path(manifest["files"][0]["path"])
+    assert manifest_path.is_relative_to(data_root)
+    assert stored.is_relative_to(data_root)
+    assert stored.exists()
+    assert manifest["rows"] == 4 * 48
+    assert manifest["coverage"]["gate_passed_before_prices"] is True
+    assert manifest["forward_return_fields_read"] is False
+    assert manifest["daily_or_forward_return_fields_read"] is False
+    assert manifest["selection_or_promotion_allowed"] is False
+    assert not list(data_root.rglob("*.partial"))
+
+
+def test_baostock_5m_full_sync_deletes_partial_snapshot_on_partition_failure(
+    tmp_path, monkeypatch
+):
+    universe = tmp_path / "universe.txt"
+    universe.write_text("SH600519\t2020-01-02\t2020-01-07\n", encoding="utf-8")
+    calendar = tmp_path / "calendar.txt"
+    calendar.write_text(
+        "2020-01-02\n2020-01-03\n2020-01-06\n2020-01-07\n", encoding="utf-8"
+    )
+    chain = permissive_baostock_source_chain()
+
+    def failed_download(tasks, workers):
+        raise RICH.RichDataError("simulated partition failure")
+        yield  # pragma: no cover
+
+    monkeypatch.setattr(RICH, "load_baostock_5m_source_chain", lambda path: chain)
+    monkeypatch.setattr(RICH, "require_baostock_5m_runtime", lambda: None)
+    monkeypatch.setattr(RICH, "BAOSTOCK_5M_MINIMUM_FREE_BYTES", 1)
+    monkeypatch.setattr(RICH, "download_baostock_5m_partitions", failed_download)
+    monkeypatch.setattr(RICH, "new_run_id", lambda prefix: "fixed-failed-run")
+    data_root = tmp_path / "external"
+    with pytest.raises(RICH.RichDataError, match="simulated partition failure"):
+        RICH.sync_baostock_5m_history(
+            allow_large=True,
+            data_root=data_root,
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+    snapshots = data_root / "raw" / "a_share" / "rich" / "baostock" / "minutes" / "5m" / "snapshots"
+    assert not snapshots.exists() or not list(snapshots.iterdir())
+    assert list((data_root / "metadata" / "rich_data" / "preflights").glob("*.json"))
 
 
 def test_frozen_minute_factor_spec_rejects_direction_changes(tmp_path):

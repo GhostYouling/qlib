@@ -21,13 +21,18 @@ password in a command line, a config file committed to git, or a run manifest.
 from __future__ import annotations
 
 import argparse
+import atexit
+import concurrent.futures
 import datetime as dt
+import fcntl
 import hashlib
+import importlib.metadata
 import importlib.util
 import json
 import os
 import shutil
 import tempfile
+import time
 import uuid
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -95,6 +100,9 @@ BAOSTOCK_5M_CONTRACT_SHA256 = (
 BAOSTOCK_5M_FACTOR_SPEC_SHA256 = (
     "a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8"
 )
+BAOSTOCK_5M_MINIMUM_FREE_BYTES = 10 * 1024**3
+BAOSTOCK_5M_MAX_WORKERS = 4
+BAOSTOCK_5M_PARTITION_RETRIES = 3
 JQDATA_MONEYFLOW_RAW_FIELDS = (
     "inflow_xl",
     "inflow_l",
@@ -123,6 +131,39 @@ JQDATA_MONEYFLOW_COLUMNS = (
 
 class RichDataError(RuntimeError):
     """A recoverable provider, credential, or data-contract error."""
+
+
+class RichDataProcessLock:
+    """Hold one advisory lock for a long-running rich-data synchronization."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self._handle: Any | None = None
+
+    def __enter__(self) -> "RichDataProcessLock":
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._handle = self.path.open("a+", encoding="utf-8")
+        try:
+            fcntl.flock(self._handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            self._handle.seek(0)
+            owner = self._handle.read().strip() or "unknown"
+            self._handle.close()
+            self._handle = None
+            raise RichDataError(
+                f"another BaoStock five-minute synchronization holds {self.path}; owner={owner}"
+            ) from exc
+        self._handle.seek(0)
+        self._handle.truncate()
+        self._handle.write(str(os.getpid()))
+        self._handle.flush()
+        return self
+
+    def __exit__(self, exc_type: Any, exc: Any, traceback: Any) -> None:
+        if self._handle is not None:
+            fcntl.flock(self._handle.fileno(), fcntl.LOCK_UN)
+            self._handle.close()
+            self._handle = None
 
 
 @dataclass(frozen=True)
@@ -319,6 +360,30 @@ def canonicalize_minute_bars(
     return result.reset_index(drop=True)
 
 
+def canonicalize_baostock_5m_bars(
+    frame: pd.DataFrame,
+    code: str,
+    start: dt.date,
+    end: dt.date,
+) -> pd.DataFrame:
+    """Normalize BaoStock bars without silently resolving duplicate timestamps."""
+
+    if frame is not None and not frame.empty:
+        normalized = frame.copy()
+        if not isinstance(normalized.index, pd.RangeIndex):
+            normalized = normalized.reset_index()
+        datetime_column = _column(normalized, ("datetime", "trade_time", "time", "date"))
+        if datetime_column is None:
+            raise RichDataError("baostock minute response has no datetime column")
+        timestamps = pd.to_datetime(normalized[datetime_column], errors="coerce")
+        if timestamps.notna().any() and timestamps[timestamps.notna()].duplicated().any():
+            raise RichDataError(
+                f"BaoStock returned duplicate five-minute timestamps for {code}; "
+                "the frozen contract forbids silent deduplication"
+            )
+    return canonicalize_minute_bars(frame, "baostock", code, start, end)
+
+
 def minute_daily_summary(frame: pd.DataFrame) -> list[dict[str, Any]]:
     """Return small reconciliation summaries without duplicating the raw data."""
 
@@ -502,34 +567,24 @@ def _import_tushare() -> Any:
     return ts
 
 
-def fetch_baostock_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
-    """Fetch only the frozen anonymous raw five-minute BaoStock fields."""
-
-    if frequency != "5m":
-        raise RichDataError("the frozen BaoStock intraday contract supports only 5m bars")
-    import baostock as bs
+def _query_baostock_5m(client: Any, code: str, start: dt.date, end: dt.date) -> pd.DataFrame:
+    """Query one raw partition through an already authenticated BaoStock client."""
 
     fields = "date,time,code,open,high,low,close,volume,amount,adjustflag"
-    login = bs.login()
-    if str(login.error_code) != "0":
-        raise RichDataError(f"BaoStock anonymous login failed: {login.error_msg}")
-    try:
-        response = bs.query_history_k_data_plus(
-            vendor_symbol(code, "baostock"),
-            fields,
-            start_date=start.isoformat(),
-            end_date=end.isoformat(),
-            frequency="5",
-            adjustflag="3",
-        )
-        if str(response.error_code) != "0":
-            raise RichDataError(f"BaoStock five-minute query failed for {code}: {response.error_msg}")
-        rows: list[list[str]] = []
-        while response.next():
-            rows.append(response.get_row_data())
-        frame = pd.DataFrame(rows, columns=response.fields)
-    finally:
-        bs.logout()
+    response = client.query_history_k_data_plus(
+        vendor_symbol(code, "baostock"),
+        fields,
+        start_date=start.isoformat(),
+        end_date=end.isoformat(),
+        frequency="5",
+        adjustflag="3",
+    )
+    if str(response.error_code) != "0":
+        raise RichDataError(f"BaoStock five-minute query failed for {code}: {response.error_msg}")
+    rows: list[list[str]] = []
+    while response.next():
+        rows.append(response.get_row_data())
+    frame = pd.DataFrame(rows, columns=response.fields)
     if frame.empty:
         return frame
     expected_fields = fields.split(",")
@@ -543,6 +598,100 @@ def fetch_baostock_minutes(code: str, start: dt.date, end: dt.date, frequency: s
     if frame["datetime"].isna().any():
         raise RichDataError("BaoStock five-minute response contains an invalid timestamp")
     return frame
+
+
+def fetch_baostock_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
+    """Fetch only the frozen anonymous raw five-minute BaoStock fields."""
+
+    if frequency != "5m":
+        raise RichDataError("the frozen BaoStock intraday contract supports only 5m bars")
+    import baostock as bs
+
+    login = bs.login()
+    if str(login.error_code) != "0":
+        raise RichDataError(f"BaoStock anonymous login failed: {login.error_msg}")
+    try:
+        frame = _query_baostock_5m(bs, code, start, end)
+    finally:
+        bs.logout()
+    return frame
+
+
+_BAOSTOCK_WORKER_CLIENT: Any | None = None
+
+
+def initialize_baostock_5m_worker() -> None:
+    """Authenticate one anonymous BaoStock session per process."""
+
+    import baostock as bs
+
+    login = bs.login()
+    if str(login.error_code) != "0":
+        raise RichDataError(f"BaoStock worker login failed: {login.error_msg}")
+    global _BAOSTOCK_WORKER_CLIENT
+    _BAOSTOCK_WORKER_CLIENT = bs
+    atexit.register(bs.logout)
+
+
+def fetch_baostock_5m_partition_worker(
+    task: tuple[str, str, str, int],
+) -> tuple[str, int, pd.DataFrame]:
+    """Fetch and canonicalize one instrument-year with fixed retries."""
+
+    code, start_value, end_value, year = task
+    if _BAOSTOCK_WORKER_CLIENT is None:
+        raise RichDataError("BaoStock five-minute worker is not initialized")
+    start = dt.date.fromisoformat(start_value)
+    end = dt.date.fromisoformat(end_value)
+    error: Exception | None = None
+    for attempt in range(1, BAOSTOCK_5M_PARTITION_RETRIES + 1):
+        try:
+            raw = _query_baostock_5m(_BAOSTOCK_WORKER_CLIENT, code, start, end)
+            frame = canonicalize_baostock_5m_bars(raw, code, start, end)
+            return code, year, frame
+        except Exception as exc:  # noqa: BLE001 - worker must preserve the final provider error.
+            error = exc
+            if attempt < BAOSTOCK_5M_PARTITION_RETRIES:
+                time.sleep(float(attempt))
+    raise RichDataError(
+        f"BaoStock five-minute partition failed after {BAOSTOCK_5M_PARTITION_RETRIES} attempts: "
+        f"{code} {year}: {error}"
+    )
+
+
+def download_baostock_5m_partitions(
+    tasks: Iterable[tuple[str, str, str, int]],
+    workers: int,
+) -> Iterable[tuple[str, int, pd.DataFrame]]:
+    """Yield partition results while bounding submitted work and process count."""
+
+    if not 1 <= workers <= BAOSTOCK_5M_MAX_WORKERS:
+        raise RichDataError(
+            f"BaoStock five-minute workers must be between 1 and {BAOSTOCK_5M_MAX_WORKERS}"
+        )
+    task_iterator = iter(tasks)
+    with concurrent.futures.ProcessPoolExecutor(
+        max_workers=workers,
+        initializer=initialize_baostock_5m_worker,
+    ) as executor:
+        pending: dict[concurrent.futures.Future[tuple[str, int, pd.DataFrame]], None] = {}
+        for _ in range(workers * 2):
+            try:
+                pending[executor.submit(fetch_baostock_5m_partition_worker, next(task_iterator))] = None
+            except StopIteration:
+                break
+        while pending:
+            completed, _ = concurrent.futures.wait(
+                pending, return_when=concurrent.futures.FIRST_COMPLETED
+            )
+            for future in completed:
+                del pending[future]
+                yield future.result()
+                try:
+                    task = next(task_iterator)
+                except StopIteration:
+                    continue
+                pending[executor.submit(fetch_baostock_5m_partition_worker, task)] = None
 
 
 def fetch_tushare_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
@@ -1290,6 +1439,330 @@ def load_baostock_5m_factor_spec(
     return spec
 
 
+def load_baostock_5m_source_chain(
+    factor_spec_path: Path = DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+) -> dict[str, Any]:
+    """Fingerprint-validate the contract, acceptance and alignment records."""
+
+    spec = load_baostock_5m_factor_spec(factor_spec_path)
+    contract = load_baostock_5m_contract()
+    chain = spec["source_chain"]
+    acceptance_link = chain["acceptance_snapshot"]
+    alignment_link = chain["alignment_confirmation"]
+    acceptance_path = resolve_record_path(acceptance_link["path"])
+    alignment_path = resolve_record_path(alignment_link["path"])
+    if not acceptance_path.exists() or file_digest(acceptance_path) != acceptance_link["sha256"]:
+        raise RichDataError("BaoStock five-minute acceptance fingerprint mismatch")
+    if not alignment_path.exists() or file_digest(alignment_path) != alignment_link["sha256"]:
+        raise RichDataError("BaoStock five-minute alignment fingerprint mismatch")
+    acceptance = load_json_record(acceptance_path, kind="a_share_rich_data_snapshot")
+    alignment = load_json_record(alignment_path, kind="a_share_minute_alignment_confirmation")
+    expected_symbols = {qlib_symbol(code) for code in contract["formal_acceptance"]["symbols"]}
+    observed_symbols = {str(item.get("symbol")) for item in (acceptance.get("files") or [])}
+    if (
+        acceptance.get("provider") != "baostock"
+        or acceptance.get("frequency") != "5m"
+        or acceptance.get("prices") != "raw_unadjusted"
+        or acceptance.get("acceptance_status")
+        != "automatic_checks_passed_pending_time_alignment"
+        or (acceptance.get("data_contract") or {}).get("sha256") != BAOSTOCK_5M_CONTRACT_SHA256
+        or observed_symbols != expected_symbols
+        or any(int(item.get("rows") or 0) != 48 for item in (acceptance.get("files") or []))
+        or alignment.get("status") != "passed_for_feature_research"
+        or alignment.get("provider") != "baostock"
+        or alignment.get("frequency") != "5m"
+        or alignment.get("bar_timestamp_label") != "end"
+        or alignment.get("volume_unit") != "shares"
+        or resolve_record_path((alignment.get("source_acceptance_snapshot") or {}).get("path") or "")
+        != acceptance_path
+        or (alignment.get("source_acceptance_snapshot") or {}).get("sha256")
+        != acceptance_link["sha256"]
+    ):
+        raise RichDataError("BaoStock five-minute source chain violates the frozen protocol")
+    for file_record in acceptance.get("files") or []:
+        frame = load_snapshot_frame(file_record)
+        report = file_record.get("acceptance") or {}
+        exact = report.get("baostock_5m_contract") or {}
+        if (
+            report.get("status") != "automatic_checks_passed_pending_time_alignment"
+            or exact.get("exact_timestamp_grid_passed") is not True
+            or (report.get("daily_reconciliation") or {}).get("status") != "passed"
+        ):
+            raise RichDataError("BaoStock five-minute acceptance file failed its frozen checks")
+        if len(frame) != 48:
+            raise RichDataError("BaoStock five-minute acceptance data no longer has 48 rows")
+    return {
+        "contract": contract,
+        "factor_spec": spec,
+        "acceptance_path": acceptance_path,
+        "acceptance": acceptance,
+        "alignment_path": alignment_path,
+        "alignment": alignment,
+    }
+
+
+def require_baostock_5m_runtime() -> None:
+    """Require the exact anonymous SDK version frozen by the source contract."""
+
+    require_provider("baostock")
+    try:
+        version = importlib.metadata.version("baostock")
+    except importlib.metadata.PackageNotFoundError as exc:
+        raise RichDataError("BaoStock SDK metadata is unavailable") from exc
+    if version != "0.9.3":
+        raise RichDataError(
+            f"BaoStock five-minute sync requires baostock==0.9.3, found {version}"
+        )
+
+
+def baostock_5m_partition_tasks(
+    intervals: pd.DataFrame,
+    start: dt.date,
+    end: dt.date,
+) -> list[tuple[str, str, str, int]]:
+    """Split point-in-time instrument intervals into fixed calendar-year requests."""
+
+    tasks: list[tuple[str, str, str, int]] = []
+    range_start = pd.Timestamp(start)
+    range_end = pd.Timestamp(end)
+    for row in intervals.itertuples(index=False):
+        interval_start = max(pd.Timestamp(row.start_date), range_start)
+        interval_end = min(pd.Timestamp(row.end_date), range_end)
+        if interval_start > interval_end:
+            continue
+        code = str(row.instrument)[2:]
+        for year in range(interval_start.year, interval_end.year + 1):
+            partition_start = max(interval_start, pd.Timestamp(year=year, month=1, day=1))
+            partition_end = min(interval_end, pd.Timestamp(year=year, month=12, day=31))
+            tasks.append(
+                (
+                    code,
+                    partition_start.date().isoformat(),
+                    partition_end.date().isoformat(),
+                    year,
+                )
+            )
+    keys = [(code, year) for code, _, _, year in tasks]
+    if len(keys) != len(set(keys)):
+        raise RichDataError("BaoStock five-minute point-in-time tasks contain duplicate symbol-years")
+    return tasks
+
+
+def validate_baostock_5m_partition(
+    frame: pd.DataFrame,
+    task: tuple[str, str, str, int],
+    calendar: pd.DatetimeIndex,
+) -> list[str]:
+    """Validate one raw partition and return its exact complete-session dates."""
+
+    code, start_value, end_value, year = task
+    required = {
+        "datetime",
+        "symbol",
+        "source_symbol",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "provider",
+    }
+    if missing := sorted(required - set(frame.columns)):
+        raise RichDataError(
+            f"BaoStock five-minute {code} {year} partition is missing columns: "
+            + ", ".join(missing)
+        )
+    if frame.empty:
+        return []
+    timestamps = pd.to_datetime(frame["datetime"], errors="coerce")
+    if timestamps.isna().any() or timestamps.duplicated().any():
+        raise RichDataError(
+            f"BaoStock five-minute {code} {year} partition has invalid or duplicate timestamps"
+        )
+    if not timestamps.is_monotonic_increasing:
+        raise RichDataError(f"BaoStock five-minute {code} {year} partition is not sorted")
+    start_timestamp = pd.Timestamp(start_value)
+    end_timestamp = pd.Timestamp(end_value) + pd.Timedelta(days=1)
+    if timestamps.lt(start_timestamp).any() or timestamps.ge(end_timestamp).any():
+        raise RichDataError(f"BaoStock five-minute {code} {year} partition escaped its task range")
+    expected_symbol = qlib_symbol(code)
+    if (
+        set(frame["symbol"].astype(str)) != {expected_symbol}
+        or set(frame["source_symbol"].astype(str)) != {vendor_symbol(code, "baostock")}
+        or set(frame["provider"].astype(str)) != {"baostock"}
+    ):
+        raise RichDataError(f"BaoStock five-minute {code} {year} partition identity mismatch")
+    calendar_dates = set(pd.DatetimeIndex(calendar).normalize())
+    observed_dates = set(timestamps.dt.normalize())
+    if not observed_dates.issubset(calendar_dates):
+        raise RichDataError(
+            f"BaoStock five-minute {code} {year} partition contains non-local-calendar dates"
+        )
+    expected_times = expected_minute_times("end", "5m")
+    expected_time_set = set(expected_times)
+    if not set(timestamps.dt.time).issubset(expected_time_set):
+        raise RichDataError(
+            f"BaoStock five-minute {code} {year} partition violates the frozen end-label grid"
+        )
+    complete_dates: list[str] = []
+    work = frame.assign(_trade_date=timestamps.dt.normalize())
+    for trade_date, group in work.groupby("_trade_date", sort=True):
+        observed_times = tuple(pd.to_datetime(group["datetime"]).dt.time)
+        if len(group) > len(expected_times):
+            raise RichDataError(
+                f"BaoStock five-minute {code} {trade_date.date()} has too many bars"
+            )
+        if observed_times == expected_times:
+            complete_dates.append(trade_date.date().isoformat())
+    return complete_dates
+
+
+def baostock_5m_coverage_report(
+    intervals: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    complete_counts: dict[str, int],
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Compute the frozen no-return point-in-time coverage and capacity gates."""
+
+    active_counts = np.zeros(len(calendar), dtype=np.int64)
+    for row in intervals.itertuples(index=False):
+        left = int(calendar.searchsorted(pd.Timestamp(row.start_date), side="left"))
+        right = int(calendar.searchsorted(pd.Timestamp(row.end_date), side="right"))
+        if right > left:
+            active_counts[left:right] += 1
+    completed = np.asarray(
+        [int(complete_counts.get(value.date().isoformat(), 0)) for value in calendar],
+        dtype=np.int64,
+    )
+    if (completed > active_counts).any():
+        raise RichDataError("BaoStock five-minute complete-session count exceeds the PIT universe")
+    ratios = np.divide(
+        completed,
+        active_counts,
+        out=np.full(len(calendar), np.nan, dtype=float),
+        where=active_counts > 0,
+    )
+    valid_ratios = ratios[np.isfinite(ratios)]
+    if valid_ratios.size == 0:
+        raise RichDataError("BaoStock five-minute coverage has no active PIT-universe sessions")
+    bulk = contract["bulk_snapshot_contract"]
+    potential_indices = np.arange(0, max(len(calendar) - 3, 0), 3, dtype=int)
+    potential_cohorts = int(
+        (completed[potential_indices] >= int(bulk["minimum_names_per_factor_cross_section"])).sum()
+    )
+    median_coverage = float(np.median(valid_ratios))
+    p05_coverage = float(np.quantile(valid_ratios, 0.05))
+    gate_passed = (
+        median_coverage >= float(bulk["median_eligible_universe_coverage_min"])
+        and p05_coverage >= float(bulk["p05_eligible_universe_coverage_min"])
+        and potential_cohorts
+        >= int(bulk["minimum_potential_non_overlapping_three_session_cohorts"])
+    )
+    return {
+        "calendar_sessions": int(len(calendar)),
+        "median_eligible_universe_coverage": median_coverage,
+        "p05_eligible_universe_coverage": p05_coverage,
+        "dates_with_at_least_fifty_complete_names": int(
+            (completed >= int(bulk["minimum_names_per_factor_cross_section"])).sum()
+        ),
+        "potential_non_overlapping_three_session_cohorts": potential_cohorts,
+        "gate_passed_before_prices": gate_passed,
+        "daily": [
+            {
+                "trade_date": value.date().isoformat(),
+                "active_pit_names": int(active),
+                "complete_five_minute_names": int(complete),
+                "eligible_universe_coverage": float(ratio) if np.isfinite(ratio) else None,
+            }
+            for value, active, complete, ratio in zip(
+                calendar, active_counts, completed, ratios, strict=True
+            )
+        ],
+    }
+
+
+def write_baostock_5m_preflight(
+    *,
+    data_root: Path = DATA_ROOT,
+    universe_path: Path = DEFAULT_FACTOR_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+    factor_spec_path: Path = DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+) -> Path:
+    """Record a source-chain and storage audit without issuing a network request."""
+
+    source_chain = load_baostock_5m_source_chain(factor_spec_path)
+    require_baostock_5m_runtime()
+    contract = source_chain["contract"]
+    bulk = contract["bulk_snapshot_contract"]
+    start = dt.date.fromisoformat(str(bulk["development_start"]))
+    end = dt.date.fromisoformat(str(bulk["development_end"]))
+    intervals = load_factor_universe_intervals(universe_path)
+    calendar = local_calendar_dates(start, end, calendar_path)
+    if calendar.empty:
+        raise RichDataError("local calendar has no sessions in the BaoStock five-minute range")
+    tasks = baostock_5m_partition_tasks(intervals, start, end)
+    if not tasks:
+        raise RichDataError("factor universe has no BaoStock five-minute partitions")
+    resolved_data_root = data_root.expanduser().resolve()
+    resolved_data_root.mkdir(parents=True, exist_ok=True)
+    usage = shutil.disk_usage(resolved_data_root)
+    passed = usage.free >= BAOSTOCK_5M_MINIMUM_FREE_BYTES
+    run_id = new_run_id("baostock_5m_preflight")
+    payload = {
+        "schema_version": 1,
+        "kind": "a_share_baostock_5m_preflight",
+        "run_id": run_id,
+        "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "status": "passed_before_network" if passed else "blocked_insufficient_disk_before_network",
+        "data_root": str(resolved_data_root),
+        "sdk_version": importlib.metadata.version("baostock"),
+        "source_chain": {
+            "data_contract_sha256": BAOSTOCK_5M_CONTRACT_SHA256,
+            "factor_spec_sha256": BAOSTOCK_5M_FACTOR_SPEC_SHA256,
+            "acceptance_snapshot": {
+                "path": manifest_path(source_chain["acceptance_path"]),
+                "sha256": file_digest(source_chain["acceptance_path"]),
+            },
+            "alignment_confirmation": {
+                "path": manifest_path(source_chain["alignment_path"]),
+                "sha256": file_digest(source_chain["alignment_path"]),
+            },
+        },
+        "development_start": start.isoformat(),
+        "development_end": end.isoformat(),
+        "point_in_time_instruments": int(len(intervals)),
+        "yearly_partitions": int(len(tasks)),
+        "calendar_sessions": int(len(calendar)),
+        "universe": {
+            "path": manifest_path(universe_path.expanduser().resolve()),
+            "sha256": file_digest(universe_path.expanduser().resolve()),
+        },
+        "calendar": {
+            "path": manifest_path(calendar_path.expanduser().resolve()),
+            "sha256": file_digest(calendar_path.expanduser().resolve()),
+        },
+        "minimum_free_bytes": BAOSTOCK_5M_MINIMUM_FREE_BYTES,
+        "observed_free_bytes": int(usage.free),
+        "observed_free_gib": float(usage.free / 1024**3),
+        "filesystem_device": int(resolved_data_root.stat().st_dev),
+        "network_request_issued": False,
+        "raw_or_derived_factor_values_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+    }
+    destination = (
+        resolved_data_root
+        / "metadata"
+        / "rich_data"
+        / "preflights"
+        / f"{run_id}.json"
+    )
+    atomic_write_json(payload, destination)
+    return destination
+
+
 def previous_comparable_close_map(symbol: str) -> dict[pd.Timestamp, float]:
     """Express the prior close on each current session's raw-price scale.
 
@@ -1599,7 +2072,11 @@ def sync_minutes(
     acceptance_by_code: dict[str, dict[str, Any]] = {}
     for code in codes:
         raw = fetcher(code, start, end, frequency)
-        rows_by_code[code] = canonicalize_minute_bars(raw, provider, code, start, end)
+        rows_by_code[code] = (
+            canonicalize_baostock_5m_bars(raw, code, start, end)
+            if provider == "baostock"
+            else canonicalize_minute_bars(raw, provider, code, start, end)
+        )
         if acceptance:
             acceptance_by_code[code] = minute_acceptance_report(rows_by_code[code])
     return write_minute_snapshot(
@@ -1650,7 +2127,7 @@ def sync_baostock_5m_acceptance() -> Path:
     acceptance_by_code: dict[str, dict[str, Any]] = {}
     for code in codes:
         raw = fetch_baostock_minutes(code, trade_date, trade_date, "5m")
-        frame = canonicalize_minute_bars(raw, "baostock", code, trade_date, trade_date)
+        frame = canonicalize_baostock_5m_bars(raw, code, trade_date, trade_date)
         rows_by_code[code] = frame
         acceptance_by_code[code] = baostock_5m_acceptance_report(frame, contract)
     return write_minute_snapshot(
@@ -1667,6 +2144,295 @@ def sync_baostock_5m_acceptance() -> Path:
             "forward_return_fields_read": False,
         },
     )
+
+
+def sync_baostock_5m_history(
+    *,
+    allow_large: bool = False,
+    data_root: Path = DATA_ROOT,
+    universe_path: Path = DEFAULT_FACTOR_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+    factor_spec_path: Path = DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+    workers: int = BAOSTOCK_5M_MAX_WORKERS,
+) -> Path:
+    """Run one locked full-history synchronization on the selected data root."""
+
+    if not allow_large:
+        raise RichDataError(
+            "BaoStock full five-minute history requires explicit --allow-large"
+        )
+    resolved_data_root = data_root.expanduser().resolve()
+    resolved_data_root.mkdir(parents=True, exist_ok=True)
+    with RichDataProcessLock(resolved_data_root / ".a_share_baostock_5m.lock"):
+        return _sync_baostock_5m_history_unlocked(
+            allow_large=allow_large,
+            data_root=resolved_data_root,
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+            factor_spec_path=factor_spec_path,
+            workers=workers,
+        )
+
+
+def _sync_baostock_5m_history_unlocked(
+    *,
+    allow_large: bool = False,
+    data_root: Path = DATA_ROOT,
+    universe_path: Path = DEFAULT_FACTOR_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+    factor_spec_path: Path = DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+    workers: int = BAOSTOCK_5M_MAX_WORKERS,
+) -> Path:
+    """Store the frozen 2020--2025 PIT-universe BaoStock five-minute history."""
+
+    if not allow_large:
+        raise RichDataError(
+            "BaoStock full five-minute history requires explicit --allow-large"
+        )
+    if not 1 <= workers <= BAOSTOCK_5M_MAX_WORKERS:
+        raise RichDataError(
+            f"BaoStock five-minute workers must be between 1 and {BAOSTOCK_5M_MAX_WORKERS}"
+        )
+    preflight_path = write_baostock_5m_preflight(
+        data_root=data_root,
+        universe_path=universe_path,
+        calendar_path=calendar_path,
+        factor_spec_path=factor_spec_path,
+    )
+    preflight = load_json_record(preflight_path, kind="a_share_baostock_5m_preflight")
+    if preflight.get("status") != "passed_before_network":
+        raise RichDataError(
+            "BaoStock full five-minute history stopped before any network request: "
+            f"{preflight['data_root']} has {float(preflight['observed_free_gib']):.2f} GiB free; "
+            "pass --data-root pointing to a volume with at least 10 GiB. "
+            f"Audit: {preflight_path}"
+        )
+    source_chain = load_baostock_5m_source_chain(factor_spec_path)
+    contract = source_chain["contract"]
+    require_baostock_5m_runtime()
+    bulk = contract["bulk_snapshot_contract"]
+    start = dt.date.fromisoformat(str(bulk["development_start"]))
+    end = dt.date.fromisoformat(str(bulk["development_end"]))
+    intervals = load_factor_universe_intervals(universe_path)
+    calendar = local_calendar_dates(start, end, calendar_path)
+    if calendar.empty:
+        raise RichDataError("local calendar has no sessions in the BaoStock five-minute range")
+    tasks = baostock_5m_partition_tasks(intervals, start, end)
+    if not tasks:
+        raise RichDataError("factor universe has no BaoStock five-minute partitions")
+
+    resolved_data_root = data_root.expanduser().resolve()
+    resolved_data_root.mkdir(parents=True, exist_ok=True)
+    storage_device = int(resolved_data_root.stat().st_dev)
+    if storage_device != int(preflight["filesystem_device"]):
+        raise RichDataError("BaoStock five-minute target filesystem changed after preflight")
+    disk_before = shutil.disk_usage(resolved_data_root)
+    if disk_before.free < BAOSTOCK_5M_MINIMUM_FREE_BYTES:
+        raise RichDataError(
+            "BaoStock full five-minute history requires at least 10 GiB free before any "
+            f"network request; {resolved_data_root} has {disk_before.free / 1024**3:.2f} GiB. "
+            "Pass --data-root pointing to a larger volume."
+        )
+
+    run_id = new_run_id("baostock_5m_history")
+    parent = (
+        resolved_data_root
+        / "raw"
+        / "a_share"
+        / "rich"
+        / "baostock"
+        / "minutes"
+        / "5m"
+        / "snapshots"
+    )
+    run_root = parent / run_id
+    temporary_root = parent / f".{run_id}.partial"
+    runs_root = resolved_data_root / "metadata" / "rich_data" / "runs"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(f"BaoStock five-minute snapshot already exists: {run_id}")
+    temporary_root.mkdir(parents=True)
+
+    task_by_key = {(task[0], task[3]): task for task in tasks}
+    received: set[tuple[str, int]] = set()
+    complete_counts: dict[str, int] = {}
+    files: list[dict[str, Any]] = []
+    total_rows = 0
+    complete_sessions = 0
+    incomplete_sessions = 0
+    download_started_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    download_started_monotonic = time.monotonic()
+    try:
+        for code, year, frame in download_baostock_5m_partitions(tasks, workers):
+            key = (str(code), int(year))
+            if key not in task_by_key:
+                raise RichDataError(
+                    f"BaoStock five-minute downloader returned an unexpected partition: {key}"
+                )
+            if key in received:
+                raise RichDataError(
+                    f"BaoStock five-minute downloader returned a duplicate partition: {key}"
+                )
+            task = task_by_key[key]
+            complete_dates = validate_baostock_5m_partition(frame, task, calendar)
+            observed_dates = (
+                int(pd.to_datetime(frame["datetime"]).dt.normalize().nunique())
+                if not frame.empty
+                else 0
+            )
+            for trade_date in complete_dates:
+                complete_counts[trade_date] = complete_counts.get(trade_date, 0) + 1
+            complete_sessions += len(complete_dates)
+            incomplete_sessions += observed_dates - len(complete_dates)
+            relative = Path(qlib_symbol(code).lower()) / f"{year}.parquet"
+            temporary_destination = temporary_root / relative
+            final_destination = run_root / relative
+            try:
+                current_device = int(resolved_data_root.stat().st_dev)
+            except FileNotFoundError as exc:
+                raise RichDataError(
+                    "BaoStock five-minute target volume disappeared during download"
+                ) from exc
+            if current_device != storage_device:
+                raise RichDataError(
+                    "BaoStock five-minute target filesystem changed during download"
+                )
+            atomic_write_frame(frame, temporary_destination)
+            total_rows += int(len(frame))
+            files.append(
+                {
+                    "code": str(code),
+                    "symbol": qlib_symbol(code),
+                    "year": int(year),
+                    "requested_start": task[1],
+                    "requested_end": task[2],
+                    "path": manifest_path(final_destination),
+                    "rows": int(len(frame)),
+                    "observed_sessions": observed_dates,
+                    "complete_regular_sessions": int(len(complete_dates)),
+                    "sha256": frame_digest(frame),
+                }
+            )
+            received.add(key)
+            if len(received) == 1 or len(received) % 100 == 0:
+                elapsed = max(time.monotonic() - download_started_monotonic, 0.001)
+                print(
+                    json.dumps(
+                        {
+                            "status": "downloading_baostock_5m",
+                            "partitions_completed": len(received),
+                            "partitions_total": len(tasks),
+                            "rows_written": total_rows,
+                            "elapsed_minutes": round(elapsed / 60.0, 2),
+                            "partitions_per_minute": round(len(received) / elapsed * 60.0, 2),
+                        },
+                        ensure_ascii=False,
+                    ),
+                    flush=True,
+                )
+        missing = sorted(set(task_by_key) - received)
+        if missing:
+            raise RichDataError(
+                f"BaoStock five-minute downloader omitted {len(missing)} partitions; "
+                f"first missing partition: {missing[0]}"
+            )
+        coverage = baostock_5m_coverage_report(
+            intervals, calendar, complete_counts, contract
+        )
+        disk_after_download = shutil.disk_usage(resolved_data_root)
+        files.sort(key=lambda item: (item["symbol"], item["year"]))
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "baostock_five_minute_history",
+            "provider": "baostock",
+            "frequency": "5m",
+            "prices": "raw_unadjusted",
+            "requested_start": start.isoformat(),
+            "requested_end": end.isoformat(),
+            "download_started_at": download_started_at,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "run_id": run_id,
+            "status": (
+                "full_source_coverage_passed_pending_no_return_feature_materialization"
+                if coverage["gate_passed_before_prices"]
+                else "full_source_coverage_failed_stop_before_forward_returns"
+            ),
+            "data_root": str(resolved_data_root),
+            "source_chain": {
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_BAOSTOCK_5M_CONTRACT.resolve()),
+                    "sha256": BAOSTOCK_5M_CONTRACT_SHA256,
+                },
+                "factor_spec": {
+                    "path": manifest_path(factor_spec_path.expanduser().resolve()),
+                    "sha256": BAOSTOCK_5M_FACTOR_SPEC_SHA256,
+                },
+                "acceptance_snapshot": {
+                    "path": manifest_path(source_chain["acceptance_path"]),
+                    "sha256": file_digest(source_chain["acceptance_path"]),
+                    "run_id": source_chain["acceptance"].get("run_id"),
+                },
+                "alignment_confirmation": {
+                    "path": manifest_path(source_chain["alignment_path"]),
+                    "sha256": file_digest(source_chain["alignment_path"]),
+                    "run_id": source_chain["alignment"].get("run_id"),
+                },
+            },
+            "storage_preflight_record": {
+                "path": manifest_path(preflight_path),
+                "sha256": file_digest(preflight_path),
+                "status": preflight["status"],
+                "network_request_issued": preflight["network_request_issued"],
+            },
+            "request_protocol": {
+                "sdk_version": importlib.metadata.version("baostock"),
+                "frequency": "5",
+                "adjustflag": "3",
+                "fields": contract["source"]["requested_fields"],
+                "yearly_partitions": True,
+                "partition_retries": BAOSTOCK_5M_PARTITION_RETRIES,
+                "workers": workers,
+                "partition_count": len(tasks),
+                "credentials_required_or_stored": False,
+            },
+            "storage_preflight": {
+                "minimum_free_bytes": BAOSTOCK_5M_MINIMUM_FREE_BYTES,
+                "free_bytes_before_network": int(disk_before.free),
+                "free_bytes_after_download": int(disk_after_download.free),
+                "passed_before_network": True,
+                "temporary_snapshot_deleted_on_failure": True,
+            },
+            "universe": {
+                "path": manifest_path(universe_path.expanduser().resolve()),
+                "sha256": file_digest(universe_path.expanduser().resolve()),
+                "point_in_time_intervals": int(len(intervals)),
+            },
+            "calendar": {
+                "path": manifest_path(calendar_path.expanduser().resolve()),
+                "sha256": file_digest(calendar_path.expanduser().resolve()),
+                "sessions": int(len(calendar)),
+            },
+            "rows": total_rows,
+            "complete_regular_sessions": complete_sessions,
+            "incomplete_observed_sessions": incomplete_sessions,
+            "files": files,
+            "coverage": coverage,
+            "raw_minute_price_fields_stored": ["open", "high", "low", "close"],
+            "daily_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = runs_root / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        raise
 
 
 def sync_tushare_events(
@@ -2066,6 +2832,46 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the frozen four-symbol BaoStock five-minute acceptance",
     )
 
+    baostock_preflight = subparsers.add_parser(
+        "preflight-baostock-5m",
+        help="audit the frozen source chain and target storage without a network request",
+    )
+    baostock_preflight.add_argument("--data-root", type=Path, default=DATA_ROOT)
+    baostock_preflight.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_FACTOR_UNIVERSE
+    )
+    baostock_preflight.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+
+    baostock_history = subparsers.add_parser(
+        "sync-baostock-5m",
+        help="download the frozen 2020--2025 PIT-universe BaoStock five-minute snapshot",
+    )
+    baostock_history.add_argument(
+        "--data-root",
+        type=Path,
+        default=DATA_ROOT,
+        help="raw/metadata root; use a large external volume when the repository disk is full",
+    )
+    baostock_history.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_FACTOR_UNIVERSE
+    )
+    baostock_history.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+    baostock_history.add_argument(
+        "--workers",
+        type=int,
+        choices=range(1, BAOSTOCK_5M_MAX_WORKERS + 1),
+        default=BAOSTOCK_5M_MAX_WORKERS,
+    )
+    baostock_history.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the accepted full-universe, multi-year anonymous request",
+    )
+
     events = subparsers.add_parser("sync-tushare-events", help="download Tushare event tables after the close")
     events.add_argument("--datasets", default="moneyflow,limit-list,top-list")
     events.add_argument("--start", type=parse_date, required=True)
@@ -2133,6 +2939,20 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_minutes(args.provider, args.symbols, args.date, args.date, args.frequency, False, acceptance=True)
         elif args.command == "acceptance-baostock-5m":
             manifest = sync_baostock_5m_acceptance()
+        elif args.command == "preflight-baostock-5m":
+            manifest = write_baostock_5m_preflight(
+                data_root=args.data_root,
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+            )
+        elif args.command == "sync-baostock-5m":
+            manifest = sync_baostock_5m_history(
+                allow_large=args.allow_large,
+                data_root=args.data_root,
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+                workers=args.workers,
+            )
         elif args.command == "sync-tushare-events":
             datasets = [item.strip() for item in args.datasets.split(",") if item.strip()]
             manifest = sync_tushare_events(datasets, args.start, args.end, args.allow_large)
@@ -2169,6 +2989,8 @@ def main(argv: list[str] | None = None) -> int:
         "build-minute-features": "stored_research_features",
         "acceptance-jqdata-moneyflow": "stored_entitlement_acceptance",
         "acceptance-baostock-5m": "stored_five_minute_acceptance",
+        "preflight-baostock-5m": "stored_no_network_preflight",
+        "sync-baostock-5m": "stored_pending_no_return_feature_materialization",
         "sync-jqdata-moneyflow": "stored_pending_no_return_capacity",
     }.get(args.command, "stored_pending_acceptance")
     print(json.dumps({"manifest": str(manifest), "status": command_status}, ensure_ascii=False))

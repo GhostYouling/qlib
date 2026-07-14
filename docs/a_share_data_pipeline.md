@@ -1352,7 +1352,26 @@ python scripts/a_share_rich_data.py confirm-minute-alignment \
 
 五分钟字段在看到任何字段值之前另行冻结为 `docs/a_share_baostock_5m_factor_preregistration.json`（SHA‑256 `a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8`）：`late_return_30m_5m`、`late_amount_share_30m_5m`、`late_vwap_to_day_vwap_30m_5m`、`opening_gap_digestion_5m` 方向为高，`intraday_realized_volatility_5m` 方向为低。四股票特征烟测 `20260714T210509Z_baostock_5m_features_v1_155027ba.json` 得到 4/4 合格行、0 个不完整会话，并明确 `forward_return_fields_read=false`；四股票单日值不能计算 Rank IC、形成选股或证明因子有效。
 
-全量下载在任何大请求前被磁盘门禁停止。`docs/a_share_baostock_5m_bulk_preflight_audit.json`（SHA‑256 `5cac308c82d6302e14ed076ea176a5fffb225261b3b15491aaeb8a13039a86ae`）对浦发银行 2020–2025 的单股票样本测得 69,840 行、1,455 个会话、Zstd Parquet 1,224,398 字节和 22.21 秒；按 4,800 只完整历史上界估计原始 Parquet 约 5.47 GiB，单进程约 29.6 小时、四进程理想约 7.4 小时，建议至少 10 GiB 可用空间。当前数据卷只剩约 3.0 GiB（99% 已用），所以状态为 `blocked_insufficient_disk_before_bulk_request`，没有发出全量请求、写入部分全量快照、读取收益或实现 `--allow-large`。先在当前卷释放至少 10 GiB，或为数据目录选择至少 10 GiB 的外部存储，再重新做磁盘前置审计；不得跳过原始快照、只保留看起来有用的因子值来规避门禁。
+最初的全量下载在任何大请求前被磁盘门禁停止。`docs/a_share_baostock_5m_bulk_preflight_audit.json`（SHA‑256 `5cac308c82d6302e14ed076ea176a5fffb225261b3b15491aaeb8a13039a86ae`）对浦发银行 2020–2025 的单股票样本测得 69,840 行、1,455 个会话、Zstd Parquet 1,224,398 字节和 22.21 秒；按 4,800 只完整历史上界估计原始 Parquet 约 5.47 GiB，单进程约 29.6 小时、四进程理想约 7.4 小时，建议至少 10 GiB 可用空间。仓库所在数据卷仍只有约 3–4 GiB 可用，不能作为全量目的地，也不能靠自动删除缓存或已有研究数据腾挪。
+
+全量接入现支持显式外置 `--data-root`，但先单独运行无网络预检：
+
+```bash
+python scripts/a_share_rich_data.py preflight-baostock-5m \
+  --data-root /path/to/qlib-rich-data
+```
+
+预检重新验证数据合同、因子预声明、四股票验收、时间/单位确认、精确 SDK 0.9.3、本地历史股票区间和日历指纹，并在目标根目录的 `metadata/rich_data/preflights/` 写清单；它不请求网络、不读取分钟字段或收益。只有状态为 `passed_before_network` 且剩余空间不少于 10 GiB 才能继续。当前工作站选用 `/Volumes/DIsk/qlib-rich-data`，预检 `20260714T212612Z_baostock_5m_preflight_f888f097.json`（SHA‑256 `e957a47da878eef74f1fd5d99f22decedc9fb39658b1561d2e7fd0ac965d948f`）记录 1,714.29 GiB 可用、5,451 个历史股票区间、29,246 个股票年度分区和 1,455 个交易日，同时绑定目标文件系统设备号及股票区间/日历指纹，已通过且 `network_request_issued=false`。
+
+通过后才运行固定的 2020–2025 全量命令；它没有日期、字段、频率或门槛覆盖：
+
+```bash
+python scripts/a_share_rich_data.py sync-baostock-5m \
+  --data-root /Volumes/DIsk/qlib-rich-data \
+  --workers 4 --allow-large
+```
+
+下载只请求冻结的十个原始字段，按历史股票有效区间拆成年度分区，最多四个匿名会话进程，每个分区最多重试三次。原始重复时间戳直接失败；缺 bar 的股票日保留原始数据但整日不合格，不填充、不插值、不静默去重。所有 Parquet 先写同一文件系统的隐藏临时快照，任一分区失败或遗漏即删除整份临时快照；全部分区成功后才原子改名并写清单。覆盖门禁要求历史有效股票覆盖率中位数至少 95%、P5 至少 90%，并至少有 200 个非重叠三交易日候选截面达到 50 只完整股票。门禁失败仍只保留可审计原始快照并停止；通过以前不读取日线开收盘或远期收益，不构造 IC、聚合评分或选股。不要在下载时拔出外置卷、让 Mac 睡眠或并行启动第二次同步；也不得跳过原始快照、只保留看起来有用的因子值来规避门禁。
 
 ### JQData 专业版日级资金流
 
