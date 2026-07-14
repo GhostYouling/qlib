@@ -2426,6 +2426,68 @@ def test_quarterly_profit_acceleration_event_uses_only_newly_effective_positive_
     assert rounds.iloc[0]["net_return"] == pytest.approx(0.10)
 
 
+def test_quarterly_event_capacity_rejects_sparse_ideas_without_return_fields():
+    calendar = pd.bdate_range("2024-05-06", periods=6)
+    rows = []
+    for instrument, current_revenue_yoy in (
+        ("SZ000001", 20.0),
+        ("SZ000002", 25.0),
+        ("SZ000003", 30.0),
+        ("SZ000004", 35.0),
+    ):
+        rows.extend(
+            [
+                {
+                    "instrument": instrument,
+                    "report_date": pd.Timestamp("2023-03-31"),
+                    "announcement_date": pd.Timestamp("2023-04-20"),
+                    "roe": 8.0,
+                    "net_profit": 1.0,
+                    "revenue_yoy": 10.0,
+                    "profit_yoy": 10.0,
+                },
+                {
+                    "instrument": instrument,
+                    "report_date": pd.Timestamp("2024-03-31"),
+                    "announcement_date": pd.Timestamp("2024-05-03"),
+                    "roe": 10.0,
+                    "net_profit": 2.0,
+                    "revenue_yoy": current_revenue_yoy,
+                    "profit_yoy": 15.0,
+                },
+            ]
+        )
+    intervals = {
+        instrument: [(calendar[0], calendar[-1])]
+        for instrument in ("SZ000001", "SZ000002", "SZ000003")
+    }
+    capacity = RESEARCH.quarterly_acceleration_event_capacity(
+        pd.DataFrame(rows),
+        calendar,
+        intervals,
+        acceleration_column="revenue_yoy_acceleration",
+        hold_days=3,
+        topk=3,
+        minimum_cohorts=2,
+    )
+    assert capacity["newly_effective_positive_quality_rows"] == 3
+    assert capacity["event_dates_with_any_positive_name"] == 1
+    assert capacity["complete_topk_event_cohorts"] == 1
+    assert capacity["complete_topk_event_cohorts_by_year"] == {"2024": 1}
+    assert capacity["capacity_gate_passed"] is False
+    assert capacity["forward_return_fields_read"] is False
+    assert all("return" not in key or key == "forward_return_fields_read" for key in capacity)
+    with pytest.raises(ValueError, match="unknown quarterly acceleration metric"):
+        RESEARCH.quarterly_acceleration_event_capacity(
+            pd.DataFrame(rows),
+            calendar,
+            intervals,
+            acceleration_column="future_return",
+            hold_days=3,
+            topk=3,
+        )
+
+
 def test_quarterly_profit_acceleration_event_audits_are_retained_without_strategy_promotion(tmp_path):
     (tmp_path / "20260714T000000Z_quarterly_profit_acceleration_event_audit.json").write_text(
         json.dumps(
@@ -2453,6 +2515,37 @@ def test_quarterly_profit_acceleration_event_audits_are_retained_without_strateg
     assert "季度利润加速公告事件审计" in report
     assert "quarterly-acceleration" in report
     assert "通过（仍不可直接选股）" in report
+
+
+def test_quarterly_event_capacity_audits_are_retained_before_any_return_test(tmp_path):
+    (tmp_path / "20260714T000000Z_quarterly_event_capacity_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "revenue-capacity",
+                "status": "completed",
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "capacity": {
+                    "metric": "revenue_yoy_acceleration",
+                    "complete_topk_event_cohorts": 139,
+                    "minimum_required_cohorts": 200,
+                    "capacity_gate_passed": False,
+                    "forward_return_fields_read": False,
+                },
+                "decision": "rejected_before_return_audit_insufficient_independent_cohorts",
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_quarterly_event_capacity_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        quarterly_event_capacity_audits=audits,
+    )
+    assert "季度事件样本容量审计" in report
+    assert "139 / 200" in report
+    assert "容量不足（停止）" in report
+    assert "读取未来收益" in report
 
 
 def test_research_report_marks_non_promotable_historical_diagnostics():

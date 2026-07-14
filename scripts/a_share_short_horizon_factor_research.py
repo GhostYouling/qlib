@@ -1195,6 +1195,12 @@ LIMIT_LIKE_CHINEXT_RETURN_THRESHOLD = 0.195
 LIMIT_LIKE_CLOSE_TO_HIGH_MIN = 0.995
 LIMIT_LIKE_EVENT_MIN_COHORTS = 200
 LIMIT_LIKE_EVENT_MAX_DRAWDOWN = -0.20
+QUARTERLY_EVENT_CAPACITY_MIN_COHORTS = 200
+QUARTERLY_ACCELERATION_METRICS = {
+    "profit_yoy_acceleration": "same-fiscal-quarter profit YoY acceleration",
+    "revenue_yoy_acceleration": "same-fiscal-quarter revenue YoY acceleration",
+    "roe_change": "same-fiscal-quarter ROE change",
+}
 
 
 def candidate_library(library_id: str) -> tuple[Candidate, ...]:
@@ -6085,6 +6091,169 @@ def run_limit_like_event_audit(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def quarterly_acceleration_event_capacity(
+    fundamentals: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    acceleration_column: str,
+    hold_days: int,
+    topk: int,
+    minimum_cohorts: int = QUARTERLY_EVENT_CAPACITY_MIN_COHORTS,
+) -> dict[str, Any]:
+    """Count potential non-overlapping event baskets without reading any return.
+
+    Sparse event ideas must be able to satisfy the existing independent-cohort
+    gate before a forward-return audit is allowed.  This function uses only
+    filing fields, the local calendar, and buyable-instrument activity spans;
+    OHLC fields and post-signal outcomes are neither accepted nor loaded.
+    """
+
+    if acceleration_column not in QUARTERLY_ACCELERATION_METRICS:
+        choices = ", ".join(sorted(QUARTERLY_ACCELERATION_METRICS))
+        raise ValueError(f"unknown quarterly acceleration metric; choose one of: {choices}")
+    if hold_days < 1 or topk < 1 or minimum_cohorts < 1:
+        raise ValueError("hold_days, topk, and minimum_cohorts must all be positive")
+    sessions = pd.DatetimeIndex(pd.to_datetime(calendar)).normalize().unique().sort_values()
+    if len(sessions) <= hold_days + 1:
+        raise ValueError("capacity window is too short for the requested holding period")
+    rebalances = sessions[: -(hold_days + 1) : hold_days]
+    events = attach_fundamental_accelerations(fundamentals)
+    events["quality_effective_date"] = _first_trading_day_after(sessions, events["announcement_date"])
+    events = events.dropna(subset=["quality_effective_date"])
+    events = events.sort_values(
+        ["instrument", "quality_effective_date", "report_date", "announcement_date"], kind="stable"
+    ).drop_duplicates(["instrument", "quality_effective_date"], keep="last")
+    events = events.loc[events["quality_effective_date"].isin(rebalances)].copy()
+
+    def active_on_event(row: Any) -> bool:
+        event_date = pd.Timestamp(row.quality_effective_date)
+        return any(
+            pd.Timestamp(start).normalize() <= event_date <= pd.Timestamp(end).normalize()
+            for start, end in instrument_intervals.get(str(row.instrument), [])
+        )
+
+    events["buyable_active"] = [active_on_event(row) for row in events.itertuples(index=False)]
+    quality = (
+        events["buyable_active"]
+        & events["roe"].ge(5.0)
+        & events["net_profit"].gt(0.0)
+        & events["revenue_yoy"].gt(0.0)
+        & events["profit_yoy"].gt(0.0)
+    )
+    acceleration = pd.to_numeric(events[acceleration_column], errors="coerce")
+    positive = events.loc[quality & acceleration.gt(0.0)].copy()
+    counts = positive.groupby("quality_effective_date", sort=True)["instrument"].nunique()
+    complete = counts.loc[counts.ge(topk)]
+    by_year = {
+        str(int(year)): int(count)
+        for year, count in complete.groupby(complete.index.year).size().items()
+    }
+    complete_cohorts = int(len(complete))
+    return {
+        "metric": acceleration_column,
+        "metric_description": QUARTERLY_ACCELERATION_METRICS[acceleration_column],
+        "holding_period_trading_days": hold_days,
+        "topk": topk,
+        "minimum_required_cohorts": minimum_cohorts,
+        "calendar_sessions": int(len(sessions)),
+        "non_overlapping_rebalance_capacity": int(len(rebalances)),
+        "newly_effective_positive_quality_rows": int(len(positive)),
+        "event_dates_with_any_positive_name": int(len(counts)),
+        "complete_topk_event_cohorts": complete_cohorts,
+        "complete_topk_event_cohorts_by_year": by_year,
+        "capacity_gate_passed": complete_cohorts >= minimum_cohorts,
+        "forward_return_fields_read": False,
+        "rule": "If capacity_gate_passed is false, no return audit may be run for this event definition.",
+    }
+
+
+def local_market_instrument_intervals(
+    provider_uri: Path, *, market: str, start: str, end: str
+) -> tuple[pd.DatetimeIndex, dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]]]:
+    """Load only calendar and instrument-activity spans for a no-outcome capacity audit."""
+
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    import qlib
+    from qlib.data import D
+
+    qlib.init(provider_uri=str(provider_uri.expanduser().resolve()), region="cn", kernels=1)
+    calendar = pd.DatetimeIndex(D.calendar(start_time=start, end_time=end, freq="day"))
+    intervals = D.list_instruments(
+        D.instruments(market=market), start_time=start, end_time=end, as_list=False
+    )
+    return calendar, {
+        str(instrument): [(pd.Timestamp(span_start), pd.Timestamp(span_end)) for span_start, span_end in spans]
+        for instrument, spans in intervals.items()
+    }
+
+
+def run_quarterly_event_capacity_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Persist a no-return feasibility gate for one quarterly event definition."""
+
+    if pd.Timestamp(args.end) > pd.Timestamp(args.development_end):
+        raise ValueError("quarterly-event-capacity-audit must stop no later than development_end")
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    fundamentals = load_fundamentals(fundamental_path)
+    calendar, intervals = local_market_instrument_intervals(
+        provider_uri, market="buyable_main_chinext", start=args.start, end=args.end
+    )
+    capacity = quarterly_acceleration_event_capacity(
+        fundamentals,
+        calendar,
+        intervals,
+        acceleration_column=args.metric,
+        hold_days=args.hold_days,
+        topk=args.topk,
+        minimum_cohorts=args.minimum_cohorts,
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "quarterly_event_capacity_gate_without_forward_returns",
+        "candidate_event": {
+            "metric": args.metric,
+            "direction": "positive acceleration only; descending raw acceleration",
+            "availability": "strictly next local trading day after announcement_date",
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "fundamentals": str(fundamental_path.resolve()),
+            "fundamentals_sha256": file_sha256(fundamental_path),
+            "calendar_start": pd.Timestamp(calendar.min()).date().isoformat(),
+            "calendar_end": pd.Timestamp(calendar.max()).date().isoformat(),
+            "development_end": args.development_end,
+            "test_period_used": False,
+        },
+        "capacity": capacity,
+        "decision": (
+            "eligible_for_preregistered_return_audit"
+            if capacity["capacity_gate_passed"]
+            else "rejected_before_return_audit_insufficient_independent_cohorts"
+        ),
+        "limitations": [
+            "No open, close, forward-return, or performance field is loaded by this audit.",
+            "The public quarterly snapshot can contain later revisions and is not exchange-grade point-in-time data.",
+            "The holding universe is derived from the repository's current listing snapshot and retains survivorship bias.",
+        ],
+    }
+    root = Path(args.experiment_root).expanduser()
+    destination = root / f"{run_id}_quarterly_event_capacity_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "metric": args.metric,
+        "complete_topk_event_cohorts": capacity["complete_topk_event_cohorts"],
+        "minimum_required_cohorts": capacity["minimum_required_cohorts"],
+        "capacity_gate_passed": capacity["capacity_gate_passed"],
+        "decision": audit["decision"],
+    }
+
+
 def quarterly_profit_acceleration_event_rounds(
     market: pd.DataFrame,
     *,
@@ -8097,6 +8266,36 @@ def load_quarterly_profit_acceleration_event_audits(experiment_root: Path) -> li
     return audits
 
 
+def load_quarterly_event_capacity_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read no-outcome event-capacity gates so rejected ideas remain visible."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_quarterly_event_capacity_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        data = audit.get("data") or {}
+        capacity = audit.get("capacity") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "metric": str(capacity.get("metric", "—")),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "complete_cohorts": int(capacity.get("complete_topk_event_cohorts") or 0),
+                "minimum_cohorts": int(capacity.get("minimum_required_cohorts") or 0),
+                "passed": bool(capacity.get("capacity_gate_passed", False)),
+                "forward_return_fields_read": bool(capacity.get("forward_return_fields_read", True)),
+                "decision": str(audit.get("decision", "—")),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -8441,6 +8640,7 @@ def render_three_day_research_report(
     quarterly_profit_acceleration_event_audits: list[dict[str, Any]] | None = None,
     prospective_factor_registry: dict[str, Any] | None = None,
     prospective_factor_ledger: dict[str, Any] | None = None,
+    quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -8747,6 +8947,32 @@ def render_three_day_research_report(
                     mdd=_percent(audit["max_drawdown"]),
                     conclusion="通过（仍不可直接选股）" if audit["passed"] else "不通过（停止）",
                     uses_test="是（无效记录）" if audit["test_period_used"] else "否",
+                )
+            )
+        lines.append("")
+    if quarterly_event_capacity_audits:
+        lines.extend(
+            [
+                "",
+                "## 季度事件样本容量审计",
+                "",
+                "本节在读取任何未来收益前，只按公告生效日、质量条件、非重叠三日网格和完整 Top‑3 计算最大可用 cohort。低于固定 200 cohort 的事件定义直接停止，不允许通过放宽门槛进入收益回测。",
+                "",
+                "| 审计 | 指标 | 开发期 | 完整 Cohort / 门槛 | 容量结论 | 读取未来收益 |",
+                "| --- | --- | --- | ---: | --- | --- |",
+            ]
+        )
+        for audit in quarterly_event_capacity_audits:
+            lines.append(
+                "| {run_id} | {metric} | {start} 至 {end} | {cohorts} / {minimum} | {decision} | {returns} |".format(
+                    run_id=audit["run_id"],
+                    metric=audit["metric"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    cohorts=audit["complete_cohorts"],
+                    minimum=audit["minimum_cohorts"],
+                    decision="通过容量门（仍需预注册）" if audit["passed"] else "容量不足（停止）",
+                    returns="是（无效）" if audit["forward_return_fields_read"] else "否",
                 )
             )
         lines.append("")
@@ -9153,6 +9379,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     selection_multiplicity_audits = load_selection_multiplicity_audits(experiment_root)
     limit_like_event_audits = load_limit_like_event_audits(experiment_root)
     quarterly_profit_acceleration_event_audits = load_quarterly_profit_acceleration_event_audits(experiment_root)
+    quarterly_event_capacity_audits = load_quarterly_event_capacity_audits(experiment_root)
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -9188,6 +9415,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         quarterly_profit_acceleration_event_audits,
         prospective_factor_registry=prospective_factor_registry,
         prospective_factor_ledger=prospective_factor_ledger,
+        quarterly_event_capacity_audits=quarterly_event_capacity_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -9219,6 +9447,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "selection_multiplicity_audits": len(selection_multiplicity_audits),
         "limit_like_event_audits": len(limit_like_event_audits),
         "quarterly_profit_acceleration_event_audits": len(quarterly_profit_acceleration_event_audits),
+        "quarterly_event_capacity_audits": len(quarterly_event_capacity_audits),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
         "model_audits": len(model_audits),
@@ -11535,6 +11764,25 @@ def parse_args() -> argparse.Namespace:
     quarterly_profit_acceleration_event_audit.add_argument("--max-quality-age-days", type=int, default=550)
     quarterly_profit_acceleration_event_audit.add_argument("--batch-size", type=int, default=500)
 
+    quarterly_event_capacity_audit = subparsers.add_parser(
+        "quarterly-event-capacity-audit",
+        help="count independent quarterly event cohorts without loading forward returns",
+    )
+    quarterly_event_capacity_audit.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    quarterly_event_capacity_audit.add_argument("--fundamentals", default=str(DEFAULT_QUARTERLY_FUNDAMENTALS))
+    quarterly_event_capacity_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    quarterly_event_capacity_audit.add_argument("--start", default="2019-01-01")
+    quarterly_event_capacity_audit.add_argument("--end", default="2025-12-31")
+    quarterly_event_capacity_audit.add_argument("--development-end", default="2025-12-31")
+    quarterly_event_capacity_audit.add_argument(
+        "--metric", choices=sorted(QUARTERLY_ACCELERATION_METRICS), required=True
+    )
+    quarterly_event_capacity_audit.add_argument("--hold-days", type=int, default=3)
+    quarterly_event_capacity_audit.add_argument("--topk", type=int, default=3)
+    quarterly_event_capacity_audit.add_argument(
+        "--minimum-cohorts", type=int, default=QUARTERLY_EVENT_CAPACITY_MIN_COHORTS
+    )
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -11997,6 +12245,8 @@ def main() -> int:
         report = run_limit_like_event_audit(args)
     elif args.command == "quarterly-profit-acceleration-event-audit":
         report = run_quarterly_profit_acceleration_event_audit(args)
+    elif args.command == "quarterly-event-capacity-audit":
+        report = run_quarterly_event_capacity_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":
