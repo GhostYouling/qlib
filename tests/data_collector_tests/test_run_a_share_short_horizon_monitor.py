@@ -34,13 +34,32 @@ def test_monitor_wait_configuration_rejects_invalid_values(tmp_path):
         MONITOR.wait_for_pipeline_idle(tmp_path / "lock", poll_seconds=0)
 
 
-def test_monitor_uses_the_unseen_start_and_only_enables_registered_prospective_factors(tmp_path):
+def test_monitor_only_enables_registries_with_the_accepted_price_basis(tmp_path):
     prospective_registry = tmp_path / "prospective_registry.json"
-    commands = MONITOR.observation_commands(prospective_registry)
-    assert commands[0] == ["monitor", "--not-before", "2026-07-14"]
-    assert ["prospective-monitor"] not in commands
-    prospective_registry.write_text("{}", encoding="utf-8")
-    commands = MONITOR.observation_commands(prospective_registry)
+    strategy_registry = tmp_path / "strategy_registry.json"
+    shadow_registry = tmp_path / "shadow_registry.json"
+    assert MONITOR.observation_commands(prospective_registry, strategy_registry, shadow_registry) == [["report"]]
+    strategy_registry.write_text(
+        '{"iterations":[{"iteration_id":"legacy","promotion":{"status":"passed_initial_test"}}]}',
+        encoding="utf-8",
+    )
+    prospective_registry.write_text('{"registrations":[{"registration_id":"legacy"}]}', encoding="utf-8")
+    assert MONITOR.observation_commands(prospective_registry, strategy_registry, shadow_registry) == [["report"]]
+    accepted = MONITOR.REQUIRED_PRICE_BASIS
+    strategy_registry.write_text(
+        '{"iterations":[{"iteration_id":"valid","data":{"price_basis":"'
+        + accepted
+        + '"},"promotion":{"status":"passed_initial_test"}}]}',
+        encoding="utf-8",
+    )
+    shadow_registry.write_text('{"observations":[{"iteration_id":"valid"}]}', encoding="utf-8")
+    prospective_registry.write_text(
+        '{"registrations":[{"registration_id":"valid","data":{"price_basis":"'
+        + accepted
+        + '"}}]}',
+        encoding="utf-8",
+    )
+    commands = MONITOR.observation_commands(prospective_registry, strategy_registry, shadow_registry)
     assert commands == [
         ["monitor", "--not-before", "2026-07-14"],
         ["shadow-monitor"],

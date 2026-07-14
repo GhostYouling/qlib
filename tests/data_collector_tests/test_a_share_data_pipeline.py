@@ -144,3 +144,61 @@ def test_invalid_price_mask_rejects_negative_qfq_artifacts():
         }
     )
     assert PIPELINE.invalid_price_mask(bars).tolist() == [False, True, True]
+
+
+def test_point_in_time_prices_chain_close_known_returns_and_restore_raw_prices():
+    bars = pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2026-06-01", "2026-06-02", "2026-06-03"]),
+            "symbol": ["SH600519"] * 3,
+            "pct_chg": [0.0, 0.0, 10.0],
+            "amount": [100000.0, 90000.0, 110000.0],
+            "turnover": [1.0, 1.0, 1.0],
+            "raw_open": [10.0, 9.0, 9.9],
+            "raw_high": [10.2, 9.2, 10.1],
+            "raw_low": [9.8, 8.8, 9.8],
+            "raw_close": [10.0, 9.0, 9.9],
+            "raw_volume": [100.0, 100.0, 100.0],
+            "raw_vwap": [10.0, 9.0, 9.9],
+            "price_basis": [PIPELINE.POINT_IN_TIME_PRICE_BASIS] * 3,
+            "daily_source": ["eastmoney"] * 3,
+        }
+    )
+    adjusted = PIPELINE.rebuild_point_in_time_prices(bars)
+    assert adjusted["close"].tolist() == [10.0, 10.0, 11.0]
+    assert (adjusted["close"] / adjusted["factor"]).tolist() == [10.0, 9.0, 9.9]
+    assert adjusted["vwap"].between(adjusted["low"] - 0.011, adjusted["high"] + 0.011).all()
+    assert not any(PIPELINE.price_basis_quality_counts(adjusted).values())
+
+
+def test_point_in_time_merge_rejects_legacy_mix_but_force_full_replaces_it(tmp_path):
+    target = tmp_path / "sh600519.parquet"
+    legacy = pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2026-05-29"]), "symbol": ["SH600519"],
+            "open": [1.0], "high": [1.1], "low": [0.9], "close": [1.0],
+            "volume": [100.0], "amount": [100000.0], "vwap": [10.0],
+            "change": [0.0], "pct_chg": [0.0], "turnover": [1.0],
+        }
+    )
+    legacy.to_parquet(target, index=False)
+    point_in_time = pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2026-06-01"]), "symbol": ["SH600519"],
+            "pct_chg": [0.0], "amount": [100000.0], "turnover": [1.0],
+            "raw_open": [10.0], "raw_high": [10.1], "raw_low": [9.9], "raw_close": [10.0],
+            "raw_volume": [100.0], "raw_vwap": [10.0],
+            "price_basis": [PIPELINE.POINT_IN_TIME_PRICE_BASIS],
+            "daily_source": ["eastmoney"],
+        }
+    )
+    point_in_time = PIPELINE.rebuild_point_in_time_prices(point_in_time)
+    try:
+        PIPELINE.merge_and_save_bars(target, point_in_time)
+    except PIPELINE.PipelineError as exc:
+        assert "--force-full --adjust point_in_time" in str(exc)
+    else:
+        raise AssertionError("legacy and point-in-time rows must not be mixed")
+    replaced = PIPELINE.merge_and_save_bars(target, point_in_time, replace_existing=True)
+    assert replaced["price_basis"].eq(PIPELINE.POINT_IN_TIME_PRICE_BASIS).all()
+    assert replaced["factor"].eq(1.0).all()

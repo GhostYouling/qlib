@@ -43,6 +43,7 @@ RUNS_DIR = METADATA_DIR / "runs"
 LOG_DIR = DATA_ROOT / "logs"
 QLIB_DIR = DATA_ROOT / "qlib" / "cn_a_share"
 LOCK_PATH = DATA_ROOT / ".a_share_pipeline.lock"
+PRICE_BASIS_MANIFEST = QLIB_DIR / "price_basis.json"
 
 # Eleven years of daily cross-sectional history is enough for the initial
 # stock-selection baseline while fitting the combined raw + Qlib data set on a
@@ -50,6 +51,23 @@ LOCK_PATH = DATA_ROOT / ".a_share_pipeline.lock"
 DEFAULT_START_DATE = "2015-01-01"
 DEFAULT_REFRESH_DAYS = 45
 DEFAULT_WORKERS = 3
+
+POINT_IN_TIME_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
+POINT_IN_TIME_RAW_COLUMNS = (
+    "raw_open",
+    "raw_high",
+    "raw_low",
+    "raw_close",
+    "raw_volume",
+    "raw_vwap",
+)
+POINT_IN_TIME_EXCLUDED_FIELDS = (
+    "date",
+    "symbol",
+    "price_basis",
+    "daily_source",
+    *POINT_IN_TIME_RAW_COLUMNS,
+)
 
 UNIVERSE_URL = "https://82.push2.eastmoney.com/api/qt/clist/get"
 KLINE_URLS = (
@@ -277,7 +295,7 @@ class EastmoneyClient:
     def daily_bars(self, instrument: Instrument, start: dt.date, end: dt.date, adjust: str) -> pd.DataFrame:
         """Return adjusted daily OHLCV data in a Qlib-ready column layout."""
 
-        adjust_code = {"raw": "0", "qfq": "1", "hfq": "2"}[adjust]
+        adjust_code = {"point_in_time": "0", "raw": "0", "qfq": "1", "hfq": "2"}[adjust]
         params = {
             "secid": _eastmoney_secid(instrument),
             "fields1": "f1,f2,f3,f4,f5,f6",
@@ -328,7 +346,159 @@ class EastmoneyClient:
         bars = bars.dropna(subset=["date", "open", "high", "low", "close"])
         bars = bars.loc[~invalid_price_mask(bars)]
         bars.insert(1, "symbol", instrument.symbol)
-        return bars.sort_values("date").drop_duplicates("date", keep="last")
+        bars = bars.sort_values("date").drop_duplicates("date", keep="last")
+        if adjust == "point_in_time":
+            for raw_column, source_column in zip(
+                POINT_IN_TIME_RAW_COLUMNS,
+                ("open", "high", "low", "close", "volume", "vwap"),
+            ):
+                bars[raw_column] = bars[source_column]
+            bars["price_basis"] = POINT_IN_TIME_PRICE_BASIS
+            bars["daily_source"] = "eastmoney"
+            bars = rebuild_point_in_time_prices(bars)
+        return bars
+
+
+class BaoStockClient:
+    """Sequential BaoStock daily adapter used for independent recovery."""
+
+    def __init__(self) -> None:
+        try:
+            import baostock as bs  # pylint: disable=import-outside-toplevel
+        except ImportError as exc:
+            raise PipelineError(
+                "BaoStock source requires `python -m pip install baostock==0.9.3`"
+            ) from exc
+        self._bs = bs
+        login = self._bs.login()
+        if login.error_code != "0":
+            raise PipelineError(f"BaoStock login failed: {login.error_code} {login.error_msg}")
+
+    def close(self) -> None:
+        """Close the process-global BaoStock session."""
+
+        self._bs.logout()
+
+    @staticmethod
+    def _symbol(instrument: Instrument) -> str:
+        market = "sh" if instrument.symbol.startswith("SH") else "sz"
+        return f"{market}.{instrument.code}"
+
+    def list_instruments(self, as_of: dt.date) -> list[Instrument]:
+        """Return the current requested A-share boards from BaoStock."""
+
+        response = self._bs.query_all_stock(day=as_of.isoformat())
+        if response.error_code != "0":
+            raise PipelineError(
+                f"BaoStock universe query failed: {response.error_code} {response.error_msg}"
+            )
+        rows: list[list[str]] = []
+        while response.next():
+            rows.append(response.get_row_data())
+        prior_path = METADATA_DIR / "universe_latest.json"
+        prior = {}
+        if prior_path.exists():
+            prior = {
+                str(item.get("symbol", "")).upper(): item
+                for item in json.loads(prior_path.read_text(encoding="utf-8"))
+            }
+        instruments: list[Instrument] = []
+        for code_with_market, _trade_status, name in rows:
+            market, separator, code = str(code_with_market).lower().partition(".")
+            if separator != "." or len(code) != 6 or not code.isdigit():
+                continue
+            if market == "sh" and not code.startswith((*MAIN_BOARD_PREFIXES[:4], *STAR_PREFIXES)):
+                continue
+            if market == "sz" and not code.startswith((*MAIN_BOARD_PREFIXES[4:], *CHINEXT_PREFIXES)):
+                continue
+            board = classify_board(code)
+            if board is None:
+                continue
+            symbol = f"{market.upper()}{code}"
+            previous = prior.get(symbol) or {}
+            instruments.append(
+                Instrument(
+                    symbol=symbol,
+                    code=code,
+                    name=str(name),
+                    board=board,
+                    listing_date=previous.get("listing_date"),
+                    market_cap=_float_or_none(previous.get("market_cap")),
+                    float_market_cap=_float_or_none(previous.get("float_market_cap")),
+                    is_st=is_st_name(str(name)),
+                )
+            )
+        current_symbols = {item.symbol for item in instruments}
+        for symbol, previous in prior.items():
+            if symbol in current_symbols:
+                continue
+            try:
+                historical = Instrument(**previous)
+            except TypeError:
+                continue
+            if historical.board in {"main", "chinext", "star"}:
+                instruments.append(historical)
+        if not instruments:
+            raise PipelineError("BaoStock returned no requested A-share instruments")
+        return sorted(instruments, key=lambda item: item.symbol)
+
+    def daily_bars(self, instrument: Instrument, start: dt.date, end: dt.date, adjust: str) -> pd.DataFrame:
+        """Return BaoStock daily data in the same canonical source schema."""
+
+        adjust_flag = {"point_in_time": "3", "raw": "3", "qfq": "2", "hfq": "1"}[adjust]
+        fields = "date,code,open,high,low,close,preclose,volume,amount,turn,pctChg,isST"
+        response = self._bs.query_history_k_data_plus(
+            self._symbol(instrument),
+            fields,
+            start_date=start.isoformat(),
+            end_date=end.isoformat(),
+            frequency="d",
+            adjustflag=adjust_flag,
+        )
+        if response.error_code != "0":
+            raise PipelineError(
+                f"BaoStock query failed for {instrument.symbol}: "
+                f"{response.error_code} {response.error_msg}"
+            )
+        rows: list[list[str]] = []
+        while response.next():
+            rows.append(response.get_row_data())
+        if not rows:
+            return pd.DataFrame(columns=_BAR_COLUMNS)
+        source = pd.DataFrame(rows, columns=response.fields)
+        numeric_columns = [
+            "open", "high", "low", "close", "preclose", "volume", "amount", "turn", "pctChg"
+        ]
+        source[numeric_columns] = source[numeric_columns].apply(pd.to_numeric, errors="coerce")
+        source["date"] = pd.to_datetime(source["date"], errors="coerce")
+        volume_lots = source["volume"] / 100.0
+        bars = pd.DataFrame(
+            {
+                "date": source["date"],
+                "symbol": instrument.symbol,
+                "open": source["open"],
+                "high": source["high"],
+                "low": source["low"],
+                "close": source["close"],
+                "volume": volume_lots,
+                "amount": source["amount"],
+                "vwap": source["amount"].div(source["volume"].where(source["volume"].gt(0.0))),
+                "change": source["close"] - source["preclose"],
+                "pct_chg": source["pctChg"],
+                "turnover": source["turn"],
+            }
+        ).dropna(subset=["date", "open", "high", "low", "close"])
+        bars = bars.loc[~invalid_price_mask(bars)].sort_values("date").drop_duplicates("date", keep="last")
+        if adjust == "point_in_time":
+            for raw_column, source_column in zip(
+                POINT_IN_TIME_RAW_COLUMNS,
+                ("open", "high", "low", "close", "volume", "vwap"),
+            ):
+                bars[raw_column] = bars[source_column]
+            bars["price_basis"] = POINT_IN_TIME_PRICE_BASIS
+            bars["daily_source"] = "baostock"
+            bars = rebuild_point_in_time_prices(bars)
+        return bars
 
 
 _BAR_COLUMNS = [
@@ -346,6 +516,51 @@ _BAR_COLUMNS = [
 ]
 
 
+def rebuild_point_in_time_prices(bars: pd.DataFrame) -> pd.DataFrame:
+    """Build a close-known adjusted price index from raw bars and provider returns.
+
+    A vendor's qfq history can subtract later cash distributions from earlier
+    prices.  For high-dividend stocks this can push old prices close to zero
+    and create impossible percentage returns.  The raw ``pct_chg``
+    is instead chained in date order.  It is known at each close, remains
+    independent of later corporate actions, and supplies an adjusted/raw
+    restoration factor for Qlib execution.
+    """
+
+    required = {"date", "pct_chg", "amount", "turnover", "daily_source", *POINT_IN_TIME_RAW_COLUMNS}
+    missing = sorted(required - set(bars.columns))
+    if missing:
+        raise PipelineError("point-in-time price construction is missing columns: " + ", ".join(missing))
+    result = bars.sort_values("date").drop_duplicates("date", keep="last").copy()
+    numeric_columns = ["pct_chg", "amount", "turnover", *POINT_IN_TIME_RAW_COLUMNS]
+    result[numeric_columns] = result[numeric_columns].apply(pd.to_numeric, errors="coerce")
+    raw_prices = result[["raw_open", "raw_high", "raw_low", "raw_close"]]
+    if raw_prices.isna().any(axis=None) or (raw_prices <= 0.0).any(axis=None):
+        raise PipelineError("point-in-time price construction requires positive finite raw OHLC")
+    gross_multiplier = 1.0 + result["pct_chg"] / 100.0
+    if gross_multiplier.isna().any() or (gross_multiplier <= 0.0).any():
+        raise PipelineError("point-in-time price construction requires finite pct_chg above -100%")
+    adjusted_close = result["raw_close"].iloc[0] * gross_multiplier.iloc[1:].cumprod()
+    result["close"] = pd.concat(
+        [pd.Series([result["raw_close"].iloc[0]], index=result.index[:1]), adjusted_close]
+    ).sort_index()
+    result["factor"] = result["close"] / result["raw_close"]
+    for adjusted_column, raw_column in (
+        ("open", "raw_open"),
+        ("high", "raw_high"),
+        ("low", "raw_low"),
+        ("vwap", "raw_vwap"),
+    ):
+        result[adjusted_column] = result[raw_column] * result["factor"]
+    result["volume"] = result["raw_volume"] / result["factor"]
+    prior_adjusted_close = result["close"] / gross_multiplier
+    result["change"] = result["close"] - prior_adjusted_close
+    result["price_basis"] = POINT_IN_TIME_PRICE_BASIS
+    if invalid_price_mask(result).any():
+        raise PipelineError("point-in-time adjustment produced invalid OHLC relationships")
+    return result
+
+
 def invalid_price_mask(bars: pd.DataFrame) -> pd.Series:
     """Identify unusable OHLC rows, including negative qfq artifacts.
 
@@ -359,12 +574,13 @@ def invalid_price_mask(bars: pd.DataFrame) -> pd.Series:
     if not set(required).issubset(bars.columns):
         return pd.Series(True, index=bars.index)
     prices = bars[required].apply(pd.to_numeric, errors="coerce")
+    tolerance = 1e-8 + prices.abs().max(axis=1) * 1e-8
     return (
         prices.isna().any(axis=1)
         | (prices <= 0).any(axis=1)
-        | (prices["high"] < prices["low"])
-        | (prices["high"] < prices[["open", "close"]].max(axis=1))
-        | (prices["low"] > prices[["open", "close"]].min(axis=1))
+        | (prices["high"] + tolerance < prices["low"])
+        | (prices["high"] + tolerance < prices[["open", "close"]].max(axis=1))
+        | (prices["low"] - tolerance > prices[["open", "close"]].min(axis=1))
     )
 
 
@@ -406,12 +622,18 @@ def _atomic_write_parquet(data: pd.DataFrame, destination: Path) -> None:
     temporary.replace(destination)
 
 
-def merge_and_save_bars(path: Path, new_bars: pd.DataFrame, end: dt.date | None = None) -> pd.DataFrame:
+def merge_and_save_bars(
+    path: Path,
+    new_bars: pd.DataFrame,
+    end: dt.date | None = None,
+    *,
+    replace_existing: bool = False,
+) -> pd.DataFrame:
     """Merge refreshed rows into a per-symbol source file, preserving latest data."""
 
     expected_symbol = path.stem.upper()
     new_bars = normalize_bar_symbols(new_bars, expected_symbol, source=f"new rows for {path.name}")
-    if path.exists():
+    if path.exists() and not replace_existing:
         old_bars = normalize_bar_symbols(
             pd.read_parquet(path), expected_symbol, source=f"existing rows in {path.name}"
         )
@@ -422,6 +644,20 @@ def merge_and_save_bars(path: Path, new_bars: pd.DataFrame, end: dt.date | None 
     combined = combined.sort_values("date").drop_duplicates("date", keep="last")
     if end is not None:
         combined = combined.loc[combined["date"] <= pd.Timestamp(end)].copy()
+    if "price_basis" in combined:
+        basis = combined["price_basis"].astype("string")
+        source = combined.get("daily_source", pd.Series(pd.NA, index=combined.index)).astype("string")
+        if (
+            basis.isna().any()
+            or not basis.eq(POINT_IN_TIME_PRICE_BASIS).all()
+            or source.isna().any()
+            or source.nunique() != 1
+        ):
+            raise PipelineError(
+                f"{path.name} mixes legacy price bases or daily sources; "
+                "rerun with --force-full --adjust point_in_time"
+            )
+        combined = rebuild_point_in_time_prices(combined)
     _atomic_write_parquet(combined, path)
     return combined
 
@@ -567,6 +803,100 @@ def prune_source_after(end: dt.date, max_examples: int = 20) -> dict[str, Any]:
     }
 
 
+def price_basis_quality_counts(bars: pd.DataFrame) -> dict[str, int]:
+    """Count violations of the point-in-time adjusted/raw data contract."""
+
+    required = {
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "vwap",
+        "pct_chg",
+        "factor",
+        "price_basis",
+        "daily_source",
+        *POINT_IN_TIME_RAW_COLUMNS,
+    }
+    if not required.issubset(bars.columns):
+        return {"missing_contract_columns": len(required - set(bars.columns))}
+    numeric = bars[[
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "vwap",
+        "pct_chg",
+        "factor",
+        *POINT_IN_TIME_RAW_COLUMNS,
+    ]].apply(pd.to_numeric, errors="coerce")
+    tolerance = 0.011 + numeric["high"].abs() * 1e-6
+    vwap_present = numeric["volume"].gt(0.0) & numeric["vwap"].notna()
+    vwap_outside = vwap_present & (
+        numeric["vwap"].lt(numeric["low"] - tolerance)
+        | numeric["vwap"].gt(numeric["high"] + tolerance)
+    )
+    reconstructed_close = numeric["close"] / numeric["factor"]
+    reconstruction_error = (
+        reconstructed_close - numeric["raw_close"]
+    ).abs() > (1e-6 + numeric["raw_close"].abs() * 1e-6)
+    observed_return = numeric["close"].pct_change(fill_method=None) * 100.0
+    return_error = observed_return.iloc[1:].sub(numeric["pct_chg"].iloc[1:]).abs().gt(1e-6)
+    return {
+        "unsupported_price_basis_rows": int(
+            (~bars["price_basis"].astype("string").eq(POINT_IN_TIME_PRICE_BASIS)).sum()
+        ),
+        "unsupported_daily_source_rows": int(
+            (~bars["daily_source"].astype("string").isin({"eastmoney", "baostock"})).sum()
+        ),
+        "mixed_daily_source_rows": int(
+            len(bars) if bars["daily_source"].astype("string").dropna().nunique() != 1 else 0
+        ),
+        "non_positive_or_missing_factor_rows": int(
+            (numeric["factor"].isna() | numeric["factor"].le(0.0)).sum()
+        ),
+        "invalid_adjusted_ohlc_rows": int(invalid_price_mask(numeric).sum()),
+        "adjusted_vwap_outside_ohlc_rows": int(vwap_outside.sum()),
+        "raw_close_reconstruction_error_rows": int(reconstruction_error.sum()),
+        "pct_chg_chain_error_rows": int(return_error.sum()),
+    }
+
+
+def audit_point_in_time_source(raw_dir: Path = RAW_DIR, max_examples: int = 20) -> dict[str, Any]:
+    """Validate every source file before it can become a research provider."""
+
+    files = sorted(raw_dir.glob("*.parquet"))
+    totals: dict[str, int] = {}
+    affected: list[dict[str, Any]] = []
+    row_count = 0
+    daily_sources: set[str] = set()
+    for path in files:
+        bars = pd.read_parquet(path)
+        row_count += len(bars)
+        if "daily_source" in bars:
+            daily_sources.update(bars["daily_source"].astype("string").dropna().astype(str).unique())
+        counts = price_basis_quality_counts(bars)
+        for name, count in counts.items():
+            totals[name] = totals.get(name, 0) + int(count)
+        if any(counts.values()) and len(affected) < max_examples:
+            affected.append({"symbol": path.stem.upper(), "violations": counts})
+    if len(daily_sources) != 1:
+        totals["mixed_daily_sources"] = max(1, len(daily_sources))
+    failures = {name: count for name, count in totals.items() if count}
+    return {
+        "status": "passed" if files and not failures else "failed",
+        "price_basis": POINT_IN_TIME_PRICE_BASIS,
+        "daily_sources": sorted(daily_sources),
+        "raw_files": len(files),
+        "rows": row_count,
+        "violations": totals,
+        "affected_examples": affected,
+        "failures": failures,
+    }
+
+
 def write_json(path: Path, value: Any) -> None:
     """Atomically save machine-readable metadata."""
 
@@ -634,7 +964,24 @@ def download_instrument(
     destination = RAW_DIR / f"{instrument.symbol.lower()}.parquet"
     latest = _latest_parquet_date(destination)
     if latest is not None and only_missing:
-        return DownloadResult(instrument.symbol, "up_to_date", last_date=latest.isoformat())
+        if adjust != "point_in_time":
+            return DownloadResult(instrument.symbol, "up_to_date", last_date=latest.isoformat())
+        expected_source = "baostock" if isinstance(client, BaoStockClient) else "eastmoney"
+        contract_matches = False
+        try:
+            contract = pd.read_parquet(destination, columns=["price_basis", "daily_source"])
+            contract_matches = (
+                contract["price_basis"].astype("string").eq(POINT_IN_TIME_PRICE_BASIS).all()
+                and contract["daily_source"].astype("string").eq(expected_source).all()
+            )
+        except (OSError, ValueError, KeyError):
+            contract_matches = False
+        if contract_matches and latest >= end:
+            return DownloadResult(instrument.symbol, "up_to_date", last_date=latest.isoformat())
+        if not contract_matches:
+            # ``only_missing`` doubles as safe interrupted-recovery: a legacy
+            # file is missing the new contract even though its path exists.
+            force_full = True
     fetch_start = start
     if latest is not None and not force_full:
         fetch_start = max(start, latest - dt.timedelta(days=refresh_days))
@@ -646,7 +993,7 @@ def download_instrument(
         bars = client.daily_bars(instrument, fetch_start, end, adjust)
         if bars.empty:
             return DownloadResult(instrument.symbol, "empty", error=f"no bars returned for {fetch_start}..{end}")
-        merged = merge_and_save_bars(destination, bars, end=end)
+        merged = merge_and_save_bars(destination, bars, end=end, replace_existing=force_full)
         return DownloadResult(
             instrument.symbol,
             "ok",
@@ -656,6 +1003,41 @@ def download_instrument(
         )
     except Exception as exc:  # collect per-symbol failures; do not lose a whole run
         return DownloadResult(instrument.symbol, "failed", error=f"{type(exc).__name__}: {exc}")
+
+
+_BAOSTOCK_WORKER_CLIENT: BaoStockClient | None = None
+
+
+def initialize_baostock_worker() -> None:
+    """Create one independent BaoStock socket per process-pool worker."""
+
+    global _BAOSTOCK_WORKER_CLIENT
+    _BAOSTOCK_WORKER_CLIENT = BaoStockClient()
+
+
+def download_instrument_baostock_worker(
+    instrument: Instrument,
+    start: dt.date,
+    end: dt.date,
+    refresh_days: int,
+    force_full: bool,
+    only_missing: bool,
+    adjust: str,
+) -> DownloadResult:
+    """Process-pool entry point for a thread-unsafe BaoStock session."""
+
+    if _BAOSTOCK_WORKER_CLIENT is None:
+        raise PipelineError("BaoStock worker was not initialized")
+    return download_instrument(
+        _BAOSTOCK_WORKER_CLIENT,
+        instrument,
+        start,
+        end,
+        refresh_days,
+        force_full,
+        only_missing,
+        adjust,
+    )
 
 
 def _read_qlib_instruments(path: Path) -> dict[str, tuple[str, str]]:
@@ -691,6 +1073,28 @@ def materialize_qlib(instruments: list[Instrument], workers: int) -> dict[str, i
     parquet_count = len(list(RAW_DIR.glob("*.parquet")))
     if not parquet_count:
         raise PipelineError(f"no source Parquet files exist under {RAW_DIR}")
+    write_json(
+        PRICE_BASIS_MANIFEST,
+        {
+            "status": "validating",
+            "price_basis": POINT_IN_TIME_PRICE_BASIS,
+            "updated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+    )
+    price_basis_audit = audit_point_in_time_source()
+    if price_basis_audit["status"] != "passed":
+        write_json(
+            PRICE_BASIS_MANIFEST,
+            {
+                **price_basis_audit,
+                "status": "failed",
+                "updated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            },
+        )
+        raise PipelineError(
+            "source price-basis acceptance failed; run a full point-in-time refresh: "
+            f"{price_basis_audit['failures']}"
+        )
     # ``dump_bin.py`` is part of this repository.  We reuse its binary writer
     # but orchestrate it here with threads rather than its ProcessPoolExecutor:
     # macOS uses ``spawn`` for child processes, which can recursively re-enter a
@@ -706,7 +1110,7 @@ def materialize_qlib(instruments: list[Instrument], workers: int) -> dict[str, i
         date_field_name="date",
         file_suffix=".parquet",
         symbol_field_name="symbol",
-        exclude_fields="date,symbol",
+        exclude_fields=",".join(POINT_IN_TIME_EXCLUDED_FIELDS),
     )
     all_datetimes: set[pd.Timestamp] = set()
     date_ranges: list[str] = []
@@ -742,12 +1146,28 @@ def materialize_qlib(instruments: list[Instrument], workers: int) -> dict[str, i
     instruments_dir = QLIB_DIR / "instruments"
     buyable_count = _write_qlib_universe(instruments_dir / "buyable_main_chinext.txt", buyable, ranges)
     factor_count = _write_qlib_universe(instruments_dir / "factor_main_chinext_star.txt", factor, ranges)
-    return {
+    summary = {
         "raw_parquet_files": parquet_count,
         "qlib_all": len(ranges),
         "qlib_buyable_main_chinext": buyable_count,
         "qlib_factor_main_chinext_star": factor_count,
     }
+    write_json(
+        PRICE_BASIS_MANIFEST,
+        {
+            **price_basis_audit,
+            "status": "passed",
+            "price_basis": POINT_IN_TIME_PRICE_BASIS,
+            "construction": "raw OHLCV adjusted by the cumulative same-close provider pct_chg chain",
+            "restoration_factor": "factor = adjusted_price / raw_price",
+            "vwap": "raw amount/volume VWAP multiplied by the same daily restoration factor",
+            "volume": "raw lot volume divided by the same daily restoration factor",
+            "future_corporate_actions_used": False,
+            "materialized_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "qlib": summary,
+        },
+    )
+    return summary
 
 
 def run_sync(args: argparse.Namespace) -> int:
@@ -767,12 +1187,35 @@ def run_sync(args: argparse.Namespace) -> int:
         directory.mkdir(parents=True, exist_ok=True)
 
     run_started = dt.datetime.now(dt.timezone.utc)
-    client = EastmoneyClient(timeout=args.timeout, retries=args.retries, delay=args.delay)
+    universe_client: Any = (
+        EastmoneyClient(timeout=args.timeout, retries=args.retries, delay=args.delay)
+        if args.source == "eastmoney"
+        else BaoStockClient()
+    )
     with PipelineLock(LOCK_PATH):
         migrated_csv_files = migrate_csv_source_files()
-        universe = client.list_instruments()
+        try:
+            universe = (
+                universe_client.list_instruments()
+                if args.source == "eastmoney"
+                else universe_client.list_instruments(end)
+            )
+        finally:
+            if args.source == "baostock":
+                universe_client.close()
         write_universe_snapshot(universe, end)
         selected = select_instruments(universe, args.scope, _requested_symbols(args.symbols))
+        write_json(
+            PRICE_BASIS_MANIFEST,
+            {
+                "status": "source_update_in_progress",
+                "price_basis": POINT_IN_TIME_PRICE_BASIS,
+                "daily_source": args.source,
+                "requested_adjustment": args.adjust,
+                "started_at": run_started.isoformat(),
+                "research_allowed": False,
+            },
+        )
         logging.info(
             "collecting %d symbols (%s scope; %d main, %d ChiNext, %d STAR in current snapshot)",
             len(selected),
@@ -783,21 +1226,44 @@ def run_sync(args: argparse.Namespace) -> int:
         )
 
         results: list[DownloadResult] = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as executor:
-            futures = [
-                executor.submit(
-                    download_instrument,
-                    client,
-                    item,
-                    start,
-                    end,
-                    args.refresh_days,
-                    args.force_full,
-                    args.only_missing,
-                    args.adjust,
-                )
-                for item in selected
-            ]
+        executor_context: Any = (
+            concurrent.futures.ThreadPoolExecutor(max_workers=args.workers)
+            if args.source == "eastmoney"
+            else concurrent.futures.ProcessPoolExecutor(
+                max_workers=args.workers,
+                initializer=initialize_baostock_worker,
+            )
+        )
+        with executor_context as executor:
+            if args.source == "eastmoney":
+                futures = [
+                    executor.submit(
+                        download_instrument,
+                        universe_client,
+                        item,
+                        start,
+                        end,
+                        args.refresh_days,
+                        args.force_full,
+                        args.only_missing,
+                        args.adjust,
+                    )
+                    for item in selected
+                ]
+            else:
+                futures = [
+                    executor.submit(
+                        download_instrument_baostock_worker,
+                        item,
+                        start,
+                        end,
+                        args.refresh_days,
+                        args.force_full,
+                        args.only_missing,
+                        args.adjust,
+                    )
+                    for item in selected
+                ]
             for index, future in enumerate(concurrent.futures.as_completed(futures), start=1):
                 result = future.result()
                 results.append(result)
@@ -821,6 +1287,7 @@ def run_sync(args: argparse.Namespace) -> int:
             "start": start.isoformat(),
             "end": end.isoformat(),
             "adjust": args.adjust,
+            "source": args.source,
             "force_full": args.force_full,
             "only_missing": args.only_missing,
             "requested_symbols": args.symbols,
@@ -866,6 +1333,7 @@ def run_status(_: argparse.Namespace) -> int:
                 "start",
                 "end",
                 "adjust",
+                "source",
                 "force_full",
                 "only_missing",
                 "universe_counts",
@@ -909,6 +1377,11 @@ def run_status(_: argparse.Namespace) -> int:
         "qlib_calendar_end": calendar_end,
         "latest_run": latest_summary,
         "latest_local_maintenance": maintenance,
+        "price_basis": (
+            json.loads(PRICE_BASIS_MANIFEST.read_text(encoding="utf-8"))
+            if PRICE_BASIS_MANIFEST.exists()
+            else {"status": "missing", "research_allowed": False}
+        ),
     }
     print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
@@ -932,6 +1405,24 @@ def run_materialize(_: argparse.Namespace) -> int:
     write_json(METADATA_DIR / "latest_materialization.json", manifest)
     print(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
+
+
+def run_price_basis_audit(args: argparse.Namespace) -> int:
+    """Audit every source file without downloading or materializing data."""
+
+    started = dt.datetime.now(dt.timezone.utc)
+    with PipelineLock(LOCK_PATH):
+        audit = audit_point_in_time_source(max_examples=args.max_examples)
+    report = {
+        **audit,
+        "started_at": started.isoformat(),
+        "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "forward_return_fields_read": False,
+    }
+    destination = METADATA_DIR / f"price_basis_audit_{started.strftime('%Y%m%dT%H%M%SZ')}.json"
+    write_json(destination, report)
+    print(json.dumps({**report, "report_path": str(destination.resolve())}, ensure_ascii=False, indent=2, sort_keys=True))
+    return 0 if audit["status"] == "passed" else 1
 
 
 def run_sanitize(args: argparse.Namespace) -> int:
@@ -1030,7 +1521,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     sync.add_argument("--scope", choices=("buyable", "factor"), default="factor", help="factor includes STAR data")
     sync.add_argument("--symbols", help="comma-separated test/repair subset, e.g. 600519,300750,688981")
-    sync.add_argument("--adjust", choices=("qfq", "hfq", "raw"), default="qfq", help="price adjustment requested from source")
+    sync.add_argument(
+        "--source",
+        choices=("eastmoney", "baostock"),
+        default="eastmoney",
+        help="daily-bar provider; BaoStock is sequential and can recover an unavailable Eastmoney history endpoint",
+    )
+    sync.add_argument(
+        "--adjust",
+        choices=("point_in_time", "qfq", "hfq", "raw"),
+        default="point_in_time",
+        help="price basis requested from source; point_in_time is required for research materialization",
+    )
     sync.add_argument("--refresh-days", type=int, default=DEFAULT_REFRESH_DAYS, help="tail window refreshed each run")
     sync.add_argument("--force-full", action="store_true", help="redownload each selected symbol from --start")
     sync.add_argument(
@@ -1047,6 +1549,12 @@ def build_parser() -> argparse.ArgumentParser:
     sync.set_defaults(func=run_sync)
     materialize = subparsers.add_parser("materialize", help="rebuild Qlib binary data from local source Parquet files")
     materialize.set_defaults(func=run_materialize)
+    price_basis_audit = subparsers.add_parser(
+        "price-basis-audit",
+        help="verify point-in-time prices, VWAP, returns, and restoration factors without reading future returns",
+    )
+    price_basis_audit.add_argument("--max-examples", type=int, default=20)
+    price_basis_audit.set_defaults(func=run_price_basis_audit)
     sanitize = subparsers.add_parser("sanitize", help="remove invalid local OHLC rows and rebuild Qlib binaries")
     sanitize.add_argument("--dump-workers", type=int, default=DEFAULT_WORKERS, help="Qlib binary materialization workers")
     sanitize.add_argument("--skip-dump", action="store_true", help="repair Parquet only; do not rebuild Qlib binaries")

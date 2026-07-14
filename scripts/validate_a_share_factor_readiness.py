@@ -94,12 +94,23 @@ def _tail_excluded_label_coverage(frame: pd.DataFrame, label_name: str) -> float
 def _validate_raw_prices(raw: pd.DataFrame) -> dict[str, int]:
     """Count impossible OHLCV relationships while preserving missingness separately."""
 
+    tolerance = 0.011 + raw["$high"].abs() * 1e-6
+    vwap_present = raw["$volume"].gt(0.0) & raw["$vwap"].notna()
     return {
         "non_positive_price_rows": int((raw[["$open", "$high", "$low", "$close"]] <= 0).any(axis=1).sum()),
         "high_below_low_rows": int((raw["$high"] < raw["$low"]).sum()),
         "negative_volume_rows": int((raw["$volume"] < 0).sum()),
         "non_positive_vwap_with_volume_rows": int(
             ((raw["$volume"] > 0) & (raw["$vwap"] <= 0)).sum()
+        ),
+        "vwap_outside_ohlc_rows": int(
+            (
+                vwap_present
+                & (
+                    raw["$vwap"].lt(raw["$low"] - tolerance)
+                    | raw["$vwap"].gt(raw["$high"] + tolerance)
+                )
+            ).sum()
         ),
     }
 
@@ -165,11 +176,6 @@ def run_readiness_check(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     restoration_factor = D.features(samples, ["$factor"], start_time=start, end_time=end, freq="day")
     restoration_factor_coverage = _coverage(restoration_factor).get("$factor", 0.0)
     warnings: list[str] = []
-    if restoration_factor_coverage == 0.0:
-        warnings.append(
-            "Qlib restoration factor ($factor) is absent. Alpha158 is usable, but Qlib backtests use adjusted-price "
-            "execution and cannot yet claim exact A-share 100-share-lot simulation."
-        )
 
     failures: list[str] = []
     if len(feature_frame.columns) != 158:
@@ -188,6 +194,11 @@ def run_readiness_check(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         failures.append(f"label coverage {label_coverage:.4f} is below {args.min_label_coverage:.4f}")
     if any(raw_invalid.values()):
         failures.append(f"invalid raw OHLCV relationships: {raw_invalid}")
+    if restoration_factor_coverage < args.min_raw_coverage:
+        failures.append(
+            f"restoration-factor coverage {restoration_factor_coverage:.4f} is below "
+            f"{args.min_raw_coverage:.4f}; adjusted prices cannot reconstruct executable raw prices"
+        )
     if buyable_star_count:
         failures.append(f"buyable universe unexpectedly contains {buyable_star_count} STAR instruments")
     if not factor_star_count:

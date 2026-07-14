@@ -3,7 +3,7 @@
 
 The local time zone of this workspace (Asia/Singapore) is the same as mainland
 China time, so the default 18:30 weekday job runs after the A-share close.
-Friday 20:00 performs a full refresh to keep qfq-adjusted history current.
+Friday 20:00 performs a full raw-history refresh to catch source corrections.
 An optional 19:30 weekday job records and settles the approved three-day
 paper strategy after the normal close-data refresh has had time to complete.
 """
@@ -60,8 +60,8 @@ def _jobs(with_short_horizon_monitor: bool) -> dict[str, dict]:
     common = [sys.executable, str(PIPELINE), "sync", "--scope", "factor"]
     jobs = {
         DAILY_LABEL: _job(DAILY_LABEL, common, _calendar([2, 3, 4, 5, 6], 18, 30)),
-        # The full weekly refresh re-requests qfq history.  This corrects prior
-        # adjusted prices after ex-rights/ex-dividend events.
+        # The full weekly refresh catches vendor corrections in raw bars.  The
+        # point-in-time adjustment itself never uses later corporate actions.
         FULL_LABEL: _job(FULL_LABEL, [*common, "--force-full"], _calendar([6], 20, 0)),
     }
     if with_short_horizon_monitor:

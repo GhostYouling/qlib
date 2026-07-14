@@ -8,6 +8,7 @@ new factor combinations, change the approved candidate, or place trades.
 from __future__ import annotations
 
 import fcntl
+import json
 import subprocess
 import sys
 import time
@@ -19,7 +20,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = REPO_ROOT / "scripts" / "a_share_short_horizon_factor_research.py"
 PIPELINE_LOCK = REPO_ROOT / "data" / ".a_share_pipeline.lock"
 PROSPECTIVE_FACTOR_REGISTRY = REPO_ROOT / "data" / "experiments" / "short_horizon" / "prospective_factor_registry.json"
+STRATEGY_REGISTRY = REPO_ROOT / "data" / "experiments" / "short_horizon" / "strategy_registry.json"
+SHADOW_OBSERVATION_REGISTRY = (
+    REPO_ROOT / "data" / "experiments" / "short_horizon" / "shadow_observation_registry.json"
+)
 FORWARD_NOT_BEFORE = "2026-07-14"
+REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 
 
 def pipeline_is_busy(lock_path: Path = PIPELINE_LOCK) -> bool:
@@ -58,14 +64,42 @@ def wait_for_pipeline_idle(
     return True
 
 
-def observation_commands(prospective_registry: Path = PROSPECTIVE_FACTOR_REGISTRY) -> list[list[str]]:
-    """Build the fixed observation sequence, enabling prospective factors only after registration."""
+def _records(path: Path, key: str) -> list[dict]:
+    """Read one append-only registry without treating file existence as validity."""
 
-    commands = [
-        ["monitor", "--not-before", FORWARD_NOT_BEFORE],
-        ["shadow-monitor"],
-    ]
-    if prospective_registry.exists():
+    if not path.exists():
+        return []
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    records = payload.get(key) or []
+    return list(records) if isinstance(records, list) else []
+
+
+def _accepted(record: dict) -> bool:
+    return (record.get("data") or {}).get("price_basis") == REQUIRED_PRICE_BASIS
+
+
+def observation_commands(
+    prospective_registry: Path = PROSPECTIVE_FACTOR_REGISTRY,
+    strategy_registry: Path = STRATEGY_REGISTRY,
+    shadow_registry: Path = SHADOW_OBSERVATION_REGISTRY,
+) -> list[list[str]]:
+    """Run only observations backed by the accepted point-in-time price basis."""
+
+    iterations = _records(strategy_registry, "iterations")
+    valid_iteration_ids = {
+        str(item.get("iteration_id")) for item in iterations if _accepted(item)
+    }
+    commands: list[list[str]] = []
+    if any(
+        str(item.get("iteration_id")) in valid_iteration_ids
+        and (item.get("promotion") or {}).get("status") == "passed_initial_test"
+        for item in iterations
+    ):
+        commands.append(["monitor", "--not-before", FORWARD_NOT_BEFORE])
+    observations = _records(shadow_registry, "observations")
+    if any(str(item.get("iteration_id")) in valid_iteration_ids for item in observations):
+        commands.append(["shadow-monitor"])
+    if any(_accepted(item) for item in _records(prospective_registry, "registrations")):
         commands.append(["prospective-monitor"])
     commands.append(["report"])
     return commands

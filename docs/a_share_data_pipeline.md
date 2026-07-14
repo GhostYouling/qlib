@@ -4,7 +4,7 @@
 
 ```
 data/
-  raw/a_share/daily/       # 每只股票一份压缩复权日频 Parquet，可审计、可重建
+  raw/a_share/daily/       # 每只股票一份原始价 + 点时复权因子 Parquet，可审计、可重建
   metadata/                # 每日股票清单快照和每次运行的失败清单
   qlib/cn_a_share/         # Qlib 二进制数据
   logs/                    # 定时任务日志
@@ -12,7 +12,7 @@ data/
 
 ## 覆盖范围
 
-数据来自东财公开的 A 股清单和历史日线接口。它不需要登录，也没有把账号、令牌或 Cookie 写入仓库。
+默认清单和日线来自东财公开接口；当东财历史接口限流或断连时，可用免费、匿名登录的 BaoStock 日线作为独立恢复源。两者都不需要用户账号、令牌或 Cookie。
 接口说明可见 [AKShare 的 A 股历史数据文档](https://akshare.akfamily.xyz/data/stock/stock.html)。数据源可能限流或更改，管线会重试并在 `data/metadata/runs/` 中记录失败股票；不要把公共数据源视作交易所级数据。
 
 | Qlib 股票池 | 代码前缀 | 用途 |
@@ -27,7 +27,8 @@ data/
 在仓库根目录运行：
 
 ```bash
-python scripts/a_share_data_pipeline.py sync --scope factor --start 2015-01-01
+python scripts/a_share_data_pipeline.py sync --scope factor --start 2015-01-01 \
+  --adjust point_in_time
 ```
 
 首次任务会对主板、创业板和科创板逐只下载历史日线，可能需要较长时间。默认从 2015 年开始，兼顾模型训练所需样本与本机磁盘空间；磁盘充足时可通过 `--start 2010-01-01` 扩展。为避免“原始 CSV + Qlib 二进制”占满笔记本磁盘，可审计原始层采用 Zstandard 压缩的 Parquet 格式；它可安全重跑，已有股票只会重拉最近 45 个自然日并合并数据。想先验证整个流程而不下载全市场，可以运行：
@@ -40,7 +41,8 @@ python scripts/a_share_data_pipeline.py sync \
 若首次全市场回填被中断，可只补缺失的股票，随后单独从本地原始数据构建 Qlib 二进制：
 
 ```bash
-python scripts/a_share_data_pipeline.py sync --scope factor --only-missing --skip-dump
+python scripts/a_share_data_pipeline.py sync --scope factor --only-missing --skip-dump \
+  --adjust point_in_time
 python scripts/a_share_data_pipeline.py materialize
 ```
 
@@ -75,7 +77,21 @@ python scripts/a_share_data_pipeline.py sync
 python scripts/a_share_data_pipeline.py status
 ```
 
-默认使用前复权（`qfq`）价格，并且在 15:30 前只更新到上一个工作日，避免把未收盘日线写进训练集。只有明确需要盘中研究时，才使用 `--include-current-session`。每次日常更新重拉最近 45 天以修复迟到数据；每周应该做一次 `--force-full` 全量重拉，因为复权历史会在除权除息后被数据源重述。每次同步会从原始 Parquet 重新生成 Qlib 二进制数据，避免只追加日线而留下不一致的复权历史。
+默认使用 `point_in_time`：下载未复权 OHLCV，以每个收盘时已经公开的 `pct_chg` 串成连续价格指数；同日 `factor = adjusted_price / raw_price`，并用同一个 factor 调整 VWAP、反向调整成交量。它不会用后来发生的分红送转去重写更早的价格，且可以从 Qlib 复权价还原实际成交价。`qfq`/`hfq` 仅保留给源数据排错，不能通过研究物化门槛。
+
+在 15:30 前只更新到上一个工作日，避免把未收盘日线写进训练集。只有明确需要盘中研究时，才使用 `--include-current-session`。日常更新重拉最近 45 天并从整只股票的原始收益链重新计算 factor；不再需要为了未来公司行动每周重述全部历史。
+
+若东财接口持续断连，可整库切换 BaoStock；同一份研究数据不允许股票间混用日线源。BaoStock 使用独立进程连接，`--workers 3` 为保守默认值：
+
+```bash
+python -m pip install baostock==0.9.3
+python scripts/a_share_data_pipeline.py sync --scope factor --source baostock \
+  --adjust point_in_time --force-full --start 2015-01-01 --skip-dump
+python scripts/a_share_data_pipeline.py price-basis-audit
+python scripts/a_share_data_pipeline.py materialize
+```
+
+中断后改用 `--only-missing --source baostock --adjust point_in_time --skip-dump`：已有且已达到同一 source/basis、日期完整的文件会跳过；旧 qfq 文件虽然路径存在，仍会被视为“缺少新合同”并全量替换。
 
 公共当前股票清单适合维护今天的“可买范围”，但并不能保证已退市股票的完整历史。因此，以它训练长期回测会有幸存者偏差风险。严肃研究需要补充有上市/退市区间与公告时点的商业数据或合规数据源；这条管线已经按日保存清单快照和运行记录，为后续替换数据源保留了审计入口。
 
@@ -92,6 +108,16 @@ python scripts/a_share_data_pipeline.py normalize-symbols
 ```bash
 python scripts/validate_a_share_factor_readiness.py
 ```
+
+在它之前先运行全市场价格口径审计：
+
+```bash
+python scripts/a_share_data_pipeline.py price-basis-audit
+```
+
+审计不读取任何未来收益，必须得到 `status=passed`、单一 `daily_sources`、零缺失合同列、零 VWAP 越界、零 adjusted/raw 还原错误与零 `pct_chg` 链错误。物化成功后，`data/qlib/cn_a_share/price_basis.json` 才会写成 `passed`；所有研究命令都会先验证它。`validate_a_share_factor_readiness.py` 现在也把 VWAP 不在 OHLC 范围内或 `$factor` 覆盖不足视为硬失败，而不是警告。
+
+2026-07-14 的尾部归因发现旧 qfq 数据存在系统性错误：5,449 个文件、11,130,132 行中，约 6,807,341 行的未复权 VWAP 不在前复权 OHLC 内，5,302 只股票受影响，且 `$factor` 完全缺失；高分红股票还出现主板三日 −50% 至 −77% 的不可能回报。旧数据的全部因子诊断、候选策略、模型收益、前瞻台账和选股分数因此都是**无效证据**，只能保留作审计记录。修复后必须从窗口语义审计、全因子基线和两道固定门槛重新开始，不能把新结果与旧收益直接拼接或比较。
 
 这个测试验证“数据可以正确进入选股模型”，不验证因子有预测能力。通过后再用 `buyable_main_chinext` 训练 LightGBM 基线，并以样本外 IC、RankIC、换手和扣除成本后的回测决定是否保留或聚合因子。
 
@@ -113,7 +139,7 @@ python scripts/a_share_short_horizon_factor_research.py sync-fundamentals \
 python scripts/a_share_short_horizon_factor_research.py run
 ```
 
-在技术/质量候选库的滚动检验被淘汰后，不能再从同一批连续因子里微调权重。本项目额外预先固定了一条不同的**限价样强势收盘事件**：主板日收盘收益至少 9.5%、创业板（`SZ300`/`SZ301`）至少 19.5%，且收盘价距当日日高不超过 0.5%；只在这些事件中按同日换手异常度取完整 Top‑3，次日开盘买入、第 3 日收盘卖出。少于 3 个可成交事件不会以非事件股票补足。它以 qfq 日线推断“限价样”现象，而非交易所官方涨停标签；不模拟次日封板、停牌或排队无法成交，因此只是一项开发期淘汰/分流审计：
+在技术/质量候选库的滚动检验被淘汰后，不能再从同一批连续因子里微调权重。本项目额外预先固定了一条不同的**限价样强势收盘事件**：主板日收盘收益至少 9.5%、创业板（`SZ300`/`SZ301`）至少 19.5%，且收盘价距当日日高不超过 0.5%；只在这些事件中按同日换手异常度取完整 Top‑3，次日开盘买入、第 3 日收盘卖出。少于 3 个可成交事件不会以非事件股票补足。修复后它以点时收益链推断“限价样”现象，而非交易所官方涨停标签；旧 qfq 运行已经失效。不模拟次日封板、停牌或排队无法成交，因此只是一项开发期淘汰/分流审计：
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py limit-like-event-audit \
@@ -490,22 +516,9 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 沿用与上一项相同的固定稳定性和 Top‑3 可行性门槛。失败时淘汰正方向，不能根据结果改为“收盘低于 VWAP 的反转”或选择别的 VWAP 窗口。
 
-该假设已按预注册版本完成。`20260714T082752Z_factor_diagnostic.json` 仅诊断 `close_above_vwap_1`：560 个 cohort 的平均 Rank IC 为 **−0.0267**，正 IC 比例 **36.4%**，平均 Top‑3 相对 Bottom‑3 毛差为 **−3.82%**，2019–2025 每一年的平均 IC 和 Top‑3 扣费收益均为负。Top‑3 扣费累计收益为 **−99.49%**、最大回撤为 **−99.73%**；`20260714T082911Z` 的稳定性和可行性审计均无合格因子。因此正方向被淘汰且不得历史反向重测。若将“收盘低于 VWAP”另立为反转假设，只能在本结果记录之后用 2026‑07‑14 起尚未见过的未来收盘日预注册观察，不能引用 2019–2025 作为其验证业绩。
+上述 `close_above_vwap_1` 诊断及其数值后来被价格口径审计判定为**无效证据**：当时的 qfq OHLC 与未复权 VWAP 不在同一基准，且没有 `$factor` 可还原。因此，由它事后推导出的 `close_below_vwap_1` 登记 `prospective_close_below_vwap_1_20260714` 也同步失效；不得运行 `prospective-monitor`，不得结算或引用其收益，也不能把旧诊断的正负方向当成新假设依据。
 
-`close_below_vwap_1` 因此被严格登记为**事后形成、纯前瞻观察**，不是历史验证通过的因子。定义固定为 `1 − 当日横截面 percentile_rank(close/vwap−1)`；股票池固定为 `buyable_main_chinext`，只保留年报质量合格且当前非 ST 的股票；每个信号取 Top‑3，收盘后形成信号，下一交易日开盘进入，第 3 个交易日收盘退出，按买入 0.012%、卖出 0.062% 扣费。信号日在以首个未见收盘日为锚的每 3 个交易日网格上，互不重叠。
-
-首次登记必须在本地出现 2026‑07‑14 收盘前完成；命令会同时校验来源诊断的内容与 SHA‑256，并拒绝 `not_before` 不晚于本地最新收盘的登记：
-
-```bash
-python scripts/a_share_short_horizon_factor_research.py prospective-register \
-  --not-before 2026-07-14 \
-  --source-diagnostic data/experiments/short_horizon/20260714T082752Z_factor_diagnostic.json
-python scripts/a_share_short_horizon_factor_research.py prospective-monitor
-```
-
-该登记已于 2026‑07‑14、本地数据仍止于 2026‑07‑13 时完成，ID 为 `prospective_close_below_vwap_1_20260714`；来源诊断 SHA‑256 为 `1c60e64971d7c83af55b68c1ca1b3917ed4624a6d60eef6c66071c783d1bec70`。登记后的首次监控返回 `not_started` 和 `ledger_written=false`，磁盘上没有创建空的前瞻台账。
-
-此后监控器只允许记录**运行当日的最新本地收盘**：若漏跑某个信号日，不得回填；非三日网格日只结算已有信号，不补建仓。登记与台账分别保存在 `prospective_factor_registry.json` 和 `three_day_prospective_factor_ledger.json`，`report` 会将它们放在独立章节，不能与已晋级策略或 shadow 候选的收益混算。此观察永远不能调用 `plan`；若未来样本支持它，也只能作为设计下一轮预注册策略的证据，不能追溯性地改写 2019–2025 结论。
+注册表和可能存在的台账不会删除，只作为审计记录保留。研究模块、报告与定时观察器均要求来源记录携带 `price_basis=close_known_raw_pct_chg_chain_v1`；旧登记缺少该字段，会被标记为“价格基准失效”并从收益汇总中剔除。完成全量重建和新因子基线后，若 VWAP 类定义仍有研究价值，必须从新数据提出一份新的、具有新 ID 和新首个未见日期的预注册，不能修补或复用这条旧登记。
 
 下一项独立开发期假设预注册为 `signed_efficiency_ratio_10`：
 
@@ -606,7 +619,7 @@ raw_max_return_20 = Max(close / Ref(close, 1) - 1, 20) + 0 * Ref(close, 20)
 max_return_20_low = 1 - cross_sectional_percentile_rank(raw_max_return_20)
 ```
 
-20 个交易日包含信号日，输入使用本地前复权收盘价；额外的 `0 * Ref(close, 20)` 不改变完整窗口的 MAX 值，只强制不足 20 日的股票保持缺失，因为 Qlib 的滚动 `Max` 默认接受短窗口。高值方向固定，表示过去约一个月没有出现极端正收益日。该方向源自 Bali、Cakici 与 Whitelaw 的 [MAX 彩票偏好研究](https://doi.org/10.1016/j.jfineco.2010.08.014) 及 [中国市场 MAX 证据](https://doi.org/10.1016/j.najef.2021.101475)：高 MAX 股票后续回报较低。原研究主要使用月度形成/持有期，并不能证明三日预测，因此本轮只检验把该机制转移到“收盘信号、次日开盘进入、第 3 日收盘退出”后是否仍成立；不测试 5/10/60 日窗口、最大负收益、绝对收益、均值或与波动率组合。
+20 个交易日包含信号日，修复后输入使用本地点时调整收盘价；额外的 `0 * Ref(close, 20)` 不改变完整窗口的 MAX 值，只强制不足 20 日的股票保持缺失，因为 Qlib 的滚动 `Max` 默认接受短窗口。高值方向固定，表示过去约一个月没有出现极端正收益日。该方向源自 Bali、Cakici 与 Whitelaw 的 [MAX 彩票偏好研究](https://doi.org/10.1016/j.jfineco.2010.08.014) 及 [中国市场 MAX 证据](https://doi.org/10.1016/j.najef.2021.101475)：高 MAX 股票后续回报较低。原研究主要使用月度形成/持有期，并不能证明三日预测，因此本轮只检验把该机制转移到“收盘信号、次日开盘进入、第 3 日收盘退出”后是否仍成立；不测试 5/10/60 日窗口、最大负收益、绝对收益、均值或与波动率组合。
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
@@ -828,6 +841,8 @@ python scripts/a_share_short_horizon_factor_research.py screen \
 
 通过初测的策略不应马上被视为可实盘策略。每次收盘数据更新后，运行纸面观察器：它只在状态允许时追加一笔不可修改的模拟信号；三日后的本地日线齐全时，才用“下一日开盘买入、第三日收盘卖出”和研究成本结算实际样本外结果。
 
+当前注册表中的 18 个既有轮次全部来自旧价格基准，均已失效，所以下述命令此时会拒绝创建信号。只有全量点时价格重建后产生、并携带验收清单哈希的新轮次才能进入观察；不要为旧轮次手工补写 `price_basis`。
+
 ```bash
 python scripts/a_share_short_horizon_factor_research.py monitor \
   --not-before 2026-07-14
@@ -917,11 +932,7 @@ python scripts/a_share_short_horizon_factor_research.py plan \
 
 `plan` 默认只生成 20 万元方案；每个方案都会列出整手股数、买入占用资金、买卖两侧费用、实际仓位、剩余现金和因整手限制跳过的候选。需要临时覆盖资金时传入 `--capital`，例如 `--capital 120000`。计划中的 `reference_close` 只用于仓位测算；交易日必须以券商可见的实际价格重新核对，并只允许下调股数来遵守上限。
 
-当前筛选与历史研究仍采用前复权日线，且缺少 Qlib 的复权恢复因子。故这个整手规划器可用于当日仓位和费用审计，但历史收益曲线尚不是精确的整手、税费、涨跌停和停牌成交模拟。
-
-研究结果仅用于比较候选假设，不能作为收益承诺或直接实盘信号。当前数据为前复权价且缺少恢复因子，股票池也来自当前上市快照；结果不包含精确整手、税费、涨跌停、停牌和退市历史的成交模拟。
-
-当前原始价格已是前复权价，管线尚未提供 Qlib 的复权恢复因子 `$factor`。因此 Alpha158 可以正常计算，但 Qlib 回测会以复权价执行，不能把 100 股整手、分红送配前后的成交细节视为精确模拟；严肃的可交易性回测需要补充原始价和恢复因子。
+只有 `price_basis.json` 与因子就绪度测试都通过后，筛选和历史研究才可使用点时复权价与 `$factor` 还原实际价格；整手规划仍需用交易时券商可见价格复核。研究结果仅用于比较候选假设，不能作为收益承诺或直接实盘信号；涨跌停排队、停牌、冲击成本和完整退市历史仍未被精确模拟。
 
 若正常 `sync` 因东财接口短暂不可用，但确认需要补入一个已收盘的交易日，可使用受审计的腾讯收盘行情恢复脚本。它只使用已有的本地股票池快照、只写入指定日期，并将源站、失败股票与 Qlib 重建结果记录在 `data/metadata/recoveries/`。东财恢复后，仍应执行一次正常 `sync` 覆盖并复核这一天。
 
@@ -930,7 +941,7 @@ python scripts/recover_a_share_close_from_tencent.py --date 2026-07-13
 python scripts/a_share_data_pipeline.py status
 ```
 
-东财个别股票的长周期前复权数据会在大额现金分红后出现负数价格。日常下载会自动拒绝此类无效 OHLC 行；已有历史数据可运行下面的本地修复命令。它会删除这些无法建模的日期，并以 Qlib 的缺失交易日形式重新生成二进制数据，同时在 `data/metadata/repairs/` 保存审计清单。
+`sanitize` 只保留给旧数据的非正数/错误 OHLC 清理，不能把旧 qfq 数据修复成合格的点时价格口径。旧数据必须全量重新下载；删除异常行会掩盖复权基准错误。
 
 ```bash
 python scripts/a_share_data_pipeline.py sanitize
@@ -966,7 +977,7 @@ python scripts/install_a_share_launchd.py install --with-short-horizon-monitor
 python scripts/install_a_share_launchd.py status
 ```
 
-纸面观察任务会先检查 18:30 数据同步所持有的管线锁；若同步仍在进行，最多等待 45 分钟，避免用旧收盘数据漏记当日信号。随后依次运行已晋级策略的 `monitor`、已登记研究候选的 `shadow-monitor`；本地存在纯前瞻因子登记时再运行 `prospective-monitor`，最后生成 `report`。它不会自动重跑因子搜索、修改策略权重、回填错过的前瞻信号或生成下单计划。日志在 `data/logs/`。需要移除定时任务时：
+纸面观察任务会先检查 18:30 数据同步所持有的管线锁；若同步仍在进行，最多等待 45 分钟，避免用旧收盘数据漏记当日信号。随后只对注册表中带有已验收 `price_basis` 的记录运行 `monitor`、`shadow-monitor` 或 `prospective-monitor`，旧 qfq 登记会被跳过；无有效登记时只生成 `report`。它不会自动重跑因子搜索、修改策略权重、回填错过的前瞻信号或生成下单计划。日志在 `data/logs/`。需要移除定时任务时：
 
 ```bash
 python scripts/install_a_share_launchd.py uninstall
@@ -1018,7 +1029,7 @@ python scripts/a_share_rich_data.py acceptance --provider tushare --date 2026-07
 python scripts/a_share_rich_data.py sync-tushare-events --start 2026-07-13 --end 2026-07-13
 ```
 
-现有日线价格是前复权，分钟线保存的是原始未复权价格。因此不比较两者的绝对价格或跨日收益；验收只比较不受同日复权比例影响的 OHLC/收盘比值、成交额和成交量。供应商的成交量单位可能是“股”或“手”，程序会记录与日线的比值；在确认并显式标准化之前，不得把不同供应商的量能字段混用。
+分钟线保存原始未复权价格；日线同时保留 raw OHLCV 与 `$factor`，所以验收应先用 `adjusted / factor` 还原日线原始价，再比较同日 OHLC、成交额和成交量。供应商的成交量单位可能是“股”或“手”，程序会记录比值；在确认并显式标准化之前，不得把不同供应商的量能字段混用。
 
 分钟快照清单的状态必须是 `automatic_checks_passed_pending_time_alignment`，才可进入下一步人工检查：
 

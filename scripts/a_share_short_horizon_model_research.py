@@ -655,7 +655,7 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
         "limitations": [
             "This audit is historical research only; no configuration is registered, promoted, or converted into a trading signal.",
             "The holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices are qfq-adjusted and lack restoration factors, exact lot-size, tax, limit-up/limit-down and fill simulation.",
+            "Prices require the accepted point-in-time restoration-factor contract; exact limit queues, suspensions, market impact, and fill priority remain unsimulated.",
             "The post-development period is already historical evidence and remains a diagnostic check, not new forward proof.",
         ],
     }

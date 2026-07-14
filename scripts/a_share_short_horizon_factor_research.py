@@ -77,6 +77,8 @@ DEFAULT_PROSPECTIVE_FACTOR_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_prospec
 DEFAULT_RESEARCH_REPORT = DEFAULT_EXPERIMENT_ROOT / "three_day_research_report.md"
 DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS = REPO_ROOT / "docs" / "a_share_factor_diagnostic_invalidations.json"
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
+REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
+PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
 
 PROSPECTIVE_VWAP_FACTOR = "close_below_vwap_1"
 PROSPECTIVE_VWAP_SOURCE_FACTOR = "close_above_vwap_1"
@@ -4391,6 +4393,68 @@ def attach_dividend_plan_events_asof(
     return result
 
 
+def require_research_price_basis(provider_uri: Path) -> dict[str, Any]:
+    """Require a passed, point-in-time price-basis manifest before research."""
+
+    manifest_path = provider_uri.expanduser().resolve() / PRICE_BASIS_MANIFEST_NAME
+    if not manifest_path.exists():
+        raise RuntimeError(
+            "research is blocked because the Qlib provider has no price-basis acceptance manifest; "
+            "run a full `a_share_data_pipeline.py sync --force-full --adjust point_in_time` refresh"
+        )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("status") != "passed" or manifest.get("price_basis") != REQUIRED_PRICE_BASIS:
+        raise RuntimeError(
+            "research is blocked because the Qlib provider price basis has not passed acceptance: "
+            f"status={manifest.get('status')!r}, price_basis={manifest.get('price_basis')!r}"
+        )
+    if manifest.get("failures"):
+        raise RuntimeError("research is blocked because the price-basis manifest contains failures")
+    return manifest
+
+
+def uses_required_price_basis(record: dict[str, Any]) -> bool:
+    """Return whether an immutable research record names the accepted basis."""
+
+    return (record.get("data") or {}).get("price_basis") == REQUIRED_PRICE_BASIS
+
+
+def require_record_price_basis(record: dict[str, Any], *, record_kind: str) -> None:
+    """Prevent legacy qfq/raw-VWAP evidence from becoming executable again."""
+
+    observed = (record.get("data") or {}).get("price_basis")
+    if observed != REQUIRED_PRICE_BASIS:
+        raise ValueError(
+            f"{record_kind} is invalid under the research price-basis contract: "
+            f"expected {REQUIRED_PRICE_BASIS!r}, got {observed!r}"
+        )
+
+
+def research_price_basis_metadata(provider_uri: Path) -> dict[str, Any]:
+    """Fingerprint the accepted provider basis into every new research record."""
+
+    provider_uri = provider_uri.expanduser().resolve()
+    manifest = require_research_price_basis(provider_uri)
+    manifest_path = provider_uri / PRICE_BASIS_MANIFEST_NAME
+    return {
+        "price_basis": manifest["price_basis"],
+        "price_basis_manifest": str(manifest_path),
+        "price_basis_manifest_sha256": file_sha256(manifest_path),
+        "future_corporate_actions_used": bool(manifest.get("future_corporate_actions_used", False)),
+    }
+
+
+def require_diagnostic_price_basis(diagnostic: dict[str, Any]) -> None:
+    """Reject historical diagnostics created before the price-basis contract."""
+
+    observed = (diagnostic.get("data") or {}).get("price_basis")
+    if observed != REQUIRED_PRICE_BASIS:
+        raise ValueError(
+            "factor diagnostic is invalid under the research price-basis contract: "
+            f"expected {REQUIRED_PRICE_BASIS!r}, got {observed!r}"
+        )
+
+
 def load_market_data(
     provider_uri: Path,
     start: str,
@@ -4412,6 +4476,7 @@ def load_market_data(
     provider_uri = provider_uri.expanduser().resolve()
     if not provider_uri.exists():
         raise FileNotFoundError(f"Qlib provider directory does not exist: {provider_uri}")
+    require_research_price_basis(provider_uri)
     qlib.init(provider_uri=str(provider_uri), region="cn", kernels=1)
     market = D.instruments(market="buyable_main_chinext")
     instruments = D.list_instruments(market, start_time=start, end_time=end, as_list=True)
@@ -6036,7 +6101,7 @@ def run_selection_multiplicity_audit(args: argparse.Namespace) -> dict[str, Any]
         "limitations": [
             "This is a development-only selection-bias diagnostic; it does not promote, suspend, replace, or create a strategy.",
             "The bootstrap quantifies instability and a centered global-null tail probability, not an economic guarantee or a probability of future profit.",
-            "Candidate returns share a current-listing universe and qfq prices, so survivorship and execution limitations remain.",
+            "Candidate returns require the accepted point-in-time price basis but still share a current-listing universe, so survivorship and execution limitations remain.",
             "When a legacy drawdown convention is required to reproduce a stored study, that convention is used only to audit the historical selection and must not be used for new research.",
             "The original test period is intentionally not read; future paper evidence remains the only new validation.",
         ],
@@ -6291,7 +6356,7 @@ def run_limit_like_event_audit(args: argparse.Namespace) -> dict[str, Any]:
         "result": decision,
         "limitations": [
             "This is a fixed development-only event audit, not a strategy registration, stock list, or trading recommendation.",
-            "Limit-like events are inferred from qfq daily price fields and are not official exchange limit-up flags.",
+            "Limit-like events are inferred from accepted point-in-time daily price fields and are not official exchange limit-up flags.",
             "The audit cannot determine whether a next-open order would be blocked by a limit, suspension, queue, or liquidity condition.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias.",
         ],
@@ -7219,6 +7284,7 @@ def prospective_vwap_source_record(path: Path) -> dict[str, Any]:
 
     source_path = path.expanduser().resolve()
     payload = json.loads(source_path.read_text(encoding="utf-8"))
+    require_diagnostic_price_basis(payload)
     catalog = list(payload.get("factor_catalog") or [])
     ranking = list(payload.get("ranking_by_development_rank_ic") or [])
     source_rows = [item for item in ranking if item.get("factor") == PROSPECTIVE_VWAP_SOURCE_FACTOR]
@@ -7247,6 +7313,8 @@ def prospective_vwap_source_record(path: Path) -> dict[str, Any]:
         "sha256": file_sha256(source_path),
         "factor_catalog": catalog,
         "calendar_end": calendar_end.date().isoformat(),
+        "price_basis": (payload.get("data") or {}).get("price_basis"),
+        "price_basis_manifest_sha256": (payload.get("data") or {}).get("price_basis_manifest_sha256"),
     }
 
 
@@ -7285,6 +7353,10 @@ def append_prospective_vwap_registration(
             "latest_observed_at_registration": latest.date().isoformat(),
             "registered_at": dt.datetime.now(dt.timezone.utc).isoformat(),
             "source_diagnostic": dict(source),
+            "data": {
+                "price_basis": source.get("price_basis"),
+                "price_basis_manifest_sha256": source.get("price_basis_manifest_sha256"),
+            },
             "universe": "buyable_main_chinext; annual-quality eligible; current ST excluded",
             "strategy": {
                 "holding_period_trading_days": PROSPECTIVE_VWAP_HOLD_DAYS,
@@ -7316,6 +7388,7 @@ def prospective_vwap_registration(registry_path: Path, registration_id: str | No
         detail = f" {registration_id}" if registration_id else ""
         raise ValueError(f"prospective factor registration not found:{detail}")
     registration = registrations[-1]
+    require_record_price_basis(registration, record_kind="prospective factor registration")
     if registration.get("factor") != PROSPECTIVE_VWAP_FACTOR:
         raise ValueError("prospective monitor only accepts the fixed close_below_vwap_1 registration")
     return registration
@@ -7547,6 +7620,7 @@ def build_iteration_record(
 def append_strategy_registry(registry_path: Path, iteration: dict[str, Any]) -> Path:
     """Append a completed research cycle without allowing historic replacement."""
 
+    require_record_price_basis(iteration, record_kind="strategy iteration")
     registry_path = registry_path.expanduser()
     if registry_path.exists():
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
@@ -7570,10 +7644,15 @@ def promoted_iteration(registry_path: Path, iteration_id: str | None = None) -> 
     if iteration_id is not None:
         iterations = [item for item in iterations if item.get("iteration_id") == iteration_id]
     for iteration in reversed(iterations):
-        if iteration.get("promotion", {}).get("status") == "passed_initial_test":
+        if (
+            iteration.get("promotion", {}).get("status") == "passed_initial_test"
+            and uses_required_price_basis(iteration)
+        ):
             return iteration
     detail = f" {iteration_id}" if iteration_id else ""
-    raise ValueError(f"no passed_initial_test strategy found in registry{detail}")
+    raise ValueError(
+        f"no passed_initial_test strategy with price_basis={REQUIRED_PRICE_BASIS} found in registry{detail}"
+    )
 
 
 def research_observation_iteration(registry_path: Path, iteration_id: str) -> dict[str, Any]:
@@ -7589,6 +7668,7 @@ def research_observation_iteration(registry_path: Path, iteration_id: str) -> di
     if not iterations:
         raise ValueError(f"research iteration not found: {iteration_id}")
     iteration = iterations[-1]
+    require_record_price_basis(iteration, record_kind="research-only strategy iteration")
     promotion = iteration.get("promotion") or {}
     data = iteration.get("data") or {}
     test = iteration.get("initial_test") or {}
@@ -7631,6 +7711,12 @@ def append_shadow_observation(
             "candidate_library": (iteration.get("strategy") or {}).get("candidate_library", "v1"),
             "not_before": date.date().isoformat(),
             "registered_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "data": {
+                "price_basis": (iteration.get("data") or {}).get("price_basis"),
+                "price_basis_manifest_sha256": (iteration.get("data") or {}).get(
+                    "price_basis_manifest_sha256"
+                ),
+            },
             "rule": "Forward paper observation only; the date must be the first genuinely unseen signal close.",
         }
     )
@@ -7806,6 +7892,8 @@ def run_paper_monitor(args: argparse.Namespace) -> dict[str, Any]:
     settled_ids = {str(item.get("signal_id")) for item in ledger["settlements"]}
     new_settlements: list[dict[str, Any]] = []
     for signal in ledger["signals"]:
+        if str(signal.get("iteration_id")) != str(iteration["iteration_id"]):
+            continue
         signal_id = str(signal.get("signal_id"))
         if signal_id in settled_ids:
             continue
@@ -8023,6 +8111,8 @@ def run_prospective_vwap_monitor(args: argparse.Namespace) -> dict[str, Any]:
     settled_ids = {str(item.get("signal_id")) for item in ledger["settlements"]}
     new_settlements: list[dict[str, Any]] = []
     for signal in ledger["signals"]:
+        if str(signal.get("registration_id")) != str(registration["registration_id"]):
+            continue
         signal_id = str(signal.get("signal_id"))
         if signal_id in settled_ids:
             continue
@@ -8181,8 +8271,26 @@ def _paper_ledger_summary(ledger: dict[str, Any]) -> tuple[int, int, int, float]
     return len(signals), len(settlements), len(pending), equity
 
 
+def filter_paper_ledger(
+    ledger: dict[str, Any], *, identity_field: str, accepted_ids: set[str]
+) -> dict[str, Any]:
+    """Retain only signals whose immutable source record has an accepted basis."""
+
+    signals = [
+        item for item in ledger.get("signals") or [] if str(item.get(identity_field)) in accepted_ids
+    ]
+    signal_ids = {str(item.get("signal_id")) for item in signals}
+    settlements = [
+        item for item in ledger.get("settlements") or [] if str(item.get("signal_id")) in signal_ids
+    ]
+    return {"schema_version": ledger.get("schema_version", 1), "signals": signals, "settlements": settlements}
+
+
 def _shadow_observation_rows(
-    plan: dict[str, Any], ledger: dict[str, Any], suspension_registry: dict[str, Any] | None = None
+    plan: dict[str, Any],
+    ledger: dict[str, Any],
+    suspension_registry: dict[str, Any] | None = None,
+    valid_iteration_ids: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     """Summarize separate forward evidence for each explicitly registered candidate."""
 
@@ -8194,7 +8302,10 @@ def _shadow_observation_rows(
     rows: list[dict[str, Any]] = []
     for observation in plan.get("observations") or []:
         iteration_id = str(observation.get("iteration_id", ""))
-        candidate_signals = [item for item in signals if str(item.get("iteration_id")) == iteration_id]
+        basis_valid = valid_iteration_ids is None or iteration_id in valid_iteration_ids
+        candidate_signals = [
+            item for item in signals if basis_valid and str(item.get("iteration_id")) == iteration_id
+        ]
         signal_ids = {str(item.get("signal_id")) for item in candidate_signals}
         candidate_settlements = [item for item in settlements if str(item.get("signal_id")) in signal_ids]
         settled_ids = {str(item.get("signal_id")) for item in candidate_settlements}
@@ -8210,7 +8321,13 @@ def _shadow_observation_rows(
                 "candidate": str(observation.get("candidate", "—")),
                 "candidate_library": str(observation.get("candidate_library", "—")),
                 "not_before": str(observation.get("not_before", "—")),
-                "status": "已暂停" if iteration_id in suspended else "前瞻观察中",
+                "status": (
+                    "价格基准失效"
+                    if not basis_valid
+                    else "已暂停"
+                    if iteration_id in suspended
+                    else "前瞻观察中"
+                ),
                 "signals": len(candidate_signals),
                 "settlements": len(candidate_settlements),
                 "pending": len(pending),
@@ -8220,7 +8337,9 @@ def _shadow_observation_rows(
     return rows
 
 
-def _prospective_factor_rows(registry: dict[str, Any], ledger: dict[str, Any]) -> list[dict[str, Any]]:
+def _prospective_factor_rows(
+    registry: dict[str, Any], ledger: dict[str, Any], valid_registration_ids: set[str] | None = None
+) -> list[dict[str, Any]]:
     """Summarize each post-development factor without mixing its returns into another strategy."""
 
     signals = list(ledger.get("signals") or [])
@@ -8228,7 +8347,12 @@ def _prospective_factor_rows(registry: dict[str, Any], ledger: dict[str, Any]) -
     rows: list[dict[str, Any]] = []
     for registration in registry.get("registrations") or []:
         registration_id = str(registration.get("registration_id", ""))
-        factor_signals = [item for item in signals if str(item.get("registration_id")) == registration_id]
+        basis_valid = valid_registration_ids is None or registration_id in valid_registration_ids
+        factor_signals = [
+            item
+            for item in signals
+            if basis_valid and str(item.get("registration_id")) == registration_id
+        ]
         signal_ids = {str(item.get("signal_id")) for item in factor_signals}
         factor_settlements = [item for item in settlements if str(item.get("signal_id")) in signal_ids]
         settled_ids = {str(item.get("signal_id")) for item in factor_settlements}
@@ -8243,6 +8367,7 @@ def _prospective_factor_rows(registry: dict[str, Any], ledger: dict[str, Any]) -
                 "factor": str(registration.get("factor", "—")),
                 "not_before": str(registration.get("not_before", "—")),
                 "source_run_id": str((registration.get("source_diagnostic") or {}).get("run_id", "—")),
+                "status": "有效" if basis_valid else "价格基准失效",
                 "signals": len(factor_signals),
                 "settlements": len(factor_settlements),
                 "pending": sum(str(item.get("signal_id")) not in settled_ids for item in factor_signals),
@@ -8375,12 +8500,15 @@ def load_factor_diagnostics(
         dividend_plan_events = diagnostic.get("dividend_plan_events") or {}
         run_id = str(diagnostic.get("run_id", path.stem))
         invalidation = invalidations.get(run_id)
+        price_basis_invalid = data.get("price_basis") != REQUIRED_PRICE_BASIS
         expected_sha256 = str((invalidation or {}).get("source_sha256", "")).strip()
         if expected_sha256 and file_sha256(path) != expected_sha256:
             raise ValueError(f"factor diagnostic invalidation fingerprint mismatch: {run_id}")
         ranking_factors = [str(item.get("factor", "")) for item in ranking]
         semantic_invalid_factors = pre_complete_window_invalid_factors(run_id, ranking_factors)
-        invalidated_factors = set(ranking_factors) if invalidation else semantic_invalid_factors
+        invalidated_factors = (
+            set(ranking_factors) if invalidation or price_basis_invalid else semantic_invalid_factors
+        )
         valid_ranking = [item for item in ranking if str(item.get("factor", "")) not in invalidated_factors]
         # A fully invalidated run remains visible for auditability, but a
         # partially invalidated catalog must display its best still-valid
@@ -8419,7 +8547,9 @@ def load_factor_diagnostics(
                 "invalidation_reason": str(
                     (invalidation or {}).get(
                         "reason",
-                        "pre-complete-window diagnostic rows used Qlib partial rolling values"
+                        "diagnostic used the legacy mixed qfq/raw-VWAP basis without restoration factors"
+                        if price_basis_invalid
+                        else "pre-complete-window diagnostic rows used Qlib partial rolling values"
                         if semantic_invalid_factors
                         else "",
                     )
@@ -8447,10 +8577,20 @@ def load_factor_stability_audits(experiment_root: Path) -> list[dict[str, Any]]:
         source = audit.get("input_diagnostic") or {}
         policy = audit.get("policy") or {}
         source_run_id = str(source.get("run_id", "—"))
+        source_path = Path(str(source.get("path", ""))).expanduser()
+        source_price_basis_invalid = False
+        if source_path.is_file():
+            try:
+                source_diagnostic = json.loads(source_path.read_text(encoding="utf-8"))
+                source_price_basis_invalid = (
+                    (source_diagnostic.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+                )
+            except (OSError, json.JSONDecodeError):
+                source_price_basis_invalid = True
         decision_factors = [str(item.get("factor", "")) for item in decisions]
         invalid_decision_factors = (
             set(decision_factors)
-            if source_run_id in invalidations
+            if source_run_id in invalidations or source_price_basis_invalid
             else pre_complete_window_invalid_factors(source_run_id, decision_factors)
         )
         invalid_factor_count = len(invalid_decision_factors)
@@ -8494,10 +8634,20 @@ def load_factor_topk_viability_audits(experiment_root: Path) -> list[dict[str, A
         decisions = list(audit.get("factor_decisions") or [])
         source = audit.get("input_diagnostic") or {}
         source_run_id = str(source.get("run_id", "—"))
+        source_path = Path(str(source.get("path", ""))).expanduser()
+        source_price_basis_invalid = False
+        if source_path.is_file():
+            try:
+                source_diagnostic = json.loads(source_path.read_text(encoding="utf-8"))
+                source_price_basis_invalid = (
+                    (source_diagnostic.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+                )
+            except (OSError, json.JSONDecodeError):
+                source_price_basis_invalid = True
         decision_factors = [str(item.get("factor", "")) for item in decisions]
         invalid_decision_factors = (
             set(decision_factors)
-            if source_run_id in invalidations
+            if source_run_id in invalidations or source_price_basis_invalid
             else pre_complete_window_invalid_factors(source_run_id, decision_factors)
         )
         invalid_factor_count = len(invalid_decision_factors)
@@ -9077,11 +9227,25 @@ def render_three_day_research_report(
     """Render the append-only machine records into a concise human research log."""
 
     iterations = list(registry.get("iterations") or [])
-    signals, settlements, pending, paper_equity = _paper_ledger_summary(ledger)
+    valid_iteration_ids = {
+        str(item.get("iteration_id")) for item in iterations if uses_required_price_basis(item)
+    }
+    valid_ledger = filter_paper_ledger(
+        ledger, identity_field="iteration_id", accepted_ids=valid_iteration_ids
+    )
+    signals, settlements, pending, paper_equity = _paper_ledger_summary(valid_ledger)
+    invalid_iteration_count = len(iterations) - len(valid_iteration_ids)
     lines = [
         "# 三日短线研究日志",
         "",
         "本报告由策略注册表和纸面台账生成。它记录研究证据，不构成买卖建议或收益承诺。",
+        (
+            f"旧 qfq/raw-VWAP 价格基准下的 {invalid_iteration_count} 个策略轮次及其纸面收益已失效，"
+            "仅保留审计记录；它们不会被监控、结算或用于选股。下文任何未携带已验收 price_basis 的"
+            "旧因子、模型、敏感性或收益数字同样无效，即使其表格未逐行重复标记。"
+            if invalid_iteration_count
+            else f"所有可用策略轮次均要求价格基准 `{REQUIRED_PRICE_BASIS}`。"
+        ),
         "",
         "## 策略迭代",
         "",
@@ -9099,6 +9263,8 @@ def render_three_day_research_report(
         regime = strategy.get("regime_filter", "always")
         policy = selection.get("policy", strategy.get("selection_policy", "pooled_return_drawdown"))
         status = str(promotion.get("status", "—"))
+        if not uses_required_price_basis(item):
+            status = "价格基准失效（仅审计保留）"
         if promotion.get("eligible_for_promotion") is False:
             is_development_preregistration = (
                 int(initial_test.get("rounds") or 0) == 0
@@ -9728,7 +9894,12 @@ def render_three_day_research_report(
         ]
     )
     if shadow_ledger is not None:
-        shadow_signals, shadow_settlements, shadow_pending, shadow_equity = _paper_ledger_summary(shadow_ledger)
+        valid_shadow_ledger = filter_paper_ledger(
+            shadow_ledger, identity_field="iteration_id", accepted_ids=valid_iteration_ids
+        )
+        shadow_signals, shadow_settlements, shadow_pending, shadow_equity = _paper_ledger_summary(
+            valid_shadow_ledger
+        )
         lines.extend(
             [
                 "## 研究候选前瞻纸面观察",
@@ -9740,7 +9911,10 @@ def render_three_day_research_report(
             ]
         )
         observation_rows = _shadow_observation_rows(
-            shadow_observation_registry or {}, shadow_ledger, shadow_suspension_registry
+            shadow_observation_registry or {},
+            valid_shadow_ledger,
+            shadow_suspension_registry,
+            valid_iteration_ids,
         )
         if observation_rows:
             lines.extend(
@@ -9786,8 +9960,18 @@ def render_three_day_research_report(
                 )
             lines.append("")
     if prospective_factor_registry is not None and prospective_factor_ledger is not None:
+        valid_registration_ids = {
+            str(item.get("registration_id"))
+            for item in prospective_factor_registry.get("registrations") or []
+            if uses_required_price_basis(item)
+        }
+        valid_prospective_ledger = filter_paper_ledger(
+            prospective_factor_ledger,
+            identity_field="registration_id",
+            accepted_ids=valid_registration_ids,
+        )
         prospective_signals, prospective_settlements, prospective_pending, prospective_equity = (
-            _paper_ledger_summary(prospective_factor_ledger)
+            _paper_ledger_summary(valid_prospective_ledger)
         )
         lines.extend(
             [
@@ -9799,21 +9983,24 @@ def render_three_day_research_report(
                 "",
             ]
         )
-        prospective_rows = _prospective_factor_rows(prospective_factor_registry, prospective_factor_ledger)
+        prospective_rows = _prospective_factor_rows(
+            prospective_factor_registry, valid_prospective_ledger, valid_registration_ids
+        )
         if prospective_rows:
             lines.extend(
                 [
-                    "| 登记 | 因子 | 来源诊断 | 首个未见收盘日 | 信号 | 已结算 | 待结算 | 已结算累计净收益 |",
-                    "| --- | --- | --- | --- | ---: | ---: | ---: | ---: |",
+                    "| 登记 | 因子 | 来源诊断 | 首个未见收盘日 | 状态 | 信号 | 已结算 | 待结算 | 已结算累计净收益 |",
+                    "| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: |",
                 ]
             )
             for row in prospective_rows:
                 lines.append(
-                    "| {registration_id} | {factor} | {source} | {not_before} | {signals} | {settlements} | {pending} | {net_return} |".format(
+                    "| {registration_id} | {factor} | {source} | {not_before} | {status} | {signals} | {settlements} | {pending} | {net_return} |".format(
                         registration_id=row["registration_id"],
                         factor=row["factor"],
                         source=row["source_run_id"],
                         not_before=row["not_before"],
+                        status=row["status"],
                         signals=row["signals"],
                         settlements=row["settlements"],
                         pending=row["pending"],
@@ -9825,7 +10012,7 @@ def render_three_day_research_report(
         [
             "## 下一步规则",
             "",
-            "1. 每次本地收盘数据更新后运行 `monitor`；存在纯前瞻登记时同时运行 `prospective-monitor`，只追加当日信号或结算。",
+            "1. 只对携带已验收 `price_basis` 的新登记运行 `monitor`、`shadow-monitor` 或 `prospective-monitor`；定时器会跳过所有旧登记。",
             "2. 新因子/权重必须作为新一轮写入注册表；不得改写已见测试段的结论。",
             "3. 只有纸面样本继续积累且回撤、成本、可交易性都可接受时，才讨论扩大模拟仓位。",
             "",
@@ -10197,6 +10384,8 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     pledge_path = Path(args.pledge_events).expanduser() if args.pledge_events else None
     dividend_plan_path = Path(args.dividend_plan_events).expanduser() if args.dividend_plan_events else None
     experiment_root = Path(args.experiment_root).expanduser()
+    price_basis_manifest = require_research_price_basis(provider_uri)
+    price_basis_manifest_path = provider_uri.expanduser().resolve() / PRICE_BASIS_MANIFEST_NAME
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
     market_end = market["datetime"].max()
@@ -10474,6 +10663,10 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         ),
         "data": {
             "provider_uri": str(provider_uri.resolve()),
+            "price_basis": price_basis_manifest.get("price_basis"),
+            "price_basis_manifest": str(price_basis_manifest_path),
+            "price_basis_manifest_sha256": file_sha256(price_basis_manifest_path),
+            "future_corporate_actions_used": price_basis_manifest.get("future_corporate_actions_used"),
             "calendar_start": market["datetime"].min().date().isoformat(),
             "calendar_end": market_end.date().isoformat(),
             "market_rows": int(len(market)),
@@ -10488,7 +10681,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "TopK-minus-BottomK is a descriptive gross cross-sectional spread, not an executable long-short simulation.",
             "A later factor library must be declared independently and evaluated with an untouched future period; this diagnostic does not validate a combined model.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+            "Prices use the accepted close-known adjusted/raw restoration contract; exchange limit queues, suspensions, and market impact are still not simulated exactly.",
         ],
     }
     destination = experiment_root / f"{run_id}_factor_diagnostic.json"
@@ -10513,6 +10706,7 @@ def run_factor_stability_audit(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError(f"factor diagnostic is not valid JSON: {diagnostic_path}") from error
     if diagnostic.get("status") != "completed":
         raise ValueError("factor stability audit requires a completed factor diagnostic")
+    require_diagnostic_price_basis(diagnostic)
     ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
     if not ranking:
         raise ValueError("factor diagnostic contains no factor summaries")
@@ -10588,6 +10782,7 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError(f"factor diagnostic is not valid JSON: {diagnostic_path}") from error
     if diagnostic.get("status") != "completed":
         raise ValueError("factor TopK viability audit requires a completed factor diagnostic")
+    require_diagnostic_price_basis(diagnostic)
     ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
     if not ranking:
         raise ValueError("factor diagnostic contains no factor summaries")
@@ -10629,7 +10824,7 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
         "limitations": [
             "This screen uses the factor diagnostic's development-only TopK reconstruction and is not an independent strategy test.",
             "Passing it still requires a separately predeclared full-strategy evaluation and genuinely future paper observations before any execution discussion.",
-            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+            "Prices use the accepted point-in-time restoration contract but do not provide exact limit-queue or fill simulation.",
         ],
     }
     destination = experiment_root / f"{run_id}_factor_topk_viability_audit.json"
@@ -10749,7 +10944,7 @@ def run_billboard_holdout(args: argparse.Namespace) -> dict[str, Any]:
             "The inverse direction was formed from an already-observed development diagnostic; this one holdout does not erase multiple-testing risk.",
             "The public billboard snapshot can revise historical entries and is not an exchange-grade point-in-time disclosure database.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias.",
-            "Prices are qfq-adjusted and do not simulate exact tradability, price limits, or suspensions.",
+            "Prices use the accepted point-in-time restoration contract but do not simulate exact tradability, price limits, or suspensions.",
         ],
     }
     destination = experiment_root / f"{run_id}_event_factor_holdout.json"
@@ -10860,7 +11055,7 @@ def run_basket_correlation_audit(args: argparse.Namespace) -> dict[str, Any]:
             "Return correlation is a statistical concentration proxy, not an industry classification or proof of common economic exposure.",
             "Twenty daily observations make the estimate noisy; this diagnostic does not itself filter or reorder a basket.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices are qfq-adjusted and do not provide an exact executable or limit-up/limit-down simulation.",
+            "Prices use the accepted point-in-time restoration contract but do not provide exact limit-queue or fill simulation.",
         ],
     }
     destination = experiment_root / f"{run_id}_basket_correlation_audit.json"
@@ -10997,7 +11192,7 @@ def run_cohort_risk_audit(args: argparse.Namespace) -> dict[str, Any]:
             "Entry gap is observable only at the next session's open, so it is an execution variable rather than a close-known factor.",
             "Names and ST flags are drawn from a current metadata snapshot and are not historical point-in-time classifications.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+            "Prices use the accepted point-in-time restoration contract but do not provide exact limit-queue or fill simulation.",
         ],
     }
     destination = experiment_root / f"{run_id}_cohort_risk_audit.json"
@@ -11142,7 +11337,7 @@ def run_risk_gate_audit(args: argparse.Namespace) -> dict[str, Any]:
             "The two risk features are cross-sectional ranks, not absolute volatility or intraday loss guarantees.",
             "A missing complete eligible basket is modeled as cash, not as a partial basket or replacement allocation.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+            "Prices use the accepted point-in-time restoration contract but do not provide exact limit-queue or fill simulation.",
         ],
     }
     destination = experiment_root / f"{run_id}_risk_gate_audit.json"
@@ -11281,7 +11476,7 @@ def run_diversification_audit(args: argparse.Namespace) -> dict[str, Any]:
             "Return correlation is a short-window statistical proxy, not industry classification or proof of economic independence.",
             "A missing complete low-correlation basket is modeled as cash, not as a partial basket or replacement allocation.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices are qfq-adjusted and do not provide exact executable or limit-up/limit-down simulation.",
+            "Prices use the accepted point-in-time restoration contract but do not provide exact limit-queue or fill simulation.",
         ],
     }
     destination = experiment_root / f"{run_id}_diversification_audit.json"
@@ -11383,7 +11578,7 @@ def run_regime_audit(args: argparse.Namespace) -> dict[str, Any]:
         "limitations": [
             "This is a regime sensitivity audit, not an authorization to change a registered forward candidate.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices are qfq-adjusted and do not provide exact lot-size, dividend, tax, or limit-up/limit-down execution simulation.",
+            "Restoration factors support raw-price reconstruction, but exact taxes, limit queues, suspensions, and fills remain unsimulated.",
         ],
     }
     destination = experiment_root / f"{run_id}_regime_audit.json"
@@ -11520,7 +11715,7 @@ def run_loss_cap_audit(args: argparse.Namespace) -> dict[str, Any]:
         "limitations": [
             "This is a loss-cap sensitivity audit, not authorization to apply a cap to an existing forward candidate.",
             "An assumed same-close exit is a market-on-close approximation, not proof that an order would fill at that price.",
-            "The qfq price data cannot simulate limit-up/limit-down availability, restoration factors, dividends, lot sizing, or exact taxes.",
+            "The accepted restoration contract supports raw prices and lot sizing, but cannot simulate exact limit availability, suspensions, fills, or taxes.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
         ],
     }
@@ -11652,7 +11847,7 @@ def run_entry_gap_audit(args: argparse.Namespace) -> dict[str, Any]:
         "limitations": [
             "This is an execution sensitivity audit, not authorization to apply an entry-gap ceiling to an existing forward candidate.",
             "The next-session opening price is observable only after the close-based signal; a rapid market move can make a real order unavailable or different from the adjusted open.",
-            "The qfq price data cannot simulate opening-auction fill priority, limit-up/limit-down availability, restoration factors, dividends, lot sizing, or exact taxes.",
+            "The accepted restoration contract supports raw prices and lot sizing, but cannot simulate opening-auction priority, exact limit availability, suspensions, fills, or taxes.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
         ],
     }
@@ -11793,7 +11988,7 @@ def run_walk_forward_selection_audit(args: argparse.Namespace) -> dict[str, Any]
         "limitations": [
             "This audit checks historical candidate-selection stability; it does not promote a candidate or create a forward signal.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices are qfq-adjusted and cannot prove limit-up/limit-down, suspension, lot-size, dividend, or exact-tax execution.",
+            "Restoration factors support raw-price and lot-size reconstruction, but cannot prove limit queues, suspensions, fills, or exact-tax execution.",
         ],
     }
     destination = experiment_root / f"{run_id}_walk_forward_selection_audit.json"
@@ -11818,6 +12013,7 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
     candidates = candidate_library(args.candidate_library)
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    price_basis_metadata = research_price_basis_metadata(provider_uri)
     market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
     ranked = rank_factor_frame(market)
     run_id = _timestamp()
@@ -11868,11 +12064,12 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
             "eligible_rows": int(market["quality_eligible"].sum()),
             "development_end": args.development_end,
             "test_window_is_newly_reserved": not args.research_only,
+            **price_basis_metadata,
         },
         "limitations": [
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
             "Eastmoney public data are a present-day snapshot; retaining the earliest visible notice date reduces but does not eliminate accounting restatement bias.",
-            "Prices are qfq-adjusted and the provider lacks Qlib restoration factors; this is not an exact lot-size, dividend, tax, or limit-up/limit-down execution simulation.",
+            "Restoration factors support raw-price and lot-size reconstruction, but this is not an exact tax, limit-queue, suspension, or fill simulation.",
             "The winner is selected only on development data. Its later test result is evidence for further research, never a promise of future return.",
         ],
     }
@@ -11915,6 +12112,7 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
         "candidate_library_fingerprint_sha256": candidate_library_fingerprint(candidates),
         "selection_policy": args.selection_policy,
         "selection_rule": f"{SELECTION_POLICIES[args.selection_policy]}; no test metrics are used for selection",
+        "data": dict(common["data"]),
         "winner_selected_on_development_only": winner,
         "ranking_by_development": [
             {

@@ -1722,7 +1722,7 @@ def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_
         study_path=tmp_path / "study.json",
         winner=winner,
         candidate_count=100,
-        data={"calendar_end": "2026-07-13"},
+        data={"calendar_end": "2026-07-13", "price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
     )
     assert iteration["promotion"]["status"] == "passed_initial_test"
     assert not iteration["selection"]["test_metrics_used_for_selection"]
@@ -1897,7 +1897,11 @@ def test_promoted_iteration_selects_the_latest_passed_record(tmp_path):
                 "schema_version": 1,
                 "iterations": [
                     {"iteration_id": "failed", "promotion": {"status": "research_only_not_promoted"}},
-                    {"iteration_id": "passed", "promotion": {"status": "passed_initial_test"}},
+                    {
+                        "iteration_id": "passed",
+                        "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
+                        "promotion": {"status": "passed_initial_test"},
+                    },
                 ],
             }
         ),
@@ -1905,6 +1909,23 @@ def test_promoted_iteration_selects_the_latest_passed_record(tmp_path):
     )
     assert RESEARCH.promoted_iteration(registry_path)["iteration_id"] == "passed"
     assert RESEARCH.promoted_iteration(registry_path, "passed")["iteration_id"] == "passed"
+
+
+def test_promoted_iteration_rejects_a_legacy_price_basis_even_if_the_old_gate_passed(tmp_path):
+    registry_path = tmp_path / "registry.json"
+    registry_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "iterations": [
+                    {"iteration_id": "legacy-passed", "promotion": {"status": "passed_initial_test"}}
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="price_basis"):
+        RESEARCH.promoted_iteration(registry_path, "legacy-passed")
 
 
 def test_paper_monitor_requires_an_explicit_unseen_start_date():
@@ -1932,6 +1953,8 @@ def test_prospective_vwap_registration_requires_a_genuinely_unseen_start_and_is_
         "sha256": "abc123",
         "factor_catalog": ["close_above_vwap_1"],
         "calendar_end": "2025-12-31",
+        "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+        "price_basis_manifest_sha256": "accepted-manifest",
     }
     with pytest.raises(ValueError, match="cannot precede"):
         RESEARCH.append_prospective_vwap_registration(
@@ -1983,7 +2006,12 @@ def test_prospective_vwap_source_record_is_bound_to_the_isolated_failed_diagnost
         "run_id": RESEARCH.PROSPECTIVE_VWAP_SOURCE_RUN_ID,
         "status": "completed",
         "factor_catalog": [RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR],
-        "data": {"calendar_end": "2025-12-31", "test_period_used_for_factor_design": False},
+        "data": {
+            "calendar_end": "2025-12-31",
+            "test_period_used_for_factor_design": False,
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "price_basis_manifest_sha256": "accepted-manifest",
+        },
         "ranking_by_development_rank_ic": [
             {"factor": RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR, "mean_rank_ic": -0.02}
         ],
@@ -1996,6 +2024,26 @@ def test_prospective_vwap_source_record_is_bound_to_the_isolated_failed_diagnost
     payload["ranking_by_development_rank_ic"][0]["mean_rank_ic"] = 0.01
     path.write_text(json.dumps(payload), encoding="utf-8")
     with pytest.raises(ValueError, match="negative direction"):
+        RESEARCH.prospective_vwap_source_record(path)
+
+
+def test_prospective_vwap_source_record_rejects_the_real_legacy_price_basis(tmp_path):
+    path = tmp_path / "legacy_source.json"
+    path.write_text(
+        json.dumps(
+            {
+                "run_id": RESEARCH.PROSPECTIVE_VWAP_SOURCE_RUN_ID,
+                "status": "completed",
+                "factor_catalog": [RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR],
+                "data": {"calendar_end": "2025-12-31", "test_period_used_for_factor_design": False},
+                "ranking_by_development_rank_ic": [
+                    {"factor": RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR, "mean_rank_ic": -0.02}
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="price-basis contract"):
         RESEARCH.prospective_vwap_source_record(path)
 
 
@@ -2029,6 +2077,7 @@ def test_prospective_vwap_monitor_does_not_touch_a_ledger_before_the_registered_
                         "not_before": "2026-07-14",
                         "latest_observed_at_registration": "2026-07-13",
                         "strategy": {"holding_period_trading_days": 3, "topk": 3},
+                        "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
                     }
                 ],
             }
@@ -2068,6 +2117,7 @@ def test_prospective_vwap_monitor_never_backfills_a_missed_signal_date(tmp_path,
                         "not_before": "2026-07-14",
                         "latest_observed_at_registration": "2026-07-13",
                         "strategy": {"holding_period_trading_days": 3, "topk": 3},
+                        "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
                     }
                 ],
             }
@@ -2107,7 +2157,11 @@ def test_development_only_iteration_can_be_explicitly_registered_for_separate_fo
         "iteration_id": "v2-development-only",
         "strategy": {"candidate_library": "v2_microstructure"},
         "selection": {"winner": "expanded_v2_quiet_long_trend_q20_composite"},
-        "data": {"calendar_end": "2025-12-31", "development_end": "2025-12-31"},
+        "data": {
+            "calendar_end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+        },
         "initial_test": {"rounds": 0},
         "promotion": {"status": "research_only_not_promoted"},
     }
@@ -2133,7 +2187,11 @@ def test_shadow_observation_refuses_an_iteration_with_a_historical_test_window(t
                 "iterations": [
                     {
                         "iteration_id": "historical-diagnostic",
-                        "data": {"calendar_end": "2026-07-13", "development_end": "2025-12-31"},
+                        "data": {
+                            "calendar_end": "2026-07-13",
+                            "development_end": "2025-12-31",
+                            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                        },
                         "initial_test": {"rounds": 38},
                         "promotion": {"status": "research_only_not_promoted"},
                     }
@@ -2190,7 +2248,9 @@ def test_research_report_renders_registry_and_only_counts_settled_paper_returns(
     registry = {
         "iterations": [
             {
+                "iteration_id": "three-day-cycle",
                 "label": "three_day_cycle",
+                "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
                 "strategy": {"holding_period_trading_days": 3, "topk": 10, "regime_filter": "breadth_5_above_20"},
                 "selection": {"winner": "candidate", "development": {"net_cumulative_return": 0.1}},
                 "initial_test": {"net_cumulative_return": 0.02, "max_drawdown": -0.05},
@@ -2199,7 +2259,10 @@ def test_research_report_renders_registry_and_only_counts_settled_paper_returns(
         ]
     }
     ledger = {
-        "signals": [{"signal_id": "settled"}, {"signal_id": "pending"}],
+        "signals": [
+            {"signal_id": "settled", "iteration_id": "three-day-cycle"},
+            {"signal_id": "pending", "iteration_id": "three-day-cycle"},
+        ],
         "settlements": [{"signal_id": "settled", "net_return": 0.03}],
     }
     report = RESEARCH.render_three_day_research_report(registry, ledger)
@@ -2216,6 +2279,7 @@ def test_research_report_keeps_post_development_factor_evidence_separate():
                 "factor": "close_below_vwap_1",
                 "not_before": "2026-07-14",
                 "source_diagnostic": {"run_id": "failed-direct-factor"},
+                "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
             }
         ]
     }
@@ -2245,7 +2309,11 @@ def test_walk_forward_audits_are_retained_in_the_research_report_without_promoti
                 "run_id": "walk-forward-v2",
                 "status": "completed",
                 "candidate_library": {"id": "v2_microstructure", "count": 150},
-                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                    "data": {
+                        "calendar_start": "2019-01-02",
+                        "calendar_end": "2025-12-31",
+                        "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                    },
                 "protocol": {"first_test_year": 2021, "last_test_year": 2025},
                 "folds": [
                     {"winner_selected_on_training_only": "candidate"},
@@ -2588,7 +2656,11 @@ def test_quarterly_event_capacity_audits_are_retained_before_any_return_test(tmp
             {
                 "run_id": "revenue-capacity",
                 "status": "completed",
-                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "data": {
+                    "calendar_start": "2019-01-02",
+                    "calendar_end": "2025-12-31",
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                },
                 "capacity": {
                     "metric": "revenue_yoy_acceleration",
                     "complete_topk_event_cohorts": 139,
@@ -2793,7 +2865,11 @@ def test_pre_complete_window_report_keeps_only_unaffected_factor_rows_as_valid(t
             {
                 "run_id": "20260713T000000Z",
                 "status": "completed",
-                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "data": {
+                    "calendar_start": "2019-01-02",
+                    "calendar_end": "2025-12-31",
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                },
                 "ranking_by_development_rank_ic": [
                     {"factor": "amplitude_low", "mean_rank_ic": 0.05},
                     {"factor": "reversal_1", "mean_rank_ic": 0.02},
@@ -2931,7 +3007,11 @@ def test_research_report_labels_development_only_preregistration_for_forward_obs
             {
                 "label": "v2-development-only",
                 "strategy": {"holding_period_trading_days": 3, "topk": 3},
-                "data": {"calendar_end": "2025-12-31", "development_end": "2025-12-31"},
+                "data": {
+                    "calendar_end": "2025-12-31",
+                    "development_end": "2025-12-31",
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                },
                 "selection": {"winner": "candidate", "development": {}},
                 "initial_test": {"rounds": 0},
                 "promotion": {"status": "research_only_not_promoted", "eligible_for_promotion": False},
@@ -2945,10 +3025,17 @@ def test_research_report_labels_development_only_preregistration_for_forward_obs
 
 def test_research_report_keeps_shadow_observation_results_separate():
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []},
+        {
+            "iterations": [
+                {
+                    "iteration_id": "shadow-iteration",
+                    "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
+                }
+            ]
+        },
         {"signals": [], "settlements": []},
         {
-            "signals": [{"signal_id": "shadow"}],
+            "signals": [{"signal_id": "shadow", "iteration_id": "shadow-iteration"}],
             "settlements": [{"signal_id": "shadow", "net_return": 0.02}],
         },
     )
@@ -2981,7 +3068,15 @@ def test_shadow_observation_report_breaks_out_each_candidate_instead_of_pooling_
         "settlements": [{"signal_id": "first:2026-07-14", "net_return": 0.03}],
     }
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, shadow_ledger, shadow_registry
+        {
+            "iterations": [
+                {"iteration_id": "first", "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS}},
+                {"iteration_id": "second", "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS}},
+            ]
+        },
+        {"signals": [], "settlements": []},
+        shadow_ledger,
+        shadow_registry,
     )
     assert "candidate_one" in report
     assert "candidate_two" in report

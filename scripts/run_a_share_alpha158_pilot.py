@@ -172,7 +172,7 @@ def run_pilot(args: argparse.Namespace) -> dict[str, Any]:
         },
         "limitations": [
             "This pilot uses 16 readiness-test samples, so its IC is not evidence of an investable strategy.",
-            "The source currently lacks Qlib restoration factors; do not use this result as an exact A-share lot-size backtest.",
+            "A passed readiness report now requires restoration factors, but this small pilot still does not simulate exact limit queues, suspensions, or fills.",
         ],
     }
 
