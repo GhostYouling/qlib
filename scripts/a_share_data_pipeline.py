@@ -370,6 +370,11 @@ class BaoStockClient:
                 "BaoStock source requires `python -m pip install baostock==0.9.3`"
             ) from exc
         self._bs = bs
+        self._login()
+
+    def _login(self) -> None:
+        """Open or refresh the process-local BaoStock session."""
+
         login = self._bs.login()
         if login.error_code != "0":
             raise PipelineError(f"BaoStock login failed: {login.error_code} {login.error_msg}")
@@ -455,6 +460,18 @@ class BaoStockClient:
             frequency="d",
             adjustflag=adjust_flag,
         )
+        if response.error_code == "10001001":
+            # Long full-market recoveries can outlive a server-side session.
+            # Refresh only this worker's connection and retry the same query.
+            self._login()
+            response = self._bs.query_history_k_data_plus(
+                self._symbol(instrument),
+                fields,
+                start_date=start.isoformat(),
+                end_date=end.isoformat(),
+                frequency="d",
+                adjustflag=adjust_flag,
+            )
         if response.error_code != "0":
             raise PipelineError(
                 f"BaoStock query failed for {instrument.symbol}: "
@@ -471,6 +488,7 @@ class BaoStockClient:
         ]
         source[numeric_columns] = source[numeric_columns].apply(pd.to_numeric, errors="coerce")
         source["date"] = pd.to_datetime(source["date"], errors="coerce")
+        source["pctChg"] = fill_baostock_pct_chg(source)
         volume_lots = source["volume"] / 100.0
         bars = pd.DataFrame(
             {
@@ -514,6 +532,30 @@ _BAR_COLUMNS = [
     "pct_chg",
     "turnover",
 ]
+
+
+def fill_baostock_pct_chg(source: pd.DataFrame) -> pd.Series:
+    """Fill BaoStock's blank no-trade returns from its adjusted pre-close.
+
+    BaoStock leaves ``pctChg`` blank on some zero-volume suspension rows even
+    though ``preclose`` and ``close`` are present.  Its pre-close is the
+    provider's same-session comparison basis, so the derived return remains
+    close-known and preserves ex-date continuity.  Only the first usable row
+    may fall back to zero because it is the chain's local anchor; an
+    unresolvable gap later in the series remains invalid.
+    """
+
+    close = pd.to_numeric(source["close"], errors="coerce")
+    preclose = pd.to_numeric(source["preclose"], errors="coerce")
+    pct_chg = pd.to_numeric(source["pctChg"], errors="coerce").copy()
+    derived = close.div(preclose.where(preclose.gt(0.0))).sub(1.0).mul(100.0)
+    pct_chg = pct_chg.fillna(derived)
+    usable = close.gt(0.0)
+    if usable.any():
+        first_index = usable[usable].index[0]
+        if pd.isna(pct_chg.loc[first_index]):
+            pct_chg.loc[first_index] = 0.0
+    return pct_chg
 
 
 def rebuild_point_in_time_prices(bars: pd.DataFrame) -> pd.DataFrame:

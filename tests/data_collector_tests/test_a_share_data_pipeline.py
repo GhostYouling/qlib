@@ -171,6 +171,30 @@ def test_point_in_time_prices_chain_close_known_returns_and_restore_raw_prices()
     assert not any(PIPELINE.price_basis_quality_counts(adjusted).values())
 
 
+def test_baostock_blank_suspension_return_uses_close_known_preclose():
+    source = pd.DataFrame(
+        {
+            "close": [10.0, 10.0, 11.0],
+            "preclose": [None, 10.0, 10.0],
+            "pctChg": [None, None, 10.0],
+        }
+    )
+    assert PIPELINE.fill_baostock_pct_chg(source).tolist() == [0.0, 0.0, 10.0]
+
+
+def test_baostock_unresolvable_noninitial_return_remains_missing():
+    source = pd.DataFrame(
+        {
+            "close": [10.0, 10.5],
+            "preclose": [None, None],
+            "pctChg": [None, None],
+        }
+    )
+    filled = PIPELINE.fill_baostock_pct_chg(source)
+    assert filled.iloc[0] == 0.0
+    assert pd.isna(filled.iloc[1])
+
+
 def test_point_in_time_merge_rejects_legacy_mix_but_force_full_replaces_it(tmp_path):
     target = tmp_path / "sh600519.parquet"
     legacy = pd.DataFrame(
