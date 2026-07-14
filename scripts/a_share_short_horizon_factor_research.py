@@ -1133,6 +1133,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "roe_change",
     "revenue_yoy_acceleration",
     "profit_yoy_acceleration",
+    "free_float_cap_small",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -4267,6 +4268,11 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
         "turnover_surge_3": "Mean($turnover, 3)/Mean($turnover, 10) - 1",
         "turnover_surge_1": "$turnover/Mean($turnover, 20) - 1",
         "liquidity_5": "Mean($turnover, 5)",
+        # Eastmoney's daily amount is in RMB and turnover is a percentage of
+        # free float.  Their ratio differs from free-float market value only
+        # by the common 100x percentage conversion, which does not affect a
+        # same-day cross-sectional rank.  Both inputs are known at the close.
+        "free_float_cap_proxy": "$amount/$turnover",
         "volatility_5": "Std($close/Ref($close, 1) - 1, 5)",
         "volatility_10": "Std($close/Ref($close, 1) - 1, 10)",
         "volatility_20": "Std($close/Ref($close, 1) - 1, 20)",
@@ -4355,6 +4361,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "turnover_surge_3",
         "turnover_surge_1",
         "liquidity_5",
+        "free_float_cap_proxy",
         "volatility_5",
         "volatility_10",
         "volatility_20",
@@ -4480,6 +4487,12 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     raw_columns.extend(dividend_plan_raw_columns)
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
+    # A zero or unavailable turnover cannot support a free-float-capitalization
+    # proxy.  It must remain missing rather than become an infinite extreme
+    # rank that could dominate a factor diagnostic.
+    result["free_float_cap_proxy"] = result["free_float_cap_proxy"].where(
+        np.isfinite(result["free_float_cap_proxy"])
+    )
     # Event rows are forward-filled only so each row retains the event context
     # for auditing.  Once the explicitly declared event window expires, those
     # raw values must not participate in a cross-sectional rank; otherwise a
@@ -4519,6 +4532,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["gap_strength"] = result["rank_gap_1"]
     result["close_pullback"] = 1.0 - result["rank_close_to_high"]
     result["drawdown_20"] = 1.0 - result["rank_near_high_20"]
+    result["free_float_cap_small"] = 1.0 - result["rank_free_float_cap_proxy"]
     result["quality_roe"] = result["rank_roe"]
     result["quality_revenue"] = result["rank_revenue_yoy"]
     result["quality_profit"] = result["rank_profit_yoy"]

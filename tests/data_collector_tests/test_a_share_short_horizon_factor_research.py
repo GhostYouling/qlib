@@ -793,6 +793,7 @@ def test_rank_factor_frame_excludes_expired_event_values():
         "turnover_surge_3",
         "turnover_surge_1",
         "liquidity_5",
+        "free_float_cap_proxy",
         "volatility_5",
         "volatility_10",
         "volatility_20",
@@ -852,6 +853,8 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert active["rank_block_trade_premium_ratio"] == pytest.approx(1.0)
     assert active["rank_margin_net_buy_to_market_cap"] == pytest.approx(1.0)
     assert active["rank_institutional_survey_org_count"] == pytest.approx(1.0)
+    assert expired["free_float_cap_small"] == pytest.approx(0.5)
+    assert active["free_float_cap_small"] == pytest.approx(0.0)
 
 
 def test_winner_uses_development_only():
@@ -1415,6 +1418,7 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
         "roe_change",
         "revenue_yoy_acceleration",
         "profit_yoy_acceleration",
+        "free_float_cap_small",
     }
     assert expected.issubset(RESEARCH.FACTOR_DIAGNOSTIC_COLUMNS)
     assert expected.issubset(RESEARCH.EXPLORATORY_DIAGNOSTIC_FACTORS)
