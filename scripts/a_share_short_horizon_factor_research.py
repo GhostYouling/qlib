@@ -72,8 +72,28 @@ DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
 DEFAULT_SHADOW_OBSERVATION_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "shadow_observation_registry.json"
 DEFAULT_SHADOW_SUSPENSION_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "shadow_observation_suspensions.json"
 DEFAULT_SHADOW_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_shadow_paper_ledger.json"
+DEFAULT_PROSPECTIVE_FACTOR_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "prospective_factor_registry.json"
+DEFAULT_PROSPECTIVE_FACTOR_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_prospective_factor_ledger.json"
 DEFAULT_RESEARCH_REPORT = DEFAULT_EXPERIMENT_ROOT / "three_day_research_report.md"
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
+
+PROSPECTIVE_VWAP_FACTOR = "close_below_vwap_1"
+PROSPECTIVE_VWAP_SOURCE_FACTOR = "close_above_vwap_1"
+PROSPECTIVE_VWAP_REGISTRATION_ID = "prospective_close_below_vwap_1_20260714"
+PROSPECTIVE_VWAP_EARLIEST_NOT_BEFORE = "2026-07-14"
+PROSPECTIVE_VWAP_SOURCE_RUN_ID = "20260714T082752Z"
+PROSPECTIVE_VWAP_SOURCE_DIAGNOSTIC = (
+    DEFAULT_EXPERIMENT_ROOT / "20260714T082752Z_factor_diagnostic.json"
+)
+PROSPECTIVE_VWAP_HYPOTHESIS = (
+    "Within the close-known, quality-eligible and non-ST A-share universe, stocks whose closing price ranks "
+    "lower relative to the same-session VWAP will have a higher return from the next session open to the "
+    "third trading-session close."
+)
+PROSPECTIVE_VWAP_TOPK = 3
+PROSPECTIVE_VWAP_HOLD_DAYS = 3
+PROSPECTIVE_VWAP_OPEN_COST = 0.00012
+PROSPECTIVE_VWAP_CLOSE_COST = 0.00062
 
 EASTMONEY_DATACENTER_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get"
 EASTMONEY_REPORT = "RPT_LICO_FN_CPD"
@@ -4714,6 +4734,26 @@ def add_billboard_holdout_factor(ranked: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def add_prospective_vwap_reversal_factor(ranked: pd.DataFrame) -> pd.DataFrame:
+    """Add a future-only direction without admitting it to historical diagnostics.
+
+    ``close_below_vwap_1`` was formed only after the completed 2019--2025
+    ``close_above_vwap_1`` diagnostic was read.  It therefore remains outside
+    ``FACTOR_DIAGNOSTIC_COLUMNS`` and every candidate library.  This helper is
+    used exclusively by the separately registered prospective monitor.
+    """
+
+    if PROSPECTIVE_VWAP_SOURCE_FACTOR not in ranked.columns:
+        raise ValueError(
+            f"prospective VWAP reversal requires {PROSPECTIVE_VWAP_SOURCE_FACTOR}"
+        )
+    result = ranked.copy()
+    result[PROSPECTIVE_VWAP_FACTOR] = 1.0 - pd.to_numeric(
+        result[PROSPECTIVE_VWAP_SOURCE_FACTOR], errors="coerce"
+    )
+    return result
+
+
 def score_candidate(ranked: pd.DataFrame, candidate: Candidate) -> pd.DataFrame:
     """Apply a predeclared factor mix and discard rows with incomplete signals."""
 
@@ -6670,6 +6710,125 @@ def filter_st_candidates(screen: pd.DataFrame, metadata: dict[str, dict[str, Any
     return screen.loc[~is_st].copy()
 
 
+def load_prospective_factor_registry(path: Path) -> dict[str, Any]:
+    """Load the append-only registry for hypotheses formed after development."""
+
+    path = path.expanduser()
+    if not path.exists():
+        return {"schema_version": 1, "registrations": []}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != 1 or not isinstance(payload.get("registrations"), list):
+        raise ValueError("prospective factor registry has an unsupported schema")
+    return payload
+
+
+def prospective_vwap_source_record(path: Path) -> dict[str, Any]:
+    """Verify and fingerprint the completed diagnostic that prompted the new direction."""
+
+    source_path = path.expanduser().resolve()
+    payload = json.loads(source_path.read_text(encoding="utf-8"))
+    catalog = list(payload.get("factor_catalog") or [])
+    ranking = list(payload.get("ranking_by_development_rank_ic") or [])
+    source_rows = [item for item in ranking if item.get("factor") == PROSPECTIVE_VWAP_SOURCE_FACTOR]
+    if (
+        payload.get("status") != "completed"
+        or payload.get("run_id") != PROSPECTIVE_VWAP_SOURCE_RUN_ID
+        or catalog != [PROSPECTIVE_VWAP_SOURCE_FACTOR]
+        or len(source_rows) != 1
+    ):
+        raise ValueError(
+            "prospective VWAP registration requires the completed isolated close_above_vwap_1 diagnostic"
+        )
+    calendar_end = pd.Timestamp((payload.get("data") or {}).get("calendar_end")).normalize()
+    if (
+        pd.isna(calendar_end)
+        or calendar_end != pd.Timestamp("2025-12-31")
+        or bool((payload.get("data") or {}).get("test_period_used_for_factor_design", True))
+    ):
+        raise ValueError("prospective VWAP source diagnostic must be the isolated development-only 2019-2025 run")
+    mean_rank_ic = float(source_rows[0].get("mean_rank_ic"))
+    if not np.isfinite(mean_rank_ic) or mean_rank_ic >= 0.0:
+        raise ValueError("prospective VWAP source diagnostic does not contain the recorded negative direction")
+    return {
+        "run_id": str(payload["run_id"]),
+        "path": str(source_path),
+        "sha256": file_sha256(source_path),
+        "factor_catalog": catalog,
+        "calendar_end": calendar_end.date().isoformat(),
+    }
+
+
+def append_prospective_vwap_registration(
+    path: Path,
+    *,
+    not_before: str,
+    latest_observed: str | pd.Timestamp,
+    source: dict[str, Any],
+) -> dict[str, Any]:
+    """Pre-register the fixed inverse direction only before its first eligible close exists."""
+
+    start = pd.Timestamp(not_before).normalize()
+    latest = pd.Timestamp(latest_observed).normalize()
+    earliest = pd.Timestamp(PROSPECTIVE_VWAP_EARLIEST_NOT_BEFORE)
+    if pd.isna(start) or pd.isna(latest):
+        raise ValueError("prospective VWAP dates must be valid ISO dates")
+    if start < earliest:
+        raise ValueError(
+            f"prospective VWAP not_before cannot precede {PROSPECTIVE_VWAP_EARLIEST_NOT_BEFORE}"
+        )
+    if start <= latest:
+        raise ValueError("prospective VWAP not_before must be strictly later than the latest observed close")
+    registry = load_prospective_factor_registry(path)
+    known = {str(item.get("registration_id")) for item in registry["registrations"]}
+    if PROSPECTIVE_VWAP_REGISTRATION_ID in known:
+        raise ValueError(f"prospective factor registry already contains {PROSPECTIVE_VWAP_REGISTRATION_ID}")
+    registry["registrations"].append(
+        {
+            "registration_id": PROSPECTIVE_VWAP_REGISTRATION_ID,
+            "factor": PROSPECTIVE_VWAP_FACTOR,
+            "source_factor": PROSPECTIVE_VWAP_SOURCE_FACTOR,
+            "hypothesis": PROSPECTIVE_VWAP_HYPOTHESIS,
+            "construction": "1 - percentile_rank($close/$vwap - 1) within the same signal close",
+            "not_before": start.date().isoformat(),
+            "latest_observed_at_registration": latest.date().isoformat(),
+            "registered_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "source_diagnostic": dict(source),
+            "universe": "buyable_main_chinext; annual-quality eligible; current ST excluded",
+            "strategy": {
+                "holding_period_trading_days": PROSPECTIVE_VWAP_HOLD_DAYS,
+                "topk": PROSPECTIVE_VWAP_TOPK,
+                "open_cost": PROSPECTIVE_VWAP_OPEN_COST,
+                "close_cost": PROSPECTIVE_VWAP_CLOSE_COST,
+                "signal_timing": "signal at close; enter next local session open; exit third local session close",
+                "rebalance_rule": "non-overlapping three-session grid anchored at the first local session on or after not_before",
+            },
+            "status": "research_only_forward_observation",
+            "guardrails": [
+                "No 2019-2025 inverse-direction backtest, diagnostic, candidate-library admission, or promotion.",
+                "No signal date before not_before and no reconstruction of a missed historical signal date.",
+                "Settled forward observations remain research evidence and cannot generate an execution plan.",
+            ],
+        }
+    )
+    _atomic_write_text(path, json.dumps(registry, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return registry
+
+
+def prospective_vwap_registration(registry_path: Path, registration_id: str | None = None) -> dict[str, Any]:
+    """Return one fixed forward registration, latest by default."""
+
+    registrations = list(load_prospective_factor_registry(registry_path).get("registrations") or [])
+    if registration_id is not None:
+        registrations = [item for item in registrations if item.get("registration_id") == registration_id]
+    if not registrations:
+        detail = f" {registration_id}" if registration_id else ""
+        raise ValueError(f"prospective factor registration not found:{detail}")
+    registration = registrations[-1]
+    if registration.get("factor") != PROSPECTIVE_VWAP_FACTOR:
+        raise ValueError("prospective monitor only accepts the fixed close_below_vwap_1 registration")
+    return registration
+
+
 def run_latest_screen(args: argparse.Namespace) -> dict[str, Any]:
     """Create an auditable latest-available candidate screen from local data."""
 
@@ -7216,6 +7375,220 @@ def run_paper_monitor(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def register_prospective_vwap_factor(args: argparse.Namespace) -> dict[str, Any]:
+    """Record the post-diagnostic inverse direction before any eligible close is observed."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    registry_path = Path(args.prospective_registry_path).expanduser()
+    source = prospective_vwap_source_record(Path(args.source_diagnostic))
+    latest = latest_provider_date(provider_uri).normalize()
+    registry = append_prospective_vwap_registration(
+        registry_path,
+        not_before=args.not_before,
+        latest_observed=latest,
+        source=source,
+    )
+    registration = registry["registrations"][-1]
+    return {
+        "status": "completed",
+        "registration_id": registration["registration_id"],
+        "factor": registration["factor"],
+        "not_before": registration["not_before"],
+        "latest_observed_at_registration": registration["latest_observed_at_registration"],
+        "source_diagnostic": source,
+        "prospective_registry_path": str(registry_path.resolve()),
+        "recording_rule": "Pure forward observation only; no historical inverse-direction evaluation or signal backfill.",
+    }
+
+
+def prospective_rebalance_due(
+    calendar: pd.DatetimeIndex,
+    *,
+    not_before: str | pd.Timestamp,
+    as_of: str | pd.Timestamp,
+    hold_days: int,
+) -> bool:
+    """Return whether the latest close is on the fixed, non-overlapping forward grid."""
+
+    if hold_days < 1:
+        raise ValueError("prospective hold_days must be positive")
+    normalized = pd.DatetimeIndex(pd.to_datetime(calendar)).normalize().unique().sort_values()
+    start = pd.Timestamp(not_before).normalize()
+    latest = pd.Timestamp(as_of).normalize()
+    start_position = int(normalized.searchsorted(start, side="left"))
+    matching = np.flatnonzero(normalized == latest)
+    if start_position >= len(normalized) or len(matching) != 1 or matching[0] < start_position:
+        return False
+    return (int(matching[0]) - start_position) % hold_days == 0
+
+
+def run_prospective_vwap_screen(
+    args: argparse.Namespace,
+    *,
+    registration: dict[str, Any],
+    as_of: pd.Timestamp,
+) -> dict[str, Any]:
+    """Rank only the current registered forward close; never evaluate prior outcomes."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamentals_path = Path(args.fundamentals).expanduser()
+    end = as_of.date().isoformat()
+    start = (as_of - pd.Timedelta(days=args.lookback_calendar_days)).date().isoformat()
+    fundamentals = load_fundamentals(fundamentals_path)
+    market = load_market_data(provider_uri, start=start, end=end, batch_size=args.batch_size)
+    market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    ranked = add_prospective_vwap_reversal_factor(rank_factor_frame(market))
+    latest = ranked.loc[
+        ranked["datetime"].eq(as_of)
+        & ranked["quality_eligible"].fillna(False)
+        & ranked[PROSPECTIVE_VWAP_FACTOR].notna()
+    ].copy()
+    metadata = _universe_metadata()
+    latest = filter_st_candidates(latest, metadata, include_st=False)
+    topk = int(registration["strategy"]["topk"])
+    screen = latest.sort_values(
+        [PROSPECTIVE_VWAP_FACTOR, "instrument"], ascending=[False, True], kind="stable"
+    ).head(topk)
+    if len(screen) < topk:
+        raise RuntimeError(f"only {len(screen)} complete prospective candidates exist on {end}, need {topk}")
+    records: list[dict[str, Any]] = []
+    for rank, row in enumerate(screen.itertuples(index=False), start=1):
+        records.append(
+            {
+                "rank": rank,
+                "instrument": str(row.instrument),
+                "name": str(metadata.get(str(row.instrument), {}).get("name", "")),
+                "score": float(getattr(row, PROSPECTIVE_VWAP_FACTOR)),
+                "close_above_vwap_percentile": float(getattr(row, PROSPECTIVE_VWAP_SOURCE_FACTOR)),
+                "reference_close": float(row.close),
+                "roe": float(row.roe),
+                "revenue_yoy": float(row.revenue_yoy),
+                "profit_yoy": float(row.profit_yoy),
+                "quality_report_date": pd.Timestamp(row.report_date).date().isoformat(),
+                "quality_announcement_date": pd.Timestamp(row.announcement_date).date().isoformat(),
+                "quality_age_days": int(row.quality_age_days),
+            }
+        )
+    report = {
+        "run_id": _timestamp(),
+        "status": "completed",
+        "purpose": "registered_future_only_factor_screen_not_trade_instruction",
+        "registration_id": registration["registration_id"],
+        "factor": PROSPECTIVE_VWAP_FACTOR,
+        "hypothesis": registration["hypothesis"],
+        "as_of": end,
+        "not_before": registration["not_before"],
+        "historical_backfill": False,
+        "historical_inverse_evaluation": False,
+        "universe": registration["universe"],
+        "exclude_current_st": True,
+        "topk": topk,
+        "execution_allowed": False,
+        "quality_gate": {
+            "source": str(fundamentals_path.resolve()),
+            "sha256": file_sha256(fundamentals_path),
+            "annual_report_only": True,
+            "effective_date": "strictly next local trading day after announcement_date",
+        },
+        "top_candidates": records,
+        "limitations": [
+            "This is one immutable forward paper signal, not a buy/sell instruction or a promoted strategy.",
+            "No historical result for close_below_vwap_1 was calculated when producing this screen.",
+            "The current listing universe retains survivorship bias and daily bars cannot reproduce intraday execution.",
+        ],
+    }
+    root = Path(args.experiment_root).expanduser()
+    destination = root / f"{report['run_id']}_prospective_screen_{PROSPECTIVE_VWAP_FACTOR}.json"
+    _atomic_write_text(destination, json.dumps(report, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    report["screen_path"] = str(destination.resolve())
+    return report
+
+
+def run_prospective_vwap_monitor(args: argparse.Namespace) -> dict[str, Any]:
+    """Append current-close signals and future settlements for the registered inverse direction."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    registry_path = Path(args.prospective_registry_path).expanduser()
+    ledger_path = Path(args.prospective_ledger_path).expanduser()
+    registration = prospective_vwap_registration(registry_path, args.registration_id)
+    latest = latest_provider_date(provider_uri).normalize()
+    not_before = pd.Timestamp(registration["not_before"]).normalize()
+    registered_latest = pd.Timestamp(registration["latest_observed_at_registration"]).normalize()
+    if not_before <= registered_latest:
+        raise ValueError("prospective registration is invalid because its start was not genuinely unseen")
+    if latest < not_before:
+        return {
+            "status": "not_started",
+            "as_of": latest.date().isoformat(),
+            "registration_id": registration["registration_id"],
+            "factor": registration["factor"],
+            "not_before": not_before.date().isoformat(),
+            "ledger_written": False,
+            "reason": "forward observation begins only on the registered unseen signal date",
+        }
+    calendar = local_trading_calendar(provider_uri, end=latest.date().isoformat())
+    ledger = load_paper_ledger(ledger_path)
+    settled_ids = {str(item.get("signal_id")) for item in ledger["settlements"]}
+    new_settlements: list[dict[str, Any]] = []
+    for signal in ledger["signals"]:
+        signal_id = str(signal.get("signal_id"))
+        if signal_id in settled_ids:
+            continue
+        instruments = [str(item["instrument"]) for item in signal.get("top_candidates", [])]
+        quotes = load_open_close_quotes(
+            provider_uri,
+            instruments,
+            start=str(signal["signal_date"]),
+            end=latest.date().isoformat(),
+        )
+        settlement = paper_settlement(signal, calendar, quotes)
+        if settlement is not None:
+            new_settlements.append(settlement)
+    ledger["settlements"].extend(new_settlements)
+
+    strategy = dict(registration["strategy"])
+    signal_due = prospective_rebalance_due(
+        calendar,
+        not_before=not_before,
+        as_of=latest,
+        hold_days=int(strategy["holding_period_trading_days"]),
+    )
+    signal_id = f"{registration['registration_id']}:{latest.date().isoformat()}"
+    known_signal_ids = {str(item.get("signal_id")) for item in ledger["signals"]}
+    new_signal: dict[str, Any] | None = None
+    screen: dict[str, Any] | None = None
+    if signal_due and signal_id not in known_signal_ids:
+        screen = run_prospective_vwap_screen(args, registration=registration, as_of=latest)
+        new_signal = {
+            "signal_id": signal_id,
+            "registration_id": registration["registration_id"],
+            "factor": registration["factor"],
+            "signal_date": latest.date().isoformat(),
+            "strategy": strategy,
+            "screen_path": screen["screen_path"],
+            "top_candidates": screen["top_candidates"],
+            "recording_rule": "Current-close forward paper signal only; missed dates are never reconstructed.",
+        }
+        ledger["signals"].append(new_signal)
+    ledger_written = bool(new_signal or new_settlements)
+    if ledger_written:
+        _atomic_write_text(ledger_path, json.dumps(ledger, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "as_of": latest.date().isoformat(),
+        "registration_id": registration["registration_id"],
+        "factor": registration["factor"],
+        "signal_due": signal_due,
+        "signal_already_recorded": signal_due and signal_id in known_signal_ids,
+        "new_signal": new_signal,
+        "new_settlements": new_settlements,
+        "screen_path": screen["screen_path"] if screen else None,
+        "ledger_written": ledger_written,
+        "prospective_ledger_path": str(ledger_path.resolve()),
+        "recording_rule": "Latest local close only; no historical signal backfill and no execution-plan eligibility.",
+    }
+
+
 def register_shadow_observation(args: argparse.Namespace) -> dict[str, Any]:
     """Register a development-only candidate for a future, separate paper ledger."""
 
@@ -7349,6 +7722,38 @@ def _shadow_observation_rows(
                 "signals": len(candidate_signals),
                 "settlements": len(candidate_settlements),
                 "pending": len(pending),
+                "net_cumulative_return": equity,
+            }
+        )
+    return rows
+
+
+def _prospective_factor_rows(registry: dict[str, Any], ledger: dict[str, Any]) -> list[dict[str, Any]]:
+    """Summarize each post-development factor without mixing its returns into another strategy."""
+
+    signals = list(ledger.get("signals") or [])
+    settlements = list(ledger.get("settlements") or [])
+    rows: list[dict[str, Any]] = []
+    for registration in registry.get("registrations") or []:
+        registration_id = str(registration.get("registration_id", ""))
+        factor_signals = [item for item in signals if str(item.get("registration_id")) == registration_id]
+        signal_ids = {str(item.get("signal_id")) for item in factor_signals}
+        factor_settlements = [item for item in settlements if str(item.get("signal_id")) in signal_ids]
+        settled_ids = {str(item.get("signal_id")) for item in factor_settlements}
+        equity = (
+            float(np.prod([1.0 + float(item["net_return"]) for item in factor_settlements]) - 1.0)
+            if factor_settlements
+            else 0.0
+        )
+        rows.append(
+            {
+                "registration_id": registration_id,
+                "factor": str(registration.get("factor", "—")),
+                "not_before": str(registration.get("not_before", "—")),
+                "source_run_id": str((registration.get("source_diagnostic") or {}).get("run_id", "—")),
+                "signals": len(factor_signals),
+                "settlements": len(factor_settlements),
+                "pending": sum(str(item.get("signal_id")) not in settled_ids for item in factor_signals),
                 "net_cumulative_return": equity,
             }
         )
@@ -7999,6 +8404,8 @@ def render_three_day_research_report(
     selection_multiplicity_audits: list[dict[str, Any]] | None = None,
     limit_like_event_audits: list[dict[str, Any]] | None = None,
     quarterly_profit_acceleration_event_audits: list[dict[str, Any]] | None = None,
+    prospective_factor_registry: dict[str, Any] | None = None,
+    prospective_factor_ledger: dict[str, Any] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -8635,6 +9042,42 @@ def render_three_day_research_report(
                     )
                 )
             lines.append("")
+    if prospective_factor_registry is not None and prospective_factor_ledger is not None:
+        prospective_signals, prospective_settlements, prospective_pending, prospective_equity = (
+            _paper_ledger_summary(prospective_factor_ledger)
+        )
+        lines.extend(
+            [
+                "## 事后形成因子的纯前瞻观察",
+                "",
+                f"- 已记录信号：{prospective_signals} 笔；已结算：{prospective_settlements} 笔；待结算：{prospective_pending} 笔。",
+                f"- 已结算前瞻累计净收益：{_percent(prospective_equity)}。",
+                "- 这些方向在读完开发期结果后才形成；禁止历史反向回测、补录错过的信号、加入候选库或生成下单计划。",
+                "",
+            ]
+        )
+        prospective_rows = _prospective_factor_rows(prospective_factor_registry, prospective_factor_ledger)
+        if prospective_rows:
+            lines.extend(
+                [
+                    "| 登记 | 因子 | 来源诊断 | 首个未见收盘日 | 信号 | 已结算 | 待结算 | 已结算累计净收益 |",
+                    "| --- | --- | --- | --- | ---: | ---: | ---: | ---: |",
+                ]
+            )
+            for row in prospective_rows:
+                lines.append(
+                    "| {registration_id} | {factor} | {source} | {not_before} | {signals} | {settlements} | {pending} | {net_return} |".format(
+                        registration_id=row["registration_id"],
+                        factor=row["factor"],
+                        source=row["source_run_id"],
+                        not_before=row["not_before"],
+                        signals=row["signals"],
+                        settlements=row["settlements"],
+                        pending=row["pending"],
+                        net_return=_percent(row["net_cumulative_return"]) if row["settlements"] else "—",
+                    )
+                )
+            lines.append("")
     lines.extend(
         [
             "## 下一步规则",
@@ -8661,6 +9104,10 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     shadow_observation_registry = load_shadow_observation_registry(shadow_observation_registry_path)
     shadow_suspension_registry_path = Path(args.shadow_suspension_registry_path).expanduser()
     shadow_suspension_registry = load_shadow_suspension_registry(shadow_suspension_registry_path)
+    prospective_factor_registry_path = Path(args.prospective_factor_registry_path).expanduser()
+    prospective_factor_registry = load_prospective_factor_registry(prospective_factor_registry_path)
+    prospective_factor_ledger_path = Path(args.prospective_factor_ledger_path).expanduser()
+    prospective_factor_ledger = load_paper_ledger(prospective_factor_ledger_path)
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
@@ -8704,6 +9151,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         selection_multiplicity_audits,
         limit_like_event_audits,
         quarterly_profit_acceleration_event_audits,
+        prospective_factor_registry=prospective_factor_registry,
+        prospective_factor_ledger=prospective_factor_ledger,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -8714,6 +9163,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_ledger_path": str(shadow_ledger_path.resolve()),
         "shadow_observation_registry_path": str(shadow_observation_registry_path.resolve()),
         "shadow_suspension_registry_path": str(shadow_suspension_registry_path.resolve()),
+        "prospective_factor_registry_path": str(prospective_factor_registry_path.resolve()),
+        "prospective_factor_ledger_path": str(prospective_factor_ledger_path.resolve()),
         "report_path": str(output.resolve()),
         "iterations": len(registry.get("iterations") or []),
         "signals": len(ledger["signals"]),
@@ -8721,6 +9172,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "shadow_signals": len(shadow_ledger["signals"]),
         "shadow_settlements": len(shadow_ledger["settlements"]),
         "shadow_suspensions": len(shadow_suspension_registry["suspensions"]),
+        "prospective_factor_registrations": len(prospective_factor_registry["registrations"]),
+        "prospective_factor_signals": len(prospective_factor_ledger["signals"]),
+        "prospective_factor_settlements": len(prospective_factor_ledger["settlements"]),
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
         "factor_stability_audits": len(factor_stability_audits),
@@ -11340,6 +11794,41 @@ def parse_args() -> argparse.Namespace:
     monitor.add_argument("--max-quality-age-days", type=int, default=550)
     monitor.add_argument("--batch-size", type=int, default=500)
 
+    prospective_register = subparsers.add_parser(
+        "prospective-register",
+        help="pre-register the fixed close-below-VWAP hypothesis before its first unseen close",
+    )
+    prospective_register.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    prospective_register.add_argument(
+        "--prospective-registry-path", default=str(DEFAULT_PROSPECTIVE_FACTOR_REGISTRY)
+    )
+    prospective_register.add_argument(
+        "--source-diagnostic", default=str(PROSPECTIVE_VWAP_SOURCE_DIAGNOSTIC)
+    )
+    prospective_register.add_argument(
+        "--not-before",
+        default=PROSPECTIVE_VWAP_EARLIEST_NOT_BEFORE,
+        help="first genuinely unseen signal close; must be later than the current local provider date",
+    )
+
+    prospective_monitor = subparsers.add_parser(
+        "prospective-monitor",
+        help="record current-close signals and three-day settlements for registered future-only factors",
+    )
+    prospective_monitor.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    prospective_monitor.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    prospective_monitor.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    prospective_monitor.add_argument(
+        "--prospective-registry-path", default=str(DEFAULT_PROSPECTIVE_FACTOR_REGISTRY)
+    )
+    prospective_monitor.add_argument(
+        "--prospective-ledger-path", default=str(DEFAULT_PROSPECTIVE_FACTOR_LEDGER)
+    )
+    prospective_monitor.add_argument("--registration-id", help="specific registration; latest by default")
+    prospective_monitor.add_argument("--lookback-calendar-days", type=int, default=100)
+    prospective_monitor.add_argument("--max-quality-age-days", type=int, default=550)
+    prospective_monitor.add_argument("--batch-size", type=int, default=500)
+
     shadow_register = subparsers.add_parser(
         "shadow-register", help="register a development-only iteration for separate future paper observation"
     )
@@ -11383,6 +11872,8 @@ def parse_args() -> argparse.Namespace:
     report.add_argument("--shadow-ledger-path", default=str(DEFAULT_SHADOW_PAPER_LEDGER))
     report.add_argument("--shadow-observation-registry-path", default=str(DEFAULT_SHADOW_OBSERVATION_REGISTRY))
     report.add_argument("--shadow-suspension-registry-path", default=str(DEFAULT_SHADOW_SUSPENSION_REGISTRY))
+    report.add_argument("--prospective-factor-registry-path", default=str(DEFAULT_PROSPECTIVE_FACTOR_REGISTRY))
+    report.add_argument("--prospective-factor-ledger-path", default=str(DEFAULT_PROSPECTIVE_FACTOR_LEDGER))
     report.add_argument("--output", default=str(DEFAULT_RESEARCH_REPORT))
     return parser.parse_args()
 
@@ -11495,6 +11986,10 @@ def main() -> int:
         report = run_execution_plan(args)
     elif args.command == "monitor":
         report = run_paper_monitor(args)
+    elif args.command == "prospective-register":
+        report = register_prospective_vwap_factor(args)
+    elif args.command == "prospective-monitor":
+        report = run_prospective_vwap_monitor(args)
     elif args.command == "shadow-register":
         report = register_shadow_observation(args)
     elif args.command == "shadow-suspend":

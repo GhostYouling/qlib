@@ -1832,6 +1832,196 @@ def test_paper_monitor_requires_an_explicit_unseen_start_date():
         RESEARCH.run_paper_monitor(SimpleNamespace())
 
 
+def test_close_below_vwap_is_isolated_from_historical_factor_catalogs():
+    ranked = pd.DataFrame({"close_above_vwap_1": [0.1, 0.5, 0.9]})
+    prospective = RESEARCH.add_prospective_vwap_reversal_factor(ranked)
+    assert prospective["close_below_vwap_1"].tolist() == pytest.approx([0.9, 0.5, 0.1])
+    assert RESEARCH.PROSPECTIVE_VWAP_FACTOR not in RESEARCH.FACTOR_DIAGNOSTIC_COLUMNS
+    assert all(
+        RESEARCH.PROSPECTIVE_VWAP_FACTOR not in candidate.weights
+        for library in RESEARCH.CANDIDATE_LIBRARIES.values()
+        for candidate in library
+    )
+
+
+def test_prospective_vwap_registration_requires_a_genuinely_unseen_start_and_is_append_only(tmp_path):
+    path = tmp_path / "prospective_registry.json"
+    source = {
+        "run_id": "source-diagnostic",
+        "path": "/immutable/source.json",
+        "sha256": "abc123",
+        "factor_catalog": ["close_above_vwap_1"],
+        "calendar_end": "2025-12-31",
+    }
+    with pytest.raises(ValueError, match="cannot precede"):
+        RESEARCH.append_prospective_vwap_registration(
+            path,
+            not_before="2026-07-13",
+            latest_observed="2026-07-12",
+            source=source,
+        )
+    with pytest.raises(ValueError, match="strictly later"):
+        RESEARCH.append_prospective_vwap_registration(
+            path,
+            not_before="2026-07-14",
+            latest_observed="2026-07-14",
+            source=source,
+        )
+    registry = RESEARCH.append_prospective_vwap_registration(
+        path,
+        not_before="2026-07-14",
+        latest_observed="2026-07-13",
+        source=source,
+    )
+    registration = registry["registrations"][0]
+    assert registration["factor"] == "close_below_vwap_1"
+    assert registration["not_before"] == "2026-07-14"
+    assert registration["latest_observed_at_registration"] == "2026-07-13"
+    assert registration["strategy"] == {
+        "holding_period_trading_days": 3,
+        "topk": 3,
+        "open_cost": 0.00012,
+        "close_cost": 0.00062,
+        "signal_timing": "signal at close; enter next local session open; exit third local session close",
+        "rebalance_rule": "non-overlapping three-session grid anchored at the first local session on or after not_before",
+    }
+    serialized = json.dumps(registration)
+    assert "historical_backtest" not in serialized
+    assert "inverse_metrics" not in serialized
+    with pytest.raises(ValueError, match="already contains"):
+        RESEARCH.append_prospective_vwap_registration(
+            path,
+            not_before="2026-07-14",
+            latest_observed="2026-07-13",
+            source=source,
+        )
+
+
+def test_prospective_vwap_source_record_is_bound_to_the_isolated_failed_diagnostic(tmp_path):
+    path = tmp_path / "source.json"
+    payload = {
+        "run_id": RESEARCH.PROSPECTIVE_VWAP_SOURCE_RUN_ID,
+        "status": "completed",
+        "factor_catalog": [RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR],
+        "data": {"calendar_end": "2025-12-31", "test_period_used_for_factor_design": False},
+        "ranking_by_development_rank_ic": [
+            {"factor": RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR, "mean_rank_ic": -0.02}
+        ],
+    }
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    source = RESEARCH.prospective_vwap_source_record(path)
+    assert source["run_id"] == RESEARCH.PROSPECTIVE_VWAP_SOURCE_RUN_ID
+    assert source["calendar_end"] == "2025-12-31"
+    assert source["sha256"] == RESEARCH.file_sha256(path)
+    payload["ranking_by_development_rank_ic"][0]["mean_rank_ic"] = 0.01
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(ValueError, match="negative direction"):
+        RESEARCH.prospective_vwap_source_record(path)
+
+
+def test_prospective_vwap_rebalance_grid_is_non_overlapping():
+    calendar = pd.DatetimeIndex(pd.to_datetime(["2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17"]))
+    assert RESEARCH.prospective_rebalance_due(
+        calendar, not_before="2026-07-14", as_of="2026-07-14", hold_days=3
+    )
+    assert not RESEARCH.prospective_rebalance_due(
+        calendar, not_before="2026-07-14", as_of="2026-07-15", hold_days=3
+    )
+    assert not RESEARCH.prospective_rebalance_due(
+        calendar, not_before="2026-07-14", as_of="2026-07-16", hold_days=3
+    )
+    assert RESEARCH.prospective_rebalance_due(
+        calendar, not_before="2026-07-14", as_of="2026-07-17", hold_days=3
+    )
+
+
+def test_prospective_vwap_monitor_does_not_touch_a_ledger_before_the_registered_date(tmp_path, monkeypatch):
+    registry_path = tmp_path / "prospective_registry.json"
+    ledger_path = tmp_path / "prospective_ledger.json"
+    registry_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "registrations": [
+                    {
+                        "registration_id": RESEARCH.PROSPECTIVE_VWAP_REGISTRATION_ID,
+                        "factor": RESEARCH.PROSPECTIVE_VWAP_FACTOR,
+                        "not_before": "2026-07-14",
+                        "latest_observed_at_registration": "2026-07-13",
+                        "strategy": {"holding_period_trading_days": 3, "topk": 3},
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(RESEARCH, "latest_provider_date", lambda *_: pd.Timestamp("2026-07-13"))
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_trading_calendar",
+        lambda *_args, **_kwargs: pytest.fail("calendar must not load before not_before"),
+    )
+    result = RESEARCH.run_prospective_vwap_monitor(
+        SimpleNamespace(
+            provider_uri=str(tmp_path / "provider"),
+            prospective_registry_path=str(registry_path),
+            prospective_ledger_path=str(ledger_path),
+            registration_id=None,
+        )
+    )
+    assert result["status"] == "not_started"
+    assert result["ledger_written"] is False
+    assert not ledger_path.exists()
+
+
+def test_prospective_vwap_monitor_never_backfills_a_missed_signal_date(tmp_path, monkeypatch):
+    registry_path = tmp_path / "prospective_registry.json"
+    ledger_path = tmp_path / "prospective_ledger.json"
+    registry_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "registrations": [
+                    {
+                        "registration_id": RESEARCH.PROSPECTIVE_VWAP_REGISTRATION_ID,
+                        "factor": RESEARCH.PROSPECTIVE_VWAP_FACTOR,
+                        "not_before": "2026-07-14",
+                        "latest_observed_at_registration": "2026-07-13",
+                        "strategy": {"holding_period_trading_days": 3, "topk": 3},
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(RESEARCH, "latest_provider_date", lambda *_: pd.Timestamp("2026-07-15"))
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_trading_calendar",
+        lambda *_args, **_kwargs: pd.DatetimeIndex(
+            pd.to_datetime(["2026-07-13", "2026-07-14", "2026-07-15"])
+        ),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "run_prospective_vwap_screen",
+        lambda *_args, **_kwargs: pytest.fail("a missed 2026-07-14 signal must not be reconstructed"),
+    )
+    result = RESEARCH.run_prospective_vwap_monitor(
+        SimpleNamespace(
+            provider_uri=str(tmp_path / "provider"),
+            prospective_registry_path=str(registry_path),
+            prospective_ledger_path=str(ledger_path),
+            registration_id=None,
+        )
+    )
+    assert result["status"] == "completed"
+    assert result["signal_due"] is False
+    assert result["new_signal"] is None
+    assert result["ledger_written"] is False
+    assert not ledger_path.exists()
+
+
 def test_development_only_iteration_can_be_explicitly_registered_for_separate_forward_observation(tmp_path):
     iteration = {
         "iteration_id": "v2-development-only",
@@ -1936,6 +2126,36 @@ def test_research_report_renders_registry_and_only_counts_settled_paper_returns(
     assert "three_day_cycle" in report
     assert "已记录信号：2 笔；已结算：1 笔；待结算：1 笔。" in report
     assert "已结算纸面累计净收益：+3.00%" in report
+
+
+def test_research_report_keeps_post_development_factor_evidence_separate():
+    prospective_registry = {
+        "registrations": [
+            {
+                "registration_id": "future-vwap",
+                "factor": "close_below_vwap_1",
+                "not_before": "2026-07-14",
+                "source_diagnostic": {"run_id": "failed-direct-factor"},
+            }
+        ]
+    }
+    prospective_ledger = {
+        "signals": [
+            {"signal_id": "settled", "registration_id": "future-vwap"},
+            {"signal_id": "pending", "registration_id": "future-vwap"},
+        ],
+        "settlements": [{"signal_id": "settled", "net_return": 0.02}],
+    }
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        prospective_factor_registry=prospective_registry,
+        prospective_factor_ledger=prospective_ledger,
+    )
+    assert "事后形成因子的纯前瞻观察" in report
+    assert "future-vwap" in report
+    assert "已结算前瞻累计净收益：+2.00%" in report
+    assert "禁止历史反向回测" in report
 
 
 def test_walk_forward_audits_are_retained_in_the_research_report_without_promotion(tmp_path):

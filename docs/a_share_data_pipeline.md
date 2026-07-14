@@ -477,6 +477,19 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 该假设已按预注册版本完成。`20260714T082752Z_factor_diagnostic.json` 仅诊断 `close_above_vwap_1`：560 个 cohort 的平均 Rank IC 为 **−0.0267**，正 IC 比例 **36.4%**，平均 Top‑3 相对 Bottom‑3 毛差为 **−3.82%**，2019–2025 每一年的平均 IC 和 Top‑3 扣费收益均为负。Top‑3 扣费累计收益为 **−99.49%**、最大回撤为 **−99.73%**；`20260714T082911Z` 的稳定性和可行性审计均无合格因子。因此正方向被淘汰且不得历史反向重测。若将“收盘低于 VWAP”另立为反转假设，只能在本结果记录之后用 2026‑07‑14 起尚未见过的未来收盘日预注册观察，不能引用 2019–2025 作为其验证业绩。
 
+`close_below_vwap_1` 因此被严格登记为**事后形成、纯前瞻观察**，不是历史验证通过的因子。定义固定为 `1 − 当日横截面 percentile_rank(close/vwap−1)`；股票池固定为 `buyable_main_chinext`，只保留年报质量合格且当前非 ST 的股票；每个信号取 Top‑3，收盘后形成信号，下一交易日开盘进入，第 3 个交易日收盘退出，按买入 0.012%、卖出 0.062% 扣费。信号日在以首个未见收盘日为锚的每 3 个交易日网格上，互不重叠。
+
+首次登记必须在本地出现 2026‑07‑14 收盘前完成；命令会同时校验来源诊断的内容与 SHA‑256，并拒绝 `not_before` 不晚于本地最新收盘的登记：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py prospective-register \
+  --not-before 2026-07-14 \
+  --source-diagnostic data/experiments/short_horizon/20260714T082752Z_factor_diagnostic.json
+python scripts/a_share_short_horizon_factor_research.py prospective-monitor
+```
+
+当前本地最新日为 2026‑07‑13，因此第二条命令应返回 `not_started`，且不会创建空台账。此后监控器只允许记录**运行当日的最新本地收盘**：若漏跑某个信号日，不得回填；非三日网格日只结算已有信号，不补建仓。登记与台账分别保存在 `prospective_factor_registry.json` 和 `three_day_prospective_factor_ledger.json`，`report` 会将它们放在独立章节，不能与已晋级策略或 shadow 候选的收益混算。此观察永远不能调用 `plan`；若未来样本支持它，也只能作为设计下一轮预注册策略的证据，不能追溯性地改写 2019–2025 结论。
+
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge、浅层 LightGBM 回归和浅层 LightGBM LambdaRank 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票；LambdaRank 只在训练样本内按每个信号日的后续收益分为五档，直接学习横截面排序，绝不把未来标签带入评分时点。
 
 默认审计还将每种模型与三个**预先固定、收盘可知**的市场状态组合：始终交易、20 日广度为正、以及“20 日广度为正且波动不高于严格追溯的 75 分位”。这不是在全部状态中事后挑选；三种状态均来自已有的因子研究定义，并在同一开发期规则下和模型一起参与选择。停用状态时该轮完整按现金记录，不会用别的日期或股票替换。
@@ -816,7 +829,7 @@ python scripts/install_a_share_launchd.py install --with-short-horizon-monitor
 python scripts/install_a_share_launchd.py status
 ```
 
-纸面观察任务会先检查 18:30 数据同步所持有的管线锁；若同步仍在进行，最多等待 45 分钟，避免用旧收盘数据漏记当日信号。随后依次运行已晋级策略的 `monitor`、已登记研究候选的 `shadow-monitor` 和 `report`；它不会自动重跑因子搜索、修改策略权重或生成下单计划。日志在 `data/logs/`。需要移除定时任务时：
+纸面观察任务会先检查 18:30 数据同步所持有的管线锁；若同步仍在进行，最多等待 45 分钟，避免用旧收盘数据漏记当日信号。随后依次运行已晋级策略的 `monitor`、已登记研究候选的 `shadow-monitor`；本地存在纯前瞻因子登记时再运行 `prospective-monitor`，最后生成 `report`。它不会自动重跑因子搜索、修改策略权重、回填错过的前瞻信号或生成下单计划。日志在 `data/logs/`。需要移除定时任务时：
 
 ```bash
 python scripts/install_a_share_launchd.py uninstall

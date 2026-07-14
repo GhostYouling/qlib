@@ -18,6 +18,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = REPO_ROOT / "scripts" / "a_share_short_horizon_factor_research.py"
 PIPELINE_LOCK = REPO_ROOT / "data" / ".a_share_pipeline.lock"
+PROSPECTIVE_FACTOR_REGISTRY = REPO_ROOT / "data" / "experiments" / "short_horizon" / "prospective_factor_registry.json"
+FORWARD_NOT_BEFORE = "2026-07-14"
 
 
 def pipeline_is_busy(lock_path: Path = PIPELINE_LOCK) -> bool:
@@ -56,11 +58,24 @@ def wait_for_pipeline_idle(
     return True
 
 
+def observation_commands(prospective_registry: Path = PROSPECTIVE_FACTOR_REGISTRY) -> list[list[str]]:
+    """Build the fixed observation sequence, enabling prospective factors only after registration."""
+
+    commands = [
+        ["monitor", "--not-before", FORWARD_NOT_BEFORE],
+        ["shadow-monitor"],
+    ]
+    if prospective_registry.exists():
+        commands.append(["prospective-monitor"])
+    commands.append(["report"])
+    return commands
+
+
 def main() -> int:
     if not wait_for_pipeline_idle():
         raise RuntimeError("A-share data refresh did not finish within 45 minutes; paper observation was skipped")
-    for command in ("monitor", "shadow-monitor", "report"):
-        subprocess.run([sys.executable, str(RESEARCH), command], check=True)
+    for command in observation_commands():
+        subprocess.run([sys.executable, str(RESEARCH), *command], check=True)
     return 0
 
 
