@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_institutional_survey_timing_data_contract",
+  "status": "frozen_before_full_timing_snapshot_or_price_returns_observed",
+  "preregistered_at": "2026-07-14T17:38:50Z",
+  "purpose": "Create and capacity-screen one point-in-time institutional-survey disclosure-delay factor without reading any price or forward-return field.",
+  "source": {
+    "provider": "Eastmoney public datacenter",
+    "report": "RPT_ORG_SURVEY",
+    "requested_columns": [
+      "SECURITY_CODE",
+      "NOTICE_DATE",
+      "RECEIVE_START_DATE",
+      "RECEIVE_END_DATE",
+      "SUM"
+    ],
+    "request_filter": "NUMBERNEW=1, IS_SOURCE=1, NOTICE_DATE within each verified partition",
+    "announcement_start": "2019-01-01",
+    "announcement_end": "2025-12-31",
+    "participant_identities_requested_or_stored": false
+  },
+  "snapshot_contract": {
+    "output": "data/raw/a_share/events/institutional_survey_timing.parquet",
+    "manifest": "data/metadata/institutional_survey_timing_manifest.json",
+    "columns": [
+      "instrument",
+      "announcement_date",
+      "institutional_survey_latest_receive_end_date",
+      "institutional_survey_disclosure_lag_days"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date"
+    ],
+    "latest_receive_end_rule": "maximum non-missing RECEIVE_END_DATE within issuer and NOTICE_DATE after replacing a missing end with RECEIVE_START_DATE",
+    "disclosure_lag_formula": "calendar_days(NOTICE_DATE - latest_receive_end_date)",
+    "negative_lag_policy": "exclude from the factor snapshot and count in the manifest",
+    "maximum_lag_filter_or_winsorization": null,
+    "partition_policy": {
+      "initial_partition": "calendar_month",
+      "maximum_pages_per_partition": 40,
+      "oversized_partition_policy": "bisect_calendar_dates_until_within_page_ceiling",
+      "advertised_source_count_must_equal_rows_fetched": true,
+      "partial_snapshot_written_on_failure": false
+    }
+  },
+  "factor": {
+    "name": "institutional_survey_prompt_disclosure",
+    "raw_column": "institutional_survey_disclosure_lag_days",
+    "direction": "lower_raw_lag_is_better",
+    "score_formula_if_capacity_passes": "1 - cross_sectional_percentile_rank(institutional_survey_disclosure_lag_days)",
+    "event_availability": "strictly next local trading day after announcement_date",
+    "maximum_event_age_days": 3,
+    "mechanism": "More prompt disclosure after the latest received survey may preserve the information-attention impulse into the next three sessions."
+  },
+  "acceptance": {
+    "all_partitions_count_verified": true,
+    "continuous_announcement_coverage_required": true,
+    "duplicate_event_keys_allowed": 0,
+    "missing_instrument_or_announcement_allowed": 0,
+    "receive_start_after_receive_end_allowed": 0,
+    "negative_lag_rows_in_factor_snapshot_allowed": 0,
+    "every_requested_announcement_year_required": true,
+    "source_and_manifest_sha256_required": true
+  },
+  "capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "one_completed_capacity_audit_only": true,
+    "failed_capacity_must_stop_without_return_diagnostic": true,
+    "selection_or_promotion_allowed": false
+  },
+  "sample_field_audit_before_freeze": {
+    "price_or_forward_return_fields_read": false,
+    "months": [
+      "2019-01",
+      "2024-01",
+      "2025-01"
+    ],
+    "finding": "The fields exist at both history endpoints; median lag was one calendar day in every sampled month. Two negative-lag source anomalies appeared in 2019-01 and motivated the frozen exclusion-and-count rule."
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

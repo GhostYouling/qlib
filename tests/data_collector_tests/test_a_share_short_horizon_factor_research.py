@@ -805,6 +805,61 @@ def test_institutional_survey_normalization_uses_notice_date_and_deduplicates_pa
     assert "RECEIVE_OBJECT" not in normalized.columns
 
 
+def test_institutional_survey_timing_contract_is_fingerprint_frozen(tmp_path):
+    contract = RESEARCH.load_institutional_survey_timing_data_contract()
+    assert contract["factor"]["name"] == RESEARCH.INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME
+    assert contract["factor"]["direction"] == "lower_raw_lag_is_better"
+    assert contract["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT.read_text(encoding="utf-8")
+    )
+    changed["factor"]["direction"] = "higher_raw_lag_is_better"
+    changed_path = tmp_path / "changed_timing_contract.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_institutional_survey_timing_data_contract(changed_path)
+
+
+def test_institutional_survey_timing_uses_latest_received_end_and_excludes_negative_lags():
+    details = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000001", "SZ000002", "SZ000003"],
+            "announcement_date": pd.to_datetime(["2024-04-30"] * 4),
+            "receive_start_date": pd.to_datetime(
+                ["2024-04-28", "2024-04-30", "2024-05-01", "2024-04-28"]
+            ),
+            "receive_end_date": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-01", None]
+            ),
+        }
+    )
+    timing, quality = RESEARCH.aggregate_institutional_survey_timing_details(details)
+    assert timing.columns.tolist() == list(RESEARCH.INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS)
+    assert timing["instrument"].tolist() == ["SZ000001", "SZ000003"]
+    assert timing.loc[
+        timing["instrument"] == "SZ000001", "institutional_survey_disclosure_lag_days"
+    ].item() == pytest.approx(0.0)
+    assert timing.loc[
+        timing["instrument"] == "SZ000003", "institutional_survey_disclosure_lag_days"
+    ].item() == pytest.approx(2.0)
+    assert quality["negative_lag_event_keys_excluded"] == 1
+    assert quality["distinct_disclosure_lag_values"] == 2
+
+
+def test_institutional_survey_timing_rejects_reversed_received_range():
+    details = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "receive_start_date": pd.to_datetime(["2024-04-30"]),
+            "receive_end_date": pd.to_datetime(["2024-04-29"]),
+        }
+    )
+    with pytest.raises(ValueError, match="after receive_end_date"):
+        RESEARCH.aggregate_institutional_survey_timing_details(details)
+
+
 def test_institutional_survey_month_partitions_cover_years_without_overlap():
     ranges = RESEARCH.institutional_survey_month_ranges(2024, 2025)
     assert len(ranges) == 24
@@ -932,6 +987,59 @@ def test_institutional_survey_sync_writes_only_after_verified_partitions(tmp_pat
         RESEARCH.sync_institutional_survey_events(2024, 2024, failed_output, failed_manifest)
     assert not failed_output.exists()
     assert not failed_manifest.exists()
+
+
+def test_institutional_survey_timing_sync_writes_separate_no_price_snapshot(tmp_path, monkeypatch):
+    details = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000002"],
+            "announcement_date": pd.to_datetime(["2024-01-10", "2024-01-10"]),
+            "receive_start_date": pd.to_datetime(["2024-01-09", "2024-01-11"]),
+            "receive_end_date": pd.to_datetime(["2024-01-09", "2024-01-11"]),
+            "institutional_survey_org_count": [5.0, 2.0],
+        }
+    )
+    contract = RESEARCH.load_institutional_survey_timing_data_contract()
+    contract = json.loads(json.dumps(contract))
+    contract["source"]["announcement_start"] = "2024-01-01"
+    contract["source"]["announcement_end"] = "2024-12-31"
+    monkeypatch.setattr(
+        RESEARCH, "load_institutional_survey_timing_data_contract", lambda: contract
+    )
+    monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
+    monkeypatch.setattr(
+        RESEARCH,
+        "institutional_survey_month_ranges",
+        lambda start_year, end_year: [("2024-01-01", "2024-01-31")],
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "fetch_institutional_survey_partition_details",
+        lambda *args, **kwargs: (
+            [details],
+            [
+                {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "pages": 1,
+                    "advertised_source_rows": 2,
+                    "source_rows": 2,
+                    "count_verified": True,
+                }
+            ],
+        ),
+    )
+    output = tmp_path / "institutional_survey_timing.parquet"
+    manifest = tmp_path / "institutional_survey_timing_manifest.json"
+    result = RESEARCH.sync_institutional_survey_timing_events(output, manifest)
+    assert result["status"] == "completed"
+    assert result["rows_written"] == 1
+    assert result["timing_quality"]["negative_lag_event_keys_excluded"] == 1
+    assert result["price_fields_loaded"] == []
+    assert result["forward_return_fields_read"] is False
+    stored = pd.read_parquet(output)
+    assert stored["instrument"].tolist() == ["SZ000001"]
+    assert manifest.exists()
 
 
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():

@@ -59,6 +59,12 @@ DEFAULT_MARGIN_FINANCING_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "ma
 DEFAULT_MARGIN_FINANCING_EVENT_MANIFEST = DATA_ROOT / "metadata" / "margin_financing_top_flows_manifest.json"
 DEFAULT_INSTITUTIONAL_SURVEY_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "institutional_surveys.parquet"
 DEFAULT_INSTITUTIONAL_SURVEY_EVENT_MANIFEST = DATA_ROOT / "metadata" / "institutional_surveys_manifest.json"
+DEFAULT_INSTITUTIONAL_SURVEY_TIMING_EVENTS = (
+    DATA_ROOT / "raw" / "a_share" / "events" / "institutional_survey_timing.parquet"
+)
+DEFAULT_INSTITUTIONAL_SURVEY_TIMING_EVENT_MANIFEST = (
+    DATA_ROOT / "metadata" / "institutional_survey_timing_manifest.json"
+)
 DEFAULT_REPURCHASE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "repurchase_plans.parquet"
 DEFAULT_REPURCHASE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "repurchase_plans_manifest.json"
 DEFAULT_HOLDER_COUNT_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "holder_count_changes.parquet"
@@ -92,6 +98,9 @@ DEFAULT_INSTITUTIONAL_SURVEY_CAPACITY_SPEC = (
 )
 DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC = (
     REPO_ROOT / "docs" / "a_share_institutional_survey_event_diagnostic_preregistration.json"
+)
+DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_institutional_survey_timing_data_contract.json"
 )
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
@@ -292,6 +301,13 @@ INSTITUTIONAL_SURVEY_EVENT_COLUMNS = (
     "institutional_survey_org_count",
     "institutional_survey_event_count",
 )
+INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS = (
+    "instrument",
+    "announcement_date",
+    "institutional_survey_latest_receive_end_date",
+    "institutional_survey_disclosure_lag_days",
+)
+INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME = "institutional_survey_prompt_disclosure"
 INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS = (
     "institutional_survey_org_count",
     "institutional_survey_event_count",
@@ -369,6 +385,9 @@ INSTITUTIONAL_SURVEY_CAPACITY_PURPOSE = (
 )
 INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_institutional_survey_event_research_not_investment_advice"
+)
+INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT_SHA256 = (
+    "9ce1b08f2ed50f9683e4953de8f6666d232448c3abfdd42d71ad77df3e900fb4"
 )
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
@@ -2133,6 +2152,38 @@ def require_unconsumed_announcement_event_rebuild(experiment_root: Path) -> None
         record = load_json_record(path)
         if record.get("purpose") == ANNOUNCEMENT_EVENT_REBUILD_PURPOSE:
             raise ValueError(f"accepted-price announcement-event rebuild is already consumed: {path}")
+
+
+def load_institutional_survey_timing_data_contract(
+    path: Path = DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-snapshot disclosure-timing contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT_SHA256:
+        raise ValueError("institutional-survey timing data contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_institutional_survey_timing_data_contract")
+    factor = contract.get("factor") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    capacity = contract.get("capacity_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status") != "frozen_before_full_timing_snapshot_or_price_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-14T17:38:50Z"
+        or tuple(snapshot.get("columns") or []) != INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS
+        or factor.get("name") != INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME
+        or factor.get("raw_column") != "institutional_survey_disclosure_lag_days"
+        or factor.get("direction") != "lower_raw_lag_is_better"
+        or factor.get("maximum_event_age_days") != 3
+        or capacity.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("institutional-survey timing data contract does not match the frozen protocol")
+    return contract
 
 
 def load_sparse_announcement_capacity_preregistration(
@@ -4148,6 +4199,79 @@ def aggregate_institutional_survey_details(details: pd.DataFrame) -> pd.DataFram
     return result.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
 
 
+def aggregate_institutional_survey_timing_details(
+    details: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Build the frozen issuer/announcement disclosure-lag snapshot."""
+
+    required = {
+        "instrument",
+        "announcement_date",
+        "receive_start_date",
+        "receive_end_date",
+    }
+    if missing := sorted(required - set(details.columns)):
+        raise ValueError(
+            "institutional-survey timing detail frame is missing columns: " + ", ".join(missing)
+        )
+    if details.empty:
+        return pd.DataFrame(columns=INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS), {
+            "input_detail_rows": 0,
+            "unique_received_ranges": 0,
+            "invalid_start_after_end_rows": 0,
+            "negative_lag_event_keys_excluded": 0,
+            "rows_written": 0,
+            "distinct_disclosure_lag_values": 0,
+        }
+    source = details.loc[:, sorted(required)].copy()
+    source["instrument"] = source["instrument"].astype("string")
+    for column in ("announcement_date", "receive_start_date", "receive_end_date"):
+        source[column] = pd.to_datetime(source[column], errors="coerce").dt.normalize()
+    source["receive_end_date"] = source["receive_end_date"].fillna(source["receive_start_date"])
+    source = source.dropna(subset=["instrument", "announcement_date", "receive_start_date"])
+    invalid_start_after_end = int(source["receive_start_date"].gt(source["receive_end_date"]).sum())
+    if invalid_start_after_end:
+        raise ValueError(
+            "institutional-survey timing source contains receive_start_date after receive_end_date"
+        )
+    ranges = source.drop_duplicates(
+        ["instrument", "announcement_date", "receive_start_date", "receive_end_date"]
+    )
+    events = (
+        ranges.groupby(["instrument", "announcement_date"], as_index=False, sort=True)
+        .agg(institutional_survey_latest_receive_end_date=("receive_end_date", "max"))
+        .sort_values(["instrument", "announcement_date"], kind="stable")
+    )
+    events["institutional_survey_disclosure_lag_days"] = (
+        events["announcement_date"] - events["institutional_survey_latest_receive_end_date"]
+    ).dt.days
+    negative = events["institutional_survey_disclosure_lag_days"].lt(0)
+    negative_count = int(negative.sum())
+    result = events.loc[~negative, list(INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS)].copy()
+    result["institutional_survey_disclosure_lag_days"] = pd.to_numeric(
+        result["institutional_survey_disclosure_lag_days"], errors="coerce"
+    ).astype(float)
+    result = result.dropna(subset=list(INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS))
+    result = result.drop_duplicates(["instrument", "announcement_date"], keep="last")
+    result = result.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+    lags = result["institutional_survey_disclosure_lag_days"]
+    stats = {
+        "input_detail_rows": int(len(source)),
+        "unique_received_ranges": int(len(ranges)),
+        "invalid_start_after_end_rows": invalid_start_after_end,
+        "negative_lag_event_keys_excluded": negative_count,
+        "rows_written": int(len(result)),
+        "distinct_disclosure_lag_values": int(lags.nunique()),
+        "disclosure_lag_days": {
+            "minimum": float(lags.min()),
+            "median": float(lags.median()),
+            "p95": float(lags.quantile(0.95)),
+            "maximum": float(lags.max()),
+        },
+    }
+    return result, stats
+
+
 def normalize_repurchase_plan_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
     """Reduce public repurchase plans to first-plan-date, non-outcome fields."""
 
@@ -4926,6 +5050,115 @@ def sync_institutional_survey_events(
         ],
     }
     _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
+def sync_institutional_survey_timing_events(
+    output: Path = DEFAULT_INSTITUTIONAL_SURVEY_TIMING_EVENTS,
+    manifest: Path = DEFAULT_INSTITUTIONAL_SURVEY_TIMING_EVENT_MANIFEST,
+) -> dict[str, Any]:
+    """Build the frozen 2019--2025 disclosure-lag snapshot without price data."""
+
+    contract = load_institutional_survey_timing_data_contract()
+    source_contract = contract["source"]
+    start_year = pd.Timestamp(source_contract["announcement_start"]).year
+    end_year = pd.Timestamp(source_contract["announcement_end"]).year
+    session = _eastmoney_session()
+    detail_frames: list[pd.DataFrame] = []
+    pages_by_year: dict[str, int] = {}
+    source_detail_rows_by_year: dict[str, int] = {}
+    partition_records: list[dict[str, Any]] = []
+    for month_start, month_end in institutional_survey_month_ranges(start_year, end_year):
+        frames, records = fetch_institutional_survey_partition_details(
+            session,
+            month_start,
+            month_end,
+            maximum_pages=INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION,
+            page_pause_seconds=INSTITUTIONAL_SURVEY_PAGE_PAUSE_SECONDS,
+        )
+        detail_frames.extend(frames)
+        partition_records.extend(records)
+        month_pages = sum(int(record["pages"]) for record in records)
+        month_rows = sum(int(record["source_rows"]) for record in records)
+        year = month_start[:4]
+        pages_by_year[year] = pages_by_year.get(year, 0) + month_pages
+        source_detail_rows_by_year[year] = source_detail_rows_by_year.get(year, 0) + month_rows
+        print(
+            f"institutional survey timing {month_start[:7]}: {len(records)} verified partitions, "
+            f"{month_pages} pages, {month_rows} source detail rows"
+        )
+    details = (
+        pd.concat(detail_frames, ignore_index=True)
+        if detail_frames
+        else pd.DataFrame(
+            columns=[
+                "instrument",
+                "announcement_date",
+                "receive_start_date",
+                "receive_end_date",
+                "institutional_survey_org_count",
+            ]
+        )
+    )
+    timing, timing_quality = aggregate_institutional_survey_timing_details(details)
+    if timing.empty:
+        raise RuntimeError("institutional-survey timing sync produced no usable A-share notice events")
+    requested_years = list(range(start_year, end_year + 1))
+    observed_years = sorted(pd.to_datetime(timing["announcement_date"]).dt.year.unique().tolist())
+    if observed_years != requested_years:
+        raise RuntimeError("institutional-survey timing snapshot does not cover every requested year")
+    if timing.duplicated(["instrument", "announcement_date"]).any():
+        raise RuntimeError("institutional-survey timing snapshot contains duplicate event keys")
+    if timing["institutional_survey_disclosure_lag_days"].lt(0).any():
+        raise RuntimeError("institutional-survey timing snapshot contains a negative disclosure lag")
+    _atomic_write_parquet(output, timing)
+    result = {
+        "status": "completed",
+        "data_contract": {
+            "path": str(DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT.resolve()),
+            "sha256": file_sha256(DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT),
+            "preregistered_at": contract["preregistered_at"],
+            "forward_return_fields_read": False,
+        },
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_INSTITUTIONAL_SURVEY_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "requested_columns": source_contract["requested_columns"],
+            "participant_identities_requested_or_stored": False,
+        },
+        "event_frequency": "dated_institutional_survey_disclosure_timing",
+        "years": requested_years,
+        "partition_policy": contract["snapshot_contract"]["partition_policy"],
+        "verified_partitions": partition_records,
+        "pages_by_year": pages_by_year,
+        "source_detail_rows_by_year": source_detail_rows_by_year,
+        "timing_quality": timing_quality,
+        "rows_by_announcement_year": {
+            str(year): int(len(group))
+            for year, group in timing.groupby(
+                pd.to_datetime(timing["announcement_date"]).dt.year, sort=True
+            )
+        },
+        "rows_written": int(len(timing)),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "price_fields_loaded": [],
+        "open_close_or_forward_return_fields_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "The public source is queried as it exists today and may revise or omit historical survey notices.",
+            "Negative disclosure lags are treated as source anomalies and excluded without clipping or imputation.",
+            "The factor becomes usable only after the public NOTICE_DATE, never on a received date.",
+            "This is a research event snapshot, not an exchange-grade point-in-time announcement database.",
+        ],
+    }
+    _atomic_write_text(
+        manifest,
+        json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
     return result
 
 
@@ -15992,13 +16225,18 @@ def parse_args() -> argparse.Namespace:
 
     sync_institutional_survey = subparsers.add_parser(
         "sync-institutional-survey-events",
-        help="experimental source probe; not eligible for research until a complete historical snapshot succeeds",
+        help="refresh the verified institutional-survey count snapshot",
     )
     sync_institutional_survey.add_argument("--start-year", type=int, default=2019)
     sync_institutional_survey.add_argument("--end-year", type=int, default=2026)
     sync_institutional_survey.add_argument("--output", default=str(DEFAULT_INSTITUTIONAL_SURVEY_EVENTS))
     sync_institutional_survey.add_argument(
         "--manifest", default=str(DEFAULT_INSTITUTIONAL_SURVEY_EVENT_MANIFEST)
+    )
+
+    subparsers.add_parser(
+        "sync-institutional-survey-timing-events",
+        help="build the frozen 2019-2025 institutional-survey disclosure-lag snapshot",
     )
 
     sync_repurchase = subparsers.add_parser(
@@ -16824,6 +17062,8 @@ def main() -> int:
             Path(args.output),
             Path(args.manifest),
         )
+    elif args.command == "sync-institutional-survey-timing-events":
+        report = sync_institutional_survey_timing_events()
     elif args.command == "sync-repurchase-plan-events":
         report = sync_repurchase_plan_events(Path(args.output), Path(args.manifest))
     elif args.command == "sync-holder-count-events":
