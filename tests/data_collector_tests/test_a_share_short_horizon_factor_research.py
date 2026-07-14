@@ -270,15 +270,22 @@ def make_minute_gate_records(
     *,
     stability_qualified: tuple[str, ...] = (),
     topk_qualified: tuple[str, ...] = (),
+    factor_names: tuple[str, ...] = RESEARCH.MINUTE_FACTOR_NAMES,
+    factor_directions: tuple[str, ...] = RESEARCH.MINUTE_FACTOR_DIRECTIONS,
+    factor_spec_path: Path = RESEARCH.DEFAULT_MINUTE_FACTOR_SPEC,
+    provider: str = "rqdata",
+    frequency: str = "1m",
+    protocol_kind: str = "a_share_minute_factor_preregistration",
+    development_start: str = "2019-01-01",
 ) -> tuple[Path, Path, Path]:
     diagnostic_path = tmp_path / "minute_factor_diagnostic.json"
     diagnostic = {
         "run_id": "minute-diagnostic",
         "status": "completed",
         "purpose": "development_only_preregistered_minute_factor_diagnostic_research_not_investment_advice",
-        "factor_catalog": list(RESEARCH.MINUTE_FACTOR_NAMES),
+        "factor_catalog": list(factor_names),
         "factor_directions": dict(
-            zip(RESEARCH.MINUTE_FACTOR_NAMES, RESEARCH.MINUTE_FACTOR_DIRECTIONS)
+            zip(factor_names, factor_directions)
         ),
         "strategy_timing": {
             "holding_period_trading_days": 3,
@@ -288,18 +295,23 @@ def make_minute_gate_records(
             "parameters_read_from_preregistration": True,
         },
         "minute_features": {
-            "provider": "rqdata",
-            "factor_spec_sha256": RESEARCH.file_sha256(RESEARCH.DEFAULT_MINUTE_FACTOR_SPEC),
+            "provider": provider,
+            "frequency": frequency,
+            "factor_protocol_kind": protocol_kind,
+            "factor_spec_sha256": RESEARCH.file_sha256(factor_spec_path),
             "selection_or_promotion_allowed": False,
         },
         "data": {
+            "calendar_end": "2025-12-31",
+            "development_start": development_start,
             "development_end": "2025-12-31",
             "test_period_used_for_factor_design": False,
             "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
         },
         "ranking_by_development_rank_ic": [
-            {"factor": factor} for factor in RESEARCH.MINUTE_FACTOR_NAMES
+            {"factor": factor} for factor in factor_names
         ],
+        "forward_return_fields_read": True,
         "selection_or_promotion_allowed": False,
     }
     write_json_record(diagnostic_path, diagnostic)
@@ -326,7 +338,7 @@ def make_minute_gate_records(
         "requested_factors": None,
         "factor_decisions": [
             {"factor": factor, "passed": factor in stability_qualified}
-            for factor in RESEARCH.MINUTE_FACTOR_NAMES
+            for factor in factor_names
         ],
         "qualified_factors": list(stability_qualified),
     }
@@ -348,12 +360,32 @@ def make_minute_gate_records(
         "requested_factors": None,
         "factor_decisions": [
             {"factor": factor, "passed": factor in topk_qualified}
-            for factor in RESEARCH.MINUTE_FACTOR_NAMES
+            for factor in factor_names
         ],
         "qualified_factors": list(topk_qualified),
     }
     write_json_record(topk_path, topk)
     return diagnostic_path, stability_path, topk_path
+
+
+def make_baostock_5m_gate_records(
+    tmp_path: Path,
+    *,
+    stability_qualified: tuple[str, ...] = (),
+    topk_qualified: tuple[str, ...] = (),
+) -> tuple[Path, Path, Path]:
+    return make_minute_gate_records(
+        tmp_path,
+        stability_qualified=stability_qualified,
+        topk_qualified=topk_qualified,
+        factor_names=RESEARCH.BAOSTOCK_5M_FACTOR_NAMES,
+        factor_directions=RESEARCH.BAOSTOCK_5M_FACTOR_DIRECTIONS,
+        factor_spec_path=RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+        provider="baostock",
+        frequency="5m",
+        protocol_kind="a_share_baostock_5m_factor_preregistration",
+        development_start="2020-01-01",
+    )
 
 
 def test_annual_report_dates_and_symbol_mapping():
@@ -4264,6 +4296,7 @@ def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(tmp_path, mo
     assert diagnostic["strategy_timing"]["close_cost"] == pytest.approx(0.00062)
     assert diagnostic["strategy_timing"]["parameters_read_from_preregistration"] is True
     assert diagnostic["selection_or_promotion_allowed"] is False
+    assert diagnostic["forward_return_fields_read"] is True
     assert diagnostic["data"]["price_basis"] == RESEARCH.REQUIRED_PRICE_BASIS
     assert all(item["mean_rank_ic"] == pytest.approx(1.0) for item in diagnostic["ranking_by_development_rank_ic"])
 
@@ -4355,6 +4388,7 @@ def test_baostock_5m_diagnostic_uses_2020_2025_protocol(tmp_path, monkeypatch):
     assert diagnostic["data"]["development_start"] == "2020-01-01"
     assert diagnostic["data"]["development_end"] == "2025-12-31"
     assert diagnostic["strategy_timing"]["holding_period_trading_days"] == 3
+    assert diagnostic["forward_return_fields_read"] is True
     assert diagnostic["selection_or_promotion_allowed"] is False
 
 
@@ -4483,6 +4517,90 @@ def test_minute_combination_records_no_dual_gate_factors_without_returns(tmp_pat
                 batch_size=500,
             )
         )
+
+
+def test_baostock_5m_combination_registration_freezes_all_dual_gate_passers(
+    tmp_path, monkeypatch
+):
+    stable = RESEARCH.BAOSTOCK_5M_FACTOR_NAMES[:3]
+    qualified = RESEARCH.BAOSTOCK_5M_FACTOR_NAMES[:2]
+    diagnostic_path, stability_path, topk_path = make_baostock_5m_gate_records(
+        tmp_path,
+        stability_qualified=stable,
+        topk_qualified=qualified,
+    )
+    monkeypatch.setattr(
+        RESEARCH, "latest_provider_date", lambda provider_uri: pd.Timestamp("2026-07-13")
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "forward_factor_return_frame",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("registration must not read another return")
+        ),
+    )
+    args = SimpleNamespace(
+        diagnostic=str(diagnostic_path),
+        stability_audit=str(stability_path),
+        topk_audit=str(topk_path),
+        not_before="2026-07-14",
+        provider_uri=str(tmp_path / "provider"),
+        experiment_root=str(tmp_path / "experiments"),
+    )
+    result = RESEARCH.run_baostock_5m_combination_registration(args)
+    record = json.loads(Path(result["audit_path"]).read_text())
+    assert result["status"] == "prospective_paper_protocol_registered"
+    assert result["additional_forward_return_fields_read"] is False
+    assert record["qualified_factors"] == list(qualified)
+    assert record["input_diagnostic_forward_return_fields_read"] is True
+    assert record["additional_price_fields_read"] == []
+    assert record["additional_forward_return_fields_read"] is False
+    assert record["not_before"] == "2026-07-14"
+    assert record["latest_observed_at_registration"] == "2026-07-13"
+    assert record["construction"]["components"] == [
+        {"factor": factor, "weight": pytest.approx(0.5)} for factor in qualified
+    ]
+    assert record["construction"]["subset_or_weight_search_performed"] is False
+    assert record["current_five_minute_observation_adapter_implemented"] is False
+    assert record["selection_or_promotion_allowed"] is False
+    registrations = RESEARCH.load_baostock_5m_combination_registrations(
+        tmp_path / "experiments"
+    )
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        baostock_5m_combination_registrations=registrations,
+    )
+    assert "BaoStock 五分钟双门禁聚合登记" in report
+    assert "等权配方已冻结，等待当前 5m 观察器" in report
+    assert "新增收益读取" in report
+    with pytest.raises(ValueError, match="already registered"):
+        RESEARCH.run_baostock_5m_combination_registration(args)
+
+
+def test_baostock_5m_combination_registration_stops_below_two_without_dates(tmp_path):
+    one = RESEARCH.BAOSTOCK_5M_FACTOR_NAMES[:1]
+    diagnostic_path, stability_path, topk_path = make_baostock_5m_gate_records(
+        tmp_path,
+        stability_qualified=one,
+        topk_qualified=one,
+    )
+    result = RESEARCH.run_baostock_5m_combination_registration(
+        SimpleNamespace(
+            diagnostic=str(diagnostic_path),
+            stability_audit=str(stability_path),
+            topk_audit=str(topk_path),
+            not_before=None,
+            provider_uri=str(tmp_path / "provider-not-read"),
+            experiment_root=str(tmp_path / "experiments"),
+        )
+    )
+    record = json.loads(Path(result["audit_path"]).read_text())
+    assert result["status"] == "no_eligible_factor_combination"
+    assert result["prospective_observation_allowed"] is False
+    assert record["qualified_factors"] == list(one)
+    assert record["terminal_for_input_evidence"] is True
+    assert record["additional_forward_return_fields_read"] is False
 
 
 def test_minute_combination_capacity_gate_stops_before_holdout_returns(tmp_path, monkeypatch):

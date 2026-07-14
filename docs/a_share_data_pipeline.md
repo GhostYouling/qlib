@@ -1407,6 +1407,18 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 五分钟聚合规则已经在观察因子值与收益前冻结：取同时通过两道完整门禁的因子交集；少于两个就终止，达到两个才把全部合格方向分位数做一次等权聚合，不枚举子集、不搜索权重或聚合函数。2020–2025 不是新的纯净留出期，因此通过历史门禁也不能回头把聚合结果当成确认性回测或直接选股；只能在另行登记后，从登记日之后积累新的前瞻纸面观察。当前恢复探针未通过，以上命令是就绪后的固定顺序，不是现在启动因子或收益读取的授权。
 
+两道审计完成后，用唯一登记命令固化交集决策；`--not-before` 必须晚于本地已见的全部收盘日，且只在至少两个因子同时通过时才是必需的：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py baostock-5m-combination-register \
+  --diagnostic data/experiments/short_horizon/<run>_factor_diagnostic.json \
+  --stability-audit data/experiments/short_horizon/<run>_factor_stability_audit.json \
+  --topk-audit data/experiments/short_horizon/<run>_factor_topk_viability_audit.json \
+  --not-before <first-genuinely-unseen-signal-date>
+```
+
+该命令只读取上述三个不可变 JSON 及五分钟预注册文件，不再次加载价格或远期收益。少于两个双门禁因子时写入一次终止记录；至少两个时写入全部合格因子、相等权重、缺任一分量即股票日不合格、三日持有成本与最早前瞻日期。相同四份输入指纹只能登记一次。记录会进入统一 `report` 的“BaoStock 五分钟双门禁聚合登记”章节。登记本身仍不生成分数或股票；全量历史只到 2025 年，必须另行实现并验收登记日之后的当前 5 分钟观察适配器，才能开始不可回填的纸面信号。
+
 第一次全量尝试在完成至少 100 个分区后被 `600027` 的 2024 分区阻断，并按规则删除全部临时文件、未写最终快照或清单。隔离复核证明 11,616 个源 bar 中有 478 根来自 10 个股票日的停牌占位，精确定义为 `open=high=low=close=volume=amount=0`；其中 2024‑07‑22 和 2024‑07‑26 各另有一根 15:00 的零成交参考价 bar。这不是活动交易 bar。处置在 `docs/a_share_baostock_5m_suspension_placeholder_audit.json`（SHA‑256 `5c29bd194ef70ed0d30a1e72aa3adc7e287ec1f513e0d3ee29d7551cf1dff47d`）中冻结：零价零活动占位从可计算 bar 中排除，但其行数和股票日写入质量统计；正价零活动参考 bar 保留；这 10 个股票日整体不合格。修正后该分区写 11,138 行并识别 232 个完整且正活动会话。非占位的零/负价、负量额、OHLC 关系错误和重复时间戳仍是致命错误。该复核没有读取因子值、日线开收盘或远期收益。
 
 第二次尝试使用四进程年度请求，在 40.95 分钟内完成 9,000/29,246 次请求、约 1.03 亿规范化行后，于 `603880/2025` 收到 `黑名单用户，请与管理员联系`；整份临时快照再次删除，没有最终数据或清单。随后唯一一次小探针连匿名登录都被拒绝，故当前不能重跑。官方页面没有可验证的匿名数值频率上限，因此不使用代理、换 IP 或紧密登录规避。`docs/a_share_baostock_5m_request_throttle_audit.json`（SHA‑256 `4a881c707f41dc1a1043015ca004b65ff4607bc96bce21cd65c832cb20dc18aa`）在任何后续请求前把计划冻结为 5,386 次股票有效区间请求，本地仍写 29,246 个年度分区，请求数降低 81.5838% 且少于已观察的 9,000 次封禁点。恢复探针通过以前，继续做不依赖该源的研究，不得启动全量、构造五分钟因子或读取收益。[BaoStock 官方站点](https://www.baostock.com/)列有技术交流与联系渠道；是否需要联系由用户决定，代码不会自动发送消息。

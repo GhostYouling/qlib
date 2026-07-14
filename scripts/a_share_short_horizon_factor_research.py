@@ -220,6 +220,7 @@ MINUTE_COMBINATION_NAME = "minute_dual_gate_equal_weight_all_v1"
 MINUTE_COMBINATION_HOLDOUT_START = "2026-01-01"
 MINUTE_COMBINATION_MIN_FACTORS = 2
 MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS = 20
+BAOSTOCK_5M_COMBINATION_NAME = "baostock_5m_dual_gate_equal_weight_all_v1"
 
 PROSPECTIVE_VWAP_FACTOR = "close_below_vwap_1"
 PROSPECTIVE_VWAP_SOURCE_FACTOR = "close_above_vwap_1"
@@ -5181,7 +5182,17 @@ def load_minute_combination_gate_inputs(
     diagnostic_path = diagnostic_path.expanduser().resolve()
     stability_audit_path = stability_audit_path.expanduser().resolve()
     topk_audit_path = topk_audit_path.expanduser().resolve()
-    load_minute_factor_preregistration(factor_spec_path)
+    factor_spec_path = factor_spec_path.expanduser().resolve()
+    spec_kind = load_json_record(factor_spec_path).get("kind")
+    if spec_kind == "a_share_minute_factor_preregistration":
+        spec = load_minute_factor_preregistration(factor_spec_path)
+    elif spec_kind == "a_share_baostock_5m_factor_preregistration":
+        spec = load_baostock_5m_factor_preregistration(factor_spec_path)
+    else:
+        raise ValueError(f"unsupported minute factor preregistration kind: {spec_kind}")
+    protocol = minute_factor_protocol(spec)
+    factor_names = tuple(protocol["names"])
+    factor_directions = tuple(protocol["directions"])
     diagnostic = load_json_record(diagnostic_path)
     stability = load_json_record(stability_audit_path)
     topk = load_json_record(topk_audit_path)
@@ -5189,11 +5200,11 @@ def load_minute_combination_gate_inputs(
         diagnostic.get("status") != "completed"
         or diagnostic.get("purpose")
         != "development_only_preregistered_minute_factor_diagnostic_research_not_investment_advice"
-        or tuple(diagnostic.get("factor_catalog") or []) != MINUTE_FACTOR_NAMES
+        or tuple(diagnostic.get("factor_catalog") or []) != factor_names
         or diagnostic.get("factor_directions")
         != {
             factor: direction
-            for factor, direction in zip(MINUTE_FACTOR_NAMES, MINUTE_FACTOR_DIRECTIONS)
+            for factor, direction in zip(factor_names, factor_directions)
         }
         or diagnostic.get("selection_or_promotion_allowed") is not False
     ):
@@ -5207,16 +5218,24 @@ def load_minute_combination_gate_inputs(
         or timing.get("open_cost") != 0.00012
         or timing.get("close_cost") != 0.00062
         or timing.get("parameters_read_from_preregistration") is not True
-        or data.get("development_end") != "2025-12-31"
+        or data.get("development_end") != protocol["development_end"]
         or data.get("test_period_used_for_factor_design") is not False
         or data.get("price_basis") != REQUIRED_PRICE_BASIS
-        or minute.get("factor_spec_sha256") != file_sha256(factor_spec_path.expanduser().resolve())
+        or minute.get("factor_spec_sha256") != file_sha256(factor_spec_path)
         or minute.get("selection_or_promotion_allowed") is not False
     ):
         raise ValueError("minute diagnostic timing, price basis, or preregistration fingerprint is invalid")
+    if spec_kind == "a_share_baostock_5m_factor_preregistration" and (
+        data.get("development_start") != protocol["development_start"]
+        or minute.get("provider") != protocol["provider"]
+        or minute.get("frequency") != protocol["frequency"]
+        or minute.get("factor_protocol_kind") != spec_kind
+        or diagnostic.get("forward_return_fields_read") is not True
+    ):
+        raise ValueError("BaoStock five-minute diagnostic is not bound to its frozen protocol")
     ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
     ranking_factors = [str(item.get("factor")) for item in ranking]
-    if len(ranking_factors) != len(MINUTE_FACTOR_NAMES) or set(ranking_factors) != set(MINUTE_FACTOR_NAMES):
+    if len(ranking_factors) != len(factor_names) or set(ranking_factors) != set(factor_names):
         raise ValueError("minute diagnostic must retain exactly all five frozen factors")
 
     diagnostic_sha256 = file_sha256(diagnostic_path)
@@ -5266,7 +5285,7 @@ def load_minute_combination_gate_inputs(
     def validated_qualified(record: dict[str, Any], label: str) -> set[str]:
         decisions = list(record.get("factor_decisions") or [])
         factors = [str(item.get("factor")) for item in decisions]
-        if len(factors) != len(MINUTE_FACTOR_NAMES) or set(factors) != set(MINUTE_FACTOR_NAMES):
+        if len(factors) != len(factor_names) or set(factors) != set(factor_names):
             raise ValueError(f"{label} must decide exactly all five frozen minute factors")
         passed = {str(item.get("factor")) for item in decisions if item.get("passed") is True}
         if passed != set(map(str, record.get("qualified_factors") or [])):
@@ -5276,7 +5295,7 @@ def load_minute_combination_gate_inputs(
     stable_factors = validated_qualified(stability, "factor stability audit")
     viable_factors = validated_qualified(topk, "factor TopK viability audit")
     qualified = tuple(
-        factor for factor in MINUTE_FACTOR_NAMES if factor in stable_factors & viable_factors
+        factor for factor in factor_names if factor in stable_factors & viable_factors
     )
     lineage = {
         "diagnostic_path": diagnostic_path,
@@ -5285,8 +5304,8 @@ def load_minute_combination_gate_inputs(
         "stability_audit_sha256": file_sha256(stability_audit_path),
         "topk_audit_path": topk_audit_path,
         "topk_audit_sha256": file_sha256(topk_audit_path),
-        "factor_spec_path": factor_spec_path.expanduser().resolve(),
-        "factor_spec_sha256": file_sha256(factor_spec_path.expanduser().resolve()),
+        "factor_spec_path": factor_spec_path,
+        "factor_spec_sha256": file_sha256(factor_spec_path),
     }
     return diagnostic, stability, topk, qualified, lineage
 
@@ -15875,6 +15894,53 @@ def load_minute_combination_holdouts(experiment_root: Path) -> list[dict[str, An
     return records
 
 
+def load_baostock_5m_combination_registrations(
+    experiment_root: Path,
+) -> list[dict[str, Any]]:
+    """Read immutable 5m aggregation decisions for the research report."""
+
+    records: list[dict[str, Any]] = []
+    for path in sorted(
+        experiment_root.expanduser().glob("*_baostock_5m_combination_registration.json")
+    ):
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if (
+            record.get("kind") != "a_share_baostock_5m_combination_registration"
+            or record.get("purpose")
+            != "dual_gate_baostock_5m_aggregation_decision_for_newly_dated_paper_observation"
+        ):
+            continue
+        diagnostic = ((record.get("input_evidence") or {}).get("diagnostic") or {})
+        records.append(
+            {
+                "run_id": str(record.get("run_id", path.stem)),
+                "status": str(record.get("status", "—")),
+                "diagnostic_run_id": str(diagnostic.get("run_id", "—")),
+                "qualified_factors": [
+                    str(item) for item in record.get("qualified_factors") or []
+                ],
+                "not_before": str(record.get("not_before", "—")),
+                "additional_forward_return_fields_read": bool(
+                    record.get("additional_forward_return_fields_read", True)
+                ),
+                "prospective_observation_allowed": bool(
+                    record.get("prospective_observation_allowed", False)
+                ),
+                "current_five_minute_observation_adapter_implemented": bool(
+                    record.get("current_five_minute_observation_adapter_implemented", False)
+                ),
+                "selection_or_promotion_allowed": bool(
+                    record.get("selection_or_promotion_allowed", True)
+                ),
+                "path": str(path.resolve()),
+            }
+        )
+    return records
+
+
 def pre_complete_window_invalid_factors(run_id: str, factors: Iterable[str]) -> set[str]:
     """Identify factor rows invalidated by the fixed full-window semantics audit."""
 
@@ -16962,6 +17028,7 @@ def render_three_day_research_report(
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
+    baostock_5m_combination_registrations: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -17256,6 +17323,45 @@ def render_three_day_research_report(
                     net=_percent(item["net_cumulative_return"]),
                     mdd=_percent(item["max_drawdown"]),
                     forward="是" if item["forward_return_fields_read"] else "否",
+                    conclusion=conclusion,
+                )
+            )
+        lines.append("")
+    if baostock_5m_combination_registrations:
+        lines.extend(
+            [
+                "",
+                "## BaoStock 五分钟双门禁聚合登记",
+                "",
+                "本节只把已完成单因子诊断与两道完整默认审计的交集冻结为决策记录，不再次读取价格或收益。少于两个因子即终止；达到两个后只允许全部合格方向分位数等权平均，并从登记后的新日期开始纸面观察。当前观察适配器未验收时不得生成分数或选股。",
+                "",
+                "| 登记 | 输入诊断 | 双门禁因子 | 最早前瞻日期 | 新增收益读取 | 当前 5m 观察器 | 结论 |",
+                "| --- | --- | --- | --- | --- | --- | --- |",
+            ]
+        )
+        for item in baostock_5m_combination_registrations:
+            registered = item["status"] == "prospective_paper_protocol_registered"
+            conclusion = (
+                "等权配方已冻结，等待当前 5m 观察器"
+                if registered
+                else "少于两个双门禁因子，停止"
+            )
+            lines.append(
+                "| {run_id} | {diagnostic} | {factors} | {not_before} | {forward} | {adapter} | {conclusion} |".format(
+                    run_id=item["run_id"],
+                    diagnostic=item["diagnostic_run_id"],
+                    factors="、".join(item["qualified_factors"]) or "无",
+                    not_before=item["not_before"],
+                    forward=(
+                        "是（异常）"
+                        if item["additional_forward_return_fields_read"]
+                        else "否"
+                    ),
+                    adapter=(
+                        "已实现"
+                        if item["current_five_minute_observation_adapter_implemented"]
+                        else "未实现"
+                    ),
                     conclusion=conclusion,
                 )
             )
@@ -18063,6 +18169,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     rolling_window_semantics_audits = load_rolling_window_semantics_audits(experiment_root)
     minute_factor_coverage_audits = load_minute_factor_coverage_audits(experiment_root)
     minute_combination_holdouts = load_minute_combination_holdouts(experiment_root)
+    baostock_5m_combination_registrations = (
+        load_baostock_5m_combination_registrations(experiment_root)
+    )
     factor_stability_audits = load_factor_stability_audits(experiment_root)
     factor_topk_viability_audits = load_factor_topk_viability_audits(experiment_root)
     event_factor_holdouts = load_event_factor_holdouts(experiment_root)
@@ -18132,6 +18241,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         rolling_window_semantics_audits=rolling_window_semantics_audits,
         minute_factor_coverage_audits=minute_factor_coverage_audits,
         minute_combination_holdouts=minute_combination_holdouts,
+        baostock_5m_combination_registrations=baostock_5m_combination_registrations,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -18159,6 +18269,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "rolling_window_semantics_audits": len(rolling_window_semantics_audits),
         "minute_factor_coverage_audits": len(minute_factor_coverage_audits),
         "minute_combination_holdouts": len(minute_combination_holdouts),
+        "baostock_5m_combination_registrations": len(
+            baostock_5m_combination_registrations
+        ),
         "factor_stability_audits": len(factor_stability_audits),
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
@@ -19914,6 +20027,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "test_period_used_for_factor_design": False,
         },
         "ranking_by_development_rank_ic": summaries,
+        "forward_return_fields_read": True,
         "selection_or_promotion_allowed": False,
         "limitations": [
             "This diagnoses only the five directions frozen before minute returns were observed; it does not choose weights or create a stock list.",
@@ -20079,6 +20193,161 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
         "input_diagnostic_run_id": audit["input_diagnostic"]["run_id"],
         "factor_count": len(decisions),
         "qualified_factors": audit["qualified_factors"],
+    }
+
+
+def require_unregistered_baostock_5m_combination(
+    experiment_root: Path,
+    input_key: str,
+) -> None:
+    """Keep one terminal 5m aggregation decision per immutable gate evidence set."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob("*_baostock_5m_combination_registration.json")
+    ):
+        record = load_json_record(path)
+        if record.get("combination_input_key") == input_key:
+            raise ValueError(
+                "BaoStock five-minute combination evidence is already registered: "
+                f"{path}"
+            )
+
+
+def run_baostock_5m_combination_registration(args: argparse.Namespace) -> dict[str, Any]:
+    """Freeze the dual-gate 5m aggregation decision without another return read."""
+
+    diagnostic_path = Path(args.diagnostic).expanduser()
+    stability_path = Path(args.stability_audit).expanduser()
+    topk_path = Path(args.topk_audit).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    diagnostic, stability, topk, qualified_factors, lineage = (
+        load_minute_combination_gate_inputs(
+            diagnostic_path,
+            stability_path,
+            topk_path,
+            factor_spec_path=DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+        )
+    )
+    input_key = minute_combination_input_key(lineage)
+    require_unregistered_baostock_5m_combination(experiment_root, input_key)
+    spec = load_baostock_5m_factor_preregistration()
+    combination = dict(spec["combination_policy"])
+    run_id = _timestamp()
+    evidence = {
+        "diagnostic": {
+            "run_id": diagnostic.get("run_id"),
+            "path": str(lineage["diagnostic_path"]),
+            "sha256": lineage["diagnostic_sha256"],
+        },
+        "stability_audit": {
+            "run_id": stability.get("run_id"),
+            "path": str(lineage["stability_audit_path"]),
+            "sha256": lineage["stability_audit_sha256"],
+        },
+        "topk_viability_audit": {
+            "run_id": topk.get("run_id"),
+            "path": str(lineage["topk_audit_path"]),
+            "sha256": lineage["topk_audit_sha256"],
+        },
+        "factor_spec": {
+            "path": str(lineage["factor_spec_path"]),
+            "sha256": lineage["factor_spec_sha256"],
+        },
+    }
+    base = {
+        "schema_version": 1,
+        "kind": "a_share_baostock_5m_combination_registration",
+        "run_id": run_id,
+        "combination_input_key": input_key,
+        "purpose": "dual_gate_baostock_5m_aggregation_decision_for_newly_dated_paper_observation",
+        "combination_name": BAOSTOCK_5M_COMBINATION_NAME,
+        "combination_policy": combination,
+        "qualified_factors": list(qualified_factors),
+        "qualified_factor_count": len(qualified_factors),
+        "input_evidence": evidence,
+        "input_diagnostic_forward_return_fields_read": True,
+        "additional_price_fields_read": [],
+        "additional_forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+    }
+    if len(qualified_factors) < MINUTE_COMBINATION_MIN_FACTORS:
+        record = {
+            **base,
+            "status": "no_eligible_factor_combination",
+            "reason": "fewer than two factors passed both complete default gates",
+            "terminal_for_input_evidence": True,
+            "prospective_observation_allowed": False,
+        }
+    else:
+        not_before_value = str(getattr(args, "not_before", "") or "")
+        if not not_before_value:
+            raise ValueError(
+                "--not-before is required when at least two BaoStock five-minute factors "
+                "pass both gates"
+            )
+        not_before = pd.Timestamp(not_before_value).normalize()
+        latest_observed = latest_provider_date(Path(args.provider_uri).expanduser()).normalize()
+        diagnostic_end = pd.Timestamp((diagnostic.get("data") or {}).get("calendar_end")).normalize()
+        if pd.isna(not_before) or pd.isna(latest_observed) or pd.isna(diagnostic_end):
+            raise ValueError("BaoStock five-minute prospective registration dates are invalid")
+        latest_known = max(latest_observed, diagnostic_end)
+        if not_before <= latest_known:
+            raise ValueError(
+                "BaoStock five-minute --not-before must be strictly later than every locally "
+                "observed close"
+            )
+        weight = 1.0 / len(qualified_factors)
+        record = {
+            **base,
+            "status": "prospective_paper_protocol_registered",
+            "registration_id": f"baostock_5m_equal_weight_{input_key[:16]}",
+            "registered_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "not_before": not_before.date().isoformat(),
+            "latest_observed_at_registration": latest_known.date().isoformat(),
+            "construction": {
+                "score": "arithmetic mean of all dual-gate-qualified directional cross-sectional percentile scores",
+                "components": [
+                    {"factor": factor, "weight": weight}
+                    for factor in qualified_factors
+                ],
+                "missing_component_policy": "stock-day ineligible if any component is missing",
+                "subset_or_weight_search_performed": False,
+            },
+            "strategy": {
+                "universe": "buyable_main_chinext",
+                "holding_period_trading_days": 3,
+                "topk": 3,
+                "open_cost": 0.00012,
+                "close_cost": 0.00062,
+                "signal_timing": "five-minute features known after signal-session close",
+                "entry": "next local trading-session open",
+                "exit": "third local trading-session close after entry",
+                "rebalance_rule": "non-overlapping three-session cohorts beginning no earlier than not_before",
+            },
+            "prospective_observation_allowed": True,
+            "current_five_minute_observation_adapter_implemented": False,
+            "terminal_for_input_evidence": True,
+            "guardrails": [
+                "Do not backtest this post-gate combination on 2020-2025 or any date before not_before.",
+                "Do not enumerate a factor subset, change weights, or replace the arithmetic mean.",
+                "This registration does not create a stock score, selection list, order, or capital allocation.",
+                "Implement and accept a current five-minute observation adapter before recording any signal.",
+            ],
+        }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_baostock_5m_combination_registration.json"
+    if destination.exists():
+        raise RuntimeError(f"BaoStock five-minute combination record already exists: {destination}")
+    _atomic_write_text(
+        destination,
+        json.dumps(record, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": record["status"],
+        "audit_path": str(destination.resolve()),
+        "qualified_factors": list(qualified_factors),
+        "additional_forward_return_fields_read": False,
+        "prospective_observation_allowed": record["prospective_observation_allowed"],
     }
 
 
@@ -22226,6 +22495,29 @@ def parse_args() -> argparse.Namespace:
     minute_combination_holdout.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     minute_combination_holdout.add_argument("--batch-size", type=int, default=500)
 
+    baostock_5m_combination_registration = subparsers.add_parser(
+        "baostock-5m-combination-register",
+        help="freeze the 5m dual-gate intersection for future-only paper observation without another return read",
+    )
+    baostock_5m_combination_registration.add_argument("--diagnostic", required=True)
+    baostock_5m_combination_registration.add_argument(
+        "--stability-audit", required=True
+    )
+    baostock_5m_combination_registration.add_argument("--topk-audit", required=True)
+    baostock_5m_combination_registration.add_argument(
+        "--not-before",
+        help=(
+            "first genuinely unseen signal close; required only if at least two factors "
+            "pass both gates"
+        ),
+    )
+    baostock_5m_combination_registration.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    baostock_5m_combination_registration.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
     selection_multiplicity_audit = subparsers.add_parser(
         "selection-multiplicity-audit",
         help="audit a stored development winner for candidate-library search multiplicity",
@@ -22852,6 +23144,8 @@ def main() -> int:
         report = run_factor_topk_viability_audit(args)
     elif args.command == "minute-combination-holdout":
         report = run_minute_combination_holdout(args)
+    elif args.command == "baostock-5m-combination-register":
+        report = run_baostock_5m_combination_registration(args)
     elif args.command == "selection-multiplicity-audit":
         report = run_selection_multiplicity_audit(args)
     elif args.command == "limit-like-event-audit":
