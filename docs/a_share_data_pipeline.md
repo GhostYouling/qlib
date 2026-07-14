@@ -782,3 +782,27 @@ python scripts/install_a_share_launchd.py uninstall
 ```
 
 定时任务不在休眠的电脑上补跑；若错过一次，手动执行 `sync` 即可恢复。若将来换成需要登录的专业数据服务，不要把令牌写进 YAML 或 Git；由系统钥匙串、环境变量或本地 `.env`（已忽略）提供即可。
+# 受凭据保护的分钟与事件数据
+
+日线管线继续是当前策略的唯一正式行情底座。若要研究三日持有期所需的尾盘、日内成交和资金流因子，使用独立的可审计接入器：
+
+```bash
+python scripts/a_share_rich_data.py status
+```
+
+它支持 Tushare（分钟线、`moneyflow`、涨跌停和龙虎榜）、JQData（分钟线）和 RQData（分钟线）。三者都需要各自的合法账户；凭据只从本机环境变量读取，永远不能提交到仓库。先安装可选 SDK：
+
+```bash
+python -m pip install -r scripts/data_collector/a_share_rich/requirements.txt
+```
+
+在供应商授权完成后，先做一个已收盘交易日的小样本验收，而不是直接下载多年全市场数据：
+
+```bash
+python scripts/a_share_rich_data.py acceptance --provider rqdata --date 2026-07-13
+python scripts/a_share_rich_data.py acceptance --provider jqdata --date 2026-07-13
+python scripts/a_share_rich_data.py acceptance --provider tushare --date 2026-07-13
+python scripts/a_share_rich_data.py sync-tushare-events --start 2026-07-13 --end 2026-07-13
+```
+
+分钟线默认按原始未复权价格保存到 `data/raw/a_share/rich/`，每次下载都有独立不可变快照、SHA-256 和日内汇总；运行清单写入 `data/metadata/rich_data/runs/`。它们都标记为 `pending`，在随机股票的分钟末价/成交量/成交额与日线核对，并确认事件仅于盘后下一交易日可用前，**不得**进入因子或模型。大批量请求还必须显式传入 `--allow-large`。
