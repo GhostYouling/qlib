@@ -1129,6 +1129,20 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
   --diagnostic data/experiments/short_horizon/<run>_factor_diagnostic.json
 ```
 
-任一因子没有有效横截面时也会作为 `no_valid_cross_sectional_cohorts` 留在诊断中，而不是被静默删除。只有同时通过跨年度关联稳定性与 Top‑3 可行性门禁的因子，才允许根据已记录结果另写一份组合预注册；诊断本身始终 `selection_or_promotion_allowed=false`，不会生成选股或仓位。
+任一因子没有有效横截面时也会作为 `no_valid_cross_sectional_cohorts` 留在诊断中，而不是被静默删除。诊断本身始终 `selection_or_promotion_allowed=false`，不会生成选股或仓位。
+
+组合规则也已在本机仍为 0 个分钟快照时冻结：取**同时**通过完整默认稳定性与 Top‑3 审计的因子交集；少于两个则停止，至少两个则把交集中全部方向分位数做唯一一次等权平均，任一分量缺失时该股票日不合格。不枚举子集，不搜索权重，也不根据开发期表现挑聚合函数。使用两个完整审计和一份包含 2026‑01‑01 以后数据的特征运行执行：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py minute-combination-holdout \
+  --diagnostic data/experiments/short_horizon/<run>_factor_diagnostic.json \
+  --stability-audit data/experiments/short_horizon/<run>_factor_stability_audit.json \
+  --topk-audit data/experiments/short_horizon/<run>_factor_topk_viability_audit.json \
+  --feature-run data/metadata/rich_data/feature_runs/<holdout-feature-run>.json
+```
+
+命令会拒绝只审计部分因子、放宽 5 年/200 cohort 门槛、输入诊断哈希不一致或供应商/预注册不一致的记录。2026 条件留出仍须通过相同覆盖门禁，并在读取未来价格前证明至少有 20 个潜在非重叠 Top‑3 cohort；覆盖或容量不足只写拒绝记录，允许以后用延长但仍未读取收益的特征快照重试。一旦形成过未来收益，同一诊断、稳定性审计与 Top‑3 审计的哈希组合即被视为已消费，不能换新快照重跑。
+
+条件留出复用固定门槛：至少 20 个实际 cohort、扣费累计收益为正、最大回撤不差于 −20%。但此前其他日线研究已经观察过 2026 市场收益，因此这只是“分钟分数未见”的条件留出，不是纯净市场收益留出；即使通过也保持 `selection_or_promotion_allowed=false`，只能为这个完全相同的组合另行登记新日期开始的前瞻纸面观察，不能直接形成选股、仓位或实盘策略。所有通过、失败、无双门禁因子和未消费留出的覆盖/容量记录都会进入三日研究报告。
 
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。

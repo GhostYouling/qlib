@@ -104,6 +104,10 @@ MINUTE_FEATURE_BASE_COLUMNS = (
     "minute_feature_eligible",
     "opening_gap_return",
 )
+MINUTE_COMBINATION_NAME = "minute_dual_gate_equal_weight_all_v1"
+MINUTE_COMBINATION_HOLDOUT_START = "2026-01-01"
+MINUTE_COMBINATION_MIN_FACTORS = 2
+MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS = 20
 
 PROSPECTIVE_VWAP_FACTOR = "close_below_vwap_1"
 PROSPECTIVE_VWAP_SOURCE_FACTOR = "close_above_vwap_1"
@@ -1725,6 +1729,7 @@ def load_minute_factor_preregistration(
     diagnostic = spec.get("diagnostic_protocol") or {}
     coverage = spec.get("data_coverage_gate") or {}
     universe = spec.get("universe_contract") or {}
+    combination = spec.get("combination_protocol") or {}
     valid = (
         spec.get("version") == 1
         and spec.get("status") == "frozen_before_minute_data_observed"
@@ -1754,6 +1759,31 @@ def load_minute_factor_preregistration(
         and coverage.get("minimum_eligible_names_per_cross_section") == 50
         and coverage.get("failed_gate_policy")
         == "write_coverage_audit_without_reading_forward_returns"
+        and combination.get("name") == MINUTE_COMBINATION_NAME
+        and combination.get("input_factor_rule")
+        == "intersection_of_factors_passing_full_default_factor_stability_and_topk_viability_audits"
+        and combination.get("minimum_qualified_factor_count") == MINUTE_COMBINATION_MIN_FACTORS
+        and combination.get("maximum_qualified_factor_count") == len(MINUTE_FACTOR_NAMES)
+        and tuple(combination.get("factor_order") or []) == MINUTE_FACTOR_NAMES
+        and combination.get("aggregation")
+        == "arithmetic_mean_of_all_qualified_directional_cross_sectional_percentile_scores"
+        and combination.get("weighting")
+        == "equal_one_over_qualified_factor_count_without_subset_or_weight_search"
+        and combination.get("missing_component_policy")
+        == "stock_day_ineligible_if_any_qualified_factor_is_missing"
+        and combination.get("holdout_start") == MINUTE_COMBINATION_HOLDOUT_START
+        and combination.get("holdout_scope")
+        == "minute_score_conditional_holdout_not_pristine_market_return_holdout"
+        and combination.get("minimum_non_overlapping_holdout_cohorts")
+        == MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS
+        and combination.get("holdout_gate")
+        == "net_cumulative_return_positive_and_maximum_drawdown_not_below_minus_0.20"
+        and combination.get("consumption_rule")
+        == (
+            "coverage_or_capacity_failure_reads_no_forward_returns_and_may_retry; "
+            "after_forward_returns_are_read_the_exact_diagnostic_and_audit_inputs_may_never_run_again"
+        )
+        and combination.get("selection_or_promotion_allowed") is False
         and spec.get("forward_return_fields_read") is False
         and spec.get("selection_or_promotion_allowed") is False
     )
@@ -1940,6 +1970,210 @@ def load_minute_feature_run(
         "acceptance_snapshot_path": acceptance_path,
     }
     return manifest, spec, frame.sort_values(["trade_date", "symbol"], kind="stable"), chain
+
+
+def load_minute_combination_gate_inputs(
+    diagnostic_path: Path,
+    stability_audit_path: Path,
+    topk_audit_path: Path,
+    *,
+    factor_spec_path: Path = DEFAULT_MINUTE_FACTOR_SPEC,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], tuple[str, ...], dict[str, Any]]:
+    """Validate full default single-factor gates before any combination exists."""
+
+    diagnostic_path = diagnostic_path.expanduser().resolve()
+    stability_audit_path = stability_audit_path.expanduser().resolve()
+    topk_audit_path = topk_audit_path.expanduser().resolve()
+    spec = load_minute_factor_preregistration(factor_spec_path)
+    diagnostic = load_json_record(diagnostic_path)
+    stability = load_json_record(stability_audit_path)
+    topk = load_json_record(topk_audit_path)
+    if (
+        diagnostic.get("status") != "completed"
+        or diagnostic.get("purpose")
+        != "development_only_preregistered_minute_factor_diagnostic_research_not_investment_advice"
+        or tuple(diagnostic.get("factor_catalog") or []) != MINUTE_FACTOR_NAMES
+        or diagnostic.get("factor_directions")
+        != {
+            factor: direction
+            for factor, direction in zip(MINUTE_FACTOR_NAMES, MINUTE_FACTOR_DIRECTIONS)
+        }
+        or diagnostic.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("combination input is not the completed frozen minute factor diagnostic")
+    timing = diagnostic.get("strategy_timing") or {}
+    data = diagnostic.get("data") or {}
+    minute = diagnostic.get("minute_features") or {}
+    if (
+        timing.get("holding_period_trading_days") != 3
+        or timing.get("diagnostic_topk") != 3
+        or timing.get("open_cost") != 0.00012
+        or timing.get("close_cost") != 0.00062
+        or timing.get("parameters_read_from_preregistration") is not True
+        or data.get("development_end") != "2025-12-31"
+        or data.get("test_period_used_for_factor_design") is not False
+        or data.get("price_basis") != REQUIRED_PRICE_BASIS
+        or minute.get("factor_spec_sha256") != file_sha256(factor_spec_path.expanduser().resolve())
+        or minute.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("minute diagnostic timing, price basis, or preregistration fingerprint is invalid")
+    ranking = list(diagnostic.get("ranking_by_development_rank_ic") or [])
+    ranking_factors = [str(item.get("factor")) for item in ranking]
+    if len(ranking_factors) != len(MINUTE_FACTOR_NAMES) or set(ranking_factors) != set(MINUTE_FACTOR_NAMES):
+        raise ValueError("minute diagnostic must retain exactly all five frozen factors")
+
+    diagnostic_sha256 = file_sha256(diagnostic_path)
+    diagnostic_run_id = str(diagnostic.get("run_id") or diagnostic_path.stem)
+
+    def validate_audit_link(record: dict[str, Any], label: str) -> None:
+        source = record.get("input_diagnostic") or {}
+        source_path_value = str(source.get("path") or "")
+        if (
+            record.get("status") != "completed"
+            or not source_path_value
+            or resolve_repository_record_path(source_path_value) != diagnostic_path
+            or source.get("sha256") != diagnostic_sha256
+            or str(source.get("run_id")) != diagnostic_run_id
+        ):
+            raise ValueError(f"{label} is not fingerprint-bound to the minute diagnostic")
+
+    validate_audit_link(stability, "factor stability audit")
+    validate_audit_link(topk, "factor TopK viability audit")
+    stability_policy = stability.get("policy") or {}
+    if (
+        stability.get("purpose")
+        != "development_only_factor_stability_screen_research_not_investment_advice"
+        or stability.get("requested_factors") is not None
+        or stability_policy.get("minimum_calendar_years") != FACTOR_STABILITY_MIN_CALENDAR_YEARS
+        or stability_policy.get("minimum_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or stability_policy.get("mean_rank_ic_gt") != 0.0
+        or stability_policy.get("positive_rank_ic_rate_gt") != 0.50
+        or stability_policy.get("mean_top_minus_bottom_gross_return_gt") != 0.0
+        or stability_policy.get("every_observed_calendar_year_mean_rank_ic_gt") != 0.0
+        or stability_policy.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("factor stability audit did not use the full fixed default policy")
+    topk_policy = topk.get("policy") or {}
+    if (
+        topk.get("purpose")
+        != "development_only_single_factor_topk_viability_screen_research_not_investment_advice"
+        or topk.get("requested_factors") is not None
+        or topk_policy.get("minimum_executable_topk_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or topk_policy.get("topk_net_cumulative_return_gt") != 0.0
+        or topk_policy.get("topk_max_drawdown_gte") != STRICT_DEVELOPMENT_MAX_DRAWDOWN
+        or topk_policy.get("every_observed_calendar_year_topk_net_cumulative_return_gt") != 0.0
+        or topk_policy.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("factor TopK viability audit did not use the full fixed default policy")
+
+    def validated_qualified(record: dict[str, Any], label: str) -> set[str]:
+        decisions = list(record.get("factor_decisions") or [])
+        factors = [str(item.get("factor")) for item in decisions]
+        if len(factors) != len(MINUTE_FACTOR_NAMES) or set(factors) != set(MINUTE_FACTOR_NAMES):
+            raise ValueError(f"{label} must decide exactly all five frozen minute factors")
+        passed = {str(item.get("factor")) for item in decisions if item.get("passed") is True}
+        if passed != set(map(str, record.get("qualified_factors") or [])):
+            raise ValueError(f"{label} qualified-factor list conflicts with its decisions")
+        return passed
+
+    stable_factors = validated_qualified(stability, "factor stability audit")
+    viable_factors = validated_qualified(topk, "factor TopK viability audit")
+    qualified = tuple(
+        factor for factor in MINUTE_FACTOR_NAMES if factor in stable_factors & viable_factors
+    )
+    lineage = {
+        "diagnostic_path": diagnostic_path,
+        "diagnostic_sha256": diagnostic_sha256,
+        "stability_audit_path": stability_audit_path,
+        "stability_audit_sha256": file_sha256(stability_audit_path),
+        "topk_audit_path": topk_audit_path,
+        "topk_audit_sha256": file_sha256(topk_audit_path),
+        "factor_spec_path": factor_spec_path.expanduser().resolve(),
+        "factor_spec_sha256": file_sha256(factor_spec_path.expanduser().resolve()),
+    }
+    return diagnostic, stability, topk, qualified, lineage
+
+
+def minute_combination_input_key(lineage: dict[str, Any]) -> str:
+    """Identify the exact development evidence that may consume one holdout."""
+
+    payload = {
+        key: str(lineage[key])
+        for key in (
+            "diagnostic_sha256",
+            "stability_audit_sha256",
+            "topk_audit_sha256",
+            "factor_spec_sha256",
+        )
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def require_unconsumed_minute_combination_holdout(experiment_root: Path, input_key: str) -> None:
+    """Prevent a second look at holdout returns for the same development evidence."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_minute_combination_holdout.json")):
+        record = load_json_record(path)
+        if record.get("combination_input_key") != input_key:
+            continue
+        if (
+            record.get("forward_return_fields_read") is True
+            or record.get("status") == "no_eligible_factor_combination"
+        ):
+            raise ValueError(
+                "minute combination holdout is already consumed for this exact diagnostic and audit evidence: "
+                f"{path}"
+            )
+
+
+def add_minute_combination_score(
+    ranked: pd.DataFrame,
+    qualified_factors: Iterable[str],
+) -> pd.DataFrame:
+    """Apply the one frozen all-qualified equal-weight combination."""
+
+    factor_set = set(map(str, qualified_factors))
+    factors = tuple(factor for factor in MINUTE_FACTOR_NAMES if factor in factor_set)
+    if len(factors) < MINUTE_COMBINATION_MIN_FACTORS:
+        raise ValueError("minute combination requires at least two dual-gate-qualified factors")
+    if len(factors) != len(factor_set):
+        raise ValueError("minute combination contains an unknown factor")
+    if missing := sorted(set(factors) - set(ranked.columns)):
+        raise ValueError("minute combination frame is missing factors: " + ", ".join(missing))
+    result = ranked.copy()
+    result[MINUTE_COMBINATION_NAME] = result[list(factors)].mean(axis=1, skipna=False)
+    return result
+
+
+def minute_combination_holdout_capacity(
+    ranked: pd.DataFrame,
+    *,
+    hold_days: int = 3,
+    topk: int = 3,
+) -> dict[str, Any]:
+    """Count close-known potential cohorts before forming any forward return."""
+
+    if hold_days < 1 or topk < 1:
+        raise ValueError("hold_days and topk must be positive")
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(ranked["datetime"]).dropna().unique()))
+    rebalances = calendar[: -(hold_days + 1) : hold_days] if len(calendar) > hold_days + 1 else calendar[:0]
+    eligible = (
+        ranked["quality_eligible"].fillna(False)
+        & pd.to_numeric(ranked[MINUTE_COMBINATION_NAME], errors="coerce").notna()
+        & ranked["datetime"].isin(rebalances)
+    )
+    counts = ranked.loc[eligible].groupby("datetime", sort=True).size()
+    executable = counts.loc[counts.ge(topk)]
+    return {
+        "calendar_sessions": int(len(calendar)),
+        "potential_rebalance_dates": int(len(rebalances)),
+        "potential_complete_topk_cohorts": int(len(executable)),
+        "minimum_names_on_potential_cohort": int(executable.min()) if len(executable) else 0,
+        "minimum_required_holdout_cohorts": MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS,
+        "capacity_gate_passed": bool(len(executable) >= MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS),
+        "forward_return_fields_read": False,
+    }
 
 
 def qlib_symbol(code: Any) -> str | None:
@@ -9109,6 +9343,51 @@ def load_minute_factor_coverage_audits(experiment_root: Path) -> list[dict[str, 
     return audits
 
 
+def load_minute_combination_holdouts(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read deterministic minute-combination holdout and pre-return gate records."""
+
+    records: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_minute_combination_holdout.json")):
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if record.get("purpose") != (
+            "gate_conditioned_minute_combination_conditional_holdout_research_not_investment_advice"
+        ):
+            continue
+        data = record.get("data") or {}
+        result = record.get("result") or {}
+        topk = result.get("topk") or {}
+        capacity = record.get("capacity") or {}
+        gate = record.get("holdout_gate") or {}
+        diagnostic = ((record.get("input_evidence") or {}).get("diagnostic") or {})
+        records.append(
+            {
+                "run_id": str(record.get("run_id", path.stem)),
+                "status": str(record.get("status", "—")),
+                "diagnostic_run_id": str(diagnostic.get("run_id", "—")),
+                "qualified_factors": [str(item) for item in record.get("qualified_factors") or []],
+                "holdout_start": str(data.get("holdout_start", MINUTE_COMBINATION_HOLDOUT_START)),
+                "holdout_end": str(data.get("holdout_end", "—")),
+                "cohorts": int(
+                    topk.get("rounds")
+                    or capacity.get("potential_complete_topk_cohorts")
+                    or 0
+                ),
+                "net_cumulative_return": topk.get("net_cumulative_return"),
+                "max_drawdown": topk.get("max_drawdown"),
+                "holdout_gate_passed": bool(gate.get("passed", False)),
+                "forward_return_fields_read": bool(record.get("forward_return_fields_read", False)),
+                "selection_or_promotion_allowed": bool(
+                    record.get("selection_or_promotion_allowed", True)
+                ),
+                "path": str(path.resolve()),
+            }
+        )
+    return records
+
+
 def pre_complete_window_invalid_factors(run_id: str, factors: Iterable[str]) -> set[str]:
     """Identify factor rows invalidated by the fixed full-window semantics audit."""
 
@@ -9878,6 +10157,7 @@ def render_three_day_research_report(
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
+    minute_combination_holdouts: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -10134,6 +10414,45 @@ def render_three_day_research_report(
                     }.get(audit.get("input_evidence_status"), "有效"),
                     count=audit["factor_count"],
                     qualified=qualified,
+                )
+            )
+        lines.append("")
+    if minute_combination_holdouts:
+        lines.extend(
+            [
+                "",
+                "## 分钟因子固定组合条件留出",
+                "",
+                "这里只允许双门禁交集中全部因子的唯一等权组合；不搜索子集或权重。2026 日线结果曾被其他研究观察，因此这里只是分钟分数条件留出，任何通过仍不可晋级或直接选股。",
+                "",
+                "| 运行 | 输入诊断 | 双门禁因子 | 条件留出期 | Cohort | 净收益 | 最大回撤 | 读取未来收益 | 结论 |",
+                "| --- | --- | --- | --- | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        conclusions = {
+            "no_eligible_factor_combination": "少于两个双门禁因子，停止",
+            "insufficient_holdout_coverage": "覆盖不足，未消费留出期",
+            "insufficient_holdout_capacity": "容量不足，未消费留出期",
+        }
+        for item in minute_combination_holdouts:
+            conclusion = conclusions.get(
+                item["status"],
+                "条件门禁通过（仍仅研究）"
+                if item["holdout_gate_passed"]
+                else "条件门禁失败，停止",
+            )
+            lines.append(
+                "| {run_id} | {diagnostic} | {factors} | {start} 至 {end} | {cohorts} | {net} | {mdd} | {forward} | {conclusion} |".format(
+                    run_id=item["run_id"],
+                    diagnostic=item["diagnostic_run_id"],
+                    factors="、".join(item["qualified_factors"]) or "无",
+                    start=item["holdout_start"],
+                    end=item["holdout_end"],
+                    cohorts=item["cohorts"],
+                    net=_percent(item["net_cumulative_return"]),
+                    mdd=_percent(item["max_drawdown"]),
+                    forward="是" if item["forward_return_fields_read"] else "否",
+                    conclusion=conclusion,
                 )
             )
         lines.append("")
@@ -10727,6 +11046,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     factor_diagnostics = load_factor_diagnostics(experiment_root)
     rolling_window_semantics_audits = load_rolling_window_semantics_audits(experiment_root)
     minute_factor_coverage_audits = load_minute_factor_coverage_audits(experiment_root)
+    minute_combination_holdouts = load_minute_combination_holdouts(experiment_root)
     factor_stability_audits = load_factor_stability_audits(experiment_root)
     factor_topk_viability_audits = load_factor_topk_viability_audits(experiment_root)
     event_factor_holdouts = load_event_factor_holdouts(experiment_root)
@@ -10773,6 +11093,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         quarterly_event_capacity_audits=quarterly_event_capacity_audits,
         rolling_window_semantics_audits=rolling_window_semantics_audits,
         minute_factor_coverage_audits=minute_factor_coverage_audits,
+        minute_combination_holdouts=minute_combination_holdouts,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -10799,6 +11120,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "factor_diagnostics": len(factor_diagnostics),
         "rolling_window_semantics_audits": len(rolling_window_semantics_audits),
         "minute_factor_coverage_audits": len(minute_factor_coverage_audits),
+        "minute_combination_holdouts": len(minute_combination_holdouts),
         "factor_stability_audits": len(factor_stability_audits),
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
@@ -11741,6 +12063,297 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
         "input_diagnostic_run_id": audit["input_diagnostic"]["run_id"],
         "factor_count": len(decisions),
         "qualified_factors": audit["qualified_factors"],
+    }
+
+
+def run_minute_combination_holdout(args: argparse.Namespace) -> dict[str, Any]:
+    """Evaluate the one frozen dual-gate minute combination exactly once."""
+
+    diagnostic_path = Path(args.diagnostic).expanduser()
+    stability_path = Path(args.stability_audit).expanduser()
+    topk_path = Path(args.topk_audit).expanduser()
+    feature_run_path = Path(args.feature_run).expanduser()
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    diagnostic, stability, topk_audit, qualified_factors, lineage = (
+        load_minute_combination_gate_inputs(diagnostic_path, stability_path, topk_path)
+    )
+    spec = load_minute_factor_preregistration()
+    combination = spec["combination_protocol"]
+    input_key = minute_combination_input_key(lineage)
+    require_unconsumed_minute_combination_holdout(experiment_root, input_key)
+    run_id = _timestamp()
+    evidence = {
+        "diagnostic": {
+            "run_id": diagnostic.get("run_id"),
+            "path": str(lineage["diagnostic_path"]),
+            "sha256": lineage["diagnostic_sha256"],
+        },
+        "stability_audit": {
+            "run_id": stability.get("run_id"),
+            "path": str(lineage["stability_audit_path"]),
+            "sha256": lineage["stability_audit_sha256"],
+        },
+        "topk_viability_audit": {
+            "run_id": topk_audit.get("run_id"),
+            "path": str(lineage["topk_audit_path"]),
+            "sha256": lineage["topk_audit_sha256"],
+        },
+        "factor_spec": {
+            "path": str(lineage["factor_spec_path"]),
+            "sha256": lineage["factor_spec_sha256"],
+        },
+    }
+
+    def write_record(record: dict[str, Any]) -> Path:
+        experiment_root.mkdir(parents=True, exist_ok=True)
+        destination = experiment_root / f"{record['run_id']}_minute_combination_holdout.json"
+        if destination.exists():
+            raise RuntimeError(f"minute combination holdout record already exists: {destination}")
+        _atomic_write_text(
+            destination,
+            json.dumps(record, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+        )
+        return destination
+
+    base = {
+        "run_id": run_id,
+        "combination_input_key": input_key,
+        "purpose": "gate_conditioned_minute_combination_conditional_holdout_research_not_investment_advice",
+        "combination_protocol": combination,
+        "qualified_factors": list(qualified_factors),
+        "qualified_factor_count": len(qualified_factors),
+        "input_evidence": evidence,
+        "selection_or_promotion_allowed": False,
+    }
+    if len(qualified_factors) < int(combination["minimum_qualified_factor_count"]):
+        record = {
+            **base,
+            "status": "no_eligible_factor_combination",
+            "reason": "fewer than two factors passed both full default single-factor gates",
+            "forward_return_fields_read": False,
+            "terminal_for_input_evidence": True,
+        }
+        destination = write_record(record)
+        return {
+            "status": record["status"],
+            "audit_path": str(destination.resolve()),
+            "qualified_factors": list(qualified_factors),
+            "forward_return_fields_read": False,
+        }
+
+    feature_manifest, feature_spec, minute_features, feature_chain = load_minute_feature_run(
+        feature_run_path
+    )
+    diagnostic_minute = diagnostic.get("minute_features") or {}
+    if (
+        feature_spec != spec
+        or feature_manifest.get("provider") != diagnostic_minute.get("provider")
+        or feature_chain["factor_spec_sha256"] != lineage["factor_spec_sha256"]
+    ):
+        raise ValueError("holdout feature run does not match the diagnostic provider and frozen specification")
+    feature_evidence = {
+        "run_id": feature_manifest.get("run_id"),
+        "provider": feature_manifest.get("provider"),
+        "path": str(feature_chain["feature_run_path"]),
+        "sha256": feature_chain["feature_run_sha256"],
+        "output_path": str(feature_chain["feature_output_path"]),
+        "output_file_sha256": file_sha256(feature_chain["feature_output_path"]),
+    }
+    holdout_start = pd.Timestamp(combination["holdout_start"])
+    requested_features = minute_features.loc[
+        minute_features["trade_date"].ge(holdout_start)
+    ].copy()
+    if requested_features.empty:
+        record = {
+            **base,
+            "status": "insufficient_holdout_capacity",
+            "feature_run": feature_evidence,
+            "coverage": None,
+            "capacity": {
+                "potential_complete_topk_cohorts": 0,
+                "minimum_required_holdout_cohorts": MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS,
+                "capacity_gate_passed": False,
+                "forward_return_fields_read": False,
+            },
+            "forward_return_fields_read": False,
+            "retry_allowed_with_extended_unseen_feature_run": True,
+        }
+        destination = write_record(record)
+        return {"status": record["status"], "audit_path": str(destination.resolve()), **record["capacity"]}
+
+    max_quality_age_days = int(spec["universe_contract"]["maximum_quality_age_days"])
+    hold_days = int(spec["holding_protocol"]["holding_period_trading_days"])
+    diagnostic_topk = int(spec["holding_protocol"]["topk"])
+    open_cost = float(spec["holding_protocol"]["open_cost"])
+    close_cost = float(spec["holding_protocol"]["close_cost"])
+    requested_end = pd.Timestamp(requested_features["trade_date"].max())
+    price_basis_metadata = research_price_basis_metadata(provider_uri)
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_execution_data(
+        provider_uri,
+        holdout_start.date().isoformat(),
+        requested_end.date().isoformat(),
+        args.batch_size,
+    )
+    market_end = pd.Timestamp(market["datetime"].max()).normalize()
+    holdout_features = requested_features.loc[
+        requested_features["trade_date"].le(market_end)
+    ].copy()
+    if holdout_features.empty:
+        record = {
+            **base,
+            "status": "insufficient_holdout_capacity",
+            "feature_run": feature_evidence,
+            "coverage": None,
+            "capacity": {
+                "potential_complete_topk_cohorts": 0,
+                "minimum_required_holdout_cohorts": MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS,
+                "capacity_gate_passed": False,
+                "forward_return_fields_read": False,
+            },
+            "forward_return_fields_read": False,
+            "retry_allowed_with_extended_unseen_feature_run": True,
+        }
+        destination = write_record(record)
+        return {"status": record["status"], "audit_path": str(destination.resolve()), **record["capacity"]}
+
+    market = attach_quality_asof(market, fundamentals, max_age_days=max_quality_age_days)
+    ranked, coverage = attach_directional_minute_factors(market, holdout_features, spec)
+    ranked = add_minute_combination_score(ranked, qualified_factors)
+    if not coverage["coverage_gate_passed"]:
+        record = {
+            **base,
+            "status": "insufficient_holdout_coverage",
+            "feature_run": feature_evidence,
+            "coverage": coverage,
+            "forward_return_fields_read": False,
+            "retry_allowed_with_extended_unseen_feature_run": True,
+        }
+        destination = write_record(record)
+        return {
+            "status": record["status"],
+            "audit_path": str(destination.resolve()),
+            "coverage": coverage,
+            "forward_return_fields_read": False,
+        }
+    capacity = minute_combination_holdout_capacity(
+        ranked, hold_days=hold_days, topk=diagnostic_topk
+    )
+    if not capacity["capacity_gate_passed"]:
+        record = {
+            **base,
+            "status": "insufficient_holdout_capacity",
+            "feature_run": feature_evidence,
+            "coverage": coverage,
+            "capacity": capacity,
+            "forward_return_fields_read": False,
+            "retry_allowed_with_extended_unseen_feature_run": True,
+        }
+        destination = write_record(record)
+        return {
+            "status": record["status"],
+            "audit_path": str(destination.resolve()),
+            **capacity,
+        }
+
+    require_unconsumed_minute_combination_holdout(experiment_root, input_key)
+    forward_returns = forward_factor_return_frame(ranked, hold_days)
+    forward_returns = forward_returns.loc[
+        pd.to_datetime(forward_returns["signal_date"]).ge(holdout_start)
+    ].copy()
+    summaries = summarize_factor_diagnostics(
+        forward_returns,
+        (MINUTE_COMBINATION_NAME,),
+        hold_days=hold_days,
+        topk=diagnostic_topk,
+        open_cost=open_cost,
+        close_cost=close_cost,
+    )
+    result = (
+        summaries[0]
+        if summaries
+        else unavailable_factor_diagnostic_summary(MINUTE_COMBINATION_NAME, hold_days)
+    )
+    passed, failures = initial_test_gate(result["topk"])
+    record = {
+        **base,
+        "status": "completed",
+        "feature_run": feature_evidence,
+        "strategy_timing": {
+            "universe": "buyable_main_chinext",
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "holding_period_trading_days": hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": "signal-session close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "topk": diagnostic_topk,
+            "open_cost": open_cost,
+            "close_cost": close_cost,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "max_quality_age_days": max_quality_age_days,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
+        },
+        "coverage": coverage,
+        "capacity": capacity,
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            **price_basis_metadata,
+            "holdout_start": holdout_start.date().isoformat(),
+            "holdout_end": market_end.date().isoformat(),
+            "minute_feature_rows_used": int(len(holdout_features)),
+            "feature_rows_after_local_daily_end_ignored": int(
+                len(requested_features) - len(holdout_features)
+            ),
+            "holdout_used_for_factor_or_weight_design": False,
+            "holdout_scope": combination["holdout_scope"],
+        },
+        "result": result,
+        "holdout_gate": {
+            "passed": passed,
+            "criteria": {
+                "minimum_test_cohorts": MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS,
+                "net_cumulative_return_gt": 0.0,
+                "max_drawdown_gte": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+            },
+            "failures": failures,
+        },
+        "forward_return_fields_read": True,
+        "holdout_consumed_for_input_evidence": True,
+        "promotion": {
+            "eligible_for_promotion": False,
+            "status": (
+                "passed_conditional_minute_holdout_research_only"
+                if passed
+                else "failed_conditional_minute_holdout"
+            ),
+            "next_step": (
+                "A pass permits only a newly dated prospective paper observation of this exact fixed combination; "
+                "it does not permit historical retuning, stock selection, or live capital."
+            ),
+        },
+        "limitations": [
+            "This is the only preregistered all-qualified equal-weight combination; no subset or weight search was performed.",
+            "Prior unrelated daily-factor work has already exposed 2026 market returns, so this is only a conditional holdout of previously unseen minute scores, not a pristine market-return holdout.",
+            "A consumed holdout may not be rerun with a later feature snapshot for the same diagnostic and audit evidence.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias.",
+            "Exact limit queues, suspension fills, queue priority, and market impact are not simulated.",
+        ],
+    }
+    destination = write_record(record)
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "qualified_factors": list(qualified_factors),
+        "holdout_gate_passed": passed,
+        "holdout_gate_failures": failures,
+        "result": result,
+        "forward_return_fields_read": True,
     }
 
 
@@ -13421,6 +14034,19 @@ def parse_args() -> argparse.Namespace:
         help="optional exact factor name to audit; repeat to restrict the saved diagnostic",
     )
 
+    minute_combination_holdout = subparsers.add_parser(
+        "minute-combination-holdout",
+        help="evaluate the one frozen all-dual-gate minute combination on its conditional holdout",
+    )
+    minute_combination_holdout.add_argument("--diagnostic", required=True)
+    minute_combination_holdout.add_argument("--stability-audit", required=True)
+    minute_combination_holdout.add_argument("--topk-audit", required=True)
+    minute_combination_holdout.add_argument("--feature-run", required=True)
+    minute_combination_holdout.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    minute_combination_holdout.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    minute_combination_holdout.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    minute_combination_holdout.add_argument("--batch-size", type=int, default=500)
+
     selection_multiplicity_audit = subparsers.add_parser(
         "selection-multiplicity-audit",
         help="audit a stored development winner for candidate-library search multiplicity",
@@ -13953,6 +14579,8 @@ def main() -> int:
         report = run_factor_stability_audit(args)
     elif args.command == "factor-topk-viability-audit":
         report = run_factor_topk_viability_audit(args)
+    elif args.command == "minute-combination-holdout":
+        report = run_minute_combination_holdout(args)
     elif args.command == "selection-multiplicity-audit":
         report = run_selection_multiplicity_audit(args)
     elif args.command == "limit-like-event-audit":

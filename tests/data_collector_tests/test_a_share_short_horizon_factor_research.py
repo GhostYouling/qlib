@@ -146,6 +146,97 @@ def make_minute_feature_chain(
     return manifest_path, stored_features
 
 
+def make_minute_gate_records(
+    tmp_path: Path,
+    *,
+    stability_qualified: tuple[str, ...] = (),
+    topk_qualified: tuple[str, ...] = (),
+) -> tuple[Path, Path, Path]:
+    diagnostic_path = tmp_path / "minute_factor_diagnostic.json"
+    diagnostic = {
+        "run_id": "minute-diagnostic",
+        "status": "completed",
+        "purpose": "development_only_preregistered_minute_factor_diagnostic_research_not_investment_advice",
+        "factor_catalog": list(RESEARCH.MINUTE_FACTOR_NAMES),
+        "factor_directions": dict(
+            zip(RESEARCH.MINUTE_FACTOR_NAMES, RESEARCH.MINUTE_FACTOR_DIRECTIONS)
+        ),
+        "strategy_timing": {
+            "holding_period_trading_days": 3,
+            "diagnostic_topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "parameters_read_from_preregistration": True,
+        },
+        "minute_features": {
+            "provider": "rqdata",
+            "factor_spec_sha256": RESEARCH.file_sha256(RESEARCH.DEFAULT_MINUTE_FACTOR_SPEC),
+            "selection_or_promotion_allowed": False,
+        },
+        "data": {
+            "development_end": "2025-12-31",
+            "test_period_used_for_factor_design": False,
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+        },
+        "ranking_by_development_rank_ic": [
+            {"factor": factor} for factor in RESEARCH.MINUTE_FACTOR_NAMES
+        ],
+        "selection_or_promotion_allowed": False,
+    }
+    write_json_record(diagnostic_path, diagnostic)
+    diagnostic_link = {
+        "run_id": diagnostic["run_id"],
+        "path": str(diagnostic_path),
+        "sha256": RESEARCH.file_sha256(diagnostic_path),
+    }
+    stability_path = tmp_path / "minute_factor_stability_audit.json"
+    stability = {
+        "run_id": "minute-stability",
+        "status": "completed",
+        "purpose": "development_only_factor_stability_screen_research_not_investment_advice",
+        "input_diagnostic": diagnostic_link,
+        "policy": {
+            "minimum_calendar_years": 5,
+            "minimum_cohorts": 200,
+            "mean_rank_ic_gt": 0.0,
+            "positive_rank_ic_rate_gt": 0.50,
+            "mean_top_minus_bottom_gross_return_gt": 0.0,
+            "every_observed_calendar_year_mean_rank_ic_gt": 0.0,
+            "selection_or_promotion_allowed": False,
+        },
+        "requested_factors": None,
+        "factor_decisions": [
+            {"factor": factor, "passed": factor in stability_qualified}
+            for factor in RESEARCH.MINUTE_FACTOR_NAMES
+        ],
+        "qualified_factors": list(stability_qualified),
+    }
+    write_json_record(stability_path, stability)
+    topk_path = tmp_path / "minute_factor_topk_audit.json"
+    topk = {
+        "run_id": "minute-topk",
+        "status": "completed",
+        "purpose": "development_only_single_factor_topk_viability_screen_research_not_investment_advice",
+        "input_diagnostic": diagnostic_link,
+        "policy": {
+            "factor_association_stability_screen": "factor_stability_decision with fixed default thresholds",
+            "minimum_executable_topk_cohorts": 200,
+            "topk_net_cumulative_return_gt": 0.0,
+            "topk_max_drawdown_gte": -0.20,
+            "every_observed_calendar_year_topk_net_cumulative_return_gt": 0.0,
+            "selection_or_promotion_allowed": False,
+        },
+        "requested_factors": None,
+        "factor_decisions": [
+            {"factor": factor, "passed": factor in topk_qualified}
+            for factor in RESEARCH.MINUTE_FACTOR_NAMES
+        ],
+        "qualified_factors": list(topk_qualified),
+    }
+    write_json_record(topk_path, topk)
+    return diagnostic_path, stability_path, topk_path
+
+
 def test_annual_report_dates_and_symbol_mapping():
     assert RESEARCH.annual_report_dates(2023, 2025) == ["2023-12-31", "2024-12-31", "2025-12-31"]
     assert RESEARCH.quarterly_report_dates(2023, 2024) == [
@@ -1622,6 +1713,16 @@ def test_minute_feature_run_loader_verifies_the_full_manifest_chain(tmp_path):
         RESEARCH.load_minute_feature_run(manifest_path)
 
 
+def test_minute_preregistration_freezes_the_holdout_consumption_rule(tmp_path):
+    spec = json.loads(RESEARCH.DEFAULT_MINUTE_FACTOR_SPEC.read_text(encoding="utf-8"))
+    spec["combination_protocol"]["consumption_rule"] = "allow_repeated_holdout_reads"
+    changed_path = tmp_path / "changed_minute_factor_preregistration.json"
+    write_json_record(changed_path, spec)
+
+    with pytest.raises(ValueError, match="frozen v1 diagnostic protocol"):
+        RESEARCH.load_minute_factor_preregistration(changed_path)
+
+
 def test_minute_factor_direction_is_ranked_after_quality_and_listing_gates(tmp_path):
     symbols = tuple(f"SZ{index:06d}" for index in range(1, 52))
     _, features = make_minute_feature_chain(tmp_path, symbols=symbols)
@@ -1810,6 +1911,223 @@ def test_minute_coverage_gate_stops_before_forward_returns(tmp_path, monkeypatch
     assert "分钟因子数据覆盖门禁" in report
     assert "rqdata / feature-run" in report
     assert "读取未来收益" in report
+
+
+def test_minute_combination_requires_full_default_gate_audits(tmp_path):
+    first_three = RESEARCH.MINUTE_FACTOR_NAMES[:3]
+    first_two = RESEARCH.MINUTE_FACTOR_NAMES[:2]
+    diagnostic_path, stability_path, topk_path = make_minute_gate_records(
+        tmp_path,
+        stability_qualified=first_three,
+        topk_qualified=first_two,
+    )
+    _, _, _, qualified, lineage = RESEARCH.load_minute_combination_gate_inputs(
+        diagnostic_path, stability_path, topk_path
+    )
+    assert qualified == first_two
+    assert len(RESEARCH.minute_combination_input_key(lineage)) == 64
+
+    stability = json.loads(stability_path.read_text())
+    stability["policy"]["minimum_cohorts"] = 199
+    write_json_record(stability_path, stability)
+    with pytest.raises(ValueError, match="full fixed default policy"):
+        RESEARCH.load_minute_combination_gate_inputs(
+            diagnostic_path, stability_path, topk_path
+        )
+
+
+def test_minute_combination_records_no_dual_gate_factors_without_returns(tmp_path):
+    diagnostic_path, stability_path, topk_path = make_minute_gate_records(tmp_path)
+    result = RESEARCH.run_minute_combination_holdout(
+        SimpleNamespace(
+            diagnostic=str(diagnostic_path),
+            stability_audit=str(stability_path),
+            topk_audit=str(topk_path),
+            feature_run=str(tmp_path / "not-needed.json"),
+            provider_uri=str(tmp_path / "not-needed-provider"),
+            fundamentals=str(tmp_path / "not-needed-fundamentals"),
+            experiment_root=str(tmp_path / "experiments"),
+            batch_size=500,
+        )
+    )
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert result["status"] == "no_eligible_factor_combination"
+    assert result["forward_return_fields_read"] is False
+    assert audit["qualified_factor_count"] == 0
+    assert audit["terminal_for_input_evidence"] is True
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_minute_combination_holdout(
+            SimpleNamespace(
+                diagnostic=str(diagnostic_path),
+                stability_audit=str(stability_path),
+                topk_audit=str(topk_path),
+                feature_run=str(tmp_path / "not-needed.json"),
+                provider_uri=str(tmp_path / "not-needed-provider"),
+                fundamentals=str(tmp_path / "not-needed-fundamentals"),
+                experiment_root=str(tmp_path / "experiments"),
+                batch_size=500,
+            )
+        )
+
+
+def test_minute_combination_capacity_gate_stops_before_holdout_returns(tmp_path, monkeypatch):
+    qualified = RESEARCH.MINUTE_FACTOR_NAMES[:2]
+    diagnostic_path, stability_path, topk_path = make_minute_gate_records(
+        tmp_path,
+        stability_qualified=qualified,
+        topk_qualified=qualified,
+    )
+    dates = pd.bdate_range("2026-01-02", periods=30)
+    symbols = tuple(f"SZ{index:06d}" for index in range(1, 61))
+    feature_run_path, _ = make_minute_feature_chain(tmp_path, dates=dates, symbols=symbols)
+    provider_uri = tmp_path / "provider"
+    provider_uri.mkdir()
+    write_json_record(
+        provider_uri / RESEARCH.PRICE_BASIS_MANIFEST_NAME,
+        {
+            "status": "passed",
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "failures": {},
+            "future_corporate_actions_used": False,
+        },
+    )
+    fundamental_path = tmp_path / "fundamentals.parquet"
+    fundamental_path.write_bytes(b"offline-fixture")
+    market = pd.DataFrame(
+        [
+            {
+                "datetime": date,
+                "instrument": symbol,
+                "open": 100.0,
+                "close": 100.0,
+                "listing_age_sessions": 100,
+            }
+            for date in dates
+            for symbol in symbols
+        ]
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_market_execution_data",
+        lambda provider_uri, start, end, batch_size: market.copy(),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+
+    def attach_all_quality(frame, fundamentals, max_age_days=550):
+        result = frame.copy()
+        result["fundamental_quality_eligible"] = True
+        result["listing_seasoning_eligible"] = True
+        result["quality_eligible"] = True
+        return result
+
+    monkeypatch.setattr(RESEARCH, "attach_quality_asof", attach_all_quality)
+    monkeypatch.setattr(
+        RESEARCH,
+        "forward_factor_return_frame",
+        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("holdout returns must not be read")),
+    )
+    result = RESEARCH.run_minute_combination_holdout(
+        SimpleNamespace(
+            diagnostic=str(diagnostic_path),
+            stability_audit=str(stability_path),
+            topk_audit=str(topk_path),
+            feature_run=str(feature_run_path),
+            provider_uri=str(provider_uri),
+            fundamentals=str(fundamental_path),
+            experiment_root=str(tmp_path / "experiments"),
+            batch_size=500,
+        )
+    )
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert result["status"] == "insufficient_holdout_capacity"
+    assert result["forward_return_fields_read"] is False
+    assert audit["capacity"]["potential_complete_topk_cohorts"] < 20
+
+
+def test_minute_combination_consumes_one_conditional_holdout_once(tmp_path, monkeypatch):
+    qualified = RESEARCH.MINUTE_FACTOR_NAMES[:2]
+    diagnostic_path, stability_path, topk_path = make_minute_gate_records(
+        tmp_path,
+        stability_qualified=qualified,
+        topk_qualified=qualified,
+    )
+    dates = pd.bdate_range("2026-01-02", periods=75)
+    symbols = tuple(f"SZ{index:06d}" for index in range(1, 61))
+    feature_run_path, _ = make_minute_feature_chain(tmp_path, dates=dates, symbols=symbols)
+    provider_uri = tmp_path / "provider"
+    provider_uri.mkdir()
+    write_json_record(
+        provider_uri / RESEARCH.PRICE_BASIS_MANIFEST_NAME,
+        {
+            "status": "passed",
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "failures": {},
+            "future_corporate_actions_used": False,
+        },
+    )
+    fundamental_path = tmp_path / "fundamentals.parquet"
+    fundamental_path.write_bytes(b"offline-fixture")
+    market = pd.DataFrame(
+        [
+            {
+                "datetime": date,
+                "instrument": symbol,
+                "open": 100.0,
+                "close": 100.0 + position,
+                "listing_age_sessions": 100,
+            }
+            for date in dates
+            for position, symbol in enumerate(symbols, start=1)
+        ]
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_market_execution_data",
+        lambda provider_uri, start, end, batch_size: market.copy(),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+
+    def attach_all_quality(frame, fundamentals, max_age_days=550):
+        result = frame.copy()
+        result["fundamental_quality_eligible"] = True
+        result["listing_seasoning_eligible"] = True
+        result["quality_eligible"] = True
+        return result
+
+    monkeypatch.setattr(RESEARCH, "attach_quality_asof", attach_all_quality)
+    args = SimpleNamespace(
+        diagnostic=str(diagnostic_path),
+        stability_audit=str(stability_path),
+        topk_audit=str(topk_path),
+        feature_run=str(feature_run_path),
+        provider_uri=str(provider_uri),
+        fundamentals=str(fundamental_path),
+        experiment_root=str(tmp_path / "experiments"),
+        batch_size=500,
+    )
+    result = RESEARCH.run_minute_combination_holdout(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert result["status"] == "completed"
+    assert result["holdout_gate_passed"] is True
+    assert result["forward_return_fields_read"] is True
+    assert audit["qualified_factors"] == list(qualified)
+    assert audit["result"]["factor"] == RESEARCH.MINUTE_COMBINATION_NAME
+    assert audit["result"]["topk"]["rounds"] >= 20
+    assert audit["promotion"]["eligible_for_promotion"] is False
+    assert audit["data"]["holdout_scope"] == (
+        "minute_score_conditional_holdout_not_pristine_market_return_holdout"
+    )
+    holdouts = RESEARCH.load_minute_combination_holdouts(tmp_path / "experiments")
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        minute_combination_holdouts=holdouts,
+    )
+    assert "分钟因子固定组合条件留出" in report
+    assert "条件门禁通过（仍仅研究）" in report
+    assert "minute-diagnostic" in report
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_minute_combination_holdout(args)
 
 
 def test_rolling_window_semantics_audit_rejects_partial_history_without_reading_returns():

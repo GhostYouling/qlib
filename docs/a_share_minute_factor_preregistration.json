@@ -11,6 +11,14 @@
       "local_alignment_confirmation_count_before_change": 0,
       "local_minute_feature_run_count_before_change": 0,
       "minute_factor_returns_observed_before_change": false
+    },
+    {
+      "amended_on": "2026-07-14",
+      "change": "Added the deterministic dual-gate equal-weight combination and one-time post-2025 holdout protocol; feature formulas and directions were unchanged.",
+      "local_snapshot_manifest_count_before_change": 0,
+      "local_alignment_confirmation_count_before_change": 0,
+      "local_minute_feature_run_count_before_change": 0,
+      "minute_factor_returns_observed_before_change": false
     }
   ],
   "purpose": "Test five close-known one-minute path hypotheses for the fixed three-session A-share research protocol without observing minute-factor returns first.",
@@ -89,6 +97,28 @@
     "association_gate": "overall_and_each_year_mean_rank_ic_positive; positive_rank_ic_share_above_0.5; top3_minus_bottom3_mean_gross_return_positive",
     "topk_gate": "association_gate_passed; overall_and_each_year_top3_net_return_positive; maximum_drawdown_not_below_minus_0.20",
     "failed_direction_policy": "retire_without_inverting_or_changing_window_on_the_same_development_history"
+  },
+  "combination_protocol": {
+    "name": "minute_dual_gate_equal_weight_all_v1",
+    "input_factor_rule": "intersection_of_factors_passing_full_default_factor_stability_and_topk_viability_audits",
+    "minimum_qualified_factor_count": 2,
+    "maximum_qualified_factor_count": 5,
+    "factor_order": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "opening_gap_digestion",
+      "intraday_realized_volatility"
+    ],
+    "aggregation": "arithmetic_mean_of_all_qualified_directional_cross_sectional_percentile_scores",
+    "weighting": "equal_one_over_qualified_factor_count_without_subset_or_weight_search",
+    "missing_component_policy": "stock_day_ineligible_if_any_qualified_factor_is_missing",
+    "holdout_start": "2026-01-01",
+    "holdout_scope": "minute_score_conditional_holdout_not_pristine_market_return_holdout",
+    "minimum_non_overlapping_holdout_cohorts": 20,
+    "holdout_gate": "net_cumulative_return_positive_and_maximum_drawdown_not_below_minus_0.20",
+    "consumption_rule": "coverage_or_capacity_failure_reads_no_forward_returns_and_may_retry; after_forward_returns_are_read_the_exact_diagnostic_and_audit_inputs_may_never_run_again",
+    "selection_or_promotion_allowed": false
   },
   "forward_return_fields_read": false,
   "selection_or_promotion_allowed": false
