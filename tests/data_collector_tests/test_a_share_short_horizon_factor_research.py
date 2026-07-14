@@ -2787,6 +2787,61 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
     assert "无效 → factor-diagnostic-fixed" in report
 
 
+def test_pre_complete_window_report_keeps_only_unaffected_factor_rows_as_valid(tmp_path):
+    (tmp_path / "20260713T000000Z_factor_diagnostic.json").write_text(
+        json.dumps(
+            {
+                "run_id": "20260713T000000Z",
+                "status": "completed",
+                "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
+                "ranking_by_development_rank_ic": [
+                    {"factor": "amplitude_low", "mean_rank_ic": 0.05},
+                    {"factor": "reversal_1", "mean_rank_ic": 0.02},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    diagnostics = RESEARCH.load_factor_diagnostics(tmp_path, tmp_path / "missing_invalidations.json")
+    assert diagnostics[0]["evidence_status"] == "partially_invalidated"
+    assert diagnostics[0]["invalidated_factors"] == ["amplitude_low"]
+    assert diagnostics[0]["valid_factor_count"] == 1
+    assert diagnostics[0]["top_factor"] == "reversal_1"
+    assert RESEARCH.pre_complete_window_invalid_factors(
+        "20260713T000000Z", ["amplitude_low", "reversal_1"]
+    ) == {"amplitude_low"}
+    assert not RESEARCH.pre_complete_window_invalid_factors(
+        "20260714T095118Z", ["amplitude_low"]
+    )
+
+
+def test_rolling_window_semantics_audits_are_retained_without_future_returns(tmp_path):
+    (tmp_path / "20260714T000000Z_rolling_window_semantics_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "window-audit",
+                "status": "completed",
+                "passed": False,
+                "factor_count": 2,
+                "failed_factor_count": 1,
+                "failed_factors": ["volatility_20"],
+                "forward_return_fields_read": False,
+                "data": {"calendar_start": "2015-01-05", "calendar_end": "2026-07-13"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_rolling_window_semantics_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        rolling_window_semantics_audits=audits,
+    )
+    assert "滚动因子完整窗口语义审计" in report
+    assert "volatility_20" in report
+    assert "| window-audit | 2015-01-05 至 2026-07-13 | 2 | 1 | 否 |" in report
+
+
 def test_billboard_holdouts_are_retained_as_non_promotable_event_evidence(tmp_path):
     (tmp_path / "billboard_event_factor_holdout.json").write_text(
         json.dumps(

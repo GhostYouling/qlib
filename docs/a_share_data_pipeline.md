@@ -385,6 +385,8 @@ python scripts/a_share_short_horizon_factor_research.py rolling-window-semantics
 
 首次正式窗口审计 `20260714T094825Z_rolling_window_semantics_audit.json` 在 4,836 只股票上检查了 29 个字段，`forward_return_fields_read=false`。动量 `Ref`、单日缺口、10 日效率比和已修复的 20 日 MAX 等 10 个字段通过；其余 **19/29** 失败：5 日上涨比例，5/20/60 日均线，量能/换手/流动性均值，5/10/20 日波动率，5 日振幅，10/20 日接近高点，10 日收益/换手相关和 5 日量价压力。多数均值/极值字段从第 1 个会话即有值，波动率和相关性从第 3 个会话即有值。修复固定为一次性给全部 19 个字段加入各自完整窗口所需的零值 `Ref` 保护，不根据任何收益选择字段；修复后必须先重跑本审计达到 29/29，再允许重新计算受影响的历史诊断。
 
+修复后的审计 `20260714T095117Z_rolling_window_semantics_audit.json` 已达到 **29/29 通过**、`failed_factor_count=0`、`forward_return_fields_read=false`。从该运行起生成的新诊断使用完整窗口语义；更早的诊断若包含上述 19 个原始字段或其 `volume_dry_up`、`volatility_target*`、`volatility_low_20`、`amplitude_low`、`drawdown_20`、`up_day_consistency_5`、`compression_consensus_min` 等派生方向，对应因子行自动标为无效，未受影响的因子行仍可保留。报告会显示“部分无效”及有效因子数；旧候选库/模型若使用任一受影响字段，也只能作为旧语义记录，不能晋级或与修复后的运行直接比较。
+
 为避免只按一次平均 Rank IC 追逐偶然结果，应对已保存的诊断运行固定的跨年度稳定性审计。默认门槛不可按结果调整：至少 5 个自然年和 200 个非重叠 cohort、总体平均 Rank IC 为正、正 Rank IC cohort 占比高于 50%、Top‑3 相对末 3 的平均毛收益差为正，并且每个已观察自然年的平均 Rank IC 都为正。审计只记录“可提出独立假设”的因子，**不会**选择权重、生成策略、登记前瞻观察或给出选股名单：
 
 ```bash

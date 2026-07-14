@@ -1258,6 +1258,39 @@ ROLLING_FACTOR_PRIOR_CLOSE_REQUIREMENTS = {
     "signed_volume_pressure_5": 4,
     "max_return_20": 20,
 }
+COMPLETE_WINDOW_SEMANTICS_EFFECTIVE_RUN_ID = "20260714T095117Z"
+WINDOW_SEMANTICS_AFFECTED_FACTORS = frozenset(
+    {
+        "up_day_ratio_5",
+        "up_day_consistency_5",
+        "trend_ma_5",
+        "trend_ma_20",
+        "trend_ma_60",
+        "volume_surge_1",
+        "volume_surge",
+        "volume_surge_3",
+        "volume_dry_up",
+        "turnover_surge",
+        "turnover_surge_3",
+        "turnover_surge_1",
+        "liquidity_5",
+        "volatility_5",
+        "volatility_10",
+        "volatility_20",
+        "volatility_target_5",
+        "volatility_target",
+        "volatility_target_20",
+        "volatility_low_20",
+        "amplitude_5",
+        "amplitude_low",
+        "near_high_10",
+        "near_high_20",
+        "drawdown_20",
+        "return_turnover_correlation_10",
+        "signed_volume_pressure_5",
+        "compression_consensus_min",
+    }
+)
 SELECTION_MULTIPLICITY_DEFAULT_BOOTSTRAP_REPLICATES = 1000
 SELECTION_MULTIPLICITY_DEFAULT_BLOCK_COHORTS = 5
 SELECTION_MULTIPLICITY_DEFAULT_SEED = 17
@@ -8269,6 +8302,49 @@ def load_factor_diagnostic_invalidations(
     return result
 
 
+def load_rolling_window_semantics_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read no-return rolling-window input audits for the research report."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_rolling_window_semantics_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        data = audit.get("data") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "calendar_start": str(data.get("calendar_start", "—")),
+                "calendar_end": str(data.get("calendar_end", "—")),
+                "factor_count": int(audit.get("factor_count") or 0),
+                "failed_factor_count": int(audit.get("failed_factor_count") or 0),
+                "failed_factors": [str(item) for item in audit.get("failed_factors") or []],
+                "passed": bool(audit.get("passed", False)),
+                "forward_return_fields_read": bool(audit.get("forward_return_fields_read", True)),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
+def pre_complete_window_invalid_factors(run_id: str, factors: Iterable[str]) -> set[str]:
+    """Identify factor rows invalidated by the fixed full-window semantics audit."""
+
+    is_timestamp_run = (
+        len(run_id) >= 16
+        and run_id[:8].isdigit()
+        and run_id[8] == "T"
+        and run_id[9:15].isdigit()
+        and run_id[15] == "Z"
+    )
+    if not is_timestamp_run or run_id >= COMPLETE_WINDOW_SEMANTICS_EFFECTIVE_RUN_ID:
+        return set()
+    return set(map(str, factors)) & set(WINDOW_SEMANTICS_AFFECTED_FACTORS)
+
+
 def load_factor_diagnostics(
     experiment_root: Path,
     invalidation_path: Path = DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS,
@@ -8297,13 +8373,25 @@ def load_factor_diagnostics(
         holder_count_events = diagnostic.get("holder_count_events") or {}
         pledge_events = diagnostic.get("pledge_events") or {}
         dividend_plan_events = diagnostic.get("dividend_plan_events") or {}
-        top = ranking[0] if ranking else {}
-        top_tail = top.get("topk_tail_risk") or {}
         run_id = str(diagnostic.get("run_id", path.stem))
         invalidation = invalidations.get(run_id)
         expected_sha256 = str((invalidation or {}).get("source_sha256", "")).strip()
         if expected_sha256 and file_sha256(path) != expected_sha256:
             raise ValueError(f"factor diagnostic invalidation fingerprint mismatch: {run_id}")
+        ranking_factors = [str(item.get("factor", "")) for item in ranking]
+        semantic_invalid_factors = pre_complete_window_invalid_factors(run_id, ranking_factors)
+        invalidated_factors = set(ranking_factors) if invalidation else semantic_invalid_factors
+        valid_ranking = [item for item in ranking if str(item.get("factor", "")) not in invalidated_factors]
+        # A fully invalidated run remains visible for auditability, but a
+        # partially invalidated catalog must display its best still-valid
+        # factor rather than silently retaining an affected winner.
+        top = valid_ranking[0] if valid_ranking else (ranking[0] if ranking else {})
+        top_tail = top.get("topk_tail_risk") or {}
+        evidence_status = (
+            "invalidated"
+            if ranking and not valid_ranking
+            else "partially_invalidated" if invalidated_factors else "valid"
+        )
         diagnostics.append(
             {
                 "run_id": run_id,
@@ -8321,12 +8409,21 @@ def load_factor_diagnostics(
                 "pledge_event_source": str(pledge_events.get("source", "—")),
                 "dividend_plan_event_source": str(dividend_plan_events.get("source", "—")),
                 "factor_count": len(ranking),
+                "valid_factor_count": len(valid_ranking),
+                "invalidated_factors": sorted(invalidated_factors),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
                 "top_factor_p05_net_return": top_tail.get("p05_net_return"),
                 "top_factor_worst_net_return": top_tail.get("worst_net_return"),
-                "evidence_status": "invalidated" if invalidation else "valid",
-                "invalidation_reason": str((invalidation or {}).get("reason", "")),
+                "evidence_status": evidence_status,
+                "invalidation_reason": str(
+                    (invalidation or {}).get(
+                        "reason",
+                        "pre-complete-window diagnostic rows used Qlib partial rolling values"
+                        if semantic_invalid_factors
+                        else "",
+                    )
+                ),
                 "replacement_run_id": str((invalidation or {}).get("replacement_run_id", "")),
                 "path": str(path.resolve()),
             }
@@ -8347,15 +8444,31 @@ def load_factor_stability_audits(experiment_root: Path) -> list[dict[str, Any]]:
         if audit.get("status") != "completed":
             continue
         decisions = list(audit.get("factor_decisions") or [])
-        qualified = [str(item.get("factor")) for item in decisions if item.get("passed")]
         source = audit.get("input_diagnostic") or {}
         policy = audit.get("policy") or {}
         source_run_id = str(source.get("run_id", "—"))
+        decision_factors = [str(item.get("factor", "")) for item in decisions]
+        invalid_decision_factors = (
+            set(decision_factors)
+            if source_run_id in invalidations
+            else pre_complete_window_invalid_factors(source_run_id, decision_factors)
+        )
+        invalid_factor_count = len(invalid_decision_factors)
+        qualified = [
+            str(item.get("factor"))
+            for item in decisions
+            if item.get("passed") and str(item.get("factor")) not in invalid_decision_factors
+        ]
+        input_status = (
+            "invalidated"
+            if decisions and invalid_factor_count == len(decisions)
+            else "partially_invalidated" if invalid_factor_count else "valid"
+        )
         audits.append(
             {
                 "run_id": str(audit.get("run_id", path.stem)),
                 "input_diagnostic_run_id": source_run_id,
-                "input_evidence_status": "invalidated" if source_run_id in invalidations else "valid",
+                "input_evidence_status": input_status,
                 "factor_count": len(decisions),
                 "qualified_factors": qualified,
                 "minimum_calendar_years": policy.get("minimum_calendar_years"),
@@ -8379,14 +8492,30 @@ def load_factor_topk_viability_audits(experiment_root: Path) -> list[dict[str, A
         if audit.get("status") != "completed":
             continue
         decisions = list(audit.get("factor_decisions") or [])
-        qualified = [str(item.get("factor")) for item in decisions if item.get("passed")]
         source = audit.get("input_diagnostic") or {}
         source_run_id = str(source.get("run_id", "—"))
+        decision_factors = [str(item.get("factor", "")) for item in decisions]
+        invalid_decision_factors = (
+            set(decision_factors)
+            if source_run_id in invalidations
+            else pre_complete_window_invalid_factors(source_run_id, decision_factors)
+        )
+        invalid_factor_count = len(invalid_decision_factors)
+        qualified = [
+            str(item.get("factor"))
+            for item in decisions
+            if item.get("passed") and str(item.get("factor")) not in invalid_decision_factors
+        ]
+        input_status = (
+            "invalidated"
+            if decisions and invalid_factor_count == len(decisions)
+            else "partially_invalidated" if invalid_factor_count else "valid"
+        )
         audits.append(
             {
                 "run_id": str(audit.get("run_id", path.stem)),
                 "input_diagnostic_run_id": source_run_id,
-                "input_evidence_status": "invalidated" if source_run_id in invalidations else "valid",
+                "input_evidence_status": input_status,
                 "factor_count": len(decisions),
                 "qualified_factors": qualified,
                 "path": str(path.resolve()),
@@ -8943,6 +9072,7 @@ def render_three_day_research_report(
     prospective_factor_registry: dict[str, Any] | None = None,
     prospective_factor_ledger: dict[str, Any] | None = None,
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
+    rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -9015,6 +9145,32 @@ def render_three_day_research_report(
                 )
             )
         lines.append("")
+    if rolling_window_semantics_audits:
+        lines.extend(
+            [
+                "",
+                "## 滚动因子完整窗口语义审计",
+                "",
+                "本节只检查收盘已知字段是否在声明窗口形成前意外非空；任何一行读取未来收益都使审计无效。",
+                "",
+                "| 审计 | 历史范围 | 检查字段 | 失败字段 | 未来收益字段 | 结论 |",
+                "| --- | --- | ---: | ---: | --- | --- |",
+            ]
+        )
+        for audit in rolling_window_semantics_audits:
+            conclusion = "通过" if audit["passed"] else "失败：" + "、".join(audit["failed_factors"])
+            lines.append(
+                "| {run_id} | {start} 至 {end} | {count} | {failed} | {forward} | {conclusion} |".format(
+                    run_id=audit["run_id"],
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    count=audit["factor_count"],
+                    failed=audit["failed_factor_count"],
+                    forward="是" if audit["forward_return_fields_read"] else "否",
+                    conclusion=conclusion,
+                )
+            )
+        lines.append("")
     if factor_diagnostics:
         lines.extend(
             [
@@ -9032,10 +9188,16 @@ def render_three_day_research_report(
             formatted_ic = "—" if mean_ic is None else f"{float(mean_ic):.4f}"
             p05 = diagnostic["top_factor_p05_net_return"]
             worst = diagnostic["top_factor_worst_net_return"]
-            evidence_status = (
-                f"无效 → {diagnostic['replacement_run_id'] or '待替代'}"
-                if diagnostic["evidence_status"] == "invalidated"
-                else "有效"
+            if diagnostic["evidence_status"] == "invalidated":
+                evidence_status = f"无效 → {diagnostic['replacement_run_id'] or '待替代'}"
+            elif diagnostic["evidence_status"] == "partially_invalidated":
+                evidence_status = f"部分无效（{len(diagnostic['invalidated_factors'])} 因子）"
+            else:
+                evidence_status = "有效"
+            factor_count = (
+                str(diagnostic["factor_count"])
+                if diagnostic["valid_factor_count"] == diagnostic["factor_count"]
+                else f"{diagnostic['valid_factor_count']}/{diagnostic['factor_count']} 有效"
             )
             lines.append(
                 "| {run_id} | {evidence_status} | {fundamentals} | {start} 至 {end} | {count} | {factor} | {mean_ic} | {p05} | {worst} |".format(
@@ -9061,7 +9223,7 @@ def render_three_day_research_report(
                     or "—",
                     start=diagnostic["calendar_start"],
                     end=diagnostic["calendar_end"],
-                    count=diagnostic["factor_count"],
+                    count=factor_count,
                     factor=diagnostic["top_factor"],
                     mean_ic=formatted_ic,
                     p05=_percent(p05),
@@ -9087,7 +9249,10 @@ def render_three_day_research_report(
                 "| {run_id} | {source} | {source_status} | {count} | {qualified} | {years} / {cohorts} |".format(
                     run_id=audit["run_id"],
                     source=audit["input_diagnostic_run_id"],
-                    source_status="无效输入" if audit.get("input_evidence_status") == "invalidated" else "有效",
+                    source_status={
+                        "invalidated": "无效输入",
+                        "partially_invalidated": "部分无效",
+                    }.get(audit.get("input_evidence_status"), "有效"),
                     count=audit["factor_count"],
                     qualified=qualified,
                     years=audit["minimum_calendar_years"] if audit["minimum_calendar_years"] is not None else "—",
@@ -9113,7 +9278,10 @@ def render_three_day_research_report(
                 "| {run_id} | {source} | {source_status} | {count} | {qualified} |".format(
                     run_id=audit["run_id"],
                     source=audit["input_diagnostic_run_id"],
-                    source_status="无效输入" if audit.get("input_evidence_status") == "invalidated" else "有效",
+                    source_status={
+                        "invalidated": "无效输入",
+                        "partially_invalidated": "部分无效",
+                    }.get(audit.get("input_evidence_status"), "有效"),
                     count=audit["factor_count"],
                     qualified=qualified,
                 )
@@ -9686,6 +9854,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     experiment_root = Path(args.experiment_root).expanduser()
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
+    rolling_window_semantics_audits = load_rolling_window_semantics_audits(experiment_root)
     factor_stability_audits = load_factor_stability_audits(experiment_root)
     factor_topk_viability_audits = load_factor_topk_viability_audits(experiment_root)
     event_factor_holdouts = load_event_factor_holdouts(experiment_root)
@@ -9730,6 +9899,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         prospective_factor_registry=prospective_factor_registry,
         prospective_factor_ledger=prospective_factor_ledger,
         quarterly_event_capacity_audits=quarterly_event_capacity_audits,
+        rolling_window_semantics_audits=rolling_window_semantics_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -9754,6 +9924,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "prospective_factor_settlements": len(prospective_factor_ledger["settlements"]),
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
+        "rolling_window_semantics_audits": len(rolling_window_semantics_audits),
         "factor_stability_audits": len(factor_stability_audits),
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
