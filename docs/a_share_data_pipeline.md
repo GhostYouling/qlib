@@ -1461,7 +1461,19 @@ python scripts/a_share_rich_data.py acceptance-jqdata-moneyflow --date 2026-07-1
 python scripts/a_share_rich_data.py sync-jqdata-moneyflow --allow-large
 ```
 
-每个年度调用必须低于供应商文档的 200 万行上限；分片依次写入同一临时目录，所有年度成功后才原子改名并写运行清单，失败删除整份临时快照。覆盖率以当日本地历史股票区间为分母，要求中位数至少 95%、P5 至少 90%，并保留至少 200 个有 50 只正活动因子值的日期。全量覆盖通过也只能冻结并执行无收益容量门禁；在那以前不得读取开收盘/远期收益、进入聚合或选股。当前本机 `status` 显示 JQData SDK、用户名和密码均未配置，因此这里仅完成合同与接入器，不声称已验收或已有数据。
+每个年度调用必须低于供应商文档的 200 万行上限；分片依次写入同一临时目录，所有年度成功后才原子改名并写运行清单，失败删除整份临时快照。覆盖率以当日本地点时股票区间为分母，要求中位数至少 95%、P5 至少 90%，并保留至少 200 个有 50 只正活动因子值的日期。全量清单同时绑定来源验收清单、`factor_main_chinext_star` 点时区间文件和本地交易日历的 SHA‑256；任何一项随后变化，容量审计都会拒绝继续。
+
+无收益容量规则已在任何 JQData 权限或数据行被观察前另行冻结为 `docs/a_share_jqdata_moneyflow_capacity_preregistration.json`（SHA‑256 `d379157a1fd21909f8edf33897efd7b77d1f45dc9f6e6e470da62c7f548fc159`）。它还预先绑定了 2019–2025 范围内规范化后的来源股票池、持仓股票池和交易日历指纹，日后只追加 2026+ 会话不会改变协议；历史区间被改写则会停止。全量清单状态只有达到 `full_source_coverage_passed_pending_no_return_capacity`，才可运行：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py \
+  jqdata-moneyflow-capacity-audit \
+  --manifest data/metadata/rich_data/runs/<full-run>.json
+```
+
+该命令逐年度核对 Parquet 内容指纹、精确列、非负八项金额、唯一股票日、供应商标识和本地推导公式，然后只在 `buyable_main_chinext`、季度质量年龄不超过 550 天、上市满 20 个会话的股票中计算 2019–2025 非重叠三日截面。每个截面至少 50 只股票、至少 2 个不同值，总计至少 200 个 cohort 且覆盖至少 5 个自然年才通过。命令不提供日期、方向、TopK、质量、上市年龄或样本门槛覆盖，并明确记录 `price_fields_loaded=[]`、`forward_return_fields_read=false`；同一全量清单只能完成一次容量审计。
+
+容量通过不代表因子有效，也不能直接调用通用 `factor-diagnostic`、聚合、评分或选股。下一步必须先另写不可变的收益诊断预注册，并绑定容量审计 JSON 的 SHA‑256，之后才允许读取固定的次日开盘至第 3 个交易日收盘收益；容量不通过则在读取收益前永久停止这一版本。当前本机 `status` 显示 JQData SDK、用户名和密码均未配置，因此这里只完成合同、接入器和下游审计器，不声称已验收、已有数据或已得到因子结论。
 
 ### 必经验收流程
 

@@ -3233,6 +3233,20 @@ def sync_jqdata_moneyflow(
                     "status": acceptance_record[1].get("acceptance_status"),
                 }
             ),
+            "point_in_time_universe": (
+                None
+                if acceptance
+                else {
+                    "path": manifest_path(universe_path.expanduser().resolve()),
+                    "sha256": file_digest(universe_path.expanduser().resolve()),
+                    "intervals": int(len(intervals)),
+                }
+            ),
+            "local_calendar": {
+                "path": manifest_path(calendar_path.expanduser().resolve()),
+                "sha256": file_digest(calendar_path.expanduser().resolve()),
+                "sessions_in_requested_range": int(len(calendar)),
+            },
             "source_request": {
                 "api": "get_money_flow_pro",
                 "frequency": "daily",

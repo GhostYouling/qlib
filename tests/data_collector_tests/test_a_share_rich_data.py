@@ -512,6 +512,16 @@ def test_jqdata_moneyflow_sync_writes_immutable_no_price_snapshot(tmp_path, monk
     assert manifest["source_request"]["fields"] == list(RICH.JQDATA_MONEYFLOW_RAW_FIELDS)
     assert manifest["source_request"]["credentials_logged_or_stored"] is False
     assert manifest["source_acceptance"]["run_id"] == "accepted"
+    assert manifest["point_in_time_universe"] == {
+        "path": str(universe),
+        "sha256": RICH.file_digest(universe),
+        "intervals": 2,
+    }
+    assert manifest["local_calendar"] == {
+        "path": str(calendar),
+        "sha256": RICH.file_digest(calendar),
+        "sessions_in_requested_range": 2,
+    }
     assert manifest["price_fields_loaded"] == []
     assert manifest["forward_return_fields_read"] is False
     assert manifest["acceptance_status"] == "full_source_coverage_failed_stop_before_prices"

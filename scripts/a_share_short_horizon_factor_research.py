@@ -191,6 +191,18 @@ DEFAULT_RESEARCH_FRONTIER_AUDIT = (
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
 )
+DEFAULT_JQDATA_MONEYFLOW_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
+)
+JQDATA_MONEYFLOW_DATA_CONTRACT_SHA256 = (
+    "1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004"
+)
+DEFAULT_JQDATA_MONEYFLOW_CAPACITY_SPEC = (
+    REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_capacity_preregistration.json"
+)
+JQDATA_MONEYFLOW_CAPACITY_SPEC_SHA256 = (
+    "d379157a1fd21909f8edf33897efd7b77d1f45dc9f6e6e470da62c7f548fc159"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -215,6 +227,34 @@ BAOSTOCK_5M_FACTOR_NAMES = (
     "intraday_realized_volatility_5m",
 )
 BAOSTOCK_5M_FACTOR_DIRECTIONS = ("higher", "higher", "higher", "higher", "lower")
+JQDATA_MONEYFLOW_FACTOR_NAME = "jqdata_large_order_net_inflow_share"
+JQDATA_MONEYFLOW_RAW_FIELDS = (
+    "inflow_xl",
+    "inflow_l",
+    "inflow_m",
+    "inflow_s",
+    "outflow_xl",
+    "outflow_l",
+    "outflow_m",
+    "outflow_s",
+)
+JQDATA_MONEYFLOW_AMOUNT_COLUMNS = (
+    "inflow_xl_amount",
+    "inflow_l_amount",
+    "inflow_m_amount",
+    "inflow_s_amount",
+    "outflow_xl_amount",
+    "outflow_l_amount",
+    "outflow_m_amount",
+    "outflow_s_amount",
+)
+JQDATA_MONEYFLOW_COLUMNS = (
+    "trade_date",
+    "instrument",
+    *JQDATA_MONEYFLOW_AMOUNT_COLUMNS,
+    JQDATA_MONEYFLOW_FACTOR_NAME,
+    "provider",
+)
 MINUTE_FEATURE_BASE_COLUMNS = (
     "symbol",
     "trade_date",
@@ -549,6 +589,9 @@ RESTRICTED_SHARE_UNLOCK_CAPACITY_PURPOSE = (
 )
 INSIDER_OPEN_MARKET_CAPACITY_PURPOSE = (
     "insider_open_market_capacity_gate_without_price_or_forward_returns"
+)
+JQDATA_MONEYFLOW_CAPACITY_PURPOSE = (
+    "jqdata_moneyflow_capacity_gate_without_price_or_forward_returns"
 )
 INSIDER_OPEN_MARKET_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_insider_open_market_research_not_investment_advice"
@@ -1985,6 +2028,82 @@ def file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def point_in_time_interval_fingerprint(
+    path: Path,
+    *,
+    start: str,
+    end: str,
+) -> dict[str, Any]:
+    """Fingerprint normalized instrument intervals clipped to a frozen range."""
+
+    frame = pd.read_csv(
+        path.expanduser().resolve(),
+        sep="\t",
+        header=None,
+        names=["instrument", "active_start", "active_end"],
+        dtype={"instrument": "string"},
+    )
+    frame["active_start"] = pd.to_datetime(frame["active_start"], errors="coerce").dt.normalize()
+    frame["active_end"] = pd.to_datetime(frame["active_end"], errors="coerce").dt.normalize()
+    if (
+        frame.empty
+        or frame[["instrument", "active_start", "active_end"]].isna().any().any()
+        or frame["instrument"].duplicated().any()
+        or not frame["instrument"].str.fullmatch(r"(?:SH6|SZ[03])\d{5}", na=False).all()
+        or frame["active_start"].gt(frame["active_end"]).any()
+    ):
+        raise ValueError(f"invalid point-in-time instrument file: {path}")
+    start_date = pd.Timestamp(start).normalize()
+    end_date = pd.Timestamp(end).normalize()
+    clipped = frame.loc[
+        frame["active_start"].le(end_date) & frame["active_end"].ge(start_date)
+    ].copy()
+    clipped["active_start"] = clipped["active_start"].clip(lower=start_date)
+    clipped["active_end"] = clipped["active_end"].clip(upper=end_date)
+    clipped = clipped.sort_values("instrument", kind="stable")
+    records = [
+        {
+            "instrument": str(row.instrument),
+            "active_start": pd.Timestamp(row.active_start).date().isoformat(),
+            "active_end": pd.Timestamp(row.active_end).date().isoformat(),
+        }
+        for row in clipped.itertuples(index=False)
+    ]
+    encoded = json.dumps(
+        records, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return {"sha256": hashlib.sha256(encoded).hexdigest(), "intervals": len(records)}
+
+
+def local_calendar_range_fingerprint(
+    path: Path,
+    *,
+    start: str,
+    end: str,
+) -> dict[str, Any]:
+    """Fingerprint normalized local sessions inside a frozen date range."""
+
+    values = pd.to_datetime(
+        path.expanduser().resolve().read_text(encoding="utf-8").splitlines(),
+        errors="coerce",
+    )
+    if pd.isna(values).any():
+        raise ValueError(f"invalid local calendar file: {path}")
+    sessions = pd.DatetimeIndex(values).normalize().unique().sort_values()
+    sessions = sessions[
+        (sessions >= pd.Timestamp(start).normalize())
+        & (sessions <= pd.Timestamp(end).normalize())
+    ]
+    if sessions.empty:
+        raise ValueError(f"local calendar has no sessions in frozen range: {path}")
+    encoded = json.dumps(
+        [date.date().isoformat() for date in sessions],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return {"sha256": hashlib.sha256(encoded).hexdigest(), "sessions": len(sessions)}
+
+
 def dataframe_content_sha256(frame: pd.DataFrame) -> str:
     """Match the rich-data manifest's stable, storage-independent frame hash."""
 
@@ -2038,6 +2157,163 @@ def load_research_frontier_contract(
     if not groups or any(not isinstance(item, dict) for item in groups):
         raise ValueError("three-day research frontier evidence groups must be non-empty objects")
     return contract
+
+
+def load_jqdata_moneyflow_data_contract(
+    path: Path = DEFAULT_JQDATA_MONEYFLOW_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-entitlement JQData classified-flow contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != JQDATA_MONEYFLOW_DATA_CONTRACT_SHA256:
+        raise ValueError("JQData moneyflow data contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_jqdata_moneyflow_data_contract")
+    source = contract.get("source") or {}
+    factor = contract.get("factor") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    coverage = contract.get("coverage_and_capacity_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_jqdata_moneyflow_entitlement_or_rows_observed"
+        or contract.get("preregistered_at") != "2026-07-14T20:20:32Z"
+        or source.get("provider") != "jqdata"
+        or source.get("api") != "get_money_flow_pro"
+        or source.get("frequency") != "daily"
+        or source.get("data_type") != "money"
+        or tuple(snapshot.get("columns") or ()) != JQDATA_MONEYFLOW_COLUMNS
+        or factor.get("name") != JQDATA_MONEYFLOW_FACTOR_NAME
+        or factor.get("direction") != "higher_is_better"
+        or coverage.get("holding_period_trading_days") != 3
+        or coverage.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or coverage.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("JQData moneyflow data contract does not match the frozen protocol")
+    return contract
+
+
+def load_jqdata_moneyflow_capacity_preregistration(
+    path: Path = DEFAULT_JQDATA_MONEYFLOW_CAPACITY_SPEC,
+) -> dict[str, Any]:
+    """Enforce the no-return JQData moneyflow capacity protocol."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != JQDATA_MONEYFLOW_CAPACITY_SPEC_SHA256:
+        raise ValueError("JQData moneyflow capacity preregistration fingerprint mismatch")
+    spec = load_json_record(path, kind="a_share_jqdata_moneyflow_capacity_preregistration")
+    data_contract = spec.get("data_contract") or {}
+    quality = spec.get("quarterly_quality_snapshot") or {}
+    point_in_time = spec.get("point_in_time_context") or {}
+    required_snapshot = spec.get("required_full_snapshot") or {}
+    run_contract = spec.get("run_contract") or {}
+    policy = spec.get("capacity_policy") or {}
+    next_step = spec.get("next_step_if_capacity_passes") or {}
+    contract_path = resolve_repository_record_path(str(data_contract.get("path") or ""))
+    contract = load_jqdata_moneyflow_data_contract(contract_path)
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_before_jqdata_moneyflow_entitlement_or_rows_observed"
+        or spec.get("preregistered_at") != "2026-07-14T23:04:52Z"
+        or data_contract.get("sha256") != JQDATA_MONEYFLOW_DATA_CONTRACT_SHA256
+        or data_contract.get("preregistered_at") != contract.get("preregistered_at")
+        or tuple(spec.get("factor_catalog") or ()) != (JQDATA_MONEYFLOW_FACTOR_NAME,)
+        or spec.get("factor_raw_columns")
+        != {JQDATA_MONEYFLOW_FACTOR_NAME: JQDATA_MONEYFLOW_FACTOR_NAME}
+        or spec.get("later_diagnostic_direction_if_capacity_passes")
+        != "higher_large_order_net_inflow_share_is_better"
+        or required_snapshot.get("dataset") != "jqdata_moneyflow_pro_daily"
+        or required_snapshot.get("provider") != "jqdata"
+        or required_snapshot.get("acceptance_status")
+        != "full_source_coverage_passed_pending_no_return_capacity"
+        or tuple(required_snapshot.get("required_partition_years") or ())
+        != tuple(range(2019, 2026))
+        or tuple(required_snapshot.get("required_columns") or ())
+        != JQDATA_MONEYFLOW_COLUMNS
+        or run_contract
+        != {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_universe": "buyable_main_chinext",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+            "topk": 3,
+            "minimum_valid_names_per_factor_cohort": 50,
+            "minimum_distinct_factor_values_per_cohort": 2,
+            "minimum_required_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "minimum_observed_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "signal_availability": "trade-date data documented around 19:00; assign to that local close only for next-local-session-open entry",
+            "maximum_event_age_days": 0,
+            "price_basis_required_for_later_return_diagnostic": REQUIRED_PRICE_BASIS,
+        }
+        or policy.get("open_close_or_forward_return_fields_allowed") is not False
+        or policy.get("one_completed_capacity_audit_per_full_snapshot") is not True
+        or policy.get("selection_or_promotion_allowed") is not False
+        or next_step.get("separate_immutable_diagnostic_preregistration_required") is not True
+        or next_step.get("capacity_audit_fingerprint_must_be_bound_before_price_access")
+        is not True
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("JQData moneyflow capacity preregistration is inconsistent")
+    quality_path = resolve_repository_record_path(str(quality.get("path") or ""))
+    quality_manifest_path = resolve_repository_record_path(
+        str(quality.get("manifest_path") or "")
+    )
+    if (
+        not quality_path.exists()
+        or not quality_manifest_path.exists()
+        or file_sha256(quality_path) != quality.get("sha256")
+        or file_sha256(quality_manifest_path) != quality.get("manifest_sha256")
+    ):
+        raise ValueError("JQData moneyflow capacity quarterly-quality fingerprint mismatch")
+    context_start = str(point_in_time.get("fingerprint_range_start") or "")
+    context_end = str(point_in_time.get("fingerprint_range_end") or "")
+    source_universe = point_in_time.get("source_universe") or {}
+    holding_universe = point_in_time.get("holding_universe") or {}
+    local_calendar = point_in_time.get("local_calendar") or {}
+    source_path = resolve_repository_record_path(str(source_universe.get("path") or ""))
+    holding_path = resolve_repository_record_path(str(holding_universe.get("path") or ""))
+    calendar_path = resolve_repository_record_path(str(local_calendar.get("path") or ""))
+    if (
+        context_start != run_contract["start"]
+        or context_end != run_contract["end"]
+        or point_in_time.get("fingerprint_algorithm")
+        != "sha256_of_compact_sorted_json_after_normalization_and_range_clipping"
+        or holding_universe.get("name") != run_contract["holding_universe"]
+        or not source_path.exists()
+        or not holding_path.exists()
+        or not calendar_path.exists()
+        or point_in_time_interval_fingerprint(
+            source_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": source_universe.get("sha256"),
+            "intervals": source_universe.get("intervals"),
+        }
+        or point_in_time_interval_fingerprint(
+            holding_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": holding_universe.get("sha256"),
+            "intervals": holding_universe.get("intervals"),
+        }
+        or local_calendar_range_fingerprint(
+            calendar_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": local_calendar.get("sha256"),
+            "sessions": local_calendar.get("sessions"),
+        }
+    ):
+        raise ValueError("JQData moneyflow capacity point-in-time context fingerprint mismatch")
+    return spec
 
 
 def load_minute_factor_preregistration(
@@ -12855,6 +13131,567 @@ def run_limit_like_event_audit(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def _validate_jqdata_moneyflow_partition(
+    frame: pd.DataFrame,
+    *,
+    start: pd.Timestamp,
+    end: pd.Timestamp,
+) -> pd.DataFrame:
+    """Validate one stored JQData flow partition and return only capacity fields."""
+
+    if tuple(frame.columns) != JQDATA_MONEYFLOW_COLUMNS:
+        raise ValueError("JQData moneyflow partition column contract mismatch")
+    work = frame.copy()
+    work["trade_date"] = pd.to_datetime(work["trade_date"], errors="coerce").dt.normalize()
+    if work[["trade_date", "instrument", *JQDATA_MONEYFLOW_AMOUNT_COLUMNS]].isna().any().any():
+        raise ValueError("JQData moneyflow partition contains a missing contracted value")
+    amount_columns = list(JQDATA_MONEYFLOW_AMOUNT_COLUMNS)
+    work.loc[:, amount_columns] = work.loc[
+        :, amount_columns
+    ].apply(pd.to_numeric, errors="coerce")
+    if work.loc[:, amount_columns].isna().any().any():
+        raise ValueError("JQData moneyflow partition contains a nonnumeric raw amount")
+    if work.loc[:, amount_columns].lt(0.0).any().any():
+        raise ValueError("JQData moneyflow partition contains a negative raw amount")
+    denominator = work.loc[:, amount_columns].sum(axis=1)
+    if not denominator.gt(0.0).all():
+        raise ValueError("JQData moneyflow partition contains a nonpositive denominator")
+    derived = (
+        work["inflow_xl_amount"]
+        + work["inflow_l_amount"]
+        - work["outflow_xl_amount"]
+        - work["outflow_l_amount"]
+    ) / denominator
+    stored = pd.to_numeric(work[JQDATA_MONEYFLOW_FACTOR_NAME], errors="coerce")
+    if (
+        stored.isna().any()
+        or not stored.between(-1.0, 1.0).all()
+        or not np.allclose(stored.to_numpy(), derived.to_numpy(), rtol=0.0, atol=1e-12)
+    ):
+        raise ValueError("JQData moneyflow stored factor does not match the frozen formula")
+    if not work["trade_date"].between(start, end).all():
+        raise ValueError("JQData moneyflow partition contains an out-of-contract date")
+    if set(work["provider"].astype(str)) != {"jqdata"}:
+        raise ValueError("JQData moneyflow partition provider identity mismatch")
+    if work.duplicated(["instrument", "trade_date"]).any():
+        raise ValueError("JQData moneyflow partition contains duplicate stock-date keys")
+    return work.loc[:, ["trade_date", "instrument", JQDATA_MONEYFLOW_FACTOR_NAME]].copy()
+
+
+def validate_jqdata_moneyflow_full_snapshot(
+    manifest_path: Path,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Fingerprint-validate a passed full source snapshot without price access."""
+
+    manifest_path = manifest_path.expanduser().resolve()
+    manifest = load_json_record(manifest_path, kind="a_share_rich_data_snapshot")
+    required = spec["required_full_snapshot"]
+    data_contract = manifest.get("data_contract") or {}
+    request = manifest.get("source_request") or {}
+    coverage = manifest.get("coverage") or {}
+    universe = manifest.get("point_in_time_universe") or {}
+    calendar = manifest.get("local_calendar") or {}
+    acceptance_link = manifest.get("source_acceptance") or {}
+    if (
+        manifest.get("schema_version") != 1
+        or manifest.get("dataset") != required["dataset"]
+        or manifest.get("provider") != required["provider"]
+        or manifest.get("acceptance_status") != required["acceptance_status"]
+        or manifest.get("requested_start") != required["requested_start"]
+        or manifest.get("requested_end") != required["requested_end"]
+        or data_contract.get("sha256") != JQDATA_MONEYFLOW_DATA_CONTRACT_SHA256
+        or request.get("api") != "get_money_flow_pro"
+        or request.get("frequency") != "daily"
+        or request.get("data_type") != "money"
+        or tuple(request.get("fields") or ()) != JQDATA_MONEYFLOW_RAW_FIELDS
+        or request.get("forbidden_fields_requested_or_stored") != []
+        or request.get("credentials_logged_or_stored") is not False
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("open_close_or_forward_return_fields_read") is not False
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or coverage.get("gate_passed_before_prices") is not True
+        or float(coverage.get("median_positive_activity_factor_coverage") or 0.0)
+        < float(required["minimum_median_positive_activity_factor_coverage"])
+        or float(coverage.get("p05_positive_activity_factor_coverage") or 0.0)
+        < float(required["minimum_p05_positive_activity_factor_coverage"])
+        or int(coverage.get("dates_with_at_least_fifty_factor_names") or 0)
+        < int(required["minimum_dates_with_at_least_fifty_factor_names"])
+    ):
+        raise ValueError("JQData moneyflow full snapshot did not pass the frozen source gate")
+    universe_path = resolve_repository_record_path(str(universe.get("path") or ""))
+    calendar_path = resolve_repository_record_path(str(calendar.get("path") or ""))
+    for label, source_path, link in (
+        ("point-in-time universe", universe_path, universe),
+        ("local calendar", calendar_path, calendar),
+    ):
+        if not source_path.exists() or file_sha256(source_path) != link.get("sha256"):
+            raise ValueError(f"JQData moneyflow {label} fingerprint mismatch")
+    point_in_time = spec["point_in_time_context"]
+    source_contract = point_in_time["source_universe"]
+    calendar_contract = point_in_time["local_calendar"]
+    context_start = point_in_time["fingerprint_range_start"]
+    context_end = point_in_time["fingerprint_range_end"]
+    if (
+        point_in_time_interval_fingerprint(
+            universe_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": source_contract["sha256"],
+            "intervals": source_contract["intervals"],
+        }
+        or local_calendar_range_fingerprint(
+            calendar_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": calendar_contract["sha256"],
+            "sessions": calendar_contract["sessions"],
+        }
+    ):
+        raise ValueError("JQData moneyflow source context differs from its preregistration")
+    if int(universe.get("intervals") or 0) < 1:
+        raise ValueError("JQData moneyflow point-in-time universe is empty")
+    if int(calendar.get("sessions_in_requested_range") or 0) != int(
+        coverage.get("calendar_sessions") or 0
+    ):
+        raise ValueError("JQData moneyflow calendar session count mismatch")
+    acceptance_path = resolve_repository_record_path(str(acceptance_link.get("path") or ""))
+    if (
+        not acceptance_path.exists()
+        or file_sha256(acceptance_path) != acceptance_link.get("sha256")
+    ):
+        raise ValueError("JQData moneyflow acceptance manifest fingerprint mismatch")
+    acceptance = load_json_record(acceptance_path, kind="a_share_rich_data_snapshot")
+    acceptance_request = acceptance.get("source_request") or {}
+    if (
+        acceptance.get("dataset") != required["dataset"]
+        or acceptance.get("provider") != "jqdata"
+        or acceptance.get("acceptance_status")
+        != "accepted_entitlement_and_formula_pending_full_history"
+        or (acceptance.get("data_contract") or {}).get("sha256")
+        != JQDATA_MONEYFLOW_DATA_CONTRACT_SHA256
+        or tuple(acceptance_request.get("fields") or ()) != JQDATA_MONEYFLOW_RAW_FIELDS
+        or acceptance_request.get("forbidden_fields_requested_or_stored") != []
+        or acceptance_request.get("credentials_logged_or_stored") is not False
+        or acceptance.get("price_fields_loaded") != []
+        or acceptance.get("forward_return_fields_read") is not False
+    ):
+        raise ValueError("JQData moneyflow acceptance evidence is inconsistent")
+
+    expected_years = list(required["required_partition_years"])
+    files = list(manifest.get("files") or [])
+    if [int(item.get("year") or 0) for item in files] != expected_years:
+        raise ValueError("JQData moneyflow full snapshot partition-year coverage mismatch")
+    capacity_frames: list[pd.DataFrame] = []
+    file_evidence: list[dict[str, Any]] = []
+    start = pd.Timestamp(required["requested_start"])
+    end = pd.Timestamp(required["requested_end"])
+    for item in files:
+        path = resolve_repository_record_path(str(item.get("path") or ""))
+        if not path.exists():
+            raise FileNotFoundError(f"JQData moneyflow partition is missing: {path}")
+        frame = pd.read_parquet(path)
+        if (
+            dataframe_content_sha256(frame) != item.get("sha256")
+            or int(len(frame)) != int(item.get("rows") or -1)
+        ):
+            raise ValueError("JQData moneyflow partition fingerprint or row count mismatch")
+        year = int(item["year"])
+        partition = _validate_jqdata_moneyflow_partition(
+            frame,
+            start=max(start, pd.Timestamp(year=year, month=1, day=1)),
+            end=min(end, pd.Timestamp(year=year, month=12, day=31)),
+        )
+        capacity_frames.append(partition)
+        file_evidence.append(
+            {
+                "year": year,
+                "path": str(path),
+                "rows": int(len(frame)),
+                "sha256": str(item["sha256"]),
+            }
+        )
+    factor_frame = pd.concat(capacity_frames, ignore_index=True)
+    if factor_frame.duplicated(["instrument", "trade_date"]).any():
+        raise ValueError("JQData moneyflow full snapshot has cross-partition duplicate keys")
+
+    universe_frame = pd.read_csv(
+        universe_path,
+        sep="\t",
+        header=None,
+        names=["instrument", "active_start", "active_end"],
+        dtype={"instrument": "string"},
+    )
+    universe_frame["active_start"] = pd.to_datetime(
+        universe_frame["active_start"], errors="coerce"
+    ).dt.normalize()
+    universe_frame["active_end"] = pd.to_datetime(
+        universe_frame["active_end"], errors="coerce"
+    ).dt.normalize()
+    if (
+        len(universe_frame) != int(universe.get("intervals") or 0)
+        or universe_frame[["instrument", "active_start", "active_end"]].isna().any().any()
+        or universe_frame["instrument"].duplicated().any()
+        or not universe_frame["instrument"].str.fullmatch(
+            r"(?:SH6|SZ[03])\d{5}", na=False
+        ).all()
+        or universe_frame["active_start"].gt(universe_frame["active_end"]).any()
+    ):
+        raise ValueError("JQData moneyflow point-in-time universe contents are invalid")
+    membership = factor_frame.merge(universe_frame, on="instrument", how="left")
+    if (
+        membership[["active_start", "active_end"]].isna().any().any()
+        or membership["trade_date"].lt(membership["active_start"]).any()
+        or membership["trade_date"].gt(membership["active_end"]).any()
+    ):
+        raise ValueError("JQData moneyflow row falls outside the bound point-in-time universe")
+
+    raw_calendar = pd.to_datetime(
+        calendar_path.read_text(encoding="utf-8").splitlines(), errors="coerce"
+    )
+    if pd.isna(raw_calendar).any():
+        raise ValueError("JQData moneyflow bound local calendar contains an invalid date")
+    calendar_dates = pd.DatetimeIndex(raw_calendar).normalize().unique().sort_values()
+    calendar_dates = calendar_dates[
+        (calendar_dates >= start) & (calendar_dates <= end)
+    ]
+    if len(calendar_dates) != int(calendar.get("sessions_in_requested_range") or 0):
+        raise ValueError("JQData moneyflow bound local calendar session count mismatch")
+    observed_by_date = factor_frame.groupby("trade_date")["instrument"].nunique()
+    expected_by_date = pd.Series(
+        [
+            int(
+                (
+                    universe_frame["active_start"].le(date)
+                    & universe_frame["active_end"].ge(date)
+                ).sum()
+            )
+            for date in calendar_dates
+        ],
+        index=calendar_dates,
+        dtype="int64",
+    )
+    observed_by_date = observed_by_date.reindex(calendar_dates, fill_value=0).astype(int)
+    if expected_by_date.le(0).any():
+        raise ValueError("JQData moneyflow source calendar has a session with no active names")
+    recomputed_coverages = observed_by_date.div(expected_by_date)
+    recomputed_median = float(recomputed_coverages.median())
+    recomputed_p05 = float(recomputed_coverages.quantile(0.05))
+    recomputed_dates_with_fifty = int(observed_by_date.ge(50).sum())
+    if (
+        not math.isclose(
+            float(coverage.get("median_positive_activity_factor_coverage")),
+            recomputed_median,
+            rel_tol=0.0,
+            abs_tol=1e-12,
+        )
+        or not math.isclose(
+            float(coverage.get("p05_positive_activity_factor_coverage")),
+            recomputed_p05,
+            rel_tol=0.0,
+            abs_tol=1e-12,
+        )
+        or int(coverage.get("dates_with_at_least_fifty_factor_names") or 0)
+        != recomputed_dates_with_fifty
+    ):
+        raise ValueError("JQData moneyflow source coverage does not recompute from stored rows")
+    daily = list(coverage.get("daily") or [])
+    if len(daily) != len(calendar_dates):
+        raise ValueError("JQData moneyflow daily source-coverage record is incomplete")
+    for position, date in enumerate(calendar_dates):
+        item = daily[position]
+        if (
+            item.get("trade_date") != date.date().isoformat()
+            or int(item.get("expected_active_names") or 0) != int(expected_by_date.loc[date])
+            or int(item.get("positive_activity_factor_names") or 0)
+            != int(observed_by_date.loc[date])
+            or not math.isclose(
+                float(item.get("coverage")),
+                float(recomputed_coverages.loc[date]),
+                rel_tol=0.0,
+                abs_tol=1e-12,
+            )
+        ):
+            raise ValueError("JQData moneyflow daily source-coverage record changed")
+    return factor_frame, {
+        "manifest": {
+            "path": str(manifest_path),
+            "sha256": file_sha256(manifest_path),
+            "run_id": manifest.get("run_id"),
+            "status": manifest.get("acceptance_status"),
+        },
+        "source_acceptance": {
+            "path": str(acceptance_path),
+            "sha256": file_sha256(acceptance_path),
+            "run_id": acceptance.get("run_id"),
+            "status": acceptance.get("acceptance_status"),
+        },
+        "point_in_time_universe": universe,
+        "local_calendar": calendar,
+        "coverage": {
+            key: coverage.get(key)
+            for key in (
+                "calendar_sessions",
+                "median_positive_activity_factor_coverage",
+                "p05_positive_activity_factor_coverage",
+                "dates_with_at_least_fifty_factor_names",
+                "gate_passed_before_prices",
+            )
+        },
+        "files": file_evidence,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def jqdata_moneyflow_capacity(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    research_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Count factor-ready non-overlapping cohorts without loading price outcomes."""
+
+    sessions = pd.DatetimeIndex(research_calendar).normalize().unique().sort_values()
+    hold_days = int(contract["holding_period_trading_days"])
+    if len(sessions) <= hold_days:
+        raise ValueError("JQData moneyflow capacity calendar is too short")
+    rebalances = sessions[:-hold_days:hold_days]
+    candidates = factor_frame.rename(columns={"trade_date": "datetime"}).copy()
+    candidates["datetime"] = pd.to_datetime(candidates["datetime"]).dt.normalize()
+    candidates = candidates.loc[candidates["datetime"].isin(rebalances)].copy()
+    interval_rows = [
+        {"instrument": instrument, "active_start": start, "active_end": end}
+        for instrument, spans in instrument_intervals.items()
+        for start, end in spans
+    ]
+    interval_frame = pd.DataFrame(interval_rows)
+    candidates = candidates.merge(interval_frame, on="instrument", how="inner")
+    candidate_dates = pd.to_datetime(candidates["datetime"])
+    candidates = candidates.loc[
+        candidate_dates.ge(pd.to_datetime(candidates["active_start"]))
+        & candidate_dates.le(pd.to_datetime(candidates["active_end"]))
+    ].copy()
+    candidates = candidates.sort_values(
+        ["instrument", "datetime", "active_start"], kind="stable"
+    ).drop_duplicates(["instrument", "datetime"], keep="first")
+    candidates = attach_listing_age_sessions(
+        candidates, instrument_intervals, pd.DatetimeIndex(full_calendar)
+    )
+    candidates = attach_quality_asof(
+        candidates,
+        fundamentals,
+        max_age_days=int(contract["maximum_quality_age_days"]),
+        availability_calendar=pd.DatetimeIndex(full_calendar),
+    )
+    eligible = candidates.loc[candidates["quality_eligible"].fillna(False)].copy()
+    eligible["_factor_value"] = pd.to_numeric(
+        eligible[JQDATA_MONEYFLOW_FACTOR_NAME], errors="coerce"
+    )
+    valid = eligible.loc[np.isfinite(eligible["_factor_value"])].copy()
+    cross_sections = valid.groupby("datetime", sort=True).agg(
+        valid_names=("instrument", "nunique"),
+        distinct_factor_values=("_factor_value", "nunique"),
+    )
+    complete = cross_sections.loc[
+        cross_sections["valid_names"].ge(
+            int(contract["minimum_valid_names_per_factor_cohort"])
+        )
+        & cross_sections["distinct_factor_values"].ge(
+            int(contract["minimum_distinct_factor_values_per_cohort"])
+        )
+    ]
+    by_year = {
+        str(int(year)): int(count)
+        for year, count in complete.groupby(complete.index.year).size().items()
+    }
+    cohort_count = int(len(complete))
+    observed_years = len(by_year)
+    passed = bool(
+        cohort_count >= int(contract["minimum_required_cohorts"])
+        and observed_years >= int(contract["minimum_observed_calendar_years"])
+    )
+    return {
+        "factor": JQDATA_MONEYFLOW_FACTOR_NAME,
+        "source_rows": int(len(factor_frame)),
+        "non_overlapping_rebalance_capacity": int(len(rebalances)),
+        "buyable_rebalance_rows": int(len(candidates)),
+        "quality_and_listing_eligible_rows": int(len(eligible)),
+        "valid_factor_rows": int(len(valid)),
+        "dates_with_any_valid_name": int(len(cross_sections)),
+        "potential_complete_cohorts": cohort_count,
+        "potential_complete_cohorts_by_year": by_year,
+        "observed_calendar_years": observed_years,
+        "minimum_required_cohorts": int(contract["minimum_required_cohorts"]),
+        "minimum_observed_calendar_years": int(
+            contract["minimum_observed_calendar_years"]
+        ),
+        "minimum_valid_names_per_factor_cohort": int(
+            contract["minimum_valid_names_per_factor_cohort"]
+        ),
+        "minimum_distinct_factor_values_per_cohort": int(
+            contract["minimum_distinct_factor_values_per_cohort"]
+        ),
+        "capacity_gate_passed": passed,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_jqdata_moneyflow_capacity(
+    experiment_root: Path,
+    *,
+    source_manifest_sha256: str,
+) -> None:
+    """Allow one completed no-return capacity audit per immutable full snapshot."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob("*_jqdata_moneyflow_capacity_audit.json")
+    ):
+        record = load_json_record(path)
+        source = ((record.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "manifest"
+        ) or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("purpose") == JQDATA_MONEYFLOW_CAPACITY_PURPOSE
+            and source.get("sha256") == source_manifest_sha256
+        ):
+            raise ValueError(
+                f"JQData moneyflow capacity snapshot is already consumed: {path}"
+            )
+
+
+def run_jqdata_moneyflow_capacity_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen JQData classified-flow capacity gate without prices."""
+
+    spec = load_jqdata_moneyflow_capacity_preregistration()
+    factor_frame, source_evidence = validate_jqdata_moneyflow_full_snapshot(
+        Path(args.manifest), spec
+    )
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_jqdata_moneyflow_capacity(
+        experiment_root,
+        source_manifest_sha256=source_evidence["manifest"]["sha256"],
+    )
+    contract = spec["run_contract"]
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    source_calendar_sha256 = source_evidence["local_calendar"]["sha256"]
+    if not calendar_path.exists() or file_sha256(calendar_path) != source_calendar_sha256:
+        raise ValueError(
+            "JQData moneyflow capacity provider calendar does not match the source snapshot"
+        )
+    holding_universe_path = (
+        provider_uri / "instruments" / f"{contract['holding_universe']}.txt"
+    )
+    if not holding_universe_path.exists():
+        raise FileNotFoundError(
+            f"JQData moneyflow holding-universe file is missing: {holding_universe_path}"
+        )
+    point_in_time = spec["point_in_time_context"]
+    holding_contract = point_in_time["holding_universe"]
+    holding_fingerprint = point_in_time_interval_fingerprint(
+        holding_universe_path,
+        start=point_in_time["fingerprint_range_start"],
+        end=point_in_time["fingerprint_range_end"],
+    )
+    if holding_fingerprint != {
+        "sha256": holding_contract["sha256"],
+        "intervals": holding_contract["intervals"],
+    }:
+        raise ValueError(
+            "JQData moneyflow holding universe differs from its preregistration"
+        )
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market=contract["holding_universe"],
+        start=contract["start"],
+        end=contract["end"],
+    )
+    quality = spec["quarterly_quality_snapshot"]
+    fundamentals = load_fundamentals(
+        resolve_repository_record_path(quality["path"])
+    )
+    capacity = jqdata_moneyflow_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        contract=contract,
+    )
+    admitted = bool(capacity["capacity_gate_passed"])
+    decision = (
+        "eligible_only_for_separate_fingerprint_bound_return_diagnostic_preregistration"
+        if admitted
+        else "rejected_before_return_diagnostic_insufficient_quality_listing_seasoned_cohorts"
+    )
+    run_id = _timestamp()
+    audit = {
+        "kind": "a_share_jqdata_moneyflow_capacity_audit",
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": JQDATA_MONEYFLOW_CAPACITY_PURPOSE,
+        "preregistration": {
+            "path": str(DEFAULT_JQDATA_MONEYFLOW_CAPACITY_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_JQDATA_MONEYFLOW_CAPACITY_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [JQDATA_MONEYFLOW_FACTOR_NAME],
+        "later_diagnostic_direction_if_capacity_passes": spec[
+            "later_diagnostic_direction_if_capacity_passes"
+        ],
+        "run_contract": contract,
+        "source_capacity": capacity,
+        "source_admitted_for_separate_return_diagnostic_preregistration": admitted,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri),
+            "full_calendar_start": full_calendar.min().date().isoformat(),
+            "full_calendar_end": full_calendar.max().date().isoformat(),
+            "research_calendar_start": research_calendar.min().date().isoformat(),
+            "research_calendar_end": research_calendar.max().date().isoformat(),
+            "calendar_path": str(calendar_path),
+            "calendar_sha256": file_sha256(calendar_path),
+            "holding_universe": contract["holding_universe"],
+            "holding_universe_path": str(holding_universe_path),
+            "holding_universe_sha256": file_sha256(holding_universe_path),
+            "holding_universe_clipped_fingerprint": holding_fingerprint,
+            "instrument_span_count": int(len(intervals)),
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Capacity is only a no-outcome upper bound; passing does not imply association, tradability, or a usable strategy.",
+            "No open, close, forward return, score, current selection, or order field is loaded by this audit.",
+            "A pass authorizes only a new immutable return-diagnostic preregistration bound to this audit fingerprint.",
+            "The licensed JQData product and local historical snapshot are user-provided evidence and are not bundled in Git.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_jqdata_moneyflow_capacity_audit.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity,
+        "source_admitted_for_separate_return_diagnostic_preregistration": admitted,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
 def quarterly_acceleration_event_capacity(
     fundamentals: pd.DataFrame,
     calendar: pd.DatetimeIndex,
@@ -16394,6 +17231,59 @@ def load_quarterly_event_capacity_audits(experiment_root: Path) -> list[dict[str
     return audits
 
 
+def load_jqdata_moneyflow_capacity_audits(
+    experiment_root: Path,
+) -> list[dict[str, Any]]:
+    """Read no-return JQData moneyflow capacity gates for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(
+        experiment_root.expanduser().glob("*_jqdata_moneyflow_capacity_audit.json")
+    ):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if (
+            audit.get("status") != "completed"
+            or audit.get("purpose") != JQDATA_MONEYFLOW_CAPACITY_PURPOSE
+        ):
+            continue
+        contract = audit.get("run_contract") or {}
+        capacity = audit.get("source_capacity") or {}
+        source = ((audit.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "manifest"
+        ) or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "source_run_id": str(source.get("run_id", "—")),
+                "source_sha256": str(source.get("sha256", "—")),
+                "calendar_start": str(contract.get("start", "—")),
+                "calendar_end": str(contract.get("end", "—")),
+                "complete_cohorts": int(capacity.get("potential_complete_cohorts") or 0),
+                "minimum_cohorts": int(capacity.get("minimum_required_cohorts") or 0),
+                "observed_years": int(capacity.get("observed_calendar_years") or 0),
+                "minimum_years": int(
+                    capacity.get("minimum_observed_calendar_years") or 0
+                ),
+                "passed": bool(capacity.get("capacity_gate_passed", False)),
+                "admitted": bool(
+                    audit.get(
+                        "source_admitted_for_separate_return_diagnostic_preregistration",
+                        False,
+                    )
+                ),
+                "forward_return_fields_read": bool(
+                    audit.get("forward_return_fields_read", True)
+                ),
+                "decision": str(audit.get("decision", "—")),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_sparse_announcement_capacity_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read no-return sparse-announcement capacity gates for the research log."""
 
@@ -17074,6 +17964,7 @@ def render_three_day_research_report(
     prospective_factor_registry: dict[str, Any] | None = None,
     prospective_factor_ledger: dict[str, Any] | None = None,
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
+    jqdata_moneyflow_capacity_audits: list[dict[str, Any]] | None = None,
     sparse_announcement_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_timing_capacity_audits: list[dict[str, Any]] | None = None,
@@ -17591,6 +18482,43 @@ def render_three_day_research_report(
                     minimum=audit["minimum_cohorts"],
                     decision="通过容量门（仍需预注册）" if audit["passed"] else "容量不足（停止）",
                     returns="是（无效）" if audit["forward_return_fields_read"] else "否",
+                )
+            )
+        lines.append("")
+    if jqdata_moneyflow_capacity_audits:
+        lines.extend(
+            [
+                "",
+                "## JQData 大单分类无收益容量审计",
+                "",
+                "本节先逐分区复算冻结的大单净流入占比，再只用点时股票池、季度质量、上市满 20 个会话和非重叠三日网格计算可用截面；不读取开盘、收盘或未来收益。通过仅允许另写一份绑定本审计指纹的收益诊断预注册。",
+                "",
+                "| 审计 | 来源快照 | 开发期 | 潜在 Cohort / 门槛 | 年份 / 门槛 | 容量结论 | 读取未来收益 |",
+                "| --- | --- | --- | ---: | ---: | --- | --- |",
+            ]
+        )
+        for audit in jqdata_moneyflow_capacity_audits:
+            source_id = audit["source_run_id"]
+            if audit["source_sha256"] != "—":
+                source_id = f"{source_id} ({audit['source_sha256'][:12]})"
+            lines.append(
+                "| {run_id} | {source} | {start} 至 {end} | {cohorts} / {minimum} | {years} / {minimum_years} | {result} | {returns} |".format(
+                    run_id=audit["run_id"],
+                    source=source_id,
+                    start=audit["calendar_start"],
+                    end=audit["calendar_end"],
+                    cohorts=audit["complete_cohorts"],
+                    minimum=audit["minimum_cohorts"],
+                    years=audit["observed_years"],
+                    minimum_years=audit["minimum_years"],
+                    result=(
+                        "允许另行冻结收益诊断"
+                        if audit["passed"] and audit["admitted"]
+                        else "容量不足，停止"
+                    ),
+                    returns=(
+                        "是（无效）" if audit["forward_return_fields_read"] else "否"
+                    ),
                 )
             )
         lines.append("")
@@ -18291,6 +19219,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     limit_like_event_audits = load_limit_like_event_audits(experiment_root)
     quarterly_profit_acceleration_event_audits = load_quarterly_profit_acceleration_event_audits(experiment_root)
     quarterly_event_capacity_audits = load_quarterly_event_capacity_audits(experiment_root)
+    jqdata_moneyflow_capacity_audits = load_jqdata_moneyflow_capacity_audits(
+        experiment_root
+    )
     sparse_announcement_capacity_audits = load_sparse_announcement_capacity_audits(experiment_root)
     institutional_survey_capacity_audits = load_institutional_survey_capacity_audits(experiment_root)
     institutional_survey_timing_capacity_audits = (
@@ -18343,6 +19274,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         prospective_factor_registry=prospective_factor_registry,
         prospective_factor_ledger=prospective_factor_ledger,
         quarterly_event_capacity_audits=quarterly_event_capacity_audits,
+        jqdata_moneyflow_capacity_audits=jqdata_moneyflow_capacity_audits,
         sparse_announcement_capacity_audits=sparse_announcement_capacity_audits,
         institutional_survey_capacity_audits=institutional_survey_capacity_audits,
         institutional_survey_timing_capacity_audits=institutional_survey_timing_capacity_audits,
@@ -18394,6 +19326,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "limit_like_event_audits": len(limit_like_event_audits),
         "quarterly_profit_acceleration_event_audits": len(quarterly_profit_acceleration_event_audits),
         "quarterly_event_capacity_audits": len(quarterly_event_capacity_audits),
+        "jqdata_moneyflow_capacity_audits": len(jqdata_moneyflow_capacity_audits),
         "sparse_announcement_capacity_audits": len(sparse_announcement_capacity_audits),
         "institutional_survey_capacity_audits": len(institutional_survey_capacity_audits),
         "institutional_survey_timing_capacity_audits": len(
@@ -22939,6 +23872,22 @@ def parse_args() -> argparse.Namespace:
         "--minimum-cohorts", type=int, default=QUARTERLY_EVENT_CAPACITY_MIN_COHORTS
     )
 
+    jqdata_moneyflow_capacity = subparsers.add_parser(
+        "jqdata-moneyflow-capacity-audit",
+        help="audit one passed JQData classified-flow snapshot without loading price outcomes",
+    )
+    jqdata_moneyflow_capacity.add_argument(
+        "--manifest",
+        required=True,
+        help="full_source_coverage_passed_pending_no_return_capacity snapshot manifest",
+    )
+    jqdata_moneyflow_capacity.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    jqdata_moneyflow_capacity.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
     sparse_announcement_capacity = subparsers.add_parser(
         "sparse-announcement-capacity-audit",
         help="run the frozen four-source announcement-factor capacity gate without price outcomes",
@@ -23505,6 +24454,8 @@ def main() -> int:
         report = run_quarterly_profit_acceleration_event_audit(args)
     elif args.command == "quarterly-event-capacity-audit":
         report = run_quarterly_event_capacity_audit(args)
+    elif args.command == "jqdata-moneyflow-capacity-audit":
+        report = run_jqdata_moneyflow_capacity_audit(args)
     elif args.command == "sparse-announcement-capacity-audit":
         report = run_sparse_announcement_capacity_audit(args)
     elif args.command == "institutional-survey-capacity-audit":

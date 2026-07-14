@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "kind": "a_share_jqdata_moneyflow_capacity_preregistration",
+  "status": "frozen_before_jqdata_moneyflow_entitlement_or_rows_observed",
+  "preregistered_at": "2026-07-14T23:04:52Z",
+  "purpose": "Determine whether the frozen JQData classified large-order factor has enough quality/listing-seasoned three-session cross-sections before reading any open, close, or forward-return field.",
+  "freeze_evidence": {
+    "jqdata_sdk_installed": false,
+    "jqdata_environment_variables_configured": false,
+    "jqdata_moneyflow_entitlement_observed": false,
+    "jqdata_moneyflow_rows_observed": false,
+    "factor_returns_observed": false
+  },
+  "data_contract": {
+    "path": "docs/a_share_jqdata_moneyflow_data_contract.json",
+    "sha256": "1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004",
+    "preregistered_at": "2026-07-14T20:20:32Z"
+  },
+  "quarterly_quality_snapshot": {
+    "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+    "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+    "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+    "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+  },
+  "point_in_time_context": {
+    "fingerprint_range_start": "2019-01-01",
+    "fingerprint_range_end": "2025-12-31",
+    "fingerprint_algorithm": "sha256_of_compact_sorted_json_after_normalization_and_range_clipping",
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "3569ef3aebf5db0b81a60701aa2a28445f12bced1ae86d0cad81dfec235e3869",
+      "intervals": 5396
+    },
+    "holding_universe": {
+      "name": "buyable_main_chinext",
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "2b3a2fba2ebb6938853fe9c6e1f6649517bef844e0ee6347a032e2b74945394c",
+      "intervals": 4794
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "c408af553ff2aa780f302eda8bc860d06d875a1a34c6bf37cd1341c6f890623c",
+      "sessions": 1699
+    }
+  },
+  "required_full_snapshot": {
+    "kind": "a_share_rich_data_snapshot",
+    "dataset": "jqdata_moneyflow_pro_daily",
+    "provider": "jqdata",
+    "acceptance_status": "full_source_coverage_passed_pending_no_return_capacity",
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31",
+    "required_partition_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "required_columns": [
+      "trade_date",
+      "instrument",
+      "inflow_xl_amount",
+      "inflow_l_amount",
+      "inflow_m_amount",
+      "inflow_s_amount",
+      "outflow_xl_amount",
+      "outflow_l_amount",
+      "outflow_m_amount",
+      "outflow_s_amount",
+      "jqdata_large_order_net_inflow_share",
+      "provider"
+    ],
+    "minimum_median_positive_activity_factor_coverage": 0.95,
+    "minimum_p05_positive_activity_factor_coverage": 0.9,
+    "minimum_dates_with_at_least_fifty_factor_names": 200,
+    "point_in_time_universe_fingerprint_required": true,
+    "local_calendar_fingerprint_required": true,
+    "source_acceptance_fingerprint_required": true,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "factor_catalog": [
+    "jqdata_large_order_net_inflow_share"
+  ],
+  "factor_raw_columns": {
+    "jqdata_large_order_net_inflow_share": "jqdata_large_order_net_inflow_share"
+  },
+  "later_diagnostic_direction_if_capacity_passes": "higher_large_order_net_inflow_share_is_better",
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_valid_names_per_factor_cohort": 50,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "signal_availability": "trade-date data documented around 19:00; assign to that local close only for next-local-session-open entry",
+    "maximum_event_age_days": 0,
+    "price_basis_required_for_later_return_diagnostic": "close_known_raw_pct_chg_chain_v1"
+  },
+  "capacity_policy": {
+    "open_close_or_forward_return_fields_allowed": false,
+    "count_only_positive_activity_quality_and_listing_seasoned_buyable_names": true,
+    "recompute_source_formula_and_snapshot_fingerprints_before_capacity": true,
+    "failed_factor_must_stop_without_return_diagnostic": true,
+    "one_completed_capacity_audit_per_full_snapshot": true,
+    "no_direction_formula_date_topk_quality_listing_or_minimum_cohort_override": true,
+    "selection_or_promotion_allowed": false
+  },
+  "next_step_if_capacity_passes": {
+    "separate_immutable_diagnostic_preregistration_required": true,
+    "capacity_audit_fingerprint_must_be_bound_before_price_access": true,
+    "generic_factor_diagnostic_allowed": false,
+    "current_score_selection_or_order_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -6166,6 +6166,365 @@ def test_quarterly_event_capacity_rejects_sparse_ideas_without_return_fields():
         )
 
 
+def test_jqdata_moneyflow_capacity_preregistration_is_fingerprint_frozen(tmp_path):
+    spec = RESEARCH.load_jqdata_moneyflow_capacity_preregistration()
+    assert spec["run_contract"]["holding_universe"] == "buyable_main_chinext"
+    assert spec["run_contract"]["holding_period_trading_days"] == 3
+    assert spec["run_contract"]["minimum_required_cohorts"] == 200
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(RESEARCH.DEFAULT_JQDATA_MONEYFLOW_CAPACITY_SPEC.read_text())
+    changed["run_contract"]["minimum_required_cohorts"] = 199
+    changed_path = tmp_path / "changed_jqdata_capacity.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_jqdata_moneyflow_capacity_preregistration(changed_path)
+
+
+def test_jqdata_moneyflow_full_snapshot_recomputes_bound_source_coverage(tmp_path):
+    spec = json.loads(
+        json.dumps(RESEARCH.load_jqdata_moneyflow_capacity_preregistration())
+    )
+    symbols = [f"SZ{index:06d}" for index in range(1, 51)]
+    universe_path = tmp_path / "factor_main_chinext_star.txt"
+    universe_path.write_text(
+        "".join(
+            f"{symbol}\t2019-01-01\t2025-12-31\n" for symbol in symbols
+        ),
+        encoding="utf-8",
+    )
+    calendar = pd.DatetimeIndex(
+        sorted(
+            date
+            for year in range(2019, 2026)
+            for date in pd.bdate_range(f"{year}-01-02", periods=29)
+        )
+    )
+    calendar_path = tmp_path / "day.txt"
+    calendar_path.write_text(
+        "".join(f"{date.date().isoformat()}\n" for date in calendar),
+        encoding="utf-8",
+    )
+    spec["point_in_time_context"]["source_universe"] = {
+        "path": str(universe_path),
+        **RESEARCH.point_in_time_interval_fingerprint(
+            universe_path, start="2019-01-01", end="2025-12-31"
+        ),
+    }
+    spec["point_in_time_context"]["local_calendar"] = {
+        "path": str(calendar_path),
+        **RESEARCH.local_calendar_range_fingerprint(
+            calendar_path, start="2019-01-01", end="2025-12-31"
+        ),
+    }
+    files = []
+    for year in range(2019, 2026):
+        rows = []
+        for date in calendar[calendar.year == year]:
+            for position, symbol in enumerate(symbols, start=1):
+                amounts = {
+                    "inflow_xl_amount": 10.0 + position,
+                    "inflow_l_amount": 2.0,
+                    "inflow_m_amount": 1.0,
+                    "inflow_s_amount": 1.0,
+                    "outflow_xl_amount": 1.0,
+                    "outflow_l_amount": 1.0,
+                    "outflow_m_amount": 1.0,
+                    "outflow_s_amount": 1.0,
+                }
+                denominator = sum(amounts.values())
+                rows.append(
+                    {
+                        "trade_date": date,
+                        "instrument": symbol,
+                        **amounts,
+                        RESEARCH.JQDATA_MONEYFLOW_FACTOR_NAME: (
+                            amounts["inflow_xl_amount"]
+                            + amounts["inflow_l_amount"]
+                            - amounts["outflow_xl_amount"]
+                            - amounts["outflow_l_amount"]
+                        )
+                        / denominator,
+                        "provider": "jqdata",
+                    }
+                )
+        frame = pd.DataFrame(rows, columns=RESEARCH.JQDATA_MONEYFLOW_COLUMNS)
+        path = tmp_path / f"{year}.parquet"
+        frame.to_parquet(path, index=False)
+        files.append(
+            {
+                "year": year,
+                "path": str(path),
+                "rows": len(frame),
+                "sha256": RESEARCH.dataframe_content_sha256(frame),
+            }
+        )
+
+    acceptance = {
+        "kind": "a_share_rich_data_snapshot",
+        "dataset": "jqdata_moneyflow_pro_daily",
+        "provider": "jqdata",
+        "run_id": "acceptance",
+        "acceptance_status": "accepted_entitlement_and_formula_pending_full_history",
+        "data_contract": {"sha256": RESEARCH.JQDATA_MONEYFLOW_DATA_CONTRACT_SHA256},
+        "source_request": {
+            "fields": list(RESEARCH.JQDATA_MONEYFLOW_RAW_FIELDS),
+            "forbidden_fields_requested_or_stored": [],
+            "credentials_logged_or_stored": False,
+        },
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    acceptance_path = tmp_path / "acceptance.json"
+    write_json_record(acceptance_path, acceptance)
+    daily = [
+        {
+            "trade_date": date.date().isoformat(),
+            "expected_active_names": 50,
+            "positive_activity_factor_names": 50,
+            "coverage": 1.0,
+        }
+        for date in calendar
+    ]
+    manifest = {
+        "schema_version": 1,
+        "kind": "a_share_rich_data_snapshot",
+        "dataset": "jqdata_moneyflow_pro_daily",
+        "provider": "jqdata",
+        "run_id": "full-history",
+        "requested_start": "2019-01-01",
+        "requested_end": "2025-12-31",
+        "acceptance_status": "full_source_coverage_passed_pending_no_return_capacity",
+        "data_contract": {"sha256": RESEARCH.JQDATA_MONEYFLOW_DATA_CONTRACT_SHA256},
+        "source_acceptance": {
+            "path": str(acceptance_path),
+            "sha256": RESEARCH.file_sha256(acceptance_path),
+        },
+        "point_in_time_universe": {
+            "path": str(universe_path),
+            "sha256": RESEARCH.file_sha256(universe_path),
+            "intervals": 50,
+        },
+        "local_calendar": {
+            "path": str(calendar_path),
+            "sha256": RESEARCH.file_sha256(calendar_path),
+            "sessions_in_requested_range": len(calendar),
+        },
+        "source_request": {
+            "api": "get_money_flow_pro",
+            "frequency": "daily",
+            "data_type": "money",
+            "fields": list(RESEARCH.JQDATA_MONEYFLOW_RAW_FIELDS),
+            "forbidden_fields_requested_or_stored": [],
+            "credentials_logged_or_stored": False,
+        },
+        "coverage": {
+            "calendar_sessions": len(calendar),
+            "median_positive_activity_factor_coverage": 1.0,
+            "p05_positive_activity_factor_coverage": 1.0,
+            "dates_with_at_least_fifty_factor_names": len(calendar),
+            "gate_passed_before_prices": True,
+            "daily": daily,
+        },
+        "files": files,
+        "price_fields_loaded": [],
+        "open_close_or_forward_return_fields_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+    }
+    manifest_path = tmp_path / "full.json"
+    write_json_record(manifest_path, manifest)
+
+    factor_frame, evidence = RESEARCH.validate_jqdata_moneyflow_full_snapshot(
+        manifest_path, spec
+    )
+    assert len(factor_frame) == len(calendar) * 50
+    assert factor_frame.columns.tolist() == [
+        "trade_date",
+        "instrument",
+        RESEARCH.JQDATA_MONEYFLOW_FACTOR_NAME,
+    ]
+    assert evidence["coverage"]["gate_passed_before_prices"] is True
+    assert evidence["price_fields_loaded"] == []
+    assert evidence["forward_return_fields_read"] is False
+
+    manifest["coverage"]["median_positive_activity_factor_coverage"] = 0.99
+    write_json_record(manifest_path, manifest)
+    with pytest.raises(ValueError, match="does not recompute"):
+        RESEARCH.validate_jqdata_moneyflow_full_snapshot(manifest_path, spec)
+
+
+def test_jqdata_moneyflow_capacity_counts_only_quality_seasoned_cross_sections():
+    full_calendar = pd.bdate_range("2023-10-02", periods=80)
+    research_calendar = full_calendar[-10:]
+    symbols = [f"SZ{index:06d}" for index in range(1, 51)]
+    intervals = {
+        symbol: [(full_calendar[0], research_calendar[-1])] for symbol in symbols
+    }
+    rebalances = research_calendar[:-3:3]
+    factor_frame = pd.DataFrame(
+        [
+            {
+                "trade_date": date,
+                "instrument": symbol,
+                RESEARCH.JQDATA_MONEYFLOW_FACTOR_NAME: position / 100.0,
+            }
+            for date in rebalances
+            for position, symbol in enumerate(symbols, start=1)
+        ]
+    )
+    fundamentals = pd.DataFrame(
+        [
+            {
+                "instrument": symbol,
+                "report_date": pd.Timestamp("2023-09-30"),
+                "announcement_date": full_calendar[1],
+                "roe": 10.0,
+                "net_profit": 1.0,
+                "revenue_yoy": 10.0,
+                "profit_yoy": 10.0,
+            }
+            for symbol in symbols
+        ]
+    )
+    contract = {
+        "holding_period_trading_days": 3,
+        "minimum_valid_names_per_factor_cohort": 50,
+        "minimum_distinct_factor_values_per_cohort": 2,
+        "minimum_required_cohorts": 3,
+        "minimum_observed_calendar_years": 1,
+        "maximum_quality_age_days": 550,
+        "minimum_listing_sessions": 20,
+    }
+    capacity = RESEARCH.jqdata_moneyflow_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        contract=contract,
+    )
+    assert capacity["potential_complete_cohorts"] == 3
+    assert capacity["observed_calendar_years"] == 1
+    assert capacity["capacity_gate_passed"] is True
+    assert capacity["price_fields_loaded"] == []
+    assert capacity["forward_return_fields_read"] is False
+
+    constant = factor_frame.copy()
+    constant[RESEARCH.JQDATA_MONEYFLOW_FACTOR_NAME] = 0.0
+    rejected = RESEARCH.jqdata_moneyflow_capacity(
+        constant,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        contract=contract,
+    )
+    assert rejected["potential_complete_cohorts"] == 0
+    assert rejected["capacity_gate_passed"] is False
+
+
+def test_jqdata_moneyflow_capacity_audit_is_one_shot_and_reported(tmp_path, monkeypatch):
+    provider = tmp_path / "provider"
+    calendar_path = provider / "calendars" / "day.txt"
+    universe_path = provider / "instruments" / "buyable_main_chinext.txt"
+    calendar_path.parent.mkdir(parents=True)
+    universe_path.parent.mkdir(parents=True)
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    universe_path.write_text(
+        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
+    )
+    contract = {
+        "start": "2019-01-01",
+        "end": "2025-12-31",
+        "holding_universe": "buyable_main_chinext",
+    }
+    spec = {
+        "preregistered_at": "2026-07-14T23:04:52Z",
+        "run_contract": contract,
+        "quarterly_quality_snapshot": {"path": str(tmp_path / "quality.parquet")},
+        "point_in_time_context": {
+            "fingerprint_range_start": "2019-01-01",
+            "fingerprint_range_end": "2025-12-31",
+            "holding_universe": {
+                "name": "buyable_main_chinext",
+                **RESEARCH.point_in_time_interval_fingerprint(
+                    universe_path, start="2019-01-01", end="2025-12-31"
+                ),
+            },
+        },
+        "later_diagnostic_direction_if_capacity_passes": (
+            "higher_large_order_net_inflow_share_is_better"
+        ),
+    }
+    source_evidence = {
+        "manifest": {
+            "run_id": "full-history",
+            "sha256": "a" * 64,
+            "path": str(tmp_path / "full.json"),
+        },
+        "local_calendar": {"sha256": RESEARCH.file_sha256(calendar_path)},
+    }
+    full_calendar = pd.DatetimeIndex([pd.Timestamp("2019-01-02"), pd.Timestamp("2025-12-31")])
+    capacity = {
+        "potential_complete_cohorts": 220,
+        "minimum_required_cohorts": 200,
+        "observed_calendar_years": 7,
+        "minimum_observed_calendar_years": 5,
+        "capacity_gate_passed": True,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH, "load_jqdata_moneyflow_capacity_preregistration", lambda: spec
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_jqdata_moneyflow_full_snapshot",
+        lambda manifest, loaded_spec: (pd.DataFrame(), source_evidence),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_market_capacity_context",
+        lambda *args, **kwargs: (
+            full_calendar,
+            full_calendar,
+            {"SZ000001": [(full_calendar[0], full_calendar[-1])]},
+        ),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "jqdata_moneyflow_capacity", lambda *args, **kwargs: capacity
+    )
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "full.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(provider),
+    )
+    result = RESEARCH.run_jqdata_moneyflow_capacity_audit(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["source_admitted_for_separate_return_diagnostic_preregistration"] is True
+    assert audit["data"]["price_fields_loaded"] == []
+    assert audit["forward_return_fields_read"] is False
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_jqdata_moneyflow_capacity_audit(args)
+
+    audits = RESEARCH.load_jqdata_moneyflow_capacity_audits(
+        tmp_path / "experiments"
+    )
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        jqdata_moneyflow_capacity_audits=audits,
+    )
+    assert "JQData 大单分类无收益容量审计" in report
+    assert "220 / 200" in report
+    assert "7 / 5" in report
+    assert "允许另行冻结收益诊断" in report
+    assert "| 否 |" in report
+
+
 def test_quarterly_profit_acceleration_event_audits_are_retained_without_strategy_promotion(tmp_path):
     (tmp_path / "20260714T000000Z_quarterly_profit_acceleration_event_audit.json").write_text(
         json.dumps(
