@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "kind": "a_share_baostock_5m_bulk_preflight_audit",
+  "status": "blocked_insufficient_disk_before_bulk_request",
+  "audited_at": "2026-07-14T21:06:32Z",
+  "purpose": "Estimate raw five-minute storage and request duration before any multi-year full-market BaoStock request.",
+  "source_chain": {
+    "data_contract": {
+      "path": "docs/a_share_baostock_5m_data_contract.json",
+      "sha256": "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f"
+    },
+    "factor_preregistration": {
+      "path": "docs/a_share_baostock_5m_factor_preregistration.json",
+      "sha256": "a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8"
+    },
+    "formal_acceptance": {
+      "path": "data/metadata/rich_data/runs/20260714T210140Z_baostock_5m_be9dfe63.json",
+      "sha256": "e3d2160fab34c3a51b1524623a7c14f800abdc75164a66f0371386cf29ac68cd",
+      "status": "automatic_checks_passed_pending_time_alignment"
+    },
+    "alignment_confirmation": {
+      "path": "data/metadata/rich_data/alignments/20260714T210154Z_baostock_5m_alignment_2b1ad30e.json",
+      "sha256": "cf50051d254a3fcc2727d649b167ed053bbba2e2b3dfa2c939fae04166b54c6c"
+    },
+    "four_symbol_feature_smoke": {
+      "path": "data/metadata/rich_data/feature_runs/20260714T210509Z_baostock_5m_features_v1_155027ba.json",
+      "rows": 4,
+      "eligible_rows": 4,
+      "incomplete_session_rows": 0,
+      "forward_return_fields_read": false
+    }
+  },
+  "storage_and_duration_sample": {
+    "instrument": "SH600000",
+    "start": "2020-01-01",
+    "end": "2025-12-31",
+    "source_rows": 69840,
+    "source_sessions": 1455,
+    "first_source_session": "2020-01-02",
+    "last_source_session": "2025-12-31",
+    "zstd_parquet_bytes": 1224398,
+    "zstd_bytes_per_row": 17.531472,
+    "observed_wall_seconds": 22.21,
+    "sample_written_to_repository_data": false,
+    "factor_values_computed": false,
+    "forward_return_fields_read": false
+  },
+  "full_market_estimate": {
+    "reference_instrument_count": 4800,
+    "raw_parquet_gib_if_every_instrument_had_full_reference_history": 5.473486,
+    "estimated_sequential_hours": 29.613333,
+    "idealized_four_worker_hours": 7.403333,
+    "minimum_recommended_free_disk_gib": 10,
+    "notes": [
+      "Point-in-time listing intervals should reduce rows relative to the all-full-history upper estimate.",
+      "Temporary files, Parquet metadata, manifests, feature output and failure recovery require headroom above raw Parquet size.",
+      "Network throttling, anonymous service availability and process overhead can make wall time materially longer than the ideal estimate."
+    ]
+  },
+  "local_capacity": {
+    "filesystem": "/System/Volumes/Data",
+    "volume_size_gib": 228,
+    "used_gib": 200,
+    "available_gib_reported_by_df": 3,
+    "use_percent": 99,
+    "minimum_free_disk_gate_passed": false
+  },
+  "decision": {
+    "bulk_request_issued": false,
+    "partial_bulk_snapshot_created": false,
+    "bulk_sync_implementation_or_execution_authorized": false,
+    "required_next_state": "Free at least 10 GiB on the current data volume or select an external data root with at least 10 GiB free, then rerun a disk preflight before implementing or invoking --allow-large.",
+    "selection_or_promotion_allowed": false
+  },
+  "limitations": [
+    "The storage estimate uses one long-listed instrument and is an upper-style approximation, not a complete universe count.",
+    "The four-worker time is an ideal linear estimate and has not been load-tested against the anonymous service.",
+    "No source coverage, factor capacity, forward return, IC, Top-3 result or current stock score can be inferred from this preflight."
+  ],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -568,6 +568,22 @@ def test_frozen_minute_factor_spec_rejects_direction_changes(tmp_path):
         RICH.load_minute_factor_spec(changed_path)
 
 
+def test_frozen_baostock_5m_factor_spec_rejects_direction_changes(tmp_path):
+    spec = RICH.load_baostock_5m_factor_spec()
+    assert tuple(item["name"] for item in spec["features"]) == RICH.BAOSTOCK_5M_FEATURE_NAMES
+    assert tuple(item["diagnostic_direction"] for item in spec["features"]) == (
+        RICH.BAOSTOCK_5M_FEATURE_DIRECTIONS
+    )
+    assert spec["minute_contract"]["expected_regular_session_bars"] == 48
+    assert spec["forward_return_fields_read"] is False
+    changed = RICH.json.loads(RICH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC.read_text())
+    changed["features"][0]["diagnostic_direction"] = "lower"
+    changed_path = tmp_path / "changed_5m_spec.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_baostock_5m_factor_spec(changed_path)
+
+
 def test_alignment_confirmation_requires_review_and_matching_semantics(tmp_path):
     frame = complete_minute_frame()
     snapshot_path = write_accepted_snapshot(tmp_path, frame)
@@ -699,6 +715,49 @@ def test_minute_features_require_exact_complete_session_and_never_fill_gaps():
     assert not duplicate["complete_regular_session"]
     assert not duplicate["minute_feature_eligible"]
     assert pd.isna(missing["late_return_30m"])
+
+
+def test_baostock_5m_features_use_six_late_bars_and_distinct_names():
+    times = RICH.expected_minute_times("end", "5m")
+    datetimes = [pd.Timestamp.combine(dt.date(2026, 7, 10), value) for value in times]
+    close = pd.Series([10.0 + index * 0.01 for index in range(48)], dtype=float)
+    volume = pd.Series([100.0 + index for index in range(48)], dtype=float)
+    frame = pd.DataFrame(
+        {
+            "datetime": datetimes,
+            "symbol": "SH600519",
+            "source_symbol": "sh.600519",
+            "open": close,
+            "high": close + 0.01,
+            "low": close - 0.01,
+            "close": close,
+            "volume": volume,
+            "amount": volume * close,
+            "provider": "baostock",
+        }
+    )
+    trade_date = pd.Timestamp("2026-07-10")
+    result = RICH.minute_feature_frame(
+        frame,
+        bar_label="end",
+        previous_closes={"SH600519": {trade_date: 9.9}},
+        frequency="5m",
+        feature_names=RICH.BAOSTOCK_5M_FEATURE_NAMES,
+    )
+    row = result.iloc[0]
+    late = frame.loc[pd.to_datetime(frame["datetime"]).dt.time > dt.time(14, 30)]
+    anchor_close = frame.loc[
+        pd.to_datetime(frame["datetime"]).dt.time == dt.time(14, 30), "close"
+    ].iloc[0]
+    assert len(late) == 6
+    assert row["minute_bars"] == 48
+    assert row["minute_feature_eligible"]
+    assert row["late_return_30m_5m"] == pytest.approx(close.iloc[-1] / anchor_close - 1.0)
+    assert row["late_amount_share_30m_5m"] == pytest.approx(
+        late["amount"].sum() / frame["amount"].sum()
+    )
+    assert row["intraday_realized_volatility_5m"] > 0.0
+    assert not (set(RICH.MINUTE_FEATURE_NAMES) & set(result.columns))
 
 
 def test_previous_close_is_scaled_across_factor_change(tmp_path, monkeypatch):

@@ -1296,12 +1296,13 @@ python scripts/install_a_share_launchd.py uninstall
 ```
 
 定时任务不在休眠的电脑上补跑；若错过一次，手动执行 `sync` 即可恢复。若将来换成需要登录的专业数据服务，不要把令牌写进 YAML 或 Git；由系统钥匙串、环境变量或本地 `.env`（已忽略）提供即可。
-## 受凭据保护的分钟与事件数据
+## 分钟与事件数据
 
-日线管线继续是当前策略的唯一正式行情底座。三日持有期策略需要的尾盘、日内成交和资金流因子，使用独立且可审计的接入器；它不会覆盖日线数据或直接改动 Qlib 二进制。
+日线管线继续是当前策略的唯一正式行情底座。三日持有期策略需要的尾盘、日内成交和资金流因子，使用独立且可审计的接入器；它不会覆盖日线数据或直接改动 Qlib 二进制。BaoStock 五分钟线可以匿名读取；其余专业分钟/资金流源仍要求合法本地授权。
 
 | 来源 | 当前接入范围 | 适用阶段 |
 | --- | --- | --- |
+| BaoStock | 匿名原始 5 分钟 OHLCV/成交额；实测历史从 2020 年开始 | 低成本五分钟候选，独立于 1 分钟合同 |
 | RQData | 原始分钟 OHLCV/成交额 | 首选的全市场分钟研究数据 |
 | JQData | 原始分钟 OHLCV/成交额；另购专业版日/分钟资金流 | 当前下一项大单分类研究与分钟替代源 |
 | Tushare | 原始分钟线、`moneyflow`、涨跌停、龙虎榜 | 资金流和盘后事件补充 |
@@ -1320,7 +1321,7 @@ python scripts/install_a_share_launchd.py uninstall
 python scripts/a_share_rich_data.py status
 ```
 
-在已取得对应授权后，安装可选 SDK，并只在本机的 shell、钥匙串或被 Git 忽略的 `.env` 中提供凭据：
+BaoStock SDK 无需凭据；其余来源只有在已取得对应授权后才配置环境变量：
 
 ```bash
 python -m pip install -r scripts/data_collector/a_share_rich/requirements.txt
@@ -1332,7 +1333,26 @@ export RQDATA_USERNAME='...'
 export RQDATA_PASSWORD='...'
 ```
 
-令牌和密码绝不能出现在 Git、命令历史、笔记本输出、研究清单或聊天中。未安装 SDK 或缺少变量时，程序会在发出网络请求前失败；不要用抓取公开网页的方式替代已授权数据源。
+令牌和密码绝不能出现在 Git、命令历史、笔记本输出、研究清单或聊天中。未安装 SDK 或缺少变量时，程序会在发出网络请求前失败；不要用抓取公开网页的方式替代已授权数据源。`status` 中 BaoStock 只检查固定 `baostock==0.9.3` 包，不要求环境变量。
+
+### BaoStock 匿名五分钟候选
+
+仓库原有 `scripts/data_collector/baostock_5min/collector.py` 和 [BaoStock 官方 Python API](https://www.baostock.com/mainContent?file=pythonAPI.md) 都支持 `frequency="5"` 的原始五分钟线。匿名可用性实测显示：浦发银行、平安银行和宁德时代在抽查的 2019 日期均返回 0 行，2020‑01‑02 起抽查完整交易日返回 48 行；因此它不能冒充既有 2019–2025、1 分钟、240 bar 合同。独立数据合同冻结为 `docs/a_share_baostock_5m_data_contract.json`（SHA‑256 `3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f`），只允许 2020‑01‑01 至 2025‑12‑31、`adjustflag=3`、`date,time,code,open,high,low,close,volume,amount,adjustflag` 十个字段，完整会话必须严格为 09:35–11:30 和 13:05–15:00 的 48 个 bar-end 标签。
+
+该接入同时修正了分钟验收的成交量口径：未复权分钟量价必须与日线 `raw_open/raw_high/raw_low/raw_close/raw_volume` 比较，不能与反向因子调整后的 `volume` 比较。正式验收固定使用 2026‑07‑10 和四只代表股票，不开放日期、股票或频率覆盖：
+
+```bash
+python scripts/a_share_rich_data.py acceptance-baostock-5m
+python scripts/a_share_rich_data.py confirm-minute-alignment \
+  --manifest data/metadata/rich_data/runs/20260714T210140Z_baostock_5m_be9dfe63.json \
+  --bar-label end --volume-unit shares --reviewed-boundaries
+```
+
+验收清单 `20260714T210140Z_baostock_5m_be9dfe63.json` 绑定数据合同并通过：四只股票各 48 行，全部在常规时段且时间网格精确；成交额/本地日线比值约为 1，成交量/`raw_volume` 比值约为 100，确认单位为股；四股票最大原始 OHLC 相对误差为 0.1758%，低于冻结的 0.2% 门槛。时间与单位确认是 `20260714T210154Z_baostock_5m_alignment_2b1ad30e.json`。两项都不读取未来收益，也不授权全量下载。
+
+五分钟字段在看到任何字段值之前另行冻结为 `docs/a_share_baostock_5m_factor_preregistration.json`（SHA‑256 `a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8`）：`late_return_30m_5m`、`late_amount_share_30m_5m`、`late_vwap_to_day_vwap_30m_5m`、`opening_gap_digestion_5m` 方向为高，`intraday_realized_volatility_5m` 方向为低。四股票特征烟测 `20260714T210509Z_baostock_5m_features_v1_155027ba.json` 得到 4/4 合格行、0 个不完整会话，并明确 `forward_return_fields_read=false`；四股票单日值不能计算 Rank IC、形成选股或证明因子有效。
+
+全量下载在任何大请求前被磁盘门禁停止。`docs/a_share_baostock_5m_bulk_preflight_audit.json`（SHA‑256 `5cac308c82d6302e14ed076ea176a5fffb225261b3b15491aaeb8a13039a86ae`）对浦发银行 2020–2025 的单股票样本测得 69,840 行、1,455 个会话、Zstd Parquet 1,224,398 字节和 22.21 秒；按 4,800 只完整历史上界估计原始 Parquet 约 5.47 GiB，单进程约 29.6 小时、四进程理想约 7.4 小时，建议至少 10 GiB 可用空间。当前数据卷只剩约 3.0 GiB（99% 已用），所以状态为 `blocked_insufficient_disk_before_bulk_request`，没有发出全量请求、写入部分全量快照、读取收益或实现 `--allow-large`。先在当前卷释放至少 10 GiB，或为数据目录选择至少 10 GiB 的外部存储，再重新做磁盘前置审计；不得跳过原始快照、只保留看起来有用的因子值来规避门禁。
 
 ### JQData 专业版日级资金流
 

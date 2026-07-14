@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "kind": "a_share_baostock_5m_factor_preregistration",
+  "status": "frozen_after_source_acceptance_before_five_minute_factor_values_or_forward_returns",
+  "preregistered_at": "2026-07-14T21:02:19Z",
+  "purpose": "Test whether anonymous five-minute bars add intraday path information to the three-session A-share selection horizon without relabelling them as one-minute or Level-2 data.",
+  "source_chain": {
+    "data_contract": {
+      "path": "docs/a_share_baostock_5m_data_contract.json",
+      "sha256": "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f"
+    },
+    "acceptance_snapshot": {
+      "path": "data/metadata/rich_data/runs/20260714T210140Z_baostock_5m_be9dfe63.json",
+      "sha256": "e3d2160fab34c3a51b1524623a7c14f800abdc75164a66f0371386cf29ac68cd",
+      "status": "automatic_checks_passed_pending_time_alignment",
+      "trade_date": "2026-07-10",
+      "symbols": [
+        "600519",
+        "000001",
+        "300750",
+        "688981"
+      ]
+    },
+    "alignment_confirmation": {
+      "path": "data/metadata/rich_data/alignments/20260714T210154Z_baostock_5m_alignment_2b1ad30e.json",
+      "sha256": "cf50051d254a3fcc2727d649b167ed053bbba2e2b3dfa2c939fae04166b54c6c",
+      "bar_timestamp_label": "end",
+      "volume_unit": "shares",
+      "frequency": "5m"
+    }
+  },
+  "minute_contract": {
+    "provider": "baostock",
+    "frequency": "5m",
+    "prices": "raw_unadjusted",
+    "timestamp_normalized_to": "bar_end",
+    "complete_regular_session_required": true,
+    "expected_regular_session_bars": 48,
+    "expected_first_bar_end": "09:35:00",
+    "expected_last_bar_end": "15:00:00",
+    "missing_duplicate_or_off_grid_session_policy": "exclude the whole stock-session without filling"
+  },
+  "features": [
+    {
+      "name": "late_return_30m_5m",
+      "formula": "close at 15:00 / close at 14:30 - 1",
+      "diagnostic_direction": "higher",
+      "hypothesis": "Positive last-30-minute price pressure persists into the next three sessions."
+    },
+    {
+      "name": "late_amount_share_30m_5m",
+      "formula": "sum amount for the six bar ends after 14:30 / full-session sum amount",
+      "diagnostic_direction": "higher",
+      "hypothesis": "A larger late-session transaction share identifies concentrated closing demand."
+    },
+    {
+      "name": "late_vwap_to_day_vwap_30m_5m",
+      "formula": "late-30-minute amount/volume divided by full-session amount/volume minus 1",
+      "diagnostic_direction": "higher",
+      "hypothesis": "Late trading above the full-session VWAP identifies persistent demand."
+    },
+    {
+      "name": "opening_gap_digestion_5m",
+      "formula": "-sign(open / previous comparable raw close - 1) * (close / open - 1)",
+      "diagnostic_direction": "higher",
+      "hypothesis": "A session that digests its opening gap toward the prior comparable close is more resilient."
+    },
+    {
+      "name": "intraday_realized_volatility_5m",
+      "formula": "sqrt(sum of squared log returns across the 47 consecutive five-minute closes)",
+      "diagnostic_direction": "lower",
+      "hypothesis": "Lower complete-session five-minute path volatility is associated with a better next-three-session return."
+    }
+  ],
+  "development_protocol": {
+    "start": "2020-01-01",
+    "end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_calendar_years": 5,
+    "minimum_cohorts": 200,
+    "price_basis": "close_known_raw_pct_chg_chain_v1"
+  },
+  "coverage_gate_before_forward_returns": {
+    "historical_point_in_time_universe_intervals_required": true,
+    "median_eligible_universe_coverage_min": 0.95,
+    "p05_eligible_universe_coverage_min": 0.9,
+    "minimum_names_per_cross_section": 50,
+    "minimum_potential_non_overlapping_three_session_cohorts": 200,
+    "coverage_failure_stops_before_open_close_or_forward_return_fields": true
+  },
+  "combination_policy": {
+    "run_all_five_single_factor_directions_together_once": true,
+    "apply_full_default_stability_and_topk_viability_audits": true,
+    "eligible_inputs_are_only_the_intersection_passing_both_full_gates": true,
+    "fewer_than_two_gate_passers_stops_combination": true,
+    "two_or_more_gate_passers_use_one_equal_weight_all_passers_combination": true,
+    "no_subset_weight_or_aggregation_search": true
+  },
+  "research_policy": {
+    "five_minute_values_observed_before_registration": false,
+    "forward_return_fields_read": false,
+    "no_direction_formula_window_cost_quality_source_or_feature_subset_override": true,
+    "no_reverse_direction_or_alternative_window_after_results": true,
+    "the_2020_2025_period_is_not_a_pristine_holdout": true,
+    "passing_historical_gates_only_allows_newly_dated_prospective_paper_observation": true,
+    "the_existing_one_minute_protocol_remains_separate": true,
+    "raw_level2_claimed": false,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

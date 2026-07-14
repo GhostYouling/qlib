@@ -51,6 +51,9 @@ DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
 DEFAULT_BAOSTOCK_5M_CONTRACT = REPO_ROOT / "docs" / "a_share_baostock_5m_data_contract.json"
+DEFAULT_BAOSTOCK_5M_FACTOR_SPEC = (
+    REPO_ROOT / "docs" / "a_share_baostock_5m_factor_preregistration.json"
+)
 DEFAULT_FACTOR_UNIVERSE = (
     DATA_ROOT / "qlib" / "cn_a_share" / "instruments" / "factor_main_chinext_star.txt"
 )
@@ -74,12 +77,23 @@ MINUTE_FEATURE_NAMES = (
     "intraday_realized_volatility",
 )
 MINUTE_FEATURE_DIRECTIONS = ("higher", "higher", "higher", "higher", "lower")
+BAOSTOCK_5M_FEATURE_NAMES = (
+    "late_return_30m_5m",
+    "late_amount_share_30m_5m",
+    "late_vwap_to_day_vwap_30m_5m",
+    "opening_gap_digestion_5m",
+    "intraday_realized_volatility_5m",
+)
+BAOSTOCK_5M_FEATURE_DIRECTIONS = ("higher", "higher", "higher", "higher", "lower")
 REQUIRED_DAILY_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 JQDATA_MONEYFLOW_CONTRACT_SHA256 = (
     "1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004"
 )
 BAOSTOCK_5M_CONTRACT_SHA256 = (
     "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f"
+)
+BAOSTOCK_5M_FACTOR_SPEC_SHA256 = (
+    "a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8"
 )
 JQDATA_MONEYFLOW_RAW_FIELDS = (
     "inflow_xl",
@@ -1222,6 +1236,60 @@ def load_minute_factor_spec(path: Path = DEFAULT_MINUTE_FACTOR_SPEC) -> dict[str
     return spec
 
 
+def load_baostock_5m_factor_spec(
+    path: Path = DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+) -> dict[str, Any]:
+    """Load the immutable post-acceptance, pre-factor-value five-minute spec."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != BAOSTOCK_5M_FACTOR_SPEC_SHA256:
+        raise RichDataError("BaoStock five-minute factor preregistration fingerprint mismatch")
+    spec = load_json_record(path, kind="a_share_baostock_5m_factor_preregistration")
+    source_chain = spec.get("source_chain") or {}
+    contract_link = source_chain.get("data_contract") or {}
+    acceptance_link = source_chain.get("acceptance_snapshot") or {}
+    alignment_link = source_chain.get("alignment_confirmation") or {}
+    minute_contract = spec.get("minute_contract") or {}
+    features = list(spec.get("features") or [])
+    names = tuple(str(item.get("name")) for item in features if isinstance(item, dict))
+    directions = tuple(
+        str(item.get("diagnostic_direction")) for item in features if isinstance(item, dict)
+    )
+    development = spec.get("development_protocol") or {}
+    coverage = spec.get("coverage_gate_before_forward_returns") or {}
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_source_acceptance_before_five_minute_factor_values_or_forward_returns"
+        or spec.get("preregistered_at") != "2026-07-14T21:02:19Z"
+        or contract_link.get("sha256") != BAOSTOCK_5M_CONTRACT_SHA256
+        or acceptance_link.get("sha256")
+        != "e3d2160fab34c3a51b1524623a7c14f800abdc75164a66f0371386cf29ac68cd"
+        or alignment_link.get("sha256")
+        != "cf50051d254a3fcc2727d649b167ed053bbba2e2b3dfa2c939fae04166b54c6c"
+        or names != BAOSTOCK_5M_FEATURE_NAMES
+        or directions != BAOSTOCK_5M_FEATURE_DIRECTIONS
+        or minute_contract.get("provider") != "baostock"
+        or minute_contract.get("frequency") != "5m"
+        or minute_contract.get("prices") != "raw_unadjusted"
+        or minute_contract.get("timestamp_normalized_to") != "bar_end"
+        or minute_contract.get("complete_regular_session_required") is not True
+        or minute_contract.get("expected_regular_session_bars") != 48
+        or development.get("start") != "2020-01-01"
+        or development.get("end") != "2025-12-31"
+        or development.get("holding_period_trading_days") != 3
+        or development.get("non_overlapping_cohorts") is not True
+        or development.get("topk") != 3
+        or development.get("open_cost") != 0.00012
+        or development.get("close_cost") != 0.00062
+        or coverage.get("minimum_potential_non_overlapping_three_session_cohorts") != 200
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("BaoStock five-minute factor preregistration does not match the frozen protocol")
+    return spec
+
+
 def previous_comparable_close_map(symbol: str) -> dict[pd.Timestamp, float]:
     """Express the prior close on each current session's raw-price scale.
 
@@ -1261,20 +1329,32 @@ def minute_feature_frame(
     *,
     bar_label: str,
     previous_closes: dict[str, dict[pd.Timestamp, float]],
+    frequency: str = "1m",
+    feature_names: tuple[str, ...] = MINUTE_FEATURE_NAMES,
 ) -> pd.DataFrame:
-    """Construct the five frozen close-known minute features without returns."""
+    """Construct one frozen close-known intraday feature catalog without returns."""
 
     required = {"datetime", "symbol", "open", "high", "low", "close", "volume", "amount", "provider"}
     if missing := sorted(required - set(frame.columns)):
         raise RichDataError("minute feature input is missing columns: " + ", ".join(missing))
     if bar_label not in {"start", "end"}:
         raise RichDataError("bar label must be 'start' or 'end'")
+    if frequency not in MINUTE_EXPECTED_BARS_BY_FREQUENCY:
+        raise RichDataError(f"unsupported minute feature frequency: {frequency}")
+    if len(feature_names) != 5:
+        raise RichDataError("minute feature catalog must contain exactly five ordered names")
+    interval_minutes = int(frequency.removesuffix("m"))
+    if 30 % interval_minutes:
+        raise RichDataError("minute feature frequency must divide the frozen 30-minute late window")
+    expected_bars = MINUTE_EXPECTED_BARS_BY_FREQUENCY[frequency]
+    late_bar_count = 30 // interval_minutes
+    late_return_name, late_amount_name, late_vwap_name, gap_name, volatility_name = feature_names
     work = frame.copy()
     work["datetime"] = pd.to_datetime(work["datetime"], errors="coerce")
     if work["datetime"].isna().any():
         raise RichDataError("minute feature input contains invalid timestamps")
     work["bar_end"] = work["datetime"] + (
-        pd.Timedelta(minutes=1) if bar_label == "start" else pd.Timedelta(0)
+        pd.Timedelta(minutes=interval_minutes) if bar_label == "start" else pd.Timedelta(0)
     )
     numeric_columns = ["open", "high", "low", "close", "volume", "amount"]
     for column in numeric_columns:
@@ -1286,16 +1366,16 @@ def minute_feature_frame(
     if (work[["volume", "amount"]] < 0.0).any().any():
         raise RichDataError("minute feature input contains negative volume or amount")
     work["trade_date"] = work["bar_end"].dt.normalize()
-    expected_bar_ends = expected_minute_times("end")
+    expected_bar_ends = expected_minute_times("end", frequency)
     rows: list[dict[str, Any]] = []
     for (symbol, trade_date), group in work.groupby(["symbol", "trade_date"], sort=True):
         group = group.sort_values("bar_end", kind="stable")
         observed_bar_ends = tuple(group["bar_end"].dt.time)
         complete = (
-            len(group) == MINUTE_FEATURE_EXPECTED_BARS
+            len(group) == expected_bars
             and observed_bar_ends == expected_bar_ends
         )
-        values = {name: float("nan") for name in MINUTE_FEATURE_NAMES}
+        values = {name: float("nan") for name in feature_names}
         opening_gap_return = float("nan")
         if complete:
             day_open = float(group["open"].iloc[0])
@@ -1306,24 +1386,28 @@ def minute_feature_frame(
             total_volume = float(group["volume"].sum())
             late_amount = float(late["amount"].sum())
             late_volume = float(late["volume"].sum())
-            if len(anchor) == 1 and len(late) == 30 and float(anchor["close"].iloc[0]) > 0.0:
-                values["late_return_30m"] = day_close / float(anchor["close"].iloc[0]) - 1.0
+            if (
+                len(anchor) == 1
+                and len(late) == late_bar_count
+                and float(anchor["close"].iloc[0]) > 0.0
+            ):
+                values[late_return_name] = day_close / float(anchor["close"].iloc[0]) - 1.0
             if total_amount > 0.0:
-                values["late_amount_share_30m"] = late_amount / total_amount
+                values[late_amount_name] = late_amount / total_amount
             if total_amount > 0.0 and total_volume > 0.0 and late_amount > 0.0 and late_volume > 0.0:
-                values["late_vwap_to_day_vwap_30m"] = (late_amount / late_volume) / (
+                values[late_vwap_name] = (late_amount / late_volume) / (
                     total_amount / total_volume
                 ) - 1.0
             previous_close = previous_closes.get(str(symbol), {}).get(pd.Timestamp(trade_date))
             if previous_close is not None and previous_close > 0.0 and day_open > 0.0:
                 opening_gap_return = day_open / previous_close - 1.0
-                values["opening_gap_digestion"] = -float(np.sign(opening_gap_return)) * (
+                values[gap_name] = -float(np.sign(opening_gap_return)) * (
                     day_close / day_open - 1.0
                 )
             log_returns = np.log(pd.to_numeric(group["close"], errors="coerce")).diff().dropna()
-            if len(log_returns) == MINUTE_FEATURE_EXPECTED_BARS - 1 and np.isfinite(log_returns).all():
-                values["intraday_realized_volatility"] = float(np.sqrt(np.square(log_returns).sum()))
-        eligible = complete and all(np.isfinite(values[name]) for name in MINUTE_FEATURE_NAMES)
+            if len(log_returns) == expected_bars - 1 and np.isfinite(log_returns).all():
+                values[volatility_name] = float(np.sqrt(np.square(log_returns).sum()))
+        eligible = complete and all(np.isfinite(values[name]) for name in feature_names)
         rows.append(
             {
                 "symbol": str(symbol),
@@ -1354,11 +1438,23 @@ def build_minute_features(
     factor_spec_path = factor_spec_path.expanduser().resolve()
     snapshot = load_json_record(snapshot_path, kind="a_share_rich_data_snapshot")
     alignment = load_json_record(alignment_path, kind="a_share_minute_alignment_confirmation")
-    spec = load_minute_factor_spec(factor_spec_path)
-    if snapshot.get("dataset") != "minutes" or snapshot.get("frequency") != "1m":
-        raise RichDataError("minute feature construction requires a 1m minute snapshot")
+    spec_kind = load_json_record(factor_spec_path).get("kind")
+    if spec_kind == "a_share_minute_factor_preregistration":
+        spec = load_minute_factor_spec(factor_spec_path)
+    elif spec_kind == "a_share_baostock_5m_factor_preregistration":
+        spec = load_baostock_5m_factor_spec(factor_spec_path)
+    else:
+        raise RichDataError(f"unsupported minute factor preregistration kind: {spec_kind}")
+    minute_contract = spec["minute_contract"]
+    frequency = str(minute_contract["frequency"])
+    feature_names = tuple(str(item["name"]) for item in spec["features"])
+    if snapshot.get("dataset") != "minutes" or snapshot.get("frequency") != frequency:
+        raise RichDataError(f"minute feature construction requires a {frequency} minute snapshot")
     if snapshot.get("prices") != "raw_unadjusted":
         raise RichDataError("minute feature construction requires raw unadjusted prices")
+    expected_provider = minute_contract.get("provider")
+    if expected_provider is not None and snapshot.get("provider") != expected_provider:
+        raise RichDataError("minute snapshot provider does not match the frozen factor specification")
     if alignment.get("status") != "passed_for_feature_research":
         raise RichDataError("minute alignment has not passed for feature research")
     if snapshot.get("provider") != alignment.get("provider") or snapshot.get("frequency") != alignment.get("frequency"):
@@ -1379,6 +1475,17 @@ def build_minute_features(
         or acceptance_snapshot.get("frequency") != alignment.get("frequency")
     ):
         raise RichDataError("alignment confirmation is not bound to a compatible accepted snapshot")
+    if spec_kind == "a_share_baostock_5m_factor_preregistration":
+        chain = spec["source_chain"]
+        expected_acceptance = chain["acceptance_snapshot"]
+        expected_alignment = chain["alignment_confirmation"]
+        if (
+            resolve_record_path(expected_acceptance["path"]) != source_acceptance_path
+            or expected_acceptance["sha256"] != file_digest(source_acceptance_path)
+            or resolve_record_path(expected_alignment["path"]) != alignment_path
+            or expected_alignment["sha256"] != file_digest(alignment_path)
+        ):
+            raise RichDataError("BaoStock five-minute feature build is not bound to its frozen source chain")
     files = list(snapshot.get("files") or [])
     if not files:
         raise RichDataError("minute snapshot contains no files")
@@ -1402,6 +1509,8 @@ def build_minute_features(
                 frame,
                 bar_label=str(alignment["bar_timestamp_label"]),
                 previous_closes=previous_closes,
+                frequency=frequency,
+                feature_names=feature_names,
             )
         )
     if not feature_frames:
@@ -1413,11 +1522,12 @@ def build_minute_features(
     if eligible_rows == 0:
         raise RichDataError("minute snapshot has no complete feature-eligible sessions; missing bars are not filled")
 
-    run_id = new_run_id(f"{snapshot['provider']}_minute_features_v1")
+    feature_version = "v1" if frequency == "1m" else "baostock_5m_v1"
+    run_id = new_run_id(f"{snapshot['provider']}_{frequency}_features_v1")
     feature_path = (
         output.expanduser().resolve()
         if output is not None
-        else DERIVED_ROOT / "minute_features" / "v1" / run_id / "features.parquet"
+        else DERIVED_ROOT / "minute_features" / feature_version / run_id / "features.parquet"
     )
     if feature_path.exists():
         raise RichDataError(f"minute feature output already exists: {feature_path}")
@@ -1429,7 +1539,7 @@ def build_minute_features(
         "run_id": run_id,
         "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "provider": snapshot["provider"],
-        "frequency": "1m",
+        "frequency": frequency,
         "feature_spec": {
             "path": manifest_path(factor_spec_path),
             "sha256": file_digest(factor_spec_path),
