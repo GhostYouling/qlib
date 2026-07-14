@@ -4772,6 +4772,45 @@ def test_institutional_survey_timing_capacity_is_retained_without_returns(tmp_pa
     assert "| 否 |" in report
 
 
+def test_analyst_rating_capacity_is_retained_without_returns(tmp_path):
+    (tmp_path / "20260714T000004Z_analyst_rating_capacity_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "analyst-rating-capacity",
+                "status": "completed",
+                "purpose": RESEARCH.ANALYST_RATING_CAPACITY_PURPOSE,
+                "data": {
+                    "research_calendar_start": "2019-01-02",
+                    "research_calendar_end": "2025-12-31",
+                    "price_fields_loaded": [],
+                },
+                "run_contract": {"minimum_required_cohorts": 200},
+                "forward_return_fields_read": False,
+                "source_admitted_for_return_diagnostic": True,
+                "source_capacity": {
+                    "factor_capacity": {
+                        "analyst_rating_upgrade_share": {
+                            "potential_complete_cohorts": 224,
+                            "capacity_gate_passed": True,
+                        }
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_analyst_rating_capacity_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        analyst_rating_capacity_audits=audits,
+    )
+    assert "分析师评级调高占比容量审计" in report
+    assert "224 / 200" in report
+    assert "允许另行预注册诊断" in report
+    assert "| 否 |" in report
+
+
 def test_research_report_marks_non_promotable_historical_diagnostics():
     registry = {
         "iterations": [
