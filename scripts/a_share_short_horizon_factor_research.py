@@ -15614,6 +15614,58 @@ def load_restricted_share_unlock_capacity_audits(
     return audits
 
 
+def load_insider_open_market_capacity_audits(
+    experiment_root: Path,
+) -> list[dict[str, Any]]:
+    """Read no-return insider direct-market capacity gates for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(
+        experiment_root.expanduser().glob("*_insider_open_market_capacity_audit.json")
+    ):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if (
+            audit.get("status") != "completed"
+            or audit.get("purpose") != INSIDER_OPEN_MARKET_CAPACITY_PURPOSE
+        ):
+            continue
+        data = audit.get("data") or {}
+        contract = audit.get("run_contract") or {}
+        source = audit.get("source_capacity") or {}
+        factor_rows = [
+            {
+                "factor": str(factor_name),
+                "complete_cohorts": int(capacity.get("potential_complete_cohorts") or 0),
+                "factor_passed": bool(capacity.get("capacity_gate_passed", False)),
+            }
+            for factor_name, capacity in (source.get("factor_capacity") or {}).items()
+        ]
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "calendar_start": str(
+                    data.get("research_calendar_start", contract.get("start", "—"))
+                ),
+                "calendar_end": str(
+                    data.get("research_calendar_end", contract.get("end", "—"))
+                ),
+                "minimum_cohorts": int(contract.get("minimum_required_cohorts") or 0),
+                "factor_rows": factor_rows,
+                "source_admitted": bool(
+                    audit.get("source_admitted_for_return_diagnostic", False)
+                ),
+                "forward_return_fields_read": bool(
+                    audit.get("forward_return_fields_read", True)
+                ),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -15964,6 +16016,7 @@ def render_three_day_research_report(
     institutional_survey_timing_capacity_audits: list[dict[str, Any]] | None = None,
     analyst_rating_capacity_audits: list[dict[str, Any]] | None = None,
     restricted_share_unlock_capacity_audits: list[dict[str, Any]] | None = None,
+    insider_open_market_capacity_audits: list[dict[str, Any]] | None = None,
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
@@ -16592,6 +16645,39 @@ def render_three_day_research_report(
                     )
                 )
         lines.append("")
+    if insider_open_market_capacity_audits:
+        lines.extend(
+            [
+                "",
+                "## 董监高二级市场实际买卖容量审计",
+                "",
+                "本节只检验固定的高直接市场买入占比事件能否形成足够截面，不读取开盘、收盘或未来收益。容量通过只允许另行预注册一次同方向收益诊断，不代表因子有效。",
+                "",
+                "| 审计 | 因子 | 开发期 | 潜在 Cohort / 门槛 | 容量结论 | 读取未来收益 |",
+                "| --- | --- | --- | ---: | --- | --- |",
+            ]
+        )
+        for audit in insider_open_market_capacity_audits:
+            for row in audit["factor_rows"]:
+                lines.append(
+                    "| {run_id} | {factor} | {start} 至 {end} | {cohorts} / {minimum} | {result} | {returns} |".format(
+                        run_id=audit["run_id"],
+                        factor=row["factor"],
+                        start=audit["calendar_start"],
+                        end=audit["calendar_end"],
+                        cohorts=row["complete_cohorts"],
+                        minimum=audit["minimum_cohorts"],
+                        result=(
+                            "允许另行预注册诊断"
+                            if audit["source_admitted"]
+                            else "容量不足，停止"
+                        ),
+                        returns=(
+                            "是（无效）" if audit["forward_return_fields_read"] else "否"
+                        ),
+                    )
+                )
+        lines.append("")
     if candidate_overlap_audits:
         lines.extend(
             [
@@ -17029,6 +17115,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     restricted_share_unlock_capacity_audits = load_restricted_share_unlock_capacity_audits(
         experiment_root
     )
+    insider_open_market_capacity_audits = load_insider_open_market_capacity_audits(
+        experiment_root
+    )
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -17070,6 +17159,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         institutional_survey_timing_capacity_audits=institutional_survey_timing_capacity_audits,
         analyst_rating_capacity_audits=analyst_rating_capacity_audits,
         restricted_share_unlock_capacity_audits=restricted_share_unlock_capacity_audits,
+        insider_open_market_capacity_audits=insider_open_market_capacity_audits,
         rolling_window_semantics_audits=rolling_window_semantics_audits,
         minute_factor_coverage_audits=minute_factor_coverage_audits,
         minute_combination_holdouts=minute_combination_holdouts,
@@ -17116,6 +17206,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "analyst_rating_capacity_audits": len(analyst_rating_capacity_audits),
         "restricted_share_unlock_capacity_audits": len(
             restricted_share_unlock_capacity_audits
+        ),
+        "insider_open_market_capacity_audits": len(
+            insider_open_market_capacity_audits
         ),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
