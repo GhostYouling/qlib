@@ -36,6 +36,37 @@ def test_annual_report_dates_and_symbol_mapping():
     assert RESEARCH.qlib_symbol("200001") is None
 
 
+def test_listing_age_uses_provider_span_and_full_trading_calendar():
+    calendar = pd.to_datetime(["2024-01-02", "2024-01-03", "2024-01-04", "2024-01-05"])
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000001", "SZ000002", "SZ000003"],
+            "datetime": pd.to_datetime(["2024-01-02", "2024-01-05", "2024-01-04", "2024-01-05"]),
+        }
+    )
+    spans = {
+        "SZ000001": [(pd.Timestamp("2024-01-02"), pd.Timestamp("2024-01-05"))],
+        "SZ000002": [(pd.Timestamp("2024-01-03"), pd.Timestamp("2024-01-05"))],
+    }
+    attached = RESEARCH.attach_listing_age_sessions(market, spans, calendar)
+    assert attached["listing_age_sessions"].tolist()[:3] == [1, 4, 2]
+    assert pd.isna(attached.iloc[3]["listing_age_sessions"])
+    assert attached.iloc[2]["listing_start_date"] == pd.Timestamp("2024-01-03")
+
+
+def test_listing_seasoning_gate_is_fixed_before_factor_ranking():
+    frame = pd.DataFrame(
+        {
+            "fundamental_quality_eligible": [True, True, False],
+            "listing_age_sessions": [19, 20, 100],
+        }
+    )
+    gated = RESEARCH.apply_listing_seasoning_gate(frame)
+    assert gated["listing_seasoning_eligible"].tolist() == [False, True, True]
+    assert gated["quality_eligible"].tolist() == [False, True, False]
+    assert RESEARCH.MIN_LISTING_SESSIONS == 20
+
+
 def test_quality_join_waits_until_next_trading_day():
     market = pd.DataFrame(
         {
@@ -59,6 +90,31 @@ def test_quality_join_waits_until_next_trading_day():
     effective = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
     assert effective["quality_eligible"]
     assert effective["quality_effective_date"] == pd.Timestamp("2024-05-06")
+
+
+def test_quality_join_applies_listing_gate_when_provider_age_is_present():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000001"],
+            "datetime": pd.to_datetime(["2024-05-06", "2024-05-07"]),
+            "listing_age_sessions": [19, 20],
+        }
+    )
+    fundamentals = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "report_date": pd.to_datetime(["2023-12-31"]),
+            "announcement_date": pd.to_datetime(["2024-04-30"]),
+            "roe": [8.0],
+            "net_profit": [1.0],
+            "revenue_yoy": [5.0],
+            "profit_yoy": [10.0],
+        }
+    )
+    joined = RESEARCH.attach_quality_asof(market, fundamentals)
+    assert joined["fundamental_quality_eligible"].tolist() == [True, True]
+    assert joined["listing_seasoning_eligible"].tolist() == [False, True]
+    assert joined["quality_eligible"].tolist() == [False, True]
 
 
 def test_fundamental_acceleration_becomes_available_only_with_newer_announcement():
@@ -877,6 +933,33 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert active["compression_consensus_min"] == pytest.approx(0.0)
 
 
+def test_candidate_sweep_compaction_keeps_only_eligible_required_columns():
+    frame = pd.DataFrame(
+        {
+            **{
+                column: [1.0, 2.0]
+                for column in RESEARCH.CANDIDATE_EVALUATION_CONTEXT_COLUMNS
+                if column not in {"instrument", "datetime", "quality_eligible"}
+            },
+            "instrument": ["SZ000001", "SZ000002"],
+            "datetime": pd.to_datetime(["2024-01-02", "2024-01-02"]),
+            "quality_eligible": [True, False],
+            "factor_a": [0.2, 0.8],
+            "factor_b": [0.7, 0.3],
+            "unused_wide_column": [99.0, 100.0],
+        }
+    )
+    candidates = (
+        RESEARCH.Candidate("one", "one", {"factor_a": 1.0}),
+        RESEARCH.Candidate("two", "two", {"factor_b": 1.0}),
+    )
+    compact = RESEARCH.compact_ranked_candidate_frame(frame, candidates)
+    assert compact["instrument"].tolist() == ["SZ000001"]
+    assert "factor_a" in compact.columns
+    assert "factor_b" in compact.columns
+    assert "unused_wide_column" not in compact.columns
+
+
 def test_winner_uses_development_only():
     summaries = [
         {"candidate": "development_winner", "development_selection_score": 0.20, "test": {"annualized_return": -0.99}},
@@ -1390,6 +1473,7 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
             "entry_date": None,
             "exit_date": None,
             "entry_gap_return": None,
+            "listing_age_sessions": None,
             "close_known_feature_ranks": {},
         }
     ]

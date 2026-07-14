@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import gc
 import hashlib
 import json
 import math
@@ -79,6 +80,11 @@ DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS = REPO_ROOT / "docs" / "a_share_factor_d
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
+# A-share IPOs can spend their first sessions in one-price limit queues that
+# are not realistically buyable at the next open.  Twenty local sessions is a
+# fixed execution-universe rule (roughly one trading month), not a tunable
+# factor parameter.  It is applied before every cross-sectional rank.
+MIN_LISTING_SESSIONS = 20
 
 PROSPECTIVE_VWAP_FACTOR = "close_below_vwap_1"
 PROSPECTIVE_VWAP_SOURCE_FACTOR = "close_above_vwap_1"
@@ -3751,6 +3757,75 @@ def attach_fundamental_accelerations(events: pd.DataFrame) -> pd.DataFrame:
     return result.drop(columns="_report_month")
 
 
+def attach_listing_age_sessions(
+    frame: pd.DataFrame,
+    listing_spans: dict[str, list[tuple[Any, Any]]],
+    calendar: Iterable[Any],
+) -> pd.DataFrame:
+    """Attach each row's provider-calendar age since the first listing session.
+
+    The provider's instrument span supplies only a listing start; the age is
+    calculated on the local trading calendar and therefore uses no price or
+    forward-return field.  A missing span remains ineligible rather than being
+    guessed from the requested research window.
+    """
+
+    required = {"instrument", "datetime"}
+    if missing := sorted(required - set(frame.columns)):
+        raise ValueError(f"listing-age frame is missing columns: {', '.join(missing)}")
+    normalized_calendar = pd.DatetimeIndex(pd.to_datetime(list(calendar))).normalize().unique().sort_values()
+    if normalized_calendar.empty:
+        raise ValueError("listing-age calendar must contain at least one session")
+    result = frame.copy()
+    result["datetime"] = pd.to_datetime(result["datetime"]).dt.normalize()
+    row_positions = normalized_calendar.get_indexer(result["datetime"])
+    if (row_positions < 0).any():
+        examples = result.loc[row_positions < 0, "datetime"].drop_duplicates().head(5)
+        raise ValueError(
+            "market rows are absent from the provider calendar: "
+            + ", ".join(pd.Timestamp(value).date().isoformat() for value in examples)
+        )
+
+    listing_starts: dict[str, pd.Timestamp] = {}
+    for instrument, spans in listing_spans.items():
+        starts = [pd.Timestamp(span[0]).normalize() for span in (spans or []) if span and span[0] is not None]
+        if starts:
+            listing_starts[str(instrument)] = min(starts)
+    result["listing_start_date"] = result["instrument"].astype(str).map(listing_starts)
+    start_positions = result["listing_start_date"].map(
+        lambda value: int(normalized_calendar.searchsorted(value, side="left")) if pd.notna(value) else pd.NA
+    )
+    ages = pd.Series(pd.NA, index=result.index, dtype="Int64")
+    known = start_positions.notna()
+    numeric_starts = pd.to_numeric(start_positions.loc[known], errors="raise").astype(int)
+    calculated = pd.Series(row_positions[known.to_numpy()] - numeric_starts.to_numpy() + 1, index=result.index[known])
+    ages.loc[known] = calculated.where(calculated.ge(1)).astype("Int64")
+    result["listing_age_sessions"] = ages
+    return result
+
+
+def apply_listing_seasoning_gate(
+    frame: pd.DataFrame,
+    minimum_sessions: int = MIN_LISTING_SESSIONS,
+) -> pd.DataFrame:
+    """Require a fixed number of completed listing sessions before ranking."""
+
+    if minimum_sessions < 1:
+        raise ValueError("minimum listing sessions must be positive")
+    required = {"fundamental_quality_eligible", "listing_age_sessions"}
+    if missing := sorted(required - set(frame.columns)):
+        raise ValueError(f"listing-seasoning gate is missing columns: {', '.join(missing)}")
+    result = frame.copy()
+    result["listing_seasoning_eligible"] = pd.to_numeric(
+        result["listing_age_sessions"], errors="coerce"
+    ).ge(minimum_sessions)
+    result["quality_eligible"] = (
+        result["fundamental_quality_eligible"].fillna(False)
+        & result["listing_seasoning_eligible"].fillna(False)
+    )
+    return result
+
+
 def attach_quality_asof(market: pd.DataFrame, fundamentals: pd.DataFrame, max_age_days: int = 550) -> pd.DataFrame:
     """Attach only already-announced accounting data to every market row.
 
@@ -3802,13 +3877,20 @@ def attach_quality_asof(market: pd.DataFrame, fundamentals: pd.DataFrame, max_ag
     result = market.copy()
     result = result.join(attached.set_index("_row"), how="left")
     result["quality_age_days"] = (pd.to_datetime(result["datetime"]) - pd.to_datetime(result["quality_effective_date"])).dt.days
-    result["quality_eligible"] = (
+    result["fundamental_quality_eligible"] = (
         result["roe"].ge(5.0)
         & result["net_profit"].gt(0.0)
         & result["revenue_yoy"].gt(0.0)
         & result["profit_yoy"].gt(0.0)
         & result["quality_age_days"].between(0, max_age_days)
     )
+    if "listing_age_sessions" in result.columns:
+        result = apply_listing_seasoning_gate(result)
+    else:
+        # Small offline fixtures may intentionally test the point-in-time
+        # fundamental join without a provider calendar.  Production market
+        # frames always carry listing age from ``load_market_data``.
+        result["quality_eligible"] = result["fundamental_quality_eligible"]
     return result
 
 
@@ -4479,6 +4561,8 @@ def load_market_data(
     require_research_price_basis(provider_uri)
     qlib.init(provider_uri=str(provider_uri), region="cn", kernels=1)
     market = D.instruments(market="buyable_main_chinext")
+    listing_spans = D.list_instruments(market, as_list=False)
+    provider_calendar = D.calendar(freq="day")
     instruments = D.list_instruments(market, start_time=start, end_time=end, as_list=True)
     if not instruments:
         raise RuntimeError("buyable_main_chinext has no local instruments in the requested window")
@@ -4586,6 +4670,7 @@ def load_market_data(
     result = pd.concat(frames, ignore_index=True)
     result["datetime"] = pd.to_datetime(result["datetime"])
     result["instrument"] = result["instrument"].astype(str)
+    result = attach_listing_age_sessions(result, listing_spans, provider_calendar)
     return result.sort_values(["datetime", "instrument"], kind="stable").reset_index(drop=True)
 
 
@@ -5090,6 +5175,48 @@ def score_candidate(ranked: pd.DataFrame, candidate: Candidate) -> pd.DataFrame:
     result["score"] = sum(result[column] * weight for column, weight in candidate.weights.items())
     required = ["instrument", "datetime", "open", "close", "score", *candidate.weights]
     return result.dropna(subset=required)
+
+
+CANDIDATE_EVALUATION_CONTEXT_COLUMNS = (
+    "instrument",
+    "datetime",
+    "open",
+    "close",
+    "quality_eligible",
+    "market_breadth_5",
+    "market_breadth_20",
+    "market_volatility_20",
+    "market_return_dispersion_1",
+    "market_above_ma20_fraction",
+    "market_volatility_20_trailing_p75",
+    "market_volatility_20_trailing_p50",
+    "market_return_dispersion_1_trailing_p75",
+    "volatility_low_20",
+    "amplitude_low",
+)
+
+
+def compact_ranked_candidate_frame(
+    ranked: pd.DataFrame,
+    candidates: Iterable[Candidate],
+) -> pd.DataFrame:
+    """Keep one eligible, narrow frame for a fixed candidate sweep.
+
+    ``rank_factor_frame`` intentionally retains every auditable raw and rank
+    column.  Copying that all-market wide frame once per candidate can exhaust
+    memory even though portfolio evaluation needs only quotes, market state,
+    and the frozen candidate factors.  This projection is lossless for the
+    candidate sweep and does not change scores, dates, or selection rules.
+    """
+
+    candidates = tuple(candidates)
+    factor_columns = tuple(dict.fromkeys(factor for candidate in candidates for factor in candidate.weights))
+    required = {*CANDIDATE_EVALUATION_CONTEXT_COLUMNS, *factor_columns}
+    if missing := sorted(required - set(ranked.columns)):
+        raise ValueError("ranked candidate frame is missing columns: " + ", ".join(missing))
+    columns = list(dict.fromkeys((*CANDIDATE_EVALUATION_CONTEXT_COLUMNS, *factor_columns)))
+    eligible = ranked["quality_eligible"].fillna(False)
+    return ranked.loc[eligible, columns].copy()
 
 
 def minimum_required_holdings(topk: int) -> int:
@@ -6330,6 +6457,8 @@ def run_limit_like_event_audit(args: argparse.Namespace) -> dict[str, Any]:
         },
         "strategy_timing": {
             "universe": "buyable_main_chinext",
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
             "holding_period_trading_days": args.hold_days,
             "rebalancing": "non_overlapping_every_holding_period",
             "topk": args.topk,
@@ -6344,6 +6473,16 @@ def run_limit_like_event_audit(args: argparse.Namespace) -> dict[str, Any]:
             "sha256": file_sha256(fundamental_path),
             "effective_date": "strictly next local trading day after announcement_date",
             "max_quality_age_days": args.max_quality_age_days,
+            "fundamental_eligible_rows_before_listing_gate": int(
+                market["fundamental_quality_eligible"].fillna(False).sum()
+            ),
+            "eligible_rows_after_listing_gate": int(market["quality_eligible"].fillna(False).sum()),
+            "fundamental_rows_excluded_by_listing_gate": int(
+                (
+                    market["fundamental_quality_eligible"].fillna(False)
+                    & ~market["listing_seasoning_eligible"].fillna(False)
+                ).sum()
+            ),
         },
         "data": {
             "provider_uri": str(provider_uri.resolve()),
@@ -6804,6 +6943,7 @@ def summarize_factor_diagnostics(
                     "exit_date",
                     "close",
                     "entry_open",
+                    "listing_age_sessions",
                     *FACTOR_TAIL_ATTRIBUTION_COLUMNS,
                 )
                 if column in group.columns and column != factor
@@ -6837,6 +6977,11 @@ def summarize_factor_diagnostics(
                         "entry_date": row.get("entry_date"),
                         "exit_date": row.get("exit_date"),
                         "entry_gap_return": entry_gap_return,
+                        "listing_age_sessions": (
+                            int(row["listing_age_sessions"])
+                            if optional_finite_float(row.get("listing_age_sessions")) is not None
+                            else None
+                        ),
                         "close_known_feature_ranks": {
                             column: optional_finite_float(row.get(column))
                             for column in FACTOR_TAIL_ATTRIBUTION_COLUMNS
@@ -7436,6 +7581,8 @@ def run_latest_screen(args: argparse.Namespace) -> dict[str, Any]:
                 "quality_report_date": pd.Timestamp(row.report_date).date().isoformat(),
                 "quality_announcement_date": pd.Timestamp(row.announcement_date).date().isoformat(),
                 "quality_age_days": int(row.quality_age_days),
+                "listing_start_date": pd.Timestamp(row.listing_start_date).date().isoformat(),
+                "listing_age_sessions": int(row.listing_age_sessions),
                 "factor_percentiles": {column: float(getattr(row, column)) for column in factor_columns},
             }
         )
@@ -7459,6 +7606,8 @@ def run_latest_screen(args: argparse.Namespace) -> dict[str, Any]:
             "twenty_day": float(latest_scored["market_breadth_20"].iloc[0]),
         },
         "universe": "buyable_main_chinext",
+        "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+        "listing_gate_applied_before_cross_sectional_ranking": True,
         "exclude_current_st": not args.include_st,
         "topk": args.topk,
         "quality_gate": {
@@ -7466,6 +7615,10 @@ def run_latest_screen(args: argparse.Namespace) -> dict[str, Any]:
             "sha256": file_sha256(fundamentals_path),
             "annual_report_only": True,
             "effective_date": "strictly next local trading day after announcement_date",
+            "fundamental_eligible_rows_before_listing_gate": int(
+                market["fundamental_quality_eligible"].fillna(False).sum()
+            ),
+            "eligible_rows_after_listing_gate": int(market["quality_eligible"].fillna(False).sum()),
         },
         "top_candidates": records,
         "limitations": [
@@ -10266,6 +10419,8 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
         ],
         "strategy": {
             "universe": "buyable_main_chinext",
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
             "holding_period_trading_days": args.hold_days,
             "topk": args.topk,
             "regime_filter": args.regime_filter,
@@ -10487,6 +10642,8 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         "factor_catalog": factor_catalog,
         "strategy_timing": {
             "universe": "buyable_main_chinext",
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
             "holding_period_trading_days": args.hold_days,
             "rebalancing": "non_overlapping_every_holding_period",
             "signal_time": "market close",
@@ -10501,6 +10658,16 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "sha256": file_sha256(fundamental_path),
             "effective_date": "strictly next local trading day after announcement_date",
             "max_quality_age_days": args.max_quality_age_days,
+            "fundamental_eligible_rows_before_listing_gate": int(
+                market["fundamental_quality_eligible"].fillna(False).sum()
+            ),
+            "eligible_rows_after_listing_gate": int(market["quality_eligible"].fillna(False).sum()),
+            "fundamental_rows_excluded_by_listing_gate": int(
+                (
+                    market["fundamental_quality_eligible"].fillna(False)
+                    & ~market["listing_seasoning_eligible"].fillna(False)
+                ).sum()
+            ),
         },
         "performance_forecast_events": (
             {
@@ -10671,6 +10838,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "calendar_end": market_end.date().isoformat(),
             "market_rows": int(len(market)),
             "eligible_rows": int(market["quality_eligible"].sum()),
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
             "complete_forward_name_observations": int(len(forward_returns)),
             "development_end": args.development_end,
             "test_period_used_for_factor_design": False,
@@ -10680,6 +10848,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "This ranks individual factor associations only; it does not select, register, or promote a trading strategy.",
             "TopK-minus-BottomK is a descriptive gross cross-sectional spread, not an executable long-short simulation.",
             "A later factor library must be declared independently and evaluated with an untouched future period; this diagnostic does not validate a combined model.",
+            "The fixed twenty-session listing gate removes the known IPO one-price queue regime but does not model ordinary limit-up queue priority or guarantee an opening fill.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
             "Prices use the accepted close-known adjusted/raw restoration contract; exchange limit queues, suspensions, and market impact are still not simulated exactly.",
         ],
@@ -11004,6 +11173,8 @@ def run_basket_correlation_audit(args: argparse.Namespace) -> dict[str, Any]:
         },
         "strategy": {
             "universe": "buyable_main_chinext",
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
             "holding_period_trading_days": args.hold_days,
             "rebalancing": "non_overlapping_every_holding_period",
             "topk": args.topk,
@@ -12015,7 +12186,25 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
     price_basis_metadata = research_price_basis_metadata(provider_uri)
     market = attach_quality_asof(market, fundamentals, max_age_days=args.max_quality_age_days)
+    market_audit = {
+        "calendar_start": market["datetime"].min().date().isoformat(),
+        "calendar_end": market["datetime"].max().date().isoformat(),
+        "market_rows": int(len(market)),
+        "fundamental_eligible_rows_before_listing_gate": int(
+            market["fundamental_quality_eligible"].fillna(False).sum()
+        ),
+        "eligible_rows_after_listing_gate": int(market["quality_eligible"].fillna(False).sum()),
+        "fundamental_rows_excluded_by_listing_gate": int(
+            (
+                market["fundamental_quality_eligible"].fillna(False)
+                & ~market["listing_seasoning_eligible"].fillna(False)
+            ).sum()
+        ),
+    }
     ranked = rank_factor_frame(market)
+    del market
+    ranked = compact_ranked_candidate_frame(ranked, candidates)
+    gc.collect()
     run_id = _timestamp()
     common = {
         "run_id": run_id,
@@ -12030,6 +12219,8 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
         },
         "strategy": {
             "universe": "buyable_main_chinext",
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
             "holding_period_trading_days": args.hold_days,
             "rebalancing": "non_overlapping_every_holding_period",
             "topk": args.topk,
@@ -12049,6 +12240,13 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
             "annual_report_only": True,
             "effective_date": "strictly next local trading day after announcement_date",
             "max_quality_age_days": args.max_quality_age_days,
+            "fundamental_eligible_rows_before_listing_gate": market_audit[
+                "fundamental_eligible_rows_before_listing_gate"
+            ],
+            "eligible_rows_after_listing_gate": market_audit["eligible_rows_after_listing_gate"],
+            "fundamental_rows_excluded_by_listing_gate": market_audit[
+                "fundamental_rows_excluded_by_listing_gate"
+            ],
             "requirements": {
                 "weighted_average_roe_gte": 5.0,
                 "parent_net_profit_gt": 0.0,
@@ -12058,10 +12256,10 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
         },
         "data": {
             "provider_uri": str(provider_uri.resolve()),
-            "calendar_start": market["datetime"].min().date().isoformat(),
-            "calendar_end": market["datetime"].max().date().isoformat(),
-            "market_rows": int(len(market)),
-            "eligible_rows": int(market["quality_eligible"].sum()),
+            "calendar_start": market_audit["calendar_start"],
+            "calendar_end": market_audit["calendar_end"],
+            "market_rows": market_audit["market_rows"],
+            "eligible_rows": market_audit["eligible_rows_after_listing_gate"],
             "development_end": args.development_end,
             "test_window_is_newly_reserved": not args.research_only,
             **price_basis_metadata,
@@ -12092,6 +12290,8 @@ def run_research(args: argparse.Namespace) -> dict[str, Any]:
         records.append((record, destination))
         summaries.append(summary)
         print(f"{candidate.name}: {destination}")
+        del scored
+        gc.collect()
     winner = choose_winner(summaries, args.selection_policy)
     for record, destination in records:
         record["selected_by_development"] = record["candidate"] == winner
