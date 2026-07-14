@@ -10764,6 +10764,46 @@ def load_quarterly_event_capacity_audits(experiment_root: Path) -> list[dict[str
     return audits
 
 
+def load_sparse_announcement_capacity_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read no-return sparse-announcement capacity gates for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_sparse_announcement_capacity_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        data = audit.get("data") or {}
+        contract = audit.get("run_contract") or {}
+        source_rows: list[dict[str, Any]] = []
+        for source_name, source in (audit.get("source_capacity") or {}).items():
+            admitted = bool(source.get("source_admitted_for_return_rebuild", False))
+            for factor_name, capacity in (source.get("factor_capacity") or {}).items():
+                source_rows.append(
+                    {
+                        "source": str(source_name),
+                        "factor": str(factor_name),
+                        "complete_cohorts": int(capacity.get("potential_complete_cohorts") or 0),
+                        "factor_passed": bool(capacity.get("capacity_gate_passed", False)),
+                        "source_admitted": admitted,
+                    }
+                )
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "calendar_start": str(data.get("research_calendar_start", contract.get("start", "—"))),
+                "calendar_end": str(data.get("research_calendar_end", contract.get("end", "—"))),
+                "minimum_cohorts": int(contract.get("minimum_required_cohorts") or 0),
+                "source_rows": source_rows,
+                "forward_return_fields_read": bool(audit.get("forward_return_fields_read", True)),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -11109,6 +11149,7 @@ def render_three_day_research_report(
     prospective_factor_registry: dict[str, Any] | None = None,
     prospective_factor_ledger: dict[str, Any] | None = None,
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
+    sparse_announcement_capacity_audits: list[dict[str, Any]] | None = None,
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
@@ -11581,6 +11622,35 @@ def render_three_day_research_report(
                 )
             )
         lines.append("")
+    if sparse_announcement_capacity_audits:
+        lines.extend(
+            [
+                "",
+                "## 稀疏公司公告因子容量审计",
+                "",
+                "本节完全不读取开盘、收盘或未来收益，只检验固定公告时效、季度质量、上市满 20 个会话和非重叠三日网格下能否形成完整关联截面。来源内任一原始因子达到 200 cohort 才允许该来源一次性重建全部原始方向；否则整个来源停止。",
+                "",
+                "| 审计 | 来源 | 因子 | 开发期 | 潜在 Cohort / 门槛 | 因子容量 | 来源结论 | 读取未来收益 |",
+                "| --- | --- | --- | --- | ---: | --- | --- | --- |",
+            ]
+        )
+        for audit in sparse_announcement_capacity_audits:
+            for row in audit["source_rows"]:
+                lines.append(
+                    "| {run_id} | {source} | {factor} | {start} 至 {end} | {cohorts} / {minimum} | {factor_result} | {source_result} | {returns} |".format(
+                        run_id=audit["run_id"],
+                        source=row["source"],
+                        factor=row["factor"],
+                        start=audit["calendar_start"],
+                        end=audit["calendar_end"],
+                        cohorts=row["complete_cohorts"],
+                        minimum=audit["minimum_cohorts"],
+                        factor_result="通过" if row["factor_passed"] else "不足",
+                        source_result="允许固定重建" if row["source_admitted"] else "停止，不读收益",
+                        returns="是（无效）" if audit["forward_return_fields_read"] else "否",
+                    )
+                )
+        lines.append("")
     if candidate_overlap_audits:
         lines.extend(
             [
@@ -12009,6 +12079,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     limit_like_event_audits = load_limit_like_event_audits(experiment_root)
     quarterly_profit_acceleration_event_audits = load_quarterly_profit_acceleration_event_audits(experiment_root)
     quarterly_event_capacity_audits = load_quarterly_event_capacity_audits(experiment_root)
+    sparse_announcement_capacity_audits = load_sparse_announcement_capacity_audits(experiment_root)
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -12045,6 +12116,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         prospective_factor_registry=prospective_factor_registry,
         prospective_factor_ledger=prospective_factor_ledger,
         quarterly_event_capacity_audits=quarterly_event_capacity_audits,
+        sparse_announcement_capacity_audits=sparse_announcement_capacity_audits,
         rolling_window_semantics_audits=rolling_window_semantics_audits,
         minute_factor_coverage_audits=minute_factor_coverage_audits,
         minute_combination_holdouts=minute_combination_holdouts,
@@ -12083,6 +12155,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "limit_like_event_audits": len(limit_like_event_audits),
         "quarterly_profit_acceleration_event_audits": len(quarterly_profit_acceleration_event_audits),
         "quarterly_event_capacity_audits": len(quarterly_event_capacity_audits),
+        "sparse_announcement_capacity_audits": len(sparse_announcement_capacity_audits),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
         "model_audits": len(model_audits),

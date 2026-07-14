@@ -3689,6 +3689,56 @@ def test_quarterly_event_capacity_audits_are_retained_before_any_return_test(tmp
     assert "读取未来收益" in report
 
 
+def test_sparse_announcement_capacity_audits_retain_source_level_decisions_without_returns(tmp_path):
+    (tmp_path / "20260714T000001Z_sparse_announcement_capacity_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "sparse-capacity",
+                "status": "completed",
+                "data": {
+                    "research_calendar_start": "2019-01-02",
+                    "research_calendar_end": "2025-12-31",
+                    "price_fields_loaded": [],
+                },
+                "run_contract": {"minimum_required_cohorts": 200},
+                "forward_return_fields_read": False,
+                "source_capacity": {
+                    "holder_count_changes": {
+                        "source_admitted_for_return_rebuild": False,
+                        "factor_capacity": {
+                            "holder_count_change_ratio": {
+                                "potential_complete_cohorts": 194,
+                                "capacity_gate_passed": False,
+                            }
+                        },
+                    },
+                    "share_pledges": {
+                        "source_admitted_for_return_rebuild": True,
+                        "factor_capacity": {
+                            "pledge_share_count": {
+                                "potential_complete_cohorts": 399,
+                                "capacity_gate_passed": True,
+                            }
+                        },
+                    },
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_sparse_announcement_capacity_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        sparse_announcement_capacity_audits=audits,
+    )
+    assert "稀疏公司公告因子容量审计" in report
+    assert "194 / 200" in report
+    assert "399 / 200" in report
+    assert "停止，不读收益" in report
+    assert "允许固定重建" in report
+
+
 def test_research_report_marks_non_promotable_historical_diagnostics():
     registry = {
         "iterations": [
