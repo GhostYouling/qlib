@@ -100,7 +100,11 @@ SIGNED_EFFICIENCY_RATIO_10_EXPRESSION = (
 RETURN_TURNOVER_CORRELATION_10_EXPRESSION = (
     "Corr($close/Ref($close, 1) - 1, $turnover, 10)"
 )
-MAX_RETURN_20_EXPRESSION = "Max($close/Ref($close, 1) - 1, 20)"
+# Qlib's rolling ``Max`` accepts a partial history by default.  Multiplying a
+# 20-session reference by zero makes the expression missing until that
+# reference exists, enforcing the preregistered complete-window requirement
+# without altering any valid 20-session value.
+MAX_RETURN_20_EXPRESSION = "Max($close/Ref($close, 1) - 1, 20) + 0*Ref($close, 20)"
 COMPRESSION_CONSENSUS_MIN_COMPONENTS = (
     "amplitude_low",
     "amplitude_low_1",
@@ -1202,6 +1206,7 @@ FACTOR_TAIL_ATTRIBUTION_COLUMNS = (
     "free_float_cap_small",
     "volatility_low_20",
     "amplitude_low",
+    "volume_dry_up",
     "momentum_1",
     "momentum_20",
     "close_to_high",
