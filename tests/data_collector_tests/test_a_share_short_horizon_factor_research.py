@@ -1683,6 +1683,39 @@ def test_securities_lending_sync_leaves_no_partial_snapshot_on_failure(tmp_path,
     assert not list(tmp_path.glob("*.parquet"))
 
 
+def test_securities_lending_source_rejection_is_frozen_and_rendered(tmp_path):
+    audit = RESEARCH.load_securities_lending_source_coverage_audit()
+    assert audit is not None
+    assert audit["sessions_published"] == 1695
+    assert audit["sessions_expected"] == 1699
+    assert audit["missing_dates"] == [
+        "2019-12-31",
+        "2020-06-30",
+        "2020-12-31",
+        "2021-06-30",
+    ]
+    assert audit["forward_return_fields_read"] is False
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        securities_lending_source_coverage_audit=audit,
+    )
+    assert "全市场融券来源覆盖审计" in report
+    assert "1695 / 1699" in report
+    assert "源不连续，停止" in report
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_SECURITIES_LENDING_SOURCE_COVERAGE_AUDIT.read_text(
+            encoding="utf-8"
+        )
+    )
+    changed["results"]["sessions_with_published_positive_partitions"] = 1696
+    changed_path = tmp_path / "changed_securities_lending_coverage.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_securities_lending_source_coverage_audit(changed_path)
+
+
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {

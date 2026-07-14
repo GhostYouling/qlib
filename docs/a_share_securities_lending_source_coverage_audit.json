@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "kind": "a_share_securities_lending_source_coverage_audit",
+  "status": "rejected_before_full_snapshot_capacity_or_return_access",
+  "audited_at": "2026-07-14T20:12:54Z",
+  "purpose": "Test the frozen requirement that every 2019-2025 local trading session has a published full-market securities-lending partition, without reading prices or returns.",
+  "data_contract": {
+    "path": "docs/a_share_securities_lending_data_contract.json",
+    "sha256": "3d13a0b464a5123d12c545942cba6ba39e95756bdc87f8845e15cb8a624a012c",
+    "status_at_audit": "frozen_before_full_securities_lending_snapshot_or_price_returns_observed"
+  },
+  "local_calendar": {
+    "path": "data/qlib/cn_a_share/calendars/day.txt",
+    "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "sessions": 1699,
+    "sessions_by_year": {
+      "2019": 244,
+      "2020": 243,
+      "2021": 243,
+      "2022": 242,
+      "2023": 242,
+      "2024": 242,
+      "2025": 243
+    },
+    "price_fields_read": false
+  },
+  "source": {
+    "provider": "Eastmoney public consolidated exchange margin-trading detail",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPTA_WEB_RZRQ_GGMX",
+    "requested_fields": [
+      "DATE",
+      "SCODE",
+      "RQYL",
+      "RQMCL",
+      "RQCHL"
+    ],
+    "financing_price_market_cap_or_return_fields_requested": []
+  },
+  "method": {
+    "initial_full_sync": "The frozen streamed sync count-verified 243 sessions before the first missing local session and then stopped. Its source request retried the missing partition five times.",
+    "coverage_scan": "Request page 1 for every frozen local session with the same five-field whitelist and four fixed workers; a session passes presence only when success is true and both page count and advertised row count are positive.",
+    "neighbor_and_range_confirmation": "Query adjacent sessions and bounded date ranges with the same whitelist. Neighboring sessions returned positive counts, while the four dates remained absent from range counts.",
+    "full_pagination_or_normalization_used_for_presence_scan": false,
+    "open_close_or_forward_return_fields_read": false
+  },
+  "results": {
+    "sessions_expected": 1699,
+    "sessions_with_published_positive_partitions": 1695,
+    "sessions_missing": 4,
+    "coverage_fraction": 0.997645674,
+    "missing_sessions": [
+      {
+        "trade_date": "2019-12-31",
+        "source_code": 9201,
+        "source_message": "返回数据为空"
+      },
+      {
+        "trade_date": "2020-06-30",
+        "source_code": 9201,
+        "source_message": "返回数据为空"
+      },
+      {
+        "trade_date": "2020-12-31",
+        "source_code": 9201,
+        "source_message": "返回数据为空"
+      },
+      {
+        "trade_date": "2021-06-30",
+        "source_code": 9201,
+        "source_message": "返回数据为空"
+      }
+    ],
+    "first_missing_session": "2019-12-31",
+    "verified_sessions_strictly_before_first_missing": 243,
+    "final_parquet_written": false,
+    "final_manifest_written": false,
+    "temporary_snapshot_deleted": true
+  },
+  "acceptance": {
+    "continuous_local_trading_sessions_required": true,
+    "continuous_local_trading_sessions_observed": false,
+    "full_snapshot_accepted": false,
+    "capacity_audit_allowed": false,
+    "return_diagnostic_allowed": false,
+    "selection_or_promotion_allowed": false
+  },
+  "decision": {
+    "factor": "securities_lending_net_cover_ratio",
+    "outcome": "stop_source_candidate_before_capacity_or_returns",
+    "reason": "The frozen public-source continuity requirement failed on four local trading sessions.",
+    "prohibited_rescues": [
+      "skip the missing sessions",
+      "forward-fill or backfill another session",
+      "treat absence as zero activity",
+      "change the frozen development dates",
+      "substitute financing, price, market-cap, or return fields",
+      "mix another provider into the frozen single-source contract",
+      "run a capacity or return diagnostic on the incomplete snapshot",
+      "use the factor in aggregation, current scoring, or stock selection"
+    ]
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

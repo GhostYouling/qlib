@@ -164,6 +164,9 @@ DEFAULT_INSIDER_OPEN_MARKET_DIAGNOSTIC_SPEC = (
 DEFAULT_SECURITIES_LENDING_DATA_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_securities_lending_data_contract.json"
 )
+DEFAULT_SECURITIES_LENDING_SOURCE_COVERAGE_AUDIT = (
+    REPO_ROOT / "docs" / "a_share_securities_lending_source_coverage_audit.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -544,6 +547,9 @@ INSIDER_OPEN_MARKET_DATA_CONTRACT_SHA256 = (
 )
 SECURITIES_LENDING_DATA_CONTRACT_SHA256 = (
     "3d13a0b464a5123d12c545942cba6ba39e95756bdc87f8845e15cb8a624a012c"
+)
+SECURITIES_LENDING_SOURCE_COVERAGE_AUDIT_SHA256 = (
+    "b81dcd3d1e5e24198343455ccec4928061ec8d7cafd5283460b65970a1eec8fc"
 )
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
@@ -16177,6 +16183,49 @@ def load_insider_open_market_capacity_audits(
     return audits
 
 
+def load_securities_lending_source_coverage_audit(
+    path: Path = DEFAULT_SECURITIES_LENDING_SOURCE_COVERAGE_AUDIT,
+) -> dict[str, Any] | None:
+    """Load the immutable no-return rejection of the lending source."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        return None
+    if file_sha256(path) != SECURITIES_LENDING_SOURCE_COVERAGE_AUDIT_SHA256:
+        raise ValueError("securities-lending source coverage audit fingerprint mismatch")
+    audit = load_json_record(path, kind="a_share_securities_lending_source_coverage_audit")
+    results = audit.get("results") or {}
+    acceptance = audit.get("acceptance") or {}
+    decision = audit.get("decision") or {}
+    missing = list(results.get("missing_sessions") or [])
+    if (
+        audit.get("version") != 1
+        or audit.get("status") != "rejected_before_full_snapshot_capacity_or_return_access"
+        or results.get("sessions_expected") != 1699
+        or results.get("sessions_with_published_positive_partitions") != 1695
+        or [item.get("trade_date") for item in missing]
+        != ["2019-12-31", "2020-06-30", "2020-12-31", "2021-06-30"]
+        or results.get("final_parquet_written") is not False
+        or results.get("final_manifest_written") is not False
+        or acceptance.get("full_snapshot_accepted") is not False
+        or acceptance.get("capacity_audit_allowed") is not False
+        or acceptance.get("return_diagnostic_allowed") is not False
+        or decision.get("outcome") != "stop_source_candidate_before_capacity_or_returns"
+        or audit.get("forward_return_fields_read") is not False
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("securities-lending source coverage audit is inconsistent")
+    return {
+        "audited_at": str(audit["audited_at"]),
+        "sessions_expected": int(results["sessions_expected"]),
+        "sessions_published": int(results["sessions_with_published_positive_partitions"]),
+        "missing_dates": [str(item["trade_date"]) for item in missing],
+        "outcome": str(decision["outcome"]),
+        "forward_return_fields_read": False,
+        "path": str(path),
+    }
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -16528,6 +16577,7 @@ def render_three_day_research_report(
     analyst_rating_capacity_audits: list[dict[str, Any]] | None = None,
     restricted_share_unlock_capacity_audits: list[dict[str, Any]] | None = None,
     insider_open_market_capacity_audits: list[dict[str, Any]] | None = None,
+    securities_lending_source_coverage_audit: dict[str, Any] | None = None,
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
@@ -17189,6 +17239,29 @@ def render_three_day_research_report(
                     )
                 )
         lines.append("")
+    if securities_lending_source_coverage_audit:
+        audit = securities_lending_source_coverage_audit
+        lines.extend(
+            [
+                "",
+                "## 全市场融券来源覆盖审计",
+                "",
+                "本节只检查冻结来源能否连续覆盖每个本地交易日，不读取开盘、收盘或未来收益。来源连续性失败即停止因子，不能在不完整快照上执行容量或收益诊断。",
+                "",
+                "| 审计时间 | 有分区交易日 / 应有交易日 | 缺失交易日 | 结论 | 读取未来收益 |",
+                "| --- | ---: | --- | --- | --- |",
+                "| {audited_at} | {published} / {expected} | {missing} | 源不连续，停止 | {returns} |".format(
+                    audited_at=audit["audited_at"],
+                    published=audit["sessions_published"],
+                    expected=audit["sessions_expected"],
+                    missing=", ".join(audit["missing_dates"]),
+                    returns=(
+                        "是（无效）" if audit["forward_return_fields_read"] else "否"
+                    ),
+                ),
+                "",
+            ]
+        )
     if candidate_overlap_audits:
         lines.extend(
             [
@@ -17629,6 +17702,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     insider_open_market_capacity_audits = load_insider_open_market_capacity_audits(
         experiment_root
     )
+    securities_lending_source_coverage_audit = (
+        load_securities_lending_source_coverage_audit()
+    )
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -17671,6 +17747,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         analyst_rating_capacity_audits=analyst_rating_capacity_audits,
         restricted_share_unlock_capacity_audits=restricted_share_unlock_capacity_audits,
         insider_open_market_capacity_audits=insider_open_market_capacity_audits,
+        securities_lending_source_coverage_audit=securities_lending_source_coverage_audit,
         rolling_window_semantics_audits=rolling_window_semantics_audits,
         minute_factor_coverage_audits=minute_factor_coverage_audits,
         minute_combination_holdouts=minute_combination_holdouts,
@@ -17720,6 +17797,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         ),
         "insider_open_market_capacity_audits": len(
             insider_open_market_capacity_audits
+        ),
+        "securities_lending_source_coverage_audits": int(
+            securities_lending_source_coverage_audit is not None
         ),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
