@@ -488,7 +488,9 @@ python scripts/a_share_short_horizon_factor_research.py prospective-register \
 python scripts/a_share_short_horizon_factor_research.py prospective-monitor
 ```
 
-当前本地最新日为 2026‑07‑13，因此第二条命令应返回 `not_started`，且不会创建空台账。此后监控器只允许记录**运行当日的最新本地收盘**：若漏跑某个信号日，不得回填；非三日网格日只结算已有信号，不补建仓。登记与台账分别保存在 `prospective_factor_registry.json` 和 `three_day_prospective_factor_ledger.json`，`report` 会将它们放在独立章节，不能与已晋级策略或 shadow 候选的收益混算。此观察永远不能调用 `plan`；若未来样本支持它，也只能作为设计下一轮预注册策略的证据，不能追溯性地改写 2019–2025 结论。
+该登记已于 2026‑07‑14、本地数据仍止于 2026‑07‑13 时完成，ID 为 `prospective_close_below_vwap_1_20260714`；来源诊断 SHA‑256 为 `1c60e64971d7c83af55b68c1ca1b3917ed4624a6d60eef6c66071c783d1bec70`。登记后的首次监控返回 `not_started` 和 `ledger_written=false`，磁盘上没有创建空的前瞻台账。
+
+此后监控器只允许记录**运行当日的最新本地收盘**：若漏跑某个信号日，不得回填；非三日网格日只结算已有信号，不补建仓。登记与台账分别保存在 `prospective_factor_registry.json` 和 `three_day_prospective_factor_ledger.json`，`report` 会将它们放在独立章节，不能与已晋级策略或 shadow 候选的收益混算。此观察永远不能调用 `plan`；若未来样本支持它，也只能作为设计下一轮预注册策略的证据，不能追溯性地改写 2019–2025 结论。
 
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge、浅层 LightGBM 回归和浅层 LightGBM LambdaRank 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票；LambdaRank 只在训练样本内按每个信号日的后续收益分为五档，直接学习横截面排序，绝不把未来标签带入评分时点。
 
