@@ -2059,6 +2059,76 @@ def test_sparse_announcement_capacity_counts_factor_ready_cohorts_without_prices
     assert capacity["source_admitted_for_return_rebuild"] is True
 
 
+def test_institutional_survey_capacity_protocol_is_frozen(tmp_path):
+    spec = RESEARCH.load_institutional_survey_capacity_preregistration()
+    assert tuple(spec["factor_catalog"]) == RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+    assert spec["run_contract"]["minimum_required_cohorts"] == 200
+    assert spec["source_snapshots"]["institutional_surveys"]["maximum_age_days"] == 3
+    assert spec["capacity_policy"]["open_close_or_forward_return_fields_allowed"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_CAPACITY_SPEC.read_text(encoding="utf-8")
+    )
+    changed["run_contract"]["minimum_required_cohorts"] = 20
+    changed_path = tmp_path / "changed_institutional_survey_capacity.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_institutional_survey_capacity_preregistration(changed_path)
+
+
+def test_institutional_survey_capacity_audit_reads_no_price_and_is_one_time(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_institutional_survey_capacity_sources",
+        lambda spec: {"source_snapshots": {}, "institutional_survey_acceptance": {"rows": 6}},
+    )
+    calendar = pd.bdate_range("2018-12-01", "2025-12-31")
+    research_calendar = pd.bdate_range("2019-01-01", "2025-12-31")
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_market_capacity_context",
+        lambda *args, **kwargs: (calendar, research_calendar, {"SZ000001": [(calendar[0], calendar[-1])]}),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(RESEARCH, "load_institutional_survey_events", lambda path: pd.DataFrame())
+    captured = {}
+
+    def fake_capacity(*args, **kwargs):
+        captured.update(kwargs)
+        return {
+            "source": "institutional_surveys",
+            "source_event_rows": 6,
+            "candidate_event_rows": 6,
+            "quality_and_listing_eligible_event_rows": 6,
+            "factor_capacity": {
+                factor: {
+                    "raw_column": raw,
+                    "potential_complete_cohorts": 201,
+                    "potential_complete_cohorts_by_year": {"2025": 201},
+                    "capacity_gate_passed": True,
+                }
+                for factor, raw in kwargs["factor_raw_columns"].items()
+            },
+            "source_admitted_for_return_rebuild": True,
+        }
+
+    monkeypatch.setattr(RESEARCH, "sparse_announcement_source_capacity", fake_capacity)
+    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path))
+    result = RESEARCH.run_institutional_survey_capacity_audit(args)
+    assert captured["source_name"] == "institutional_surveys"
+    assert captured["max_age_days"] == 3
+    assert result["source_admitted_for_return_diagnostic"] is True
+    assert result["forward_return_fields_read"] is False
+    audit = json.loads(Path(result["audit_path"]).read_text(encoding="utf-8"))
+    assert audit["data"]["price_fields_loaded"] == []
+    assert audit["data"]["open_close_or_forward_return_fields_read"] is False
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_institutional_survey_capacity_audit(args)
+
+
 def test_pledge_event_rebuild_is_capacity_bound_and_one_time(tmp_path, monkeypatch):
     spec = RESEARCH.load_pledge_event_rebuild_preregistration()
     assert tuple(spec["factor_catalog"]) == RESEARCH.PLEDGE_EVENT_REBUILD_FACTOR_NAMES
@@ -3981,6 +4051,51 @@ def test_sparse_announcement_capacity_audits_retain_source_level_decisions_witho
     assert "399 / 200" in report
     assert "停止，不读收益" in report
     assert "允许固定重建" in report
+
+
+def test_institutional_survey_capacity_audits_are_retained_without_returns(tmp_path):
+    (tmp_path / "20260714T000002Z_institutional_survey_capacity_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "survey-capacity",
+                "status": "completed",
+                "purpose": RESEARCH.INSTITUTIONAL_SURVEY_CAPACITY_PURPOSE,
+                "data": {
+                    "research_calendar_start": "2019-01-02",
+                    "research_calendar_end": "2025-12-31",
+                    "price_fields_loaded": [],
+                },
+                "run_contract": {"minimum_required_cohorts": 200},
+                "forward_return_fields_read": False,
+                "source_admitted_for_return_diagnostic": True,
+                "decision": "eligible_for_separately_preregistered_three_day_return_diagnostic",
+                "source_capacity": {
+                    "factor_capacity": {
+                        "institutional_survey_org_count": {
+                            "potential_complete_cohorts": 400,
+                            "capacity_gate_passed": True,
+                        },
+                        "institutional_survey_freshness": {
+                            "potential_complete_cohorts": 180,
+                            "capacity_gate_passed": False,
+                        },
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_institutional_survey_capacity_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        institutional_survey_capacity_audits=audits,
+    )
+    assert "机构调研因子容量审计" in report
+    assert "400 / 200" in report
+    assert "180 / 200" in report
+    assert "允许另行预注册共同诊断" in report
+    assert "| 否 |" in report
 
 
 def test_research_report_marks_non_promotable_historical_diagnostics():

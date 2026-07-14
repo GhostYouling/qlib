@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "kind": "a_share_institutional_survey_capacity_preregistration",
+  "status": "frozen_before_price_or_forward_returns_observed",
+  "preregistered_at": "2026-07-14T17:19:37Z",
+  "purpose": "Determine whether the complete verified 2019-2025 institutional-survey snapshot can support a valid three-session cross-sectional diagnostic before reading any price or forward-return field.",
+  "source_snapshots": {
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "institutional_surveys": {
+      "path": "data/raw/a_share/events/institutional_surveys.parquet",
+      "sha256": "d55491709c9b6c89a759e0048593885d96b55848c5a3ea74617b4c84e61c3299",
+      "manifest_path": "data/metadata/institutional_surveys_manifest.json",
+      "manifest_sha256": "1210c6ee9bd838033ef0fc8ccd58a943a2f2e655f40b504dd46419b6399362a2",
+      "maximum_age_days": 3,
+      "effective_date": "strictly next local trading day after announcement_date",
+      "required_announcement_start": "2019-01-01",
+      "required_announcement_end": "2025-12-31"
+    }
+  },
+  "factor_catalog": [
+    "institutional_survey_org_count",
+    "institutional_survey_event_count",
+    "institutional_survey_freshness"
+  ],
+  "factor_raw_columns": {
+    "institutional_survey_org_count": "institutional_survey_org_count",
+    "institutional_survey_event_count": "institutional_survey_event_count",
+    "institutional_survey_freshness": "event_age_days"
+  },
+  "later_diagnostic_direction_if_capacity_passes": "higher",
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_factor_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "event_availability": "strictly next local trading day after announcement_date",
+    "price_basis_required_for_later_return_diagnostic": "close_known_raw_pct_chg_chain_v1"
+  },
+  "capacity_policy": {
+    "open_close_or_forward_return_fields_allowed": false,
+    "count_only_quality_and_listing_seasoned_active_names": true,
+    "source_admitted_if_any_original_factor_meets_minimum_cohorts": true,
+    "admitted_source_must_diagnose_all_original_factors_together": true,
+    "failed_source_must_stop_without_return_diagnostic": true,
+    "one_completed_capacity_audit_only": true,
+    "no_factor_direction_age_date_topk_or_minimum_cohort_override": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
