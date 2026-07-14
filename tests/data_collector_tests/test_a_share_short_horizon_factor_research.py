@@ -2454,6 +2454,73 @@ def test_institutional_survey_timing_capacity_is_frozen_and_one_time(tmp_path, m
         RESEARCH.run_institutional_survey_timing_capacity_audit(args)
 
 
+def test_analyst_rating_capacity_is_frozen_and_one_time(tmp_path, monkeypatch):
+    spec = RESEARCH.load_analyst_rating_capacity_preregistration()
+    assert spec["factor_catalog"] == [RESEARCH.ANALYST_RATING_FACTOR_NAME]
+    assert spec["snapshot_acceptance"]["rows"] == 86643
+    assert spec["snapshot_acceptance"]["source_rows"] == 117248
+    assert spec["run_contract"]["minimum_required_cohorts"] == 200
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(RESEARCH.DEFAULT_ANALYST_RATING_CAPACITY_SPEC.read_text(encoding="utf-8"))
+    changed["run_contract"]["minimum_required_cohorts"] = 20
+    changed_path = tmp_path / "changed_analyst_rating_capacity.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_analyst_rating_capacity_preregistration(changed_path)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_analyst_rating_capacity_sources",
+        lambda loaded: {"source_snapshots": {}, "analyst_rating_acceptance": {}},
+    )
+    calendar = pd.bdate_range("2018-12-01", "2025-12-31")
+    research_calendar = pd.bdate_range("2019-01-01", "2025-12-31")
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_market_capacity_context",
+        lambda *args, **kwargs: (
+            calendar,
+            research_calendar,
+            {"SZ000001": [(calendar[0], calendar[-1])]},
+        ),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(RESEARCH, "load_analyst_rating_events", lambda path: pd.DataFrame())
+    captured = {}
+
+    def fake_capacity(*args, **kwargs):
+        captured.update(kwargs)
+        return {
+            "source": "analyst_rating_changes",
+            "source_event_rows": 6,
+            "candidate_event_rows": 6,
+            "quality_and_listing_eligible_event_rows": 6,
+            "factor_capacity": {
+                RESEARCH.ANALYST_RATING_FACTOR_NAME: {
+                    "raw_column": RESEARCH.ANALYST_RATING_FACTOR_NAME,
+                    "potential_complete_cohorts": 201,
+                    "potential_complete_cohorts_by_year": {"2025": 201},
+                    "capacity_gate_passed": True,
+                }
+            },
+            "source_admitted_for_return_rebuild": True,
+        }
+
+    monkeypatch.setattr(RESEARCH, "sparse_announcement_source_capacity", fake_capacity)
+    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path))
+    result = RESEARCH.run_analyst_rating_capacity_audit(args)
+    assert captured["source_name"] == "analyst_rating_changes"
+    assert captured["max_age_days"] == 3
+    assert result["source_admitted_for_return_diagnostic"] is True
+    assert result["forward_return_fields_read"] is False
+    audit = json.loads(Path(result["audit_path"]).read_text(encoding="utf-8"))
+    assert audit["data"]["price_fields_loaded"] == []
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_analyst_rating_capacity_audit(args)
+
+
 def test_institutional_survey_timing_diagnostic_is_capacity_bound_and_one_time(
     tmp_path, monkeypatch
 ):

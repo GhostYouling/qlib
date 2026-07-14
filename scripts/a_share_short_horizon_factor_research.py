@@ -117,6 +117,9 @@ DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC = (
 DEFAULT_ANALYST_RATING_DATA_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_analyst_rating_data_contract.json"
 )
+DEFAULT_ANALYST_RATING_CAPACITY_SPEC = (
+    REPO_ROOT / "docs" / "a_share_analyst_rating_capacity_preregistration.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -400,6 +403,7 @@ ANNOUNCEMENT_CAPACITY_SOURCE_FACTORS = {
     **SPARSE_ANNOUNCEMENT_SOURCE_FACTORS,
     "institutional_surveys": INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS,
     "institutional_survey_timing": (INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME,),
+    "analyst_rating_changes": (ANALYST_RATING_FACTOR_NAME,),
 }
 SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE = (
     "sparse_announcement_factor_capacity_gate_without_price_or_forward_returns"
@@ -409,6 +413,9 @@ INSTITUTIONAL_SURVEY_CAPACITY_PURPOSE = (
 )
 INSTITUTIONAL_SURVEY_TIMING_CAPACITY_PURPOSE = (
     "institutional_survey_timing_capacity_gate_without_price_or_forward_returns"
+)
+ANALYST_RATING_CAPACITY_PURPOSE = (
+    "analyst_rating_capacity_gate_without_price_or_forward_returns"
 )
 INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_institutional_survey_timing_research_not_investment_advice"
@@ -2257,6 +2264,179 @@ def load_analyst_rating_data_contract(
     ):
         raise ValueError("analyst-rating data contract does not match the frozen protocol")
     return contract
+
+
+def load_analyst_rating_capacity_preregistration(
+    path: Path = DEFAULT_ANALYST_RATING_CAPACITY_SPEC,
+) -> dict[str, Any]:
+    """Enforce the frozen no-return analyst-rating capacity protocol."""
+
+    spec = load_json_record(
+        path.expanduser().resolve(), kind="a_share_analyst_rating_capacity_preregistration"
+    )
+    snapshots = spec.get("source_snapshots") or {}
+    acceptance = spec.get("snapshot_acceptance") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("capacity_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_analyst_rating_snapshot_before_price_or_forward_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T18:34:21Z"
+        and set(snapshots) == {"quarterly_quality", "analyst_rating_changes"}
+        and snapshots["analyst_rating_changes"].get("maximum_age_days") == 3
+        and snapshots["analyst_rating_changes"].get("effective_date")
+        == "strictly next local trading day after announcement_date"
+        and snapshots["analyst_rating_changes"].get("required_announcement_start")
+        == "2019-01-01"
+        and snapshots["analyst_rating_changes"].get("required_announcement_end")
+        == "2025-12-31"
+        and acceptance
+        == {
+            "rows": 86643,
+            "verified_partitions": 84,
+            "pages": 1215,
+            "source_rows": 117248,
+            "recognized_rating_rows": 108732,
+            "upgrade_rows": 1249,
+            "duplicate_event_keys": 0,
+            "missing_values": 0,
+            "distinct_upgrade_share_values": 16,
+            "positive_upgrade_event_rows": 1233,
+            "all_requested_years_covered": True,
+            "price_fields_loaded": [],
+            "forward_return_fields_read": False,
+        }
+        and tuple(spec.get("factor_catalog") or []) == (ANALYST_RATING_FACTOR_NAME,)
+        and spec.get("factor_raw_columns")
+        == {ANALYST_RATING_FACTOR_NAME: ANALYST_RATING_FACTOR_NAME}
+        and spec.get("later_diagnostic_direction_if_capacity_passes")
+        == "higher_upgrade_share_is_better"
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "minimum_valid_names_per_factor_cohort": 6,
+            "minimum_distinct_factor_values_per_cohort": 2,
+            "minimum_required_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "event_availability": "strictly next local trading day after announcement_date",
+            "price_basis_required_for_later_return_diagnostic": REQUIRED_PRICE_BASIS,
+        }
+        and policy
+        == {
+            "open_close_or_forward_return_fields_allowed": False,
+            "count_only_quality_and_listing_seasoned_active_names": True,
+            "failed_factor_must_stop_without_return_diagnostic": True,
+            "one_completed_capacity_audit_only": True,
+            "no_direction_formula_age_date_topk_or_minimum_cohort_override": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("analyst-rating capacity preregistration does not match the frozen protocol")
+    return spec
+
+
+def validate_analyst_rating_capacity_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Verify analyst snapshot rows, partitions, fingerprints, and data contract."""
+
+    contract_link = spec.get("data_contract") or {}
+    contract_path = resolve_repository_record_path(str(contract_link.get("path") or ""))
+    contract = load_analyst_rating_data_contract(contract_path)
+    if (
+        file_sha256(contract_path) != str(contract_link.get("sha256") or "")
+        or contract.get("preregistered_at") != contract_link.get("preregistered_at")
+    ):
+        raise ValueError("analyst-rating data contract link does not match")
+
+    snapshots = spec["source_snapshots"]
+    evidence: dict[str, Any] = {"source_snapshots": {}}
+    manifests: dict[str, dict[str, Any]] = {}
+    paths: dict[str, Path] = {}
+    for name, link in snapshots.items():
+        source_path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not source_path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"analyst-rating capacity input is missing: {name}")
+        source_sha = file_sha256(source_path)
+        manifest_sha = file_sha256(manifest_path)
+        manifest = load_json_record(manifest_path)
+        if (
+            source_sha != str(link.get("sha256") or "")
+            or manifest_sha != str(link.get("manifest_sha256") or "")
+            or manifest.get("status") != "completed"
+            or manifest.get("sha256") != source_sha
+        ):
+            raise ValueError(f"analyst-rating capacity fingerprint mismatch: {name}")
+        paths[name] = source_path
+        manifests[name] = manifest
+        evidence["source_snapshots"][name] = {
+            "path": str(source_path),
+            "sha256": source_sha,
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": manifest_sha,
+        }
+
+    manifest = manifests["analyst_rating_changes"]
+    partitions = list(manifest.get("verified_partitions") or [])
+    expected_start = pd.Timestamp("2019-01-01")
+    pages = 0
+    source_rows = 0
+    for partition in partitions:
+        start = pd.Timestamp(partition.get("start"))
+        end = pd.Timestamp(partition.get("end"))
+        part_pages = int(partition.get("pages") or 0)
+        part_rows = int(partition.get("source_rows") or 0)
+        if (
+            start != expected_start
+            or end < start
+            or part_pages < 1
+            or part_pages > ANALYST_RATING_MAX_PAGES_PER_PARTITION
+            or partition.get("count_verified") is not True
+            or part_rows != int(partition.get("advertised_source_rows") or 0)
+        ):
+            raise ValueError("analyst-rating manifest contains an invalid partition")
+        expected_start = end + pd.Timedelta(days=1)
+        pages += part_pages
+        source_rows += part_rows
+    acceptance = spec["snapshot_acceptance"]
+    quality = manifest.get("normalization_quality") or {}
+    events = load_analyst_rating_events(paths["analyst_rating_changes"])
+    if (
+        expected_start != pd.Timestamp("2026-01-01")
+        or len(partitions) != acceptance["verified_partitions"]
+        or pages != acceptance["pages"]
+        or source_rows != acceptance["source_rows"]
+        or source_rows != sum(int(v) for v in (manifest.get("source_rows_by_year") or {}).values())
+        or len(events) != acceptance["rows"]
+        or quality.get("recognized_rating_rows") != acceptance["recognized_rating_rows"]
+        or quality.get("upgrade_rows") != acceptance["upgrade_rows"]
+        or int(events["analyst_rating_upgrade_share"].nunique())
+        != acceptance["distinct_upgrade_share_values"]
+        or int(events["analyst_rating_upgrade_share"].gt(0).sum())
+        != acceptance["positive_upgrade_event_rows"]
+        or events["announcement_date"].min() != pd.Timestamp("2019-01-01")
+        or events["announcement_date"].max() != pd.Timestamp("2025-12-31")
+    ):
+        raise ValueError("analyst-rating snapshot fails frozen row-level acceptance")
+    evidence["analyst_rating_acceptance"] = {
+        "rows": int(len(events)),
+        "verified_partitions": int(len(partitions)),
+        "pages": pages,
+        "source_rows": source_rows,
+        "distinct_upgrade_share_values": int(events["analyst_rating_upgrade_share"].nunique()),
+        "positive_upgrade_event_rows": int(events["analyst_rating_upgrade_share"].gt(0).sum()),
+        "partition_counts_reconciled": True,
+    }
+    return evidence
 
 
 def load_sparse_announcement_capacity_preregistration(
@@ -6385,6 +6565,31 @@ def load_institutional_survey_timing_events(path: Path) -> pd.DataFrame:
     return frame.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
 
 
+def load_analyst_rating_events(path: Path) -> pd.DataFrame:
+    """Load and validate the frozen non-identifying analyst-rating events."""
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"analyst-rating snapshot does not exist: {path}; run sync-analyst-rating-events first"
+        )
+    frame = pd.read_parquet(path)
+    if tuple(frame.columns) != ANALYST_RATING_EVENT_COLUMNS:
+        raise ValueError("analyst-rating snapshot columns do not match the frozen contract")
+    frame = frame.loc[:, list(ANALYST_RATING_EVENT_COLUMNS)].copy()
+    frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
+    for column in ANALYST_RATING_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    if frame[list(ANALYST_RATING_EVENT_COLUMNS)].isna().any().any():
+        raise ValueError("analyst-rating snapshot contains missing values")
+    if frame.duplicated(["instrument", "announcement_date"]).any():
+        raise ValueError("analyst-rating snapshot contains duplicate event keys")
+    if not frame["analyst_rating_upgrade_share"].between(0.0, 1.0).all():
+        raise ValueError("analyst-rating upgrade share falls outside [0, 1]")
+    if not frame["analyst_valid_rating_report_count"].gt(0).all():
+        raise ValueError("analyst-rating snapshot contains a non-positive report count")
+    return frame.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+
+
 def load_repurchase_plan_events(path: Path) -> pd.DataFrame:
     """Load the dated non-outcome repurchase-plan event snapshot."""
 
@@ -10164,6 +10369,108 @@ def run_institutional_survey_timing_capacity_audit(args: argparse.Namespace) -> 
     _atomic_write_text(
         destination,
         json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity["factor_capacity"],
+        "source_admitted_for_return_diagnostic": admitted,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_analyst_rating_capacity(experiment_root: Path) -> None:
+    """Prevent duplicate evidence for the immutable analyst-rating capacity gate."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_analyst_rating_capacity_audit.json")):
+        if load_json_record(path).get("purpose") == ANALYST_RATING_CAPACITY_PURPOSE:
+            raise ValueError(f"analyst-rating capacity protocol is already consumed: {path}")
+
+
+def run_analyst_rating_capacity_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen analyst-rating capacity gate without reading prices."""
+
+    spec = load_analyst_rating_capacity_preregistration()
+    source_evidence = validate_analyst_rating_capacity_sources(spec)
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_analyst_rating_capacity(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    provider_uri = Path(args.provider_uri).expanduser()
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market="buyable_main_chinext",
+        start=contract["start"],
+        end=contract["end"],
+    )
+    fundamentals = load_fundamentals(
+        resolve_repository_record_path(snapshots["quarterly_quality"]["path"])
+    )
+    events = load_analyst_rating_events(
+        resolve_repository_record_path(snapshots["analyst_rating_changes"]["path"])
+    )
+    capacity = sparse_announcement_source_capacity(
+        events,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        source_name="analyst_rating_changes",
+        event_columns=ANALYST_RATING_EVENT_COLUMNS,
+        factor_raw_columns=spec["factor_raw_columns"],
+        max_age_days=snapshots["analyst_rating_changes"]["maximum_age_days"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        minimum_required_cohorts=contract["minimum_required_cohorts"],
+        maximum_quality_age_days=contract["maximum_quality_age_days"],
+    )
+    admitted = capacity["source_admitted_for_return_rebuild"]
+    decision = (
+        "eligible_for_separately_preregistered_three_day_return_diagnostic"
+        if admitted
+        else "rejected_before_return_diagnostic_insufficient_independent_cohorts"
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": ANALYST_RATING_CAPACITY_PURPOSE,
+        "preregistration": {
+            "path": str(DEFAULT_ANALYST_RATING_CAPACITY_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_ANALYST_RATING_CAPACITY_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [ANALYST_RATING_FACTOR_NAME],
+        "later_diagnostic_direction_if_capacity_passes": spec[
+            "later_diagnostic_direction_if_capacity_passes"
+        ],
+        "run_contract": contract,
+        "source_capacity": capacity,
+        "source_admitted_for_return_diagnostic": admitted,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "full_calendar_start": full_calendar.min().date().isoformat(),
+            "research_calendar_start": research_calendar.min().date().isoformat(),
+            "research_calendar_end": research_calendar.max().date().isoformat(),
+            "instrument_span_count": int(len(intervals)),
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Capacity is an upper bound before next-open and exit-close completeness; passing does not imply association or tradability.",
+            "The public research-report index can be revised and is not an exchange-grade point-in-time archive.",
+            "The current listing universe can introduce survivorship bias even though full provider spans season listings.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_analyst_rating_capacity_audit.json"
+    _atomic_write_text(
+        destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n"
     )
     return {
         "status": "completed",
@@ -17843,6 +18150,15 @@ def parse_args() -> argparse.Namespace:
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
+    analyst_rating_capacity = subparsers.add_parser(
+        "analyst-rating-capacity-audit",
+        help="run the frozen analyst-rating capacity gate without price outcomes",
+    )
+    analyst_rating_capacity.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    analyst_rating_capacity.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -18335,6 +18651,8 @@ def main() -> int:
         report = run_institutional_survey_capacity_audit(args)
     elif args.command == "institutional-survey-timing-capacity-audit":
         report = run_institutional_survey_timing_capacity_audit(args)
+    elif args.command == "analyst-rating-capacity-audit":
+        report = run_analyst_rating_capacity_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":
