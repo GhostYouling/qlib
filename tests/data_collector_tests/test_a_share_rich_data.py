@@ -276,6 +276,69 @@ def test_baostock_5m_source_chain_and_pit_year_partitioning_are_frozen():
         ("600519", "2020-01-01", "2020-12-31", 2020),
         ("600519", "2021-01-01", "2021-02-03", 2021),
     ]
+    assert RICH.baostock_5m_request_tasks(
+        intervals, dt.date(2020, 1, 1), dt.date(2021, 12, 31)
+    ) == [("600519", "2020-01-01", "2021-02-03")]
+    throttle = RICH.load_baostock_5m_throttle_audit()
+    assert throttle["frozen_reduced_request_plan"]["provider_requests"] == 5386
+
+
+def test_baostock_5m_full_interval_response_splits_into_yearly_storage():
+    frame = complete_baostock_5m_frame(["2020-12-31", "2021-01-04"])
+    frame.attrs["source_rows_by_year"] = {2020: 48, 2021: 48}
+    tasks = [
+        ("600519", "2020-12-31", "2020-12-31", 2020),
+        ("600519", "2021-01-01", "2021-01-04", 2021),
+    ]
+    partitions = list(RICH.split_baostock_5m_request_frame(frame, tasks))
+    assert [len(partition) for _, partition in partitions] == [48, 48]
+    assert [partition.attrs["source_rows"] for _, partition in partitions] == [48, 48]
+
+
+def test_baostock_blacklist_error_is_not_retried(monkeypatch):
+    calls = 0
+
+    class BlacklistedClient:
+        def query_history_k_data_plus(self, *args, **kwargs):
+            nonlocal calls
+            calls += 1
+            return SimpleNamespace(error_code="1", error_msg="黑名单用户，请与管理员联系")
+
+    monkeypatch.setattr(RICH, "_BAOSTOCK_WORKER_CLIENT", BlacklistedClient())
+    with pytest.raises(RICH.RichDataError, match="after 1 attempt"):
+        RICH.fetch_baostock_5m_request_worker(
+            ("600519", "2020-01-01", "2025-12-31")
+        )
+    assert calls == 1
+
+
+def test_baostock_restoration_probe_must_pass_and_remain_recent(tmp_path, monkeypatch):
+    frame = complete_baostock_5m_frame(["2026-07-10"])
+    monkeypatch.setattr(RICH, "require_baostock_5m_runtime", lambda: None)
+    monkeypatch.setattr(
+        RICH,
+        "fetch_baostock_minutes",
+        lambda code, start, end, frequency: frame,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "minute_daily_reconciliation",
+        lambda source: {"status": "passed", "days": [{"status": "passed"}]},
+    )
+    path = RICH.probe_baostock_5m_restoration(data_root=tmp_path)
+    record = RICH.json.loads(path.read_text())
+    assert record["status"] == "passed_for_bulk_retry"
+    assert record["rows"] == 48
+    assert record["forward_return_fields_read"] is False
+    created = pd.Timestamp(record["created_at"]).to_pydatetime()
+    loaded_path, _ = RICH.load_baostock_5m_restoration_probe(
+        tmp_path, now=created + dt.timedelta(minutes=10)
+    )
+    assert loaded_path == path.resolve()
+    with pytest.raises(RICH.RichDataError, match="older than"):
+        RICH.load_baostock_5m_restoration_probe(
+            tmp_path, now=created + dt.timedelta(minutes=31)
+        )
 
 
 def test_jqdata_moneyflow_contract_is_fingerprint_frozen(tmp_path):
@@ -685,9 +748,17 @@ def test_baostock_5m_full_sync_stops_at_disk_gate_before_downloader(
 
     monkeypatch.setattr(RICH, "require_baostock_5m_runtime", lambda: None)
     monkeypatch.setattr(
+        RICH,
+        "load_baostock_5m_restoration_probe",
+        lambda data_root: (
+            RICH.DEFAULT_BAOSTOCK_5M_THROTTLE_AUDIT,
+            {"status": "passed_for_bulk_retry", "created_at": "2026-07-14T22:00:00Z"},
+        ),
+    )
+    monkeypatch.setattr(
         RICH, "BAOSTOCK_5M_MINIMUM_FREE_BYTES", 10**30
     )
-    monkeypatch.setattr(RICH, "download_baostock_5m_partitions", forbidden_download)
+    monkeypatch.setattr(RICH, "download_baostock_5m_requests", forbidden_download)
     with pytest.raises(RICH.RichDataError, match="before any network request"):
         RICH.sync_baostock_5m_history(
             allow_large=True,
@@ -710,12 +781,22 @@ def test_baostock_5m_full_sync_is_external_atomic_and_no_return(
     chain = permissive_baostock_source_chain()
     monkeypatch.setattr(RICH, "load_baostock_5m_source_chain", lambda path: chain)
     monkeypatch.setattr(RICH, "require_baostock_5m_runtime", lambda: None)
+    monkeypatch.setattr(
+        RICH,
+        "load_baostock_5m_restoration_probe",
+        lambda data_root: (
+            RICH.DEFAULT_BAOSTOCK_5M_THROTTLE_AUDIT,
+            {"status": "passed_for_bulk_retry", "created_at": "2026-07-14T22:00:00Z"},
+        ),
+    )
     monkeypatch.setattr(RICH, "BAOSTOCK_5M_MINIMUM_FREE_BYTES", 1)
     monkeypatch.setattr(RICH.importlib.metadata, "version", lambda package: "0.9.3")
     monkeypatch.setattr(
         RICH,
-        "download_baostock_5m_partitions",
-        lambda tasks, workers: iter([("600519", 2020, frame)]),
+        "download_baostock_5m_requests",
+        lambda tasks, workers: iter(
+            [("600519", "2020-01-02", "2020-01-07", frame)]
+        ),
     )
     data_root = tmp_path / "external"
     manifest_path = RICH.sync_baostock_5m_history(
@@ -760,8 +841,16 @@ def test_baostock_5m_full_sync_deletes_partial_snapshot_on_partition_failure(
 
     monkeypatch.setattr(RICH, "load_baostock_5m_source_chain", lambda path: chain)
     monkeypatch.setattr(RICH, "require_baostock_5m_runtime", lambda: None)
+    monkeypatch.setattr(
+        RICH,
+        "load_baostock_5m_restoration_probe",
+        lambda data_root: (
+            RICH.DEFAULT_BAOSTOCK_5M_THROTTLE_AUDIT,
+            {"status": "passed_for_bulk_retry", "created_at": "2026-07-14T22:00:00Z"},
+        ),
+    )
     monkeypatch.setattr(RICH, "BAOSTOCK_5M_MINIMUM_FREE_BYTES", 1)
-    monkeypatch.setattr(RICH, "download_baostock_5m_partitions", failed_download)
+    monkeypatch.setattr(RICH, "download_baostock_5m_requests", failed_download)
     monkeypatch.setattr(RICH, "new_run_id", lambda prefix: "fixed-failed-run")
     data_root = tmp_path / "external"
     with pytest.raises(RICH.RichDataError, match="simulated partition failure"):

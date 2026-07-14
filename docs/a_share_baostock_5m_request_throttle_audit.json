@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_baostock_5m_request_throttle_audit",
+  "created_at": "2026-07-14T22:17:41Z",
+  "status": "request_plan_reduced_before_any_post_blacklist_retry",
+  "purpose": "Record the anonymous BaoStock service rejection, preserve the atomic cleanup result, and reduce provider call count without changing the frozen data range, fields, PIT universe, yearly storage, or factor protocol.",
+  "source_chain": {
+    "data_contract_sha256": "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f",
+    "factor_spec_sha256": "a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8",
+    "suspension_placeholder_audit_sha256": "5c29bd194ef70ed0d30a1e72aa3adc7e287ec1f513e0d3ee29d7551cf1dff47d",
+    "pre_retry_external_preflight_sha256": "9d24d637e29c49eea76ab7212c3d220beec2a9eadd7fc2886494d467f6b9619e"
+  },
+  "failed_attempt": {
+    "command": "python scripts/a_share_rich_data.py sync-baostock-5m --data-root /Volumes/DIsk/qlib-rich-data --workers 4 --allow-large",
+    "request_plan": "one BaoStock request per PIT instrument-year",
+    "provider_processes": 4,
+    "planned_provider_requests": 29246,
+    "reported_partitions_completed_before_failure": 9000,
+    "reported_canonical_rows_written_before_failure": 102980353,
+    "elapsed_minutes_before_failure": 40.95,
+    "observed_requests_per_minute": 219.77,
+    "failed_request": {
+      "code": "603880",
+      "year": 2025,
+      "provider_error": "黑名单用户，请与管理员联系"
+    },
+    "worker_logout_messages": {
+      "failed": 4
+    },
+    "temporary_snapshot_deleted": true,
+    "final_snapshot_written": false,
+    "final_manifest_written": false
+  },
+  "single_post_failure_probe": {
+    "probe_type": "one anonymous login followed by the already accepted 600519 2026-07-10 request only if login succeeded",
+    "login_status": "rejected",
+    "provider_error": "黑名单用户，请与管理员联系",
+    "history_query_issued": false,
+    "additional_probe_loop_allowed": false
+  },
+  "official_information_check": {
+    "official_site": "https://www.baostock.com/",
+    "official_api": "https://www.baostock.com/mainContent?file=pythonAPI.md",
+    "numeric_anonymous_request_rate_published_and_verified": false,
+    "contact_email_listed_by_official_site": "baostock@163.com",
+    "proxy_rotation_or_identity_evasion_allowed": false
+  },
+  "frozen_reduced_request_plan": {
+    "provider_request_unit": "one clipped 2020-2025 PIT interval per instrument",
+    "provider_requests": 5386,
+    "yearly_parquet_storage_partitions": 29246,
+    "provider_request_reduction_percent": 81.5838,
+    "provider_requests_below_observed_failure_count": true,
+    "maximum_provider_processes": 4,
+    "query_fields_frequency_adjustflag_unchanged": true,
+    "development_dates_unchanged": true,
+    "pit_universe_unchanged": true,
+    "yearly_storage_contract_unchanged": true,
+    "coverage_gates_unchanged": true,
+    "blacklist_error_is_immediately_fatal_without_retry": true,
+    "ordinary_transient_partition_retries": 3,
+    "partial_resume_allowed": false,
+    "post_blacklist_retry_condition": "Do not issue another bulk request while a single isolated anonymous login remains rejected. After a cooldown or provider guidance, require one isolated accepted-date probe to pass before starting from an empty temporary snapshot."
+  },
+  "raw_or_derived_factor_values_read": false,
+  "daily_open_close_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
