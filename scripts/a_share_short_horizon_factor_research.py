@@ -102,6 +102,9 @@ DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC = (
 DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_institutional_survey_timing_data_contract.json"
 )
+DEFAULT_INSTITUTIONAL_SURVEY_TIMING_CAPACITY_SPEC = (
+    REPO_ROOT / "docs" / "a_share_institutional_survey_timing_capacity_preregistration.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -376,12 +379,16 @@ SPARSE_ANNOUNCEMENT_SOURCE_FACTORS = {
 ANNOUNCEMENT_CAPACITY_SOURCE_FACTORS = {
     **SPARSE_ANNOUNCEMENT_SOURCE_FACTORS,
     "institutional_surveys": INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS,
+    "institutional_survey_timing": (INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME,),
 }
 SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE = (
     "sparse_announcement_factor_capacity_gate_without_price_or_forward_returns"
 )
 INSTITUTIONAL_SURVEY_CAPACITY_PURPOSE = (
     "institutional_survey_factor_capacity_gate_without_price_or_forward_returns"
+)
+INSTITUTIONAL_SURVEY_TIMING_CAPACITY_PURPOSE = (
+    "institutional_survey_timing_capacity_gate_without_price_or_forward_returns"
 )
 INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_institutional_survey_event_research_not_investment_advice"
@@ -2482,6 +2489,209 @@ def validate_institutional_survey_capacity_sources(spec: dict[str, Any]) -> dict
         "pages": partition_pages,
         "source_detail_rows": detail_rows,
         "partition_counts_reconciled": True,
+    }
+    return evidence
+
+
+def load_institutional_survey_timing_capacity_preregistration(
+    path: Path = DEFAULT_INSTITUTIONAL_SURVEY_TIMING_CAPACITY_SPEC,
+) -> dict[str, Any]:
+    """Enforce the frozen no-return disclosure-timing capacity protocol."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_institutional_survey_timing_capacity_preregistration")
+    snapshots = spec.get("source_snapshots") or {}
+    acceptance = spec.get("snapshot_acceptance") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("capacity_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_timing_snapshot_before_price_or_forward_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T18:01:05Z"
+        and set(snapshots) == {"quarterly_quality", "institutional_survey_timing"}
+        and snapshots["institutional_survey_timing"].get("maximum_age_days") == 3
+        and snapshots["institutional_survey_timing"].get("effective_date")
+        == "strictly next local trading day after announcement_date"
+        and snapshots["institutional_survey_timing"].get("required_announcement_start")
+        == "2019-01-01"
+        and snapshots["institutional_survey_timing"].get("required_announcement_end")
+        == "2025-12-31"
+        and acceptance
+        == {
+            "rows": 107913,
+            "verified_partitions": 108,
+            "pages": 2587,
+            "source_detail_rows": 126639,
+            "negative_lag_event_keys_excluded": 26,
+            "duplicate_event_keys": 0,
+            "missing_values": 0,
+            "formula_mismatches": 0,
+            "distinct_disclosure_lag_values": 105,
+            "all_requested_years_covered": True,
+            "partitions_match_accepted_count_snapshot": True,
+            "price_fields_loaded": [],
+            "forward_return_fields_read": False,
+        }
+        and tuple(spec.get("factor_catalog") or []) == (INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME,)
+        and spec.get("factor_raw_columns")
+        == {INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME: "institutional_survey_disclosure_lag_days"}
+        and spec.get("later_diagnostic_direction_if_capacity_passes")
+        == "lower_raw_lag_is_better"
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "minimum_valid_names_per_factor_cohort": 6,
+            "minimum_distinct_factor_values_per_cohort": 2,
+            "minimum_required_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "event_availability": "strictly next local trading day after announcement_date",
+            "price_basis_required_for_later_return_diagnostic": REQUIRED_PRICE_BASIS,
+        }
+        and policy
+        == {
+            "open_close_or_forward_return_fields_allowed": False,
+            "count_only_quality_and_listing_seasoned_active_names": True,
+            "failed_factor_must_stop_without_return_diagnostic": True,
+            "one_completed_capacity_audit_only": True,
+            "no_direction_formula_age_date_topk_or_minimum_cohort_override": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError(
+            "institutional-survey timing capacity preregistration does not match the frozen protocol"
+        )
+    return spec
+
+
+def validate_institutional_survey_timing_capacity_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Verify timing snapshot rows, partitions, fingerprints, and pre-snapshot contract."""
+
+    contract_link = spec.get("data_contract") or {}
+    contract_path = resolve_repository_record_path(str(contract_link.get("path") or ""))
+    contract = load_institutional_survey_timing_data_contract(contract_path)
+    if (
+        file_sha256(contract_path) != str(contract_link.get("sha256") or "")
+        or contract.get("preregistered_at") != contract_link.get("preregistered_at")
+    ):
+        raise ValueError("institutional-survey timing data contract link does not match")
+
+    snapshots = spec.get("source_snapshots") or {}
+    evidence: dict[str, Any] = {"source_snapshots": {}}
+    manifests: dict[str, dict[str, Any]] = {}
+    paths: dict[str, Path] = {}
+    for name, link in snapshots.items():
+        source_path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not source_path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"institutional-survey timing capacity input is missing: {name}")
+        source_sha256 = file_sha256(source_path)
+        manifest_sha256 = file_sha256(manifest_path)
+        if source_sha256 != str(link.get("sha256") or ""):
+            raise ValueError(f"institutional-survey timing source fingerprint mismatch: {source_path}")
+        if manifest_sha256 != str(link.get("manifest_sha256") or ""):
+            raise ValueError(f"institutional-survey timing manifest fingerprint mismatch: {manifest_path}")
+        manifest = load_json_record(manifest_path)
+        if manifest.get("status") != "completed" or manifest.get("sha256") != source_sha256:
+            raise ValueError(f"institutional-survey timing manifest rejects its source: {manifest_path}")
+        paths[name] = source_path
+        manifests[name] = manifest
+        evidence["source_snapshots"][name] = {
+            "path": str(source_path),
+            "sha256": source_sha256,
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": manifest_sha256,
+        }
+
+    manifest = manifests["institutional_survey_timing"]
+    partitions = list(manifest.get("verified_partitions") or [])
+    acceptance = spec["snapshot_acceptance"]
+    expected_start = pd.Timestamp("2019-01-01")
+    pages = 0
+    source_rows = 0
+    for partition in partitions:
+        start = pd.Timestamp(partition.get("start"))
+        end = pd.Timestamp(partition.get("end"))
+        partition_pages = int(partition.get("pages") or 0)
+        partition_rows = int(partition.get("source_rows") or 0)
+        if (
+            start != expected_start
+            or end < start
+            or partition_pages < 1
+            or partition_pages > INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION
+            or partition.get("count_verified") is not True
+            or partition_rows != int(partition.get("advertised_source_rows") or 0)
+        ):
+            raise ValueError("institutional-survey timing manifest has an invalid partition")
+        expected_start = end + pd.Timedelta(days=1)
+        pages += partition_pages
+        source_rows += partition_rows
+    comparison = spec.get("partition_comparison_snapshot") or {}
+    comparison_path = resolve_repository_record_path(str(comparison.get("manifest_path") or ""))
+    if (
+        not comparison_path.exists()
+        or file_sha256(comparison_path) != str(comparison.get("manifest_sha256") or "")
+    ):
+        raise ValueError("institutional-survey timing comparison manifest fingerprint mismatch")
+    comparison_manifest = load_json_record(comparison_path)
+    timing_quality = manifest.get("timing_quality") or {}
+    if (
+        expected_start != pd.Timestamp("2026-01-01")
+        or len(partitions) != acceptance["verified_partitions"]
+        or pages != acceptance["pages"]
+        or source_rows != acceptance["source_detail_rows"]
+        or partitions != comparison_manifest.get("verified_partitions")
+        or manifest.get("pages_by_year") != comparison_manifest.get("pages_by_year")
+        or manifest.get("source_detail_rows_by_year")
+        != comparison_manifest.get("source_detail_rows_by_year")
+        or timing_quality.get("negative_lag_event_keys_excluded")
+        != acceptance["negative_lag_event_keys_excluded"]
+        or timing_quality.get("distinct_disclosure_lag_values")
+        != acceptance["distinct_disclosure_lag_values"]
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or (manifest.get("data_contract") or {}).get("sha256") != file_sha256(contract_path)
+    ):
+        raise ValueError("institutional-survey timing manifest fails frozen acceptance")
+
+    events = load_institutional_survey_timing_events(paths["institutional_survey_timing"])
+    lag_formula = (
+        events["announcement_date"] - events["institutional_survey_latest_receive_end_date"]
+    ).dt.days.astype(float)
+    duplicate_keys = int(events.duplicated(["instrument", "announcement_date"]).sum())
+    missing_values = int(events.isna().sum().sum())
+    formula_mismatches = int(
+        lag_formula.ne(events["institutional_survey_disclosure_lag_days"]).sum()
+    )
+    if (
+        len(events) != acceptance["rows"]
+        or duplicate_keys != acceptance["duplicate_event_keys"]
+        or missing_values != acceptance["missing_values"]
+        or formula_mismatches != acceptance["formula_mismatches"]
+        or events["announcement_date"].min() != pd.Timestamp("2019-01-01")
+        or events["announcement_date"].max() != pd.Timestamp("2025-12-31")
+        or sorted(events["announcement_date"].dt.year.unique().tolist()) != list(range(2019, 2026))
+    ):
+        raise ValueError("institutional-survey timing rows fail frozen acceptance")
+    evidence["data_contract"] = {
+        "path": str(contract_path),
+        "sha256": file_sha256(contract_path),
+        "preregistered_at": contract["preregistered_at"],
+    }
+    evidence["timing_acceptance"] = {
+        **acceptance,
+        "partition_counts_reconciled": True,
+        "announcement_start": events["announcement_date"].min().date().isoformat(),
+        "announcement_end": events["announcement_date"].max().date().isoformat(),
     }
     return evidence
 
@@ -5593,6 +5803,36 @@ def load_institutional_survey_events(path: Path) -> pd.DataFrame:
     for column in INSTITUTIONAL_SURVEY_EVENT_COLUMNS[2:]:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     frame = frame.dropna(subset=["instrument", "announcement_date"])
+    return frame.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+
+
+def load_institutional_survey_timing_events(path: Path) -> pd.DataFrame:
+    """Load the frozen non-identifying institutional-survey disclosure lags."""
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"institutional-survey timing snapshot does not exist: {path}; "
+            "run sync-institutional-survey-timing-events first"
+        )
+    frame = pd.read_parquet(path)
+    missing = sorted(set(INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(
+            "institutional-survey timing snapshot is missing columns: " + ", ".join(missing)
+        )
+    frame = frame.loc[:, list(INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS)].copy()
+    frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
+    frame["institutional_survey_latest_receive_end_date"] = pd.to_datetime(
+        frame["institutional_survey_latest_receive_end_date"], errors="coerce"
+    )
+    frame["institutional_survey_disclosure_lag_days"] = pd.to_numeric(
+        frame["institutional_survey_disclosure_lag_days"], errors="coerce"
+    )
+    frame = frame.dropna(subset=list(INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS))
+    if frame["institutional_survey_disclosure_lag_days"].lt(0).any():
+        raise ValueError("institutional-survey timing snapshot contains a negative lag")
+    if frame.duplicated(["instrument", "announcement_date"]).any():
+        raise ValueError("institutional-survey timing snapshot contains duplicate event keys")
     return frame.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
 
 
@@ -9194,6 +9434,112 @@ def run_institutional_survey_capacity_audit(args: argparse.Namespace) -> dict[st
     }
 
 
+def require_unconsumed_institutional_survey_timing_capacity(experiment_root: Path) -> None:
+    """Prevent duplicate evidence for the immutable disclosure-timing capacity gate."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob("*_institutional_survey_timing_capacity_audit.json")
+    ):
+        record = load_json_record(path)
+        if record.get("purpose") == INSTITUTIONAL_SURVEY_TIMING_CAPACITY_PURPOSE:
+            raise ValueError(f"institutional-survey timing capacity is already consumed: {path}")
+
+
+def run_institutional_survey_timing_capacity_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen prompt-disclosure capacity gate without reading prices."""
+
+    spec = load_institutional_survey_timing_capacity_preregistration()
+    source_evidence = validate_institutional_survey_timing_capacity_sources(spec)
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_institutional_survey_timing_capacity(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    provider_uri = Path(args.provider_uri).expanduser()
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market="buyable_main_chinext",
+        start=contract["start"],
+        end=contract["end"],
+    )
+    fundamentals = load_fundamentals(
+        resolve_repository_record_path(snapshots["quarterly_quality"]["path"])
+    )
+    events = load_institutional_survey_timing_events(
+        resolve_repository_record_path(snapshots["institutional_survey_timing"]["path"])
+    )
+    capacity = sparse_announcement_source_capacity(
+        events,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        source_name="institutional_survey_timing",
+        event_columns=INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS,
+        factor_raw_columns=spec["factor_raw_columns"],
+        max_age_days=snapshots["institutional_survey_timing"]["maximum_age_days"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        minimum_required_cohorts=contract["minimum_required_cohorts"],
+        maximum_quality_age_days=contract["maximum_quality_age_days"],
+    )
+    admitted = capacity["source_admitted_for_return_rebuild"]
+    decision = (
+        "eligible_for_separately_preregistered_three_day_return_diagnostic"
+        if admitted
+        else "rejected_before_return_diagnostic_insufficient_independent_cohorts"
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": INSTITUTIONAL_SURVEY_TIMING_CAPACITY_PURPOSE,
+        "preregistration": {
+            "path": str(DEFAULT_INSTITUTIONAL_SURVEY_TIMING_CAPACITY_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_INSTITUTIONAL_SURVEY_TIMING_CAPACITY_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME],
+        "later_diagnostic_direction_if_capacity_passes": spec[
+            "later_diagnostic_direction_if_capacity_passes"
+        ],
+        "run_contract": contract,
+        "source_capacity": capacity,
+        "source_admitted_for_return_diagnostic": admitted,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            "full_calendar_start": full_calendar.min().date().isoformat(),
+            "research_calendar_start": research_calendar.min().date().isoformat(),
+            "research_calendar_end": research_calendar.max().date().isoformat(),
+            "instrument_span_count": int(len(intervals)),
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Capacity is an upper bound before next-open and exit-close completeness; passing does not imply association or tradability.",
+            "The public received-date fields can be revised and are not an exchange-grade point-in-time disclosure database.",
+            "The current listing universe can introduce survivorship bias even though full provider spans season listings.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_institutional_survey_timing_capacity_audit.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity["factor_capacity"],
+        "source_admitted_for_return_diagnostic": admitted,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
 def run_quarterly_event_capacity_audit(args: argparse.Namespace) -> dict[str, Any]:
     """Persist a no-return feasibility gate for one quarterly event definition."""
 
@@ -11794,6 +12140,51 @@ def load_institutional_survey_capacity_audits(experiment_root: Path) -> list[dic
     return audits
 
 
+def load_institutional_survey_timing_capacity_audits(
+    experiment_root: Path,
+) -> list[dict[str, Any]]:
+    """Read no-return prompt-disclosure capacity gates for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(
+        experiment_root.expanduser().glob("*_institutional_survey_timing_capacity_audit.json")
+    ):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if (
+            audit.get("status") != "completed"
+            or audit.get("purpose") != INSTITUTIONAL_SURVEY_TIMING_CAPACITY_PURPOSE
+        ):
+            continue
+        data = audit.get("data") or {}
+        contract = audit.get("run_contract") or {}
+        source = audit.get("source_capacity") or {}
+        factor_rows = [
+            {
+                "factor": str(factor_name),
+                "complete_cohorts": int(capacity.get("potential_complete_cohorts") or 0),
+                "factor_passed": bool(capacity.get("capacity_gate_passed", False)),
+            }
+            for factor_name, capacity in (source.get("factor_capacity") or {}).items()
+        ]
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "calendar_start": str(data.get("research_calendar_start", contract.get("start", "—"))),
+                "calendar_end": str(data.get("research_calendar_end", contract.get("end", "—"))),
+                "minimum_cohorts": int(contract.get("minimum_required_cohorts") or 0),
+                "factor_rows": factor_rows,
+                "source_admitted": bool(audit.get("source_admitted_for_return_diagnostic", False)),
+                "forward_return_fields_read": bool(audit.get("forward_return_fields_read", True)),
+                "decision": str(audit.get("decision", "—")),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -12141,6 +12532,7 @@ def render_three_day_research_report(
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
     sparse_announcement_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_capacity_audits: list[dict[str, Any]] | None = None,
+    institutional_survey_timing_capacity_audits: list[dict[str, Any]] | None = None,
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
@@ -12674,6 +13066,37 @@ def render_three_day_research_report(
                     )
                 )
         lines.append("")
+    if institutional_survey_timing_capacity_audits:
+        lines.extend(
+            [
+                "",
+                "## 机构调研披露时滞容量审计",
+                "",
+                "本节只检验“接待结束日至公告日时滞越短越好”的固定机制能否形成足够截面，不读取开盘、收盘或未来收益。容量通过只允许另行预注册一次收益诊断。",
+                "",
+                "| 审计 | 因子 | 开发期 | 潜在 Cohort / 门槛 | 容量结论 | 读取未来收益 |",
+                "| --- | --- | --- | ---: | --- | --- |",
+            ]
+        )
+        for audit in institutional_survey_timing_capacity_audits:
+            for row in audit["factor_rows"]:
+                lines.append(
+                    "| {run_id} | {factor} | {start} 至 {end} | {cohorts} / {minimum} | {result} | {returns} |".format(
+                        run_id=audit["run_id"],
+                        factor=row["factor"],
+                        start=audit["calendar_start"],
+                        end=audit["calendar_end"],
+                        cohorts=row["complete_cohorts"],
+                        minimum=audit["minimum_cohorts"],
+                        result=(
+                            "允许另行预注册诊断"
+                            if audit["source_admitted"]
+                            else "容量不足，停止"
+                        ),
+                        returns="是（无效）" if audit["forward_return_fields_read"] else "否",
+                    )
+                )
+        lines.append("")
     if candidate_overlap_audits:
         lines.extend(
             [
@@ -13104,6 +13527,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     quarterly_event_capacity_audits = load_quarterly_event_capacity_audits(experiment_root)
     sparse_announcement_capacity_audits = load_sparse_announcement_capacity_audits(experiment_root)
     institutional_survey_capacity_audits = load_institutional_survey_capacity_audits(experiment_root)
+    institutional_survey_timing_capacity_audits = (
+        load_institutional_survey_timing_capacity_audits(experiment_root)
+    )
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -13142,6 +13568,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         quarterly_event_capacity_audits=quarterly_event_capacity_audits,
         sparse_announcement_capacity_audits=sparse_announcement_capacity_audits,
         institutional_survey_capacity_audits=institutional_survey_capacity_audits,
+        institutional_survey_timing_capacity_audits=institutional_survey_timing_capacity_audits,
         rolling_window_semantics_audits=rolling_window_semantics_audits,
         minute_factor_coverage_audits=minute_factor_coverage_audits,
         minute_combination_holdouts=minute_combination_holdouts,
@@ -13182,6 +13609,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "quarterly_event_capacity_audits": len(quarterly_event_capacity_audits),
         "sparse_announcement_capacity_audits": len(sparse_announcement_capacity_audits),
         "institutional_survey_capacity_audits": len(institutional_survey_capacity_audits),
+        "institutional_survey_timing_capacity_audits": len(
+            institutional_survey_timing_capacity_audits
+        ),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
         "model_audits": len(model_audits),
@@ -16622,6 +17052,17 @@ def parse_args() -> argparse.Namespace:
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
+    institutional_survey_timing_capacity = subparsers.add_parser(
+        "institutional-survey-timing-capacity-audit",
+        help="run the frozen prompt-disclosure capacity gate without price outcomes",
+    )
+    institutional_survey_timing_capacity.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    institutional_survey_timing_capacity.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -17108,6 +17549,8 @@ def main() -> int:
         report = run_sparse_announcement_capacity_audit(args)
     elif args.command == "institutional-survey-capacity-audit":
         report = run_institutional_survey_capacity_audit(args)
+    elif args.command == "institutional-survey-timing-capacity-audit":
+        report = run_institutional_survey_timing_capacity_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":

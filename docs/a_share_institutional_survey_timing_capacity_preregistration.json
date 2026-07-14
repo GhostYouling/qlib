@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "kind": "a_share_institutional_survey_timing_capacity_preregistration",
+  "status": "frozen_after_timing_snapshot_before_price_or_forward_returns_observed",
+  "preregistered_at": "2026-07-14T18:01:05Z",
+  "purpose": "Determine whether prompt institutional-survey disclosure can support a valid three-session cross-sectional diagnostic before reading any price or forward-return field.",
+  "data_contract": {
+    "path": "docs/a_share_institutional_survey_timing_data_contract.json",
+    "sha256": "9ce1b08f2ed50f9683e4953de8f6666d232448c3abfdd42d71ad77df3e900fb4",
+    "preregistered_at": "2026-07-14T17:38:50Z"
+  },
+  "partition_comparison_snapshot": {
+    "manifest_path": "data/metadata/institutional_surveys_manifest.json",
+    "manifest_sha256": "1210c6ee9bd838033ef0fc8ccd58a943a2f2e655f40b504dd46419b6399362a2"
+  },
+  "source_snapshots": {
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "institutional_survey_timing": {
+      "path": "data/raw/a_share/events/institutional_survey_timing.parquet",
+      "sha256": "0b1544ac400f021ed632fbf5810967c5a1d6acd9d7fbb6334a743c19f824f5eb",
+      "manifest_path": "data/metadata/institutional_survey_timing_manifest.json",
+      "manifest_sha256": "07b6e405e9b73177921ce06ba5020e4f6c48c05a553948619309b18d2b03fe97",
+      "maximum_age_days": 3,
+      "effective_date": "strictly next local trading day after announcement_date",
+      "required_announcement_start": "2019-01-01",
+      "required_announcement_end": "2025-12-31"
+    }
+  },
+  "snapshot_acceptance": {
+    "rows": 107913,
+    "verified_partitions": 108,
+    "pages": 2587,
+    "source_detail_rows": 126639,
+    "negative_lag_event_keys_excluded": 26,
+    "duplicate_event_keys": 0,
+    "missing_values": 0,
+    "formula_mismatches": 0,
+    "distinct_disclosure_lag_values": 105,
+    "all_requested_years_covered": true,
+    "partitions_match_accepted_count_snapshot": true,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "factor_catalog": [
+    "institutional_survey_prompt_disclosure"
+  ],
+  "factor_raw_columns": {
+    "institutional_survey_prompt_disclosure": "institutional_survey_disclosure_lag_days"
+  },
+  "later_diagnostic_direction_if_capacity_passes": "lower_raw_lag_is_better",
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_factor_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "event_availability": "strictly next local trading day after announcement_date",
+    "price_basis_required_for_later_return_diagnostic": "close_known_raw_pct_chg_chain_v1"
+  },
+  "capacity_policy": {
+    "open_close_or_forward_return_fields_allowed": false,
+    "count_only_quality_and_listing_seasoned_active_names": true,
+    "failed_factor_must_stop_without_return_diagnostic": true,
+    "one_completed_capacity_audit_only": true,
+    "no_direction_formula_age_date_topk_or_minimum_cohort_override": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

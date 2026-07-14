@@ -311,7 +311,15 @@ python scripts/a_share_short_horizon_factor_research.py institutional-survey-eve
 python scripts/a_share_short_horizon_factor_research.py sync-institutional-survey-timing-events
 ```
 
-完整快照只有在 2019–2025 日期分片连续、服务端计数逐片对账、股票/公告日无重复、时滞非负且每年覆盖后，才允许另写无收益 200-cohort 容量预注册。同步和容量阶段不得读取开盘、收盘或未来收益；容量不足即停止。
+完整 timing 快照随后成功：108 个连续分片、2,587 页和 126,639 条源明细与已验收的计数快照逐项一致；排除 26 个负时滞事件键后形成 107,913 行，股票/公告日重复键、缺失值和公式不一致均为 0。时滞共有 105 个不同值，中位数 1 天、95% 为 7 天以内、最大值 355 天且未截尾；Parquet SHA-256 为 `0b1544ac400f021ed632fbf5810967c5a1d6acd9d7fbb6334a743c19f824f5eb`。
+
+无收益容量协议已绑定数据合同、timing 快照、季度质量、两份清单及旧计数清单的指纹，冻结为 `docs/a_share_institutional_survey_timing_capacity_preregistration.json`。命令只读取交易日历、上市活动区间、季度质量和时滞事件，不读取任何行情字段：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py institutional-survey-timing-capacity-audit
+```
+
+它固定使用 2019–2025 非重叠三日网格、Top‑3、每截面至少 6 个有效名字和 2 个不同时滞、550 日季度质量、上市满 20 会话与至少 200 个潜在 cohort。容量不足即停止；容量通过也只允许另行预注册一次“低原始时滞”收益诊断。
 
 下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
 
