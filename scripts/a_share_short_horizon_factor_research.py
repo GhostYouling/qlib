@@ -1196,6 +1196,16 @@ FACTOR_DIAGNOSTIC_COLUMNS = tuple(
     sorted({factor for candidate in V7_CANDIDATES for factor in candidate.weights} | set(EXPLORATORY_DIAGNOSTIC_FACTORS))
 )
 FACTOR_DIAGNOSTIC_BUCKET_COUNT = 5
+FACTOR_DIAGNOSTIC_WORST_COHORT_COUNT = 5
+FACTOR_TAIL_ATTRIBUTION_COLUMNS = (
+    "liquidity_5",
+    "free_float_cap_small",
+    "volatility_low_20",
+    "amplitude_low",
+    "momentum_1",
+    "momentum_20",
+    "close_to_high",
+)
 SELECTION_MULTIPLICITY_DEFAULT_BOOTSTRAP_REPLICATES = 1000
 SELECTION_MULTIPLICITY_DEFAULT_BLOCK_COHORTS = 5
 SELECTION_MULTIPLICITY_DEFAULT_SEED = 17
@@ -6525,6 +6535,14 @@ def summarize_factor_diagnostics(
     missing = sorted(required - set(forward_returns.columns))
     if missing:
         raise ValueError(f"forward_returns is missing required columns: {', '.join(missing)}")
+
+    def optional_finite_float(value: Any) -> float | None:
+        try:
+            numeric = float(value)
+        except (TypeError, ValueError):
+            return None
+        return numeric if np.isfinite(numeric) else None
+
     summaries: list[dict[str, Any]] = []
     for factor in factor_columns:
         if factor not in forward_returns.columns:
@@ -6532,17 +6550,53 @@ def summarize_factor_diagnostics(
         cohorts: list[dict[str, Any]] = []
         quintile_means: list[dict[str, Any]] = []
         for signal_date, group in forward_returns.groupby("signal_date", sort=True):
-            valid = group[[factor, "forward_gross_return"]].dropna()
+            context_columns = [
+                column
+                for column in (
+                    "entry_date",
+                    "exit_date",
+                    "close",
+                    "entry_open",
+                    *FACTOR_TAIL_ATTRIBUTION_COLUMNS,
+                )
+                if column in group.columns and column != factor
+            ]
+            valid = group[["instrument", factor, "forward_gross_return", *context_columns]].dropna(
+                subset=[factor, "forward_gross_return"]
+            )
             if len(valid) < max(2, 2 * topk) or valid[factor].nunique() < 2:
                 continue
             rank_ic = valid[factor].corr(valid["forward_gross_return"], method="spearman")
             if pd.isna(rank_ic):
                 continue
-            ordered = valid.sort_values(factor, ascending=False, kind="stable")
-            top = ordered.head(topk)["forward_gross_return"]
+            ordered = valid.sort_values([factor, "instrument"], ascending=[False, True], kind="stable")
+            selected = ordered.head(topk).copy()
+            top = selected["forward_gross_return"]
             bottom = ordered.tail(topk)["forward_gross_return"]
             top_gross_return = float(top.mean())
             top_net_return = float((1.0 - open_cost) * (1.0 + top_gross_return) * (1.0 - close_cost) - 1.0)
+            selected_stocks: list[dict[str, Any]] = []
+            for row in selected.to_dict(orient="records"):
+                entry_gap_return = None
+                close_value = optional_finite_float(row.get("close"))
+                entry_open_value = optional_finite_float(row.get("entry_open"))
+                if close_value is not None and entry_open_value is not None and close_value > 0.0:
+                    entry_gap_return = entry_open_value / close_value - 1.0
+                selected_stocks.append(
+                    {
+                        "instrument": str(row["instrument"]),
+                        "factor_value": float(row[factor]),
+                        "forward_gross_return": float(row["forward_gross_return"]),
+                        "entry_date": row.get("entry_date"),
+                        "exit_date": row.get("exit_date"),
+                        "entry_gap_return": entry_gap_return,
+                        "close_known_feature_ranks": {
+                            column: optional_finite_float(row.get(column))
+                            for column in FACTOR_TAIL_ATTRIBUTION_COLUMNS
+                            if column in row
+                        },
+                    }
+                )
             factor_rank = valid[factor].rank(method="first")
             quintile = pd.qcut(factor_rank, FACTOR_DIAGNOSTIC_BUCKET_COUNT, labels=False)
             for bucket, bucket_returns in valid.groupby(quintile, observed=True)["forward_gross_return"]:
@@ -6560,6 +6614,7 @@ def summarize_factor_diagnostics(
                     "topk_gross_return": top_gross_return,
                     "topk_net_return": top_net_return,
                     "top_minus_bottom_gross_return": float(top.mean() - bottom.mean()),
+                    "selected_stocks": selected_stocks,
                 }
             )
         if not cohorts:
@@ -6570,6 +6625,30 @@ def summarize_factor_diagnostics(
             columns={"topk_net_return": "net_return", "topk_gross_return": "gross_return"}
         )
         topk_rounds["holdings"] = topk
+        topk_net_returns = cohort_frame["topk_net_return"]
+        worst_cohorts = cohort_frame.nsmallest(
+            min(FACTOR_DIAGNOSTIC_WORST_COHORT_COUNT, len(cohort_frame)), "topk_net_return"
+        )
+        topk_tail_risk = {
+            "p01_net_return": float(topk_net_returns.quantile(0.01)),
+            "p05_net_return": float(topk_net_returns.quantile(0.05)),
+            "median_net_return": float(topk_net_returns.median()),
+            "negative_return_rate": float((topk_net_returns < 0.0).mean()),
+            "below_minus_5pct_rate": float((topk_net_returns < -0.05).mean()),
+            "below_minus_10pct_rate": float((topk_net_returns < -0.10).mean()),
+            "worst_net_return": float(topk_net_returns.min()),
+            "worst_cohorts": [
+                {
+                    "signal_date": row.signal_date,
+                    "rank_ic": float(row.rank_ic),
+                    "topk_gross_return": float(row.topk_gross_return),
+                    "topk_net_return": float(row.topk_net_return),
+                    "top_minus_bottom_gross_return": float(row.top_minus_bottom_gross_return),
+                    "selected_stocks": row.selected_stocks,
+                }
+                for row in worst_cohorts.itertuples(index=False)
+            ],
+        }
         by_year = {
             str(year): {
                 "cohorts": int(len(group)),
@@ -6592,6 +6671,7 @@ def summarize_factor_diagnostics(
                     for quintile, group in quintile_frame.groupby("quintile", sort=True)
                 },
                 "topk": return_metrics(topk_rounds, hold_days),
+                "topk_tail_risk": topk_tail_risk,
                 "by_signal_year": by_year,
             }
         )
@@ -8039,6 +8119,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         pledge_events = diagnostic.get("pledge_events") or {}
         dividend_plan_events = diagnostic.get("dividend_plan_events") or {}
         top = ranking[0] if ranking else {}
+        top_tail = top.get("topk_tail_risk") or {}
         diagnostics.append(
             {
                 "run_id": str(diagnostic.get("run_id", path.stem)),
@@ -8058,6 +8139,8 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
+                "top_factor_p05_net_return": top_tail.get("p05_net_return"),
+                "top_factor_worst_net_return": top_tail.get("worst_net_return"),
                 "path": str(path.resolve()),
             }
         )
@@ -8747,15 +8830,17 @@ def render_three_day_research_report(
                 "",
                 "诊断只描述每个已声明因子与其后完整三日收益的横截面秩相关；它不选择策略，不能替代组合的独立测试或前瞻观察。",
                 "",
-                "| 诊断 | 财务 / 事件快照 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC |",
-                "| --- | --- | --- | ---: | --- | ---: |",
+                "| 诊断 | 财务 / 事件快照 | 历史范围 | 因子数 | 开发期最高平均 Rank IC 因子 | 平均 Rank IC | TopK 净收益 P5 | 最差 TopK |",
+                "| --- | --- | --- | ---: | --- | ---: | ---: | ---: |",
             ]
         )
         for diagnostic in factor_diagnostics:
             mean_ic = diagnostic["top_factor_mean_rank_ic"]
             formatted_ic = "—" if mean_ic is None else f"{float(mean_ic):.4f}"
+            p05 = diagnostic["top_factor_p05_net_return"]
+            worst = diagnostic["top_factor_worst_net_return"]
             lines.append(
-                "| {run_id} | {fundamentals} | {start} 至 {end} | {count} | {factor} | {mean_ic} |".format(
+                "| {run_id} | {fundamentals} | {start} 至 {end} | {count} | {factor} | {mean_ic} | {p05} | {worst} |".format(
                     run_id=diagnostic["run_id"],
                     fundamentals=" / ".join(
                         Path(source).name
@@ -8780,6 +8865,8 @@ def render_three_day_research_report(
                     count=diagnostic["factor_count"],
                     factor=diagnostic["top_factor"],
                     mean_ic=formatted_ic,
+                    p05=_percent(p05),
+                    worst=_percent(worst),
                 )
             )
         lines.append("")

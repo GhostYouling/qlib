@@ -1373,6 +1373,26 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
         "5": pytest.approx(0.055),
     }
     assert by_factor["good"]["topk"]["net_cumulative_return"] == pytest.approx((1.05 * 1.06) - 1.0)
+    tail = by_factor["good"]["topk_tail_risk"]
+    assert tail["p01_net_return"] == pytest.approx(0.0501)
+    assert tail["p05_net_return"] == pytest.approx(0.0505)
+    assert tail["median_net_return"] == pytest.approx(0.055)
+    assert tail["negative_return_rate"] == pytest.approx(0.0)
+    assert tail["below_minus_5pct_rate"] == pytest.approx(0.0)
+    assert tail["below_minus_10pct_rate"] == pytest.approx(0.0)
+    assert tail["worst_net_return"] == pytest.approx(0.05)
+    assert tail["worst_cohorts"][0]["signal_date"] == pd.Timestamp("2025-01-02")
+    assert tail["worst_cohorts"][0]["selected_stocks"] == [
+        {
+            "instrument": "S4",
+            "factor_value": pytest.approx(0.5),
+            "forward_gross_return": pytest.approx(0.05),
+            "entry_date": None,
+            "exit_date": None,
+            "entry_gap_return": None,
+            "close_known_feature_ranks": {},
+        }
+    ]
     assert by_factor["bad"]["mean_rank_ic"] == pytest.approx(-1.0)
 
 
@@ -2696,7 +2716,11 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
                 "status": "completed",
                 "data": {"calendar_start": "2019-01-02", "calendar_end": "2025-12-31"},
                 "ranking_by_development_rank_ic": [
-                    {"factor": "reversal_1", "mean_rank_ic": 0.03125},
+                    {
+                        "factor": "reversal_1",
+                        "mean_rank_ic": 0.03125,
+                        "topk_tail_risk": {"p05_net_return": -0.08, "worst_net_return": -0.15},
+                    },
                     {"factor": "momentum_20", "mean_rank_ic": 0.01},
                 ],
             }
@@ -2710,6 +2734,8 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
     assert "开发期单因子三日预测诊断" in report
     assert "reversal_1" in report
     assert "0.0312" in report
+    assert "-8.00%" in report
+    assert "-15.00%" in report
 
 
 def test_billboard_holdouts_are_retained_as_non_promotable_event_evidence(tmp_path):
