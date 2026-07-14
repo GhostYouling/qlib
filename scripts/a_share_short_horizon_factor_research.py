@@ -78,6 +78,9 @@ DEFAULT_PROSPECTIVE_FACTOR_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_prospec
 DEFAULT_RESEARCH_REPORT = DEFAULT_EXPERIMENT_ROOT / "three_day_research_report.md"
 DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS = REPO_ROOT / "docs" / "a_share_factor_diagnostic_invalidations.json"
 DEFAULT_MINUTE_FACTOR_SPEC = REPO_ROOT / "docs" / "a_share_minute_factor_preregistration.json"
+DEFAULT_TRANSACTION_EVENT_REBUILD_SPEC = (
+    REPO_ROOT / "docs" / "a_share_transaction_event_rebuild_preregistration.json"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -246,6 +249,14 @@ MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS = (
     "margin_buy_to_market_cap",
     "margin_balance_to_market_cap",
     "margin_financing_balance_growth",
+)
+TRANSACTION_EVENT_REBUILD_FACTOR_NAMES = (
+    *BILLBOARD_FACTOR_DIAGNOSTIC_COLUMNS,
+    *BLOCK_TRADE_FACTOR_DIAGNOSTIC_COLUMNS,
+    *MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS,
+)
+TRANSACTION_EVENT_REBUILD_PURPOSE = (
+    "development_only_preregistered_transaction_event_rebuild_research_not_investment_advice"
 )
 INSTITUTIONAL_SURVEY_EVENT_COLUMNS = (
     "instrument",
@@ -1790,6 +1801,128 @@ def load_minute_factor_preregistration(
     if not valid:
         raise ValueError("minute factor preregistration does not match the frozen v1 diagnostic protocol")
     return spec
+
+
+def load_transaction_event_rebuild_preregistration(
+    path: Path = DEFAULT_TRANSACTION_EVENT_REBUILD_SPEC,
+) -> dict[str, Any]:
+    """Enforce the exact accepted-price rebuild of three transaction-event sources."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_transaction_event_rebuild_preregistration")
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("rebuild_policy") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    legacy = list(spec.get("superseded_legacy_diagnostics") or [])
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status") == "frozen_before_accepted_price_event_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T16:02:27Z"
+        and tuple(spec.get("factor_catalog") or []) == TRANSACTION_EVENT_REBUILD_FACTOR_NAMES
+        and spec.get("factor_direction") == "higher"
+        and set(snapshots) == {"daily_billboard", "block_trades", "margin_financing"}
+        and snapshots["daily_billboard"].get("maximum_age_days") == 3
+        and snapshots["block_trades"].get("maximum_age_days") == 3
+        and snapshots["margin_financing"].get("maximum_age_days") == 0
+        and len(legacy) == 3
+        and [item.get("run_id") for item in legacy]
+        == ["20260713T214915Z", "20260713T222021Z", "20260713T230129Z"]
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "run_all_factors_together": True,
+            "accepted_price_returns_observed_before_registration": False,
+            "legacy_invalid_price_returns_were_observed": True,
+            "one_completed_rebuild_only": True,
+            "no_direction_window_age_cost_or_factor_subset_override": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_a_new_prospective_combination_registration": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("transaction-event rebuild preregistration does not match the frozen protocol")
+    return spec
+
+
+def validate_transaction_event_rebuild_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Fingerprint-bind transaction-event snapshots and superseded legacy evidence."""
+
+    evidence: dict[str, Any] = {"source_snapshots": {}, "superseded_legacy_diagnostics": []}
+    for name, link in (spec.get("source_snapshots") or {}).items():
+        path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"transaction-event source or manifest is missing: {name}")
+        if file_sha256(path) != str(link.get("sha256") or ""):
+            raise ValueError(f"transaction-event source fingerprint mismatch: {path}")
+        if file_sha256(manifest_path) != str(link.get("manifest_sha256") or ""):
+            raise ValueError(f"transaction-event manifest fingerprint mismatch: {manifest_path}")
+        manifest = load_json_record(manifest_path)
+        if manifest.get("status") != "completed" or manifest.get("sha256") != file_sha256(path):
+            raise ValueError(f"transaction-event manifest does not accept its source snapshot: {manifest_path}")
+        evidence["source_snapshots"][name] = {
+            "path": str(path),
+            "sha256": file_sha256(path),
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": file_sha256(manifest_path),
+        }
+
+    source_factors = {
+        "daily_billboard": set(BILLBOARD_FACTOR_DIAGNOSTIC_COLUMNS),
+        "block_trades": set(BLOCK_TRADE_FACTOR_DIAGNOSTIC_COLUMNS),
+        "margin_financing": set(MARGIN_FINANCING_FACTOR_DIAGNOSTIC_COLUMNS),
+    }
+    for link in spec.get("superseded_legacy_diagnostics") or []:
+        path = resolve_repository_record_path(str(link.get("path") or ""))
+        if not path.exists():
+            raise FileNotFoundError(f"superseded transaction-event diagnostic is missing: {path}")
+        if file_sha256(path) != str(link.get("sha256") or ""):
+            raise ValueError(f"superseded transaction-event diagnostic fingerprint mismatch: {path}")
+        record = load_json_record(path)
+        source_name = str(link.get("source") or "")
+        if (
+            str(record.get("run_id")) != str(link.get("run_id"))
+            or (record.get("data") or {}).get("price_basis") == REQUIRED_PRICE_BASIS
+            or not source_factors.get(source_name, set()).issubset(set(record.get("factor_catalog") or []))
+        ):
+            raise ValueError(f"superseded transaction-event diagnostic is not the frozen legacy evidence: {path}")
+        evidence["superseded_legacy_diagnostics"].append(
+            {
+                "run_id": record.get("run_id"),
+                "source": source_name,
+                "path": str(path),
+                "sha256": file_sha256(path),
+                "evidence_status": "invalid_legacy_price_basis",
+            }
+        )
+    return evidence
+
+
+def require_unconsumed_transaction_event_rebuild(experiment_root: Path) -> None:
+    """Prevent a second accepted-price look at the fixed transaction-event catalog."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == TRANSACTION_EVENT_REBUILD_PURPOSE:
+            raise ValueError(f"accepted-price transaction-event rebuild is already consumed: {path}")
 
 
 def _load_fingerprinted_json_link(
@@ -11494,7 +11627,11 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     audit = {
         "run_id": run_id,
         "status": "completed",
-        "purpose": "development_only_single_factor_forward_diagnostic_research_not_investment_advice",
+        "purpose": getattr(
+            args,
+            "diagnostic_purpose",
+            "development_only_single_factor_forward_diagnostic_research_not_investment_advice",
+        ),
         "factor_catalog": factor_catalog,
         "strategy_timing": {
             "universe": "buyable_main_chinext",
@@ -11700,6 +11837,8 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "test_period_used_for_factor_design": False,
         },
         "ranking_by_development_rank_ic": summaries,
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
         "limitations": [
             "This ranks individual factor associations only; it does not select, register, or promote a trading strategy.",
             "TopK-minus-BottomK is a descriptive gross cross-sectional spread, not an executable long-short simulation.",
@@ -11709,14 +11848,86 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "Prices use the accepted close-known adjusted/raw restoration contract; exchange limit queues, suspensions, and market impact are still not simulated exactly.",
         ],
     }
+    preregistration = getattr(args, "diagnostic_preregistration", None)
+    if preregistration is not None:
+        audit["preregistration"] = preregistration
     destination = experiment_root / f"{run_id}_factor_diagnostic.json"
     _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
     return {
         "status": "completed",
         "audit_path": str(destination.resolve()),
+        "run_id": run_id,
         "factor_count": len(summaries),
         "top_factors_by_development_rank_ic": summaries[: min(10, len(summaries))],
     }
+
+
+def run_transaction_event_rebuild_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Rebuild the fixed transaction-event catalog once on accepted daily prices."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_transaction_event_rebuild_preregistration()
+    source_evidence = validate_transaction_event_rebuild_sources(spec)
+    require_unconsumed_transaction_event_rebuild(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=args.fundamentals,
+        performance_forecasts=None,
+        billboard_events=str(resolve_repository_record_path(snapshots["daily_billboard"]["path"])),
+        major_holder_events=None,
+        block_trade_events=str(resolve_repository_record_path(snapshots["block_trades"]["path"])),
+        margin_financing_events=str(
+            resolve_repository_record_path(snapshots["margin_financing"]["path"])
+        ),
+        institutional_survey_events=None,
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=contract["maximum_quality_age_days"],
+        max_forecast_age_days=120,
+        max_billboard_age_days=snapshots["daily_billboard"]["maximum_age_days"],
+        max_major_holder_age_days=120,
+        max_block_trade_age_days=snapshots["block_trades"]["maximum_age_days"],
+        max_margin_financing_age_days=snapshots["margin_financing"]["maximum_age_days"],
+        max_institutional_survey_age_days=120,
+        max_repurchase_age_days=120,
+        max_holder_count_age_days=120,
+        max_pledge_age_days=120,
+        max_dividend_plan_age_days=120,
+        batch_size=args.batch_size,
+        factor=list(TRANSACTION_EVENT_REBUILD_FACTOR_NAMES),
+        diagnostic_purpose=TRANSACTION_EVENT_REBUILD_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_TRANSACTION_EVENT_REBUILD_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_TRANSACTION_EVENT_REBUILD_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "accepted_price_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    if (
+        audit.get("purpose") != TRANSACTION_EVENT_REBUILD_PURPOSE
+        or tuple(audit.get("factor_catalog") or []) != TRANSACTION_EVENT_REBUILD_FACTOR_NAMES
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError("completed transaction-event rebuild does not match its frozen protocol")
+    return result
 
 
 def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
@@ -13982,6 +14193,17 @@ def parse_args() -> argparse.Namespace:
         help="optional exact predeclared factor to diagnose; repeat to run an explicitly isolated factor set",
     )
 
+    transaction_event_rebuild = subparsers.add_parser(
+        "transaction-event-rebuild-diagnostic",
+        help="rebuild the 13 frozen billboard/block-trade/margin factors once on accepted daily prices",
+    )
+    transaction_event_rebuild.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    transaction_event_rebuild.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    transaction_event_rebuild.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    transaction_event_rebuild.add_argument("--batch-size", type=int, default=500)
+
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
         help="diagnose all five frozen one-minute factors under the fixed three-day protocol",
@@ -14571,6 +14793,8 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "factor-diagnostic":
         report = run_factor_diagnostic(args)
+    elif args.command == "transaction-event-rebuild-diagnostic":
+        report = run_transaction_event_rebuild_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":

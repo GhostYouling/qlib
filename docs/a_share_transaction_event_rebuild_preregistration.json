@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "kind": "a_share_transaction_event_rebuild_preregistration",
+  "status": "frozen_before_accepted_price_event_returns_observed",
+  "preregistered_at": "2026-07-14T16:02:27Z",
+  "purpose": "Rebuild the original higher-is-better transaction-event factor diagnostics exactly once after the point-in-time daily-price and 20-session listing corrections.",
+  "source_snapshots": {
+    "daily_billboard": {
+      "path": "data/raw/a_share/events/daily_billboard.parquet",
+      "sha256": "0fee2fff3de2a8422203b9cf0dfbbe2a190129f0f746d9982542d53937b0cbe7",
+      "manifest_path": "data/metadata/daily_billboard_manifest.json",
+      "manifest_sha256": "aacefb639390fce6f5303812ec6f016aa34023edd84c6062a6cf83fe09ba2ce4",
+      "maximum_age_days": 3
+    },
+    "block_trades": {
+      "path": "data/raw/a_share/events/block_trades.parquet",
+      "sha256": "03676688aff699686ec8729d8fe439d3cbdf610e9e9ccd2845ac29f790768ce8",
+      "manifest_path": "data/metadata/block_trades_manifest.json",
+      "manifest_sha256": "63a5814ce096c123843d17277d02e10632473416ee108ae67ca8db55a9d06d77",
+      "maximum_age_days": 3
+    },
+    "margin_financing": {
+      "path": "data/raw/a_share/events/margin_financing_top_flows.parquet",
+      "sha256": "dd7e02f94456bba6a1ea6e20ccf3cc0bf133f57c36b83fbe20f1fcfd347ee1a9",
+      "manifest_path": "data/metadata/margin_financing_top_flows_manifest.json",
+      "manifest_sha256": "8710f7faefbb04ef2f8f318955d922ac5c8e5fdaf1d7aa3dc25824a64eb9b377",
+      "maximum_age_days": 0
+    }
+  },
+  "superseded_legacy_diagnostics": [
+    {
+      "run_id": "20260713T214915Z",
+      "path": "data/experiments/short_horizon/20260713T214915Z_factor_diagnostic.json",
+      "sha256": "2c919c8704309d6a250385a02c2a9bd808f8a43f5dfc5c403776fd22ed7cf02c",
+      "source": "daily_billboard"
+    },
+    {
+      "run_id": "20260713T222021Z",
+      "path": "data/experiments/short_horizon/20260713T222021Z_factor_diagnostic.json",
+      "sha256": "6aa2f72513ddb1d10844efb5cc4fe97de95c9980e945a25297c09cd73b25f60f",
+      "source": "block_trades"
+    },
+    {
+      "run_id": "20260713T230129Z",
+      "path": "data/experiments/short_horizon/20260713T230129Z_factor_diagnostic.json",
+      "sha256": "67630f54db474e30fc57cf9faa2cccd04092baf566e2ab775356dc41a311bd95",
+      "source": "margin_financing"
+    }
+  ],
+  "factor_catalog": [
+    "billboard_net_flow_to_float",
+    "billboard_net_flow_to_deal",
+    "billboard_deal_to_float",
+    "billboard_reason_count",
+    "billboard_freshness",
+    "block_trade_premium_ratio",
+    "block_trade_turnover_rate",
+    "block_trade_event_count",
+    "block_trade_freshness",
+    "margin_net_buy_to_market_cap",
+    "margin_buy_to_market_cap",
+    "margin_balance_to_market_cap",
+    "margin_financing_balance_growth"
+  ],
+  "factor_direction": "higher",
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "stability_minimum_calendar_years": 5,
+    "stability_minimum_cohorts": 200
+  },
+  "rebuild_policy": {
+    "run_all_factors_together": true,
+    "accepted_price_returns_observed_before_registration": false,
+    "legacy_invalid_price_returns_were_observed": true,
+    "one_completed_rebuild_only": true,
+    "no_direction_window_age_cost_or_factor_subset_override": true,
+    "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": true,
+    "passing_both_gates_only_allows_a_new_prospective_combination_registration": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
