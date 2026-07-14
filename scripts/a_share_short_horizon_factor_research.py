@@ -81,6 +81,9 @@ DEFAULT_MINUTE_FACTOR_SPEC = REPO_ROOT / "docs" / "a_share_minute_factor_preregi
 DEFAULT_TRANSACTION_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_transaction_event_rebuild_preregistration.json"
 )
+DEFAULT_ANNOUNCEMENT_EVENT_REBUILD_SPEC = (
+    REPO_ROOT / "docs" / "a_share_announcement_event_rebuild_preregistration.json"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -257,6 +260,13 @@ TRANSACTION_EVENT_REBUILD_FACTOR_NAMES = (
 )
 TRANSACTION_EVENT_REBUILD_PURPOSE = (
     "development_only_preregistered_transaction_event_rebuild_research_not_investment_advice"
+)
+ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES = (
+    *FORECAST_FACTOR_DIAGNOSTIC_COLUMNS,
+    *MAJOR_HOLDER_FACTOR_DIAGNOSTIC_COLUMNS,
+)
+ANNOUNCEMENT_EVENT_REBUILD_PURPOSE = (
+    "development_only_preregistered_announcement_event_rebuild_research_not_investment_advice"
 )
 INSTITUTIONAL_SURVEY_EVENT_COLUMNS = (
     "instrument",
@@ -1923,6 +1933,150 @@ def require_unconsumed_transaction_event_rebuild(experiment_root: Path) -> None:
         record = load_json_record(path)
         if record.get("purpose") == TRANSACTION_EVENT_REBUILD_PURPOSE:
             raise ValueError(f"accepted-price transaction-event rebuild is already consumed: {path}")
+
+
+def load_announcement_event_rebuild_preregistration(
+    path: Path = DEFAULT_ANNOUNCEMENT_EVENT_REBUILD_SPEC,
+) -> dict[str, Any]:
+    """Enforce one accepted-price rebuild of the original announcement factors."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_announcement_event_rebuild_preregistration")
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("rebuild_policy") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    legacy = list(spec.get("superseded_legacy_diagnostics") or [])
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status") == "frozen_before_accepted_price_event_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T16:15:29Z"
+        and tuple(spec.get("factor_catalog") or []) == ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES
+        and spec.get("factor_direction") == "higher"
+        and set(snapshots) == {
+            "quarterly_quality",
+            "performance_forecasts",
+            "major_holder_changes",
+        }
+        and snapshots["quarterly_quality"].get("maximum_age_days") == 550
+        and snapshots["performance_forecasts"].get("maximum_age_days") == 30
+        and snapshots["major_holder_changes"].get("maximum_age_days") == 3
+        and snapshots["performance_forecasts"].get("effective_date")
+        == "strictly next local trading day after announcement_date"
+        and snapshots["major_holder_changes"].get("effective_date")
+        == "strictly next local trading day after announcement_date"
+        and len(legacy) == 2
+        and [item.get("run_id") for item in legacy]
+        == ["20260713T214654Z", "20260713T220522Z"]
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "run_all_factors_together": True,
+            "accepted_price_returns_observed_before_registration": False,
+            "legacy_invalid_price_returns_were_observed": True,
+            "one_completed_rebuild_only": True,
+            "preserve_original_quarterly_quality_snapshot": True,
+            "no_direction_formula_age_cost_quality_source_or_factor_subset_override": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_a_new_prospective_combination_registration": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("announcement-event rebuild preregistration does not match the frozen protocol")
+    return spec
+
+
+def validate_announcement_event_rebuild_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Fingerprint-bind announcement snapshots, quality data, and legacy evidence."""
+
+    evidence: dict[str, Any] = {"source_snapshots": {}, "superseded_legacy_diagnostics": []}
+    snapshots = spec.get("source_snapshots") or {}
+    for name, link in snapshots.items():
+        path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"announcement-event source or manifest is missing: {name}")
+        if file_sha256(path) != str(link.get("sha256") or ""):
+            raise ValueError(f"announcement-event source fingerprint mismatch: {path}")
+        if file_sha256(manifest_path) != str(link.get("manifest_sha256") or ""):
+            raise ValueError(f"announcement-event manifest fingerprint mismatch: {manifest_path}")
+        manifest = load_json_record(manifest_path)
+        if manifest.get("status") != "completed" or manifest.get("sha256") != file_sha256(path):
+            raise ValueError(f"announcement-event manifest does not accept its source snapshot: {manifest_path}")
+        evidence["source_snapshots"][name] = {
+            "path": str(path),
+            "sha256": file_sha256(path),
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": file_sha256(manifest_path),
+        }
+
+    legacy_sources = {
+        "performance_forecasts": (
+            set(FORECAST_FACTOR_DIAGNOSTIC_COLUMNS),
+            "performance_forecast_events",
+        ),
+        "major_holder_changes": (
+            set(MAJOR_HOLDER_FACTOR_DIAGNOSTIC_COLUMNS),
+            "major_holder_events",
+        ),
+    }
+    for link in spec.get("superseded_legacy_diagnostics") or []:
+        path = resolve_repository_record_path(str(link.get("path") or ""))
+        if not path.exists():
+            raise FileNotFoundError(f"superseded announcement-event diagnostic is missing: {path}")
+        if file_sha256(path) != str(link.get("sha256") or ""):
+            raise ValueError(f"superseded announcement-event diagnostic fingerprint mismatch: {path}")
+        record = load_json_record(path)
+        source_name = str(link.get("source") or "")
+        target_factors, metadata_key = legacy_sources.get(source_name, (set(), ""))
+        event_metadata = record.get(metadata_key) or {}
+        quality_metadata = record.get("quality_gate") or {}
+        if (
+            str(record.get("run_id")) != str(link.get("run_id"))
+            or (record.get("data") or {}).get("price_basis") == REQUIRED_PRICE_BASIS
+            or (record.get("data") or {}).get("minimum_listing_sessions") == MIN_LISTING_SESSIONS
+            or not target_factors
+            or not target_factors.issubset(set(record.get("factor_catalog") or []))
+            or event_metadata.get("sha256") != snapshots[source_name].get("sha256")
+            or quality_metadata.get("sha256") != snapshots["quarterly_quality"].get("sha256")
+        ):
+            raise ValueError(f"superseded announcement-event diagnostic is not frozen legacy evidence: {path}")
+        evidence["superseded_legacy_diagnostics"].append(
+            {
+                "run_id": record.get("run_id"),
+                "source": source_name,
+                "path": str(path),
+                "sha256": file_sha256(path),
+                "evidence_status": "invalid_legacy_price_basis_and_missing_listing_gate",
+            }
+        )
+    return evidence
+
+
+def require_unconsumed_announcement_event_rebuild(experiment_root: Path) -> None:
+    """Prevent a second accepted-price look at the fixed announcement catalog."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == ANNOUNCEMENT_EVENT_REBUILD_PURPOSE:
+            raise ValueError(f"accepted-price announcement-event rebuild is already consumed: {path}")
 
 
 def _load_fingerprinted_json_link(
@@ -11930,6 +12084,82 @@ def run_transaction_event_rebuild_diagnostic(args: argparse.Namespace) -> dict[s
     return result
 
 
+def run_announcement_event_rebuild_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Rebuild the frozen forecast and major-holder catalog once on accepted prices."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_announcement_event_rebuild_preregistration()
+    source_evidence = validate_announcement_event_rebuild_sources(spec)
+    require_unconsumed_announcement_event_rebuild(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=str(resolve_repository_record_path(snapshots["quarterly_quality"]["path"])),
+        performance_forecasts=str(
+            resolve_repository_record_path(snapshots["performance_forecasts"]["path"])
+        ),
+        billboard_events=None,
+        major_holder_events=str(
+            resolve_repository_record_path(snapshots["major_holder_changes"]["path"])
+        ),
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=None,
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=snapshots["quarterly_quality"]["maximum_age_days"],
+        max_forecast_age_days=snapshots["performance_forecasts"]["maximum_age_days"],
+        max_billboard_age_days=3,
+        max_major_holder_age_days=snapshots["major_holder_changes"]["maximum_age_days"],
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=3,
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=3,
+        max_dividend_plan_age_days=3,
+        batch_size=args.batch_size,
+        factor=list(ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES),
+        diagnostic_purpose=ANNOUNCEMENT_EVENT_REBUILD_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_ANNOUNCEMENT_EVENT_REBUILD_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_ANNOUNCEMENT_EVENT_REBUILD_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "accepted_price_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    if (
+        audit.get("purpose") != ANNOUNCEMENT_EVENT_REBUILD_PURPOSE
+        or tuple(audit.get("factor_catalog") or []) != ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or (audit.get("quality_gate") or {}).get("sha256")
+        != snapshots["quarterly_quality"]["sha256"]
+        or (audit.get("performance_forecast_events") or {}).get("max_forecast_age_days")
+        != snapshots["performance_forecasts"]["maximum_age_days"]
+        or (audit.get("major_holder_events") or {}).get("max_major_holder_age_days")
+        != snapshots["major_holder_changes"]["maximum_age_days"]
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError("completed announcement-event rebuild does not match its frozen protocol")
+    return result
+
+
 def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the frozen five-factor minute diagnostic on development data only."""
 
@@ -14204,6 +14434,16 @@ def parse_args() -> argparse.Namespace:
     )
     transaction_event_rebuild.add_argument("--batch-size", type=int, default=500)
 
+    announcement_event_rebuild = subparsers.add_parser(
+        "announcement-event-rebuild-diagnostic",
+        help="rebuild the nine frozen forecast/major-holder factors once on accepted daily prices",
+    )
+    announcement_event_rebuild.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    announcement_event_rebuild.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    announcement_event_rebuild.add_argument("--batch-size", type=int, default=500)
+
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
         help="diagnose all five frozen one-minute factors under the fixed three-day protocol",
@@ -14795,6 +15035,8 @@ def main() -> int:
         report = run_factor_diagnostic(args)
     elif args.command == "transaction-event-rebuild-diagnostic":
         report = run_transaction_event_rebuild_diagnostic(args)
+    elif args.command == "announcement-event-rebuild-diagnostic":
+        report = run_announcement_event_rebuild_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":

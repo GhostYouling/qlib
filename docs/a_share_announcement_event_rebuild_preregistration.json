@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_announcement_event_rebuild_preregistration",
+  "status": "frozen_before_accepted_price_event_returns_observed",
+  "preregistered_at": "2026-07-14T16:15:29Z",
+  "purpose": "Rebuild the original higher-is-better performance-forecast and major-holder announcement factor diagnostics exactly once after the point-in-time daily-price and 20-session listing corrections.",
+  "source_snapshots": {
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "maximum_age_days": 550
+    },
+    "performance_forecasts": {
+      "path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+      "sha256": "48bc11ea6749a590fcc260f6a5728e853f59f228f6cef7c5b0183f206895d734",
+      "manifest_path": "data/metadata/performance_forecasts_manifest.json",
+      "manifest_sha256": "d824bf8194b871fc21ce66cab80f1f9158814fff0e9a5d77a2cfbaec967e562c",
+      "maximum_age_days": 30,
+      "effective_date": "strictly next local trading day after announcement_date"
+    },
+    "major_holder_changes": {
+      "path": "data/raw/a_share/events/major_holder_changes.parquet",
+      "sha256": "f04b5a756a2a4c57fece9235224c3878a3778ad1261a525a9617683c7345116f",
+      "manifest_path": "data/metadata/major_holder_changes_manifest.json",
+      "manifest_sha256": "b3909ffeb9bda0170b300eea8475bb0fd1b76e5b2142986284616bf65be68bd5",
+      "maximum_age_days": 3,
+      "effective_date": "strictly next local trading day after announcement_date"
+    }
+  },
+  "superseded_legacy_diagnostics": [
+    {
+      "run_id": "20260713T214654Z",
+      "path": "data/experiments/short_horizon/20260713T214654Z_factor_diagnostic.json",
+      "sha256": "1573a50129ae8c3c561f98aef4c2d4ad6c79f1d7571656898d33ffe768b27513",
+      "source": "performance_forecasts"
+    },
+    {
+      "run_id": "20260713T220522Z",
+      "path": "data/experiments/short_horizon/20260713T220522Z_factor_diagnostic.json",
+      "sha256": "de762833a27353c4e265f63555d66bd127c6a7fa01ce3cecc9f45183622fae9e",
+      "source": "major_holder_changes"
+    }
+  ],
+  "factor_catalog": [
+    "forecast_profit_yoy",
+    "forecast_profit_yoy_precision",
+    "forecast_freshness",
+    "forecast_turnaround",
+    "major_holder_net_change_free_ratio",
+    "major_holder_increase_free_ratio",
+    "major_holder_decrease_free_ratio",
+    "major_holder_event_count",
+    "major_holder_freshness"
+  ],
+  "factor_direction": "higher",
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "stability_minimum_calendar_years": 5,
+    "stability_minimum_cohorts": 200
+  },
+  "rebuild_policy": {
+    "run_all_factors_together": true,
+    "accepted_price_returns_observed_before_registration": false,
+    "legacy_invalid_price_returns_were_observed": true,
+    "one_completed_rebuild_only": true,
+    "preserve_original_quarterly_quality_snapshot": true,
+    "no_direction_formula_age_cost_quality_source_or_factor_subset_override": true,
+    "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": true,
+    "passing_both_gates_only_allows_a_new_prospective_combination_registration": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

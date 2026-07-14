@@ -1786,6 +1786,75 @@ def test_transaction_event_rebuild_is_one_frozen_full_catalog(tmp_path, monkeypa
         RESEARCH.run_transaction_event_rebuild_diagnostic(args)
 
 
+def test_announcement_event_rebuild_is_one_frozen_full_catalog(tmp_path, monkeypatch):
+    spec = RESEARCH.load_announcement_event_rebuild_preregistration()
+    assert tuple(spec["factor_catalog"]) == RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES
+    assert spec["source_snapshots"]["performance_forecasts"]["maximum_age_days"] == 30
+    assert spec["source_snapshots"]["major_holder_changes"]["maximum_age_days"] == 3
+    assert spec["rebuild_policy"]["preserve_original_quarterly_quality_snapshot"] is True
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_ANNOUNCEMENT_EVENT_REBUILD_SPEC.read_text(encoding="utf-8")
+    )
+    changed["source_snapshots"]["performance_forecasts"]["maximum_age_days"] = 3
+    changed_path = tmp_path / "changed_announcement_event_rebuild.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_announcement_event_rebuild_preregistration(changed_path)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_announcement_event_rebuild_sources",
+        lambda loaded: {"source_snapshots": {}, "superseded_legacy_diagnostics": []},
+    )
+    captured = {}
+
+    def fake_diagnostic(args):
+        captured.update(vars(args))
+        path = tmp_path / "fixed_announcement_factor_diagnostic.json"
+        write_json_record(
+            path,
+            {
+                "run_id": "fixed-announcement",
+                "status": "completed",
+                "purpose": RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_PURPOSE,
+                "factor_catalog": list(RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES),
+                "quality_gate": {
+                    "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
+                },
+                "performance_forecast_events": {"max_forecast_age_days": 30},
+                "major_holder_events": {"max_major_holder_age_days": 3},
+                "data": {
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                    "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
+                },
+                "selection_or_promotion_allowed": False,
+            },
+        )
+        return {"status": "completed", "audit_path": str(path), "factor_count": 9}
+
+    monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
+    args = SimpleNamespace(
+        provider_uri="provider",
+        experiment_root=str(tmp_path),
+        batch_size=123,
+    )
+    result = RESEARCH.run_announcement_event_rebuild_diagnostic(args)
+    assert result["factor_count"] == 9
+    assert captured["factor"] == list(RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES)
+    assert captured["hold_days"] == 3
+    assert captured["topk"] == 3
+    assert captured["open_cost"] == pytest.approx(0.00012)
+    assert captured["close_cost"] == pytest.approx(0.00062)
+    assert captured["max_quality_age_days"] == 550
+    assert captured["max_forecast_age_days"] == 30
+    assert captured["max_major_holder_age_days"] == 3
+    assert captured["fundamentals"].endswith("quarterly_quality.parquet")
+    assert captured["diagnostic_purpose"] == RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_PURPOSE
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_announcement_event_rebuild_diagnostic(args)
+
+
 def test_minute_factor_direction_is_ranked_after_quality_and_listing_gates(tmp_path):
     symbols = tuple(f"SZ{index:06d}" for index in range(1, 52))
     _, features = make_minute_feature_chain(tmp_path, symbols=symbols)
