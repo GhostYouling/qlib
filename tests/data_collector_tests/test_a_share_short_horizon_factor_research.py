@@ -2474,6 +2474,59 @@ def test_sparse_announcement_capacity_counts_factor_ready_cohorts_without_prices
     assert capacity["source_admitted_for_return_rebuild"] is True
 
 
+def test_restricted_unlock_capacity_can_start_on_unlock_session_close():
+    full_calendar = pd.bdate_range("2018-11-01", "2019-01-31")
+    research_calendar = pd.bdate_range("2019-01-02", periods=10)
+    instruments = [f"SZ{index:06d}" for index in range(1, 7)]
+    intervals = {
+        instrument: [(full_calendar[0], full_calendar[-1])] for instrument in instruments
+    }
+    fundamentals = pd.DataFrame(
+        {
+            "instrument": instruments,
+            "report_date": pd.Timestamp("2018-09-30"),
+            "announcement_date": pd.Timestamp("2018-12-14"),
+            "roe": 10.0,
+            "net_profit": 100.0,
+            "revenue_yoy": 10.0,
+            "profit_yoy": 10.0,
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": instruments,
+            "event_date": pd.Timestamp("2019-01-02"),
+            "restricted_unlock_actual_shares": range(10, 70, 10),
+            "restricted_unlock_total_share_ratio": [0.01, 0.02, 0.03, 0.04, 0.05, 0.06],
+            "restricted_unlock_holder_count": 1,
+            "restricted_unlock_type": "首发原股东限售股份",
+        }
+    )
+    capacity = RESEARCH.sparse_announcement_source_capacity(
+        events,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        source_name="restricted_share_unlocks",
+        event_columns=RESEARCH.RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS,
+        factor_raw_columns={
+            RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME: "restricted_unlock_total_share_ratio"
+        },
+        max_age_days=3,
+        hold_days=3,
+        topk=3,
+        minimum_required_cohorts=1,
+        maximum_quality_age_days=550,
+        event_date_column="event_date",
+        strictly_after_event_date=False,
+    )
+    assert capacity["factor_capacity"][RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME][
+        "potential_complete_cohorts"
+    ] == 1
+    assert capacity["source_admitted_for_return_rebuild"] is True
+
+
 def test_institutional_survey_capacity_protocol_is_frozen(tmp_path):
     spec = RESEARCH.load_institutional_survey_capacity_preregistration()
     assert tuple(spec["factor_catalog"]) == RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
@@ -2680,6 +2733,79 @@ def test_analyst_rating_capacity_is_frozen_and_one_time(tmp_path, monkeypatch):
     assert audit["selection_or_promotion_allowed"] is False
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_analyst_rating_capacity_audit(args)
+
+
+def test_restricted_share_unlock_capacity_is_frozen_and_one_time(tmp_path, monkeypatch):
+    spec = RESEARCH.load_restricted_share_unlock_capacity_preregistration()
+    assert spec["factor_catalog"] == [RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME]
+    assert spec["snapshot_acceptance"]["rows"] == 15360
+    assert spec["snapshot_acceptance"]["source_rows"] == 16286
+    assert spec["run_contract"]["minimum_required_cohorts"] == 200
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_RESTRICTED_SHARE_UNLOCK_CAPACITY_SPEC.read_text(encoding="utf-8")
+    )
+    changed["run_contract"]["minimum_required_cohorts"] = 20
+    changed_path = tmp_path / "changed_restricted_share_unlock_capacity.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_restricted_share_unlock_capacity_preregistration(changed_path)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_restricted_share_unlock_capacity_sources",
+        lambda loaded: {"source_snapshots": {}, "restricted_share_unlock_acceptance": {}},
+    )
+    calendar = pd.bdate_range("2018-12-01", "2025-12-31")
+    research_calendar = pd.bdate_range("2019-01-01", "2025-12-31")
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_market_capacity_context",
+        lambda *args, **kwargs: (
+            calendar,
+            research_calendar,
+            {"SZ000001": [(calendar[0], calendar[-1])]},
+        ),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "load_restricted_share_unlock_events", lambda path: pd.DataFrame()
+    )
+    captured = {}
+
+    def fake_capacity(*args, **kwargs):
+        captured.update(kwargs)
+        return {
+            "source": "restricted_share_unlocks",
+            "source_event_rows": 6,
+            "candidate_event_rows": 6,
+            "quality_and_listing_eligible_event_rows": 6,
+            "factor_capacity": {
+                RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME: {
+                    "raw_column": "restricted_unlock_total_share_ratio",
+                    "potential_complete_cohorts": 201,
+                    "potential_complete_cohorts_by_year": {"2025": 201},
+                    "capacity_gate_passed": True,
+                }
+            },
+            "source_admitted_for_return_rebuild": True,
+        }
+
+    monkeypatch.setattr(RESEARCH, "sparse_announcement_source_capacity", fake_capacity)
+    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path))
+    result = RESEARCH.run_restricted_share_unlock_capacity_audit(args)
+    assert captured["source_name"] == "restricted_share_unlocks"
+    assert captured["event_date_column"] == "event_date"
+    assert captured["strictly_after_event_date"] is False
+    assert captured["max_age_days"] == 3
+    assert result["source_admitted_for_return_diagnostic"] is True
+    assert result["forward_return_fields_read"] is False
+    audit = json.loads(Path(result["audit_path"]).read_text(encoding="utf-8"))
+    assert audit["data"]["price_fields_loaded"] == []
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_restricted_share_unlock_capacity_audit(args)
 
 
 def test_institutional_survey_timing_diagnostic_is_capacity_bound_and_one_time(

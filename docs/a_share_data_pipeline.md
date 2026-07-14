@@ -373,7 +373,15 @@ python scripts/a_share_short_horizon_factor_research.py analyst-rating-diagnosti
 python scripts/a_share_short_horizon_factor_research.py sync-restricted-share-unlock-events
 ```
 
-同步完成仍不允许读收益；必须绑定快照、清单和季度质量指纹，另行冻结一次无价格的 200-cohort 容量门禁。容量不足即停止，不能改用解禁市值、前后收益、提前日程信号、股东身份、其他方向或更宽事件年龄补救。
+完整快照已于 2026-07-15 完成：84 个连续自然月、84 页和 16,286 条源记录均逐分片核对，保留 15,360 条目标 A 股解禁事件，排除 926 条非目标或合同字段缺失记录。事件覆盖 2019-01-02 至 2025-12-31，股票/解禁日重复键、合同字段缺失、负实际解禁股数和比例越界均为 0；比例为零 110 条，共 14,983 个不同值。各年保留 1,876、2,150、2,253、2,572、2,594、2,327、1,588 条，Parquet SHA-256 为 `da4e8ac847927dd13f79067e195025ba0933345e2352c24cddf3821e68d37a52`；清单明确记录 `price_fields_loaded=[]` 与 `forward_return_fields_read=false`。
+
+同步完成仍不允许读收益。无收益容量协议已绑定快照、清单、数据合同与季度质量指纹，冻结为 `docs/a_share_restricted_share_unlock_capacity_preregistration.json`。它固定 2019–2025、非重叠三日、Top‑3、每截面至少 6 名且 2 个值、550 日季度质量、上市满 20 会话和至少 200 个 cohort；命令只读取日历、上市区间、季度质量和事件字段：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py restricted-share-unlock-capacity-audit
+```
+
+容量审计只能成功写出一次，并必须保持 `price_fields_loaded=[]`。容量不足即停止，不能改用解禁市值、前后收益、提前日程信号、股东身份、其他方向或更宽事件年龄补救；容量通过也只允许在读取价格前另行冻结一次精确的低原始解禁比例诊断，不代表因子有效。
 
 下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
 

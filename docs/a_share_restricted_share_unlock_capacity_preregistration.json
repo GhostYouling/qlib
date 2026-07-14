@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_restricted_share_unlock_capacity_preregistration",
+  "status": "frozen_after_unlock_snapshot_before_price_or_forward_returns_observed",
+  "preregistered_at": "2026-07-14T19:04:15Z",
+  "purpose": "Determine whether realized restricted-share unlock pressure can support a valid three-session cross-sectional diagnostic before reading any price or forward-return field.",
+  "data_contract": {
+    "path": "docs/a_share_restricted_share_unlock_data_contract.json",
+    "sha256": "17303effa71cdefb6ce0b56dbc8f8746cdf5642afa54e061fa23484fe40d84c8",
+    "preregistered_at": "2026-07-14T18:57:38Z"
+  },
+  "source_snapshots": {
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "restricted_share_unlocks": {
+      "path": "data/raw/a_share/events/restricted_share_unlocks.parquet",
+      "sha256": "da4e8ac847927dd13f79067e195025ba0933345e2352c24cddf3821e68d37a52",
+      "manifest_path": "data/metadata/restricted_share_unlocks_manifest.json",
+      "manifest_sha256": "acbaf0e946e35856cb16d498d5303125b70140e105f89ca18d863d36e8bfdda1",
+      "maximum_age_days": 3,
+      "effective_date": "unlock date close, or first local trading-session close on or after a non-trading unlock date"
+    }
+  },
+  "snapshot_acceptance": {
+    "rows": 15360,
+    "verified_partitions": 84,
+    "pages": 84,
+    "source_rows": 16286,
+    "excluded_rows": 926,
+    "duplicate_event_keys": 0,
+    "missing_values": 0,
+    "negative_actual_share_rows": 0,
+    "out_of_range_ratio_rows": 0,
+    "zero_ratio_rows": 110,
+    "distinct_ratio_values": 14983,
+    "all_requested_years_covered": true,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "factor_catalog": [
+    "restricted_share_unlock_pressure"
+  ],
+  "factor_raw_columns": {
+    "restricted_share_unlock_pressure": "restricted_unlock_total_share_ratio"
+  },
+  "later_diagnostic_direction_if_capacity_passes": "lower_actual_unlock_share_ratio_is_better",
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_factor_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "event_availability": "unlock date close, or first local trading-session close on or after a non-trading unlock date",
+    "price_basis_required_for_later_return_diagnostic": "close_known_raw_pct_chg_chain_v1"
+  },
+  "capacity_policy": {
+    "open_close_or_forward_return_fields_allowed": false,
+    "count_only_quality_and_listing_seasoned_active_names": true,
+    "failed_factor_must_stop_without_return_diagnostic": true,
+    "one_completed_capacity_audit_only": true,
+    "no_direction_formula_age_date_topk_or_minimum_cohort_override": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
