@@ -100,6 +100,7 @@ SIGNED_EFFICIENCY_RATIO_10_EXPRESSION = (
 RETURN_TURNOVER_CORRELATION_10_EXPRESSION = (
     "Corr($close/Ref($close, 1) - 1, $turnover, 10)"
 )
+MAX_RETURN_20_EXPRESSION = "Max($close/Ref($close, 1) - 1, 20)"
 COMPRESSION_CONSENSUS_MIN_COMPONENTS = (
     "amplitude_low",
     "amplitude_low_1",
@@ -1184,6 +1185,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "signed_efficiency_ratio_10",
     "return_turnover_correlation_10",
     "compression_consensus_min",
+    "max_return_20_low",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -4367,6 +4369,11 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
         # lower on negative-return sessions.  This interaction is distinct
         # from the turnover-level and turnover-surge factors already tested.
         "return_turnover_correlation_10": RETURN_TURNOVER_CORRELATION_10_EXPRESSION,
+        # Maximum close-to-close return over the last twenty sessions.  The
+        # diagnostic direction is added after the cross-sectional rank so a
+        # high score means low MAX, matching the predeclared lottery-demand
+        # hypothesis while keeping the raw measurement auditable.
+        "max_return_20": MAX_RETURN_20_EXPRESSION,
         # Five-day close-location value weighted by each session's volume.
         # The sign is positive when volume repeatedly trades on bars that
         # finish nearer their high than their low.  This is a close-known
@@ -4468,6 +4475,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "close_above_vwap_1",
         "signed_efficiency_ratio_10",
         "return_turnover_correlation_10",
+        "max_return_20",
         "signed_volume_pressure_5",
         "roe",
         "revenue_yoy",
@@ -4605,6 +4613,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["return_turnover_correlation_10"] = result["return_turnover_correlation_10"].where(
         np.isfinite(result["return_turnover_correlation_10"])
     )
+    result["max_return_20"] = result["max_return_20"].where(np.isfinite(result["max_return_20"]))
     # Event rows are forward-filled only so each row retains the event context
     # for auditing.  Once the explicitly declared event window expires, those
     # raw values must not participate in a cross-sectional rank; otherwise a
@@ -4768,6 +4777,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["close_above_vwap_1"] = result["rank_close_above_vwap_1"]
     result["signed_efficiency_ratio_10"] = result["rank_signed_efficiency_ratio_10"]
     result["return_turnover_correlation_10"] = result["rank_return_turnover_correlation_10"]
+    result["max_return_20_low"] = 1.0 - result["rank_max_return_20"]
     result["signed_volume_pressure_5"] = result["rank_signed_volume_pressure_5"]
     return result
 
