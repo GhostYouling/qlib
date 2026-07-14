@@ -1042,6 +1042,119 @@ def test_institutional_survey_timing_sync_writes_separate_no_price_snapshot(tmp_
     assert manifest.exists()
 
 
+def test_analyst_rating_contract_is_fingerprint_frozen(tmp_path):
+    contract = RESEARCH.load_analyst_rating_data_contract()
+    assert contract["factor"]["name"] == RESEARCH.ANALYST_RATING_FACTOR_NAME
+    assert contract["factor"]["direction"] == "higher_upgrade_share_is_better"
+    assert contract["source"]["requested_fields"] == [
+        "stockCode",
+        "publishDate",
+        "infoCode",
+        "ratingChange",
+    ]
+    assert contract["forward_return_fields_read"] is False
+
+    changed = json.loads(RESEARCH.DEFAULT_ANALYST_RATING_DATA_CONTRACT.read_text(encoding="utf-8"))
+    changed["factor"]["direction"] = "lower_upgrade_share_is_better"
+    changed_path = tmp_path / "changed_analyst_rating_contract.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_analyst_rating_data_contract(changed_path)
+
+
+def test_analyst_rating_normalization_uses_only_recognized_adjustments():
+    rows = [
+        {"stockCode": "000001", "publishDate": "2024-04-30", "infoCode": "A", "ratingChange": 0},
+        {"stockCode": "000001", "publishDate": "2024-04-30", "infoCode": "B", "ratingChange": 3},
+        {"stockCode": "000001", "publishDate": "2024-04-30", "infoCode": "C", "ratingChange": 4},
+        {"stockCode": "600000", "publishDate": "2024-04-30", "infoCode": "D", "ratingChange": 1},
+        {"stockCode": "920106", "publishDate": "2024-04-30", "infoCode": "E", "ratingChange": 0},
+    ]
+    normalized, quality = RESEARCH.normalize_analyst_rating_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.ANALYST_RATING_EVENT_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600000", "SZ000001"]
+    sh = normalized.loc[normalized["instrument"] == "SH600000"].iloc[0]
+    sz = normalized.loc[normalized["instrument"] == "SZ000001"].iloc[0]
+    assert sh["analyst_rating_upgrade_share"] == pytest.approx(0.0)
+    assert sh["analyst_valid_rating_report_count"] == pytest.approx(1.0)
+    assert sz["analyst_rating_upgrade_share"] == pytest.approx(0.5)
+    assert sz["analyst_valid_rating_report_count"] == pytest.approx(2.0)
+    assert quality["missing_or_non_a_share_rows_excluded"] == 1
+    assert quality["unclassified_or_missing_rating_rows_excluded"] == 1
+    assert quality["upgrade_rows"] == 1
+
+
+def test_analyst_rating_partition_rejects_incomplete_pagination(monkeypatch):
+    def fake_request(session, start_date, end_date, page_number):
+        rows = [
+            {
+                "stockCode": "000001",
+                "publishDate": start_date,
+                "infoCode": f"A{page_number}",
+                "ratingChange": 0,
+            }
+        ] if page_number == 1 else []
+        return {"TotalPage": 2, "hits": 3, "data": rows}
+
+    monkeypatch.setattr(RESEARCH, "_eastmoney_analyst_rating_request", fake_request)
+    with pytest.raises(RuntimeError, match="row-count mismatch"):
+        RESEARCH.fetch_analyst_rating_partition_details(
+            object(),
+            "2024-01-01",
+            "2024-01-31",
+            maximum_pages=80,
+            page_pause_seconds=0.0,
+        )
+
+
+def test_analyst_rating_sync_writes_only_frozen_no_price_snapshot(tmp_path, monkeypatch):
+    details = pd.DataFrame(
+        {
+            "info_code": ["A", "B", "C"],
+            "instrument": ["SZ000001", "SZ000001", "SH600000"],
+            "announcement_date": pd.to_datetime(["2024-01-10"] * 3),
+            "rating_change": [0, 3, 1],
+        }
+    )
+    contract = json.loads(json.dumps(RESEARCH.load_analyst_rating_data_contract()))
+    contract["source"]["publication_start"] = "2024-01-01"
+    contract["source"]["publication_end"] = "2024-12-31"
+    monkeypatch.setattr(RESEARCH, "load_analyst_rating_data_contract", lambda: contract)
+    monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
+    monkeypatch.setattr(
+        RESEARCH,
+        "institutional_survey_month_ranges",
+        lambda start_year, end_year: [("2024-01-01", "2024-01-31")],
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "fetch_analyst_rating_partition_details",
+        lambda *args, **kwargs: (
+            [details],
+            [
+                {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "pages": 1,
+                    "advertised_source_rows": 3,
+                    "source_rows": 3,
+                    "count_verified": True,
+                }
+            ],
+        ),
+    )
+    output = tmp_path / "analyst_rating_changes.parquet"
+    manifest = tmp_path / "analyst_rating_changes_manifest.json"
+    result = RESEARCH.sync_analyst_rating_events(output, manifest)
+    assert result["status"] == "completed"
+    assert result["rows_written"] == 2
+    assert result["price_fields_loaded"] == []
+    assert result["forward_return_fields_read"] is False
+    stored = pd.read_parquet(output)
+    assert stored.columns.tolist() == list(RESEARCH.ANALYST_RATING_EVENT_COLUMNS)
+    assert manifest.exists()
+
+
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {

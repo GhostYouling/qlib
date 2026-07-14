@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "kind": "a_share_analyst_rating_data_contract",
+  "status": "frozen_before_full_analyst_rating_snapshot_or_price_returns_observed",
+  "preregistered_at": "2026-07-14T18:26:40Z",
+  "purpose": "Create and capacity-screen one dated analyst-rating-upgrade factor without reading any price or forward-return field.",
+  "source": {
+    "provider": "Eastmoney public research-report API",
+    "endpoint": "https://reportapi.eastmoney.com/report/list",
+    "query_type": 0,
+    "requested_fields": [
+      "stockCode",
+      "publishDate",
+      "infoCode",
+      "ratingChange"
+    ],
+    "service_metadata_fields_tolerated_but_not_stored": [
+      "count",
+      "orgType"
+    ],
+    "publication_start": "2019-01-01",
+    "publication_end": "2025-12-31",
+    "rating_change_dictionary": {
+      "0": "upgrade",
+      "1": "downgrade",
+      "2": "initial_coverage",
+      "3": "maintained",
+      "4": "unclassified"
+    },
+    "titles_authors_broker_identity_eps_pe_target_price_or_market_fields_requested_or_stored": false
+  },
+  "snapshot_contract": {
+    "output": "data/raw/a_share/events/analyst_rating_changes.parquet",
+    "manifest": "data/metadata/analyst_rating_changes_manifest.json",
+    "columns": [
+      "instrument",
+      "announcement_date",
+      "analyst_rating_upgrade_share",
+      "analyst_valid_rating_report_count"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date"
+    ],
+    "source_deduplication_key": "infoCode",
+    "valid_rating_change_codes": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "unclassified_or_missing_rating_change_policy": "exclude from both numerator and denominator and count in the manifest",
+    "upgrade_share_formula": "count(ratingChange == 0) / count(ratingChange in {0,1,2,3}) within issuer and publishDate",
+    "zero_policy": "zero is valid only for an observed issuer/date with at least one recognized report and no upgrade-coded report; absent issuer/date events remain missing",
+    "clipping_winsorization_or_imputation": null,
+    "partition_policy": {
+      "initial_partition": "calendar_month",
+      "page_size": 100,
+      "maximum_pages_per_partition": 80,
+      "oversized_partition_policy": "bisect_calendar_dates_until_within_page_ceiling",
+      "advertised_source_count_must_equal_rows_fetched": true,
+      "partial_snapshot_written_on_failure": false
+    }
+  },
+  "factor": {
+    "name": "analyst_rating_upgrade_share",
+    "raw_column": "analyst_rating_upgrade_share",
+    "direction": "higher_upgrade_share_is_better",
+    "score_formula_if_capacity_passes": "cross_sectional_percentile_rank(analyst_rating_upgrade_share)",
+    "event_availability": "strictly next local trading day after publishDate because no reliable intraday publication timestamp is available",
+    "maximum_event_age_days": 3,
+    "mechanism": "A larger share of same-day analyst reports marked as rating upgrades may represent a newly strengthened public consensus that is incorporated over the following three sessions."
+  },
+  "acceptance": {
+    "all_partitions_count_verified": true,
+    "continuous_publication_partitions_required": true,
+    "duplicate_source_info_codes_allowed": 0,
+    "duplicate_event_keys_allowed": 0,
+    "missing_instrument_announcement_or_factor_allowed": 0,
+    "upgrade_share_range": [
+      0.0,
+      1.0
+    ],
+    "positive_valid_report_count_required": true,
+    "every_requested_publication_year_required": true,
+    "source_and_manifest_sha256_required": true
+  },
+  "capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "one_completed_capacity_audit_only": true,
+    "failed_capacity_must_stop_without_return_diagnostic": true,
+    "selection_or_promotion_allowed": false
+  },
+  "sample_field_audit_before_freeze": {
+    "price_or_forward_return_fields_read": false,
+    "periods": [
+      "2019-Q1",
+      "2024-Q1",
+      "2025-Q1"
+    ],
+    "source_rows": [
+      2302,
+      3089,
+      2227
+    ],
+    "recognized_rating_rows": [
+      2110,
+      2816,
+      1972
+    ],
+    "upgrade_rows": [
+      62,
+      23,
+      28
+    ],
+    "dates_with_at_least_six_names_and_two_values": [
+      38,
+      16,
+      20
+    ],
+    "eps_revision_candidate_rejected_without_returns": "The same API had only 6/1049/12376 usable current-year EPS values and 3/0/852 next-year values in broader endpoint samples ending in 2019-Q1/2024-Q1/2025-Q1, so a stable 2019-2025 multi-horizon revision definition was not available."
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

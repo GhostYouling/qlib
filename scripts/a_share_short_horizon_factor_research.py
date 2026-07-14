@@ -65,6 +65,12 @@ DEFAULT_INSTITUTIONAL_SURVEY_TIMING_EVENTS = (
 DEFAULT_INSTITUTIONAL_SURVEY_TIMING_EVENT_MANIFEST = (
     DATA_ROOT / "metadata" / "institutional_survey_timing_manifest.json"
 )
+DEFAULT_ANALYST_RATING_EVENTS = (
+    DATA_ROOT / "raw" / "a_share" / "events" / "analyst_rating_changes.parquet"
+)
+DEFAULT_ANALYST_RATING_EVENT_MANIFEST = (
+    DATA_ROOT / "metadata" / "analyst_rating_changes_manifest.json"
+)
 DEFAULT_REPURCHASE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "repurchase_plans.parquet"
 DEFAULT_REPURCHASE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "repurchase_plans_manifest.json"
 DEFAULT_HOLDER_COUNT_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "holder_count_changes.parquet"
@@ -107,6 +113,9 @@ DEFAULT_INSTITUTIONAL_SURVEY_TIMING_CAPACITY_SPEC = (
 )
 DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC = (
     REPO_ROOT / "docs" / "a_share_institutional_survey_timing_diagnostic_preregistration.json"
+)
+DEFAULT_ANALYST_RATING_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_analyst_rating_data_contract.json"
 )
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
@@ -194,6 +203,7 @@ COMPRESSION_CONSENSUS_MIN_COMPONENTS = (
 )
 
 EASTMONEY_DATACENTER_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get"
+EASTMONEY_RESEARCH_REPORT_URL = "https://reportapi.eastmoney.com/report/list"
 EASTMONEY_REPORT = "RPT_LICO_FN_CPD"
 EASTMONEY_PERFORMANCE_FORECAST_REPORT = "RPT_PUBLIC_OP_NEWPREDICT"
 EASTMONEY_BILLBOARD_REPORT = "RPT_DAILYBILLBOARD_DETAILSNEW"
@@ -314,6 +324,13 @@ INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS = (
     "institutional_survey_disclosure_lag_days",
 )
 INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME = "institutional_survey_prompt_disclosure"
+ANALYST_RATING_EVENT_COLUMNS = (
+    "instrument",
+    "announcement_date",
+    "analyst_rating_upgrade_share",
+    "analyst_valid_rating_report_count",
+)
+ANALYST_RATING_FACTOR_NAME = "analyst_rating_upgrade_share"
 INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS = (
     "institutional_survey_org_count",
     "institutional_survey_event_count",
@@ -402,6 +419,9 @@ INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE = (
 INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT_SHA256 = (
     "9ce1b08f2ed50f9683e4953de8f6666d232448c3abfdd42d71ad77df3e900fb4"
 )
+ANALYST_RATING_DATA_CONTRACT_SHA256 = (
+    "84a29dfa0df529514291d37e26e4d3494720b3541a6cc36858d92074c8c2f010"
+)
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
     "development_only_preregistered_pledge_event_rebuild_research_not_investment_advice"
@@ -413,6 +433,8 @@ INTRADAY_DEMAND_PERSISTENCE_PURPOSE = (
 MARGIN_FINANCING_TOP_N = 100
 INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION = 40
 INSTITUTIONAL_SURVEY_PAGE_PAUSE_SECONDS = 0.25
+ANALYST_RATING_MAX_PAGES_PER_PARTITION = 80
+ANALYST_RATING_PAGE_PAUSE_SECONDS = 0.05
 # This direction is deliberately not part of the development diagnostic
 # catalog.  It was formed after reading the completed 2019--2025 diagnostic,
 # so it may only be evaluated in a separately recorded post-development
@@ -2199,6 +2221,44 @@ def load_institutional_survey_timing_data_contract(
     return contract
 
 
+def load_analyst_rating_data_contract(
+    path: Path = DEFAULT_ANALYST_RATING_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-snapshot analyst-rating contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != ANALYST_RATING_DATA_CONTRACT_SHA256:
+        raise ValueError("analyst-rating data contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_analyst_rating_data_contract")
+    source = contract.get("source") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    factor = contract.get("factor") or {}
+    capacity = contract.get("capacity_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_full_analyst_rating_snapshot_or_price_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-14T18:26:40Z"
+        or source.get("endpoint") != EASTMONEY_RESEARCH_REPORT_URL
+        or source.get("requested_fields")
+        != ["stockCode", "publishDate", "infoCode", "ratingChange"]
+        or tuple(snapshot.get("columns") or []) != ANALYST_RATING_EVENT_COLUMNS
+        or snapshot.get("valid_rating_change_codes") != [0, 1, 2, 3]
+        or factor.get("name") != ANALYST_RATING_FACTOR_NAME
+        or factor.get("raw_column") != ANALYST_RATING_FACTOR_NAME
+        or factor.get("direction") != "higher_upgrade_share_is_better"
+        or factor.get("maximum_event_age_days") != 3
+        or capacity.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("analyst-rating data contract does not match the frozen protocol")
+    return contract
+
+
 def load_sparse_announcement_capacity_preregistration(
     path: Path = DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC,
 ) -> dict[str, Any]:
@@ -3975,6 +4035,43 @@ def _eastmoney_institutional_survey_request(
     )
 
 
+def _eastmoney_analyst_rating_request(
+    session: requests.Session, start_date: str, end_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one page of dated analyst-rating adjustments without report text or prices."""
+
+    params = {
+        "industryCode": "*",
+        "pageSize": 100,
+        "industry": "*",
+        "rating": "*",
+        "ratingChange": "*",
+        "beginTime": start_date,
+        "endTime": end_date,
+        "pageNo": page_number,
+        "fields": "stockCode,publishDate,infoCode,ratingChange",
+        "qType": 0,
+        "orgCode": "",
+        "code": "*",
+        "rcode": "",
+    }
+    errors: list[str] = []
+    for attempt in range(5):
+        try:
+            response = session.get(EASTMONEY_RESEARCH_REPORT_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("data"), list):
+                raise ValueError("Eastmoney research-report response does not contain a data list")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(
+        f"cannot fetch analyst ratings {start_date} to {end_date} page {page_number}: {errors[-1]}"
+    )
+
+
 def _eastmoney_repurchase_request(session: requests.Session, page_number: int) -> dict[str, Any]:
     """Fetch one historical repurchase-plan page without post-plan outcomes.
 
@@ -4639,6 +4736,103 @@ def aggregate_institutional_survey_timing_details(
         },
     }
     return result, stats
+
+
+def _analyst_rating_detail_frame(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Normalize only the four preregistered analyst-rating source fields."""
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(
+            columns=["info_code", "instrument", "announcement_date", "rating_change"]
+        )
+    frame = pd.DataFrame(
+        {
+            "info_code": raw.get("infoCode", pd.Series(index=raw.index, dtype="object")),
+            "instrument": raw.get(
+                "stockCode", pd.Series(index=raw.index, dtype="object")
+            ).map(qlib_symbol),
+            "announcement_date": pd.to_datetime(
+                raw.get("publishDate", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+            ).dt.normalize(),
+            "rating_change": pd.to_numeric(
+                raw.get("ratingChange", pd.Series(index=raw.index, dtype="float64")),
+                errors="coerce",
+            ),
+        }
+    )
+    frame["info_code"] = frame["info_code"].astype("string").str.strip()
+    frame.loc[frame["info_code"].eq(""), "info_code"] = pd.NA
+    return frame
+
+
+def aggregate_analyst_rating_details(
+    details: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Aggregate recognized rating adjustments to one issuer/publication-date event."""
+
+    required = {"info_code", "instrument", "announcement_date", "rating_change"}
+    if missing := sorted(required - set(details.columns)):
+        raise ValueError("analyst-rating detail frame is missing columns: " + ", ".join(missing))
+    if details.empty:
+        return pd.DataFrame(columns=ANALYST_RATING_EVENT_COLUMNS), {
+            "input_source_rows": 0,
+            "missing_or_non_a_share_rows_excluded": 0,
+            "unclassified_or_missing_rating_rows_excluded": 0,
+            "recognized_rating_rows": 0,
+            "upgrade_rows": 0,
+            "rows_written": 0,
+            "distinct_upgrade_share_values": 0,
+        }
+    source = details.loc[:, ["info_code", "instrument", "announcement_date", "rating_change"]].copy()
+    source["announcement_date"] = pd.to_datetime(
+        source["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    source["rating_change"] = pd.to_numeric(source["rating_change"], errors="coerce")
+    invalid_key = source[["info_code", "instrument", "announcement_date"]].isna().any(axis=1)
+    invalid_key_count = int(invalid_key.sum())
+    source = source.loc[~invalid_key].copy()
+    if source["info_code"].duplicated().any():
+        duplicates = int(source["info_code"].duplicated(keep=False).sum())
+        raise ValueError(f"analyst-rating source contains {duplicates} duplicate infoCode rows")
+    recognized = source["rating_change"].isin([0, 1, 2, 3])
+    excluded_rating_count = int((~recognized).sum())
+    valid = source.loc[recognized].copy()
+    valid["is_upgrade"] = valid["rating_change"].eq(0).astype(float)
+    result = (
+        valid.groupby(["instrument", "announcement_date"], as_index=False, sort=True)
+        .agg(
+            analyst_rating_upgrade_share=("is_upgrade", "mean"),
+            analyst_valid_rating_report_count=("is_upgrade", "size"),
+        )
+        .loc[:, list(ANALYST_RATING_EVENT_COLUMNS)]
+        .sort_values(["instrument", "announcement_date"], kind="stable")
+        .reset_index(drop=True)
+    )
+    result["analyst_rating_upgrade_share"] = pd.to_numeric(
+        result["analyst_rating_upgrade_share"], errors="coerce"
+    ).astype(float)
+    result["analyst_valid_rating_report_count"] = pd.to_numeric(
+        result["analyst_valid_rating_report_count"], errors="coerce"
+    ).astype(float)
+    stats = {
+        "input_source_rows": int(len(details)),
+        "missing_or_non_a_share_rows_excluded": invalid_key_count,
+        "unclassified_or_missing_rating_rows_excluded": excluded_rating_count,
+        "recognized_rating_rows": int(len(valid)),
+        "upgrade_rows": int(valid["is_upgrade"].sum()),
+        "rows_written": int(len(result)),
+        "distinct_upgrade_share_values": int(result["analyst_rating_upgrade_share"].nunique()),
+    }
+    return result, stats
+
+
+def normalize_analyst_rating_rows(
+    rows: Iterable[dict[str, Any]],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Normalize and aggregate public analyst-rating records without report text or prices."""
+
+    return aggregate_analyst_rating_details(_analyst_rating_detail_frame(rows))
 
 
 def normalize_repurchase_plan_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
@@ -5326,6 +5520,202 @@ def fetch_institutional_survey_partition_details(
             "count_verified": True,
         }
     ]
+
+
+def fetch_analyst_rating_partition_details(
+    session: requests.Session,
+    start_date: str,
+    end_date: str,
+    *,
+    maximum_pages: int = ANALYST_RATING_MAX_PAGES_PER_PARTITION,
+    page_pause_seconds: float = ANALYST_RATING_PAGE_PAUSE_SECONDS,
+) -> tuple[list[pd.DataFrame], list[dict[str, Any]]]:
+    """Fetch and count-verify one analyst-report date range, bisecting if needed."""
+
+    start = pd.Timestamp(start_date).normalize()
+    end = pd.Timestamp(end_date).normalize()
+    if pd.isna(start) or pd.isna(end) or end < start:
+        raise ValueError("analyst-rating partition must use a valid inclusive date range")
+    if maximum_pages < 1:
+        raise ValueError("analyst-rating maximum_pages must be positive")
+    if page_pause_seconds < 0:
+        raise ValueError("analyst-rating page pause must be non-negative")
+    start_text = start.date().isoformat()
+    end_text = end.date().isoformat()
+    first = _eastmoney_analyst_rating_request(session, start_text, end_text, 1)
+    pages = int(first.get("TotalPage") or 0)
+    advertised_count = int(first.get("hits") or 0)
+    if pages > maximum_pages:
+        if start == end:
+            raise RuntimeError(
+                "analyst-rating single-date partition exceeds the safe page ceiling: "
+                f"{start_text}, pages={pages}, ceiling={maximum_pages}"
+            )
+        midpoint = start + (end - start) // 2
+        left_frames, left_records = fetch_analyst_rating_partition_details(
+            session,
+            start_text,
+            midpoint.date().isoformat(),
+            maximum_pages=maximum_pages,
+            page_pause_seconds=page_pause_seconds,
+        )
+        right_frames, right_records = fetch_analyst_rating_partition_details(
+            session,
+            (midpoint + pd.Timedelta(days=1)).date().isoformat(),
+            end_text,
+            maximum_pages=maximum_pages,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return left_frames + right_frames, left_records + right_records
+    if pages < 1:
+        if advertised_count != 0:
+            raise RuntimeError(
+                f"analyst-rating partition reported rows without pages: {start_text} to {end_text}"
+            )
+        return [], [
+            {
+                "start": start_text,
+                "end": end_text,
+                "pages": 0,
+                "advertised_source_rows": 0,
+                "source_rows": 0,
+                "count_verified": True,
+            }
+        ]
+
+    frames: list[pd.DataFrame] = []
+    source_rows = 0
+    for page_number in range(1, pages + 1):
+        payload = first if page_number == 1 else _eastmoney_analyst_rating_request(
+            session, start_text, end_text, page_number
+        )
+        rows = payload.get("data") or []
+        source_rows += len(rows)
+        normalized = _analyst_rating_detail_frame(rows)
+        if not normalized.empty:
+            frames.append(normalized)
+        if page_pause_seconds and page_number < pages:
+            time.sleep(page_pause_seconds)
+    if source_rows != advertised_count:
+        raise RuntimeError(
+            f"analyst-rating partition row-count mismatch: {start_text} to {end_text}, "
+            f"advertised={advertised_count}, fetched={source_rows}"
+        )
+    return frames, [
+        {
+            "start": start_text,
+            "end": end_text,
+            "pages": pages,
+            "advertised_source_rows": advertised_count,
+            "source_rows": source_rows,
+            "count_verified": True,
+        }
+    ]
+
+
+def sync_analyst_rating_events(
+    output: Path = DEFAULT_ANALYST_RATING_EVENTS,
+    manifest: Path = DEFAULT_ANALYST_RATING_EVENT_MANIFEST,
+) -> dict[str, Any]:
+    """Build the frozen 2019--2025 analyst-rating-upgrade snapshot without prices."""
+
+    contract = load_analyst_rating_data_contract()
+    source_contract = contract["source"]
+    start_year = pd.Timestamp(source_contract["publication_start"]).year
+    end_year = pd.Timestamp(source_contract["publication_end"]).year
+    session = _eastmoney_session()
+    detail_frames: list[pd.DataFrame] = []
+    pages_by_year: dict[str, int] = {}
+    source_rows_by_year: dict[str, int] = {}
+    partition_records: list[dict[str, Any]] = []
+    for month_start, month_end in institutional_survey_month_ranges(start_year, end_year):
+        frames, records = fetch_analyst_rating_partition_details(
+            session,
+            month_start,
+            month_end,
+            maximum_pages=ANALYST_RATING_MAX_PAGES_PER_PARTITION,
+            page_pause_seconds=ANALYST_RATING_PAGE_PAUSE_SECONDS,
+        )
+        detail_frames.extend(frames)
+        partition_records.extend(records)
+        month_pages = sum(int(record["pages"]) for record in records)
+        month_rows = sum(int(record["source_rows"]) for record in records)
+        year = month_start[:4]
+        pages_by_year[year] = pages_by_year.get(year, 0) + month_pages
+        source_rows_by_year[year] = source_rows_by_year.get(year, 0) + month_rows
+        print(
+            f"analyst ratings {month_start[:7]}: {len(records)} verified partitions, "
+            f"{month_pages} pages, {month_rows} source rows"
+        )
+    details = (
+        pd.concat(detail_frames, ignore_index=True)
+        if detail_frames
+        else pd.DataFrame(
+            columns=["info_code", "instrument", "announcement_date", "rating_change"]
+        )
+    )
+    events, quality = aggregate_analyst_rating_details(details)
+    if events.empty:
+        raise RuntimeError("analyst-rating sync produced no usable A-share rating events")
+    requested_years = list(range(start_year, end_year + 1))
+    observed_years = sorted(pd.to_datetime(events["announcement_date"]).dt.year.unique().tolist())
+    if observed_years != requested_years:
+        raise RuntimeError("analyst-rating snapshot does not cover every requested year")
+    if tuple(events.columns) != ANALYST_RATING_EVENT_COLUMNS:
+        raise RuntimeError("analyst-rating snapshot columns do not match the frozen contract")
+    if events.duplicated(["instrument", "announcement_date"]).any():
+        raise RuntimeError("analyst-rating snapshot contains duplicate event keys")
+    if events[list(ANALYST_RATING_EVENT_COLUMNS)].isna().any().any():
+        raise RuntimeError("analyst-rating snapshot contains missing contracted values")
+    if not events["analyst_rating_upgrade_share"].between(0.0, 1.0).all():
+        raise RuntimeError("analyst-rating upgrade share falls outside [0, 1]")
+    if not events["analyst_valid_rating_report_count"].gt(0).all():
+        raise RuntimeError("analyst-rating event has a non-positive valid-report count")
+    _atomic_write_parquet(output, events)
+    result = {
+        "status": "completed",
+        "data_contract": {
+            "path": str(DEFAULT_ANALYST_RATING_DATA_CONTRACT.resolve()),
+            "sha256": file_sha256(DEFAULT_ANALYST_RATING_DATA_CONTRACT),
+            "preregistered_at": contract["preregistered_at"],
+            "forward_return_fields_read": False,
+        },
+        "source": {
+            "provider": source_contract["provider"],
+            "endpoint": EASTMONEY_RESEARCH_REPORT_URL,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "requested_fields": source_contract["requested_fields"],
+            "report_titles_authors_broker_identity_eps_pe_target_price_or_market_fields_requested_or_stored": False,
+        },
+        "event_frequency": "dated_analyst_rating_adjustment",
+        "years": requested_years,
+        "partition_policy": contract["snapshot_contract"]["partition_policy"],
+        "verified_partitions": partition_records,
+        "pages_by_year": pages_by_year,
+        "source_rows_by_year": source_rows_by_year,
+        "normalization_quality": quality,
+        "rows_by_announcement_year": {
+            str(year): int(len(group))
+            for year, group in events.groupby(
+                pd.to_datetime(events["announcement_date"]).dt.year, sort=True
+            )
+        },
+        "rows_written": int(len(events)),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "price_fields_loaded": [],
+        "open_close_or_forward_return_fields_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "The public research-report index is queried as it exists today and may revise or omit historical records.",
+            "Publication dates have no reliable intraday timestamp, so events become usable only on the next local trading session.",
+            "The provider's rating-change code is accepted as published; report text, authors, broker identity, forecasts, prices, and target prices are not requested or stored.",
+            "This is a research event snapshot, not an exchange-grade point-in-time analyst-report archive.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
 
 
 def sync_institutional_survey_events(
@@ -17032,6 +17422,11 @@ def parse_args() -> argparse.Namespace:
         help="build the frozen 2019-2025 institutional-survey disclosure-lag snapshot",
     )
 
+    subparsers.add_parser(
+        "sync-analyst-rating-events",
+        help="build the frozen 2019-2025 analyst-rating-upgrade snapshot",
+    )
+
     sync_repurchase = subparsers.add_parser(
         "sync-repurchase-plan-events",
         help="download dated public initial repurchase plans for short-horizon event research",
@@ -17890,6 +18285,8 @@ def main() -> int:
         )
     elif args.command == "sync-institutional-survey-timing-events":
         report = sync_institutional_survey_timing_events()
+    elif args.command == "sync-analyst-rating-events":
+        report = sync_analyst_rating_events()
     elif args.command == "sync-repurchase-plan-events":
         report = sync_repurchase_plan_events(Path(args.output), Path(args.manifest))
     elif args.command == "sync-holder-count-events":
