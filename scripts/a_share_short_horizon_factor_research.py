@@ -1134,6 +1134,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "revenue_yoy_acceleration",
     "profit_yoy_acceleration",
     "free_float_cap_small",
+    "up_day_consistency_5",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -4255,6 +4256,10 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
         "momentum_2": "$close/Ref($close, 2) - 1",
         "momentum_3": "$close/Ref($close, 3) - 1",
         "momentum_5": "$close/Ref($close, 5) - 1",
+        # The fraction of positive close-to-close sessions is a path-quality
+        # measure, not a magnitude measure like five-day momentum.  It is
+        # formed at the signal close and is available before next-open entry.
+        "up_day_ratio_5": "Mean($close>Ref($close, 1), 5)",
         "momentum_10": "$close/Ref($close, 10) - 1",
         "momentum_20": "$close/Ref($close, 20) - 1",
         "momentum_60": "$close/Ref($close, 60) - 1",
@@ -4348,6 +4353,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "momentum_2",
         "momentum_3",
         "momentum_5",
+        "up_day_ratio_5",
         "momentum_10",
         "momentum_20",
         "momentum_60",
@@ -4520,6 +4526,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["reversal_2"] = 1.0 - result["rank_momentum_2"]
     result["reversal_3"] = 1.0 - result["rank_momentum_3"]
     result["reversal_5"] = 1.0 - result["rank_momentum_5"]
+    result["up_day_consistency_5"] = result["rank_up_day_ratio_5"]
     result["reversal_10"] = 1.0 - result["rank_momentum_10"]
     result["volume_dry_up"] = 1.0 - result["rank_volume_surge"]
     result["volatility_target_5"] = 1.0 - (result["rank_volatility_5"] - 0.50).abs()
