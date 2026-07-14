@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "kind": "a_share_intraday_demand_persistence_preregistration",
+  "status": "frozen_before_intraday_demand_factor_returns_observed",
+  "preregistered_at": "2026-07-14T16:46:16Z",
+  "purpose": "Test one previously unmeasured daily-OHLC mechanism: whether five-session cumulative open-to-close demand persists into the next three trading sessions.",
+  "hypothesis": "Among quality-eligible, listing-seasoned A-shares, a higher sum of the last five same-session open-to-close returns indicates repeated intraday demand that is associated with a higher return from the next local session open to the third local session close.",
+  "factor": {
+    "name": "intraday_return_sum_5",
+    "formula": "(Sum($close/$open - 1, 5)) + 0*Ref($close, 4)",
+    "diagnostic_direction": "higher",
+    "required_complete_sessions": 5,
+    "required_prior_close_sessions": 4,
+    "distinct_from_existing_fields": [
+      "intraday_strength measures only the current session",
+      "close-to-close momentum mixes overnight gaps with intraday returns",
+      "minute late-session factors remain unobserved and require licensed data"
+    ]
+  },
+  "source_snapshots": {
+    "price_basis_manifest": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "annual_quality": {
+      "path": "data/raw/a_share/fundamentals/annual_quality.parquet",
+      "sha256": "aa053ee050788ec8a3250c7fe7b4e11bf4e4ceacc8bb4002e6043c6405158714",
+      "manifest_path": "data/metadata/annual_quality_manifest.json",
+      "manifest_sha256": "6447720d7199fe8e979bb667c13e5f5ba40f7669025acc9af5cc75696e622731"
+    }
+  },
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "stability_minimum_calendar_years": 5,
+    "stability_minimum_cohorts": 200
+  },
+  "research_policy": {
+    "rolling_window_semantics_must_pass_before_forward_returns": true,
+    "single_factor_only": true,
+    "one_completed_diagnostic_only": true,
+    "no_direction_formula_window_cost_quality_source_or_factor_subset_override": true,
+    "no_reverse_direction_or_alternative_window_after_results": true,
+    "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": true,
+    "passing_both_gates_only_allows_newly_dated_prospective_paper_observation": true,
+    "historical_period_has_been_used_by_other_hypotheses_and_is_not_a_pristine_holdout": true,
+    "selection_aggregation_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

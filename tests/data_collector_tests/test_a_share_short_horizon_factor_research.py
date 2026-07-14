@@ -1078,6 +1078,7 @@ def test_rank_factor_frame_excludes_expired_event_values():
         "near_high_10",
         "near_high_20",
         "intraday_strength",
+        "intraday_return_sum_5",
         "close_to_high",
         "close_above_vwap_1",
         "signed_efficiency_ratio_10",
@@ -1993,6 +1994,116 @@ def test_pledge_event_rebuild_is_capacity_bound_and_one_time(tmp_path, monkeypat
         RESEARCH.run_pledge_event_rebuild_diagnostic(args)
 
 
+def test_intraday_demand_persistence_is_frozen_semantics_gated_and_one_time(tmp_path, monkeypatch):
+    spec = RESEARCH.load_intraday_demand_persistence_preregistration()
+    assert spec["factor"]["name"] == RESEARCH.INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME
+    assert spec["factor"]["formula"] == RESEARCH.INTRADAY_RETURN_SUM_5_EXPRESSION
+    assert spec["factor"]["diagnostic_direction"] == "higher"
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_INTRADAY_DEMAND_PERSISTENCE_SPEC.read_text(encoding="utf-8")
+    )
+    changed["factor"]["required_complete_sessions"] = 10
+    changed_path = tmp_path / "changed_intraday_demand.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_intraday_demand_persistence_preregistration(changed_path)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_intraday_demand_persistence_sources",
+        lambda loaded: {"price_basis_manifest": {}, "annual_quality": {}},
+    )
+    semantics = {
+        "run_id": "semantics",
+        "path": str(tmp_path / "semantics.json"),
+        "sha256": "semantics-sha256",
+        "factor_decision": {"factor": RESEARCH.INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME},
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "require_intraday_demand_window_semantics",
+        lambda experiment_root: semantics,
+    )
+    captured = {}
+
+    def fake_diagnostic(args):
+        captured.update(vars(args))
+        path = tmp_path / "fixed_intraday_demand_factor_diagnostic.json"
+        write_json_record(
+            path,
+            {
+                "run_id": "fixed-intraday-demand",
+                "status": "completed",
+                "purpose": RESEARCH.INTRADAY_DEMAND_PERSISTENCE_PURPOSE,
+                "factor_catalog": [RESEARCH.INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME],
+                "quality_gate": {
+                    "sha256": spec["source_snapshots"]["annual_quality"]["sha256"]
+                },
+                "data": {
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                    "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
+                },
+                "preregistration": {"rolling_window_semantics": semantics},
+                "selection_or_promotion_allowed": False,
+            },
+        )
+        return {"status": "completed", "audit_path": str(path), "factor_count": 1}
+
+    monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
+    args = SimpleNamespace(
+        provider_uri="provider",
+        experiment_root=str(tmp_path),
+        batch_size=123,
+    )
+    result = RESEARCH.run_intraday_demand_persistence_diagnostic(args)
+    assert result["factor_count"] == 1
+    assert captured["factor"] == [RESEARCH.INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME]
+    assert captured["hold_days"] == 3
+    assert captured["topk"] == 3
+    assert captured["open_cost"] == pytest.approx(0.00012)
+    assert captured["close_cost"] == pytest.approx(0.00062)
+    assert captured["fundamentals"].endswith("annual_quality.parquet")
+    assert captured["diagnostic_purpose"] == RESEARCH.INTRADAY_DEMAND_PERSISTENCE_PURPOSE
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_intraday_demand_persistence_diagnostic(args)
+
+
+def test_intraday_demand_requires_a_no_return_complete_window_audit(tmp_path):
+    audit_path = tmp_path / "20260714T000000Z_rolling_window_semantics_audit.json"
+    write_json_record(
+        audit_path,
+        {
+            "run_id": "semantics",
+            "status": "completed",
+            "passed": True,
+            "forward_return_fields_read": False,
+            "factor_decisions": [
+                {
+                    "factor": RESEARCH.INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME,
+                    "required_prior_sessions": 4,
+                    "expected_first_valid_session_number": 5,
+                    "early_non_missing_rows": 0,
+                    "passed": True,
+                }
+            ],
+        },
+    )
+    evidence = RESEARCH.require_intraday_demand_window_semantics(tmp_path)
+    assert evidence["run_id"] == "semantics"
+    assert evidence["sha256"] == RESEARCH.file_sha256(audit_path)
+    assert evidence["forward_return_fields_read"] is False
+
+    invalid_root = tmp_path / "invalid"
+    invalid_root.mkdir()
+    invalid = json.loads(audit_path.read_text(encoding="utf-8"))
+    invalid["forward_return_fields_read"] = True
+    write_json_record(invalid_root / audit_path.name, invalid)
+    with pytest.raises(ValueError, match="requires a passed"):
+        RESEARCH.require_intraday_demand_window_semantics(invalid_root)
+
+
 def test_minute_factor_direction_is_ranked_after_quality_and_listing_gates(tmp_path):
     symbols = tuple(f"SZ{index:06d}" for index in range(1, 52))
     _, features = make_minute_feature_chain(tmp_path, symbols=symbols)
@@ -2486,6 +2597,7 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
         "gap_reversal",
         "drawdown_20",
         "intraday_strength",
+        "intraday_return_sum_5",
         "roe_change",
         "revenue_yoy_acceleration",
         "profit_yoy_acceleration",
@@ -2505,6 +2617,9 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
     )
     assert RESEARCH.RETURN_TURNOVER_CORRELATION_10_EXPRESSION == (
         "(Corr($close/Ref($close, 1) - 1, $turnover, 10)) + 0*Ref($close, 10)"
+    )
+    assert RESEARCH.INTRADAY_RETURN_SUM_5_EXPRESSION == (
+        "(Sum($close/$open - 1, 5)) + 0*Ref($close, 4)"
     )
     assert RESEARCH.complete_rolling_window_expression("Mean($volume, 5)", 4) == (
         "(Mean($volume, 5)) + 0*Ref($close, 4)"

@@ -90,6 +90,9 @@ DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC = (
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
+DEFAULT_INTRADAY_DEMAND_PERSISTENCE_SPEC = (
+    REPO_ROOT / "docs" / "a_share_intraday_demand_persistence_preregistration.json"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -159,6 +162,9 @@ RETURN_TURNOVER_CORRELATION_10_EXPRESSION = complete_rolling_window_expression(
 # reference exists, enforcing the preregistered complete-window requirement
 # without altering any valid 20-session value.
 MAX_RETURN_20_EXPRESSION = "Max($close/Ref($close, 1) - 1, 20) + 0*Ref($close, 20)"
+INTRADAY_RETURN_SUM_5_EXPRESSION = complete_rolling_window_expression(
+    "Sum($close/$open - 1, 5)", 4
+)
 COMPRESSION_CONSENSUS_MIN_COMPONENTS = (
     "amplitude_low",
     "amplitude_low_1",
@@ -351,6 +357,10 @@ SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE = (
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
     "development_only_preregistered_pledge_event_rebuild_research_not_investment_advice"
+)
+INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME = "intraday_return_sum_5"
+INTRADAY_DEMAND_PERSISTENCE_PURPOSE = (
+    "development_only_preregistered_intraday_demand_persistence_research_not_investment_advice"
 )
 MARGIN_FINANCING_TOP_N = 100
 # This direction is deliberately not part of the development diagnostic
@@ -1267,6 +1277,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "near_high_20",
     "drawdown_20",
     "intraday_strength",
+    "intraday_return_sum_5",
     "roe_change",
     "revenue_yoy_acceleration",
     "profit_yoy_acceleration",
@@ -1333,6 +1344,7 @@ ROLLING_FACTOR_PRIOR_CLOSE_REQUIREMENTS = {
     "signed_efficiency_ratio_10": 10,
     "return_turnover_correlation_10": 10,
     "signed_volume_pressure_5": 4,
+    "intraday_return_sum_5": 4,
     "max_return_20": 20,
 }
 COMPLETE_WINDOW_SEMANTICS_EFFECTIVE_RUN_ID = "20260714T095117Z"
@@ -1365,6 +1377,7 @@ WINDOW_SEMANTICS_AFFECTED_FACTORS = frozenset(
         "drawdown_20",
         "return_turnover_correlation_10",
         "signed_volume_pressure_5",
+        "intraday_return_sum_5",
         "compression_consensus_min",
     }
 )
@@ -2390,6 +2403,148 @@ def require_unconsumed_pledge_event_rebuild(experiment_root: Path) -> None:
         record = load_json_record(path)
         if record.get("purpose") == PLEDGE_EVENT_REBUILD_PURPOSE:
             raise ValueError(f"accepted-price pledge-event rebuild is already consumed: {path}")
+
+
+def load_intraday_demand_persistence_preregistration(
+    path: Path = DEFAULT_INTRADAY_DEMAND_PERSISTENCE_SPEC,
+) -> dict[str, Any]:
+    """Enforce the frozen one-factor five-session intraday-demand protocol."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_intraday_demand_persistence_preregistration")
+    factor = spec.get("factor") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("research_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status") == "frozen_before_intraday_demand_factor_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T16:46:16Z"
+        and factor.get("name") == INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME
+        and factor.get("formula") == INTRADAY_RETURN_SUM_5_EXPRESSION
+        and factor.get("diagnostic_direction") == "higher"
+        and factor.get("required_complete_sessions") == 5
+        and factor.get("required_prior_close_sessions") == 4
+        and set(snapshots) == {"price_basis_manifest", "annual_quality"}
+        and snapshots["price_basis_manifest"].get("price_basis") == REQUIRED_PRICE_BASIS
+        and snapshots["price_basis_manifest"].get("future_corporate_actions_used") is False
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "rolling_window_semantics_must_pass_before_forward_returns": True,
+            "single_factor_only": True,
+            "one_completed_diagnostic_only": True,
+            "no_direction_formula_window_cost_quality_source_or_factor_subset_override": True,
+            "no_reverse_direction_or_alternative_window_after_results": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_newly_dated_prospective_paper_observation": True,
+            "historical_period_has_been_used_by_other_hypotheses_and_is_not_a_pristine_holdout": True,
+            "selection_aggregation_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("intraday-demand persistence preregistration does not match the frozen protocol")
+    return spec
+
+
+def validate_intraday_demand_persistence_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Fingerprint-bind the accepted daily basis and quality snapshot."""
+
+    snapshots = spec.get("source_snapshots") or {}
+    price_link = snapshots.get("price_basis_manifest") or {}
+    price_path = resolve_repository_record_path(str(price_link.get("path") or ""))
+    if not price_path.exists() or file_sha256(price_path) != str(price_link.get("sha256") or ""):
+        raise ValueError("intraday-demand price-basis manifest is missing or has a fingerprint mismatch")
+    price_manifest = load_json_record(price_path)
+    if (
+        price_manifest.get("status") != "passed"
+        or price_manifest.get("price_basis") != REQUIRED_PRICE_BASIS
+        or price_manifest.get("future_corporate_actions_used") is not False
+    ):
+        raise ValueError("intraday-demand source does not use the accepted point-in-time price basis")
+
+    quality_link = snapshots.get("annual_quality") or {}
+    quality_path = resolve_repository_record_path(str(quality_link.get("path") or ""))
+    quality_manifest_path = resolve_repository_record_path(str(quality_link.get("manifest_path") or ""))
+    if not quality_path.exists() or file_sha256(quality_path) != str(quality_link.get("sha256") or ""):
+        raise ValueError("intraday-demand quality snapshot is missing or has a fingerprint mismatch")
+    if (
+        not quality_manifest_path.exists()
+        or file_sha256(quality_manifest_path) != str(quality_link.get("manifest_sha256") or "")
+    ):
+        raise ValueError("intraday-demand quality manifest is missing or has a fingerprint mismatch")
+    quality_manifest = load_json_record(quality_manifest_path)
+    if quality_manifest.get("status") != "completed" or quality_manifest.get("sha256") != file_sha256(quality_path):
+        raise ValueError("intraday-demand quality manifest does not accept its source snapshot")
+    return {
+        "price_basis_manifest": {
+            "path": str(price_path),
+            "sha256": file_sha256(price_path),
+            "price_basis": REQUIRED_PRICE_BASIS,
+        },
+        "annual_quality": {
+            "path": str(quality_path),
+            "sha256": file_sha256(quality_path),
+            "manifest_path": str(quality_manifest_path),
+            "manifest_sha256": file_sha256(quality_manifest_path),
+        },
+    }
+
+
+def require_intraday_demand_window_semantics(experiment_root: Path) -> dict[str, Any]:
+    """Require a no-return audit proving the new five-session window is complete."""
+
+    for path in reversed(sorted(experiment_root.expanduser().glob("*_rolling_window_semantics_audit.json"))):
+        record = load_json_record(path)
+        decisions = {
+            str(item.get("factor")): item for item in (record.get("factor_decisions") or [])
+        }
+        decision = decisions.get(INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME) or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("passed") is True
+            and record.get("forward_return_fields_read") is False
+            and decision.get("passed") is True
+            and decision.get("required_prior_sessions") == 4
+            and decision.get("expected_first_valid_session_number") == 5
+            and decision.get("early_non_missing_rows") == 0
+        ):
+            return {
+                "run_id": record.get("run_id"),
+                "path": str(path.resolve()),
+                "sha256": file_sha256(path),
+                "factor_decision": decision,
+                "forward_return_fields_read": False,
+            }
+    raise ValueError(
+        "intraday-demand diagnostic requires a passed rolling-window-semantics-audit containing intraday_return_sum_5"
+    )
+
+
+def require_unconsumed_intraday_demand_persistence(experiment_root: Path) -> None:
+    """Prevent a second historical return read for the frozen daily factor."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == INTRADAY_DEMAND_PERSISTENCE_PURPOSE:
+            raise ValueError(f"intraday-demand persistence diagnostic is already consumed: {path}")
 
 
 def _load_fingerprinted_json_link(
@@ -5755,6 +5910,11 @@ def load_market_data(
         "near_high_10": complete_rolling_window_expression("$close/Max($high, 10) - 1", 9),
         "near_high_20": complete_rolling_window_expression("$close/Max($high, 20) - 1", 19),
         "intraday_strength": "$close/$open - 1",
+        # Five complete sessions of open-to-close returns isolate repeated
+        # same-session demand from overnight gaps and close-to-close momentum.
+        # The positive direction and the only allowed window are frozen in
+        # the repository preregistration before this factor's returns are read.
+        "intraday_return_sum_5": INTRADAY_RETURN_SUM_5_EXPRESSION,
         "close_to_high": "$close/$high",
         # Same-session close relative to the day's transaction-weighted
         # average price.  A positive value is predeclared as late-session
@@ -5988,6 +6148,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "near_high_10",
         "near_high_20",
         "intraday_strength",
+        "intraday_return_sum_5",
         "close_to_high",
         "close_above_vwap_1",
         "signed_efficiency_ratio_10",
@@ -6290,6 +6451,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["near_high_10"] = result["rank_near_high_10"]
     result["near_high_20"] = result["rank_near_high_20"]
     result["intraday_strength"] = result["rank_intraday_strength"]
+    result["intraday_return_sum_5"] = result["rank_intraday_return_sum_5"]
     result["close_to_high"] = result["rank_close_to_high"]
     result["close_above_vwap_1"] = result["rank_close_above_vwap_1"]
     result["signed_efficiency_ratio_10"] = result["rank_signed_efficiency_ratio_10"]
@@ -12970,6 +13132,81 @@ def run_pledge_event_rebuild_diagnostic(args: argparse.Namespace) -> dict[str, A
     return result
 
 
+def run_intraday_demand_persistence_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen five-session intraday-demand factor exactly once."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_intraday_demand_persistence_preregistration()
+    source_evidence = validate_intraday_demand_persistence_sources(spec)
+    window_semantics = require_intraday_demand_window_semantics(experiment_root)
+    require_unconsumed_intraday_demand_persistence(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=str(resolve_repository_record_path(snapshots["annual_quality"]["path"])),
+        performance_forecasts=None,
+        billboard_events=None,
+        major_holder_events=None,
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=None,
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=contract["maximum_quality_age_days"],
+        max_forecast_age_days=30,
+        max_billboard_age_days=3,
+        max_major_holder_age_days=3,
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=3,
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=3,
+        max_dividend_plan_age_days=3,
+        batch_size=args.batch_size,
+        factor=[INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME],
+        diagnostic_purpose=INTRADAY_DEMAND_PERSISTENCE_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_INTRADAY_DEMAND_PERSISTENCE_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_INTRADAY_DEMAND_PERSISTENCE_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "factor_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "rolling_window_semantics": window_semantics,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    if (
+        audit.get("purpose") != INTRADAY_DEMAND_PERSISTENCE_PURPOSE
+        or tuple(audit.get("factor_catalog") or [])
+        != (INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME,)
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or (audit.get("quality_gate") or {}).get("sha256")
+        != snapshots["annual_quality"]["sha256"]
+        or ((audit.get("preregistration") or {}).get("rolling_window_semantics") or {}).get(
+            "sha256"
+        )
+        != window_semantics["sha256"]
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError("completed intraday-demand diagnostic does not match its frozen protocol")
+    return result
+
+
 def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the frozen five-factor minute diagnostic on development data only."""
 
@@ -15262,6 +15499,14 @@ def parse_args() -> argparse.Namespace:
     pledge_event_rebuild.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     pledge_event_rebuild.add_argument("--batch-size", type=int, default=500)
 
+    intraday_demand = subparsers.add_parser(
+        "intraday-demand-persistence-diagnostic",
+        help="diagnose the frozen five-session open-to-close demand factor exactly once",
+    )
+    intraday_demand.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    intraday_demand.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    intraday_demand.add_argument("--batch-size", type=int, default=500)
+
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
         help="diagnose all five frozen one-minute factors under the fixed three-day protocol",
@@ -15866,6 +16111,8 @@ def main() -> int:
         report = run_announcement_event_rebuild_diagnostic(args)
     elif args.command == "pledge-event-rebuild-diagnostic":
         report = run_pledge_event_rebuild_diagnostic(args)
+    elif args.command == "intraday-demand-persistence-diagnostic":
+        report = run_intraday_demand_persistence_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":

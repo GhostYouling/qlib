@@ -583,6 +583,35 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 该假设已按预注册版本完成。`20260714T085351Z_factor_diagnostic.json` 仅包含 `return_turnover_correlation_10`：560 个非重叠 cohort 的平均 Rank IC 为 **−0.0174**，正 IC 比例 **43.9%**，Top‑3 相对 Bottom‑3 的平均毛差为 **−0.76%**；2019–2025 每一年的平均 Rank IC 都为负。Top‑3 扣费累计收益为 **−67.63%**、最大回撤为 **−88.07%**；2019–2021 年篮子收益为正，但 2022–2025 连续为负。`20260714T085414Z` 的稳定性与 Top‑3 可行性审计均没有合格因子，因此“上涨日高换手代表未来三日需求延续”的高值方向被淘汰；不得历史反向、改窗口、替换成交参与字段或与低波动因子组合重测。
 
+### 五日盘中需求延续单因子
+
+分钟数据尚未取得本地授权时，仍可用已验收日线 OHLC 把隔夜跳空与盘中买卖压力分开。`docs/a_share_intraday_demand_persistence_preregistration.json` 已在读取该因子的历史收益前冻结唯一新定义：
+
+```text
+intraday_return_sum_5 = Sum(close / open - 1, 5) + 0 * Ref(close, 4)
+```
+
+因子只累计最近 5 个完整交易日的开盘到收盘收益；零值引用不改变完整窗口，只保证不足 5 个会话时保持缺失。方向固定为高值，假设多日盘中持续买入比混入隔夜跳空的收盘动量更能延续到下一交易日开盘至第 3 个交易日收盘。它不同于只看信号日的 `intraday_strength`，也不冒充尚未取得的分钟尾盘或 Level‑2 数据。只测试这一窗口和方向，不测试 3/10/20 日、不反向、不增加成交量确认、不与旧失败因子组合。
+
+新增滚动表达式后必须先运行不读取收益的完整窗口审计；审计中 `intraday_return_sum_5` 必须从第 5 个本地会话才首次非空，且 `forward_return_fields_read=false`：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py rolling-window-semantics-audit \
+  --start 2015-01-01
+```
+
+只有该门禁通过，专用命令才允许按预注册一次性读取 2019–2025 的三日收益。命令不暴露日期、方向、窗口、成本、质量源、持有期、TopK 或因子子集：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py intraday-demand-persistence-diagnostic
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json>
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json>
+```
+
+固定口径仍为 2019–2025、非重叠三日 cohort、Top‑3、买入 0.012% / 卖出 0.062%、财务最大年龄 550 天、上市满 20 会话和已验收点时价格。历史区间已被其他假设反复使用，因此不是纯净留出；即使同时通过两道门禁，也只能从新日期登记完全相同因子的纸面观察，不能直接聚合、选股或提高仓位。任一道门禁失败即停止，不允许事后换方向、窗口或组合。
+
 在为稀疏季度公告事件写收益回测前，先运行**无收益样本容量审计**。它只读取季度报告字段、公告后下一交易日、买入股票池活动区间和交易日历；不会加载开盘、收盘或任何未来收益。事件仍固定在非重叠三日网格上，必须有完整 Top‑3，且最大可用 cohort 至少达到既有 200 门槛，才允许继续预注册收益审计：
 
 ```bash
