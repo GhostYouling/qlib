@@ -146,6 +146,125 @@ def make_minute_feature_chain(
     return manifest_path, stored_features
 
 
+def make_baostock_5m_feature_chain(
+    tmp_path: Path,
+    *,
+    dates: pd.DatetimeIndex | None = None,
+    symbols: tuple[str, ...] = tuple(f"SZ00000{index}" for index in range(1, 7)),
+) -> tuple[Path, pd.DataFrame]:
+    dates = dates if dates is not None else pd.DatetimeIndex([pd.Timestamp("2020-01-02")])
+    rows = []
+    for date in dates:
+        for position, symbol in enumerate(symbols, start=1):
+            rows.append(
+                {
+                    "symbol": symbol,
+                    "trade_date": pd.Timestamp(date),
+                    "provider": "baostock",
+                    "bar_timestamp_label": "end",
+                    "minute_bars": 48,
+                    "complete_regular_session": True,
+                    "minute_feature_eligible": True,
+                    "opening_gap_return": 0.001 * position,
+                    "late_return_30m_5m": 0.001 * position,
+                    "late_amount_share_30m_5m": 0.10 + 0.005 * position,
+                    "late_vwap_to_day_vwap_30m_5m": 0.0005 * position,
+                    "opening_gap_digestion_5m": 0.002 * position,
+                    "intraday_realized_volatility_5m": 0.10 - 0.0005 * position,
+                }
+            )
+    features = pd.DataFrame(rows)
+    output_path = tmp_path / "baostock_5m_features.parquet"
+    features.to_parquet(output_path, index=False)
+    stored_features = pd.read_parquet(output_path)
+
+    source_path = tmp_path / "baostock_5m_history.json"
+    write_json_record(
+        source_path,
+        {
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "baostock_five_minute_history",
+            "provider": "baostock",
+            "frequency": "5m",
+            "prices": "raw_unadjusted",
+            "run_id": "baostock-5m-bulk-run",
+            "status": "full_source_coverage_passed_pending_no_return_feature_materialization",
+            "coverage": {"gate_passed_before_prices": True},
+            "source_chain": {
+                "factor_spec": {
+                    "sha256": RESEARCH.BAOSTOCK_5M_FACTOR_SPEC_SHA256,
+                },
+                "acceptance_snapshot": {
+                    "sha256": (
+                        "e3d2160fab34c3a51b1524623a7c14f800abdc75164a66f0371386cf29ac68cd"
+                    ),
+                },
+                "alignment_confirmation": {
+                    "sha256": (
+                        "cf50051d254a3fcc2727d649b167ed053bbba2e2b3dfa2c939fae04166b54c6c"
+                    ),
+                },
+            },
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    acceptance_path = (
+        RESEARCH.REPO_ROOT
+        / "data/metadata/rich_data/runs/20260714T210140Z_baostock_5m_be9dfe63.json"
+    )
+    alignment_path = (
+        RESEARCH.REPO_ROOT
+        / "data/metadata/rich_data/alignments/20260714T210154Z_baostock_5m_alignment_2b1ad30e.json"
+    )
+    spec = RESEARCH.load_baostock_5m_factor_preregistration()
+    manifest_path = tmp_path / "baostock_5m_feature_run.json"
+    write_json_record(
+        manifest_path,
+        {
+            "schema_version": 1,
+            "kind": "a_share_minute_feature_run",
+            "status": "features_built_research_only",
+            "run_id": "baostock-5m-feature-run",
+            "provider": "baostock",
+            "frequency": "5m",
+            "feature_spec": {
+                "path": str(RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC),
+                "sha256": RESEARCH.file_sha256(RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC),
+                "version": 1,
+                "features": spec["features"],
+            },
+            "source_snapshot": {
+                "path": str(source_path),
+                "sha256": RESEARCH.file_sha256(source_path),
+                "run_id": "baostock-5m-bulk-run",
+                "prices": "raw_unadjusted",
+            },
+            "alignment_confirmation": {
+                "path": str(alignment_path),
+                "sha256": RESEARCH.file_sha256(alignment_path),
+                "run_id": "20260714T210154Z_baostock_5m_alignment_2b1ad30e",
+                "bar_timestamp_label": "end",
+                "volume_unit": "shares",
+            },
+            "output": {
+                "path": str(output_path),
+                "sha256": RESEARCH.dataframe_content_sha256(stored_features),
+                "rows": len(stored_features),
+                "eligible_rows": len(stored_features),
+                "incomplete_session_rows": 0,
+                "calendar_start": pd.Timestamp(dates.min()).date().isoformat(),
+                "calendar_end": pd.Timestamp(dates.max()).date().isoformat(),
+            },
+            "forward_return_fields_read": False,
+            "future_price_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    assert acceptance_path.exists()
+    return manifest_path, stored_features
+
+
 def make_minute_gate_records(
     tmp_path: Path,
     *,
@@ -2768,6 +2887,35 @@ def test_minute_feature_run_loader_verifies_the_full_manifest_chain(tmp_path):
         RESEARCH.load_minute_feature_run(manifest_path)
 
 
+def test_baostock_5m_feature_run_loader_uses_its_separate_frozen_protocol(tmp_path):
+    manifest_path, expected = make_baostock_5m_feature_chain(tmp_path)
+    manifest, spec, observed, chain = RESEARCH.load_minute_feature_run(
+        manifest_path,
+        factor_spec_path=RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+    )
+    protocol = RESEARCH.minute_factor_protocol(spec)
+    assert manifest["frequency"] == "5m"
+    assert protocol["development_start"] == "2020-01-01"
+    assert protocol["expected_bars"] == 48
+    assert protocol["names"] == RESEARCH.BAOSTOCK_5M_FACTOR_NAMES
+    assert chain["source_snapshot_path"] == (tmp_path / "baostock_5m_history.json").resolve()
+    pd.testing.assert_frame_equal(observed.reset_index(drop=True), expected.reset_index(drop=True))
+
+    changed = expected.copy()
+    changed.loc[0, "minute_bars"] = 240
+    changed.to_parquet(chain["feature_output_path"], index=False)
+    feature_manifest = json.loads(manifest_path.read_text())
+    feature_manifest["output"]["sha256"] = RESEARCH.dataframe_content_sha256(
+        pd.read_parquet(chain["feature_output_path"])
+    )
+    write_json_record(manifest_path, feature_manifest)
+    with pytest.raises(ValueError, match="complete-session contract"):
+        RESEARCH.load_minute_feature_run(
+            manifest_path,
+            factor_spec_path=RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+        )
+
+
 def test_minute_preregistration_freezes_the_holdout_consumption_rule(tmp_path):
     spec = json.loads(RESEARCH.DEFAULT_MINUTE_FACTOR_SPEC.read_text(encoding="utf-8"))
     spec["combination_protocol"]["consumption_rule"] = "allow_repeated_holdout_reads"
@@ -4138,6 +4286,76 @@ def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(tmp_path, mo
     )
     assert viability["factor_count"] == 5
     assert viability["qualified_factors"] == []
+
+
+def test_baostock_5m_diagnostic_uses_2020_2025_protocol(tmp_path, monkeypatch):
+    dates = pd.bdate_range("2020-01-02", periods=610)
+    symbols = tuple(f"SZ{index:06d}" for index in range(1, 61))
+    feature_run_path, _ = make_baostock_5m_feature_chain(
+        tmp_path, dates=dates, symbols=symbols
+    )
+    provider_uri = tmp_path / "provider"
+    provider_uri.mkdir()
+    write_json_record(
+        provider_uri / RESEARCH.PRICE_BASIS_MANIFEST_NAME,
+        {
+            "status": "passed",
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "failures": {},
+            "future_corporate_actions_used": False,
+        },
+    )
+    fundamental_path = tmp_path / "fundamentals.parquet"
+    fundamental_path.write_bytes(b"offline-fixture")
+    market = pd.DataFrame(
+        [
+            {
+                "datetime": pd.Timestamp(date),
+                "instrument": symbol,
+                "open": 100.0,
+                "close": 100.0 + position,
+                "listing_age_sessions": 100,
+            }
+            for date in dates
+            for position, symbol in enumerate(symbols, start=1)
+        ]
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_market_execution_data",
+        lambda provider_uri, start, end, batch_size: market.copy(),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+
+    def attach_all_quality(frame, fundamentals, max_age_days=550):
+        result = frame.copy()
+        result["fundamental_quality_eligible"] = True
+        result["listing_seasoning_eligible"] = True
+        result["quality_eligible"] = True
+        return result
+
+    monkeypatch.setattr(RESEARCH, "attach_quality_asof", attach_all_quality)
+    result = RESEARCH.run_minute_factor_diagnostic(
+        SimpleNamespace(
+            feature_run=str(feature_run_path),
+            factor_spec=str(RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC),
+            provider_uri=str(provider_uri),
+            fundamentals=str(fundamental_path),
+            experiment_root=str(tmp_path / "experiments"),
+            batch_size=500,
+        )
+    )
+    diagnostic = json.loads(Path(result["audit_path"]).read_text())
+    assert result["computed_factor_count"] == 5
+    assert diagnostic["factor_catalog"] == list(RESEARCH.BAOSTOCK_5M_FACTOR_NAMES)
+    assert diagnostic["minute_features"]["frequency"] == "5m"
+    assert diagnostic["minute_features"]["factor_protocol_kind"] == (
+        "a_share_baostock_5m_factor_preregistration"
+    )
+    assert diagnostic["data"]["development_start"] == "2020-01-01"
+    assert diagnostic["data"]["development_end"] == "2025-12-31"
+    assert diagnostic["strategy_timing"]["holding_period_trading_days"] == 3
+    assert diagnostic["selection_or_promotion_allowed"] is False
 
 
 def test_minute_coverage_gate_stops_before_forward_returns(tmp_path, monkeypatch):

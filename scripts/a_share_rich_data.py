@@ -2295,8 +2295,24 @@ def build_minute_features(
     minute_contract = spec["minute_contract"]
     frequency = str(minute_contract["frequency"])
     feature_names = tuple(str(item["name"]) for item in spec["features"])
-    if snapshot.get("dataset") != "minutes" or snapshot.get("frequency") != frequency:
+    allowed_datasets = (
+        {"minutes", "baostock_five_minute_history"}
+        if spec_kind == "a_share_baostock_5m_factor_preregistration"
+        else {"minutes"}
+    )
+    if snapshot.get("dataset") not in allowed_datasets or snapshot.get("frequency") != frequency:
         raise RichDataError(f"minute feature construction requires a {frequency} minute snapshot")
+    if snapshot.get("dataset") == "baostock_five_minute_history" and (
+        snapshot.get("status")
+        != "full_source_coverage_passed_pending_no_return_feature_materialization"
+        or (snapshot.get("coverage") or {}).get("gate_passed_before_prices") is not True
+        or snapshot.get("forward_return_fields_read") is not False
+        or snapshot.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "BaoStock five-minute history must pass its no-return full-source coverage gate "
+            "before feature materialization"
+        )
     if snapshot.get("prices") != "raw_unadjusted":
         raise RichDataError("minute feature construction requires raw unadjusted prices")
     expected_provider = minute_contract.get("provider")
@@ -2333,6 +2349,20 @@ def build_minute_features(
             or expected_alignment["sha256"] != file_digest(alignment_path)
         ):
             raise RichDataError("BaoStock five-minute feature build is not bound to its frozen source chain")
+        if snapshot.get("dataset") == "baostock_five_minute_history":
+            history_chain = snapshot.get("source_chain") or {}
+            history_spec = history_chain.get("factor_spec") or {}
+            history_acceptance = history_chain.get("acceptance_snapshot") or {}
+            history_alignment = history_chain.get("alignment_confirmation") or {}
+            if (
+                history_spec.get("sha256") != file_digest(factor_spec_path)
+                or history_acceptance.get("sha256") != expected_acceptance["sha256"]
+                or history_alignment.get("sha256") != expected_alignment["sha256"]
+            ):
+                raise RichDataError(
+                    "BaoStock five-minute history is not fingerprint-bound to the frozen "
+                    "factor, acceptance, and alignment chain"
+                )
     files = list(snapshot.get("files") or [])
     if not files:
         raise RichDataError("minute snapshot contains no files")

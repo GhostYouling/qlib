@@ -1125,3 +1125,74 @@ def test_feature_builder_binds_snapshot_alignment_and_frozen_spec(tmp_path, monk
             alignment_path,
             output=tmp_path / "tampered.parquet",
         )
+
+
+def test_feature_builder_accepts_passed_baostock_5m_history_snapshot(tmp_path, monkeypatch):
+    frame = complete_baostock_5m_frame(["2025-12-31"])
+    data_path = tmp_path / "sh600519" / "2025.parquet"
+    RICH.atomic_write_frame(frame, data_path)
+    snapshot_path = tmp_path / "baostock_5m_history.json"
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "baostock_five_minute_history",
+            "provider": "baostock",
+            "frequency": "5m",
+            "prices": "raw_unadjusted",
+            "run_id": "full-5m-test",
+            "status": "full_source_coverage_passed_pending_no_return_feature_materialization",
+            "coverage": {"gate_passed_before_prices": True},
+            "source_chain": {
+                "factor_spec": {
+                    "sha256": RICH.BAOSTOCK_5M_FACTOR_SPEC_SHA256,
+                },
+                "acceptance_snapshot": {
+                    "sha256": (
+                        "e3d2160fab34c3a51b1524623a7c14f800abdc75164a66f0371386cf29ac68cd"
+                    ),
+                },
+                "alignment_confirmation": {
+                    "sha256": (
+                        "cf50051d254a3fcc2727d649b167ed053bbba2e2b3dfa2c939fae04166b54c6c"
+                    ),
+                },
+            },
+            "files": [{"path": str(data_path), "sha256": RICH.frame_digest(frame)}],
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        },
+        snapshot_path,
+    )
+    alignment_path = (
+        RICH.REPO_ROOT
+        / "data/metadata/rich_data/alignments/20260714T210154Z_baostock_5m_alignment_2b1ad30e.json"
+    )
+    daily_root = tmp_path / "daily"
+    daily_root.mkdir()
+    pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2025-12-30", "2025-12-31"]),
+            "raw_close": [9.9, float(frame["close"].iloc[-1])],
+            "factor": [1.0, 1.0],
+            "price_basis": [RICH.REQUIRED_DAILY_PRICE_BASIS] * 2,
+        }
+    ).to_parquet(daily_root / "sh600519.parquet", index=False)
+    monkeypatch.setattr(RICH, "DAILY_RAW_DIR", daily_root)
+    monkeypatch.setattr(RICH, "FEATURE_RUNS_ROOT", tmp_path / "feature_runs")
+    output = tmp_path / "features.parquet"
+
+    feature_manifest_path = RICH.build_minute_features(
+        snapshot_path,
+        alignment_path,
+        factor_spec_path=RICH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+        output=output,
+    )
+    feature_manifest = RICH.json.loads(feature_manifest_path.read_text())
+    features = pd.read_parquet(output)
+    assert feature_manifest["frequency"] == "5m"
+    assert feature_manifest["output"]["eligible_rows"] == 1
+    assert tuple(
+        column for column in RICH.BAOSTOCK_5M_FEATURE_NAMES if column in features
+    ) == RICH.BAOSTOCK_5M_FEATURE_NAMES
+    assert features["minute_bars"].tolist() == [48]
+    assert feature_manifest["forward_return_fields_read"] is False

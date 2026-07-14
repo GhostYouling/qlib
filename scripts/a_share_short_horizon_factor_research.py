@@ -110,6 +110,12 @@ DEFAULT_PROSPECTIVE_FACTOR_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_prospec
 DEFAULT_RESEARCH_REPORT = DEFAULT_EXPERIMENT_ROOT / "three_day_research_report.md"
 DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS = REPO_ROOT / "docs" / "a_share_factor_diagnostic_invalidations.json"
 DEFAULT_MINUTE_FACTOR_SPEC = REPO_ROOT / "docs" / "a_share_minute_factor_preregistration.json"
+DEFAULT_BAOSTOCK_5M_FACTOR_SPEC = (
+    REPO_ROOT / "docs" / "a_share_baostock_5m_factor_preregistration.json"
+)
+BAOSTOCK_5M_FACTOR_SPEC_SHA256 = (
+    "a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8"
+)
 DEFAULT_TRANSACTION_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_transaction_event_rebuild_preregistration.json"
 )
@@ -192,6 +198,14 @@ MINUTE_FACTOR_NAMES = (
     "intraday_realized_volatility",
 )
 MINUTE_FACTOR_DIRECTIONS = ("higher", "higher", "higher", "higher", "lower")
+BAOSTOCK_5M_FACTOR_NAMES = (
+    "late_return_30m_5m",
+    "late_amount_share_30m_5m",
+    "late_vwap_to_day_vwap_30m_5m",
+    "opening_gap_digestion_5m",
+    "intraday_realized_volatility_5m",
+)
+BAOSTOCK_5M_FACTOR_DIRECTIONS = ("higher", "higher", "higher", "higher", "lower")
 MINUTE_FEATURE_BASE_COLUMNS = (
     "symbol",
     "trade_date",
@@ -2072,6 +2086,143 @@ def load_minute_factor_preregistration(
     if not valid:
         raise ValueError("minute factor preregistration does not match the frozen v1 diagnostic protocol")
     return spec
+
+
+def load_baostock_5m_factor_preregistration(
+    path: Path = DEFAULT_BAOSTOCK_5M_FACTOR_SPEC,
+) -> dict[str, Any]:
+    """Enforce the exact frozen BaoStock five-minute diagnostic protocol."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != BAOSTOCK_5M_FACTOR_SPEC_SHA256:
+        raise ValueError("BaoStock five-minute factor preregistration fingerprint mismatch")
+    spec = load_json_record(path, kind="a_share_baostock_5m_factor_preregistration")
+    features = list(spec.get("features") or [])
+    names = tuple(str(item.get("name")) for item in features if isinstance(item, dict))
+    directions = tuple(
+        str(item.get("diagnostic_direction")) for item in features if isinstance(item, dict)
+    )
+    minute = spec.get("minute_contract") or {}
+    development = spec.get("development_protocol") or {}
+    coverage = spec.get("coverage_gate_before_forward_returns") or {}
+    combination = spec.get("combination_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_source_acceptance_before_five_minute_factor_values_or_forward_returns"
+        and names == BAOSTOCK_5M_FACTOR_NAMES
+        and directions == BAOSTOCK_5M_FACTOR_DIRECTIONS
+        and minute.get("provider") == "baostock"
+        and minute.get("frequency") == "5m"
+        and minute.get("prices") == "raw_unadjusted"
+        and minute.get("timestamp_normalized_to") == "bar_end"
+        and minute.get("complete_regular_session_required") is True
+        and minute.get("expected_regular_session_bars") == 48
+        and development.get("start") == "2020-01-01"
+        and development.get("end") == "2025-12-31"
+        and development.get("holding_period_trading_days") == 3
+        and development.get("non_overlapping_cohorts") is True
+        and development.get("topk") == 3
+        and development.get("open_cost") == 0.00012
+        and development.get("close_cost") == 0.00062
+        and development.get("maximum_quality_age_days") == 550
+        and development.get("minimum_listing_sessions") == MIN_LISTING_SESSIONS
+        and development.get("minimum_calendar_years") == FACTOR_STABILITY_MIN_CALENDAR_YEARS
+        and development.get("minimum_cohorts") == FACTOR_STABILITY_MIN_COHORTS
+        and development.get("price_basis") == REQUIRED_PRICE_BASIS
+        and coverage.get("median_eligible_universe_coverage_min") == 0.95
+        and coverage.get("p05_eligible_universe_coverage_min") == 0.9
+        and coverage.get("minimum_names_per_cross_section") == 50
+        and coverage.get("minimum_potential_non_overlapping_three_session_cohorts")
+        == FACTOR_STABILITY_MIN_COHORTS
+        and coverage.get("coverage_failure_stops_before_open_close_or_forward_return_fields")
+        is True
+        and combination.get("eligible_inputs_are_only_the_intersection_passing_both_full_gates")
+        is True
+        and combination.get("fewer_than_two_gate_passers_stops_combination") is True
+        and combination.get("two_or_more_gate_passers_use_one_equal_weight_all_passers_combination")
+        is True
+        and combination.get("no_subset_weight_or_aggregation_search") is True
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("BaoStock five-minute factor preregistration violates its frozen protocol")
+    return spec
+
+
+def minute_factor_protocol(spec: dict[str, Any]) -> dict[str, Any]:
+    """Normalize the two separately frozen minute protocols without merging them."""
+
+    kind = str(spec.get("kind") or "")
+    names = tuple(str(item["name"]) for item in spec.get("features") or [])
+    directions = tuple(str(item["diagnostic_direction"]) for item in spec.get("features") or [])
+    minute = spec.get("minute_contract") or {}
+    if kind == "a_share_minute_factor_preregistration":
+        holding = spec["holding_protocol"]
+        diagnostic = spec["diagnostic_protocol"]
+        universe = spec["universe_contract"]
+        coverage = spec["data_coverage_gate"]
+        return {
+            "kind": kind,
+            "names": names,
+            "directions": directions,
+            "provider": None,
+            "frequency": "1m",
+            "expected_bars": int(minute["expected_regular_session_bars"]),
+            "development_start": str(diagnostic["development_start"]),
+            "development_end": str(diagnostic["development_end"]),
+            "holding_period_trading_days": int(holding["holding_period_trading_days"]),
+            "topk": int(holding["topk"]),
+            "open_cost": float(holding["open_cost"]),
+            "close_cost": float(holding["close_cost"]),
+            "maximum_quality_age_days": int(universe["maximum_quality_age_days"]),
+            "minimum_listing_sessions": int(universe["minimum_listing_sessions"]),
+            "minimum_median_source_row_coverage": float(
+                coverage["minimum_median_source_row_coverage"]
+            ),
+            "minimum_p05_source_row_coverage": float(
+                coverage["minimum_p05_source_row_coverage"]
+            ),
+            "minimum_eligible_names_per_cross_section": int(
+                coverage["minimum_eligible_names_per_cross_section"]
+            ),
+            "coverage_basis": "source_rows",
+            "minimum_potential_non_overlapping_cohorts": None,
+        }
+    if kind == "a_share_baostock_5m_factor_preregistration":
+        development = spec["development_protocol"]
+        coverage = spec["coverage_gate_before_forward_returns"]
+        return {
+            "kind": kind,
+            "names": names,
+            "directions": directions,
+            "provider": str(minute["provider"]),
+            "frequency": "5m",
+            "expected_bars": int(minute["expected_regular_session_bars"]),
+            "development_start": str(development["start"]),
+            "development_end": str(development["end"]),
+            "holding_period_trading_days": int(development["holding_period_trading_days"]),
+            "topk": int(development["topk"]),
+            "open_cost": float(development["open_cost"]),
+            "close_cost": float(development["close_cost"]),
+            "maximum_quality_age_days": int(development["maximum_quality_age_days"]),
+            "minimum_listing_sessions": int(development["minimum_listing_sessions"]),
+            "minimum_median_source_row_coverage": float(
+                coverage["median_eligible_universe_coverage_min"]
+            ),
+            "minimum_p05_source_row_coverage": float(
+                coverage["p05_eligible_universe_coverage_min"]
+            ),
+            "minimum_eligible_names_per_cross_section": int(
+                coverage["minimum_names_per_cross_section"]
+            ),
+            "coverage_basis": "complete_feature_eligible_rows",
+            "minimum_potential_non_overlapping_cohorts": int(
+                coverage["minimum_potential_non_overlapping_three_session_cohorts"]
+            ),
+        }
+    raise ValueError(f"unsupported minute factor preregistration kind: {kind}")
 
 
 def load_transaction_event_rebuild_preregistration(
@@ -4827,21 +4978,31 @@ def load_minute_feature_run(
 
     feature_run_path = feature_run_path.expanduser().resolve()
     manifest = load_json_record(feature_run_path, kind="a_share_minute_feature_run")
+    factor_spec_path = factor_spec_path.expanduser().resolve()
+    spec_kind = load_json_record(factor_spec_path).get("kind")
+    if spec_kind == "a_share_minute_factor_preregistration":
+        spec = load_minute_factor_preregistration(factor_spec_path)
+    elif spec_kind == "a_share_baostock_5m_factor_preregistration":
+        spec = load_baostock_5m_factor_preregistration(factor_spec_path)
+    else:
+        raise ValueError(f"unsupported minute factor preregistration kind: {spec_kind}")
+    protocol = minute_factor_protocol(spec)
+    factor_names = tuple(protocol["names"])
+    frequency = str(protocol["frequency"])
+    expected_bars = int(protocol["expected_bars"])
     if (
         manifest.get("status") != "features_built_research_only"
-        or manifest.get("frequency") != "1m"
+        or manifest.get("frequency") != frequency
         or manifest.get("forward_return_fields_read") is not False
         or manifest.get("future_price_fields_read") is not False
         or manifest.get("selection_or_promotion_allowed") is not False
     ):
         raise ValueError("minute feature run has not passed the research-only no-forward-data contract")
 
-    factor_spec_path = factor_spec_path.expanduser().resolve()
-    spec = load_minute_factor_preregistration(factor_spec_path)
     spec_link = manifest.get("feature_spec") or {}
     linked_spec_path, linked_spec = _load_fingerprinted_json_link(
         spec_link,
-        kind="a_share_minute_factor_preregistration",
+        kind=str(spec_kind),
         label="minute factor specification",
     )
     frozen_sha256 = file_sha256(factor_spec_path)
@@ -4864,19 +5025,34 @@ def load_minute_feature_run(
         label="minute alignment confirmation",
     )
     provider = str(manifest.get("provider") or "")
+    allowed_source_datasets = (
+        {"minutes", "baostock_five_minute_history"}
+        if frequency == "5m"
+        else {"minutes"}
+    )
     if (
-        source.get("dataset") != "minutes"
+        source.get("dataset") not in allowed_source_datasets
         or source.get("provider") != provider
-        or source.get("frequency") != "1m"
+        or source.get("frequency") != frequency
         or source.get("prices") != "raw_unadjusted"
         or (manifest.get("source_snapshot") or {}).get("run_id") != source.get("run_id")
         or (manifest.get("source_snapshot") or {}).get("prices") != "raw_unadjusted"
     ):
         raise ValueError("minute source snapshot is incompatible with the feature run")
+    if protocol["provider"] is not None and provider != protocol["provider"]:
+        raise ValueError("minute feature provider conflicts with the frozen factor protocol")
+    if source.get("dataset") == "baostock_five_minute_history" and (
+        source.get("status")
+        != "full_source_coverage_passed_pending_no_return_feature_materialization"
+        or (source.get("coverage") or {}).get("gate_passed_before_prices") is not True
+        or source.get("forward_return_fields_read") is not False
+        or source.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("BaoStock five-minute source did not pass its no-return coverage gate")
     if (
         alignment.get("status") != "passed_for_feature_research"
         or alignment.get("provider") != provider
-        or alignment.get("frequency") != "1m"
+        or alignment.get("frequency") != frequency
         or alignment.get("bar_timestamp_label") not in {"start", "end"}
         or alignment.get("volume_unit") not in {"shares", "lots"}
         or alignment.get("reviewed_boundaries") is not True
@@ -4899,10 +5075,24 @@ def load_minute_feature_run(
         != "automatic_checks_passed_pending_time_alignment"
         or acceptance.get("dataset") != "minutes"
         or acceptance.get("provider") != provider
-        or acceptance.get("frequency") != "1m"
+        or acceptance.get("frequency") != frequency
         or acceptance.get("prices") != "raw_unadjusted"
     ):
         raise ValueError("minute alignment is not bound to a compatible accepted snapshot")
+    if source.get("dataset") == "baostock_five_minute_history":
+        source_chain = source.get("source_chain") or {}
+        source_spec = source_chain.get("factor_spec") or {}
+        source_acceptance = source_chain.get("acceptance_snapshot") or {}
+        source_alignment = source_chain.get("alignment_confirmation") or {}
+        if (
+            source_spec.get("sha256") != frozen_sha256
+            or source_acceptance.get("sha256") != file_sha256(acceptance_path)
+            or source_alignment.get("sha256") != file_sha256(alignment_path)
+        ):
+            raise ValueError(
+                "BaoStock five-minute source is not fingerprint-bound to its frozen factor, "
+                "acceptance, and alignment chain"
+            )
 
     output = manifest.get("output") or {}
     output_path_value = str(output.get("path") or "")
@@ -4916,7 +5106,7 @@ def load_minute_feature_run(
         raise ValueError(f"minute feature output fingerprint mismatch: {output_path}")
     if frame.empty:
         raise ValueError("minute feature output is empty")
-    expected_columns = set(MINUTE_FEATURE_BASE_COLUMNS) | set(MINUTE_FACTOR_NAMES)
+    expected_columns = set(MINUTE_FEATURE_BASE_COLUMNS) | set(factor_names)
     if set(frame.columns) != expected_columns:
         missing = sorted(expected_columns - set(frame.columns))
         extra = sorted(set(frame.columns) - expected_columns)
@@ -4927,7 +5117,7 @@ def load_minute_feature_run(
         raise ValueError("minute feature output contains an invalid symbol or trade date")
     if frame.duplicated(["trade_date", "symbol"]).any():
         raise ValueError("minute feature output contains duplicate stock-day rows")
-    for column in MINUTE_FACTOR_NAMES:
+    for column in factor_names:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     frame["opening_gap_return"] = pd.to_numeric(frame["opening_gap_return"], errors="coerce")
     frame["minute_bars"] = pd.to_numeric(frame["minute_bars"], errors="coerce")
@@ -4936,16 +5126,17 @@ def load_minute_feature_run(
     if not pd.api.types.is_bool_dtype(frame["minute_feature_eligible"]):
         raise ValueError("minute_feature_eligible must be a boolean column")
     eligible = frame["minute_feature_eligible"]
+    late_return, late_share, late_vwap, _, realized_volatility = factor_names
     if (
         (eligible & ~frame["complete_regular_session"]).any()
-        or (eligible & frame["minute_bars"].ne(240)).any()
-        or not np.isfinite(frame.loc[eligible, list(MINUTE_FACTOR_NAMES)].to_numpy(dtype=float)).all()
+        or (eligible & frame["minute_bars"].ne(expected_bars)).any()
+        or not np.isfinite(frame.loc[eligible, list(factor_names)].to_numpy(dtype=float)).all()
         or not np.isfinite(frame.loc[eligible, "opening_gap_return"].to_numpy(dtype=float)).all()
-        or frame.loc[eligible, "late_return_30m"].le(-1.0).any()
-        or not frame.loc[eligible, "late_amount_share_30m"].between(0.0, 1.0).all()
-        or frame.loc[eligible, "late_vwap_to_day_vwap_30m"].le(-1.0).any()
+        or frame.loc[eligible, late_return].le(-1.0).any()
+        or not frame.loc[eligible, late_share].between(0.0, 1.0).all()
+        or frame.loc[eligible, late_vwap].le(-1.0).any()
         or frame.loc[eligible, "opening_gap_return"].le(-1.0).any()
-        or frame.loc[eligible, "intraday_realized_volatility"].lt(0.0).any()
+        or frame.loc[eligible, realized_volatility].lt(0.0).any()
     ):
         raise ValueError("minute feature eligibility conflicts with the frozen complete-session contract")
     if set(frame["provider"].dropna().astype(str)) != {provider}:
@@ -4990,7 +5181,7 @@ def load_minute_combination_gate_inputs(
     diagnostic_path = diagnostic_path.expanduser().resolve()
     stability_audit_path = stability_audit_path.expanduser().resolve()
     topk_audit_path = topk_audit_path.expanduser().resolve()
-    spec = load_minute_factor_preregistration(factor_spec_path)
+    load_minute_factor_preregistration(factor_spec_path)
     diagnostic = load_json_record(diagnostic_path)
     stability = load_json_record(stability_audit_path)
     topk = load_json_record(topk_audit_path)
@@ -11097,7 +11288,9 @@ def attach_directional_minute_factors(
     direction_by_factor = {
         str(item["name"]): str(item["diagnostic_direction"]) for item in features
     }
-    if tuple(direction_by_factor) != MINUTE_FACTOR_NAMES:
+    protocol = minute_factor_protocol(spec)
+    factor_names = tuple(protocol["names"])
+    if tuple(direction_by_factor) != factor_names:
         raise ValueError("minute factor directions do not match the frozen feature order")
     minute = minute_features.rename(columns={"symbol": "instrument", "trade_date": "datetime"}).copy()
     minute["datetime"] = pd.to_datetime(minute["datetime"]).dt.normalize()
@@ -11108,7 +11301,7 @@ def attach_directional_minute_factors(
         "minute_bars",
         "complete_regular_session",
         "minute_feature_eligible",
-        *MINUTE_FACTOR_NAMES,
+        *factor_names,
     ]
     result = market.merge(
         minute[join_columns],
@@ -11119,8 +11312,7 @@ def attach_directional_minute_factors(
     result["minute_feature_eligible"] = (
         result["minute_feature_eligible"].astype("boolean").fillna(False).astype(bool)
     )
-    coverage_contract = spec.get("data_coverage_gate") or {}
-    minimum_names = int(coverage_contract["minimum_eligible_names_per_cross_section"])
+    minimum_names = int(protocol["minimum_eligible_names_per_cross_section"])
     quality_eligible = result["quality_eligible"].fillna(False)
     minute_eligible = quality_eligible & result["minute_feature_eligible"]
     feature_start = minute["datetime"].min()
@@ -11142,6 +11334,13 @@ def attach_directional_minute_factors(
         .reindex(quality_counts.index, fill_value=0)
     )
     source_coverage = source_counts / quality_counts
+    eligible_coverage = eligible_counts / quality_counts
+    coverage_basis = str(protocol["coverage_basis"])
+    gate_coverage = (
+        eligible_coverage
+        if coverage_basis == "complete_feature_eligible_rows"
+        else source_coverage
+    )
     cross_section_dates = set(eligible_counts.loc[eligible_counts.ge(minimum_names)].index)
     rank_eligible = minute_eligible & result["datetime"].isin(cross_section_dates)
     for factor, direction in direction_by_factor.items():
@@ -11157,15 +11356,32 @@ def attach_directional_minute_factors(
         result.loc[scores.index, factor] = scores
     median_source_coverage = float(source_coverage.median()) if len(source_coverage) else 0.0
     p05_source_coverage = float(source_coverage.quantile(0.05)) if len(source_coverage) else 0.0
-    eligible_names_p05 = float(eligible_counts.quantile(0.05)) if len(eligible_counts) else 0.0
-    minimum_median_coverage = float(
-        coverage_contract["minimum_median_source_row_coverage"]
+    median_eligible_coverage = (
+        float(eligible_coverage.median()) if len(eligible_coverage) else 0.0
     )
-    minimum_p05_coverage = float(coverage_contract["minimum_p05_source_row_coverage"])
+    p05_eligible_coverage = (
+        float(eligible_coverage.quantile(0.05)) if len(eligible_coverage) else 0.0
+    )
+    median_gate_coverage = float(gate_coverage.median()) if len(gate_coverage) else 0.0
+    p05_gate_coverage = float(gate_coverage.quantile(0.05)) if len(gate_coverage) else 0.0
+    eligible_names_p05 = float(eligible_counts.quantile(0.05)) if len(eligible_counts) else 0.0
+    minimum_median_coverage = float(protocol["minimum_median_source_row_coverage"])
+    minimum_p05_coverage = float(protocol["minimum_p05_source_row_coverage"])
+    minimum_potential_cohorts = protocol["minimum_potential_non_overlapping_cohorts"]
+    hold_days = int(protocol["holding_period_trading_days"])
+    potential_indices = np.arange(0, max(len(eligible_counts) - hold_days, 0), hold_days)
+    potential_non_overlapping_cohorts = int(
+        eligible_counts.iloc[potential_indices].ge(minimum_names).sum()
+    )
+    capacity_gate_passed = bool(
+        minimum_potential_cohorts is None
+        or potential_non_overlapping_cohorts >= int(minimum_potential_cohorts)
+    )
     coverage_gate_passed = bool(
-        median_source_coverage >= minimum_median_coverage
-        and p05_source_coverage >= minimum_p05_coverage
+        median_gate_coverage >= minimum_median_coverage
+        and p05_gate_coverage >= minimum_p05_coverage
         and eligible_names_p05 >= minimum_names
+        and capacity_gate_passed
     )
     coverage = {
         "feature_rows_in_requested_window": int(len(minute)),
@@ -11181,10 +11397,18 @@ def attach_directional_minute_factors(
         "eligible_names_per_date_median": float(eligible_counts.median()) if len(eligible_counts) else 0.0,
         "median_source_row_coverage": median_source_coverage,
         "p05_source_row_coverage": p05_source_coverage,
+        "median_complete_feature_eligible_coverage": median_eligible_coverage,
+        "p05_complete_feature_eligible_coverage": p05_eligible_coverage,
+        "coverage_gate_basis": coverage_basis,
+        "median_gate_coverage": median_gate_coverage,
+        "p05_gate_coverage": p05_gate_coverage,
+        "potential_non_overlapping_three_session_cohorts": potential_non_overlapping_cohorts,
+        "capacity_gate_passed": capacity_gate_passed,
         "coverage_policy": {
             "minimum_median_source_row_coverage": minimum_median_coverage,
             "minimum_p05_source_row_coverage": minimum_p05_coverage,
             "minimum_eligible_names_per_cross_section": minimum_names,
+            "minimum_potential_non_overlapping_three_session_cohorts": minimum_potential_cohorts,
         },
         "coverage_gate_passed": coverage_gate_passed,
         "listing_gate_applied_before_cross_sectional_ranking": True,
@@ -19501,25 +19725,35 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the frozen five-factor minute diagnostic on development data only."""
 
     feature_run_path = Path(args.feature_run).expanduser()
+    factor_spec_path = Path(
+        getattr(args, "factor_spec", DEFAULT_MINUTE_FACTOR_SPEC)
+    ).expanduser()
     provider_uri = Path(args.provider_uri).expanduser()
     fundamental_path = Path(args.fundamentals).expanduser()
     experiment_root = Path(args.experiment_root).expanduser()
-    manifest, spec, minute_features, chain = load_minute_feature_run(feature_run_path)
-    holding = spec["holding_protocol"]
-    diagnostic_protocol = spec["diagnostic_protocol"]
-    start = str(diagnostic_protocol["development_start"])
-    end = str(diagnostic_protocol["development_end"])
-    hold_days = int(holding["holding_period_trading_days"])
-    topk = int(holding["topk"])
-    open_cost = float(holding["open_cost"])
-    close_cost = float(holding["close_cost"])
-    max_quality_age_days = int(spec["universe_contract"]["maximum_quality_age_days"])
+    manifest, spec, minute_features, chain = load_minute_feature_run(
+        feature_run_path, factor_spec_path=factor_spec_path
+    )
+    protocol = minute_factor_protocol(spec)
+    factor_names = tuple(protocol["names"])
+    start = str(protocol["development_start"])
+    end = str(protocol["development_end"])
+    hold_days = int(protocol["holding_period_trading_days"])
+    topk = int(protocol["topk"])
+    open_cost = float(protocol["open_cost"])
+    close_cost = float(protocol["close_cost"])
+    max_quality_age_days = int(protocol["maximum_quality_age_days"])
+    if int(protocol["minimum_listing_sessions"]) != MIN_LISTING_SESSIONS:
+        raise ValueError("minute protocol conflicts with the fixed listing-seasoning gate")
 
     selected_features = minute_features.loc[
         minute_features["trade_date"].between(pd.Timestamp(start), pd.Timestamp(end))
     ].copy()
     if selected_features.empty:
-        raise ValueError("minute feature run has no rows inside the frozen 2019-2025 development window")
+        raise ValueError(
+            f"minute feature run has no rows inside the frozen {start[:4]}-{end[:4]} "
+            "development window"
+        )
     price_basis_metadata = research_price_basis_metadata(provider_uri)
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_execution_data(provider_uri, start, end, args.batch_size)
@@ -19536,6 +19770,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "feature_run": {
                 "run_id": manifest.get("run_id"),
                 "provider": manifest.get("provider"),
+                "frequency": manifest.get("frequency"),
                 "path": str(chain["feature_run_path"]),
                 "sha256": chain["feature_run_sha256"],
                 "factor_spec_path": str(chain["factor_spec_path"]),
@@ -19578,7 +19813,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     forward_returns = forward_factor_return_frame(ranked, hold_days)
     computed = summarize_factor_diagnostics(
         forward_returns,
-        MINUTE_FACTOR_NAMES,
+        factor_names,
         hold_days=hold_days,
         topk=topk,
         open_cost=open_cost,
@@ -19589,7 +19824,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         *computed,
         *[
             unavailable_factor_diagnostic_summary(factor, hold_days)
-            for factor in MINUTE_FACTOR_NAMES
+            for factor in factor_names
             if factor not in computed_names
         ],
     ]
@@ -19608,7 +19843,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         "run_id": run_id,
         "status": "completed",
         "purpose": "development_only_preregistered_minute_factor_diagnostic_research_not_investment_advice",
-        "factor_catalog": list(MINUTE_FACTOR_NAMES),
+        "factor_catalog": list(factor_names),
         "factor_directions": feature_directions,
         "strategy_timing": {
             "universe": "buyable_main_chinext",
@@ -19642,6 +19877,8 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         },
         "minute_features": {
             "provider": manifest.get("provider"),
+            "frequency": manifest.get("frequency"),
+            "factor_protocol_kind": protocol["kind"],
             "feature_run_id": manifest.get("run_id"),
             "feature_run_path": str(feature_run_path),
             "feature_run_sha256": chain["feature_run_sha256"],
@@ -19668,6 +19905,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             **price_basis_metadata,
             "calendar_start": market["datetime"].min().date().isoformat(),
             "calendar_end": market["datetime"].max().date().isoformat(),
+            "development_start": start,
             "development_end": end,
             "market_rows": int(len(market)),
             "eligible_rows": int(market["quality_eligible"].sum()),
@@ -19694,7 +19932,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         "factor_count": len(summaries),
         "computed_factor_count": len(computed),
         "unavailable_factors": [
-            factor for factor in MINUTE_FACTOR_NAMES if factor not in computed_names
+            factor for factor in factor_names if factor not in computed_names
         ],
         "top_factors_by_development_rank_ic": computed[: min(5, len(computed))],
     }
@@ -21917,12 +22155,20 @@ def parse_args() -> argparse.Namespace:
 
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
-        help="diagnose all five frozen one-minute factors under the fixed three-day protocol",
+        help="diagnose all five factors from one frozen minute protocol under the fixed three-day horizon",
     )
     minute_factor_diagnostic.add_argument(
         "--feature-run",
         required=True,
         help="immutable a_share_minute_feature_run manifest produced by a_share_rich_data.py",
+    )
+    minute_factor_diagnostic.add_argument(
+        "--factor-spec",
+        default=str(DEFAULT_MINUTE_FACTOR_SPEC),
+        help=(
+            "frozen one-minute spec by default; pass "
+            "docs/a_share_baostock_5m_factor_preregistration.json for BaoStock 5m"
+        ),
     )
     minute_factor_diagnostic.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     minute_factor_diagnostic.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
