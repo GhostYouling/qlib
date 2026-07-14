@@ -250,6 +250,18 @@ class Candidate:
 
 
 @dataclass(frozen=True)
+class SelectionMultiplicityInput:
+    """Development-only candidate returns retained for a selection-bias audit."""
+
+    study: dict[str, Any]
+    candidates: tuple[str, ...]
+    signal_dates: pd.DatetimeIndex
+    net_returns: np.ndarray
+    holdings: np.ndarray
+    observed: np.ndarray
+
+
+@dataclass(frozen=True)
 class AShareExecutionRules:
     """Execution conventions for a small, long-only A-share pilot.
 
@@ -1145,6 +1157,9 @@ FACTOR_DIAGNOSTIC_COLUMNS = tuple(
     sorted({factor for candidate in V7_CANDIDATES for factor in candidate.weights} | set(EXPLORATORY_DIAGNOSTIC_FACTORS))
 )
 FACTOR_DIAGNOSTIC_BUCKET_COUNT = 5
+SELECTION_MULTIPLICITY_DEFAULT_BOOTSTRAP_REPLICATES = 1000
+SELECTION_MULTIPLICITY_DEFAULT_BLOCK_COHORTS = 5
+SELECTION_MULTIPLICITY_DEFAULT_SEED = 17
 
 
 def candidate_library(library_id: str) -> tuple[Candidate, ...]:
@@ -5359,6 +5374,354 @@ def return_metrics(rounds: pd.DataFrame, hold_days: int) -> dict[str, float | in
     }
 
 
+def load_selection_multiplicity_input(study_path: Path) -> SelectionMultiplicityInput:
+    """Rebuild a study's development-only candidate-return matrix from immutable records.
+
+    Candidates can have an absent signal date when no executable basket was
+    formed.  Such a date is kept distinct from an observed cash cohort: the
+    common calendar carries an explicit availability mask and candidate scores
+    only consume observations that the original candidate actually recorded.
+    Test cohorts are deliberately ignored even though they remain available
+    in the per-candidate records for the original initial test; the
+    multiplicity audit only asks how fragile the *development* winner was
+    among the alternatives that were searched.
+    """
+
+    try:
+        study = json.loads(study_path.expanduser().read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"study is not valid JSON: {study_path}") from error
+    ranking = list(study.get("ranking_by_development") or [])
+    if len(ranking) < 2:
+        raise ValueError("selection multiplicity audit requires at least two recorded candidates")
+    candidates: list[str] = []
+    candidate_development: list[tuple[str, pd.DataFrame]] = []
+    for item in ranking:
+        candidate = str(item.get("candidate") or "")
+        destination = Path(str(item.get("path") or "")).expanduser()
+        if not candidate or not destination.exists():
+            raise ValueError("study ranking must contain an existing per-candidate record path")
+        try:
+            record = json.loads(destination.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            raise ValueError(f"candidate record is not valid JSON: {destination}") from error
+        if str(record.get("candidate")) != candidate:
+            raise ValueError(f"candidate record does not match study ranking: {destination}")
+        cohorts = pd.DataFrame(record.get("cohorts") or [])
+        required = {"signal_date", "segment", "net_return", "holdings"}
+        missing = sorted(required - set(cohorts.columns))
+        if missing:
+            raise ValueError(f"candidate record is missing cohort fields: {', '.join(missing)}")
+        development = cohorts.loc[cohorts["segment"].eq("development")].copy()
+        development["signal_date"] = pd.to_datetime(development["signal_date"], errors="coerce")
+        development["net_return"] = pd.to_numeric(development["net_return"], errors="coerce")
+        development["holdings"] = pd.to_numeric(development["holdings"], errors="coerce")
+        development = development.sort_values("signal_date", kind="stable")
+        if development.empty or development["signal_date"].isna().any() or development["signal_date"].duplicated().any():
+            raise ValueError("candidate development cohorts must contain unique valid signal dates")
+        if development[["net_return", "holdings"]].isna().any().any() or not np.isfinite(
+            development[["net_return", "holdings"]].to_numpy(dtype=float)
+        ).all():
+            raise ValueError("candidate development cohorts contain non-finite return or holdings values")
+        candidates.append(candidate)
+        candidate_development.append((candidate, development))
+    signal_dates = pd.DatetimeIndex(
+        sorted(
+            {
+                date
+                for _, development in candidate_development
+                for date in development["signal_date"].tolist()
+            }
+        )
+    )
+    if len(signal_dates) < 20:
+        raise ValueError("selection multiplicity audit requires at least 20 development cohorts")
+    net_returns = np.zeros((len(signal_dates), len(candidates)), dtype=float)
+    holdings = np.zeros((len(signal_dates), len(candidates)), dtype=float)
+    observed = np.zeros((len(signal_dates), len(candidates)), dtype=bool)
+    calendar_positions = {date: position for position, date in enumerate(signal_dates)}
+    for column, (_, development) in enumerate(candidate_development):
+        positions = [calendar_positions[date] for date in development["signal_date"]]
+        net_returns[positions, column] = development["net_return"].to_numpy(dtype=float)
+        holdings[positions, column] = development["holdings"].to_numpy(dtype=float)
+        observed[positions, column] = True
+    return SelectionMultiplicityInput(
+        study=study,
+        candidates=tuple(candidates),
+        signal_dates=signal_dates,
+        net_returns=net_returns,
+        holdings=holdings,
+        observed=observed,
+    )
+
+
+def pooled_return_drawdown_scores(
+    net_returns: np.ndarray,
+    hold_days: int,
+    observed: np.ndarray | None = None,
+    *,
+    include_initial_equity: bool = True,
+) -> np.ndarray:
+    """Apply the pooled-return-minus-drawdown selection rule per candidate.
+
+    ``include_initial_equity`` is normally true.  The explicit false option
+    exists only to reproduce an immutable legacy study whose saved selection
+    scores were calculated before the initial-equity drawdown correction.
+    """
+
+    values = np.asarray(net_returns, dtype=float)
+    if values.ndim != 2 or not values.shape[0] or not values.shape[1]:
+        raise ValueError("net return matrix must have at least one cohort and one candidate")
+    availability = np.ones(values.shape, dtype=bool) if observed is None else np.asarray(observed, dtype=bool)
+    if availability.shape != values.shape:
+        raise ValueError("cohort availability mask must match the net return matrix")
+    if hold_days < 1 or not np.isfinite(values[availability]).all() or (values[availability] <= -1.0).any():
+        raise ValueError("net return matrix contains invalid values for selection scoring")
+    scores = np.full(values.shape[1], -np.inf, dtype=float)
+    for column in range(values.shape[1]):
+        candidate_returns = values[availability[:, column], column]
+        if not len(candidate_returns):
+            continue
+        equity = np.cumprod(1.0 + candidate_returns)
+        equity_for_drawdown = np.concatenate(([1.0], equity)) if include_initial_equity else equity
+        drawdown = equity_for_drawdown / np.maximum.accumulate(equity_for_drawdown) - 1.0
+        annualized = equity[-1] ** ((252.0 / hold_days) / len(candidate_returns)) - 1.0
+        scores[column] = annualized - 0.5 * abs(float(drawdown.min()))
+    return scores
+
+
+def infer_selection_score_drawdown_convention(
+    selection_input: SelectionMultiplicityInput, hold_days: int
+) -> dict[str, Any]:
+    """Pin a saved study to the drawdown convention that produced its stored scores.
+
+    Historical study files before the initial-capital drawdown correction do
+    not declare an implementation version.  Comparing every persisted score
+    against both conventions is a read-only integrity check; the resulting
+    legacy setting reproduces the old selection for this audit only and never
+    changes the corrected convention for new research.
+    """
+
+    score_by_candidate = {
+        str(item.get("candidate")): item.get("development_selection_score")
+        for item in list(selection_input.study.get("ranking_by_development") or [])
+    }
+    expected: list[float] = []
+    columns: list[int] = []
+    for column, candidate in enumerate(selection_input.candidates):
+        value = score_by_candidate.get(candidate)
+        try:
+            score = float(value)
+        except (TypeError, ValueError):
+            continue
+        if np.isfinite(score):
+            expected.append(score)
+            columns.append(column)
+    if not expected:
+        return {
+            "drawdown_convention": "initial_equity_high_water",
+            "include_initial_equity": True,
+            "stored_scores_verified": False,
+            "verified_candidate_count": 0,
+            "maximum_absolute_score_difference": None,
+        }
+    stored = np.asarray(expected, dtype=float)
+    current_scores = pooled_return_drawdown_scores(
+        selection_input.net_returns,
+        hold_days,
+        selection_input.observed,
+        include_initial_equity=True,
+    )[columns]
+    legacy_scores = pooled_return_drawdown_scores(
+        selection_input.net_returns,
+        hold_days,
+        selection_input.observed,
+        include_initial_equity=False,
+    )[columns]
+    current_max_difference = float(np.abs(current_scores - stored).max())
+    legacy_max_difference = float(np.abs(legacy_scores - stored).max())
+    tolerance = 1e-10
+    if current_max_difference <= tolerance:
+        return {
+            "drawdown_convention": "initial_equity_high_water",
+            "include_initial_equity": True,
+            "stored_scores_verified": True,
+            "verified_candidate_count": len(columns),
+            "maximum_absolute_score_difference": current_max_difference,
+        }
+    if legacy_max_difference <= tolerance:
+        return {
+            "drawdown_convention": "legacy_post_first_cohort_high_water",
+            "include_initial_equity": False,
+            "stored_scores_verified": True,
+            "verified_candidate_count": len(columns),
+            "maximum_absolute_score_difference": legacy_max_difference,
+        }
+    raise ValueError(
+        "stored development selection scores cannot be reproduced by either supported drawdown convention "
+        f"(initial={current_max_difference:.6g}, legacy={legacy_max_difference:.6g})"
+    )
+
+
+def circular_block_bootstrap_indices(
+    cohort_count: int, block_cohorts: int, rng: np.random.Generator
+) -> np.ndarray:
+    """Sample a cohort calendar with circular, fixed-length blocks."""
+
+    if cohort_count < 1 or block_cohorts < 1:
+        raise ValueError("cohort_count and block_cohorts must be positive")
+    starts = rng.integers(0, cohort_count, size=math.ceil(cohort_count / block_cohorts))
+    offsets = np.arange(block_cohorts, dtype=int)
+    return ((starts[:, None] + offsets[None, :]) % cohort_count).ravel()[:cohort_count]
+
+
+def selection_multiplicity_bootstrap(
+    selection_input: SelectionMultiplicityInput,
+    *,
+    hold_days: int,
+    replicates: int,
+    block_cohorts: int,
+    seed: int,
+    include_initial_equity: bool = True,
+) -> dict[str, Any]:
+    """Audit a stored development winner for search multiplicity without reading its test window.
+
+    The circular blocks preserve serial clustering and all candidates share
+    every sampled row, retaining their real cross-candidate dependence.  For
+    the global-null tail probability, each candidate's *traded* development
+    returns are centered independently while cash cohorts remain zero.  This
+    asks whether the best score among the searched library is unusual if no
+    candidate has an average traded excess return; it is not a promotion rule.
+    """
+
+    if replicates < 100:
+        raise ValueError("selection multiplicity audit requires at least 100 bootstrap replicates")
+    returns = selection_input.net_returns
+    holdings = selection_input.holdings
+    observed = selection_input.observed
+    actual_scores = pooled_return_drawdown_scores(
+        returns, hold_days, observed, include_initial_equity=include_initial_equity
+    )
+    actual_index = int(np.argmax(actual_scores))
+    stored_winner = str(selection_input.study.get("winner_selected_on_development_only") or "")
+    if stored_winner and selection_input.candidates[actual_index] != stored_winner:
+        raise ValueError("stored development winner cannot be reproduced from its recorded development cohorts")
+    centered = returns.copy()
+    for column in range(centered.shape[1]):
+        traded = observed[:, column] & (holdings[:, column] > 0)
+        if traded.any():
+            centered[traded, column] -= centered[traded, column].mean()
+    rng = np.random.default_rng(seed)
+    raw_winner_counts = np.zeros(returns.shape[1], dtype=int)
+    null_max_scores = np.empty(replicates, dtype=float)
+    for replicate in range(replicates):
+        indices = circular_block_bootstrap_indices(returns.shape[0], block_cohorts, rng)
+        raw_scores = pooled_return_drawdown_scores(
+            returns[indices], hold_days, observed[indices], include_initial_equity=include_initial_equity
+        )
+        raw_winner_counts[int(np.argmax(raw_scores))] += 1
+        null_max_scores[replicate] = float(
+            pooled_return_drawdown_scores(
+                centered[indices], hold_days, observed[indices], include_initial_equity=include_initial_equity
+            ).max()
+        )
+    observed_score = float(actual_scores[actual_index])
+    return {
+        "winner": selection_input.candidates[actual_index],
+        "winner_development_selection_score": observed_score,
+        "candidate_scores": [
+            {"candidate": candidate, "development_selection_score": float(score)}
+            for candidate, score in zip(selection_input.candidates, actual_scores, strict=True)
+        ],
+        "winner_resample_frequency": float(raw_winner_counts[actual_index] / replicates),
+        "resample_winner_frequencies": [
+            {"candidate": candidate, "frequency": float(count / replicates)}
+            for candidate, count in zip(selection_input.candidates, raw_winner_counts, strict=True)
+        ],
+        "global_null_max_score_p_value": float((1 + np.count_nonzero(null_max_scores >= observed_score)) / (replicates + 1)),
+        "global_null_max_score_quantiles": {
+            "p50": float(np.quantile(null_max_scores, 0.50)),
+            "p90": float(np.quantile(null_max_scores, 0.90)),
+            "p95": float(np.quantile(null_max_scores, 0.95)),
+            "p99": float(np.quantile(null_max_scores, 0.99)),
+        },
+    }
+
+
+def run_selection_multiplicity_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Write a development-only block-bootstrap audit for one saved factor sweep."""
+
+    study_path = Path(args.study).expanduser()
+    selection_input = load_selection_multiplicity_input(study_path)
+    policy = str(selection_input.study.get("selection_policy") or "pooled_return_drawdown")
+    if policy != "pooled_return_drawdown":
+        raise ValueError("selection multiplicity audit currently supports only pooled_return_drawdown studies")
+    convention = infer_selection_score_drawdown_convention(selection_input, int(args.hold_days))
+    bootstrap = selection_multiplicity_bootstrap(
+        selection_input,
+        hold_days=int(args.hold_days),
+        replicates=int(args.bootstrap_replicates),
+        block_cohorts=int(args.block_cohorts),
+        seed=int(args.seed),
+        include_initial_equity=bool(convention["include_initial_equity"]),
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "development_only_candidate_selection_multiplicity_audit_not_investment_advice",
+        "study": {
+            "path": str(study_path.resolve()),
+            "run_id": selection_input.study.get("run_id"),
+            "candidate_library_fingerprint_sha256": selection_input.study.get("candidate_library_fingerprint_sha256"),
+            "selection_policy": policy,
+            "stored_winner_selected_on_development_only": selection_input.study.get("winner_selected_on_development_only"),
+            "selection_score_reproducibility": convention,
+        },
+        "data": {
+            "development_signal_start": selection_input.signal_dates.min().date().isoformat(),
+            "development_signal_end": selection_input.signal_dates.max().date().isoformat(),
+            "development_cohort_count": int(len(selection_input.signal_dates)),
+            "candidate_development_cohort_count": {
+                "minimum": int(selection_input.observed.sum(axis=0).min()),
+                "maximum": int(selection_input.observed.sum(axis=0).max()),
+            },
+            "candidate_count": int(len(selection_input.candidates)),
+            "test_period_used": False,
+        },
+        "bootstrap": {
+            "method": "candidate-dependence-preserving circular block bootstrap",
+            "replicates": int(args.bootstrap_replicates),
+            "block_cohorts": int(args.block_cohorts),
+            "seed": int(args.seed),
+            "global_null": "candidate-wise centered traded returns; cash cohorts remain zero",
+        },
+        "result": {
+            **bootstrap,
+            "global_null_significance_level": 0.05,
+            "global_null_max_score_unusual": bool(bootstrap["global_null_max_score_p_value"] < 0.05),
+        },
+        "limitations": [
+            "This is a development-only selection-bias diagnostic; it does not promote, suspend, replace, or create a strategy.",
+            "The bootstrap quantifies instability and a centered global-null tail probability, not an economic guarantee or a probability of future profit.",
+            "Candidate returns share a current-listing universe and qfq prices, so survivorship and execution limitations remain.",
+            "When a legacy drawdown convention is required to reproduce a stored study, that convention is used only to audit the historical selection and must not be used for new research.",
+            "The original test period is intentionally not read; future paper evidence remains the only new validation.",
+        ],
+    }
+    root = Path(args.experiment_root).expanduser()
+    root.mkdir(parents=True, exist_ok=True)
+    destination = root / f"{run_id}_selection_multiplicity_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "winner": bootstrap["winner"],
+        "winner_resample_frequency": bootstrap["winner_resample_frequency"],
+        "global_null_max_score_p_value": bootstrap["global_null_max_score_p_value"],
+    }
+
+
 def forward_factor_return_frame(ranked: pd.DataFrame, hold_days: int) -> pd.DataFrame:
     """Pair every close-known eligible signal with its next-open three-day return.
 
@@ -6717,6 +7080,49 @@ def load_walk_forward_selection_audits(experiment_root: Path) -> list[dict[str, 
     return audits
 
 
+def load_selection_multiplicity_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read development-only candidate-search multiplicity audits for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_selection_multiplicity_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "completed":
+            continue
+        study = audit.get("study") or {}
+        data = audit.get("data") or {}
+        bootstrap = audit.get("bootstrap") or {}
+        result = audit.get("result") or {}
+        reproducibility = study.get("selection_score_reproducibility") or {}
+        candidate_cohort_count = data.get("candidate_development_cohort_count") or {}
+        cohort_minimum = int(candidate_cohort_count.get("minimum") or data.get("development_cohort_count") or 0)
+        cohort_maximum = int(candidate_cohort_count.get("maximum") or data.get("development_cohort_count") or 0)
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "study_run_id": str(study.get("run_id", "—")),
+                "candidate_count": int(data.get("candidate_count") or 0),
+                "development_cohort_count": (
+                    str(cohort_minimum)
+                    if cohort_minimum == cohort_maximum
+                    else f"{cohort_minimum}–{cohort_maximum}"
+                ),
+                "winner": str(result.get("winner", "—")),
+                "winner_resample_frequency": result.get("winner_resample_frequency"),
+                "global_null_max_score_p_value": result.get("global_null_max_score_p_value"),
+                "global_null_max_score_unusual": bool(result.get("global_null_max_score_unusual", False)),
+                "drawdown_convention": str(reproducibility.get("drawdown_convention", "—")),
+                "replicates": int(bootstrap.get("replicates") or 0),
+                "block_cohorts": int(bootstrap.get("block_cohorts") or 0),
+                "test_period_used": bool(data.get("test_period_used", False)),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -7056,6 +7462,7 @@ def render_three_day_research_report(
     event_factor_holdouts: list[dict[str, Any]] | None = None,
     factor_stability_audits: list[dict[str, Any]] | None = None,
     factor_topk_viability_audits: list[dict[str, Any]] | None = None,
+    selection_multiplicity_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -7277,6 +7684,37 @@ def render_three_day_research_report(
                     folds=audit["fold_count"],
                     net=_percent(audit["aggregate_net_return"]),
                     mdd=_percent(audit["aggregate_max_drawdown"]),
+                )
+            )
+        lines.append("")
+    if selection_multiplicity_audits:
+        lines.extend(
+            [
+                "",
+                "## 候选选择多重尝试审计",
+                "",
+                "本节只读取原始因子库在开发期保存的逐 cohort 收益：以共同的 5‑cohort 循环区块重采样保留候选之间的相关性，并在全局零收益比较中仅对实际持仓收益去均值、空仓维持零。它量化从整库挑出赢家后的稳定性与选择偏差，绝不读取测试期、生成选股名单或自动改变前瞻策略。",
+                "",
+                "| 审计 | 原始研究 | 候选 / 开发 Cohort | 胜者 | 重采样仍为胜者 | 全局零收益极值 p 值 | 评分回撤约定 | 设置 | 测试期参与 |",
+                "| --- | --- | ---: | --- | ---: | ---: | --- | --- | --- |",
+            ]
+        )
+        for audit in selection_multiplicity_audits:
+            winner_frequency = audit["winner_resample_frequency"]
+            p_value = audit["global_null_max_score_p_value"]
+            lines.append(
+                "| {run_id} | {study} | {candidates} / {cohorts} | {winner} | {frequency} | {p_value} | {convention} | {replicates} 次 / {block} cohort | {uses_test} |".format(
+                    run_id=audit["run_id"],
+                    study=audit["study_run_id"],
+                    candidates=audit["candidate_count"],
+                    cohorts=audit["development_cohort_count"],
+                    winner=audit["winner"],
+                    frequency="—" if winner_frequency is None else _percent(float(winner_frequency)),
+                    p_value="—" if p_value is None else f"{float(p_value):.4f}",
+                    convention=audit["drawdown_convention"],
+                    replicates=audit["replicates"],
+                    block=audit["block_cohorts"],
+                    uses_test="是（无效记录）" if audit["test_period_used"] else "否",
                 )
             )
         lines.append("")
@@ -7640,6 +8078,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     factor_topk_viability_audits = load_factor_topk_viability_audits(experiment_root)
     event_factor_holdouts = load_event_factor_holdouts(experiment_root)
     walk_forward_selection_audits = load_walk_forward_selection_audits(experiment_root)
+    selection_multiplicity_audits = load_selection_multiplicity_audits(experiment_root)
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -7670,6 +8109,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         event_factor_holdouts,
         factor_stability_audits,
         factor_topk_viability_audits,
+        selection_multiplicity_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -7693,6 +8133,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
         "walk_forward_selection_audits": len(walk_forward_selection_audits),
+        "selection_multiplicity_audits": len(selection_multiplicity_audits),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
         "model_audits": len(model_audits),
@@ -9943,6 +10384,21 @@ def parse_args() -> argparse.Namespace:
         help="optional exact factor name to audit; repeat to restrict the saved diagnostic",
     )
 
+    selection_multiplicity_audit = subparsers.add_parser(
+        "selection-multiplicity-audit",
+        help="audit a stored development winner for candidate-library search multiplicity",
+    )
+    selection_multiplicity_audit.add_argument("--study", required=True)
+    selection_multiplicity_audit.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    selection_multiplicity_audit.add_argument("--hold-days", type=int, default=3)
+    selection_multiplicity_audit.add_argument(
+        "--bootstrap-replicates", type=int, default=SELECTION_MULTIPLICITY_DEFAULT_BOOTSTRAP_REPLICATES
+    )
+    selection_multiplicity_audit.add_argument(
+        "--block-cohorts", type=int, default=SELECTION_MULTIPLICITY_DEFAULT_BLOCK_COHORTS
+    )
+    selection_multiplicity_audit.add_argument("--seed", type=int, default=SELECTION_MULTIPLICITY_DEFAULT_SEED)
+
     billboard_holdout = subparsers.add_parser(
         "billboard-holdout",
         help="evaluate the one post-development inverse billboard event hypothesis on a strictly later interval",
@@ -10362,6 +10818,8 @@ def main() -> int:
         report = run_factor_stability_audit(args)
     elif args.command == "factor-topk-viability-audit":
         report = run_factor_topk_viability_audit(args)
+    elif args.command == "selection-multiplicity-audit":
+        report = run_selection_multiplicity_audit(args)
     elif args.command == "billboard-holdout":
         report = run_billboard_holdout(args)
     elif args.command == "walk-forward-selection-audit":

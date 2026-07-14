@@ -1958,6 +1958,116 @@ def test_walk_forward_audits_are_retained_in_the_research_report_without_promoti
     assert "不能自动晋级或替换前瞻候选" in report
 
 
+def test_selection_multiplicity_audit_uses_development_only_and_retains_report_record(tmp_path):
+    dates = pd.bdate_range("2024-01-02", periods=20)
+
+    def write_candidate(path, candidate, development_return, test_return):
+        cohorts = [
+            {
+                "signal_date": date.date().isoformat(),
+                "segment": "development",
+                "net_return": development_return,
+                "holdings": 3,
+            }
+            for date in dates
+            if candidate != "alternate" or date != dates[-2]
+        ]
+        cohorts.append(
+            {
+                "signal_date": "2025-01-02",
+                "segment": "test",
+                "net_return": test_return,
+                "holdings": 3,
+            }
+        )
+        path.write_text(json.dumps({"candidate": candidate, "cohorts": cohorts}), encoding="utf-8")
+
+    winner_path = tmp_path / "winner.json"
+    alternate_path = tmp_path / "alternate.json"
+    write_candidate(winner_path, "winner", 0.01, -0.99)
+    # This large test-period return must not influence the development-only winner.
+    write_candidate(alternate_path, "alternate", 0.002, 0.90)
+    study_path = tmp_path / "study.json"
+    study_path.write_text(
+        json.dumps(
+            {
+                "run_id": "saved-sweep",
+                "winner_selected_on_development_only": "winner",
+                "ranking_by_development": [
+                    {"candidate": "winner", "path": str(winner_path)},
+                    {"candidate": "alternate", "path": str(alternate_path)},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    selection_input = RESEARCH.load_selection_multiplicity_input(study_path)
+    assert selection_input.candidates == ("winner", "alternate")
+    assert selection_input.net_returns.shape == (20, 2)
+    assert not selection_input.observed[-2, 1]
+    assert selection_input.net_returns[-2, 1] == 0.0
+    bootstrap = RESEARCH.selection_multiplicity_bootstrap(
+        selection_input, hold_days=3, replicates=100, block_cohorts=3, seed=1
+    )
+    assert bootstrap["winner"] == "winner"
+    assert bootstrap["winner_resample_frequency"] == 1.0
+    assert bootstrap["global_null_max_score_p_value"] == pytest.approx(1 / 101)
+
+    result = RESEARCH.run_selection_multiplicity_audit(
+        SimpleNamespace(
+            study=str(study_path),
+            experiment_root=str(tmp_path),
+            hold_days=3,
+            bootstrap_replicates=100,
+            block_cohorts=3,
+            seed=1,
+        )
+    )
+    audit = json.loads(Path(result["audit_path"]).read_text(encoding="utf-8"))
+    assert audit["data"]["test_period_used"] is False
+    audits = RESEARCH.load_selection_multiplicity_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []}, {"signals": [], "settlements": []}, selection_multiplicity_audits=audits
+    )
+    assert "候选选择多重尝试审计" in report
+    assert "绝不读取测试期" in report
+    assert "winner" in report
+
+
+def test_selection_multiplicity_infers_legacy_drawdown_only_for_historical_reproduction():
+    returns = RESEARCH.np.array(
+        [
+            [-0.10, 0.005],
+            [0.08, 0.005],
+            [0.08, 0.005],
+            [0.08, 0.005],
+        ]
+    )
+    observed = RESEARCH.np.ones_like(returns, dtype=bool)
+    legacy_scores = RESEARCH.pooled_return_drawdown_scores(
+        returns, 3, observed, include_initial_equity=False
+    )
+    selection_input = RESEARCH.SelectionMultiplicityInput(
+        study={
+            "ranking_by_development": [
+                {"candidate": "legacy-winner", "development_selection_score": float(legacy_scores[0])},
+                {"candidate": "other", "development_selection_score": float(legacy_scores[1])},
+            ]
+        },
+        candidates=("legacy-winner", "other"),
+        signal_dates=pd.bdate_range("2024-01-02", periods=4),
+        net_returns=returns,
+        holdings=RESEARCH.np.ones_like(returns),
+        observed=observed,
+    )
+    convention = RESEARCH.infer_selection_score_drawdown_convention(selection_input, hold_days=3)
+    assert convention["drawdown_convention"] == "legacy_post_first_cohort_high_water"
+    assert not convention["include_initial_equity"]
+    assert convention["stored_scores_verified"]
+    assert RESEARCH.pooled_return_drawdown_scores(returns, 3, observed)[0] < legacy_scores[0]
+
+
 def test_research_report_marks_non_promotable_historical_diagnostics():
     registry = {
         "iterations": [
