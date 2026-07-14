@@ -4612,9 +4612,15 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
             result.loc[~result[available_column].fillna(False), event_columns] = np.nan
     eligible = result["quality_eligible"].fillna(False)
     result = result.join(market_state_frame(result, eligible), on="datetime")
-    for column in raw_columns:
-        ranked = result.loc[eligible].groupby("datetime", sort=False)[column].rank(pct=True)
-        result.loc[eligible, f"rank_{column}"] = ranked
+    # Compute and attach every raw percentile in one block.  Repeated column
+    # insertion fragmented the all-market frame as the factor catalog grew,
+    # materially slowing each research iteration while producing the same
+    # values.  The joined rank frame keeps the original index and missing-row
+    # behavior, then ``copy`` consolidates blocks before derived directions are
+    # added below.
+    ranked_raw = result.loc[eligible].groupby("datetime", sort=False)[raw_columns].rank(pct=True)
+    ranked_raw = ranked_raw.rename(columns={column: f"rank_{column}" for column in raw_columns})
+    result = result.join(ranked_raw, how="left").copy()
     result["reversal_1"] = 1.0 - result["rank_momentum_1"]
     result["reversal_2"] = 1.0 - result["rank_momentum_2"]
     result["reversal_3"] = 1.0 - result["rank_momentum_3"]

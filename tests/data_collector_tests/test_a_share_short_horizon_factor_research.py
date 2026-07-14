@@ -774,6 +774,7 @@ def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
         RESEARCH.add_billboard_holdout_factor(pd.DataFrame({"other": [1.0]}))
 
 
+@pytest.mark.filterwarnings("error::pandas.errors.PerformanceWarning")
 def test_rank_factor_frame_excludes_expired_event_values():
     raw_columns = [
         "momentum_1",
