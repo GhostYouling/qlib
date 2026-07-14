@@ -492,6 +492,31 @@ python scripts/a_share_short_horizon_factor_research.py prospective-monitor
 
 此后监控器只允许记录**运行当日的最新本地收盘**：若漏跑某个信号日，不得回填；非三日网格日只结算已有信号，不补建仓。登记与台账分别保存在 `prospective_factor_registry.json` 和 `three_day_prospective_factor_ledger.json`，`report` 会将它们放在独立章节，不能与已晋级策略或 shadow 候选的收益混算。此观察永远不能调用 `plan`；若未来样本支持它，也只能作为设计下一轮预注册策略的证据，不能追溯性地改写 2019–2025 结论。
 
+下一项独立开发期假设预注册为 `signed_efficiency_ratio_10`：
+
+```text
+(close / Ref(close, 10) - 1) / Sum(Abs(close / Ref(close, 1) - 1), 10)
+```
+
+分子是 10 个交易日的净涨跌，分母是这 10 日逐日绝对收益之和，因此取值接近 +1 代表价格以较少来回波动完成上涨，接近 −1 代表平滑下跌。方向固定为高值：更有效率的上涨路径可能延续到下一交易日开盘至第 3 个交易日收盘。它不同于只看起终点的 `momentum_10` 和只统计上涨天数的 `up_day_consistency_5`。只测试 10 日、有符号、高值方向；不测试绝对值、负方向、5/20 日窗口或与旧因子的组合。分母为零或非有限值时保持缺失。
+
+仍使用固定 2019–2025 开发期、非重叠三日 cohort、Top‑3、买入 0.012% / 卖出 0.062% 成本及既有两道门槛：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --factor signed_efficiency_ratio_10
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor signed_efficiency_ratio_10
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor signed_efficiency_ratio_10
+```
+
+本轮仅回答该定义是否满足预设稳定性和可交易性门槛。失败即淘汰；即使通过，也只能作为设计下一份预注册候选库的开发期证据，不能直接晋级、提高仓位或与正在收集的纯前瞻 VWAP 观察混算。
+
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge、浅层 LightGBM 回归和浅层 LightGBM LambdaRank 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票；LambdaRank 只在训练样本内按每个信号日的后续收益分为五档，直接学习横截面排序，绝不把未来标签带入评分时点。
 
 默认审计还将每种模型与三个**预先固定、收盘可知**的市场状态组合：始终交易、20 日广度为正、以及“20 日广度为正且波动不高于严格追溯的 75 分位”。这不是在全部状态中事后挑选；三种状态均来自已有的因子研究定义，并在同一开发期规则下和模型一起参与选择。停用状态时该轮完整按现金记录，不会用别的日期或股票替换。

@@ -94,6 +94,9 @@ PROSPECTIVE_VWAP_TOPK = 3
 PROSPECTIVE_VWAP_HOLD_DAYS = 3
 PROSPECTIVE_VWAP_OPEN_COST = 0.00012
 PROSPECTIVE_VWAP_CLOSE_COST = 0.00062
+SIGNED_EFFICIENCY_RATIO_10_EXPRESSION = (
+    "($close/Ref($close, 10) - 1)/Sum(Abs($close/Ref($close, 1) - 1), 10)"
+)
 
 EASTMONEY_DATACENTER_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get"
 EASTMONEY_REPORT = "RPT_LICO_FN_CPD"
@@ -1169,6 +1172,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "up_day_consistency_5",
     "signed_volume_pressure_5",
     "close_above_vwap_1",
+    "signed_efficiency_ratio_10",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -4335,6 +4339,12 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
         # demand persistence; it is distinct from the OHLC-only close-to-high
         # location and remains fully known at the signal close.
         "close_above_vwap_1": "$close/$vwap - 1",
+        # Signed ten-session path efficiency.  The numerator is the net
+        # close-to-close move and the denominator is the total absolute path
+        # length.  A high value is a smooth upward path rather than merely a
+        # large endpoint return; the ten-session, positive direction is fixed
+        # before its isolated development diagnostic is run.
+        "signed_efficiency_ratio_10": SIGNED_EFFICIENCY_RATIO_10_EXPRESSION,
         # Five-day close-location value weighted by each session's volume.
         # The sign is positive when volume repeatedly trades on bars that
         # finish nearer their high than their low.  This is a close-known
@@ -4434,6 +4444,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "intraday_strength",
         "close_to_high",
         "close_above_vwap_1",
+        "signed_efficiency_ratio_10",
         "signed_volume_pressure_5",
         "roe",
         "revenue_yoy",
@@ -4564,6 +4575,9 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     )
     result["close_above_vwap_1"] = result["close_above_vwap_1"].where(
         np.isfinite(result["close_above_vwap_1"])
+    )
+    result["signed_efficiency_ratio_10"] = result["signed_efficiency_ratio_10"].where(
+        np.isfinite(result["signed_efficiency_ratio_10"])
     )
     # Event rows are forward-filled only so each row retains the event context
     # for auditing.  Once the explicitly declared event window expires, those
@@ -4711,6 +4725,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["intraday_strength"] = result["rank_intraday_strength"]
     result["close_to_high"] = result["rank_close_to_high"]
     result["close_above_vwap_1"] = result["rank_close_above_vwap_1"]
+    result["signed_efficiency_ratio_10"] = result["rank_signed_efficiency_ratio_10"]
     result["signed_volume_pressure_5"] = result["rank_signed_volume_pressure_5"]
     return result
 

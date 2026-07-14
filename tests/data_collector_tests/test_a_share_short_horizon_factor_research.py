@@ -806,6 +806,7 @@ def test_rank_factor_frame_excludes_expired_event_values():
         "intraday_strength",
         "close_to_high",
         "close_above_vwap_1",
+        "signed_efficiency_ratio_10",
         "signed_volume_pressure_5",
         "roe",
         "revenue_yoy",
@@ -864,6 +865,8 @@ def test_rank_factor_frame_excludes_expired_event_values():
     assert active["signed_volume_pressure_5"] == pytest.approx(1.0)
     assert expired["close_above_vwap_1"] == pytest.approx(0.5)
     assert active["close_above_vwap_1"] == pytest.approx(1.0)
+    assert expired["signed_efficiency_ratio_10"] == pytest.approx(0.5)
+    assert active["signed_efficiency_ratio_10"] == pytest.approx(1.0)
 
 
 def test_winner_uses_development_only():
@@ -1431,9 +1434,13 @@ def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields(
         "up_day_consistency_5",
         "signed_volume_pressure_5",
         "close_above_vwap_1",
+        "signed_efficiency_ratio_10",
     }
     assert expected.issubset(RESEARCH.FACTOR_DIAGNOSTIC_COLUMNS)
     assert expected.issubset(RESEARCH.EXPLORATORY_DIAGNOSTIC_FACTORS)
+    assert RESEARCH.SIGNED_EFFICIENCY_RATIO_10_EXPRESSION == (
+        "($close/Ref($close, 10) - 1)/Sum(Abs($close/Ref($close, 1) - 1), 10)"
+    )
 
 
 def test_factor_stability_decision_requires_positive_rank_ic_in_every_observed_year():
