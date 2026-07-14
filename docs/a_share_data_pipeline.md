@@ -91,6 +91,15 @@ python scripts/a_share_data_pipeline.py price-basis-audit
 python scripts/a_share_data_pipeline.py materialize
 ```
 
+如果审计只报告源端 `amount/volume` 算出的 VWAP 不在同日未复权 OHLC 内，先运行 `quarantine-vwap`，再重新审计。该命令保留异常 `raw_vwap` 与原成交额/成交量供追溯，仅将对应的研究 `vwap` 置空；绝不把均价夹到最高/最低价，也不修改 OHLC、收益或复权因子：
+
+```bash
+python scripts/a_share_data_pipeline.py quarantine-vwap
+python scripts/a_share_data_pipeline.py price-basis-audit
+```
+
+通过报告允许非零 `source_vwap_quarantined_rows`，但要求 `source_vwap_unquarantined_rows=0` 和 `adjusted_vwap_outside_ohlc_rows=0`。隔离记录保存在 `data/metadata/repairs/`。
+
 中断后改用 `--only-missing --source baostock --adjust point_in_time --skip-dump`：已有且已达到同一 source/basis、日期完整的文件会跳过；旧 qfq 文件虽然路径存在，仍会被视为“缺少新合同”并全量替换。
 
 公共当前股票清单适合维护今天的“可买范围”，但并不能保证已退市股票的完整历史。因此，以它训练长期回测会有幸存者偏差风险。严肃研究需要补充有上市/退市区间与公告时点的商业数据或合规数据源；这条管线已经按日保存清单快照和运行记录，为后续替换数据源保留了审计入口。

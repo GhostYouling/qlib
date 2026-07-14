@@ -195,6 +195,58 @@ def test_baostock_unresolvable_noninitial_return_remains_missing():
     assert pd.isna(filled.iloc[1])
 
 
+def test_source_vwap_outside_ohlc_is_preserved_but_quarantined_from_research():
+    bars = pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2026-06-01"]),
+            "symbol": ["SZ300001"],
+            "pct_chg": [0.0],
+            "amount": [0.0],
+            "turnover": [1.0],
+            "raw_open": [10.0],
+            "raw_high": [10.1],
+            "raw_low": [9.9],
+            "raw_close": [10.0],
+            "raw_volume": [100.0],
+            "raw_vwap": [0.0],
+            "price_basis": [PIPELINE.POINT_IN_TIME_PRICE_BASIS],
+            "daily_source": ["baostock"],
+        }
+    )
+    adjusted = PIPELINE.rebuild_point_in_time_prices(bars)
+    assert adjusted.loc[0, "raw_vwap"] == 0.0
+    assert pd.isna(adjusted.loc[0, "vwap"])
+    counts = PIPELINE.price_basis_quality_counts(adjusted)
+    assert counts["source_vwap_quarantined_rows"] == 1
+    assert counts["source_vwap_unquarantined_rows"] == 0
+
+
+def test_quarantine_vwap_command_rewrites_only_the_research_field(tmp_path, monkeypatch):
+    raw_dir = tmp_path / "raw"
+    metadata_dir = tmp_path / "metadata"
+    raw_dir.mkdir()
+    bars = pd.DataFrame(
+        {
+            "raw_low": [9.9],
+            "raw_high": [10.1],
+            "raw_volume": [100.0],
+            "raw_vwap": [0.0],
+            "vwap": [0.0],
+            "amount": [0.0],
+        }
+    )
+    path = raw_dir / "sz300001.parquet"
+    bars.to_parquet(path, index=False)
+    monkeypatch.setattr(PIPELINE, "RAW_DIR", raw_dir)
+    monkeypatch.setattr(PIPELINE, "METADATA_DIR", metadata_dir)
+    monkeypatch.setattr(PIPELINE, "LOCK_PATH", tmp_path / "pipeline.lock")
+    assert PIPELINE.run_quarantine_source_vwap(object()) == 0
+    repaired = pd.read_parquet(path)
+    assert repaired.loc[0, "raw_vwap"] == 0.0
+    assert pd.isna(repaired.loc[0, "vwap"])
+    assert len(list((metadata_dir / "repairs").glob("*_vwap_quarantine.json"))) == 1
+
+
 def test_point_in_time_merge_rejects_legacy_mix_but_force_full_replaces_it(tmp_path):
     target = tmp_path / "sh600519.parquet"
     legacy = pd.DataFrame(

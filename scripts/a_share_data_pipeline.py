@@ -68,6 +68,7 @@ POINT_IN_TIME_EXCLUDED_FIELDS = (
     "daily_source",
     *POINT_IN_TIME_RAW_COLUMNS,
 )
+NON_FAILURE_PRICE_BASIS_COUNTS = {"source_vwap_quarantined_rows"}
 
 UNIVERSE_URL = "https://82.push2.eastmoney.com/api/qt/clist/get"
 KLINE_URLS = (
@@ -591,9 +592,10 @@ def rebuild_point_in_time_prices(bars: pd.DataFrame) -> pd.DataFrame:
         ("open", "raw_open"),
         ("high", "raw_high"),
         ("low", "raw_low"),
-        ("vwap", "raw_vwap"),
     ):
         result[adjusted_column] = result[raw_column] * result["factor"]
+    source_vwap_invalid = raw_vwap_outside_ohlc_mask(result)
+    result["vwap"] = result["raw_vwap"].where(~source_vwap_invalid) * result["factor"]
     result["volume"] = result["raw_volume"] / result["factor"]
     prior_adjusted_close = result["close"] / gross_multiplier
     result["change"] = result["close"] - prior_adjusted_close
@@ -601,6 +603,21 @@ def rebuild_point_in_time_prices(bars: pd.DataFrame) -> pd.DataFrame:
     if invalid_price_mask(result).any():
         raise PipelineError("point-in-time adjustment produced invalid OHLC relationships")
     return result
+
+
+def raw_vwap_outside_ohlc_mask(bars: pd.DataFrame) -> pd.Series:
+    """Identify source amount/volume pairs that cannot describe the source OHLC."""
+
+    required = {"raw_low", "raw_high", "raw_volume", "raw_vwap"}
+    if not required.issubset(bars.columns):
+        return pd.Series(False, index=bars.index)
+    numeric = bars[list(required)].apply(pd.to_numeric, errors="coerce")
+    tolerance = 0.011 + numeric["raw_high"].abs() * 1e-6
+    present = numeric["raw_volume"].gt(0.0) & numeric["raw_vwap"].notna()
+    return present & (
+        numeric["raw_vwap"].lt(numeric["raw_low"] - tolerance)
+        | numeric["raw_vwap"].gt(numeric["raw_high"] + tolerance)
+    )
 
 
 def invalid_price_mask(bars: pd.DataFrame) -> pd.Series:
@@ -886,6 +903,8 @@ def price_basis_quality_counts(bars: pd.DataFrame) -> dict[str, int]:
     ).abs() > (1e-6 + numeric["raw_close"].abs() * 1e-6)
     observed_return = numeric["close"].pct_change(fill_method=None) * 100.0
     return_error = observed_return.iloc[1:].sub(numeric["pct_chg"].iloc[1:]).abs().gt(1e-6)
+    source_vwap_invalid = raw_vwap_outside_ohlc_mask(bars)
+    source_vwap_unquarantined = source_vwap_invalid & numeric["vwap"].notna()
     return {
         "unsupported_price_basis_rows": int(
             (~bars["price_basis"].astype("string").eq(POINT_IN_TIME_PRICE_BASIS)).sum()
@@ -901,6 +920,10 @@ def price_basis_quality_counts(bars: pd.DataFrame) -> dict[str, int]:
         ),
         "invalid_adjusted_ohlc_rows": int(invalid_price_mask(numeric).sum()),
         "adjusted_vwap_outside_ohlc_rows": int(vwap_outside.sum()),
+        "source_vwap_unquarantined_rows": int(source_vwap_unquarantined.sum()),
+        "source_vwap_quarantined_rows": int(
+            (source_vwap_invalid & numeric["vwap"].isna()).sum()
+        ),
         "raw_close_reconstruction_error_rows": int(reconstruction_error.sum()),
         "pct_chg_chain_error_rows": int(return_error.sum()),
     }
@@ -926,7 +949,11 @@ def audit_point_in_time_source(raw_dir: Path = RAW_DIR, max_examples: int = 20) 
             affected.append({"symbol": path.stem.upper(), "violations": counts})
     if len(daily_sources) != 1:
         totals["mixed_daily_sources"] = max(1, len(daily_sources))
-    failures = {name: count for name, count in totals.items() if count}
+    failures = {
+        name: count
+        for name, count in totals.items()
+        if count and name not in NON_FAILURE_PRICE_BASIS_COUNTS
+    }
     return {
         "status": "passed" if files and not failures else "failed",
         "price_basis": POINT_IN_TIME_PRICE_BASIS,
@@ -1467,6 +1494,42 @@ def run_price_basis_audit(args: argparse.Namespace) -> int:
     return 0 if audit["status"] == "passed" else 1
 
 
+def run_quarantine_source_vwap(_: argparse.Namespace) -> int:
+    """Null research VWAP where source amount/volume contradict source OHLC."""
+
+    started = dt.datetime.now(dt.timezone.utc)
+    affected: list[dict[str, Any]] = []
+    quarantined_rows = 0
+    with PipelineLock(LOCK_PATH):
+        for path in sorted(RAW_DIR.glob("*.parquet")):
+            bars = pd.read_parquet(path)
+            mask = raw_vwap_outside_ohlc_mask(bars)
+            if not mask.any():
+                continue
+            bars.loc[mask, "vwap"] = float("nan")
+            _atomic_write_parquet(bars, path)
+            count = int(mask.sum())
+            quarantined_rows += count
+            affected.append({"symbol": path.stem.upper(), "rows": count})
+    report = {
+        "status": "completed",
+        "operation": "quarantine_source_vwap_outside_raw_ohlc",
+        "started_at": started.isoformat(),
+        "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "affected_files": len(affected),
+        "quarantined_rows": quarantined_rows,
+        "affected": affected,
+        "raw_vwap_preserved": True,
+        "research_vwap_set_to_missing": True,
+        "price_fields_changed": False,
+        "forward_return_fields_read": False,
+    }
+    destination = METADATA_DIR / "repairs" / f"{started.strftime('%Y%m%dT%H%M%SZ')}_vwap_quarantine.json"
+    write_json(destination, report)
+    print(json.dumps({**report, "report_path": str(destination.resolve())}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def run_sanitize(args: argparse.Namespace) -> int:
     """Repair legacy invalid price rows, then rebuild Qlib data from local files."""
 
@@ -1597,6 +1660,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     price_basis_audit.add_argument("--max-examples", type=int, default=20)
     price_basis_audit.set_defaults(func=run_price_basis_audit)
+    quarantine_vwap = subparsers.add_parser(
+        "quarantine-vwap",
+        help="preserve raw source VWAP but null the research VWAP when amount/volume contradict raw OHLC",
+    )
+    quarantine_vwap.set_defaults(func=run_quarantine_source_vwap)
     sanitize = subparsers.add_parser("sanitize", help="remove invalid local OHLC rows and rebuild Qlib binaries")
     sanitize.add_argument("--dump-workers", type=int, default=DEFAULT_WORKERS, help="Qlib binary materialization workers")
     sanitize.add_argument("--skip-dump", action="store_true", help="repair Parquet only; do not rebuild Qlib binaries")
