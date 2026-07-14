@@ -173,6 +173,9 @@ DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
 DEFAULT_INTRADAY_DEMAND_PERSISTENCE_SPEC = (
     REPO_ROOT / "docs" / "a_share_intraday_demand_persistence_preregistration.json"
 )
+DEFAULT_DIRECTIONAL_SERIAL_DEPENDENCE_SPEC = (
+    REPO_ROOT / "docs" / "a_share_directional_serial_dependence_preregistration.json"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -244,6 +247,11 @@ RETURN_TURNOVER_CORRELATION_10_EXPRESSION = complete_rolling_window_expression(
 MAX_RETURN_20_EXPRESSION = "Max($close/Ref($close, 1) - 1, 20) + 0*Ref($close, 20)"
 INTRADAY_RETURN_SUM_5_EXPRESSION = complete_rolling_window_expression(
     "Sum($close/$open - 1, 5)", 4
+)
+DIRECTIONAL_SERIAL_DEPENDENCE_20_EXPRESSION = (
+    "Sign($close/Ref($close, 1) - 1)*"
+    "(Corr($close/Ref($close, 1) - 1, Ref($close/Ref($close, 1) - 1, 1), 20) "
+    "+ 0*Ref($close, 21))"
 )
 COMPRESSION_CONSENSUS_MIN_COMPONENTS = (
     "amplitude_low",
@@ -558,6 +566,10 @@ PLEDGE_EVENT_REBUILD_PURPOSE = (
 INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME = "intraday_return_sum_5"
 INTRADAY_DEMAND_PERSISTENCE_PURPOSE = (
     "development_only_preregistered_intraday_demand_persistence_research_not_investment_advice"
+)
+DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME = "directional_serial_dependence_20"
+DIRECTIONAL_SERIAL_DEPENDENCE_PURPOSE = (
+    "development_only_preregistered_directional_serial_dependence_research_not_investment_advice"
 )
 MARGIN_FINANCING_TOP_N = 100
 INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION = 40
@@ -1486,6 +1498,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "drawdown_20",
     "intraday_strength",
     "intraday_return_sum_5",
+    "directional_serial_dependence_20",
     "roe_change",
     "revenue_yoy_acceleration",
     "profit_yoy_acceleration",
@@ -1553,6 +1566,7 @@ ROLLING_FACTOR_PRIOR_CLOSE_REQUIREMENTS = {
     "return_turnover_correlation_10": 10,
     "signed_volume_pressure_5": 4,
     "intraday_return_sum_5": 4,
+    "directional_serial_dependence_20": 21,
     "max_return_20": 20,
 }
 COMPLETE_WINDOW_SEMANTICS_EFFECTIVE_RUN_ID = "20260714T095117Z"
@@ -1586,6 +1600,7 @@ WINDOW_SEMANTICS_AFFECTED_FACTORS = frozenset(
         "return_turnover_correlation_10",
         "signed_volume_pressure_5",
         "intraday_return_sum_5",
+        "directional_serial_dependence_20",
         "compression_consensus_min",
     }
 )
@@ -4650,6 +4665,137 @@ def require_unconsumed_intraday_demand_persistence(experiment_root: Path) -> Non
         record = load_json_record(path)
         if record.get("purpose") == INTRADAY_DEMAND_PERSISTENCE_PURPOSE:
             raise ValueError(f"intraday-demand persistence diagnostic is already consumed: {path}")
+
+
+def load_directional_serial_dependence_preregistration(
+    path: Path = DEFAULT_DIRECTIONAL_SERIAL_DEPENDENCE_SPEC,
+) -> dict[str, Any]:
+    """Enforce the frozen directional serial-dependence protocol."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_directional_serial_dependence_preregistration")
+    factor = spec.get("factor") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("research_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status") == "frozen_before_directional_serial_dependence_factor_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T20:40:00Z"
+        and factor.get("name") == DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME
+        and factor.get("formula") == DIRECTIONAL_SERIAL_DEPENDENCE_20_EXPRESSION
+        and factor.get("diagnostic_direction") == "higher"
+        and factor.get("required_complete_return_pairs") == 20
+        and factor.get("required_prior_close_sessions") == 21
+        and set(snapshots) == {"price_basis_manifest", "annual_quality", "uniqueness_audit"}
+        and snapshots["price_basis_manifest"].get("price_basis") == REQUIRED_PRICE_BASIS
+        and snapshots["price_basis_manifest"].get("future_corporate_actions_used") is False
+        and snapshots["uniqueness_audit"].get("forward_return_fields_read") is False
+        and snapshots["uniqueness_audit"].get("maximum_absolute_median_daily_spearman") == 0.139096
+        and snapshots["uniqueness_audit"].get("near_synonym_rejection_threshold") == 0.8
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "rolling_window_semantics_must_pass_before_forward_returns": True,
+            "single_factor_only": True,
+            "one_completed_diagnostic_only": True,
+            "no_direction_formula_window_cost_quality_source_or_factor_subset_override": True,
+            "no_reverse_direction_or_alternative_window_after_results": True,
+            "no_post_result_momentum_volatility_turnover_or_quality_combination": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_newly_dated_prospective_paper_observation": True,
+            "historical_period_has_been_used_by_other_hypotheses_and_is_not_a_pristine_holdout": True,
+            "selection_aggregation_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("directional serial-dependence preregistration does not match the frozen protocol")
+    return spec
+
+
+def validate_directional_serial_dependence_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Fingerprint-bind accepted daily inputs and the no-return uniqueness audit."""
+
+    evidence = validate_intraday_demand_persistence_sources(spec)
+    link = (spec.get("source_snapshots") or {}).get("uniqueness_audit") or {}
+    path = resolve_repository_record_path(str(link.get("path") or ""))
+    if not path.exists() or file_sha256(path) != str(link.get("sha256") or ""):
+        raise ValueError("directional serial-dependence uniqueness audit is missing or mismatched")
+    audit = load_json_record(path, kind="a_share_directional_serial_dependence_uniqueness_audit")
+    accepted = audit.get("accepted_for_preregistration") or {}
+    if (
+        audit.get("status") != "completed_before_directional_serial_dependence_forward_returns_observed"
+        or audit.get("forward_return_fields_read") is not False
+        or accepted.get("name") != DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME
+        or accepted.get("formula") != DIRECTIONAL_SERIAL_DEPENDENCE_20_EXPRESSION
+        or accepted.get("direction") != "higher"
+        or accepted.get("maximum_absolute_median_daily_spearman") != 0.139096
+        or accepted.get("decision")
+        != "eligible_for_one_frozen_development_diagnostic_after_complete_window_semantics_passes"
+    ):
+        raise ValueError("directional serial-dependence uniqueness audit is not accepted")
+    evidence["uniqueness_audit"] = {
+        "path": str(path),
+        "sha256": file_sha256(path),
+        "forward_return_fields_read": False,
+        "maximum_absolute_median_daily_spearman": 0.139096,
+    }
+    return evidence
+
+
+def require_directional_serial_dependence_window_semantics(experiment_root: Path) -> dict[str, Any]:
+    """Require a no-return audit proving all 20 lag pairs use 21 prior closes."""
+
+    for path in reversed(sorted(experiment_root.expanduser().glob("*_rolling_window_semantics_audit.json"))):
+        record = load_json_record(path)
+        decisions = {str(item.get("factor")): item for item in (record.get("factor_decisions") or [])}
+        decision = decisions.get(DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME) or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("passed") is True
+            and record.get("forward_return_fields_read") is False
+            and decision.get("passed") is True
+            and decision.get("required_prior_sessions") == 21
+            and decision.get("expected_first_valid_session_number") == 22
+            and decision.get("early_non_missing_rows") == 0
+        ):
+            return {
+                "run_id": record.get("run_id"),
+                "path": str(path.resolve()),
+                "sha256": file_sha256(path),
+                "factor_decision": decision,
+                "forward_return_fields_read": False,
+            }
+    raise ValueError(
+        "directional serial-dependence diagnostic requires a passed rolling-window-semantics-audit "
+        "containing directional_serial_dependence_20"
+    )
+
+
+def require_unconsumed_directional_serial_dependence(experiment_root: Path) -> None:
+    """Prevent a second historical return read for the frozen path factor."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == DIRECTIONAL_SERIAL_DEPENDENCE_PURPOSE:
+            raise ValueError(f"directional serial-dependence diagnostic is already consumed: {path}")
 
 
 def _load_fingerprinted_json_link(
@@ -10333,6 +10479,10 @@ def load_market_data(
         # The positive direction and the only allowed window are frozen in
         # the repository preregistration before this factor's returns are read.
         "intraday_return_sum_5": INTRADAY_RETURN_SUM_5_EXPRESSION,
+        # The current return sign turns lag-one return autocorrelation into a
+        # directional forecast.  The 20-pair window and positive direction
+        # are frozen before this factor's development returns are read.
+        "directional_serial_dependence_20": DIRECTIONAL_SERIAL_DEPENDENCE_20_EXPRESSION,
         "close_to_high": "$close/$high",
         # Same-session close relative to the day's transaction-weighted
         # average price.  A positive value is predeclared as late-session
@@ -10567,6 +10717,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "near_high_20",
         "intraday_strength",
         "intraday_return_sum_5",
+        "directional_serial_dependence_20",
         "close_to_high",
         "close_above_vwap_1",
         "signed_efficiency_ratio_10",
@@ -10729,6 +10880,9 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["return_turnover_correlation_10"] = result["return_turnover_correlation_10"].where(
         np.isfinite(result["return_turnover_correlation_10"])
     )
+    result["directional_serial_dependence_20"] = result[
+        "directional_serial_dependence_20"
+    ].where(np.isfinite(result["directional_serial_dependence_20"]))
     result["max_return_20"] = result["max_return_20"].where(np.isfinite(result["max_return_20"]))
     # Event rows are forward-filled only so each row retains the event context
     # for auditing.  Once the explicitly declared event window expires, those
@@ -10908,6 +11062,9 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["near_high_20"] = result["rank_near_high_20"]
     result["intraday_strength"] = result["rank_intraday_strength"]
     result["intraday_return_sum_5"] = result["rank_intraday_return_sum_5"]
+    result["directional_serial_dependence_20"] = result[
+        "rank_directional_serial_dependence_20"
+    ]
     result["close_to_high"] = result["rank_close_to_high"]
     result["close_above_vwap_1"] = result["rank_close_above_vwap_1"]
     result["signed_efficiency_ratio_10"] = result["rank_signed_efficiency_ratio_10"]
@@ -19269,6 +19426,77 @@ def run_intraday_demand_persistence_diagnostic(args: argparse.Namespace) -> dict
     return result
 
 
+def run_directional_serial_dependence_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen directional serial-dependence factor exactly once."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_directional_serial_dependence_preregistration()
+    source_evidence = validate_directional_serial_dependence_sources(spec)
+    window_semantics = require_directional_serial_dependence_window_semantics(experiment_root)
+    require_unconsumed_directional_serial_dependence(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=str(resolve_repository_record_path(snapshots["annual_quality"]["path"])),
+        performance_forecasts=None,
+        billboard_events=None,
+        major_holder_events=None,
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=None,
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=contract["maximum_quality_age_days"],
+        max_forecast_age_days=30,
+        max_billboard_age_days=3,
+        max_major_holder_age_days=3,
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=3,
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=3,
+        max_dividend_plan_age_days=3,
+        batch_size=args.batch_size,
+        factor=[DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME],
+        diagnostic_purpose=DIRECTIONAL_SERIAL_DEPENDENCE_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_DIRECTIONAL_SERIAL_DEPENDENCE_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_DIRECTIONAL_SERIAL_DEPENDENCE_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "factor_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "rolling_window_semantics": window_semantics,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    if (
+        audit.get("purpose") != DIRECTIONAL_SERIAL_DEPENDENCE_PURPOSE
+        or tuple(audit.get("factor_catalog") or []) != (DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME,)
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or (audit.get("quality_gate") or {}).get("sha256") != snapshots["annual_quality"]["sha256"]
+        or ((audit.get("preregistration") or {}).get("rolling_window_semantics") or {}).get("sha256")
+        != window_semantics["sha256"]
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError("completed directional serial-dependence diagnostic does not match its protocol")
+    return result
+
+
 def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the frozen five-factor minute diagnostic on development data only."""
 
@@ -21677,6 +21905,16 @@ def parse_args() -> argparse.Namespace:
     intraday_demand.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     intraday_demand.add_argument("--batch-size", type=int, default=500)
 
+    directional_serial_dependence = subparsers.add_parser(
+        "directional-serial-dependence-diagnostic",
+        help="diagnose the frozen 20-pair directional serial-dependence factor exactly once",
+    )
+    directional_serial_dependence.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    directional_serial_dependence.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    directional_serial_dependence.add_argument("--batch-size", type=int, default=500)
+
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
         help="diagnose all five frozen one-minute factors under the fixed three-day protocol",
@@ -22356,6 +22594,8 @@ def main() -> int:
         report = run_insider_open_market_diagnostic(args)
     elif args.command == "intraday-demand-persistence-diagnostic":
         report = run_intraday_demand_persistence_diagnostic(args)
+    elif args.command == "directional-serial-dependence-diagnostic":
+        report = run_directional_serial_dependence_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":

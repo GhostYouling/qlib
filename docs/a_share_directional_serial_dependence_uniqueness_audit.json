@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "kind": "a_share_directional_serial_dependence_uniqueness_audit",
+  "status": "completed_before_directional_serial_dependence_forward_returns_observed",
+  "audited_at": "2026-07-14T20:39:30Z",
+  "purpose": "Reject daily-price candidates that are near-synonymous with an already tested mechanism before any candidate forward return is read.",
+  "data": {
+    "provider_uri": "data/qlib/cn_a_share",
+    "price_basis_manifest": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "start": "2025-01-01",
+    "end": "2025-12-31",
+    "universe": "buyable_main_chinext",
+    "instrument_count": 4610,
+    "session_count": 243,
+    "row_count": 1108238,
+    "future_return_fields_read": false
+  },
+  "method": {
+    "candidate_values": "close-known current and trailing daily fields only",
+    "comparison": "For each session, percentile-rank the candidate and each existing field across the historical buyable universe, calculate their Spearman correlation, then compare the median daily correlation.",
+    "near_synonym_rejection_threshold_absolute_median_daily_spearman": 0.8,
+    "threshold_role": "mechanism uniqueness only; it does not select by return, IC, spread, drawdown, or portfolio performance",
+    "existing_daily_technical_fields_compared": 35
+  },
+  "rejected_candidates": [
+    {
+      "name": "turnover_price_impact_20_low",
+      "raw_formula": "(Sum(Abs($close/Ref($close, 1) - 1), 20)/Sum($turnover, 20)) + 0*Ref($close, 20)",
+      "proposed_direction": "lower",
+      "closest_existing_field": "liquidity_5",
+      "raw_median_daily_spearman": -0.803605,
+      "score_direction_median_daily_spearman": 0.803605,
+      "decision": "rejected_before_forward_returns",
+      "reason": "The proposed low-impact score is a near-synonym for high average turnover in the available daily data."
+    },
+    {
+      "name": "downside_tail_resilience_20",
+      "raw_formula": "Min($close/Ref($close, 1) - 1, 20) + 0*Ref($close, 20)",
+      "proposed_direction": "higher",
+      "closest_existing_field": "volatility_20",
+      "raw_median_daily_spearman": -0.805,
+      "closest_existing_score": "volatility_low_20",
+      "score_direction_median_daily_spearman": 0.805,
+      "decision": "rejected_before_forward_returns",
+      "reason": "The worst-session resilience score is a near-synonym for the already tested low-volatility direction."
+    }
+  ],
+  "accepted_for_preregistration": {
+    "name": "directional_serial_dependence_20",
+    "formula": "Sign($close/Ref($close, 1) - 1)*(Corr($close/Ref($close, 1) - 1, Ref($close/Ref($close, 1) - 1, 1), 20) + 0*Ref($close, 21))",
+    "direction": "higher",
+    "mechanism": "Use the sign of the current close-to-close return to turn trailing first-order return autocorrelation into a directional next-session persistence or reversal forecast.",
+    "finite_rows": 1106347,
+    "finite_row_rate": 0.998294,
+    "median_unique_values_per_session": 4409,
+    "maximum_absolute_median_daily_spearman": 0.139096,
+    "closest_existing_field": "momentum_1",
+    "closest_existing_field_median_daily_spearman": -0.139096,
+    "decision": "eligible_for_one_frozen_development_diagnostic_after_complete_window_semantics_passes",
+    "median_daily_spearman_by_existing_field": {
+      "momentum_1": -0.139096,
+      "intraday_strength": -0.133257,
+      "close_above_vwap_1": -0.079869,
+      "close_to_high": -0.062279,
+      "up_day_ratio_5": -0.061017,
+      "trend_ma_5": -0.050245,
+      "near_high_10": -0.030672,
+      "signed_efficiency_ratio_10": -0.020835,
+      "gap_1": -0.020611,
+      "near_high_20": -0.019269,
+      "amplitude_1": -0.018541,
+      "signed_volume_pressure_5": -0.018375,
+      "momentum_5": -0.016695,
+      "turnover_surge_3": 0.015403,
+      "volume_surge_3": 0.014989,
+      "turnover_surge_1": -0.014818,
+      "volume_surge_1": -0.014296,
+      "return_turnover_correlation_10": 0.01413,
+      "momentum_10": -0.0133,
+      "momentum_3": -0.013254,
+      "momentum_20": -0.011784,
+      "trend_ma_20": -0.011506,
+      "intraday_return_sum_5": -0.009531,
+      "momentum_2": -0.009122,
+      "trend_ma_60": -0.00906,
+      "volatility_10": 0.008903,
+      "max_return_20": 0.008244,
+      "volatility_20": 0.006599,
+      "turnover_surge": 0.006119,
+      "volume_surge": 0.005999,
+      "amplitude_5": 0.005105,
+      "volatility_5": 0.003985,
+      "momentum_60": -0.002833,
+      "liquidity_5": 0.002589,
+      "free_float_cap_proxy": 0.00239
+    }
+  },
+  "research_policy": {
+    "candidate_forward_returns_read": false,
+    "rejected_candidates_may_not_be_return_tested_or_reformulated_on_the_same_history": true,
+    "accepted_candidate_requires_repository_preregistration_before_forward_returns": true,
+    "accepted_candidate_requires_complete_window_semantics_before_forward_returns": true,
+    "selection_aggregation_or_promotion_allowed": false
+  },
+  "limitations": [
+    "The uniqueness screen uses 2025 close-known factor values and the current historical listing snapshot; it is not a pristine sample and can contain survivorship bias.",
+    "Low correlation does not imply predictive value; it only avoids an obvious rewrite of the compared daily technical fields.",
+    "Event, fundamental, licensed minute, and Level-2 mechanisms are not treated as synonymous with this daily price-path field."
+  ],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
