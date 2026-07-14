@@ -39,6 +39,20 @@ def test_model_feature_set_is_immutable_when_exploratory_diagnostic_catalog_grow
     assert "momentum_3" not in MODEL.DEFAULT_FEATURES
 
 
+def test_stable_price_volume_feature_set_is_explicit_and_cannot_be_confused_with_the_default():
+    stable = MODEL.model_feature_set("v2_stable_price_volume")
+    assert stable.columns == (
+        "amplitude_low",
+        "amplitude_low_1",
+        "volatility_low_20",
+        "volume_dry_up",
+    )
+    assert "historical sensitivity" in stable.formation_rule
+    assert MODEL.model_feature_set(MODEL.DEFAULT_FEATURE_SET).columns == MODEL.DEFAULT_FEATURES
+    with pytest.raises(ValueError, match="unknown model feature_set"):
+        MODEL.model_feature_set("unrecorded")
+
+
 def test_deterministic_daily_sample_is_label_independent_and_capped():
     rows = []
     for signal_date in pd.to_datetime(["2024-01-02", "2024-01-05"]):

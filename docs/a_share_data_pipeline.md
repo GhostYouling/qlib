@@ -423,6 +423,22 @@ python scripts/a_share_short_horizon_model_research.py \
 
 模型预测会在与未来收益合并**之前**形成完整 Top‑3；若其中任一股票后来缺少进出场报价，整组按现金记录而不会用第四只股票替换。汇总同时展示实际持仓周期比例，避免低频空仓被误读为模型优势。
 
+固定权重 V9 未通过后，可额外检验一个更受限的聚合假设：只让模型读取已经通过固定跨年度单因子稳定性审计的 `amplitude_low`、`amplitude_low_1`、`volatility_low_20` 和 `volume_dry_up`。这不是把 V9 的失败组合换权重重测，而是一个单独、显式命名的受限模型特征集；其字段来自已完成的开发期诊断，因此整个运行始终是**历史敏感性审计**，即使结果为正也不能登记、晋级或产生选股名单。
+
+```bash
+python scripts/a_share_short_horizon_model_research.py \
+  --feature-set v2_stable_price_volume \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --start 2019-01-01 --end 2026-07-13 \
+  --development-start 2023-01-01 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --train-window-rounds 336 --maximum-train-rows-per-signal 384
+```
+
+2023--2025 仍是唯一的配置选择区间；2026 只写入已经看过的隔离检查，不可据此追加字段、改变模型、选择状态或发出信号。审计 JSON 会记录 `feature_set`、字段清单和形成规则，方便与原始全量特征模型区分。
+
+该受限特征集已在 2026-07-14 完成记录为 `20260714T002011Z`：9 个“模型 × 固定状态”组合均不合格。最接近的是 Ridge + `breadth_20_positive`，开发期三年均为正、累计净收益 +82.44%，但最大回撤为 −32.18%，违反 −20% 硬上限；其已见 2026 检查的 +17.18% 不参与选择，不能用来放松门槛。这个特征集至此淘汰，不再通过扩状态、调回撤线或按 2026 表现改变其字段来重复测试。
+
 在继续扩展因子库前，可先运行“滚动候选选择审计”检验现有策略族是否经得起反复的时间切分。它在每个测试年度开始前，只用此前至少两个完整自然年的**已完成持有周期**从整库选出一个候选，再以紧接的完整年度作为隔离测试；跨年但在边界之后才退出的 cohort 不会进入训练。它不生成策略登记、纸面信号或选股名单：
 
 ```bash

@@ -38,6 +38,13 @@ DEFAULT_EXPERIMENT_ROOT = REPO_ROOT / "data" / "experiments" / "short_horizon"
 # Keep the model family immutable when the broader exploratory diagnostic
 # catalog grows.  A new model feature set needs its own explicitly named audit.
 DEFAULT_FEATURES = tuple(sorted({factor for candidate in research.V7_CANDIDATES for factor in candidate.weights}))
+DEFAULT_FEATURE_SET = "v1_full"
+STABLE_PRICE_VOLUME_FEATURES = (
+    "amplitude_low",
+    "amplitude_low_1",
+    "volatility_low_20",
+    "volume_dry_up",
+)
 MODEL_CONFIGURATIONS = ("ridge", "lgbm_shallow", "lgbm_ranker_shallow")
 # These are existing close-known market states from the factor-research
 # harness.  The compact set deliberately tests only: no gate, a broad positive
@@ -58,6 +65,16 @@ class ModelConfiguration:
     description: str
 
 
+@dataclass(frozen=True)
+class ModelFeatureSet:
+    """One immutable, auditable set of score-time model inputs."""
+
+    name: str
+    description: str
+    columns: tuple[str, ...]
+    formation_rule: str
+
+
 MODEL_SPECS = {
     "ridge": ModelConfiguration(
         name="ridge",
@@ -71,6 +88,27 @@ MODEL_SPECS = {
         name="lgbm_ranker_shallow",
         description=(
             "Shallow LambdaRank boosting over within-signal-date forward-return quintiles, aligned to TopK ordering."
+        ),
+    ),
+}
+
+MODEL_FEATURE_SETS = {
+    DEFAULT_FEATURE_SET: ModelFeatureSet(
+        name=DEFAULT_FEATURE_SET,
+        description="All fixed V7 close-known factor directions, frozen before the model audit family was added.",
+        columns=DEFAULT_FEATURES,
+        formation_rule="Predeclared full technical-and-quality model input set.",
+    ),
+    "v2_stable_price_volume": ModelFeatureSet(
+        name="v2_stable_price_volume",
+        description=(
+            "Only the four close-known price-volume factors that passed the fixed 2019--2025 cross-year "
+            "single-factor stability audit."
+        ),
+        columns=STABLE_PRICE_VOLUME_FEATURES,
+        formation_rule=(
+            "Diagnostic-driven historical sensitivity set; it may be audited only and can never be registered, "
+            "promoted, or turned into a trading signal from this historical run."
         ),
     ),
 }
@@ -96,6 +134,16 @@ def validate_model_configuration(name: str) -> ModelConfiguration:
     except KeyError as exc:
         choices = ", ".join(sorted(MODEL_SPECS))
         raise ValueError(f"unknown model configuration {name!r}; choose one of: {choices}") from exc
+
+
+def model_feature_set(name: str) -> ModelFeatureSet:
+    """Return an immutable model input set and reject unrecorded feature changes."""
+
+    try:
+        return MODEL_FEATURE_SETS[name]
+    except KeyError as exc:
+        choices = ", ".join(sorted(MODEL_FEATURE_SETS))
+        raise ValueError(f"unknown model feature_set {name!r}; choose one of: {choices}") from exc
 
 
 def annual_evaluation_segments(
@@ -431,6 +479,7 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
             raise ValueError(f"unknown model regime_filter {regime_filter!r}; choose one of: {choices}")
     if len(set(regime_filters)) != len(regime_filters):
         raise ValueError("each model regime_filter may be supplied only once")
+    feature_set = model_feature_set(getattr(args, "feature_set", DEFAULT_FEATURE_SET))
 
     fundamentals = research.load_fundamentals(fundamental_path)
     market = research.load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -438,7 +487,7 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
     ranked = research.rank_factor_frame(market)
     calendar = pd.DatetimeIndex(sorted(ranked["datetime"].unique()))
     signal_dates = calendar[: -(args.hold_days + 1) : args.hold_days]
-    feature_columns = tuple(DEFAULT_FEATURES)
+    feature_columns = feature_set.columns
     features = factor_feature_frame(ranked, signal_dates, feature_columns)
     labels = research.forward_factor_return_frame(ranked, args.hold_days)
     training = build_training_frame(features, labels, feature_columns)
@@ -563,6 +612,9 @@ def run_model_audit(args: argparse.Namespace) -> dict[str, Any]:
             "close_cost": args.close_cost,
         },
         "features": {
+            "feature_set": feature_set.name,
+            "description": feature_set.description,
+            "formation_rule": feature_set.formation_rule,
             "count": len(feature_columns),
             "names": list(feature_columns),
             "missing_value_fill": 0.5,
@@ -647,6 +699,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=500)
     parser.add_argument("--train-window-rounds", type=int, default=336)
     parser.add_argument("--maximum-train-rows-per-signal", type=int, default=384)
+    parser.add_argument(
+        "--feature-set",
+        default=DEFAULT_FEATURE_SET,
+        choices=sorted(MODEL_FEATURE_SETS),
+        help="immutable score-time feature set; a non-default diagnostic-driven set remains research-only",
+    )
     parser.add_argument("--configuration", action="append", choices=sorted(MODEL_SPECS))
     parser.add_argument(
         "--regime-filter",
