@@ -23,6 +23,131 @@ def write_json_record(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def make_research_frontier_evidence(
+    tmp_path: Path,
+    *,
+    topk_requested_factors: list[str] | None = None,
+) -> dict:
+    groups = [
+        {
+            "branch": "daily_summary",
+            "diagnostic_run_id": "diagnostic-one",
+            "stability_audit_run_id": "stability-one",
+            "topk_audit_run_id": "topk-one",
+            "expected_factors": ["factor_a", "factor_b"],
+            "stability_qualified": ["factor_a"],
+        },
+        {
+            "branch": "event_summary",
+            "diagnostic_run_id": "diagnostic-two",
+            "stability_audit_run_id": "stability-two",
+            "topk_audit_run_id": "topk-two",
+            "expected_factors": ["factor_c"],
+            "stability_qualified": [],
+        },
+    ]
+    for group in groups:
+        diagnostic_path = tmp_path / f"{group['diagnostic_run_id']}_factor_diagnostic.json"
+        write_json_record(
+            diagnostic_path,
+            {
+                "run_id": group["diagnostic_run_id"],
+                "status": "completed",
+                "data": {
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                    "calendar_start": "2019-01-02",
+                    "calendar_end": "2025-12-31",
+                    "development_end": "2025-12-31",
+                    "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
+                },
+                "factor_catalog": group["expected_factors"],
+                "ranking_by_development_rank_ic": [
+                    {"factor": factor} for factor in reversed(group["expected_factors"])
+                ],
+            },
+        )
+        diagnostic_sha256 = RESEARCH.file_sha256(diagnostic_path)
+        shared_input = {
+            "run_id": group["diagnostic_run_id"],
+            "sha256": diagnostic_sha256,
+        }
+        stability_qualified = group["stability_qualified"]
+        write_json_record(
+            tmp_path / f"{group['stability_audit_run_id']}_factor_stability_audit.json",
+            {
+                "run_id": group["stability_audit_run_id"],
+                "status": "completed",
+                "purpose": "development_only_factor_stability_screen_research_not_investment_advice",
+                "input_diagnostic": shared_input,
+                "requested_factors": None,
+                "policy": {
+                    "minimum_calendar_years": RESEARCH.FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+                    "minimum_cohorts": RESEARCH.FACTOR_STABILITY_MIN_COHORTS,
+                    "mean_rank_ic_gt": 0.0,
+                    "positive_rank_ic_rate_gt": 0.50,
+                    "mean_top_minus_bottom_gross_return_gt": 0.0,
+                    "every_observed_calendar_year_mean_rank_ic_gt": 0.0,
+                    "selection_or_promotion_allowed": False,
+                },
+                "factor_decisions": [
+                    {"factor": factor, "passed": factor in stability_qualified}
+                    for factor in group["expected_factors"]
+                ],
+                "qualified_factors": stability_qualified,
+            },
+        )
+        write_json_record(
+            tmp_path / f"{group['topk_audit_run_id']}_factor_topk_viability_audit.json",
+            {
+                "run_id": group["topk_audit_run_id"],
+                "status": "completed",
+                "purpose": "development_only_single_factor_topk_viability_screen_research_not_investment_advice",
+                "input_diagnostic": shared_input,
+                "requested_factors": topk_requested_factors,
+                "policy": {
+                    "factor_association_stability_screen": "factor_stability_decision with fixed default thresholds",
+                    "minimum_executable_topk_cohorts": RESEARCH.FACTOR_STABILITY_MIN_COHORTS,
+                    "topk_net_cumulative_return_gt": 0.0,
+                    "topk_max_drawdown_gte": RESEARCH.STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+                    "every_observed_calendar_year_topk_net_cumulative_return_gt": 0.0,
+                    "selection_or_promotion_allowed": False,
+                },
+                "factor_decisions": [
+                    {"factor": factor, "passed": False}
+                    for factor in group["expected_factors"]
+                ],
+                "qualified_factors": [],
+            },
+        )
+    return {
+        "kind": "a_share_three_day_research_frontier_contract",
+        "status": "frozen_after_current_accepted_price_diagnostics_before_any_new_data_mechanism",
+        "protocol": {
+            "calendar_start": "2019-01-02",
+            "calendar_end": "2025-12-31",
+            "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
+        },
+        "evidence_groups": [
+            {key: value for key, value in group.items() if key != "stability_qualified"}
+            for group in groups
+        ],
+        "expected_result": {
+            "evidence_group_count": 2,
+            "historical_factor_count": 3,
+            "dual_gate_qualified_factor_count": 0,
+            "status": "no_eligible_historical_factor_combination",
+        },
+        "next_independent_mechanisms": [
+            {
+                "priority": 1,
+                "mechanism": "new_data",
+                "required_before_returns": "pass its no-return source gate",
+            }
+        ],
+        "stop_rules": ["do not aggregate association-only passers"],
+    }
+
+
 def make_minute_feature_chain(
     tmp_path: Path,
     *,
@@ -4515,6 +4640,54 @@ def test_minute_combination_records_no_dual_gate_factors_without_returns(tmp_pat
                 fundamentals=str(tmp_path / "not-needed-fundamentals"),
                 experiment_root=str(tmp_path / "experiments"),
                 batch_size=500,
+            )
+        )
+
+
+def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
+    tmp_path, monkeypatch
+):
+    contract = make_research_frontier_evidence(tmp_path)
+    monkeypatch.setattr(RESEARCH, "load_research_frontier_contract", lambda: contract)
+    monkeypatch.setattr(RESEARCH, "load_factor_diagnostic_invalidations", lambda: {})
+    output = tmp_path / "frontier.json"
+    result = RESEARCH.run_research_frontier_audit(
+        SimpleNamespace(experiment_root=str(tmp_path), output=str(output))
+    )
+    audit = json.loads(output.read_text(encoding="utf-8"))
+    assert result == {
+        "status": "no_eligible_historical_factor_combination",
+        "audit_path": str(output.resolve()),
+        "historical_factor_count": 3,
+        "stability_qualified_factor_count": 1,
+        "topk_qualified_factor_count": 0,
+        "dual_gate_qualified_factor_count": 0,
+    }
+    assert audit["raw_price_fields_read"] is False
+    assert audit["additional_forward_return_fields_read"] is False
+    assert audit["historical_factor_aggregation_allowed"] is False
+    assert audit["summary"]["stability_qualified_factors"] == ["factor_a"]
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        research_frontier_audit=audit,
+    )
+    assert "当前研究前沿审计" in report
+    assert "3 个因子" in report
+    assert "双门禁交集 0 个" in report
+    assert "`new_data`" in report
+
+
+def test_research_frontier_audit_rejects_partial_gate_audit(tmp_path, monkeypatch):
+    contract = make_research_frontier_evidence(
+        tmp_path, topk_requested_factors=["factor_a"]
+    )
+    monkeypatch.setattr(RESEARCH, "load_research_frontier_contract", lambda: contract)
+    monkeypatch.setattr(RESEARCH, "load_factor_diagnostic_invalidations", lambda: {})
+    with pytest.raises(ValueError, match="full topk audit"):
+        RESEARCH.run_research_frontier_audit(
+            SimpleNamespace(
+                experiment_root=str(tmp_path), output=str(tmp_path / "frontier.json")
             )
         )
 

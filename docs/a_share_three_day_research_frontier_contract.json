@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_research_frontier_contract",
+  "status": "frozen_after_current_accepted_price_diagnostics_before_any_new_data_mechanism",
+  "purpose": "Prove whether any already-observed accepted-price factor can enter aggregation under the fixed three-session dual-gate protocol, without reading raw prices or forward returns again.",
+  "protocol": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "calendar_start": "2019-01-02",
+    "calendar_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "signal_time": "local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "buy_cost_rate": 0.00012,
+    "sell_cost_rate": 0.00062,
+    "minimum_listing_sessions": 20,
+    "minimum_calendar_years": 5,
+    "minimum_non_overlapping_cohorts": 200,
+    "maximum_topk_drawdown": -0.2,
+    "aggregation_requires_both_gates": true
+  },
+  "evidence_groups": [
+    {
+      "branch": "daily_ohlcv_summary",
+      "diagnostic_run_id": "20260714T131044Z",
+      "stability_audit_run_id": "20260714T131124Z",
+      "topk_audit_run_id": "20260714T131124Z",
+      "expected_factors": [
+        "amplitude_low",
+        "compression_consensus_min",
+        "amplitude_low_1",
+        "volatility_low_20",
+        "reversal_10",
+        "close_to_high",
+        "volume_dry_up",
+        "volatility_target_5"
+      ]
+    },
+    {
+      "branch": "transaction_events",
+      "diagnostic_run_id": "20260714T161042Z",
+      "stability_audit_run_id": "20260714T161053Z",
+      "topk_audit_run_id": "20260714T161053Z",
+      "expected_factors": [
+        "billboard_net_flow_to_float",
+        "billboard_net_flow_to_deal",
+        "billboard_deal_to_float",
+        "billboard_reason_count",
+        "billboard_freshness",
+        "block_trade_premium_ratio",
+        "block_trade_turnover_rate",
+        "block_trade_event_count",
+        "block_trade_freshness",
+        "margin_net_buy_to_market_cap",
+        "margin_buy_to_market_cap",
+        "margin_balance_to_market_cap",
+        "margin_financing_balance_growth"
+      ]
+    },
+    {
+      "branch": "announcement_events",
+      "diagnostic_run_id": "20260714T162126Z",
+      "stability_audit_run_id": "20260714T162139Z",
+      "topk_audit_run_id": "20260714T162140Z",
+      "expected_factors": [
+        "forecast_profit_yoy",
+        "forecast_profit_yoy_precision",
+        "forecast_freshness",
+        "forecast_turnaround",
+        "major_holder_net_change_free_ratio",
+        "major_holder_increase_free_ratio",
+        "major_holder_decrease_free_ratio",
+        "major_holder_event_count",
+        "major_holder_freshness"
+      ]
+    },
+    {
+      "branch": "pledge_events",
+      "diagnostic_run_id": "20260714T163855Z",
+      "stability_audit_run_id": "20260714T163907Z",
+      "topk_audit_run_id": "20260714T163907Z",
+      "expected_factors": [
+        "pledge_share_count",
+        "pledge_total_share_ratio",
+        "pledge_event_count",
+        "pledge_freshness"
+      ]
+    },
+    {
+      "branch": "daily_intraday_demand_proxy",
+      "diagnostic_run_id": "20260714T165528Z",
+      "stability_audit_run_id": "20260714T165538Z",
+      "topk_audit_run_id": "20260714T165538Z",
+      "expected_factors": [
+        "intraday_return_sum_5"
+      ]
+    },
+    {
+      "branch": "institutional_survey_events",
+      "diagnostic_run_id": "20260714T173339Z",
+      "stability_audit_run_id": "20260714T173402Z",
+      "topk_audit_run_id": "20260714T173402Z",
+      "expected_factors": [
+        "institutional_survey_org_count",
+        "institutional_survey_event_count",
+        "institutional_survey_freshness"
+      ]
+    },
+    {
+      "branch": "institutional_survey_disclosure_timing",
+      "diagnostic_run_id": "20260714T181535Z",
+      "stability_audit_run_id": "20260714T181636Z",
+      "topk_audit_run_id": "20260714T181636Z",
+      "expected_factors": [
+        "institutional_survey_prompt_disclosure"
+      ]
+    },
+    {
+      "branch": "analyst_rating_events",
+      "diagnostic_run_id": "20260714T184904Z",
+      "stability_audit_run_id": "20260714T184914Z",
+      "topk_audit_run_id": "20260714T184914Z",
+      "expected_factors": [
+        "analyst_rating_upgrade_share"
+      ]
+    },
+    {
+      "branch": "restricted_share_unlock_events",
+      "diagnostic_run_id": "20260714T191852Z",
+      "stability_audit_run_id": "20260714T191908Z",
+      "topk_audit_run_id": "20260714T191908Z",
+      "expected_factors": [
+        "restricted_share_unlock_pressure"
+      ]
+    },
+    {
+      "branch": "insider_open_market_events",
+      "diagnostic_run_id": "20260714T195205Z",
+      "stability_audit_run_id": "20260714T195221Z",
+      "topk_audit_run_id": "20260714T195221Z",
+      "expected_factors": [
+        "insider_open_market_buy_share"
+      ]
+    },
+    {
+      "branch": "directional_serial_dependence",
+      "diagnostic_run_id": "20260714T205038Z",
+      "stability_audit_run_id": "20260714T205053Z",
+      "topk_audit_run_id": "20260714T205054Z",
+      "expected_factors": [
+        "directional_serial_dependence_20"
+      ]
+    }
+  ],
+  "expected_result": {
+    "evidence_group_count": 11,
+    "historical_factor_count": 43,
+    "dual_gate_qualified_factor_count": 0,
+    "status": "no_eligible_historical_factor_combination"
+  },
+  "next_independent_mechanisms": [
+    {
+      "priority": 1,
+      "mechanism": "baostock_five_minute_path",
+      "required_before_returns": "one fresh passed restoration probe followed by one fully atomic 2020-2025 source snapshot that passes the frozen coverage gate"
+    },
+    {
+      "priority": 2,
+      "mechanism": "jqdata_classified_large_order_moneyflow",
+      "required_before_returns": "local JQData credentials, separately confirmed professional moneyflow entitlement, four-symbol acceptance, full 2019-2025 atomic sync, and the frozen no-return coverage gate"
+    }
+  ],
+  "stop_rules": [
+    "Do not combine factors that passed only the association-stability gate.",
+    "Do not invert, re-window, reweight, subset years, or rerun the frozen historical branches.",
+    "Do not produce a current score, selection, allocation, or order from this audit.",
+    "Do not treat Level-2 data as the next dependency before the lower-cost minute or classified-moneyflow mechanisms pass their fixed gates."
+  ]
+}

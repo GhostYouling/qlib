@@ -812,6 +812,18 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 因此该高值方向正式淘汰，不进入聚合、当前评分或选股。不得在相同历史上反向、改窗口、把当日收益符号换成幅度、增加动量/低波动/换手/质量过滤，或只选表现较好的年份。日线摘要中暂不继续枚举相近路径公式；下一项仍优先等待已冻结的 JQData 专业日级大单分类验收，其后才是有合法授权的全市场一分钟特征。
 
+### 当前三日研究前沿审计
+
+在继续增加数据机制前，先用 `docs/a_share_three_day_research_frontier_contract.json`（SHA‑256 `36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf`）冻结当前所有权威、正确价格口径分支。合同列出 11 组诊断、各自完整的稳定性/TopK 审计和精确因子全集，防止遗漏失败分支、误用旧价格口径，或把只通过关联门的因子重新拼成组合。运行：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py research-frontier-audit
+```
+
+命令只读取已有诊断与两道审计 JSON，不重新加载原始开收盘或未来收益；它会逐项验证诊断哈希链、`close_known_raw_pct_chg_chain_v1`、2019–2025 开发期、20 会话上市门、完整因子全集、无 `--factor` 子集的默认门禁和失效登记。任一证据缺失或参数漂移都会失败。
+
+正式结果 `docs/a_share_three_day_research_frontier_audit.json`（SHA‑256 `0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846`）核对了 **43** 个因子：稳定性门通过 **7** 个，TopK 可执行性门通过 **0** 个，双门禁交集为 **0**。因此当前历史证据没有可聚合因子；这 7 个关联通过项也不能用于评分、选股或仓位。下一项研究前沿固定为两个尚未读取收益的独立机制：优先等待 BaoStock 5 分钟源恢复并完成原子全量门禁，其次在用户本地取得 JQData 专业资金流授权后执行大单分类验收。Level‑2 仍不提前采购或接入。
+
 在为稀疏季度公告事件写收益回测前，先运行**无收益样本容量审计**。它只读取季度报告字段、公告后下一交易日、买入股票池活动区间和交易日历；不会加载开盘、收盘或任何未来收益。事件仍固定在非重叠三日网格上，必须有完整 Top‑3，且最大可用 cohort 至少达到既有 200 门槛，才允许继续预注册收益审计：
 
 ```bash

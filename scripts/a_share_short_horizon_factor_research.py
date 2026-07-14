@@ -182,6 +182,15 @@ DEFAULT_INTRADAY_DEMAND_PERSISTENCE_SPEC = (
 DEFAULT_DIRECTIONAL_SERIAL_DEPENDENCE_SPEC = (
     REPO_ROOT / "docs" / "a_share_directional_serial_dependence_preregistration.json"
 )
+DEFAULT_RESEARCH_FRONTIER_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_three_day_research_frontier_contract.json"
+)
+DEFAULT_RESEARCH_FRONTIER_AUDIT = (
+    REPO_ROOT / "docs" / "a_share_three_day_research_frontier_audit.json"
+)
+RESEARCH_FRONTIER_CONTRACT_SHA256 = (
+    "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -2007,6 +2016,28 @@ def load_json_record(path: Path, *, kind: str | None = None) -> dict[str, Any]:
     if kind is not None and record.get("kind") != kind:
         raise ValueError(f"expected {kind!r}, got {record.get('kind')!r}: {path}")
     return record
+
+
+def load_research_frontier_contract(
+    path: Path = DEFAULT_RESEARCH_FRONTIER_CONTRACT,
+) -> dict[str, Any]:
+    """Load the fingerprint-frozen inventory of authoritative historical branches."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != RESEARCH_FRONTIER_CONTRACT_SHA256:
+        raise ValueError("three-day research frontier contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_three_day_research_frontier_contract")
+    if contract.get("status") != (
+        "frozen_after_current_accepted_price_diagnostics_before_any_new_data_mechanism"
+    ):
+        raise ValueError("three-day research frontier contract has an unsupported status")
+    groups = list(contract.get("evidence_groups") or [])
+    expected = contract.get("expected_result") or {}
+    if len(groups) != expected.get("evidence_group_count"):
+        raise ValueError("three-day research frontier evidence-group count changed")
+    if not groups or any(not isinstance(item, dict) for item in groups):
+        raise ValueError("three-day research frontier evidence groups must be non-empty objects")
+    return contract
 
 
 def load_minute_factor_preregistration(
@@ -16673,6 +16704,31 @@ def load_securities_lending_source_coverage_audit(
     }
 
 
+def load_research_frontier_audit(
+    path: Path = DEFAULT_RESEARCH_FRONTIER_AUDIT,
+) -> dict[str, Any] | None:
+    """Load the committed summary of the current accepted-price research frontier."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        return None
+    audit = load_json_record(path, kind="a_share_three_day_research_frontier_audit")
+    contract = audit.get("contract") or {}
+    summary = audit.get("summary") or {}
+    if (
+        audit.get("version") != 1
+        or audit.get("status") != "no_eligible_historical_factor_combination"
+        or contract.get("sha256") != RESEARCH_FRONTIER_CONTRACT_SHA256
+        or summary.get("dual_gate_qualified_factor_count") != 0
+        or audit.get("raw_price_fields_read") is not False
+        or audit.get("additional_forward_return_fields_read") is not False
+        or audit.get("historical_factor_aggregation_allowed") is not False
+        or audit.get("selection_scoring_or_ordering_allowed") is not False
+    ):
+        raise ValueError("three-day research frontier audit is inconsistent")
+    return audit
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -17029,6 +17085,7 @@ def render_three_day_research_report(
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
     baostock_5m_combination_registrations: list[dict[str, Any]] | None = None,
+    research_frontier_audit: dict[str, Any] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -18133,6 +18190,60 @@ def render_three_day_research_report(
                     )
                 )
             lines.append("")
+    if research_frontier_audit is not None:
+        frontier_summary = research_frontier_audit.get("summary") or {}
+        lines.extend(
+            [
+                "## 当前研究前沿审计",
+                "",
+                (
+                    "本节只汇总已完成的正确价格口径诊断与两道固定门禁，不重新读取原始价格或未来收益。"
+                    f"共核对 {frontier_summary.get('evidence_group_count', 0)} 条独立分支、"
+                    f"{frontier_summary.get('historical_factor_count', 0)} 个因子；"
+                    f"关联稳定性通过 {frontier_summary.get('stability_qualified_factor_count', 0)} 个，"
+                    f"TopK 可执行性通过 {frontier_summary.get('topk_qualified_factor_count', 0)} 个，"
+                    f"双门禁交集 {frontier_summary.get('dual_gate_qualified_factor_count', 0)} 个。"
+                ),
+                "",
+                "| 分支 | 因子数 | 稳定性通过 | TopK 通过 | 双门禁通过 |",
+                "| --- | ---: | ---: | ---: | ---: |",
+            ]
+        )
+        for group in research_frontier_audit.get("evidence_groups") or []:
+            lines.append(
+                "| {branch} | {factor_count} | {stability} | {topk} | {dual} |".format(
+                    branch=group.get("branch", "—"),
+                    factor_count=group.get("factor_count", 0),
+                    stability=len(group.get("stability_qualified_factors") or []),
+                    topk=len(group.get("topk_qualified_factors") or []),
+                    dual=len(group.get("dual_gate_qualified_factors") or []),
+                )
+            )
+        lines.extend(
+            [
+                "",
+                "结论：当前历史证据没有可聚合因子；只通过关联门的因子不能进入评分、选股或仓位计划。下一项只能来自尚未观察收益的独立数据机制：",
+                "",
+            ]
+        )
+        for mechanism in research_frontier_audit.get("next_independent_mechanisms") or []:
+            mechanism_id = str(mechanism.get("mechanism", "—"))
+            requirement = {
+                "baostock_five_minute_path": (
+                    "先取得一次新鲜的恢复探针通过记录，再原子完成 2020–2025 全量快照并通过冻结覆盖门禁"
+                ),
+                "jqdata_classified_large_order_moneyflow": (
+                    "先在本地配置 JQData 凭据并确认专业资金流权限，再通过四股验收、2019–2025 原子全量同步和无收益覆盖门禁"
+                ),
+            }.get(mechanism_id, str(mechanism.get("required_before_returns", "—")))
+            lines.append(
+                "{priority}. `{mechanism}`：{requirement}。".format(
+                    priority=mechanism.get("priority", "—"),
+                    mechanism=mechanism_id,
+                    requirement=requirement,
+                )
+            )
+        lines.append("")
     lines.extend(
         [
             "## 下一步规则",
@@ -18195,6 +18306,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     securities_lending_source_coverage_audit = (
         load_securities_lending_source_coverage_audit()
     )
+    research_frontier_audit = load_research_frontier_audit()
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -18242,6 +18354,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         minute_factor_coverage_audits=minute_factor_coverage_audits,
         minute_combination_holdouts=minute_combination_holdouts,
         baostock_5m_combination_registrations=baostock_5m_combination_registrations,
+        research_frontier_audit=research_frontier_audit,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -18272,6 +18385,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "baostock_5m_combination_registrations": len(
             baostock_5m_combination_registrations
         ),
+        "research_frontier_audit": research_frontier_audit is not None,
         "factor_stability_audits": len(factor_stability_audits),
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
@@ -20193,6 +20307,230 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
         "input_diagnostic_run_id": audit["input_diagnostic"]["run_id"],
         "factor_count": len(decisions),
         "qualified_factors": audit["qualified_factors"],
+    }
+
+
+def _validate_frontier_factor_audit(
+    audit: dict[str, Any],
+    *,
+    audit_kind: str,
+    expected_run_id: str,
+    diagnostic_run_id: str,
+    diagnostic_sha256: str,
+    expected_factors: list[str],
+) -> list[str]:
+    """Validate one full fixed-policy audit and return its recorded passers."""
+
+    if audit.get("status") != "completed" or str(audit.get("run_id")) != expected_run_id:
+        raise ValueError(f"research frontier {audit_kind} audit identity mismatch")
+    if audit.get("requested_factors") is not None:
+        raise ValueError(f"research frontier requires a full {audit_kind} audit, not a subset")
+    source = audit.get("input_diagnostic") or {}
+    if (
+        str(source.get("run_id")) != diagnostic_run_id
+        or str(source.get("sha256")) != diagnostic_sha256
+    ):
+        raise ValueError(f"research frontier {audit_kind} diagnostic lineage mismatch")
+    decisions = list(audit.get("factor_decisions") or [])
+    decision_factors = [str(item.get("factor")) for item in decisions]
+    if len(decision_factors) != len(set(decision_factors)) or set(decision_factors) != set(
+        expected_factors
+    ):
+        raise ValueError(f"research frontier {audit_kind} factor catalog mismatch")
+    derived = [str(item.get("factor")) for item in decisions if item.get("passed") is True]
+    recorded = [str(item) for item in audit.get("qualified_factors") or []]
+    if set(recorded) != set(derived) or len(recorded) != len(set(recorded)):
+        raise ValueError(f"research frontier {audit_kind} qualified-factor list mismatch")
+    policy = audit.get("policy") or {}
+    if audit_kind == "stability":
+        if audit.get("purpose") != (
+            "development_only_factor_stability_screen_research_not_investment_advice"
+        ):
+            raise ValueError("research frontier stability audit purpose mismatch")
+        required_policy = {
+            "minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "mean_rank_ic_gt": 0.0,
+            "positive_rank_ic_rate_gt": 0.50,
+            "mean_top_minus_bottom_gross_return_gt": 0.0,
+            "every_observed_calendar_year_mean_rank_ic_gt": 0.0,
+            "selection_or_promotion_allowed": False,
+        }
+    elif audit_kind == "topk":
+        if audit.get("purpose") != (
+            "development_only_single_factor_topk_viability_screen_research_not_investment_advice"
+        ):
+            raise ValueError("research frontier topk audit purpose mismatch")
+        required_policy = {
+            "factor_association_stability_screen": (
+                "factor_stability_decision with fixed default thresholds"
+            ),
+            "minimum_executable_topk_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "topk_net_cumulative_return_gt": 0.0,
+            "topk_max_drawdown_gte": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
+            "every_observed_calendar_year_topk_net_cumulative_return_gt": 0.0,
+            "selection_or_promotion_allowed": False,
+        }
+    else:  # pragma: no cover - internal caller controls this value
+        raise ValueError(f"unsupported research frontier audit kind: {audit_kind}")
+    if any(policy.get(key) != value for key, value in required_policy.items()):
+        raise ValueError(f"research frontier {audit_kind} policy is not the frozen default")
+    return recorded
+
+
+def run_research_frontier_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Prove the current aggregation frontier from immutable diagnostic summaries."""
+
+    contract = load_research_frontier_contract()
+    experiment_root = Path(args.experiment_root).expanduser().resolve()
+    invalidations = load_factor_diagnostic_invalidations()
+    protocol = contract.get("protocol") or {}
+    groups: list[dict[str, Any]] = []
+    observed_factors: list[str] = []
+    stability_qualified: list[str] = []
+    topk_qualified: list[str] = []
+    dual_gate_qualified: list[str] = []
+    for item in contract.get("evidence_groups") or []:
+        branch = str(item.get("branch") or "")
+        diagnostic_run_id = str(item.get("diagnostic_run_id") or "")
+        stability_run_id = str(item.get("stability_audit_run_id") or "")
+        topk_run_id = str(item.get("topk_audit_run_id") or "")
+        expected_factors = [str(factor) for factor in item.get("expected_factors") or []]
+        if not branch or not diagnostic_run_id or not expected_factors:
+            raise ValueError("research frontier evidence group is incomplete")
+        if diagnostic_run_id in invalidations:
+            raise ValueError(f"research frontier diagnostic is invalidated: {diagnostic_run_id}")
+        diagnostic_path = experiment_root / f"{diagnostic_run_id}_factor_diagnostic.json"
+        stability_path = experiment_root / f"{stability_run_id}_factor_stability_audit.json"
+        topk_path = experiment_root / f"{topk_run_id}_factor_topk_viability_audit.json"
+        diagnostic = load_json_record(diagnostic_path)
+        stability = load_json_record(stability_path)
+        topk = load_json_record(topk_path)
+        if diagnostic.get("status") != "completed" or str(diagnostic.get("run_id")) != diagnostic_run_id:
+            raise ValueError(f"research frontier diagnostic identity mismatch: {branch}")
+        require_diagnostic_price_basis(diagnostic)
+        data = diagnostic.get("data") or {}
+        if (
+            data.get("calendar_start") != protocol.get("calendar_start")
+            or data.get("calendar_end") != protocol.get("calendar_end")
+            or data.get("development_end") != protocol.get("calendar_end")
+            or data.get("minimum_listing_sessions") != protocol.get("minimum_listing_sessions")
+        ):
+            raise ValueError(f"research frontier diagnostic protocol mismatch: {branch}")
+        factor_catalog = [str(factor) for factor in diagnostic.get("factor_catalog") or []]
+        ranking_factors = [
+            str(summary.get("factor"))
+            for summary in diagnostic.get("ranking_by_development_rank_ic") or []
+        ]
+        if (
+            factor_catalog != expected_factors
+            or len(expected_factors) != len(set(expected_factors))
+            or set(ranking_factors) != set(expected_factors)
+            or len(ranking_factors) != len(set(ranking_factors))
+        ):
+            raise ValueError(f"research frontier diagnostic factor catalog mismatch: {branch}")
+        diagnostic_sha256 = file_sha256(diagnostic_path)
+        stable = _validate_frontier_factor_audit(
+            stability,
+            audit_kind="stability",
+            expected_run_id=stability_run_id,
+            diagnostic_run_id=diagnostic_run_id,
+            diagnostic_sha256=diagnostic_sha256,
+            expected_factors=expected_factors,
+        )
+        viable = _validate_frontier_factor_audit(
+            topk,
+            audit_kind="topk",
+            expected_run_id=topk_run_id,
+            diagnostic_run_id=diagnostic_run_id,
+            diagnostic_sha256=diagnostic_sha256,
+            expected_factors=expected_factors,
+        )
+        dual = sorted(set(stable) & set(viable))
+        observed_factors.extend(expected_factors)
+        stability_qualified.extend(stable)
+        topk_qualified.extend(viable)
+        dual_gate_qualified.extend(dual)
+        groups.append(
+            {
+                "branch": branch,
+                "factor_count": len(expected_factors),
+                "stability_qualified_factors": stable,
+                "topk_qualified_factors": viable,
+                "dual_gate_qualified_factors": dual,
+                "diagnostic": {
+                    "run_id": diagnostic_run_id,
+                    "sha256": diagnostic_sha256,
+                },
+                "stability_audit": {
+                    "run_id": stability_run_id,
+                    "sha256": file_sha256(stability_path),
+                },
+                "topk_audit": {
+                    "run_id": topk_run_id,
+                    "sha256": file_sha256(topk_path),
+                },
+            }
+        )
+    if len(observed_factors) != len(set(observed_factors)):
+        raise ValueError("research frontier factor catalogs overlap across evidence groups")
+    expected_result = contract.get("expected_result") or {}
+    if (
+        len(groups) != expected_result.get("evidence_group_count")
+        or len(observed_factors) != expected_result.get("historical_factor_count")
+        or len(dual_gate_qualified) != expected_result.get("dual_gate_qualified_factor_count")
+    ):
+        raise ValueError("research frontier result no longer matches its frozen expectation")
+    status = (
+        "no_eligible_historical_factor_combination"
+        if not dual_gate_qualified
+        else "eligible_historical_factors_require_new_preregistration"
+    )
+    if status != expected_result.get("status"):
+        raise ValueError("research frontier terminal status changed")
+    run_id = _timestamp()
+    audit = {
+        "version": 1,
+        "kind": "a_share_three_day_research_frontier_audit",
+        "run_id": run_id,
+        "status": status,
+        "purpose": "accepted_price_dual_gate_frontier_without_additional_raw_price_or_return_reads",
+        "contract": {
+            "path": str(DEFAULT_RESEARCH_FRONTIER_CONTRACT.relative_to(REPO_ROOT)),
+            "sha256": RESEARCH_FRONTIER_CONTRACT_SHA256,
+        },
+        "protocol": protocol,
+        "summary": {
+            "evidence_group_count": len(groups),
+            "historical_factor_count": len(observed_factors),
+            "stability_qualified_factor_count": len(stability_qualified),
+            "topk_qualified_factor_count": len(topk_qualified),
+            "dual_gate_qualified_factor_count": len(dual_gate_qualified),
+            "stability_qualified_factors": stability_qualified,
+            "topk_qualified_factors": topk_qualified,
+            "dual_gate_qualified_factors": dual_gate_qualified,
+        },
+        "evidence_groups": groups,
+        "next_independent_mechanisms": contract.get("next_independent_mechanisms") or [],
+        "raw_price_fields_read": False,
+        "additional_forward_return_fields_read": False,
+        "precomputed_diagnostic_summaries_reused": True,
+        "historical_factor_aggregation_allowed": False,
+        "selection_scoring_or_ordering_allowed": False,
+        "stop_rules": contract.get("stop_rules") or [],
+    }
+    destination = Path(args.output).expanduser().resolve()
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": status,
+        "audit_path": str(destination),
+        "historical_factor_count": len(observed_factors),
+        "stability_qualified_factor_count": len(stability_qualified),
+        "topk_qualified_factor_count": len(topk_qualified),
+        "dual_gate_qualified_factor_count": len(dual_gate_qualified),
     }
 
 
@@ -22454,6 +22792,17 @@ def parse_args() -> argparse.Namespace:
     rolling_window_semantics.add_argument("--end", help="defaults to the latest local Qlib calendar session")
     rolling_window_semantics.add_argument("--batch-size", type=int, default=500)
 
+    research_frontier_audit = subparsers.add_parser(
+        "research-frontier-audit",
+        help="verify whether any authoritative accepted-price factor can enter aggregation",
+    )
+    research_frontier_audit.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    research_frontier_audit.add_argument(
+        "--output", default=str(DEFAULT_RESEARCH_FRONTIER_AUDIT)
+    )
+
     factor_stability_audit = subparsers.add_parser(
         "factor-stability-audit",
         help="apply one fixed development-only cross-year stability screen to a saved factor diagnostic",
@@ -23138,6 +23487,8 @@ def main() -> int:
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":
         report = run_rolling_window_semantics_audit(args)
+    elif args.command == "research-frontier-audit":
+        report = run_research_frontier_audit(args)
     elif args.command == "factor-stability-audit":
         report = run_factor_stability_audit(args)
     elif args.command == "factor-topk-viability-audit":

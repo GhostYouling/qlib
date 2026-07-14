@@ -1,0 +1,288 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_research_frontier_audit",
+  "run_id": "20260714T225921Z",
+  "status": "no_eligible_historical_factor_combination",
+  "purpose": "accepted_price_dual_gate_frontier_without_additional_raw_price_or_return_reads",
+  "contract": {
+    "path": "docs/a_share_three_day_research_frontier_contract.json",
+    "sha256": "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
+  },
+  "protocol": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "calendar_start": "2019-01-02",
+    "calendar_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "signal_time": "local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "buy_cost_rate": 0.00012,
+    "sell_cost_rate": 0.00062,
+    "minimum_listing_sessions": 20,
+    "minimum_calendar_years": 5,
+    "minimum_non_overlapping_cohorts": 200,
+    "maximum_topk_drawdown": -0.2,
+    "aggregation_requires_both_gates": true
+  },
+  "summary": {
+    "evidence_group_count": 11,
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "stability_qualified_factors": [
+      "amplitude_low",
+      "compression_consensus_min",
+      "volatility_low_20",
+      "amplitude_low_1",
+      "reversal_10",
+      "volume_dry_up",
+      "volatility_target_5"
+    ],
+    "topk_qualified_factors": [],
+    "dual_gate_qualified_factors": []
+  },
+  "evidence_groups": [
+    {
+      "branch": "daily_ohlcv_summary",
+      "factor_count": 8,
+      "stability_qualified_factors": [
+        "amplitude_low",
+        "compression_consensus_min",
+        "volatility_low_20",
+        "amplitude_low_1",
+        "reversal_10",
+        "volume_dry_up",
+        "volatility_target_5"
+      ],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T131044Z",
+        "sha256": "cf1c421302f2b3db38d32953a77a2c4d80dbd64eb3392cc18d79753914b5d0ef"
+      },
+      "stability_audit": {
+        "run_id": "20260714T131124Z",
+        "sha256": "4432f7ae0f96f5c2e1386969ed4f81cb67d7ed8aa32f913c9e9f922cbd18edd4"
+      },
+      "topk_audit": {
+        "run_id": "20260714T131124Z",
+        "sha256": "8dc60e98a67baaefae62ceccaee0d052111de6b302258e13acb9fd196c7085b9"
+      }
+    },
+    {
+      "branch": "transaction_events",
+      "factor_count": 13,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T161042Z",
+        "sha256": "4412237c9fb4c214442d92b8c50d9ac9ebce2e53e368819b1b66bed547b2895b"
+      },
+      "stability_audit": {
+        "run_id": "20260714T161053Z",
+        "sha256": "8f26e59b6b38560173a03999e9995307cc1b4f44d4946109763d09454b6d4b02"
+      },
+      "topk_audit": {
+        "run_id": "20260714T161053Z",
+        "sha256": "3a7acce82513b21fb3402c5c25d750d2ce76e791d8eef22cafd8aef9fd7c6c83"
+      }
+    },
+    {
+      "branch": "announcement_events",
+      "factor_count": 9,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T162126Z",
+        "sha256": "c3fbab2bb0760e2df65f0b4a39fa30b4d5aa4429d1579e771625d0dfbe90b265"
+      },
+      "stability_audit": {
+        "run_id": "20260714T162139Z",
+        "sha256": "349fd8efee5fdf6fcd9297007c2dde08975480ffd77dacdcd57a8bfbbea92a5d"
+      },
+      "topk_audit": {
+        "run_id": "20260714T162140Z",
+        "sha256": "52b30c85522c1cc91e1c6a75816cb2a304ce88a4710223fb563deac7d1b2c6b0"
+      }
+    },
+    {
+      "branch": "pledge_events",
+      "factor_count": 4,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T163855Z",
+        "sha256": "5ea941579fb1dffb9177886b3f82e4918c18cbd85da1ebe419f5ed8dc372e6ef"
+      },
+      "stability_audit": {
+        "run_id": "20260714T163907Z",
+        "sha256": "bd19cec8d37c3fd9655fb615645d0ac773fd75b97cf024a3120c133ee83674b2"
+      },
+      "topk_audit": {
+        "run_id": "20260714T163907Z",
+        "sha256": "6e3787b5abbccd1a8af1e0b6fb2ee9db718c517f065f812c0700db944628a54b"
+      }
+    },
+    {
+      "branch": "daily_intraday_demand_proxy",
+      "factor_count": 1,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T165528Z",
+        "sha256": "b8861757ed76d320751e599538888b21bc3745217608f27fe0050037b4e1bef4"
+      },
+      "stability_audit": {
+        "run_id": "20260714T165538Z",
+        "sha256": "2ba9a79303631871e7ce99f002864a17d44c977d8c01b2feb59c9645aed387f4"
+      },
+      "topk_audit": {
+        "run_id": "20260714T165538Z",
+        "sha256": "e860bc64810f7f9892ba3ef0a53d98528c451267b896e0832cb085a164ec3673"
+      }
+    },
+    {
+      "branch": "institutional_survey_events",
+      "factor_count": 3,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T173339Z",
+        "sha256": "800c6f81c8e87e8a80e6a58f672debe898f142ca80c3c0aa0295a05c80111cd9"
+      },
+      "stability_audit": {
+        "run_id": "20260714T173402Z",
+        "sha256": "3a7fe3fd2ccb1fb27697a7e68f5b58f1c07454713bf492d26fbe41b7a72aaebd"
+      },
+      "topk_audit": {
+        "run_id": "20260714T173402Z",
+        "sha256": "921e60bc6dce6f5408dbf574468a0d8a307b127e6ec680578c13b25b98d82221"
+      }
+    },
+    {
+      "branch": "institutional_survey_disclosure_timing",
+      "factor_count": 1,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T181535Z",
+        "sha256": "300b1c1cd5596cba268f1b8c63bb3db7298b8c6474d2b4da3c80e7d236190cbd"
+      },
+      "stability_audit": {
+        "run_id": "20260714T181636Z",
+        "sha256": "54ab11b5cc4aa84a4c0ae12727f5e045d948e686235f5ce721734608796b7919"
+      },
+      "topk_audit": {
+        "run_id": "20260714T181636Z",
+        "sha256": "a89c42597b6b0fc002a394280b780cde04330788e76c0250311d981dc3aeb740"
+      }
+    },
+    {
+      "branch": "analyst_rating_events",
+      "factor_count": 1,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T184904Z",
+        "sha256": "69a6e0c4646ca312caa5b2714a0d1c60a64d97c73ca67a29d0d93d6119d2040c"
+      },
+      "stability_audit": {
+        "run_id": "20260714T184914Z",
+        "sha256": "07f5ee43f373fc6c218d795f519c50169cbbd3914f655a3a089021cddca610e8"
+      },
+      "topk_audit": {
+        "run_id": "20260714T184914Z",
+        "sha256": "f104405b0780a6ea79a7b3037696f1b1e7630fdd948ad09c88760acdbfc50230"
+      }
+    },
+    {
+      "branch": "restricted_share_unlock_events",
+      "factor_count": 1,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T191852Z",
+        "sha256": "7cff1cd500d046179d8568064288d68b63f500b9e4e47791c19b0abfe5d6a9a5"
+      },
+      "stability_audit": {
+        "run_id": "20260714T191908Z",
+        "sha256": "a3cb59ce8d791b890a2c19072f3cce0ed14e7d78389a19bd3b689fcaa72eba93"
+      },
+      "topk_audit": {
+        "run_id": "20260714T191908Z",
+        "sha256": "e1d706036e1330ff8a5c5e01772756a36f075757fe4abf81eec83456d3d06423"
+      }
+    },
+    {
+      "branch": "insider_open_market_events",
+      "factor_count": 1,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T195205Z",
+        "sha256": "9d5410b7d2ce5b84fba631009de619daeec38b1c5ef8c53a30e8d0e34b48ec46"
+      },
+      "stability_audit": {
+        "run_id": "20260714T195221Z",
+        "sha256": "45c7b500a1578ae03cb12f57e1ffc5d31f5b451d2d8313229a3d492db7e3478a"
+      },
+      "topk_audit": {
+        "run_id": "20260714T195221Z",
+        "sha256": "488fc8ba38b66059213b96b8ed32fcd05d66de85f348a1763e889b2af946f902"
+      }
+    },
+    {
+      "branch": "directional_serial_dependence",
+      "factor_count": 1,
+      "stability_qualified_factors": [],
+      "topk_qualified_factors": [],
+      "dual_gate_qualified_factors": [],
+      "diagnostic": {
+        "run_id": "20260714T205038Z",
+        "sha256": "d726965cb83fe445c0888655d6a36f7a7e41a26e2b54a33d0e88f59b3d465285"
+      },
+      "stability_audit": {
+        "run_id": "20260714T205053Z",
+        "sha256": "90ad9db60fa240d4a8ecf892b01abc455f75949ac7c6415bc0ab4e32170c4cd4"
+      },
+      "topk_audit": {
+        "run_id": "20260714T205054Z",
+        "sha256": "e6ddab496128006d00e497ca3da3b4a1538bcb0e18aa9649a0933d06e5999fb8"
+      }
+    }
+  ],
+  "next_independent_mechanisms": [
+    {
+      "priority": 1,
+      "mechanism": "baostock_five_minute_path",
+      "required_before_returns": "one fresh passed restoration probe followed by one fully atomic 2020-2025 source snapshot that passes the frozen coverage gate"
+    },
+    {
+      "priority": 2,
+      "mechanism": "jqdata_classified_large_order_moneyflow",
+      "required_before_returns": "local JQData credentials, separately confirmed professional moneyflow entitlement, four-symbol acceptance, full 2019-2025 atomic sync, and the frozen no-return coverage gate"
+    }
+  ],
+  "raw_price_fields_read": false,
+  "additional_forward_return_fields_read": false,
+  "precomputed_diagnostic_summaries_reused": true,
+  "historical_factor_aggregation_allowed": false,
+  "selection_scoring_or_ordering_allowed": false,
+  "stop_rules": [
+    "Do not combine factors that passed only the association-stability gate.",
+    "Do not invert, re-window, reweight, subset years, or rerun the frozen historical branches.",
+    "Do not produce a current score, selection, allocation, or order from this audit.",
+    "Do not treat Level-2 data as the next dependency before the lower-cost minute or classified-moneyflow mechanisms pass their fixed gates."
+  ]
+}
