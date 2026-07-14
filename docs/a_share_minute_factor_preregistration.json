@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "kind": "a_share_minute_factor_preregistration",
+  "status": "frozen_before_minute_data_observed",
+  "preregistered_on": "2026-07-14",
+  "purpose": "Test five close-known one-minute path hypotheses for the fixed three-session A-share research protocol without observing minute-factor returns first.",
+  "holding_protocol": {
+    "signal_time": "after_signal_session_close",
+    "entry": "next_trading_session_open",
+    "exit": "third_trading_session_close",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062
+  },
+  "universe_contract": {
+    "holding_universe": "buyable_main_chinext",
+    "quality_data": "announcement_asof_only",
+    "minimum_listing_sessions": 20,
+    "point_in_time_membership_required": true
+  },
+  "minute_contract": {
+    "frequency": "1m",
+    "prices": "raw_unadjusted",
+    "timestamp_normalized_to": "bar_end",
+    "explicit_alignment_confirmation_required": true,
+    "complete_regular_session_required": true,
+    "expected_regular_session_bars": 240,
+    "missing_duplicate_or_halted_bars": "do_not_fill_and_mark_session_ineligible",
+    "cross_day_price_comparison": "previous_raw_close_times_previous_factor_divided_by_current_factor"
+  },
+  "features": [
+    {
+      "name": "late_return_30m",
+      "formula": "close_at_15_00 / close_at_14_30 - 1 after bar-end normalization",
+      "diagnostic_direction": "higher",
+      "hypothesis": "A price move supported through the final thirty minutes persists over the next three sessions."
+    },
+    {
+      "name": "late_amount_share_30m",
+      "formula": "amount_over_bar_ends_14_31_through_15_00 / full_session_amount",
+      "diagnostic_direction": "higher",
+      "hypothesis": "Unusually late trading participation indicates demand that is not fully resolved by the close."
+    },
+    {
+      "name": "late_vwap_to_day_vwap_30m",
+      "formula": "late_30m_vwap / full_session_vwap - 1",
+      "diagnostic_direction": "higher",
+      "hypothesis": "Late trading above the full-session paid-price center indicates persistent closing demand."
+    },
+    {
+      "name": "opening_gap_digestion",
+      "formula": "-sign(open / comparable_previous_close - 1) * (close / open - 1)",
+      "diagnostic_direction": "higher",
+      "hypothesis": "A gap that is absorbed back toward the prior comparable close is healthier than a gap that extends away from it."
+    },
+    {
+      "name": "intraday_realized_volatility",
+      "formula": "sqrt(sum(square(diff(log(minute_close))))) over the complete regular session",
+      "diagnostic_direction": "lower",
+      "hypothesis": "Lower intraday path volatility reduces short-horizon tail risk for otherwise eligible stocks."
+    }
+  ],
+  "diagnostic_protocol": {
+    "development_window": "2019-01-01_through_2025-12-31_if_licensed_coverage_allows",
+    "minimum_observed_years": 5,
+    "minimum_non_overlapping_cohorts": 200,
+    "association_gate": "overall_and_each_year_mean_rank_ic_positive; positive_rank_ic_share_above_0.5; top3_minus_bottom3_mean_gross_return_positive",
+    "topk_gate": "association_gate_passed; overall_and_each_year_top3_net_return_positive; maximum_drawdown_not_below_minus_0.20",
+    "failed_direction_policy": "retire_without_inverting_or_changing_window_on_the_same_development_history"
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

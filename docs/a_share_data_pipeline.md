@@ -1069,6 +1069,28 @@ python scripts/a_share_rich_data.py sync-tushare-events --start 2026-07-13 --end
 
 通过上述检查前，分钟和事件数据只属于“候选原始数据”，不得进入因子聚合、模型训练、纸面观察或选股评分。
 
+完成首尾分钟人工复核后，不修改验收清单，而是追加一份独立确认记录。`--bar-label` 必须填供应商实际采用的 `start` 或 `end`，`--volume-unit` 必须与自动日线对账推断的 `shares` 或 `lots` 一致：
+
+```bash
+python scripts/a_share_rich_data.py confirm-minute-alignment \
+  --manifest data/metadata/rich_data/runs/<acceptance-run>.json \
+  --bar-label end --volume-unit shares --reviewed-boundaries
+```
+
+该命令要求验收快照至少有一个时间标签完全匹配的 240-bar 交易日，将确认写入 `data/metadata/rich_data/alignments/`，并绑定原验收清单的 SHA-256。它只确认同一供应商、同一频率的时间戳和成交量语义，不代表因子有效，也不授权选股。
+
+第一版分钟因子已经在 [`a_share_minute_factor_preregistration.json`](a_share_minute_factor_preregistration.json) 中先于任何本地分钟收益冻结。五项原始定义及诊断方向固定为：
+
+| 字段 | 固定含义 | 诊断方向 |
+| --- | --- | --- |
+| `late_return_30m` | 14:30 至 15:00 收益 | 高值 |
+| `late_amount_share_30m` | 最后 30 分钟成交额占全天比例 | 高值 |
+| `late_vwap_to_day_vwap_30m` | 尾盘 VWAP 相对全天 VWAP | 高值 |
+| `opening_gap_digestion` | 跳空后向昨收可比价格回归的程度 | 高值 |
+| `intraday_realized_volatility` | 完整交易时段分钟对数收益实现波动 | 低值 |
+
+其中昨收可比价格使用 `昨日 raw_close × 昨日 factor ÷ 今日 factor`，避免除权日产生假跳空。特征生成器只接受原始未复权 1 分钟快照、已通过且哈希链完整的口径确认、单一供应商文件和日线 `close_known_raw_pct_chg_chain_v1`。每个股票日必须恰好匹配 240 个 bar-end 时间点；少一根、多一根、重复一根或关键值不可计算时，该日整体不合格，程序不会填补。
+
 ### 批量下载、存储与追溯
 
 验收通过后，才对明确的股票列表下载分钟数据：
@@ -1078,5 +1100,15 @@ python scripts/a_share_rich_data.py sync-minutes \
   --provider rqdata --symbols 600519,000001,300750,688981 \
   --start 2026-07-10 --end 2026-07-13 --frequency 1m
 ```
+
+批量快照的供应商和频率必须与口径确认一致，随后才能生成研究特征：
+
+```bash
+python scripts/a_share_rich_data.py build-minute-features \
+  --manifest data/metadata/rich_data/runs/<bulk-run>.json \
+  --alignment data/metadata/rich_data/alignments/<alignment-run>.json
+```
+
+输出 Parquet 位于 `data/derived/a_share/rich/minute_features/v1/`，运行清单位于 `data/metadata/rich_data/feature_runs/`。清单同时保存原始快照、口径确认和预注册文件的哈希，并明确记录 `forward_return_fields_read=false`、`selection_or_promotion_allowed=false`。此步骤仅生成当日收盘已知特征；后续关联诊断仍须使用固定 2019–2025 开发期、三日非重叠 cohort、Top‑3、万一佣金和卖出印花税门槛。任何方向失败，都不能在同一历史上反向或换窗口补测。
 
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。
