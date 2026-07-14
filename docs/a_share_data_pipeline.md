@@ -266,6 +266,23 @@ python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
 
 这是当前公开源的历史快照，不是交易所级逐时点披露库；快照可能修订或漏收历史记录。在固定 2019–2025 开发期中，质押股数、总股本占比、事件笔数和新鲜度都取得了 374–399 个 cohort，但全部存在年度 Rank IC 反向且 Top‑3 最大回撤为 −51.3% 至 −61.8%，没有任何字段通过稳定性或可行性审计。因此这四项质押因子均被淘汰，不能反向、扩窗或并入选股评分和交易计划。
 
+**沪深股通逐股日频持仓/净流入**不再是可用来源：交易所自 2024‑08‑19 起只在每日收市后公布总成交额和前十活跃证券，并改为每季度第五个交易日公布上季度末单只证券持股。它无法完整覆盖固定的 2019–2025 三日开发期，故不得用 2024 年前的片段、后续季度数或缺失值补零来研究或评分。
+
+另一类独立假设是**分红送配预案公告**。脚本按 `PLAN_NOTICE_DATE` 分年下载，仅请求每十股税前现金分红 `PRETAX_BONUS_RMB` 和送转总比例 `BONUS_IT_RATIO`，并将同一股票同日记录聚合。方案进度、最新公告日、股权登记/除权日、股息率、财务字段和所有源内未来收益字段都在请求层排除；信号严格从预案公告后的下一本地交易日生效，窗口固定为 3 个日历日：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py sync-dividend-plan-events \
+  --start-year 2019 --end-year 2025
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --dividend-plan-events data/raw/a_share/events/dividend_plans.parquet \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --max-dividend-plan-age-days 3
+```
+
+固定开发期中，四项预案因子仅形成 4–124 个非重叠 cohort，未达到 200 个最低样本门槛；现金分红项还出现负的 Top‑3 净收益（−58.3%）和 −70.8% 最大回撤。全部四项均未通过稳定性和可行性审计，因此被淘汰，不能通过延长窗口、反向或合并其他因子来绕过样本不足。
+
 季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash

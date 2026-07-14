@@ -64,6 +64,8 @@ DEFAULT_HOLDER_COUNT_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "holder
 DEFAULT_HOLDER_COUNT_EVENT_MANIFEST = DATA_ROOT / "metadata" / "holder_count_changes_manifest.json"
 DEFAULT_PLEDGE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "share_pledges.parquet"
 DEFAULT_PLEDGE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "share_pledges_manifest.json"
+DEFAULT_DIVIDEND_PLAN_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "dividend_plans.parquet"
+DEFAULT_DIVIDEND_PLAN_EVENT_MANIFEST = DATA_ROOT / "metadata" / "dividend_plans_manifest.json"
 DEFAULT_EXPERIMENT_ROOT = DATA_ROOT / "experiments" / "short_horizon"
 DEFAULT_STRATEGY_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "strategy_registry.json"
 DEFAULT_PAPER_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_paper_ledger.json"
@@ -84,6 +86,7 @@ EASTMONEY_INSTITUTIONAL_SURVEY_REPORT = "RPT_ORG_SURVEY"
 EASTMONEY_REPURCHASE_REPORT = "RPTA_WEB_GETHGLIST_NEW"
 EASTMONEY_HOLDER_COUNT_REPORT = "RPT_HOLDERNUM_DET"
 EASTMONEY_PLEDGE_REPORT = "RPTA_APP_ACCUMDETAILS"
+EASTMONEY_DIVIDEND_PLAN_REPORT = "RPT_SHAREBONUS_DET"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -210,6 +213,19 @@ PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS = (
     "pledge_total_share_ratio",
     "pledge_event_count",
     "pledge_freshness",
+)
+DIVIDEND_PLAN_EVENT_COLUMNS = (
+    "instrument",
+    "announcement_date",
+    "dividend_cash_per_ten",
+    "dividend_share_ratio",
+    "dividend_plan_event_count",
+)
+DIVIDEND_PLAN_FACTOR_DIAGNOSTIC_COLUMNS = (
+    "dividend_cash_per_ten",
+    "dividend_share_ratio",
+    "dividend_plan_event_count",
+    "dividend_plan_freshness",
 )
 MARGIN_FINANCING_TOP_N = 100
 # This direction is deliberately not part of the development diagnostic
@@ -1880,6 +1896,41 @@ def _eastmoney_pledge_request(session: requests.Session, year: int, page_number:
     raise RuntimeError(f"cannot fetch pledge notices {year} page {page_number}: {errors[-1]}")
 
 
+def _eastmoney_dividend_plan_request(session: requests.Session, year: int, page_number: int) -> dict[str, Any]:
+    """Fetch one page of initial dividend-plan notices without later outcomes.
+
+    The report carries later implementation state, ex-dividend timing, latest
+    announcement date, dividend yield, and forward return fields.  They are
+    excluded at request time.  Only the date labelled as the plan notice and
+    terms announced in that plan are candidate inputs.
+    """
+
+    params = {
+        "reportName": EASTMONEY_DIVIDEND_PLAN_REPORT,
+        "columns": "SECURITY_CODE,PLAN_NOTICE_DATE,PRETAX_BONUS_RMB,BONUS_IT_RATIO",
+        "filter": f"(PLAN_NOTICE_DATE>='{year}-01-01')(PLAN_NOTICE_DATE<='{year}-12-31')",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "-1,-1",
+        "sortColumns": "PLAN_NOTICE_DATE,SECURITY_CODE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(4):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(f"cannot fetch dividend-plan notices {year} page {page_number}: {errors[-1]}")
+
+
 def fetch_annual_report_rows(session: requests.Session, report_date: str) -> list[dict[str, Any]]:
     """Fetch all pages for one annual report period from the public endpoint."""
 
@@ -2418,6 +2469,43 @@ def normalize_pledge_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
         .loc[:, list(PLEDGE_EVENT_COLUMNS)]
     )
     result["pledge_event_count"] = pd.to_numeric(result["pledge_event_count"], errors="coerce").astype(float)
+    return result.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+
+
+def normalize_dividend_plan_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
+    """Aggregate initial public dividend-plan terms by instrument and notice date."""
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=DIVIDEND_PLAN_EVENT_COLUMNS)
+    detail = pd.DataFrame(
+        {
+            "instrument": raw.get("SECURITY_CODE", pd.Series(index=raw.index, dtype="object")).map(qlib_symbol),
+            "announcement_date": pd.to_datetime(
+                raw.get("PLAN_NOTICE_DATE", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+            ),
+            "dividend_cash_per_ten": pd.to_numeric(
+                raw.get("PRETAX_BONUS_RMB", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+            "dividend_share_ratio": pd.to_numeric(
+                raw.get("BONUS_IT_RATIO", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+        }
+    ).dropna(subset=["instrument", "announcement_date"])
+    if detail.empty:
+        return pd.DataFrame(columns=DIVIDEND_PLAN_EVENT_COLUMNS)
+    result = (
+        detail.groupby(["instrument", "announcement_date"], as_index=False, sort=True)
+        .agg(
+            dividend_cash_per_ten=("dividend_cash_per_ten", lambda values: values.sum(min_count=1)),
+            dividend_share_ratio=("dividend_share_ratio", lambda values: values.sum(min_count=1)),
+            dividend_plan_event_count=("instrument", "size"),
+        )
+        .loc[:, list(DIVIDEND_PLAN_EVENT_COLUMNS)]
+    )
+    result["dividend_plan_event_count"] = pd.to_numeric(
+        result["dividend_plan_event_count"], errors="coerce"
+    ).astype(float)
     return result.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
 
 
@@ -3135,6 +3223,75 @@ def sync_pledge_events(start_year: int, end_year: int, output: Path, manifest: P
     return result
 
 
+def sync_dividend_plan_events(start_year: int, end_year: int, output: Path, manifest: Path) -> dict[str, Any]:
+    """Download all dated public dividend-plan notices in the requested years."""
+
+    if start_year > end_year:
+        raise ValueError("start_year must not be after end_year")
+    session = _eastmoney_session()
+    frames: list[pd.DataFrame] = []
+    pages_by_year: dict[str, int] = {}
+    source_rows_by_year: dict[str, int] = {}
+    for year in range(start_year, end_year + 1):
+        first = _eastmoney_dividend_plan_request(session, year, page_number=1)
+        result = first["result"]
+        pages = int(result.get("pages") or 0)
+        pages_by_year[str(year)] = pages
+        source_rows = 0
+        for page_number in range(1, pages + 1):
+            payload = first if page_number == 1 else _eastmoney_dividend_plan_request(session, year, page_number)
+            rows = list((payload.get("result") or {}).get("data") or [])
+            source_rows += len(rows)
+            normalized = normalize_dividend_plan_rows(rows)
+            if not normalized.empty:
+                frames.append(normalized)
+        source_rows_by_year[str(year)] = source_rows
+        print(f"{year}: {pages} pages; {source_rows} dividend-plan source rows")
+    merged = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=DIVIDEND_PLAN_EVENT_COLUMNS)
+    merged = (
+        merged.groupby(["instrument", "announcement_date"], as_index=False, sort=True)
+        .agg(
+            dividend_cash_per_ten=("dividend_cash_per_ten", lambda values: values.sum(min_count=1)),
+            dividend_share_ratio=("dividend_share_ratio", lambda values: values.sum(min_count=1)),
+            dividend_plan_event_count=("dividend_plan_event_count", "sum"),
+        )
+        .loc[:, list(DIVIDEND_PLAN_EVENT_COLUMNS)]
+        .sort_values(["instrument", "announcement_date"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if merged.empty:
+        raise RuntimeError("dividend-plan sync produced no usable A-share notice events")
+    _atomic_write_parquet(output, merged)
+    result = {
+        "status": "completed",
+        "source": {
+            "provider": "Eastmoney public datacenter",
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report": EASTMONEY_DIVIDEND_PLAN_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
+        "event_frequency": "dated_dividend_plan_notice",
+        "years": list(range(start_year, end_year + 1)),
+        "pages_by_year": pages_by_year,
+        "source_rows_by_year": source_rows_by_year,
+        "rows_by_announcement_year": {
+            str(year): int(len(group))
+            for year, group in merged.groupby(pd.to_datetime(merged["announcement_date"]).dt.year, sort=True)
+        },
+        "rows_written": len(merged),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "limitations": [
+            "The public source is queried as it exists today and can revise or omit historical plan records.",
+            "PLAN_NOTICE_DATE is treated as the initial public plan notice and is made effective only on the strictly next local trading session.",
+            "Only PRETAX_BONUS_RMB (cash dividend per ten shares) and BONUS_IT_RATIO (announced total bonus/share-transfer ratio) are requested. ASSIGN_PROGRESS, NOTICE_DATE, equity-record/ex-dividend dates, dividend yield, financial fields, and forward-return fields are excluded at request time.",
+            "This is a research event snapshot, not an exchange-grade point-in-time disclosure database.",
+        ],
+    }
+    _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
 def merge_quarterly_fundamentals(input_paths: Iterable[Path], output: Path, manifest: Path) -> dict[str, Any]:
     """Atomically combine independently downloaded quarterly snapshot chunks.
 
@@ -3359,6 +3516,24 @@ def load_pledge_events(path: Path) -> pd.DataFrame:
     frame = frame.loc[:, list(PLEDGE_EVENT_COLUMNS)].copy()
     frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
     for column in PLEDGE_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    return frame.dropna(subset=["instrument", "announcement_date"]).sort_values(
+        ["instrument", "announcement_date"], kind="stable"
+    ).reset_index(drop=True)
+
+
+def load_dividend_plan_events(path: Path) -> pd.DataFrame:
+    """Load dated initial dividend-plan notices without implementation fields."""
+
+    if not path.exists():
+        raise FileNotFoundError(f"dividend-plan snapshot does not exist: {path}; run sync-dividend-plan-events first")
+    frame = pd.read_parquet(path)
+    missing = sorted(set(DIVIDEND_PLAN_EVENT_COLUMNS) - set(frame.columns))
+    if missing:
+        raise ValueError(f"dividend-plan snapshot is missing columns: {', '.join(missing)}")
+    frame = frame.loc[:, list(DIVIDEND_PLAN_EVENT_COLUMNS)].copy()
+    frame["announcement_date"] = pd.to_datetime(frame["announcement_date"], errors="coerce")
+    for column in DIVIDEND_PLAN_EVENT_COLUMNS[2:]:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     return frame.dropna(subset=["instrument", "announcement_date"]).sort_values(
         ["instrument", "announcement_date"], kind="stable"
@@ -4005,6 +4180,55 @@ def attach_pledge_events_asof(
     return result
 
 
+def attach_dividend_plan_events_asof(
+    market: pd.DataFrame, events: pd.DataFrame, max_age_days: int = 3
+) -> pd.DataFrame:
+    """Attach initial dividend-plan notices strictly after their notice date."""
+
+    if max_age_days < 0:
+        raise ValueError("max_age_days must not be negative")
+    if missing := sorted({"instrument", "datetime"} - set(market.columns)):
+        raise ValueError(f"market frame is missing columns: {', '.join(missing)}")
+    if missing := sorted(set(DIVIDEND_PLAN_EVENT_COLUMNS) - set(events.columns)):
+        raise ValueError(f"dividend-plan events are missing columns: {', '.join(missing)}")
+    result = market.reset_index(drop=True).copy()
+    calendar = pd.DatetimeIndex(sorted(pd.to_datetime(result["datetime"]).dropna().unique()))
+    source = events.loc[:, list(DIVIDEND_PLAN_EVENT_COLUMNS)].copy()
+    source["dividend_plan_effective_date"] = _first_trading_day_after(calendar, source["announcement_date"])
+    source = source.dropna(subset=["dividend_plan_effective_date"]).sort_values(
+        ["instrument", "dividend_plan_effective_date", "announcement_date"], kind="stable"
+    ).drop_duplicates(["instrument", "dividend_plan_effective_date"], keep="last")
+    columns = [
+        "dividend_plan_announcement_date", "dividend_cash_per_ten", "dividend_share_ratio",
+        "dividend_plan_event_count", "dividend_plan_effective_date",
+    ]
+    daily = result[["instrument", "datetime"]].copy()
+    daily["_kind"], daily["_row"] = 1, np.arange(len(daily))
+    for column in ("dividend_plan_announcement_date", "dividend_plan_effective_date"):
+        daily[column] = pd.NaT
+    for column in columns[1:-1]:
+        daily[column] = np.nan
+    event_rows = source.rename(
+        columns={"dividend_plan_effective_date": "datetime", "announcement_date": "dividend_plan_announcement_date"}
+    )[["instrument", "datetime", *[column for column in columns if column != "dividend_plan_effective_date"]]].copy()
+    event_rows["dividend_plan_effective_date"] = event_rows["datetime"]
+    event_rows["_kind"], event_rows["_row"] = 0, np.nan
+    combined = pd.concat([daily, event_rows], ignore_index=True, sort=False).sort_values(
+        ["instrument", "datetime", "_kind"], kind="stable"
+    )
+    combined[columns] = combined.groupby("instrument", sort=False)[columns].ffill()
+    attached = combined.loc[combined["_row"].notna(), ["_row", *columns]].copy()
+    attached["_row"] = attached["_row"].astype(int)
+    result = result.join(attached.set_index("_row"), how="left")
+    result["dividend_plan_age_days"] = (
+        pd.to_datetime(result["datetime"]) - pd.to_datetime(result["dividend_plan_effective_date"])
+    ).dt.days
+    result["dividend_plan_available"] = result["dividend_plan_announcement_date"].notna() & result[
+        "dividend_plan_age_days"
+    ].between(0, max_age_days)
+    return result
+
+
 def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size: int) -> pd.DataFrame:
     """Load the local buyable universe and precompute only non-forward factors."""
 
@@ -4243,6 +4467,17 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         if column in result.columns
     ]
     raw_columns.extend(pledge_raw_columns)
+    dividend_plan_raw_columns = [
+        column
+        for column in (
+            "dividend_cash_per_ten",
+            "dividend_share_ratio",
+            "dividend_plan_event_count",
+            "dividend_plan_age_days",
+        )
+        if column in result.columns
+    ]
+    raw_columns.extend(dividend_plan_raw_columns)
     for column in raw_columns:
         result[column] = pd.to_numeric(result[column], errors="coerce")
     # Event rows are forward-filled only so each row retains the event context
@@ -4259,6 +4494,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         ("repurchase_available", repurchase_raw_columns),
         ("holder_count_available", holder_count_raw_columns),
         ("pledge_available", pledge_raw_columns),
+        ("dividend_plan_available", dividend_plan_raw_columns),
     ):
         if available_column in result.columns:
             result.loc[~result[available_column].fillna(False), event_columns] = np.nan
@@ -4360,6 +4596,12 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
             result[column] = result[rank_column]
     if "rank_pledge_age_days" in result.columns:
         result["pledge_freshness"] = 1.0 - result["rank_pledge_age_days"]
+    for column in ("dividend_cash_per_ten", "dividend_share_ratio", "dividend_plan_event_count"):
+        rank_column = f"rank_{column}"
+        if rank_column in result.columns:
+            result[column] = result[rank_column]
+    if "rank_dividend_plan_age_days" in result.columns:
+        result["dividend_plan_freshness"] = 1.0 - result["rank_dividend_plan_age_days"]
     result["momentum_1"] = result["rank_momentum_1"]
     result["momentum_2"] = result["rank_momentum_2"]
     result["momentum_3"] = result["rank_momentum_3"]
@@ -6293,6 +6535,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
         repurchase_events = diagnostic.get("repurchase_events") or {}
         holder_count_events = diagnostic.get("holder_count_events") or {}
         pledge_events = diagnostic.get("pledge_events") or {}
+        dividend_plan_events = diagnostic.get("dividend_plan_events") or {}
         top = ranking[0] if ranking else {}
         diagnostics.append(
             {
@@ -6309,6 +6552,7 @@ def load_factor_diagnostics(experiment_root: Path) -> list[dict[str, Any]]:
                 "repurchase_event_source": str(repurchase_events.get("source", "—")),
                 "holder_count_event_source": str(holder_count_events.get("source", "—")),
                 "pledge_event_source": str(pledge_events.get("source", "—")),
+                "dividend_plan_event_source": str(dividend_plan_events.get("source", "—")),
                 "factor_count": len(ranking),
                 "top_factor": str(top.get("factor", "—")),
                 "top_factor_mean_rank_ic": top.get("mean_rank_ic"),
@@ -6883,6 +7127,7 @@ def render_three_day_research_report(
                             diagnostic["repurchase_event_source"],
                             diagnostic["holder_count_event_source"],
                             diagnostic["pledge_event_source"],
+                            diagnostic["dividend_plan_event_source"],
                         )
                         if source != "—"
                     )
@@ -7612,6 +7857,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     repurchase_path = Path(args.repurchase_events).expanduser() if args.repurchase_events else None
     holder_count_path = Path(args.holder_count_events).expanduser() if args.holder_count_events else None
     pledge_path = Path(args.pledge_events).expanduser() if args.pledge_events else None
+    dividend_plan_path = Path(args.dividend_plan_events).expanduser() if args.dividend_plan_events else None
     experiment_root = Path(args.experiment_root).expanduser()
     fundamentals = load_fundamentals(fundamental_path)
     market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
@@ -7664,6 +7910,11 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     if pledge_path is not None:
         pledge_events = load_pledge_events(pledge_path)
         market = attach_pledge_events_asof(market, pledge_events, max_age_days=args.max_pledge_age_days)
+    if dividend_plan_path is not None:
+        dividend_plan_events = load_dividend_plan_events(dividend_plan_path)
+        market = attach_dividend_plan_events_asof(
+            market, dividend_plan_events, max_age_days=args.max_dividend_plan_age_days
+        )
     ranked = rank_factor_frame(market)
     forward_returns = forward_factor_return_frame(ranked, args.hold_days)
     factor_catalog = [
@@ -7679,6 +7930,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             *REPURCHASE_FACTOR_DIAGNOSTIC_COLUMNS,
             *HOLDER_COUNT_FACTOR_DIAGNOSTIC_COLUMNS,
             *PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS,
+            *DIVIDEND_PLAN_FACTOR_DIAGNOSTIC_COLUMNS,
         )
         if factor in ranked.columns
     ]
@@ -7854,6 +8106,24 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
                 "current_price_or_state_fields_stored": False,
             }
             if pledge_path is not None
+            else None
+        ),
+        "dividend_plan_events": (
+            {
+                "source": str(dividend_plan_path.resolve()),
+                "sha256": file_sha256(dividend_plan_path),
+                "effective_date": "strictly next local trading day after PLAN_NOTICE_DATE",
+                "max_dividend_plan_age_days": args.max_dividend_plan_age_days,
+                "available_rows": int(market["dividend_plan_available"].sum()),
+                "eligible_available_rows": int(
+                    (
+                        market["quality_eligible"].fillna(False)
+                        & market["dividend_plan_available"].fillna(False)
+                    ).sum()
+                ),
+                "implementation_or_forward_fields_stored": False,
+            }
+            if dividend_plan_path is not None
             else None
         ),
         "data": {
@@ -9464,6 +9734,15 @@ def parse_args() -> argparse.Namespace:
     sync_pledge.add_argument("--output", default=str(DEFAULT_PLEDGE_EVENTS))
     sync_pledge.add_argument("--manifest", default=str(DEFAULT_PLEDGE_EVENT_MANIFEST))
 
+    sync_dividend_plan = subparsers.add_parser(
+        "sync-dividend-plan-events",
+        help="download dated public initial dividend-plan notices for short-horizon event research",
+    )
+    sync_dividend_plan.add_argument("--start-year", type=int, default=2019)
+    sync_dividend_plan.add_argument("--end-year", type=int, default=2026)
+    sync_dividend_plan.add_argument("--output", default=str(DEFAULT_DIVIDEND_PLAN_EVENTS))
+    sync_dividend_plan.add_argument("--manifest", default=str(DEFAULT_DIVIDEND_PLAN_EVENT_MANIFEST))
+
     run = subparsers.add_parser("run", help="run the predeclared short-horizon factor sweep")
     run.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
     run.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
@@ -9529,6 +9808,10 @@ def parse_args() -> argparse.Namespace:
         "--pledge-events",
         help="optional dated share-pledge notice snapshot; adds next-session event factors to the development-only diagnostic",
     )
+    factor_diagnostic.add_argument(
+        "--dividend-plan-events",
+        help="optional dated initial dividend-plan notice snapshot; adds next-session event factors to the development-only diagnostic",
+    )
     factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
     factor_diagnostic.add_argument("--start", default="2019-01-01")
     factor_diagnostic.add_argument("--end", default="2025-12-31")
@@ -9591,6 +9874,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="maximum calendar age for a share-pledge notice; default matches the three-day holding horizon",
+    )
+    factor_diagnostic.add_argument(
+        "--max-dividend-plan-age-days",
+        type=int,
+        default=3,
+        help="maximum calendar age for an initial dividend plan; default matches the three-day holding horizon",
     )
     factor_diagnostic.add_argument("--batch-size", type=int, default=500)
 
@@ -10026,6 +10315,8 @@ def main() -> int:
         report = sync_holder_count_events(args.start_year, args.end_year, Path(args.output), Path(args.manifest))
     elif args.command == "sync-pledge-events":
         report = sync_pledge_events(args.start_year, args.end_year, Path(args.output), Path(args.manifest))
+    elif args.command == "sync-dividend-plan-events":
+        report = sync_dividend_plan_events(args.start_year, args.end_year, Path(args.output), Path(args.manifest))
     elif args.command == "run":
         report = run_research(args)
     elif args.command == "factor-diagnostic":
