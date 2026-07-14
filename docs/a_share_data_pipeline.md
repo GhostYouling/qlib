@@ -1272,12 +1272,12 @@ python scripts/install_a_share_launchd.py uninstall
 | 来源 | 当前接入范围 | 适用阶段 |
 | --- | --- | --- |
 | RQData | 原始分钟 OHLCV/成交额 | 首选的全市场分钟研究数据 |
-| JQData | 原始分钟 OHLCV/成交额 | RQData 的可替代分钟源 |
+| JQData | 原始分钟 OHLCV/成交额；另购专业版日/分钟资金流 | 当前下一项大单分类研究与分钟替代源 |
 | Tushare | 原始分钟线、`moneyflow`、涨跌停、龙虎榜 | 资金流和盘后事件补充 |
 
 供应商账户、分钟权限和历史深度必须由实际授权确认。不要购买、猜测权限或把凭据交给仓库。
 
-对平均持有 3 个交易日的当前研究，接入优先级固定为：先选**已有合法授权**的 RQData 或 JQData 做 1 分钟 OHLCV/成交额单日验收；再用 Tushare 补充资金流、涨跌停和龙虎榜等有明确盘后时间的事件。分钟数据首先只构造尾盘收益、尾盘成交占比、日内 VWAP 路径、开盘跳空消化和日内实现波动等少量预声明字段。Level‑2 的十档盘口、逐笔委托/成交和队列字段暂不作为前置依赖：只有分钟/事件候选先通过时间对齐、跨年度与 Top‑3 门禁，且失败原因明确指向队列或成交优先级时，才评估合规的 Level‑2 历史授权。交易所 Level‑2 是增值行情，不应把客户端可见盘口抓取当作可回测历史数据库。
+对平均持有 3 个交易日的当前研究，下一项凭证数据优先级固定为：先验收 **JQData 专业版日级资金流**的明确大单分类，随后才选已有合法授权的 RQData 或 JQData 做 1 分钟 OHLCV/成交额验收，再用 Tushare 补充盘后事件。分钟数据只构造尾盘收益、尾盘成交占比、日内 VWAP 路径、开盘跳空消化和日内实现波动等少量预声明字段。Level‑2 的十档盘口、逐笔委托/成交、撤单和队列字段暂不作为前置依赖：只有日级分类与分钟候选先通过时间对齐、跨年度与 Top‑3 门禁，且失败原因明确指向队列或成交优先级时，才评估合规的 Level‑2 历史授权。交易所 Level‑2 是增值行情，不应把客户端可见盘口抓取当作可回测历史数据库。
 
 官方能力参考：[JQData 数据说明](https://www.joinquant.com/help/api/doc?id=10674&name=JQDatadoc)、[Tushare 股票数据目录](https://tushare.pro/document/2?doc_id=17)、[上证所 Level‑2 产品说明](https://www.sseinfo.com/services/assortment/level2/)。实际采购前仍须核对账户页显示的历史深度、频率、调用配额和再分发条款。
 
@@ -1302,6 +1302,34 @@ export RQDATA_PASSWORD='...'
 ```
 
 令牌和密码绝不能出现在 Git、命令历史、笔记本输出、研究清单或聊天中。未安装 SDK 或缺少变量时，程序会在发出网络请求前失败；不要用抓取公开网页的方式替代已授权数据源。
+
+### JQData 专业版日级资金流
+
+下一项独立机制在任何 JQData 权限或数据行被观察前冻结为 `docs/a_share_jqdata_moneyflow_data_contract.json`（SHA‑256 `1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004`）。[JQData 官方文档](https://www.joinquant.com/help/api/doc?id=10674&name=JQDatadoc)说明 `get_money_flow_pro` 从 2015 年起提供日/分钟分类资金流，日级约 19:00 更新，且需单独购买；正式 JQData 账号本身不等于拥有该产品权限。无账号的东方财富个股资金流替代接口在 2026‑07‑15 对浦发银行、平安银行、宁德时代、中芯国际均只返回最近 120 个交易日，不能覆盖 2019–2025，故不作为历史源。
+
+合同只请求 `inflow_xl/inflow_l/inflow_m/inflow_s/outflow_xl/outflow_l/outflow_m/outflow_s` 八个非负成交额字段，不请求供应商净额、涨跌幅、价格、市值或收益。本地唯一推导：
+
+```text
+jqdata_large_order_net_inflow_share =
+  ((inflow_xl + inflow_l) - (outflow_xl + outflow_l)) /
+  sum(全部八个流入/流出金额)
+```
+
+高值方向固定为更好；分母为零保持缺失，缺字段排除并计数，任何负原始金额直接中止分片，绝不裁剪、取绝对值或填充。日数据约 19:00 才可用，因此只形成当日收盘后、供下一本地交易日开盘使用的信号，事件年龄为 0。
+
+取得正式账号且确认单独购买专业资金流后，先只验收四只冻结股票和一个已收盘交易日：
+
+```bash
+python scripts/a_share_rich_data.py acceptance-jqdata-moneyflow --date 2026-07-13
+```
+
+验收必须返回四只股票、精确字段、唯一键、非负金额和 `[-1, 1]` 本地公式结果；清单不得含凭证、价格或收益。缺 SDK、缺环境变量、登录失败、产品未授权、缺股票或字段异常都会在发出大请求前停止。只有验收清单状态为 `accepted_entitlement_and_formula_pending_full_history` 后，才允许执行固定 2019–2025、历史股票区间和年度分片的全量命令：
+
+```bash
+python scripts/a_share_rich_data.py sync-jqdata-moneyflow --allow-large
+```
+
+每个年度调用必须低于供应商文档的 200 万行上限；分片依次写入同一临时目录，所有年度成功后才原子改名并写运行清单，失败删除整份临时快照。覆盖率以当日本地历史股票区间为分母，要求中位数至少 95%、P5 至少 90%，并保留至少 200 个有 50 只正活动因子值的日期。全量覆盖通过也只能冻结并执行无收益容量门禁；在那以前不得读取开收盘/远期收益、进入聚合或选股。当前本机 `status` 显示 JQData SDK、用户名和密码均未配置，因此这里仅完成合同与接入器，不声称已验收或已有数据。
 
 ### 必经验收流程
 

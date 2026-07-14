@@ -10,7 +10,7 @@ can always identify its provider, retrieval time, and raw input files.
 Supported providers
 -------------------
 * ``tushare``: minute OHLCV plus end-of-day moneyflow/limit-list/top-list.
-* ``jqdata``: minute OHLCV.
+* ``jqdata``: minute OHLCV plus separately licensed professional daily moneyflow.
 * ``rqdata``: minute OHLCV.
 
 Credentials are read only from environment variables.  Never place a token or
@@ -25,6 +25,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import shutil
 import tempfile
 import uuid
 from dataclasses import asdict, dataclass
@@ -45,6 +46,13 @@ FEATURE_RUNS_ROOT = METADATA_ROOT / "feature_runs"
 DERIVED_ROOT = DATA_ROOT / "derived" / "a_share" / "rich"
 DAILY_RAW_DIR = DATA_ROOT / "raw" / "a_share" / "daily"
 DEFAULT_MINUTE_FACTOR_SPEC = REPO_ROOT / "docs" / "a_share_minute_factor_preregistration.json"
+DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
+)
+DEFAULT_FACTOR_UNIVERSE = (
+    DATA_ROOT / "qlib" / "cn_a_share" / "instruments" / "factor_main_chinext_star.txt"
+)
+DEFAULT_LOCAL_CALENDAR = DATA_ROOT / "qlib" / "cn_a_share" / "calendars" / "day.txt"
 
 DEFAULT_ACCEPTANCE_SYMBOLS = ("600519", "000001", "300750", "688981")
 PROVIDER_REQUIREMENTS = {
@@ -63,6 +71,33 @@ MINUTE_FEATURE_NAMES = (
 )
 MINUTE_FEATURE_DIRECTIONS = ("higher", "higher", "higher", "higher", "lower")
 REQUIRED_DAILY_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
+JQDATA_MONEYFLOW_CONTRACT_SHA256 = (
+    "1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004"
+)
+JQDATA_MONEYFLOW_RAW_FIELDS = (
+    "inflow_xl",
+    "inflow_l",
+    "inflow_m",
+    "inflow_s",
+    "outflow_xl",
+    "outflow_l",
+    "outflow_m",
+    "outflow_s",
+)
+JQDATA_MONEYFLOW_COLUMNS = (
+    "trade_date",
+    "instrument",
+    "inflow_xl_amount",
+    "inflow_l_amount",
+    "inflow_m_amount",
+    "inflow_s_amount",
+    "outflow_xl_amount",
+    "outflow_l_amount",
+    "outflow_m_amount",
+    "outflow_s_amount",
+    "jqdata_large_order_net_inflow_share",
+    "provider",
+)
 
 
 class RichDataError(RuntimeError):
@@ -450,6 +485,29 @@ def fetch_jqdata_minutes(code: str, start: dt.date, end: dt.date, frequency: str
     )
 
 
+def fetch_jqdata_moneyflow_pro(
+    codes: list[str], start: dt.date, end: dt.date
+) -> pd.DataFrame:
+    """Fetch only the eight frozen daily classified-flow amount fields."""
+
+    from jqdatasdk import auth, get_money_flow_pro
+
+    authenticated = auth(os.environ["JQDATA_USERNAME"], os.environ["JQDATA_PASSWORD"])
+    if authenticated is False:
+        raise RichDataError("JQData rejected the configured credentials")
+    result = get_money_flow_pro(
+        [vendor_symbol(code, "jqdata") for code in codes],
+        start_date=start.isoformat(),
+        end_date=end.isoformat(),
+        frequency="daily",
+        fields=list(JQDATA_MONEYFLOW_RAW_FIELDS),
+        data_type="money",
+    )
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
 def fetch_rqdata_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
     """Fetch raw minute bars from RQData's licensed API."""
 
@@ -491,6 +549,96 @@ def fetch_tushare_event(dataset: str, trade_date: dt.date) -> pd.DataFrame:
     if result is None:
         return pd.DataFrame()
     return result.copy()
+
+
+def canonicalize_jqdata_moneyflow(
+    frame: pd.DataFrame,
+    codes: list[str],
+    start: dt.date,
+    end: dt.date,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Normalize licensed classified flows and derive the frozen ratio locally."""
+
+    empty_stats = {
+        "input_rows": 0,
+        "missing_rows_excluded": 0,
+        "zero_denominator_rows_excluded": 0,
+        "rows_written": 0,
+    }
+    if frame is None or frame.empty:
+        return pd.DataFrame(columns=JQDATA_MONEYFLOW_COLUMNS), empty_stats
+    raw = frame.copy()
+    if not isinstance(raw.index, pd.RangeIndex):
+        raw = raw.reset_index()
+    date_column = _column(raw, ("time", "date", "trade_date"))
+    code_column = _column(raw, ("code", "sec_code", "security"))
+    if date_column is None or code_column is None:
+        raise RichDataError("JQData moneyflow response lacks a time or code key")
+    raw_columns: dict[str, str] = {}
+    for field in JQDATA_MONEYFLOW_RAW_FIELDS:
+        column = _column(raw, (field,))
+        if column is None:
+            raise RichDataError(f"JQData moneyflow response lacks requested field: {field}")
+        raw_columns[field] = column
+
+    def instrument(value: Any) -> str | None:
+        code = str(value).split(".", 1)[0].strip()
+        try:
+            return qlib_symbol(code)
+        except RichDataError:
+            return None
+
+    normalized = pd.DataFrame(
+        {
+            "trade_date": pd.to_datetime(raw[date_column], errors="coerce").dt.normalize(),
+            "instrument": raw[code_column].map(instrument),
+            **{
+                f"{field}_amount": pd.to_numeric(raw[column], errors="coerce")
+                for field, column in raw_columns.items()
+            },
+        }
+    )
+    amount_columns = [f"{field}_amount" for field in JQDATA_MONEYFLOW_RAW_FIELDS]
+    complete = normalized[["trade_date", "instrument", *amount_columns]].notna().all(axis=1)
+    missing_rows = int((~complete).sum())
+    valid = normalized.loc[complete].copy()
+    if valid[amount_columns].lt(0.0).any().any():
+        raise RichDataError("JQData moneyflow response contains a negative raw flow amount")
+    start_ts = pd.Timestamp(start)
+    end_ts = pd.Timestamp(end)
+    if not valid["trade_date"].between(start_ts, end_ts).all():
+        raise RichDataError("JQData moneyflow response contains a date outside the request")
+    requested_instruments = {qlib_symbol(code) for code in codes}
+    if not set(valid["instrument"]).issubset(requested_instruments):
+        raise RichDataError("JQData moneyflow response contains an unrequested instrument")
+    if valid.duplicated(["instrument", "trade_date"]).any():
+        raise RichDataError("JQData moneyflow response contains duplicate instrument/date keys")
+    valid[amount_columns] = valid[amount_columns].astype("float64")
+    denominator = valid[amount_columns].sum(axis=1)
+    positive = denominator.gt(0.0)
+    zero_denominator_rows = int((~positive).sum())
+    valid = valid.loc[positive].copy()
+    denominator = denominator.loc[positive]
+    valid["jqdata_large_order_net_inflow_share"] = (
+        valid["inflow_xl_amount"]
+        + valid["inflow_l_amount"]
+        - valid["outflow_xl_amount"]
+        - valid["outflow_l_amount"]
+    ) / denominator
+    valid["provider"] = "jqdata"
+    result = (
+        valid.loc[:, list(JQDATA_MONEYFLOW_COLUMNS)]
+        .sort_values(["trade_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if not result["jqdata_large_order_net_inflow_share"].between(-1.0, 1.0).all():
+        raise RichDataError("derived JQData large-order ratio falls outside [-1, 1]")
+    return result, {
+        "input_rows": int(len(raw)),
+        "missing_rows_excluded": missing_rows,
+        "zero_denominator_rows_excluded": zero_denominator_rows,
+        "rows_written": int(len(result)),
+    }
 
 
 def validate_range(start: dt.date, end: dt.date, allow_large: bool, unit_count: int = 1) -> None:
@@ -551,6 +699,93 @@ def load_json_record(path: Path, *, kind: str | None = None) -> dict[str, Any]:
     if kind is not None and payload.get("kind") != kind:
         raise RichDataError(f"expected {kind!r}, got {payload.get('kind')!r}: {path}")
     return payload
+
+
+def load_jqdata_moneyflow_contract(
+    path: Path = DEFAULT_JQDATA_MONEYFLOW_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-entitlement daily moneyflow contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != JQDATA_MONEYFLOW_CONTRACT_SHA256:
+        raise RichDataError("JQData moneyflow contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_jqdata_moneyflow_data_contract")
+    source = contract.get("source") or {}
+    factor = contract.get("factor") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    partition = snapshot.get("partition_policy") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    coverage = contract.get("coverage_and_capacity_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_jqdata_moneyflow_entitlement_or_rows_observed"
+        or contract.get("preregistered_at") != "2026-07-14T20:20:32Z"
+        or source.get("provider") != "jqdata"
+        or source.get("api") != "get_money_flow_pro"
+        or source.get("frequency") != "daily"
+        or source.get("data_type") != "money"
+        or tuple(source.get("requested_fields") or ()) != JQDATA_MONEYFLOW_RAW_FIELDS
+        or tuple(snapshot.get("columns") or ()) != JQDATA_MONEYFLOW_COLUMNS
+        or partition.get("partition") != "one calendar year"
+        or partition.get("provider_documented_maximum_rows_per_call") != 2000000
+        or factor.get("name") != "jqdata_large_order_net_inflow_share"
+        or factor.get("direction") != "higher_is_better"
+        or acceptance.get("symbols") != ["600519", "000001", "300750", "688981"]
+        or coverage.get("minimum_required_cohorts") != 200
+        or coverage.get("minimum_observed_years") != 5
+        or coverage.get("holding_period_trading_days") != 3
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("JQData moneyflow contract does not match the frozen protocol")
+    return contract
+
+
+def load_factor_universe_intervals(
+    path: Path = DEFAULT_FACTOR_UNIVERSE,
+) -> pd.DataFrame:
+    """Read point-in-time instrument intervals without loading any price field."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        raise RichDataError(f"factor universe does not exist: {path}")
+    frame = pd.read_csv(
+        path,
+        sep="\t",
+        header=None,
+        names=["instrument", "start_date", "end_date"],
+        dtype={"instrument": "string"},
+    )
+    frame["start_date"] = pd.to_datetime(frame["start_date"], errors="coerce").dt.normalize()
+    frame["end_date"] = pd.to_datetime(frame["end_date"], errors="coerce").dt.normalize()
+    valid_symbols = frame["instrument"].str.fullmatch(r"(?:SH6|SZ[03])\d{5}", na=False)
+    if (
+        frame.empty
+        or frame[["start_date", "end_date"]].isna().any().any()
+        or (~valid_symbols).any()
+        or frame["instrument"].duplicated().any()
+        or frame["start_date"].gt(frame["end_date"]).any()
+    ):
+        raise RichDataError("factor universe contains invalid or duplicate intervals")
+    return frame.sort_values("instrument", kind="stable").reset_index(drop=True)
+
+
+def local_calendar_dates(
+    start: dt.date,
+    end: dt.date,
+    path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> pd.DatetimeIndex:
+    """Read the local calendar without touching daily prices."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        raise RichDataError(f"local calendar does not exist: {path}")
+    values = pd.to_datetime(path.read_text(encoding="utf-8").splitlines(), errors="coerce")
+    if pd.isna(values).any():
+        raise RichDataError("local calendar contains an invalid date")
+    calendar = pd.DatetimeIndex(values).normalize().unique().sort_values()
+    return calendar[(calendar >= pd.Timestamp(start)) & (calendar <= pd.Timestamp(end))]
 
 
 def atomic_write_frame(frame: pd.DataFrame, destination: Path) -> None:
@@ -1163,6 +1398,310 @@ def sync_tushare_events(
     return run_manifest_path
 
 
+def load_jqdata_moneyflow_acceptance(
+    runs_root: Path | None = None,
+) -> tuple[Path, dict[str, Any]]:
+    """Load and verify the latest accepted four-symbol entitlement snapshot."""
+
+    expected_symbols = {qlib_symbol(code) for code in DEFAULT_ACCEPTANCE_SYMBOLS}
+    root = (runs_root or RUNS_ROOT).expanduser()
+    for path in reversed(sorted(root.glob("*.json"))):
+        try:
+            manifest = load_json_record(path, kind="a_share_rich_data_snapshot")
+        except RichDataError:
+            continue
+        if manifest.get("dataset") != "jqdata_moneyflow_pro_daily":
+            continue
+        if (
+            manifest.get("provider") != "jqdata"
+            or manifest.get("acceptance_status")
+            != "accepted_entitlement_and_formula_pending_full_history"
+        ):
+            continue
+        contract = manifest.get("data_contract") or {}
+        request = manifest.get("source_request") or {}
+        if (
+            contract.get("sha256") != JQDATA_MONEYFLOW_CONTRACT_SHA256
+            or request.get("fields") != list(JQDATA_MONEYFLOW_RAW_FIELDS)
+            or request.get("forbidden_fields_requested_or_stored") != []
+            or request.get("credentials_logged_or_stored") is not False
+            or manifest.get("price_fields_loaded") != []
+            or manifest.get("forward_return_fields_read") is not False
+            or manifest.get("selection_or_promotion_allowed") is not False
+        ):
+            raise RichDataError("JQData moneyflow acceptance manifest violates the frozen contract")
+        files = list(manifest.get("files") or [])
+        if len(files) != 1:
+            raise RichDataError("JQData moneyflow acceptance must contain one daily partition")
+        frame = load_snapshot_frame(files[0])
+        if (
+            tuple(frame.columns) != JQDATA_MONEYFLOW_COLUMNS
+            or set(frame["instrument"].astype(str)) != expected_symbols
+            or frame["trade_date"].nunique() != 1
+            or not frame["jqdata_large_order_net_inflow_share"].between(-1.0, 1.0).all()
+        ):
+            raise RichDataError("JQData moneyflow acceptance data violates the frozen schema")
+        return path.resolve(), manifest
+    raise RichDataError(
+        "no accepted JQData moneyflow entitlement snapshot exists; "
+        "run acceptance-jqdata-moneyflow first"
+    )
+
+
+def sync_jqdata_moneyflow(
+    *,
+    acceptance_date: dt.date | None = None,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_FACTOR_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Store the frozen JQData daily classified-flow snapshot without prices."""
+
+    contract = load_jqdata_moneyflow_contract()
+    require_provider("jqdata")
+    acceptance = acceptance_date is not None
+    if acceptance:
+        start = end = acceptance_date
+        codes = list(contract["acceptance_protocol"]["symbols"])
+        intervals = None
+        acceptance_record: tuple[Path, dict[str, Any]] | None = None
+    else:
+        acceptance_record = load_jqdata_moneyflow_acceptance()
+        snapshot_contract = contract["snapshot_contract"]
+        start = dt.date.fromisoformat(snapshot_contract["development_start"])
+        end = dt.date.fromisoformat(snapshot_contract["development_end"])
+        intervals = load_factor_universe_intervals(universe_path)
+        overlap = intervals["start_date"].le(pd.Timestamp(end)) & intervals["end_date"].ge(
+            pd.Timestamp(start)
+        )
+        codes = intervals.loc[overlap, "instrument"].str[2:].astype(str).tolist()
+        if not codes:
+            raise RichDataError("factor universe has no instruments in the frozen range")
+    validate_range(start, end, allow_large=allow_large, unit_count=len(codes))
+    calendar = local_calendar_dates(start, end, calendar_path)
+    if calendar.empty:
+        raise RichDataError("local calendar has no sessions in the JQData moneyflow range")
+    if acceptance and len(calendar) != 1:
+        raise RichDataError("JQData moneyflow acceptance date is not a local trading session")
+
+    run_id = new_run_id("jqdata_moneyflow_daily")
+    parent = RAW_ROOT / "jqdata" / "moneyflow" / "daily" / "snapshots"
+    run_root = parent / run_id
+    temporary_root = parent / f".{run_id}.partial"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(f"JQData moneyflow snapshot already exists: {run_id}")
+    temporary_root.mkdir(parents=True)
+    files: list[dict[str, Any]] = []
+    all_daily_coverage: list[dict[str, Any]] = []
+    quality_totals = {
+        "input_rows": 0,
+        "missing_rows_excluded": 0,
+        "zero_denominator_rows_excluded": 0,
+        "outside_point_in_time_universe_rows_excluded": 0,
+        "rows_written": 0,
+    }
+    try:
+        for year in range(start.year, end.year + 1):
+            partition_start = max(start, dt.date(year, 1, 1))
+            partition_end = min(end, dt.date(year, 12, 31))
+            partition_calendar = calendar[
+                (calendar >= pd.Timestamp(partition_start))
+                & (calendar <= pd.Timestamp(partition_end))
+            ]
+            if partition_calendar.empty:
+                continue
+            if intervals is None:
+                partition_codes = codes
+                partition_intervals = None
+            else:
+                overlap = intervals["start_date"].le(pd.Timestamp(partition_end)) & intervals[
+                    "end_date"
+                ].ge(pd.Timestamp(partition_start))
+                partition_intervals = intervals.loc[overlap].copy()
+                partition_codes = partition_intervals["instrument"].str[2:].astype(str).tolist()
+            raw = fetch_jqdata_moneyflow_pro(
+                partition_codes, partition_start, partition_end
+            )
+            if len(raw) >= int(
+                contract["snapshot_contract"]["partition_policy"][
+                    "provider_documented_maximum_rows_per_call"
+                ]
+            ):
+                raise RichDataError(
+                    f"JQData moneyflow {year} partition reached the provider row ceiling"
+                )
+            normalized, quality = canonicalize_jqdata_moneyflow(
+                raw, partition_codes, partition_start, partition_end
+            )
+            outside_universe = 0
+            if partition_intervals is not None and not normalized.empty:
+                indexed = partition_intervals.set_index("instrument")
+                starts = normalized["instrument"].map(indexed["start_date"])
+                ends = normalized["instrument"].map(indexed["end_date"])
+                in_universe = normalized["trade_date"].ge(starts) & normalized[
+                    "trade_date"
+                ].le(ends)
+                outside_universe = int((~in_universe).sum())
+                normalized = normalized.loc[in_universe].reset_index(drop=True)
+            if normalized.empty:
+                raise RichDataError(
+                    f"JQData moneyflow {year} partition has no eligible positive-activity rows; "
+                    "verify the separately purchased product entitlement"
+                )
+            if acceptance:
+                observed = set(normalized["instrument"])
+                expected = {qlib_symbol(code) for code in codes}
+                if observed != expected:
+                    missing = sorted(expected - observed)
+                    raise RichDataError(
+                        "JQData moneyflow acceptance did not return all four frozen symbols: "
+                        + ", ".join(missing)
+                    )
+            observed_by_date = normalized.groupby("trade_date").size().to_dict()
+            for date in partition_calendar:
+                if partition_intervals is None:
+                    expected_names = len(partition_codes)
+                else:
+                    expected_names = int(
+                        (
+                            partition_intervals["start_date"].le(date)
+                            & partition_intervals["end_date"].ge(date)
+                        ).sum()
+                    )
+                observed_names = int(observed_by_date.get(pd.Timestamp(date), 0))
+                all_daily_coverage.append(
+                    {
+                        "trade_date": pd.Timestamp(date).date().isoformat(),
+                        "expected_active_names": expected_names,
+                        "positive_activity_factor_names": observed_names,
+                        "coverage": (
+                            observed_names / expected_names if expected_names else None
+                        ),
+                    }
+                )
+            destination = temporary_root / f"{year}.parquet"
+            atomic_write_frame(normalized, destination)
+            quality["outside_point_in_time_universe_rows_excluded"] = outside_universe
+            quality["rows_written"] = int(len(normalized))
+            for key in quality_totals:
+                quality_totals[key] += int(quality.get(key, 0))
+            files.append(
+                {
+                    "year": year,
+                    "requested_start": partition_start.isoformat(),
+                    "requested_end": partition_end.isoformat(),
+                    "requested_symbols": len(partition_codes),
+                    "path": manifest_path(run_root / destination.name),
+                    "rows": int(len(normalized)),
+                    "sha256": frame_digest(normalized),
+                    "quality": quality,
+                }
+            )
+        if not files:
+            raise RichDataError("JQData moneyflow sync produced no completed partitions")
+        coverages = pd.Series(
+            [row["coverage"] for row in all_daily_coverage if row["coverage"] is not None],
+            dtype="float64",
+        )
+        median_coverage = float(coverages.median()) if len(coverages) else 0.0
+        p05_coverage = float(coverages.quantile(0.05)) if len(coverages) else 0.0
+        minimum_names = int(
+            contract["coverage_and_capacity_policy"][
+                "minimum_eligible_names_per_cross_section"
+            ]
+        )
+        coverage_gate_passed = bool(
+            len(coverages)
+            and median_coverage
+            >= float(
+                contract["coverage_and_capacity_policy"][
+                    "minimum_median_source_row_coverage"
+                ]
+            )
+            and p05_coverage
+            >= float(
+                contract["coverage_and_capacity_policy"][
+                    "minimum_p05_source_row_coverage"
+                ]
+            )
+            and sum(
+                row["positive_activity_factor_names"] >= minimum_names
+                for row in all_daily_coverage
+            )
+            >= 200
+        )
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "jqdata_moneyflow_pro_daily",
+            "provider": "jqdata",
+            "run_id": run_id,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "requested_start": start.isoformat(),
+            "requested_end": end.isoformat(),
+            "data_contract": {
+                "path": manifest_path(DEFAULT_JQDATA_MONEYFLOW_CONTRACT),
+                "sha256": file_digest(DEFAULT_JQDATA_MONEYFLOW_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_acceptance": (
+                None
+                if acceptance_record is None
+                else {
+                    "path": manifest_path(acceptance_record[0]),
+                    "sha256": file_digest(acceptance_record[0]),
+                    "run_id": acceptance_record[1].get("run_id"),
+                    "status": acceptance_record[1].get("acceptance_status"),
+                }
+            ),
+            "source_request": {
+                "api": "get_money_flow_pro",
+                "frequency": "daily",
+                "data_type": "money",
+                "fields": list(JQDATA_MONEYFLOW_RAW_FIELDS),
+                "forbidden_fields_requested_or_stored": [],
+                "credentials_logged_or_stored": False,
+            },
+            "files": files,
+            "normalization_quality": quality_totals,
+            "coverage": {
+                "calendar_sessions": int(len(calendar)),
+                "median_positive_activity_factor_coverage": median_coverage,
+                "p05_positive_activity_factor_coverage": p05_coverage,
+                "dates_with_at_least_fifty_factor_names": int(
+                    sum(
+                        row["positive_activity_factor_names"] >= minimum_names
+                        for row in all_daily_coverage
+                    )
+                ),
+                "gate_passed_before_prices": coverage_gate_passed,
+                "daily": all_daily_coverage,
+            },
+            "acceptance_status": (
+                "accepted_entitlement_and_formula_pending_full_history"
+                if acceptance
+                else "full_source_coverage_passed_pending_no_return_capacity"
+                if coverage_gate_passed
+                else "full_source_coverage_failed_stop_before_prices"
+            ),
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        raise
+
+
 def status_payload() -> dict[str, Any]:
     """Return safe machine-readable readiness information."""
 
@@ -1209,6 +1748,26 @@ def build_parser() -> argparse.ArgumentParser:
     events.add_argument("--end", type=parse_date, required=True)
     events.add_argument("--allow-large", action="store_true", help="confirm a request above 100 table-sessions")
 
+    jq_moneyflow_acceptance = subparsers.add_parser(
+        "acceptance-jqdata-moneyflow",
+        help="verify JQData professional daily moneyflow entitlement on four frozen symbols",
+    )
+    jq_moneyflow_acceptance.add_argument(
+        "--date", type=parse_date, default=latest_completed_session_date()
+    )
+
+    jq_moneyflow = subparsers.add_parser(
+        "sync-jqdata-moneyflow",
+        help="download the frozen 2019-2025 JQData professional daily moneyflow snapshot",
+    )
+    jq_moneyflow.add_argument("--universe-file", type=Path, default=DEFAULT_FACTOR_UNIVERSE)
+    jq_moneyflow.add_argument("--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR)
+    jq_moneyflow.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the licensed full-universe multi-year request after acceptance passes",
+    )
+
     alignment = subparsers.add_parser(
         "confirm-minute-alignment",
         help="write a separate timestamp/volume confirmation for an accepted 1m snapshot",
@@ -1251,6 +1810,14 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "sync-tushare-events":
             datasets = [item.strip() for item in args.datasets.split(",") if item.strip()]
             manifest = sync_tushare_events(datasets, args.start, args.end, args.allow_large)
+        elif args.command == "acceptance-jqdata-moneyflow":
+            manifest = sync_jqdata_moneyflow(acceptance_date=args.date)
+        elif args.command == "sync-jqdata-moneyflow":
+            manifest = sync_jqdata_moneyflow(
+                allow_large=args.allow_large,
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+            )
         elif args.command == "confirm-minute-alignment":
             manifest = confirm_minute_alignment(
                 args.manifest,
@@ -1274,6 +1841,8 @@ def main(argv: list[str] | None = None) -> int:
     command_status = {
         "confirm-minute-alignment": "stored_alignment_confirmation",
         "build-minute-features": "stored_research_features",
+        "acceptance-jqdata-moneyflow": "stored_entitlement_acceptance",
+        "sync-jqdata-moneyflow": "stored_pending_no_return_capacity",
     }.get(args.command, "stored_pending_acceptance")
     print(json.dumps({"manifest": str(manifest), "status": command_status}, ensure_ascii=False))
     return 0

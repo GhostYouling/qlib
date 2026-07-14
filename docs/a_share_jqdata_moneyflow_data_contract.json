@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "kind": "a_share_jqdata_moneyflow_data_contract",
+  "status": "frozen_before_jqdata_moneyflow_entitlement_or_rows_observed",
+  "preregistered_at": "2026-07-14T20:20:32Z",
+  "purpose": "Ingest and capacity-screen one defined large-order net-inflow factor from licensed daily classified trades before observing factor returns.",
+  "source_selection": {
+    "chosen_source": "JQData get_money_flow_pro daily money statistics",
+    "official_documentation": "https://www.joinquant.com/help/api/doc?id=10674&name=JQDatadoc",
+    "documented_history_start": "2015-01-01",
+    "documented_daily_update_time": "19:00 Asia/Shanghai after the trading session",
+    "formal_account_history": "The provider documents unrestricted historical depth for a formal JQData account, subject to the purchased product entitlement.",
+    "separate_product_entitlement_required": true,
+    "public_eastmoney_alternative_rejected": "The unauthenticated per-stock fund-flow endpoint returned only the latest 120 sessions for four representative A-shares on 2026-07-15, so it cannot support the frozen 2019-2025 development period.",
+    "raw_exchange_level2_deferred": "Raw ten-level books, order queues, tick orders, trades, and cancellations remain licensed exchange market data. They are not required until this lower-cost defined daily classification is accepted and tested."
+  },
+  "source": {
+    "provider": "jqdata",
+    "sdk_package": "jqdatasdk",
+    "api": "get_money_flow_pro",
+    "frequency": "daily",
+    "data_type": "money",
+    "requested_fields": [
+      "inflow_xl",
+      "inflow_l",
+      "inflow_m",
+      "inflow_s",
+      "outflow_xl",
+      "outflow_l",
+      "outflow_m",
+      "outflow_s"
+    ],
+    "explicitly_forbidden_fields": [
+      "netflow_xl",
+      "netflow_l",
+      "netflow_m",
+      "netflow_s",
+      "change_pct",
+      "open",
+      "high",
+      "low",
+      "close",
+      "price",
+      "market_cap",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "JQDATA_USERNAME",
+        "JQDATA_PASSWORD"
+      ],
+      "values_may_be_logged_stored_or_committed": false,
+      "authentication_success_does_not_prove_product_entitlement": true
+    }
+  },
+  "provider_definitions": {
+    "inflow": "provider-classified active-buy transaction amount",
+    "outflow": "provider-classified active-sell transaction amount",
+    "xl": "transaction with at least 500000 shares or CNY 1000000",
+    "l": "transaction with at least 100000 shares or CNY 200000 and below the xl threshold",
+    "m": "transaction with at least 20000 shares or CNY 40000 and below the l threshold",
+    "s": "transaction below 20000 shares or CNY 40000, preserving the provider's documented wording",
+    "net_fields_policy": "Do not request provider netflow fields; derive differences from the eight nonnegative inflow/outflow fields and verify the formula locally."
+  },
+  "point_in_time_policy": {
+    "source_time_field": "time normalized to local trade date",
+    "documented_availability": "daily data at 19:00 after the signal session",
+    "signal_assignment": "signal-session close for a following-local-session-open entry",
+    "same_session_trade_allowed": false,
+    "maximum_event_age_days": 0,
+    "historical_release_timestamp_available_per_row": false,
+    "residual_risk": "A provider delay beyond its documented daily update time can make data unavailable for the next open; acceptance and full sync must retain retrieval timestamps."
+  },
+  "factor": {
+    "name": "jqdata_large_order_net_inflow_share",
+    "raw_column": "jqdata_large_order_net_inflow_share",
+    "direction": "higher_is_better",
+    "numerator": "(inflow_xl + inflow_l) - (outflow_xl + outflow_l)",
+    "denominator": "inflow_xl + inflow_l + inflow_m + inflow_s + outflow_xl + outflow_l + outflow_m + outflow_s",
+    "formula": "numerator / denominator",
+    "zero_denominator_policy": "exclude the observed stock-day and keep the factor missing",
+    "negative_or_missing_raw_policy": "exclude and count incomplete rows; any negative raw amount aborts the partition because raw inflow and outflow amounts must be nonnegative",
+    "clipping_winsorization_imputation_or_absolute_value": null,
+    "score_formula_if_capacity_passes": "cross_sectional_percentile_rank(jqdata_large_order_net_inflow_share)"
+  },
+  "snapshot_contract": {
+    "dataset": "jqdata_moneyflow_pro_daily",
+    "columns": [
+      "trade_date",
+      "instrument",
+      "inflow_xl_amount",
+      "inflow_l_amount",
+      "inflow_m_amount",
+      "inflow_s_amount",
+      "outflow_xl_amount",
+      "outflow_l_amount",
+      "outflow_m_amount",
+      "outflow_s_amount",
+      "jqdata_large_order_net_inflow_share",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "trade_date"
+    ],
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "universe_source": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+    "universe_membership": "use only instrument intervals overlapping each requested date; do not infer membership from present-day names",
+    "partition_policy": {
+      "partition": "one calendar year",
+      "provider_documented_maximum_rows_per_call": 2000000,
+      "requests_are_sequential": true,
+      "partial_snapshot_accepted": false,
+      "immutable_partition_files_and_manifest": true
+    }
+  },
+  "acceptance_protocol": {
+    "required_before_large_sync": true,
+    "symbols": [
+      "600519",
+      "000001",
+      "300750",
+      "688981"
+    ],
+    "sessions": 1,
+    "completed_session_only": true,
+    "required_checks": [
+      "requested field whitelist is exact",
+      "returned keys are unique and inside the requested date/symbol set",
+      "all eight raw amount fields are numeric and nonnegative",
+      "stored schema contains no forbidden, price, market-cap, credential, or return field",
+      "positive-denominator ratios equal the frozen local formula and lie in [-1, 1]",
+      "retrieval timestamp and provider are recorded",
+      "all four active acceptance symbols are returned unless provider entitlement or a documented suspension explains absence"
+    ],
+    "failed_acceptance_policy": "stop without a large sync, capacity audit, price access, or substitute endpoint"
+  },
+  "coverage_and_capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_median_source_row_coverage": 0.95,
+    "minimum_p05_source_row_coverage": 0.9,
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_observed_years": 5,
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "failed_gate_policy": "stop without reading returns, changing thresholds, switching direction, or adding raw Level-2 fields",
+    "selection_or_promotion_allowed": false
+  },
+  "diagnostic_policy_if_capacity_passes": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_window_or_threshold_search_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

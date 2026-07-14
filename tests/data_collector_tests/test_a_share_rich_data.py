@@ -4,6 +4,7 @@ import datetime as dt
 import importlib.util
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pandas as pd
 import pytest
@@ -94,6 +95,230 @@ def test_provider_status_never_returns_credential_values(monkeypatch):
     rendered = str(availability)
     assert "this-is-a-secret" not in rendered
     assert availability.missing_environment == ()
+
+
+def test_jqdata_moneyflow_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_jqdata_moneyflow_contract()
+    assert contract["factor"]["name"] == "jqdata_large_order_net_inflow_share"
+    assert contract["source"]["requested_fields"] == list(RICH.JQDATA_MONEYFLOW_RAW_FIELDS)
+    assert contract["source_selection"]["separate_product_entitlement_required"] is True
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(RICH.DEFAULT_JQDATA_MONEYFLOW_CONTRACT.read_text())
+    changed["factor"]["direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_jqdata_moneyflow_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_jqdata_moneyflow_contract(changed_path)
+
+
+def test_jqdata_moneyflow_request_uses_only_frozen_fields(monkeypatch):
+    captured = {}
+
+    def auth(username, password):
+        captured["auth"] = (username, password)
+        return True
+
+    def get_money_flow_pro(security_list, **kwargs):
+        captured["security_list"] = security_list
+        captured.update(kwargs)
+        return pd.DataFrame()
+
+    monkeypatch.setenv("JQDATA_USERNAME", "user")
+    monkeypatch.setenv("JQDATA_PASSWORD", "secret")
+    monkeypatch.setitem(
+        sys.modules,
+        "jqdatasdk",
+        SimpleNamespace(auth=auth, get_money_flow_pro=get_money_flow_pro),
+    )
+    RICH.fetch_jqdata_moneyflow_pro(
+        ["600519", "000001"], dt.date(2024, 4, 30), dt.date(2024, 4, 30)
+    )
+    assert captured["security_list"] == ["600519.XSHG", "000001.XSHE"]
+    assert captured["frequency"] == "daily"
+    assert captured["data_type"] == "money"
+    assert captured["fields"] == list(RICH.JQDATA_MONEYFLOW_RAW_FIELDS)
+    forbidden = set(RICH.load_jqdata_moneyflow_contract()["source"]["explicitly_forbidden_fields"])
+    assert set(captured["fields"]).isdisjoint(forbidden)
+
+
+def test_jqdata_moneyflow_normalization_derives_ratio_and_excludes_missing_zero():
+    raw = pd.DataFrame(
+        [
+            {
+                "time": "2024-04-30",
+                "code": "000001.XSHE",
+                "inflow_xl": 60,
+                "inflow_l": 40,
+                "inflow_m": 10,
+                "inflow_s": 10,
+                "outflow_xl": 10,
+                "outflow_l": 10,
+                "outflow_m": 30,
+                "outflow_s": 30,
+            },
+            {
+                "time": "2024-04-30",
+                "code": "600519.XSHG",
+                **{field: 0 for field in RICH.JQDATA_MONEYFLOW_RAW_FIELDS},
+            },
+            {
+                "time": "2024-04-30",
+                "code": "300750.XSHE",
+                **{
+                    field: (None if field == "inflow_xl" else 1)
+                    for field in RICH.JQDATA_MONEYFLOW_RAW_FIELDS
+                },
+            },
+        ]
+    )
+    normalized, quality = RICH.canonicalize_jqdata_moneyflow(
+        raw,
+        ["000001", "600519", "300750"],
+        dt.date(2024, 4, 30),
+        dt.date(2024, 4, 30),
+    )
+    assert normalized.columns.tolist() == list(RICH.JQDATA_MONEYFLOW_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SZ000001"]
+    assert normalized["jqdata_large_order_net_inflow_share"].item() == pytest.approx(0.4)
+    assert quality == {
+        "input_rows": 3,
+        "missing_rows_excluded": 1,
+        "zero_denominator_rows_excluded": 1,
+        "rows_written": 1,
+    }
+    assert normalized["provider"].tolist() == ["jqdata"]
+    assert not ({"change_pct", "close", "netflow_xl"} & set(normalized.columns))
+
+
+def test_jqdata_moneyflow_normalization_rejects_negative_raw_amount():
+    row = {
+        "time": "2024-04-30",
+        "code": "000001.XSHE",
+        **{field: 1 for field in RICH.JQDATA_MONEYFLOW_RAW_FIELDS},
+    }
+    row["outflow_l"] = -1
+    with pytest.raises(RICH.RichDataError, match="negative raw flow"):
+        RICH.canonicalize_jqdata_moneyflow(
+            pd.DataFrame([row]),
+            ["000001"],
+            dt.date(2024, 4, 30),
+            dt.date(2024, 4, 30),
+        )
+
+
+def test_jqdata_moneyflow_sync_writes_immutable_no_price_snapshot(tmp_path, monkeypatch):
+    contract = RICH.json.loads(RICH.DEFAULT_JQDATA_MONEYFLOW_CONTRACT.read_text())
+    contract["snapshot_contract"]["development_start"] = "2024-04-29"
+    contract["snapshot_contract"]["development_end"] = "2024-04-30"
+    universe = tmp_path / "universe.txt"
+    universe.write_text(
+        "SH600519\t2020-01-01\t2025-12-31\nSZ000001\t2020-01-01\t2025-12-31\n",
+        encoding="utf-8",
+    )
+    calendar = tmp_path / "day.txt"
+    calendar.write_text("2024-04-29\n2024-04-30\n", encoding="utf-8")
+    monkeypatch.setattr(RICH, "load_jqdata_moneyflow_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "validate_range", lambda *args, **kwargs: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    acceptance_path = tmp_path / "accepted.json"
+    RICH.atomic_write_json({"run_id": "accepted"}, acceptance_path)
+    monkeypatch.setattr(
+        RICH,
+        "load_jqdata_moneyflow_acceptance",
+        lambda: (
+            acceptance_path,
+            {
+                "run_id": "accepted",
+                "acceptance_status": "accepted_entitlement_and_formula_pending_full_history",
+            },
+        ),
+    )
+
+    def fake_fetch(codes, start, end):
+        rows = []
+        for date in pd.date_range(start, end, freq="D"):
+            for position, code in enumerate(codes, start=1):
+                rows.append(
+                    {
+                        "time": date,
+                        "code": RICH.vendor_symbol(code, "jqdata"),
+                        "inflow_xl": 60 + position,
+                        "inflow_l": 40,
+                        "inflow_m": 10,
+                        "inflow_s": 10,
+                        "outflow_xl": 10,
+                        "outflow_l": 10,
+                        "outflow_m": 30,
+                        "outflow_s": 30,
+                    }
+                )
+        return pd.DataFrame(rows)
+
+    monkeypatch.setattr(RICH, "fetch_jqdata_moneyflow_pro", fake_fetch)
+    manifest_path = RICH.sync_jqdata_moneyflow(
+        allow_large=True,
+        universe_path=universe,
+        calendar_path=calendar,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "jqdata_moneyflow_pro_daily"
+    assert manifest["source_request"]["fields"] == list(RICH.JQDATA_MONEYFLOW_RAW_FIELDS)
+    assert manifest["source_request"]["credentials_logged_or_stored"] is False
+    assert manifest["source_acceptance"]["run_id"] == "accepted"
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert manifest["acceptance_status"] == "full_source_coverage_failed_stop_before_prices"
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(RICH.JQDATA_MONEYFLOW_COLUMNS)
+    assert len(stored) == 4
+    assert not list((tmp_path / "raw").rglob("*.partial"))
+
+
+def test_jqdata_moneyflow_full_sync_requires_fingerprinted_acceptance(tmp_path):
+    with pytest.raises(RICH.RichDataError, match="run acceptance-jqdata-moneyflow first"):
+        RICH.load_jqdata_moneyflow_acceptance(tmp_path)
+
+    amounts = {f"{field}_amount": 1.0 for field in RICH.JQDATA_MONEYFLOW_RAW_FIELDS}
+    frame = pd.DataFrame(
+        [
+            {
+                "trade_date": pd.Timestamp("2026-07-13"),
+                "instrument": RICH.qlib_symbol(code),
+                **amounts,
+                "jqdata_large_order_net_inflow_share": 0.0,
+                "provider": "jqdata",
+            }
+            for code in RICH.DEFAULT_ACCEPTANCE_SYMBOLS
+        ],
+        columns=RICH.JQDATA_MONEYFLOW_COLUMNS,
+    )
+    data_path = tmp_path / "acceptance.parquet"
+    RICH.atomic_write_frame(frame, data_path)
+    manifest = {
+        "kind": "a_share_rich_data_snapshot",
+        "dataset": "jqdata_moneyflow_pro_daily",
+        "provider": "jqdata",
+        "run_id": "accepted",
+        "acceptance_status": "accepted_entitlement_and_formula_pending_full_history",
+        "data_contract": {"sha256": RICH.JQDATA_MONEYFLOW_CONTRACT_SHA256},
+        "source_request": {
+            "fields": list(RICH.JQDATA_MONEYFLOW_RAW_FIELDS),
+            "forbidden_fields_requested_or_stored": [],
+            "credentials_logged_or_stored": False,
+        },
+        "files": [{"path": str(data_path), "sha256": RICH.frame_digest(frame)}],
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+    }
+    manifest_path = tmp_path / "accepted_manifest.json"
+    RICH.atomic_write_json(manifest, manifest_path)
+    path, loaded = RICH.load_jqdata_moneyflow_acceptance(tmp_path)
+    assert path == manifest_path.resolve()
+    assert loaded["run_id"] == "accepted"
 
 
 def test_canonicalize_minutes_handles_provider_column_names_and_sorts_rows():
