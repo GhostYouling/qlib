@@ -1212,6 +1212,42 @@ FACTOR_TAIL_ATTRIBUTION_COLUMNS = (
     "momentum_20",
     "close_to_high",
 )
+# Minimum number of earlier non-missing close observations required before a
+# declared rolling field can have a value.  Same-session price/volume windows
+# need N-1 earlier observations; windows of daily returns need N earlier
+# closes.  This map is an input-semantics contract and never reads a future
+# return or changes a strategy score.
+ROLLING_FACTOR_PRIOR_CLOSE_REQUIREMENTS = {
+    "momentum_1": 1,
+    "momentum_2": 2,
+    "momentum_3": 3,
+    "momentum_5": 5,
+    "up_day_ratio_5": 5,
+    "momentum_10": 10,
+    "momentum_20": 20,
+    "momentum_60": 60,
+    "trend_ma_5": 4,
+    "trend_ma_20": 19,
+    "trend_ma_60": 59,
+    "volume_surge_1": 19,
+    "volume_surge": 19,
+    "volume_surge_3": 9,
+    "turnover_surge": 19,
+    "turnover_surge_3": 9,
+    "turnover_surge_1": 19,
+    "liquidity_5": 4,
+    "volatility_5": 5,
+    "volatility_10": 10,
+    "volatility_20": 20,
+    "amplitude_5": 4,
+    "gap_1": 1,
+    "near_high_10": 9,
+    "near_high_20": 19,
+    "signed_efficiency_ratio_10": 10,
+    "return_turnover_correlation_10": 10,
+    "signed_volume_pressure_5": 4,
+    "max_return_20": 20,
+}
 SELECTION_MULTIPLICITY_DEFAULT_BOOTSTRAP_REPLICATES = 1000
 SELECTION_MULTIPLICITY_DEFAULT_BLOCK_COHORTS = 5
 SELECTION_MULTIPLICITY_DEFAULT_SEED = 17
@@ -4452,6 +4488,71 @@ def market_state_frame(frame: pd.DataFrame, eligible: pd.Series) -> pd.DataFrame
         state["market_return_dispersion_1"].shift(1).rolling(252, min_periods=60).quantile(0.75)
     )
     return state
+
+
+def summarize_rolling_window_semantics(
+    frame: pd.DataFrame,
+    requirements: dict[str, int] | None = None,
+) -> dict[str, Any]:
+    """Detect rolling fields populated before their declared history exists.
+
+    This is a pure input-semantics audit.  It uses only the instrument/date
+    order, same-day close availability, and already computed close-known
+    fields; it never loads or derives a forward return.
+    """
+
+    requirements = dict(requirements or ROLLING_FACTOR_PRIOR_CLOSE_REQUIREMENTS)
+    required = {"instrument", "datetime", "close", *requirements}
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError("rolling-window semantics frame is missing columns: " + ", ".join(missing))
+    invalid_requirements = sorted(name for name, prior in requirements.items() if int(prior) < 0)
+    if invalid_requirements:
+        raise ValueError("rolling-window prior-session requirements must be non-negative")
+
+    source = frame.sort_values(["instrument", "datetime"], kind="stable").reset_index(drop=True)
+    session_number = source.groupby("instrument", sort=False).cumcount() + 1
+    current_close_available = pd.to_numeric(source["close"], errors="coerce").gt(0.0)
+    decisions: list[dict[str, Any]] = []
+    for factor, prior_sessions in requirements.items():
+        prior_sessions = int(prior_sessions)
+        values = pd.to_numeric(source[factor], errors="coerce")
+        finite = values.notna() & np.isfinite(values)
+        early = current_close_available & session_number.le(prior_sessions)
+        violations = early & finite
+        valid_current = current_close_available & finite
+        example_rows = source.loc[violations, ["instrument", "datetime"]].head(5)
+        decisions.append(
+            {
+                "factor": factor,
+                "required_prior_sessions": prior_sessions,
+                "expected_first_valid_session_number": prior_sessions + 1,
+                "first_observed_valid_session_number": (
+                    int(session_number.loc[valid_current].min()) if valid_current.any() else None
+                ),
+                "early_non_missing_rows": int(violations.sum()),
+                "instruments_with_early_values": int(source.loc[violations, "instrument"].nunique()),
+                "passed": not bool(violations.any()),
+                "examples": [
+                    {
+                        "instrument": str(row.instrument),
+                        "datetime": pd.Timestamp(row.datetime),
+                        "session_number": int(session_number.loc[row.Index]),
+                        "value": float(values.loc[row.Index]),
+                    }
+                    for row in example_rows.itertuples()
+                ],
+            }
+        )
+    failed = [item["factor"] for item in decisions if not item["passed"]]
+    return {
+        "passed": not failed,
+        "factor_count": len(decisions),
+        "failed_factor_count": len(failed),
+        "failed_factors": failed,
+        "factor_decisions": decisions,
+        "forward_return_fields_read": False,
+    }
 
 
 def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
@@ -9799,6 +9900,66 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def run_rolling_window_semantics_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Persist a no-forward-return audit of every declared rolling field."""
+
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    experiment_root = Path(args.experiment_root).expanduser()
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    if not calendar_path.exists():
+        raise FileNotFoundError(f"Qlib day calendar does not exist: {calendar_path}")
+    calendar_lines = [line.strip() for line in calendar_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if not calendar_lines:
+        raise ValueError("Qlib day calendar is empty")
+    provider_start = pd.Timestamp(calendar_lines[0]).normalize()
+    requested_start = pd.Timestamp(args.start).normalize()
+    if requested_start > provider_start:
+        raise ValueError(
+            "rolling-window-semantics-audit must start no later than the provider calendar start "
+            f"{provider_start.date().isoformat()} so prior history is not hidden"
+        )
+    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    summary = summarize_rolling_window_semantics(market)
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "close_known_rolling_window_semantics_audit_without_forward_returns",
+        "policy": {
+            "provider_calendar_start_required": provider_start.date().isoformat(),
+            "partial_window_values_allowed": False,
+            "future_return_fields_allowed": False,
+            "selection_or_promotion_allowed": False,
+        },
+        "data": {
+            "provider_uri": str(provider_uri),
+            "requested_start": args.start,
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "market_rows": int(len(market)),
+            "instrument_count": int(market["instrument"].nunique()),
+        },
+        **summary,
+        "limitations": [
+            "This checks when close-known fields first become non-missing; it does not read returns after the signal date.",
+            "A failure invalidates the declared complete-window semantics, but does not reveal whether fixing it improves or worsens returns.",
+            "The local provider begins in 2015 and the current instrument snapshot can still introduce survivorship bias.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_rolling_window_semantics_audit.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "passed": summary["passed"],
+        "factor_count": summary["factor_count"],
+        "failed_factor_count": summary["failed_factor_count"],
+        "failed_factors": summary["failed_factors"],
+        "forward_return_fields_read": False,
+    }
+
+
 def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Measure development-only forward association for the declared factor catalog."""
 
@@ -11854,6 +12015,16 @@ def parse_args() -> argparse.Namespace:
         help="optional exact predeclared factor to diagnose; repeat to run an explicitly isolated factor set",
     )
 
+    rolling_window_semantics = subparsers.add_parser(
+        "rolling-window-semantics-audit",
+        help="verify that declared rolling fields stay missing until their full history exists, without returns",
+    )
+    rolling_window_semantics.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    rolling_window_semantics.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    rolling_window_semantics.add_argument("--start", default="2015-01-01")
+    rolling_window_semantics.add_argument("--end", help="defaults to the latest local Qlib calendar session")
+    rolling_window_semantics.add_argument("--batch-size", type=int, default=500)
+
     factor_stability_audit = subparsers.add_parser(
         "factor-stability-audit",
         help="apply one fixed development-only cross-year stability screen to a saved factor diagnostic",
@@ -12406,6 +12577,8 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "factor-diagnostic":
         report = run_factor_diagnostic(args)
+    elif args.command == "rolling-window-semantics-audit":
+        report = run_rolling_window_semantics_audit(args)
     elif args.command == "factor-stability-audit":
         report = run_factor_stability_audit(args)
     elif args.command == "factor-topk-viability-audit":

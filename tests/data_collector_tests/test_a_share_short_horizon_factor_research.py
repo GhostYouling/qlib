@@ -1396,6 +1396,33 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
     assert by_factor["bad"]["mean_rank_ic"] == pytest.approx(-1.0)
 
 
+def test_rolling_window_semantics_audit_rejects_partial_history_without_reading_returns():
+    dates = pd.date_range("2025-01-02", periods=5, freq="B")
+    frame = pd.DataFrame(
+        {
+            "instrument": ["A"] * 5 + ["B"] * 5,
+            "datetime": list(dates) * 2,
+            "close": [10.0] * 10,
+            "partial_window": [1.0] * 10,
+            "guarded_window": [float("nan")] * 4 + [1.0] + [float("nan")] * 4 + [2.0],
+        }
+    )
+    audit = RESEARCH.summarize_rolling_window_semantics(
+        frame,
+        {"partial_window": 4, "guarded_window": 4},
+    )
+    decisions = {item["factor"]: item for item in audit["factor_decisions"]}
+    assert not audit["passed"]
+    assert audit["failed_factors"] == ["partial_window"]
+    assert not decisions["partial_window"]["passed"]
+    assert decisions["partial_window"]["early_non_missing_rows"] == 8
+    assert decisions["partial_window"]["instruments_with_early_values"] == 2
+    assert decisions["partial_window"]["first_observed_valid_session_number"] == 1
+    assert decisions["guarded_window"]["passed"]
+    assert decisions["guarded_window"]["first_observed_valid_session_number"] == 5
+    assert audit["forward_return_fields_read"] is False
+
+
 def test_pure_factor_aggregation_reproduces_the_diagnostic_topk_timing_and_costs():
     dates = pd.date_range("2025-01-02", periods=5, freq="B")
     rows = []
