@@ -71,6 +71,12 @@ DEFAULT_ANALYST_RATING_EVENTS = (
 DEFAULT_ANALYST_RATING_EVENT_MANIFEST = (
     DATA_ROOT / "metadata" / "analyst_rating_changes_manifest.json"
 )
+DEFAULT_RESTRICTED_SHARE_UNLOCK_EVENTS = (
+    DATA_ROOT / "raw" / "a_share" / "events" / "restricted_share_unlocks.parquet"
+)
+DEFAULT_RESTRICTED_SHARE_UNLOCK_EVENT_MANIFEST = (
+    DATA_ROOT / "metadata" / "restricted_share_unlocks_manifest.json"
+)
 DEFAULT_REPURCHASE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "repurchase_plans.parquet"
 DEFAULT_REPURCHASE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "repurchase_plans_manifest.json"
 DEFAULT_HOLDER_COUNT_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "holder_count_changes.parquet"
@@ -122,6 +128,9 @@ DEFAULT_ANALYST_RATING_CAPACITY_SPEC = (
 )
 DEFAULT_ANALYST_RATING_DIAGNOSTIC_SPEC = (
     REPO_ROOT / "docs" / "a_share_analyst_rating_diagnostic_preregistration.json"
+)
+DEFAULT_RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_restricted_share_unlock_data_contract.json"
 )
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
@@ -221,6 +230,7 @@ EASTMONEY_REPURCHASE_REPORT = "RPTA_WEB_GETHGLIST_NEW"
 EASTMONEY_HOLDER_COUNT_REPORT = "RPT_HOLDERNUM_DET"
 EASTMONEY_PLEDGE_REPORT = "RPTA_APP_ACCUMDETAILS"
 EASTMONEY_DIVIDEND_PLAN_REPORT = "RPT_SHAREBONUS_DET"
+EASTMONEY_RESTRICTED_SHARE_UNLOCK_REPORT = "RPT_LIFT_STAGE"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -337,6 +347,13 @@ ANALYST_RATING_EVENT_COLUMNS = (
     "analyst_valid_rating_report_count",
 )
 ANALYST_RATING_FACTOR_NAME = "analyst_rating_upgrade_share"
+RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS = (
+    "instrument",
+    "event_date",
+    "restricted_unlock_total_share_ratio",
+    "restricted_unlock_actual_shares",
+)
+RESTRICTED_SHARE_UNLOCK_FACTOR_NAME = "restricted_share_unlock_pressure"
 INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS = (
     "institutional_survey_org_count",
     "institutional_survey_event_count",
@@ -435,6 +452,9 @@ INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT_SHA256 = (
 ANALYST_RATING_DATA_CONTRACT_SHA256 = (
     "84a29dfa0df529514291d37e26e4d3494720b3541a6cc36858d92074c8c2f010"
 )
+RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT_SHA256 = (
+    "17303effa71cdefb6ce0b56dbc8f8746cdf5642afa54e061fa23484fe40d84c8"
+)
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
     "development_only_preregistered_pledge_event_rebuild_research_not_investment_advice"
@@ -448,6 +468,8 @@ INSTITUTIONAL_SURVEY_MAX_PAGES_PER_PARTITION = 40
 INSTITUTIONAL_SURVEY_PAGE_PAUSE_SECONDS = 0.25
 ANALYST_RATING_MAX_PAGES_PER_PARTITION = 80
 ANALYST_RATING_PAGE_PAUSE_SECONDS = 0.05
+RESTRICTED_SHARE_UNLOCK_MAX_PAGES_PER_PARTITION = 80
+RESTRICTED_SHARE_UNLOCK_PAGE_PAUSE_SECONDS = 0.05
 # This direction is deliberately not part of the development diagnostic
 # catalog.  It was formed after reading the completed 2019--2025 diagnostic,
 # so it may only be evaluated in a separately recorded post-development
@@ -2269,6 +2291,50 @@ def load_analyst_rating_data_contract(
         or contract.get("selection_or_promotion_allowed") is not False
     ):
         raise ValueError("analyst-rating data contract does not match the frozen protocol")
+    return contract
+
+
+def load_restricted_share_unlock_data_contract(
+    path: Path = DEFAULT_RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-snapshot restricted-share unlock contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT_SHA256:
+        raise ValueError("restricted-share unlock data contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_restricted_share_unlock_data_contract")
+    source = contract.get("source") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    factor = contract.get("factor") or {}
+    capacity = contract.get("capacity_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status") != "frozen_before_full_unlock_snapshot_or_price_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-14T18:57:38Z"
+        or source.get("endpoint") != EASTMONEY_DATACENTER_URL
+        or source.get("report_name") != EASTMONEY_RESTRICTED_SHARE_UNLOCK_REPORT
+        or source.get("requested_fields")
+        != [
+            "SECURITY_CODE",
+            "FREE_DATE",
+            "CURRENT_FREE_SHARES",
+            "TOTAL_RATIO",
+            "BATCH_HOLDER_NUM",
+            "FREE_SHARES_TYPE",
+        ]
+        or tuple(snapshot.get("columns") or []) != RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS
+        or factor.get("name") != RESTRICTED_SHARE_UNLOCK_FACTOR_NAME
+        or factor.get("raw_column") != "restricted_unlock_total_share_ratio"
+        or factor.get("direction") != "lower_actual_unlock_share_ratio_is_better"
+        or factor.get("maximum_event_age_days") != 3
+        or capacity.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("restricted-share unlock data contract does not match the frozen protocol")
     return contract
 
 
@@ -4420,6 +4486,43 @@ def _eastmoney_analyst_rating_request(
     )
 
 
+def _eastmoney_restricted_share_unlock_request(
+    session: requests.Session, start_date: str, end_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one unlock-event page without prices, market caps, returns, or holder names."""
+
+    params = {
+        "reportName": EASTMONEY_RESTRICTED_SHARE_UNLOCK_REPORT,
+        "columns": (
+            "SECURITY_CODE,FREE_DATE,CURRENT_FREE_SHARES,TOTAL_RATIO,"
+            "BATCH_HOLDER_NUM,FREE_SHARES_TYPE"
+        ),
+        "filter": f"(FREE_DATE>='{start_date}')(FREE_DATE<='{end_date}')",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "1,1",
+        "sortColumns": "FREE_DATE,SECURITY_CODE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(5):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney unlock response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(
+        f"cannot fetch restricted-share unlocks {start_date} to {end_date} "
+        f"page {page_number}: {errors[-1]}"
+    )
+
+
 def _eastmoney_repurchase_request(session: requests.Session, page_number: int) -> dict[str, Any]:
     """Fetch one historical repurchase-plan page without post-plan outcomes.
 
@@ -5181,6 +5284,53 @@ def normalize_analyst_rating_rows(
     """Normalize and aggregate public analyst-rating records without report text or prices."""
 
     return aggregate_analyst_rating_details(_analyst_rating_detail_frame(rows))
+
+
+def normalize_restricted_share_unlock_rows(
+    rows: Iterable[dict[str, Any]],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Normalize only the frozen non-price restricted-share unlock fields."""
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS), {
+            "input_source_rows": 0,
+            "missing_or_non_a_share_rows_excluded": 0,
+            "rows_written": 0,
+            "zero_ratio_rows": 0,
+        }
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get(
+                "SECURITY_CODE", pd.Series(index=raw.index, dtype="object")
+            ).map(qlib_symbol),
+            "event_date": pd.to_datetime(
+                raw.get("FREE_DATE", pd.Series(index=raw.index, dtype="object")),
+                errors="coerce",
+            ),
+            "restricted_unlock_total_share_ratio": pd.to_numeric(
+                raw.get("TOTAL_RATIO", pd.Series(index=raw.index, dtype="float64")),
+                errors="coerce",
+            ),
+            "restricted_unlock_actual_shares": pd.to_numeric(
+                raw.get("CURRENT_FREE_SHARES", pd.Series(index=raw.index, dtype="float64")),
+                errors="coerce",
+            ),
+        }
+    )
+    invalid = frame[list(RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)].isna().any(axis=1)
+    result = (
+        frame.loc[~invalid, list(RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)]
+        .sort_values(["instrument", "event_date"], kind="stable")
+        .reset_index(drop=True)
+    )
+    stats = {
+        "input_source_rows": int(len(frame)),
+        "missing_or_non_a_share_rows_excluded": int(invalid.sum()),
+        "rows_written": int(len(result)),
+        "zero_ratio_rows": int(result["restricted_unlock_total_share_ratio"].eq(0.0).sum()),
+    }
+    return result, stats
 
 
 def normalize_repurchase_plan_rows(rows: Iterable[dict[str, Any]]) -> pd.DataFrame:
@@ -5961,6 +6111,111 @@ def fetch_analyst_rating_partition_details(
     ]
 
 
+def fetch_restricted_share_unlock_partition(
+    session: requests.Session,
+    start_date: str,
+    end_date: str,
+    *,
+    maximum_pages: int = RESTRICTED_SHARE_UNLOCK_MAX_PAGES_PER_PARTITION,
+    page_pause_seconds: float = RESTRICTED_SHARE_UNLOCK_PAGE_PAUSE_SECONDS,
+) -> tuple[list[pd.DataFrame], list[dict[str, Any]]]:
+    """Fetch and count-verify one unlock date range, bisecting if needed."""
+
+    start = pd.Timestamp(start_date).normalize()
+    end = pd.Timestamp(end_date).normalize()
+    if pd.isna(start) or pd.isna(end) or end < start:
+        raise ValueError("restricted-share unlock partition must use a valid inclusive date range")
+    if maximum_pages < 1:
+        raise ValueError("restricted-share unlock maximum_pages must be positive")
+    if page_pause_seconds < 0:
+        raise ValueError("restricted-share unlock page pause must be non-negative")
+    start_text = start.date().isoformat()
+    end_text = end.date().isoformat()
+    first = _eastmoney_restricted_share_unlock_request(session, start_text, end_text, 1)
+    first_result = first["result"]
+    pages = int(first_result.get("pages") or 0)
+    advertised_count = int(first_result.get("count") or 0)
+    if pages > maximum_pages:
+        if start == end:
+            raise RuntimeError(
+                "restricted-share unlock single-date partition exceeds the safe page ceiling: "
+                f"{start_text}, pages={pages}, ceiling={maximum_pages}"
+            )
+        midpoint = start + (end - start) // 2
+        left_frames, left_records = fetch_restricted_share_unlock_partition(
+            session,
+            start_text,
+            midpoint.date().isoformat(),
+            maximum_pages=maximum_pages,
+            page_pause_seconds=page_pause_seconds,
+        )
+        right_frames, right_records = fetch_restricted_share_unlock_partition(
+            session,
+            (midpoint + pd.Timedelta(days=1)).date().isoformat(),
+            end_text,
+            maximum_pages=maximum_pages,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return left_frames + right_frames, left_records + right_records
+    if pages < 1:
+        if advertised_count != 0:
+            raise RuntimeError(
+                f"restricted-share unlock partition reported rows without pages: "
+                f"{start_text} to {end_text}"
+            )
+        return [], [
+            {
+                "start": start_text,
+                "end": end_text,
+                "pages": 0,
+                "advertised_source_rows": 0,
+                "source_rows": 0,
+                "target_rows": 0,
+                "excluded_rows": 0,
+                "count_verified": True,
+            }
+        ]
+
+    frames: list[pd.DataFrame] = []
+    source_rows = 0
+    target_rows = 0
+    excluded_rows = 0
+    for page_number in range(1, pages + 1):
+        payload = (
+            first
+            if page_number == 1
+            else _eastmoney_restricted_share_unlock_request(
+                session, start_text, end_text, page_number
+            )
+        )
+        rows = payload["result"].get("data") or []
+        source_rows += len(rows)
+        normalized, stats = normalize_restricted_share_unlock_rows(rows)
+        target_rows += int(stats["rows_written"])
+        excluded_rows += int(stats["missing_or_non_a_share_rows_excluded"])
+        if not normalized.empty:
+            frames.append(normalized)
+        if page_pause_seconds and page_number < pages:
+            time.sleep(page_pause_seconds)
+    if source_rows != advertised_count:
+        raise RuntimeError(
+            f"restricted-share unlock partition row-count mismatch: {start_text} to {end_text}, "
+            f"advertised={advertised_count}, fetched={source_rows}"
+        )
+    return frames, [
+        {
+            "start": start_text,
+            "end": end_text,
+            "pages": pages,
+            "advertised_source_rows": advertised_count,
+            "source_rows": source_rows,
+            "target_rows": target_rows,
+            "excluded_rows": excluded_rows,
+            "count_verified": True,
+        }
+    ]
+
+
 def sync_analyst_rating_events(
     output: Path = DEFAULT_ANALYST_RATING_EVENTS,
     manifest: Path = DEFAULT_ANALYST_RATING_EVENT_MANIFEST,
@@ -6063,6 +6318,149 @@ def sync_analyst_rating_events(
         ],
     }
     _atomic_write_text(manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return result
+
+
+def sync_restricted_share_unlock_events(
+    output: Path = DEFAULT_RESTRICTED_SHARE_UNLOCK_EVENTS,
+    manifest: Path = DEFAULT_RESTRICTED_SHARE_UNLOCK_EVENT_MANIFEST,
+) -> dict[str, Any]:
+    """Build the frozen 2019--2025 unlock-pressure snapshot without prices."""
+
+    contract = load_restricted_share_unlock_data_contract()
+    source_contract = contract["source"]
+    start_year = pd.Timestamp(source_contract["event_start"]).year
+    end_year = pd.Timestamp(source_contract["event_end"]).year
+    session = _eastmoney_session()
+    frames: list[pd.DataFrame] = []
+    pages_by_year: dict[str, int] = {}
+    source_rows_by_year: dict[str, int] = {}
+    target_rows_by_year: dict[str, int] = {}
+    excluded_rows_by_year: dict[str, int] = {}
+    partition_records: list[dict[str, Any]] = []
+    for month_start, month_end in institutional_survey_month_ranges(start_year, end_year):
+        month_frames, records = fetch_restricted_share_unlock_partition(
+            session,
+            month_start,
+            month_end,
+            maximum_pages=RESTRICTED_SHARE_UNLOCK_MAX_PAGES_PER_PARTITION,
+            page_pause_seconds=RESTRICTED_SHARE_UNLOCK_PAGE_PAUSE_SECONDS,
+        )
+        frames.extend(month_frames)
+        partition_records.extend(records)
+        year = month_start[:4]
+        month_pages = sum(int(record["pages"]) for record in records)
+        month_source_rows = sum(int(record["source_rows"]) for record in records)
+        month_target_rows = sum(int(record["target_rows"]) for record in records)
+        month_excluded_rows = sum(int(record["excluded_rows"]) for record in records)
+        pages_by_year[year] = pages_by_year.get(year, 0) + month_pages
+        source_rows_by_year[year] = source_rows_by_year.get(year, 0) + month_source_rows
+        target_rows_by_year[year] = target_rows_by_year.get(year, 0) + month_target_rows
+        excluded_rows_by_year[year] = excluded_rows_by_year.get(year, 0) + month_excluded_rows
+        print(
+            f"restricted-share unlocks {month_start[:7]}: {len(records)} verified partitions, "
+            f"{month_pages} pages, {month_source_rows} source rows, "
+            f"{month_target_rows} target rows"
+        )
+    events = (
+        pd.concat(frames, ignore_index=True)
+        if frames
+        else pd.DataFrame(columns=RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)
+    )
+    events = events.loc[:, list(RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)].sort_values(
+        ["instrument", "event_date"], kind="stable"
+    ).reset_index(drop=True)
+    if events.empty:
+        raise RuntimeError("restricted-share unlock sync produced no usable A-share events")
+    requested_years = list(range(start_year, end_year + 1))
+    observed_years = sorted(pd.to_datetime(events["event_date"]).dt.year.unique().tolist())
+    if observed_years != requested_years:
+        raise RuntimeError("restricted-share unlock snapshot does not cover every requested year")
+    if tuple(events.columns) != RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS:
+        raise RuntimeError("restricted-share unlock snapshot columns do not match the frozen contract")
+    if events.duplicated(["instrument", "event_date"]).any():
+        raise RuntimeError("restricted-share unlock snapshot contains duplicate event keys")
+    if events[list(RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)].isna().any().any():
+        raise RuntimeError("restricted-share unlock snapshot contains missing contracted values")
+    if not events["restricted_unlock_total_share_ratio"].between(0.0, 1.0).all():
+        raise RuntimeError("restricted-share unlock ratio falls outside [0, 1]")
+    if not events["restricted_unlock_actual_shares"].ge(0.0).all():
+        raise RuntimeError("restricted-share unlock snapshot contains negative actual shares")
+    daily = events.groupby("event_date")["restricted_unlock_total_share_ratio"].agg(
+        names="size", values="nunique"
+    )
+    ready = daily.loc[(daily["names"] >= 6) & (daily["values"] >= 2)]
+    _atomic_write_parquet(output, events)
+    result = {
+        "status": "completed",
+        "data_contract": {
+            "path": str(DEFAULT_RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT.resolve()),
+            "sha256": file_sha256(DEFAULT_RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT),
+            "preregistered_at": contract["preregistered_at"],
+            "forward_return_fields_read": False,
+        },
+        "source": {
+            "provider": source_contract["provider"],
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report_name": EASTMONEY_RESTRICTED_SHARE_UNLOCK_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "requested_fields": source_contract["requested_fields"],
+            "forbidden_fields_requested_or_stored": [],
+            "shareholder_names_requested_or_stored": False,
+        },
+        "event_frequency": "dated_restricted_share_unlock",
+        "years": requested_years,
+        "partition_policy": contract["snapshot_contract"]["partition_policy"],
+        "verified_partitions": partition_records,
+        "pages_by_year": pages_by_year,
+        "source_rows_by_year": source_rows_by_year,
+        "target_rows_by_year": target_rows_by_year,
+        "excluded_rows_by_year": excluded_rows_by_year,
+        "normalization_quality": {
+            "source_rows": int(sum(source_rows_by_year.values())),
+            "target_rows": int(len(events)),
+            "excluded_rows": int(sum(excluded_rows_by_year.values())),
+            "duplicate_event_keys": 0,
+            "missing_values": 0,
+            "negative_actual_share_rows": 0,
+            "out_of_range_ratio_rows": 0,
+            "zero_ratio_rows": int(
+                events["restricted_unlock_total_share_ratio"].eq(0.0).sum()
+            ),
+            "distinct_ratio_values": int(
+                events["restricted_unlock_total_share_ratio"].nunique()
+            ),
+            "dates_with_at_least_six_names_and_two_values_before_quality_or_listing_gates": int(
+                len(ready)
+            ),
+            "such_dates_by_year": {
+                str(year): int(count)
+                for year, count in ready.groupby(ready.index.year).size().items()
+            },
+        },
+        "rows_by_event_year": {
+            str(year): int(len(group))
+            for year, group in events.groupby(pd.to_datetime(events["event_date"]).dt.year, sort=True)
+        },
+        "rows_written": int(len(events)),
+        "event_start": events["event_date"].min().date().isoformat(),
+        "event_end": events["event_date"].max().date().isoformat(),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "price_fields_loaded": [],
+        "open_close_or_forward_return_fields_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "The public unlock table is queried as it exists today and may revise historical release records.",
+            "No point-in-time schedule-announcement archive is available, so an event is not usable before its unlock-date close.",
+            "The factor measures realized released shares relative to total shares; it does not identify whether holders sell.",
+            "This is a capacity candidate only until a separate no-return gate is frozen and passed.",
+        ],
+    }
+    _atomic_write_text(
+        manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n"
+    )
     return result
 
 
@@ -6756,6 +7154,32 @@ def load_analyst_rating_events(path: Path) -> pd.DataFrame:
     if not frame["analyst_valid_rating_report_count"].gt(0).all():
         raise ValueError("analyst-rating snapshot contains a non-positive report count")
     return frame.sort_values(["instrument", "announcement_date"], kind="stable").reset_index(drop=True)
+
+
+def load_restricted_share_unlock_events(path: Path) -> pd.DataFrame:
+    """Load and validate the frozen non-price restricted-share unlock events."""
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"restricted-share unlock snapshot does not exist: {path}; "
+            "run sync-restricted-share-unlock-events first"
+        )
+    frame = pd.read_parquet(path)
+    if tuple(frame.columns) != RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS:
+        raise ValueError("restricted-share unlock snapshot columns do not match the frozen contract")
+    frame = frame.loc[:, list(RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)].copy()
+    frame["event_date"] = pd.to_datetime(frame["event_date"], errors="coerce")
+    for column in RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS[2:]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    if frame[list(RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)].isna().any().any():
+        raise ValueError("restricted-share unlock snapshot contains missing values")
+    if frame.duplicated(["instrument", "event_date"]).any():
+        raise ValueError("restricted-share unlock snapshot contains duplicate event keys")
+    if not frame["restricted_unlock_total_share_ratio"].between(0.0, 1.0).all():
+        raise ValueError("restricted-share unlock ratio falls outside [0, 1]")
+    if not frame["restricted_unlock_actual_shares"].ge(0.0).all():
+        raise ValueError("restricted-share unlock snapshot contains negative actual shares")
+    return frame.sort_values(["instrument", "event_date"], kind="stable").reset_index(drop=True)
 
 
 def load_repurchase_plan_events(path: Path) -> pd.DataFrame:
@@ -18163,6 +18587,11 @@ def parse_args() -> argparse.Namespace:
         help="build the frozen 2019-2025 analyst-rating-upgrade snapshot",
     )
 
+    subparsers.add_parser(
+        "sync-restricted-share-unlock-events",
+        help="build the frozen 2019-2025 restricted-share unlock-pressure snapshot",
+    )
+
     sync_repurchase = subparsers.add_parser(
         "sync-repurchase-plan-events",
         help="download dated public initial repurchase plans for short-horizon event research",
@@ -19052,6 +19481,8 @@ def main() -> int:
         report = sync_institutional_survey_timing_events()
     elif args.command == "sync-analyst-rating-events":
         report = sync_analyst_rating_events()
+    elif args.command == "sync-restricted-share-unlock-events":
+        report = sync_restricted_share_unlock_events()
     elif args.command == "sync-repurchase-plan-events":
         report = sync_repurchase_plan_events(Path(args.output), Path(args.manifest))
     elif args.command == "sync-holder-count-events":

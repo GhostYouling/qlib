@@ -1155,6 +1155,135 @@ def test_analyst_rating_sync_writes_only_frozen_no_price_snapshot(tmp_path, monk
     assert manifest.exists()
 
 
+def test_restricted_share_unlock_contract_is_fingerprint_frozen(tmp_path):
+    contract = RESEARCH.load_restricted_share_unlock_data_contract()
+    assert contract["factor"]["name"] == RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME
+    assert contract["factor"]["direction"] == "lower_actual_unlock_share_ratio_is_better"
+    assert contract["source"]["explicitly_forbidden_fields"] == [
+        "LIFT_MARKET_CAP",
+        "FREE_RATIO",
+        "NEW",
+        "B20_ADJCHRATE",
+        "A20_ADJCHRATE",
+    ]
+    assert contract["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT.read_text(encoding="utf-8")
+    )
+    changed["factor"]["direction"] = "higher_actual_unlock_share_ratio_is_better"
+    changed_path = tmp_path / "changed_unlock_contract.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_restricted_share_unlock_data_contract(changed_path)
+
+
+def test_restricted_share_unlock_normalization_excludes_prices_returns_and_non_a_shares():
+    rows = [
+        {
+            "SECURITY_CODE": "000001",
+            "FREE_DATE": "2024-04-30",
+            "CURRENT_FREE_SHARES": 10_000_000,
+            "TOTAL_RATIO": 0.05,
+            "BATCH_HOLDER_NUM": 3,
+            "FREE_SHARES_TYPE": "首发原股东限售股份",
+            "NEW": 12.3,
+            "A20_ADJCHRATE": 9.9,
+        },
+        {
+            "SECURITY_CODE": "920106",
+            "FREE_DATE": "2024-04-30",
+            "CURRENT_FREE_SHARES": 20_000_000,
+            "TOTAL_RATIO": 0.10,
+        },
+    ]
+    normalized, quality = RESEARCH.normalize_restricted_share_unlock_rows(rows)
+    assert normalized.columns.tolist() == list(RESEARCH.RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SZ000001"]
+    assert normalized["event_date"].item() == pd.Timestamp("2024-04-30")
+    assert normalized["restricted_unlock_total_share_ratio"].item() == pytest.approx(0.05)
+    assert normalized["restricted_unlock_actual_shares"].item() == pytest.approx(10_000_000)
+    assert quality["missing_or_non_a_share_rows_excluded"] == 1
+    assert "NEW" not in normalized.columns
+    assert "A20_ADJCHRATE" not in normalized.columns
+
+
+def test_restricted_share_unlock_partition_rejects_incomplete_pagination(monkeypatch):
+    def fake_request(session, start_date, end_date, page_number):
+        rows = [
+            {
+                "SECURITY_CODE": "000001",
+                "FREE_DATE": start_date,
+                "CURRENT_FREE_SHARES": 1_000_000,
+                "TOTAL_RATIO": 0.01,
+            }
+        ] if page_number == 1 else []
+        return {"result": {"pages": 2, "count": 3, "data": rows}}
+
+    monkeypatch.setattr(RESEARCH, "_eastmoney_restricted_share_unlock_request", fake_request)
+    with pytest.raises(RuntimeError, match="row-count mismatch"):
+        RESEARCH.fetch_restricted_share_unlock_partition(
+            object(),
+            "2024-01-01",
+            "2024-01-31",
+            maximum_pages=80,
+            page_pause_seconds=0.0,
+        )
+
+
+def test_restricted_share_unlock_sync_writes_only_frozen_no_price_snapshot(
+    tmp_path, monkeypatch
+):
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SH600000"],
+            "event_date": pd.to_datetime(["2024-01-10", "2024-01-10"]),
+            "restricted_unlock_total_share_ratio": [0.05, 0.10],
+            "restricted_unlock_actual_shares": [10_000_000.0, 20_000_000.0],
+        }
+    )
+    contract = json.loads(json.dumps(RESEARCH.load_restricted_share_unlock_data_contract()))
+    contract["source"]["event_start"] = "2024-01-01"
+    contract["source"]["event_end"] = "2024-12-31"
+    monkeypatch.setattr(RESEARCH, "load_restricted_share_unlock_data_contract", lambda: contract)
+    monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
+    monkeypatch.setattr(
+        RESEARCH,
+        "institutional_survey_month_ranges",
+        lambda start_year, end_year: [("2024-01-01", "2024-01-31")],
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "fetch_restricted_share_unlock_partition",
+        lambda *args, **kwargs: (
+            [events],
+            [
+                {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "pages": 1,
+                    "advertised_source_rows": 2,
+                    "source_rows": 2,
+                    "target_rows": 2,
+                    "excluded_rows": 0,
+                    "count_verified": True,
+                }
+            ],
+        ),
+    )
+    output = tmp_path / "restricted_share_unlocks.parquet"
+    manifest = tmp_path / "restricted_share_unlocks_manifest.json"
+    result = RESEARCH.sync_restricted_share_unlock_events(output, manifest)
+    assert result["status"] == "completed"
+    assert result["rows_written"] == 2
+    assert result["source"]["forbidden_fields_requested_or_stored"] == []
+    assert result["price_fields_loaded"] == []
+    assert result["forward_return_fields_read"] is False
+    stored = pd.read_parquet(output)
+    assert stored.columns.tolist() == list(RESEARCH.RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)
+    assert manifest.exists()
+
+
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {

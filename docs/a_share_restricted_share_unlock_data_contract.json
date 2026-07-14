@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "kind": "a_share_restricted_share_unlock_data_contract",
+  "status": "frozen_before_full_unlock_snapshot_or_price_returns_observed",
+  "preregistered_at": "2026-07-14T18:57:38Z",
+  "purpose": "Create and capacity-screen one dated restricted-share unlock pressure factor without reading any price or forward-return field.",
+  "source": {
+    "provider": "Eastmoney public restricted-share unlock data center",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_LIFT_STAGE",
+    "requested_fields": [
+      "SECURITY_CODE",
+      "FREE_DATE",
+      "CURRENT_FREE_SHARES",
+      "TOTAL_RATIO",
+      "BATCH_HOLDER_NUM",
+      "FREE_SHARES_TYPE"
+    ],
+    "event_start": "2019-01-01",
+    "event_end": "2025-12-31",
+    "price_market_cap_pre_or_post_return_fields_requested_or_stored": false,
+    "explicitly_forbidden_fields": [
+      "LIFT_MARKET_CAP",
+      "FREE_RATIO",
+      "NEW",
+      "B20_ADJCHRATE",
+      "A20_ADJCHRATE"
+    ],
+    "shareholder_names_requested_or_stored": false
+  },
+  "snapshot_contract": {
+    "output": "data/raw/a_share/events/restricted_share_unlocks.parquet",
+    "manifest": "data/metadata/restricted_share_unlocks_manifest.json",
+    "columns": [
+      "instrument",
+      "event_date",
+      "restricted_unlock_total_share_ratio",
+      "restricted_unlock_actual_shares"
+    ],
+    "event_key": [
+      "instrument",
+      "event_date"
+    ],
+    "source_deduplication_key": [
+      "SECURITY_CODE",
+      "FREE_DATE"
+    ],
+    "raw_ratio_source_field": "TOTAL_RATIO",
+    "raw_ratio_interpretation": "CURRENT_FREE_SHARES divided by total shares, expressed as a fraction rather than percentage points",
+    "zero_policy": "zero is valid only for an observed stock/unlock date whose source TOTAL_RATIO is zero; stocks without an unlock event remain missing",
+    "clipping_winsorization_or_imputation": null,
+    "partition_policy": {
+      "initial_partition": "calendar_month",
+      "page_size": 500,
+      "maximum_pages_per_partition": 80,
+      "oversized_partition_policy": "bisect_calendar_dates_until_within_page_ceiling",
+      "advertised_source_count_must_equal_rows_fetched": true,
+      "partial_snapshot_written_on_failure": false
+    }
+  },
+  "factor": {
+    "name": "restricted_share_unlock_pressure",
+    "raw_column": "restricted_unlock_total_share_ratio",
+    "direction": "lower_actual_unlock_share_ratio_is_better",
+    "score_formula_if_capacity_passes": "1 - cross_sectional_percentile_rank(restricted_unlock_total_share_ratio)",
+    "event_availability": "unlock date close, or the first local trading-session close on or after a non-trading unlock date; entry is the following local session open",
+    "maximum_event_age_days": 3,
+    "mechanism": "A smaller realized restricted-share release relative to total shares may create less near-term supply overhang over the following three sessions."
+  },
+  "acceptance": {
+    "all_partitions_count_verified": true,
+    "continuous_event_partitions_required": true,
+    "duplicate_source_or_event_keys_allowed": 0,
+    "missing_instrument_event_ratio_or_actual_shares_allowed": 0,
+    "actual_shares_must_be_nonnegative": true,
+    "total_share_ratio_range": [
+      0.0,
+      1.0
+    ],
+    "every_requested_event_year_required": true,
+    "source_and_manifest_sha256_required": true
+  },
+  "capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "one_completed_capacity_audit_only": true,
+    "failed_capacity_must_stop_without_return_diagnostic": true,
+    "selection_or_promotion_allowed": false
+  },
+  "sample_field_audit_before_freeze": {
+    "price_market_cap_or_forward_return_fields_read": false,
+    "periods": [
+      "2019-Q1",
+      "2024-Q1",
+      "2025-Q1"
+    ],
+    "advertised_source_rows": [
+      430,
+      622,
+      400
+    ],
+    "target_a_share_rows": [
+      430,
+      586,
+      339
+    ],
+    "usable_ratio_rows": [
+      430,
+      586,
+      339
+    ],
+    "duplicate_stock_event_dates": [
+      0,
+      0,
+      0
+    ],
+    "dates_with_at_least_six_names_and_two_values": [
+      31,
+      41,
+      27
+    ],
+    "observed_ratio_range": [
+      0.0,
+      0.872149498753
+    ],
+    "repurchase_progress_candidate_rejected_without_returns": "Only 153 terminal repurchase amount-ratio dates met six-name/two-value coverage over 2019-2025, with 0 dates in 2020 and 2023 and nearly all capacity in 2024-2025.",
+    "investor_qa_candidate_rejected_without_returns": "The official Shanghai interaction search UI limits supported retrieval to the latest 30 days and no common Shanghai/Shenzhen 2019-2025 point-in-time archive was available.",
+    "major_contract_revenue_share_candidate_rejected_without_returns": "The source prior-year revenue and normalized revenue-share fields were nearly absent in 2024-Q1 and 2025-Q1, while later revisions made current latest-revenue fields unsuitable for historical point-in-time normalization."
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
