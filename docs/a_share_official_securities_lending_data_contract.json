@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "kind": "a_share_official_securities_lending_data_contract",
+  "status": "frozen_before_official_source_rows_or_price_returns_observed",
+  "preregistered_at": "2026-07-14T23:31:00Z",
+  "purpose": "Re-test the already frozen daily securities-lending net-cover mechanism using only complete official exchange publications, without reading prices or forward returns.",
+  "relationship_to_rejected_source": {
+    "prior_contract_path": "docs/a_share_securities_lending_data_contract.json",
+    "prior_contract_sha256": "3d13a0b464a5123d12c545942cba6ba39e95756bdc87f8845e15cb8a624a012c",
+    "prior_source_coverage_audit_path": "docs/a_share_securities_lending_source_coverage_audit.json",
+    "prior_source_coverage_audit_sha256": "b81dcd3d1e5e24198343455ccec4928061ec8d7cafd5283460b65970a1eec8fc",
+    "prior_outcome": "Eastmoney was rejected for four missing local-session partitions before a complete snapshot, capacity audit, or return read.",
+    "new_contract_is": "a new all-official provider chain for the same untested factor mechanism",
+    "new_contract_is_not": "a patch, mixed-source fill, or rescue of the rejected Eastmoney snapshot"
+  },
+  "official_publication_basis": {
+    "common_public_fields": [
+      "security_code",
+      "trade_date",
+      "securities_lending_balance_shares",
+      "securities_lending_sell_shares"
+    ],
+    "availability": "Each exchange publishes the prior local session's per-security margin-trading information before the following trading session opens.",
+    "balance_identity": "balance_t = balance_previous_local_session + sell_t - repay_t",
+    "repay_derivation": "repay_t = balance_previous_local_session + sell_t - balance_t",
+    "price_return_or_market_cap_needed": false
+  },
+  "sources": [
+    {
+      "exchange": "SSE",
+      "provider": "Shanghai Stock Exchange",
+      "official_page": "https://www.sse.com.cn/market/othersdata/margin/detail/index.shtml",
+      "official_api": "https://query.sse.com.cn/commonSoaQuery.do",
+      "query_id": "RZRQ_MX_INFO",
+      "semantic_fields_requested_or_stored": [
+        "trade_date",
+        "security_code",
+        "securities_lending_balance_shares",
+        "securities_lending_sell_shares"
+      ]
+    },
+    {
+      "exchange": "SZSE",
+      "provider": "Shenzhen Stock Exchange",
+      "official_page": "https://www.szse.cn/disclosure/margin/margin/index.html",
+      "official_api": "https://www.szse.cn/api/report/ShowReport",
+      "catalog_id": "1837_xxpl",
+      "tab_key": "tab1",
+      "semantic_fields_requested_or_stored": [
+        "trade_date",
+        "security_code",
+        "securities_lending_balance_shares",
+        "securities_lending_sell_shares"
+      ]
+    }
+  ],
+  "source_policy": {
+    "allowed_domains": [
+      "www.sse.com.cn",
+      "query.sse.com.cn",
+      "www.szse.cn"
+    ],
+    "third_party_consolidator_allowed": false,
+    "cross_provider_partition_fill_allowed": false,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "required_predecessor_session": "2018-12-28",
+    "requested_semantics_only": true,
+    "security_name_price_financing_market_cap_or_return_fields_requested_or_stored": false
+  },
+  "point_in_time_policy": {
+    "source_time_field": "exchange trading session",
+    "signal_assignment": "trade_date close after the exchange has published the record before the following local session opens",
+    "entry": "following local trading-session open",
+    "maximum_event_age_days": 0,
+    "same_session_trade_allowed": false,
+    "historical_release_timestamp_available": false,
+    "publication_delay_rule": "A partition not available before the normal next-session open is unavailable for that entry and cannot be filled later in a live decision."
+  },
+  "snapshot_contract": {
+    "raw_output": "data/raw/a_share/events/official_securities_lending_daily.parquet",
+    "factor_output": "data/raw/a_share/events/official_securities_lending_activity.parquet",
+    "manifest": "data/metadata/official_securities_lending_activity_manifest.json",
+    "raw_columns": [
+      "exchange",
+      "instrument",
+      "trade_date",
+      "securities_lending_balance_shares",
+      "securities_lending_sell_shares"
+    ],
+    "factor_columns": [
+      "instrument",
+      "trade_date",
+      "securities_lending_balance_shares",
+      "securities_lending_sell_shares",
+      "securities_lending_repay_shares_derived",
+      "securities_lending_net_cover_ratio"
+    ],
+    "raw_event_key": [
+      "exchange",
+      "instrument",
+      "trade_date"
+    ],
+    "factor_event_key": [
+      "instrument",
+      "trade_date"
+    ],
+    "instrument_scope": "Shanghai and Shenzhen main-board plus ChiNext common stocks in the point-in-time holding universe; STAR, B shares, funds, bonds, and depositary receipts are excluded.",
+    "predecessor_rule": "Derive repayment only when the same instrument has valid official rows on both the current and immediately previous local trading session.",
+    "absence_policy": "An absent instrument or partition is unobserved, never zero.",
+    "negative_or_missing_policy": "Rows with missing or negative official balance/sell values are excluded and counted. A negative derived repayment is excluded and counted. Values are never clipped, absolutized, or imputed.",
+    "zero_activity_policy": "Rows with derived repayment plus sell volume equal to zero remain missing and are excluded.",
+    "factor_formula": "(repay_derived - sell) / (repay_derived + sell)",
+    "clipping_winsorization_or_imputation": null,
+    "atomic_write_required": true,
+    "partial_snapshot_written_on_failure": false
+  },
+  "factor": {
+    "name": "securities_lending_net_cover_ratio",
+    "direction": "higher_net_cover_ratio_is_better",
+    "score_formula_if_capacity_passes": "cross_sectional_percentile_rank(securities_lending_net_cover_ratio)",
+    "holding_period_trading_days": 3,
+    "mechanism": "More inferred securities repayment relative to new short sales may indicate short covering and less incremental short pressure before the following session."
+  },
+  "source_acceptance": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "all_exchange_daily_partitions_required": true,
+    "continuous_local_trading_sessions_required": true,
+    "duplicate_raw_event_keys_allowed": 0,
+    "missing_snapshot_values_allowed": 0,
+    "official_raw_share_counts_must_be_nonnegative": true,
+    "every_requested_trade_year_required": true,
+    "source_response_and_manifest_sha256_required": true,
+    "minimum_sample_dates": [
+      "2018-12-28",
+      "2019-12-31",
+      "2020-06-30",
+      "2020-12-31",
+      "2021-06-30",
+      "2025-12-31"
+    ],
+    "sample_gate": "Every sample date must return a positive stock-row count from both official exchanges with the contracted semantic fields before a full sync is allowed.",
+    "failed_source_acceptance_must_stop_without_capacity_or_return_diagnostic": true
+  },
+  "capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_valid_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "one_completed_capacity_audit_only": true,
+    "failed_capacity_must_stop_without_return_diagnostic": true,
+    "selection_or_promotion_allowed": false
+  },
+  "regulatory_regime_policy": {
+    "use_unchanged_factor_over_2019_2025": true,
+    "post_return_regime_filter_split_reweight_inversion_or_rewindow_allowed": false
+  },
+  "observation_state_at_freeze": {
+    "official_source_data_rows_observed": false,
+    "open_close_or_forward_return_fields_read": false,
+    "old_eastmoney_sample_rows_previously_observed_under_prior_contract": true,
+    "old_eastmoney_complete_snapshot_or_return_observed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

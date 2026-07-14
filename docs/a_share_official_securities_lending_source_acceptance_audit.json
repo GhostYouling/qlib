@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "kind": "a_share_official_securities_lending_source_acceptance_audit",
+  "status": "rejected_before_full_snapshot_capacity_or_return_access",
+  "audited_at": "2026-07-14T23:34:09Z",
+  "purpose": "Run the frozen six-date, two-exchange semantic source gate without reading prices or forward returns.",
+  "data_contract": {
+    "path": "docs/a_share_official_securities_lending_data_contract.json",
+    "sha256": "3a694f2a18e170623bd33ad405b55edd5fdf6c3806b08d6e0be83c8189c2306e",
+    "status_at_audit": "frozen_before_official_source_rows_or_price_returns_observed"
+  },
+  "frontier_extension": {
+    "path": "docs/a_share_three_day_research_frontier_extension.json",
+    "sha256": "94a5ac622cb35724933ed451ab7e1beb7f37653f2c4a043961bb73798639d66e"
+  },
+  "method": {
+    "sample_dates": [
+      "2018-12-28",
+      "2019-12-31",
+      "2020-06-30",
+      "2020-12-31",
+      "2021-06-30",
+      "2025-12-31"
+    ],
+    "sse": "Request one count-complete RZRQ_MX_INFO partition per frozen date and verify every row has opDate, stockCode, rqyl, and rqmcl.",
+    "szse": "Request the official disclosure page and the frozen ShowReport route with catalog 1837_xxpl, tab1. Test both a historical and recent frozen date at the connection layer.",
+    "source_values_persisted": false,
+    "security_name_financing_price_market_cap_or_return_fields_persisted": false,
+    "open_close_or_forward_return_fields_read": false
+  },
+  "results": {
+    "sse": {
+      "semantic_gate_passed": true,
+      "required_fields_present_on_every_row": true,
+      "advertised_and_received_counts_match": true,
+      "sample_partitions": [
+        {
+          "trade_date": "2018-12-28",
+          "advertised_rows": 556,
+          "received_rows": 556
+        },
+        {
+          "trade_date": "2019-12-31",
+          "advertised_rows": 919,
+          "received_rows": 919
+        },
+        {
+          "trade_date": "2020-06-30",
+          "advertised_rows": 965,
+          "received_rows": 965
+        },
+        {
+          "trade_date": "2020-12-31",
+          "advertised_rows": 1090,
+          "received_rows": 1090
+        },
+        {
+          "trade_date": "2021-06-30",
+          "advertised_rows": 1194,
+          "received_rows": 1194
+        },
+        {
+          "trade_date": "2025-12-31",
+          "advertised_rows": 1957,
+          "received_rows": 1957
+        }
+      ],
+      "old_consolidator_gap_dates_present_at_official_source": [
+        "2019-12-31",
+        "2020-06-30",
+        "2020-12-31",
+        "2021-06-30"
+      ]
+    },
+    "szse": {
+      "semantic_gate_passed": false,
+      "failure_class": "connection_access_unavailable_in_current_environment",
+      "observations": [
+        {
+          "route": "https://www.szse.cn/disclosure/margin/margin/index.html",
+          "client": "curl_http1_and_in_app_browser",
+          "result": "empty_response"
+        },
+        {
+          "route": "https://www.szse.cn/api/report/ShowReport",
+          "trade_date": "2019-12-31",
+          "client": "curl_http1",
+          "http_status": 0,
+          "downloaded_bytes": 0,
+          "result": "empty_response"
+        },
+        {
+          "route": "https://www.szse.cn/api/report/ShowReport",
+          "trade_date": "2025-12-31",
+          "client": "curl_http1",
+          "http_status": 0,
+          "downloaded_bytes": 0,
+          "result": "empty_response"
+        }
+      ],
+      "source_schema_or_rows_observed": false,
+      "inference": "This audit establishes local access failure, not that the official SZSE historical archive is globally absent."
+    },
+    "two_exchange_sample_gate_passed": false,
+    "full_snapshot_started": false,
+    "raw_or_factor_parquet_written": false,
+    "manifest_written": false
+  },
+  "acceptance": {
+    "every_sample_date_and_exchange_required": true,
+    "partial_sse_only_source_allowed": false,
+    "cross_provider_partition_fill_allowed": false,
+    "full_snapshot_accepted": false,
+    "capacity_audit_allowed": false,
+    "return_diagnostic_allowed": false,
+    "selection_or_promotion_allowed": false
+  },
+  "decision": {
+    "factor": "securities_lending_net_cover_ratio",
+    "outcome": "stop_official_source_candidate_before_full_snapshot_capacity_or_returns",
+    "reason": "The frozen two-exchange gate failed because the current environment could not receive any SZSE official page or API response.",
+    "what_was_learned": "The four Eastmoney gap dates are present at the SSE official source, so the prior gaps were consolidator-specific rather than Shanghai exchange publication gaps.",
+    "allowed_reconsideration": "A future fresh contract may re-test the same official route only after a changed network environment or an official SZSE static daily archive is independently identified before any new return read.",
+    "prohibited_rescues": [
+      "continue with Shanghai stocks only",
+      "fill Shenzhen partitions from Eastmoney or another provider",
+      "treat a connection failure as zero securities-lending activity",
+      "start a partial full-history sync",
+      "run a capacity or return diagnostic",
+      "change the factor direction, formula, window, holding period, or development years",
+      "use this route in aggregation, current scoring, or stock selection"
+    ]
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

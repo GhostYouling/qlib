@@ -1992,6 +1992,62 @@ def test_securities_lending_source_rejection_is_frozen_and_rendered(tmp_path):
         RESEARCH.load_securities_lending_source_coverage_audit(changed_path)
 
 
+def test_official_securities_lending_contract_is_fingerprint_frozen(tmp_path):
+    contract = RESEARCH.load_official_securities_lending_data_contract()
+    assert [source["exchange"] for source in contract["sources"]] == ["SSE", "SZSE"]
+    assert contract["official_publication_basis"]["repay_derivation"] == (
+        "repay_t = balance_previous_local_session + sell_t - balance_t"
+    )
+    assert contract["snapshot_contract"]["absence_policy"] == (
+        "An absent instrument or partition is unobserved, never zero."
+    )
+    assert contract["source_policy"]["third_party_consolidator_allowed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT.read_text(encoding="utf-8")
+    )
+    changed["factor"]["direction"] = "lower_net_cover_ratio_is_better"
+    changed_path = tmp_path / "changed_official_securities_lending_contract.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_official_securities_lending_data_contract(changed_path)
+
+
+def test_official_securities_lending_source_rejection_is_frozen_and_rendered(tmp_path):
+    audit = RESEARCH.load_official_securities_lending_source_acceptance_audit()
+    assert audit is not None
+    assert audit["sse_sample_rows"] == [556, 919, 965, 1090, 1194, 1957]
+    assert audit["old_gap_dates_present_at_sse"] == [
+        "2019-12-31",
+        "2020-06-30",
+        "2020-12-31",
+        "2021-06-30",
+    ]
+    assert audit["szse_failure_class"] == "connection_access_unavailable_in_current_environment"
+    assert audit["forward_return_fields_read"] is False
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        official_securities_lending_source_acceptance_audit=audit,
+    )
+    assert "交易所官方融券来源接入审计" in report
+    assert "2019-12-31: 919" in report
+    assert "不得退化为沪市单边" in report
+    assert "全量、容量和收益之前停止" in report
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_OFFICIAL_SECURITIES_LENDING_SOURCE_ACCEPTANCE_AUDIT.read_text(
+            encoding="utf-8"
+        )
+    )
+    changed["results"]["two_exchange_sample_gate_passed"] = True
+    changed_path = tmp_path / "changed_official_securities_lending_acceptance.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_official_securities_lending_source_acceptance_audit(changed_path)
+
+
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {

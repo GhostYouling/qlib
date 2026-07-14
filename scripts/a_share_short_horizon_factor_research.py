@@ -173,6 +173,15 @@ DEFAULT_SECURITIES_LENDING_DATA_CONTRACT = (
 DEFAULT_SECURITIES_LENDING_SOURCE_COVERAGE_AUDIT = (
     REPO_ROOT / "docs" / "a_share_securities_lending_source_coverage_audit.json"
 )
+DEFAULT_OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_official_securities_lending_data_contract.json"
+)
+DEFAULT_OFFICIAL_SECURITIES_LENDING_SOURCE_ACCEPTANCE_AUDIT = (
+    REPO_ROOT / "docs" / "a_share_official_securities_lending_source_acceptance_audit.json"
+)
+DEFAULT_RESEARCH_FRONTIER_EXTENSION = (
+    REPO_ROOT / "docs" / "a_share_three_day_research_frontier_extension.json"
+)
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
 )
@@ -625,6 +634,15 @@ SECURITIES_LENDING_DATA_CONTRACT_SHA256 = (
 )
 SECURITIES_LENDING_SOURCE_COVERAGE_AUDIT_SHA256 = (
     "b81dcd3d1e5e24198343455ccec4928061ec8d7cafd5283460b65970a1eec8fc"
+)
+OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT_SHA256 = (
+    "3a694f2a18e170623bd33ad405b55edd5fdf6c3806b08d6e0be83c8189c2306e"
+)
+OFFICIAL_SECURITIES_LENDING_SOURCE_ACCEPTANCE_AUDIT_SHA256 = (
+    "e118cb1330722b7d40f5e7de683f81a94d405d605907a1728dd930a634f56ec4"
+)
+RESEARCH_FRONTIER_EXTENSION_SHA256 = (
+    "94a5ac622cb35724933ed451ab7e1beb7f37653f2c4a043961bb73798639d66e"
 )
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
@@ -3002,6 +3020,63 @@ def load_securities_lending_data_contract(
         or contract.get("selection_or_promotion_allowed") is not False
     ):
         raise ValueError("securities-lending data contract does not match the frozen protocol")
+    return contract
+
+
+def load_official_securities_lending_data_contract(
+    path: Path = DEFAULT_OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable all-official replacement-source contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT_SHA256:
+        raise ValueError("official securities-lending data contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_official_securities_lending_data_contract")
+    relationship = contract.get("relationship_to_rejected_source") or {}
+    publication = contract.get("official_publication_basis") or {}
+    source_policy = contract.get("source_policy") or {}
+    point_in_time = contract.get("point_in_time_policy") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    factor = contract.get("factor") or {}
+    source_acceptance = contract.get("source_acceptance") or {}
+    capacity = contract.get("capacity_policy") or {}
+    observation = contract.get("observation_state_at_freeze") or {}
+    sources = list(contract.get("sources") or [])
+    if (
+        contract.get("version") != 1
+        or contract.get("status") != "frozen_before_official_source_rows_or_price_returns_observed"
+        or relationship.get("prior_contract_sha256") != SECURITIES_LENDING_DATA_CONTRACT_SHA256
+        or relationship.get("prior_source_coverage_audit_sha256")
+        != SECURITIES_LENDING_SOURCE_COVERAGE_AUDIT_SHA256
+        or publication.get("repay_derivation")
+        != "repay_t = balance_previous_local_session + sell_t - balance_t"
+        or [source.get("exchange") for source in sources] != ["SSE", "SZSE"]
+        or source_policy.get("third_party_consolidator_allowed") is not False
+        or source_policy.get("cross_provider_partition_fill_allowed") is not False
+        or point_in_time.get("maximum_event_age_days") != 0
+        or point_in_time.get("same_session_trade_allowed") is not False
+        or snapshot.get("predecessor_rule")
+        != (
+            "Derive repayment only when the same instrument has valid official rows on both the current "
+            "and immediately previous local trading session."
+        )
+        or snapshot.get("absence_policy") != "An absent instrument or partition is unobserved, never zero."
+        or factor.get("name") != SECURITIES_LENDING_FACTOR_NAME
+        or factor.get("direction") != "higher_net_cover_ratio_is_better"
+        or factor.get("holding_period_trading_days") != 3
+        or source_acceptance.get("all_exchange_daily_partitions_required") is not True
+        or source_acceptance.get("failed_source_acceptance_must_stop_without_capacity_or_return_diagnostic")
+        is not True
+        or capacity.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or observation.get("official_source_data_rows_observed") is not False
+        or observation.get("open_close_or_forward_return_fields_read") is not False
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("official securities-lending data contract does not match the frozen protocol")
     return contract
 
 
@@ -17594,6 +17669,78 @@ def load_securities_lending_source_coverage_audit(
     }
 
 
+def load_official_securities_lending_source_acceptance_audit(
+    path: Path = DEFAULT_OFFICIAL_SECURITIES_LENDING_SOURCE_ACCEPTANCE_AUDIT,
+) -> dict[str, Any] | None:
+    """Load the immutable no-return rejection of the official exchange route."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        return None
+    if file_sha256(path) != OFFICIAL_SECURITIES_LENDING_SOURCE_ACCEPTANCE_AUDIT_SHA256:
+        raise ValueError("official securities-lending source acceptance audit fingerprint mismatch")
+    audit = load_json_record(path, kind="a_share_official_securities_lending_source_acceptance_audit")
+    contract = audit.get("data_contract") or {}
+    frontier = audit.get("frontier_extension") or {}
+    results = audit.get("results") or {}
+    sse = results.get("sse") or {}
+    szse = results.get("szse") or {}
+    acceptance = audit.get("acceptance") or {}
+    decision = audit.get("decision") or {}
+    samples = list(sse.get("sample_partitions") or [])
+    sample_dates = [str(item.get("trade_date")) for item in samples]
+    expected_dates = [
+        "2018-12-28",
+        "2019-12-31",
+        "2020-06-30",
+        "2020-12-31",
+        "2021-06-30",
+        "2025-12-31",
+    ]
+    if (
+        audit.get("version") != 1
+        or audit.get("status") != "rejected_before_full_snapshot_capacity_or_return_access"
+        or contract.get("sha256") != OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT_SHA256
+        or file_sha256(DEFAULT_OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT)
+        != OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT_SHA256
+        or frontier.get("sha256") != RESEARCH_FRONTIER_EXTENSION_SHA256
+        or file_sha256(DEFAULT_RESEARCH_FRONTIER_EXTENSION) != RESEARCH_FRONTIER_EXTENSION_SHA256
+        or sse.get("semantic_gate_passed") is not True
+        or sample_dates != expected_dates
+        or any(
+            int(item.get("advertised_rows") or 0) != int(item.get("received_rows") or -1)
+            for item in samples
+        )
+        or szse.get("semantic_gate_passed") is not False
+        or szse.get("source_schema_or_rows_observed") is not False
+        or results.get("two_exchange_sample_gate_passed") is not False
+        or results.get("full_snapshot_started") is not False
+        or results.get("raw_or_factor_parquet_written") is not False
+        or results.get("manifest_written") is not False
+        or acceptance.get("partial_sse_only_source_allowed") is not False
+        or acceptance.get("cross_provider_partition_fill_allowed") is not False
+        or acceptance.get("capacity_audit_allowed") is not False
+        or acceptance.get("return_diagnostic_allowed") is not False
+        or decision.get("outcome")
+        != "stop_official_source_candidate_before_full_snapshot_capacity_or_returns"
+        or audit.get("forward_return_fields_read") is not False
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("official securities-lending source acceptance audit is inconsistent")
+    return {
+        "audited_at": str(audit["audited_at"]),
+        "sse_sample_dates": sample_dates,
+        "sse_sample_rows": [int(item["received_rows"]) for item in samples],
+        "old_gap_dates_present_at_sse": list(
+            sse.get("old_consolidator_gap_dates_present_at_official_source") or []
+        ),
+        "szse_failure_class": str(szse["failure_class"]),
+        "outcome": str(decision["outcome"]),
+        "forward_return_fields_read": False,
+        "path": str(path),
+    }
+
+
 def load_research_frontier_audit(
     path: Path = DEFAULT_RESEARCH_FRONTIER_AUDIT,
 ) -> dict[str, Any] | None:
@@ -17972,6 +18119,7 @@ def render_three_day_research_report(
     restricted_share_unlock_capacity_audits: list[dict[str, Any]] | None = None,
     insider_open_market_capacity_audits: list[dict[str, Any]] | None = None,
     securities_lending_source_coverage_audit: dict[str, Any] | None = None,
+    official_securities_lending_source_acceptance_audit: dict[str, Any] | None = None,
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
@@ -18734,6 +18882,26 @@ def render_three_day_research_report(
                 "",
             ]
         )
+    if official_securities_lending_source_acceptance_audit:
+        audit = official_securities_lending_source_acceptance_audit
+        sample_text = ", ".join(
+            f"{date}: {rows}"
+            for date, rows in zip(audit["sse_sample_dates"], audit["sse_sample_rows"], strict=True)
+        )
+        lines.extend(
+            [
+                "",
+                "## 交易所官方融券来源接入审计",
+                "",
+                "本节只检查冻结的上交所/深交所官方逐股融券来源，不读取价格或未来收益。两市必须同时通过；不得退化为沪市单边或用第三方补深市。",
+                "",
+                f"- 上交所六个样本分区全部通过（日期: 行数）：{sample_text}。",
+                "- 旧聚合源缺失的四个日期在上交所官方源均存在。",
+                f"- 深交所结果：`{audit['szse_failure_class']}`。当前环境无法取得页面或 API 响应，因此整条官方双交易所路径在全量、容量和收益之前停止。",
+                f"- 读取未来收益：{'是（无效）' if audit['forward_return_fields_read'] else '否'}。",
+                "",
+            ]
+        )
     if candidate_overlap_audits:
         lines.extend(
             [
@@ -19237,6 +19405,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     securities_lending_source_coverage_audit = (
         load_securities_lending_source_coverage_audit()
     )
+    official_securities_lending_source_acceptance_audit = (
+        load_official_securities_lending_source_acceptance_audit()
+    )
     research_frontier_audit = load_research_frontier_audit()
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
@@ -19282,6 +19453,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         restricted_share_unlock_capacity_audits=restricted_share_unlock_capacity_audits,
         insider_open_market_capacity_audits=insider_open_market_capacity_audits,
         securities_lending_source_coverage_audit=securities_lending_source_coverage_audit,
+        official_securities_lending_source_acceptance_audit=(
+            official_securities_lending_source_acceptance_audit
+        ),
         rolling_window_semantics_audits=rolling_window_semantics_audits,
         minute_factor_coverage_audits=minute_factor_coverage_audits,
         minute_combination_holdouts=minute_combination_holdouts,
@@ -19341,6 +19515,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         ),
         "securities_lending_source_coverage_audits": int(
             securities_lending_source_coverage_audit is not None
+        ),
+        "official_securities_lending_source_acceptance_audits": int(
+            official_securities_lending_source_acceptance_audit is not None
         ),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),

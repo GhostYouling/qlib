@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_research_frontier_extension",
+  "status": "frozen_before_official_securities_lending_source_rows_or_returns",
+  "preregistered_at": "2026-07-14T23:31:00Z",
+  "purpose": "Add one newly identified official-source route to the immutable three-day research frontier without changing any prior factor result or reading any new return.",
+  "base_frontier": {
+    "path": "docs/a_share_three_day_research_frontier_audit.json",
+    "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+    "status": "no_eligible_historical_factor_combination",
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "unchanged": true
+  },
+  "new_route": {
+    "priority": 1,
+    "mechanism": "official_exchange_securities_lending_net_cover",
+    "data_contract_path": "docs/a_share_official_securities_lending_data_contract.json",
+    "data_contract_sha256_at_freeze": "3a694f2a18e170623bd33ad405b55edd5fdf6c3806b08d6e0be83c8189c2306e",
+    "independence": "short-position activity from official daily exchange disclosures, independent of the accepted OHLCV summary family",
+    "why_not_in_base_frontier": "The previous Eastmoney source route stopped on four missing partitions before capacity or returns; an all-official exchange route had not yet been frozen or tested.",
+    "required_before_returns": "Pass the frozen six-date two-exchange semantic gate, complete one atomic 2018-12-28 through 2025-12-31 official snapshot, and pass one no-return capacity audit.",
+    "if_source_or_capacity_fails": "Stop this route without return diagnostics, provider mixing, source-gap filling, factor inversion, re-windowing, or regime rescue."
+  },
+  "remaining_routes_in_original_order": [
+    {
+      "priority": 2,
+      "mechanism": "baostock_five_minute_path",
+      "required_before_returns": "one fresh passed restoration probe followed by one fully atomic 2020-2025 source snapshot that passes the frozen coverage gate"
+    },
+    {
+      "priority": 3,
+      "mechanism": "jqdata_classified_large_order_moneyflow",
+      "required_before_returns": "local JQData credentials, separately confirmed professional moneyflow entitlement, four-symbol acceptance, full 2019-2025 atomic sync, and the frozen no-return coverage gate"
+    }
+  ],
+  "observation_state_at_freeze": {
+    "official_securities_lending_source_rows_observed": false,
+    "additional_raw_price_or_forward_return_fields_read": false,
+    "base_frontier_results_reused_without_recalculation": true
+  },
+  "historical_factor_aggregation_allowed": false,
+  "selection_scoring_or_ordering_allowed": false
+}
