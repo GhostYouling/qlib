@@ -1284,6 +1284,220 @@ def test_restricted_share_unlock_sync_writes_only_frozen_no_price_snapshot(
     assert manifest.exists()
 
 
+def test_insider_open_market_contract_is_fingerprint_frozen(tmp_path):
+    contract = RESEARCH.load_insider_open_market_data_contract()
+    assert contract["factor"]["name"] == RESEARCH.INSIDER_OPEN_MARKET_FACTOR_NAME
+    assert contract["factor"]["direction"] == "higher_direct_market_buy_share_is_better"
+    assert contract["source"]["requested_fields"] == [
+        "SCODE",
+        "TDATE",
+        "CHANNUM",
+        "BDFX",
+        "BDYY",
+    ]
+    assert contract["point_in_time_policy"][
+        "source_has_cross_exchange_historical_publication_timestamp"
+    ] is False
+    assert contract["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_INSIDER_OPEN_MARKET_DATA_CONTRACT.read_text(encoding="utf-8")
+    )
+    changed["point_in_time_policy"]["conservative_availability"] = (
+        "close of the second local trading session strictly after TDATE"
+    )
+    changed_path = tmp_path / "changed_insider_contract.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_insider_open_market_data_contract(changed_path)
+
+
+def test_insider_open_market_request_uses_only_frozen_non_identity_non_price_fields():
+    captured = {}
+
+    class Response:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {"result": {"pages": 0, "count": 0, "data": []}}
+
+    class Session:
+        def get(self, url, params, timeout):
+            captured.update({"url": url, "params": params, "timeout": timeout})
+            return Response()
+
+    RESEARCH._eastmoney_insider_open_market_request(
+        Session(), "2024-01-01", "2024-01-31", 1
+    )
+    assert captured["params"]["columns"] == "SCODE,TDATE,CHANNUM,BDFX,BDYY"
+    assert captured["params"]["reportName"] == RESEARCH.EASTMONEY_INSIDER_OPEN_MARKET_REPORT
+    requested = set(captured["params"]["columns"].split(","))
+    forbidden = set(RESEARCH.load_insider_open_market_data_contract()["source"]["explicitly_forbidden_fields"])
+    assert requested.isdisjoint(forbidden)
+
+
+def test_insider_open_market_normalization_delays_three_sessions_and_excludes_mechanics():
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(
+            [
+                "2024-04-29",
+                "2024-04-30",
+                "2024-05-06",
+                "2024-05-07",
+                "2024-05-08",
+                "2024-05-09",
+            ]
+        )
+    )
+    rows = [
+        {
+            "SCODE": "000001",
+            "TDATE": "2024-04-30",
+            "CHANNUM": 1000,
+            "BDFX": "增持",
+            "BDYY": "竞价交易",
+            "BDR": "forbidden identity",
+            "CJJJ": 12.34,
+        },
+        {
+            "SCODE": "000001",
+            "TDATE": "2024-04-30",
+            "CHANNUM": -500,
+            "BDFX": "减持",
+            "BDYY": "二级市场买卖",
+        },
+        {
+            "SCODE": "600000",
+            "TDATE": "2024-04-30",
+            "CHANNUM": 300,
+            "BDFX": "增持",
+            "BDYY": "大宗交易",
+        },
+        {
+            "SCODE": "000002",
+            "TDATE": "2024-04-30",
+            "CHANNUM": 100,
+            "BDFX": "增持",
+            "BDYY": "股权激励",
+        },
+        {
+            "SCODE": "300001",
+            "TDATE": "2024-04-30",
+            "CHANNUM": -100,
+            "BDFX": "增持",
+            "BDYY": "竞价交易",
+        },
+        {
+            "SCODE": "920106",
+            "TDATE": "2024-04-30",
+            "CHANNUM": 100,
+            "BDFX": "增持",
+            "BDYY": "竞价交易",
+        },
+    ]
+    normalized, quality = RESEARCH.normalize_insider_open_market_rows(rows, calendar)
+    assert normalized.columns.tolist() == list(RESEARCH.INSIDER_OPEN_MARKET_EVENT_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600000", "SZ000001"]
+    assert normalized["event_date"].eq(pd.Timestamp("2024-05-08")).all()
+    sz = normalized.loc[normalized["instrument"] == "SZ000001"].iloc[0]
+    assert sz["insider_open_market_buy_share"] == pytest.approx(0.5)
+    assert sz["insider_open_market_event_count"] == 2
+    assert quality["missing_or_non_a_share_rows_excluded"] == 1
+    assert quality["non_direct_market_reason_rows_excluded"] == 1
+    assert quality["direction_sign_inconsistent_or_zero_rows_excluded"] == 1
+    assert quality["valid_direct_market_rows"] == 3
+    assert "BDR" not in normalized.columns
+    assert "CJJJ" not in normalized.columns
+
+
+def test_insider_open_market_partition_rejects_incomplete_pagination(monkeypatch):
+    def fake_request(session, start_date, end_date, page_number):
+        rows = [
+            {
+                "SCODE": "000001",
+                "TDATE": start_date,
+                "CHANNUM": 100,
+                "BDFX": "增持",
+                "BDYY": "竞价交易",
+            }
+        ] if page_number == 1 else []
+        return {"result": {"pages": 2, "count": 3, "data": rows}}
+
+    monkeypatch.setattr(RESEARCH, "_eastmoney_insider_open_market_request", fake_request)
+    with pytest.raises(RuntimeError, match="row-count mismatch"):
+        RESEARCH.fetch_insider_open_market_partition_details(
+            object(),
+            "2024-01-01",
+            "2024-01-31",
+            pd.date_range("2024-01-01", "2024-02-29", freq="B"),
+            maximum_pages=80,
+            page_pause_seconds=0.0,
+        )
+
+
+def test_insider_open_market_sync_writes_only_frozen_aggregates(tmp_path, monkeypatch):
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(["2024-04-30", "2024-05-06", "2024-05-07", "2024-05-08"])
+    )
+    details = pd.DataFrame(
+        {
+            "instrument": ["SZ000001", "SZ000001", "SH600000"],
+            "transaction_date": pd.to_datetime(["2024-04-30"] * 3),
+            "event_date": pd.to_datetime(["2024-05-08"] * 3),
+            "is_buy": [1.0, 0.0, 1.0],
+        }
+    )
+    contract = json.loads(json.dumps(RESEARCH.load_insider_open_market_data_contract()))
+    contract["source"]["transaction_start"] = "2024-01-01"
+    contract["source"]["transaction_end"] = "2024-12-31"
+    monkeypatch.setattr(RESEARCH, "load_insider_open_market_data_contract", lambda: contract)
+    monkeypatch.setattr(RESEARCH, "local_trading_calendar", lambda provider_uri: calendar)
+    monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
+    monkeypatch.setattr(
+        RESEARCH,
+        "institutional_survey_month_ranges",
+        lambda start_year, end_year: [("2024-04-01", "2024-04-30")],
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "fetch_insider_open_market_partition_details",
+        lambda *args, **kwargs: (
+            [details],
+            [
+                {
+                    "start": "2024-04-01",
+                    "end": "2024-04-30",
+                    "pages": 1,
+                    "advertised_source_rows": 3,
+                    "source_rows": 3,
+                    "valid_direct_market_rows": 3,
+                    "missing_or_non_a_share_rows_excluded": 0,
+                    "non_direct_market_reason_rows_excluded": 0,
+                    "direction_sign_inconsistent_or_zero_rows_excluded": 0,
+                    "calendar_mapping_rows_excluded": 0,
+                    "buy_rows": 2,
+                    "sell_rows": 1,
+                    "excluded_reason_counts": {},
+                    "count_verified": True,
+                }
+            ],
+        ),
+    )
+    output = tmp_path / "insider_open_market_transactions.parquet"
+    manifest = tmp_path / "insider_open_market_transactions_manifest.json"
+    result = RESEARCH.sync_insider_open_market_events(output, manifest, tmp_path)
+    assert result["status"] == "completed"
+    assert result["rows_written"] == 2
+    assert result["source"]["identity_fields_requested_or_stored"] == []
+    assert result["price_fields_loaded"] == []
+    assert result["forward_return_fields_read"] is False
+    stored = pd.read_parquet(output)
+    assert stored.columns.tolist() == list(RESEARCH.INSIDER_OPEN_MARKET_EVENT_COLUMNS)
+    assert stored.loc[stored["instrument"] == "SZ000001", "insider_open_market_buy_share"].item() == pytest.approx(0.5)
+    assert manifest.exists()
+
+
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {

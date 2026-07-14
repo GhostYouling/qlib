@@ -77,6 +77,12 @@ DEFAULT_RESTRICTED_SHARE_UNLOCK_EVENTS = (
 DEFAULT_RESTRICTED_SHARE_UNLOCK_EVENT_MANIFEST = (
     DATA_ROOT / "metadata" / "restricted_share_unlocks_manifest.json"
 )
+DEFAULT_INSIDER_OPEN_MARKET_EVENTS = (
+    DATA_ROOT / "raw" / "a_share" / "events" / "insider_open_market_transactions.parquet"
+)
+DEFAULT_INSIDER_OPEN_MARKET_EVENT_MANIFEST = (
+    DATA_ROOT / "metadata" / "insider_open_market_transactions_manifest.json"
+)
 DEFAULT_REPURCHASE_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "repurchase_plans.parquet"
 DEFAULT_REPURCHASE_EVENT_MANIFEST = DATA_ROOT / "metadata" / "repurchase_plans_manifest.json"
 DEFAULT_HOLDER_COUNT_EVENTS = DATA_ROOT / "raw" / "a_share" / "events" / "holder_count_changes.parquet"
@@ -137,6 +143,9 @@ DEFAULT_RESTRICTED_SHARE_UNLOCK_CAPACITY_SPEC = (
 )
 DEFAULT_RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_SPEC = (
     REPO_ROOT / "docs" / "a_share_restricted_share_unlock_diagnostic_preregistration.json"
+)
+DEFAULT_INSIDER_OPEN_MARKET_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_insider_open_market_data_contract.json"
 )
 DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
     REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
@@ -237,6 +246,7 @@ EASTMONEY_HOLDER_COUNT_REPORT = "RPT_HOLDERNUM_DET"
 EASTMONEY_PLEDGE_REPORT = "RPTA_APP_ACCUMDETAILS"
 EASTMONEY_DIVIDEND_PLAN_REPORT = "RPT_SHAREBONUS_DET"
 EASTMONEY_RESTRICTED_SHARE_UNLOCK_REPORT = "RPT_LIFT_STAGE"
+EASTMONEY_INSIDER_OPEN_MARKET_REPORT = "RPTA_WEB_GGMX"
 FUNDAMENTAL_COLUMNS = (
     "instrument",
     "report_date",
@@ -360,6 +370,34 @@ RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS = (
     "restricted_unlock_actual_shares",
 )
 RESTRICTED_SHARE_UNLOCK_FACTOR_NAME = "restricted_share_unlock_pressure"
+INSIDER_OPEN_MARKET_EVENT_COLUMNS = (
+    "instrument",
+    "event_date",
+    "insider_open_market_latest_transaction_date",
+    "insider_open_market_buy_share",
+    "insider_open_market_event_count",
+)
+INSIDER_OPEN_MARKET_DETAIL_COLUMNS = (
+    "instrument",
+    "transaction_date",
+    "event_date",
+    "is_buy",
+)
+INSIDER_OPEN_MARKET_FACTOR_NAME = "insider_open_market_buy_share"
+INSIDER_OPEN_MARKET_REASON_WHITELIST = (
+    "竞价交易",
+    "集中竞价",
+    "集中竞价交易",
+    "二级市场买卖",
+    "二级市场增持",
+    "二级市场减持",
+    "大宗交易",
+    "盘后定价",
+    "证券买入",
+    "证券卖出",
+    "买入",
+    "卖出",
+)
 INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS = (
     "institutional_survey_org_count",
     "institutional_survey_event_count",
@@ -468,6 +506,9 @@ ANALYST_RATING_DATA_CONTRACT_SHA256 = (
 RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT_SHA256 = (
     "17303effa71cdefb6ce0b56dbc8f8746cdf5642afa54e061fa23484fe40d84c8"
 )
+INSIDER_OPEN_MARKET_DATA_CONTRACT_SHA256 = (
+    "2c46dbc6ffbc04b50758d84ec52b60c80f097f3d0825c9532ce164090e40eced"
+)
 PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
 PLEDGE_EVENT_REBUILD_PURPOSE = (
     "development_only_preregistered_pledge_event_rebuild_research_not_investment_advice"
@@ -483,6 +524,8 @@ ANALYST_RATING_MAX_PAGES_PER_PARTITION = 80
 ANALYST_RATING_PAGE_PAUSE_SECONDS = 0.05
 RESTRICTED_SHARE_UNLOCK_MAX_PAGES_PER_PARTITION = 80
 RESTRICTED_SHARE_UNLOCK_PAGE_PAUSE_SECONDS = 0.05
+INSIDER_OPEN_MARKET_MAX_PAGES_PER_PARTITION = 80
+INSIDER_OPEN_MARKET_PAGE_PAUSE_SECONDS = 0.05
 # This direction is deliberately not part of the development diagnostic
 # catalog.  It was formed after reading the completed 2019--2025 diagnostic,
 # so it may only be evaluated in a separately recorded post-development
@@ -2348,6 +2391,52 @@ def load_restricted_share_unlock_data_contract(
         or contract.get("selection_or_promotion_allowed") is not False
     ):
         raise ValueError("restricted-share unlock data contract does not match the frozen protocol")
+    return contract
+
+
+def load_insider_open_market_data_contract(
+    path: Path = DEFAULT_INSIDER_OPEN_MARKET_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-snapshot insider direct-market contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != INSIDER_OPEN_MARKET_DATA_CONTRACT_SHA256:
+        raise ValueError("insider open-market data contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_insider_open_market_data_contract")
+    source = contract.get("source") or {}
+    point_in_time = contract.get("point_in_time_policy") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    factor = contract.get("factor") or {}
+    capacity = contract.get("capacity_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_full_insider_snapshot_or_price_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-14T19:26:59Z"
+        or source.get("endpoint") != EASTMONEY_DATACENTER_URL
+        or source.get("report_name") != EASTMONEY_INSIDER_OPEN_MARKET_REPORT
+        or source.get("requested_fields") != ["SCODE", "TDATE", "CHANNUM", "BDFX", "BDYY"]
+        or tuple(source.get("direct_open_market_reason_whitelist") or ())
+        != INSIDER_OPEN_MARKET_REASON_WHITELIST
+        or tuple(snapshot.get("columns") or ()) != INSIDER_OPEN_MARKET_EVENT_COLUMNS
+        or point_in_time.get("source_has_cross_exchange_historical_publication_timestamp") is not False
+        or point_in_time.get("conservative_availability")
+        != (
+            "close of the third local trading session strictly after TDATE, one full trading "
+            "session beyond the two-trading-day reporting window"
+        )
+        or factor.get("name") != INSIDER_OPEN_MARKET_FACTOR_NAME
+        or factor.get("raw_column") != INSIDER_OPEN_MARKET_FACTOR_NAME
+        or factor.get("direction") != "higher_direct_market_buy_share_is_better"
+        or factor.get("maximum_event_age_days") != 3
+        or capacity.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("insider open-market data contract does not match the frozen protocol")
     return contract
 
 
@@ -4876,6 +4965,40 @@ def _eastmoney_restricted_share_unlock_request(
     )
 
 
+def _eastmoney_insider_open_market_request(
+    session: requests.Session, start_date: str, end_date: str, page_number: int
+) -> dict[str, Any]:
+    """Fetch one insider transaction page without identities, prices, amounts, or returns."""
+
+    params = {
+        "reportName": EASTMONEY_INSIDER_OPEN_MARKET_REPORT,
+        "columns": "SCODE,TDATE,CHANNUM,BDFX,BDYY",
+        "filter": f"(TDATE>='{start_date}')(TDATE<='{end_date}')",
+        "pageNumber": page_number,
+        "pageSize": 500,
+        "sortTypes": "1,1",
+        "sortColumns": "TDATE,SCODE",
+        "source": "WEB",
+        "client": "WEB",
+    }
+    errors: list[str] = []
+    for attempt in range(5):
+        try:
+            response = session.get(EASTMONEY_DATACENTER_URL, params=params, timeout=30)
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload.get("result"), dict):
+                raise ValueError("Eastmoney insider response does not contain a result object")
+            return payload
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f"{type(exc).__name__}: {exc}")
+            time.sleep(min(8.0, 0.5 * (2**attempt)))
+    raise RuntimeError(
+        f"cannot fetch insider open-market transactions {start_date} to {end_date} "
+        f"page {page_number}: {errors[-1]}"
+    )
+
+
 def _eastmoney_repurchase_request(session: requests.Session, page_number: int) -> dict[str, Any]:
     """Fetch one historical repurchase-plan page without post-plan outcomes.
 
@@ -5683,6 +5806,143 @@ def normalize_restricted_share_unlock_rows(
         "rows_written": int(len(result)),
         "zero_ratio_rows": int(result["restricted_unlock_total_share_ratio"].eq(0.0).sum()),
     }
+    return result, stats
+
+
+def _nth_trading_day_after(
+    calendar: pd.DatetimeIndex, dated: pd.Series, sessions: int
+) -> pd.Series:
+    """Map each date to the Nth local trading session strictly after it."""
+
+    if sessions < 1:
+        raise ValueError("sessions must be positive")
+    normalized_calendar = pd.DatetimeIndex(calendar).normalize().unique().sort_values()
+    values = pd.to_datetime(dated, errors="coerce").dt.normalize()
+    mapped = pd.Series(pd.NaT, index=dated.index, dtype="datetime64[ns]")
+    valid_dates = values.notna()
+    if normalized_calendar.empty or not valid_dates.any():
+        return mapped
+    valid_index = values.index[valid_dates]
+    lookup = normalized_calendar.searchsorted(
+        pd.DatetimeIndex(values.loc[valid_index]), side="right"
+    ) + (sessions - 1)
+    within = lookup < len(normalized_calendar)
+    if within.any():
+        mapped.loc[valid_index[within]] = normalized_calendar.take(lookup[within]).values
+    return mapped
+
+
+def _insider_open_market_detail_frame(
+    rows: Iterable[dict[str, Any]], calendar: pd.DatetimeIndex
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Normalize frozen source fields to identity-free direct-market detail rows."""
+
+    raw = pd.DataFrame(rows)
+    if raw.empty:
+        return pd.DataFrame(columns=INSIDER_OPEN_MARKET_DETAIL_COLUMNS), {
+            "input_source_rows": 0,
+            "missing_or_non_a_share_rows_excluded": 0,
+            "non_direct_market_reason_rows_excluded": 0,
+            "direction_sign_inconsistent_or_zero_rows_excluded": 0,
+            "calendar_mapping_rows_excluded": 0,
+            "valid_direct_market_rows": 0,
+            "buy_rows": 0,
+            "sell_rows": 0,
+            "excluded_reason_counts": {},
+        }
+    frame = pd.DataFrame(
+        {
+            "instrument": raw.get("SCODE", pd.Series(index=raw.index, dtype="object")).map(
+                qlib_symbol
+            ),
+            "transaction_date": pd.to_datetime(
+                raw.get("TDATE", pd.Series(index=raw.index, dtype="object")), errors="coerce"
+            ).dt.normalize(),
+            "changed_shares": pd.to_numeric(
+                raw.get("CHANNUM", pd.Series(index=raw.index, dtype="float64")), errors="coerce"
+            ),
+            "direction": raw.get("BDFX", pd.Series(index=raw.index, dtype="object"))
+            .astype("string")
+            .str.strip(),
+            "reason": raw.get("BDYY", pd.Series(index=raw.index, dtype="object"))
+            .astype("string")
+            .str.strip(),
+        }
+    )
+    valid_key = frame[["instrument", "transaction_date"]].notna().all(axis=1)
+    missing_or_non_a_share = int((~valid_key).sum())
+    keyed = frame.loc[valid_key].copy()
+    direct_reason = keyed["reason"].isin(INSIDER_OPEN_MARKET_REASON_WHITELIST)
+    excluded_reasons = (
+        keyed.loc[~direct_reason, "reason"].fillna("<missing>").value_counts().sort_index()
+    )
+    direct = keyed.loc[direct_reason].copy()
+    consistent_buy = direct["direction"].eq("增持") & direct["changed_shares"].gt(0.0)
+    consistent_sell = direct["direction"].eq("减持") & direct["changed_shares"].lt(0.0)
+    consistent = consistent_buy | consistent_sell
+    direction_excluded = int((~consistent).sum())
+    valid = direct.loc[consistent, ["instrument", "transaction_date"]].copy()
+    valid["event_date"] = _nth_trading_day_after(
+        calendar, valid["transaction_date"], sessions=3
+    )
+    valid["is_buy"] = consistent_buy.loc[consistent].astype(float).to_numpy()
+    mapped = valid["event_date"].notna()
+    calendar_excluded = int((~mapped).sum())
+    result = (
+        valid.loc[mapped, list(INSIDER_OPEN_MARKET_DETAIL_COLUMNS)]
+        .sort_values(["instrument", "transaction_date", "event_date"], kind="stable")
+        .reset_index(drop=True)
+    )
+    stats = {
+        "input_source_rows": int(len(frame)),
+        "missing_or_non_a_share_rows_excluded": missing_or_non_a_share,
+        "non_direct_market_reason_rows_excluded": int((~direct_reason).sum()),
+        "direction_sign_inconsistent_or_zero_rows_excluded": direction_excluded,
+        "calendar_mapping_rows_excluded": calendar_excluded,
+        "valid_direct_market_rows": int(len(result)),
+        "buy_rows": int(result["is_buy"].sum()),
+        "sell_rows": int(len(result) - result["is_buy"].sum()),
+        "excluded_reason_counts": {str(key): int(value) for key, value in excluded_reasons.items()},
+    }
+    return result, stats
+
+
+def aggregate_insider_open_market_details(details: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate identity-free transaction rows to the frozen stock/event snapshot."""
+
+    if details.empty:
+        return pd.DataFrame(columns=INSIDER_OPEN_MARKET_EVENT_COLUMNS)
+    missing = sorted(set(INSIDER_OPEN_MARKET_DETAIL_COLUMNS) - set(details.columns))
+    if missing:
+        raise ValueError(f"insider open-market details are missing columns: {', '.join(missing)}")
+    result = (
+        details.groupby(["instrument", "event_date"], as_index=False, sort=True)
+        .agg(
+            insider_open_market_latest_transaction_date=("transaction_date", "max"),
+            insider_open_market_buy_share=("is_buy", "mean"),
+            insider_open_market_event_count=("is_buy", "size"),
+        )
+        .loc[:, list(INSIDER_OPEN_MARKET_EVENT_COLUMNS)]
+        .sort_values(["instrument", "event_date"], kind="stable")
+        .reset_index(drop=True)
+    )
+    result["insider_open_market_buy_share"] = pd.to_numeric(
+        result["insider_open_market_buy_share"], errors="coerce"
+    ).astype(float)
+    result["insider_open_market_event_count"] = pd.to_numeric(
+        result["insider_open_market_event_count"], errors="raise"
+    ).astype("int64")
+    return result
+
+
+def normalize_insider_open_market_rows(
+    rows: Iterable[dict[str, Any]], calendar: pd.DatetimeIndex
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Normalize and aggregate insider direct-market records without identities or prices."""
+
+    details, stats = _insider_open_market_detail_frame(rows, calendar)
+    result = aggregate_insider_open_market_details(details)
+    stats = {**stats, "rows_written": int(len(result))}
     return result, stats
 
 
@@ -6569,6 +6829,128 @@ def fetch_restricted_share_unlock_partition(
     ]
 
 
+def fetch_insider_open_market_partition_details(
+    session: requests.Session,
+    start_date: str,
+    end_date: str,
+    calendar: pd.DatetimeIndex,
+    *,
+    maximum_pages: int = INSIDER_OPEN_MARKET_MAX_PAGES_PER_PARTITION,
+    page_pause_seconds: float = INSIDER_OPEN_MARKET_PAGE_PAUSE_SECONDS,
+) -> tuple[list[pd.DataFrame], list[dict[str, Any]]]:
+    """Fetch and count-verify one insider transaction range, bisecting if needed."""
+
+    start = pd.Timestamp(start_date).normalize()
+    end = pd.Timestamp(end_date).normalize()
+    if pd.isna(start) or pd.isna(end) or end < start:
+        raise ValueError("insider open-market partition must use a valid inclusive date range")
+    if maximum_pages < 1:
+        raise ValueError("insider open-market maximum_pages must be positive")
+    if page_pause_seconds < 0:
+        raise ValueError("insider open-market page pause must be non-negative")
+    start_text = start.date().isoformat()
+    end_text = end.date().isoformat()
+    first = _eastmoney_insider_open_market_request(session, start_text, end_text, 1)
+    first_result = first["result"]
+    pages = int(first_result.get("pages") or 0)
+    advertised_count = int(first_result.get("count") or 0)
+    if pages > maximum_pages:
+        if start == end:
+            raise RuntimeError(
+                "insider open-market single-date partition exceeds the safe page ceiling: "
+                f"{start_text}, pages={pages}, ceiling={maximum_pages}"
+            )
+        midpoint = start + (end - start) // 2
+        left_frames, left_records = fetch_insider_open_market_partition_details(
+            session,
+            start_text,
+            midpoint.date().isoformat(),
+            calendar,
+            maximum_pages=maximum_pages,
+            page_pause_seconds=page_pause_seconds,
+        )
+        right_frames, right_records = fetch_insider_open_market_partition_details(
+            session,
+            (midpoint + pd.Timedelta(days=1)).date().isoformat(),
+            end_text,
+            calendar,
+            maximum_pages=maximum_pages,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return left_frames + right_frames, left_records + right_records
+    empty_record = {
+        "start": start_text,
+        "end": end_text,
+        "pages": 0,
+        "advertised_source_rows": 0,
+        "source_rows": 0,
+        "valid_direct_market_rows": 0,
+        "missing_or_non_a_share_rows_excluded": 0,
+        "non_direct_market_reason_rows_excluded": 0,
+        "direction_sign_inconsistent_or_zero_rows_excluded": 0,
+        "calendar_mapping_rows_excluded": 0,
+        "buy_rows": 0,
+        "sell_rows": 0,
+        "excluded_reason_counts": {},
+        "count_verified": True,
+    }
+    if pages < 1:
+        if advertised_count != 0:
+            raise RuntimeError(
+                f"insider open-market partition reported rows without pages: {start_text} to {end_text}"
+            )
+        return [], [empty_record]
+
+    frames: list[pd.DataFrame] = []
+    totals = {key: 0 for key in (
+        "source_rows",
+        "valid_direct_market_rows",
+        "missing_or_non_a_share_rows_excluded",
+        "non_direct_market_reason_rows_excluded",
+        "direction_sign_inconsistent_or_zero_rows_excluded",
+        "calendar_mapping_rows_excluded",
+        "buy_rows",
+        "sell_rows",
+    )}
+    excluded_reason_counts: dict[str, int] = {}
+    for page_number in range(1, pages + 1):
+        payload = (
+            first
+            if page_number == 1
+            else _eastmoney_insider_open_market_request(
+                session, start_text, end_text, page_number
+            )
+        )
+        rows = payload["result"].get("data") or []
+        totals["source_rows"] += len(rows)
+        details, stats = _insider_open_market_detail_frame(rows, calendar)
+        for key in totals:
+            if key != "source_rows":
+                totals[key] += int(stats[key])
+        for reason, count in stats["excluded_reason_counts"].items():
+            excluded_reason_counts[reason] = excluded_reason_counts.get(reason, 0) + int(count)
+        if not details.empty:
+            frames.append(details)
+        if page_pause_seconds and page_number < pages:
+            time.sleep(page_pause_seconds)
+    if totals["source_rows"] != advertised_count:
+        raise RuntimeError(
+            f"insider open-market partition row-count mismatch: {start_text} to {end_text}, "
+            f"advertised={advertised_count}, fetched={totals['source_rows']}"
+        )
+    return frames, [
+        {
+            "start": start_text,
+            "end": end_text,
+            "pages": pages,
+            "advertised_source_rows": advertised_count,
+            **totals,
+            "excluded_reason_counts": dict(sorted(excluded_reason_counts.items())),
+            "count_verified": True,
+        }
+    ]
+
+
 def sync_analyst_rating_events(
     output: Path = DEFAULT_ANALYST_RATING_EVENTS,
     manifest: Path = DEFAULT_ANALYST_RATING_EVENT_MANIFEST,
@@ -6808,6 +7190,202 @@ def sync_restricted_share_unlock_events(
             "The public unlock table is queried as it exists today and may revise historical release records.",
             "No point-in-time schedule-announcement archive is available, so an event is not usable before its unlock-date close.",
             "The factor measures realized released shares relative to total shares; it does not identify whether holders sell.",
+            "This is a capacity candidate only until a separate no-return gate is frozen and passed.",
+        ],
+    }
+    _atomic_write_text(
+        manifest, json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n"
+    )
+    return result
+
+
+def sync_insider_open_market_events(
+    output: Path = DEFAULT_INSIDER_OPEN_MARKET_EVENTS,
+    manifest: Path = DEFAULT_INSIDER_OPEN_MARKET_EVENT_MANIFEST,
+    provider_uri: Path = DEFAULT_PROVIDER_URI,
+) -> dict[str, Any]:
+    """Build the frozen 2019--2025 conservative insider transaction snapshot without prices."""
+
+    contract = load_insider_open_market_data_contract()
+    source_contract = contract["source"]
+    start_year = pd.Timestamp(source_contract["transaction_start"]).year
+    end_year = pd.Timestamp(source_contract["transaction_end"]).year
+    calendar = local_trading_calendar(provider_uri)
+    if calendar.empty:
+        raise RuntimeError("insider open-market sync requires a non-empty local trading calendar")
+    session = _eastmoney_session()
+    detail_frames: list[pd.DataFrame] = []
+    partition_records: list[dict[str, Any]] = []
+    pages_by_year: dict[str, int] = {}
+    source_rows_by_year: dict[str, int] = {}
+    valid_rows_by_year: dict[str, int] = {}
+    for month_start, month_end in institutional_survey_month_ranges(start_year, end_year):
+        month_frames, records = fetch_insider_open_market_partition_details(
+            session,
+            month_start,
+            month_end,
+            calendar,
+            maximum_pages=INSIDER_OPEN_MARKET_MAX_PAGES_PER_PARTITION,
+            page_pause_seconds=INSIDER_OPEN_MARKET_PAGE_PAUSE_SECONDS,
+        )
+        detail_frames.extend(month_frames)
+        partition_records.extend(records)
+        year = month_start[:4]
+        month_pages = sum(int(record["pages"]) for record in records)
+        month_source_rows = sum(int(record["source_rows"]) for record in records)
+        month_valid_rows = sum(int(record["valid_direct_market_rows"]) for record in records)
+        pages_by_year[year] = pages_by_year.get(year, 0) + month_pages
+        source_rows_by_year[year] = source_rows_by_year.get(year, 0) + month_source_rows
+        valid_rows_by_year[year] = valid_rows_by_year.get(year, 0) + month_valid_rows
+        print(
+            f"insider open-market {month_start[:7]}: {len(records)} verified partitions, "
+            f"{month_pages} pages, {month_source_rows} source rows, "
+            f"{month_valid_rows} valid direct-market rows"
+        )
+    details = (
+        pd.concat(detail_frames, ignore_index=True)
+        if detail_frames
+        else pd.DataFrame(columns=INSIDER_OPEN_MARKET_DETAIL_COLUMNS)
+    )
+    details = details.loc[:, list(INSIDER_OPEN_MARKET_DETAIL_COLUMNS)].sort_values(
+        ["instrument", "transaction_date", "event_date"], kind="stable"
+    ).reset_index(drop=True)
+    if details.empty:
+        raise RuntimeError("insider open-market sync produced no usable A-share transaction rows")
+    requested_years = list(range(start_year, end_year + 1))
+    observed_transaction_years = sorted(
+        pd.to_datetime(details["transaction_date"]).dt.year.unique().tolist()
+    )
+    if observed_transaction_years != requested_years:
+        raise RuntimeError("insider open-market snapshot does not cover every requested transaction year")
+    if any(source_rows_by_year.get(str(year), 0) < 1 for year in requested_years):
+        raise RuntimeError("insider open-market source returned an empty requested transaction year")
+    events = aggregate_insider_open_market_details(details)
+    if tuple(events.columns) != INSIDER_OPEN_MARKET_EVENT_COLUMNS:
+        raise RuntimeError("insider open-market snapshot columns do not match the frozen contract")
+    if events.duplicated(["instrument", "event_date"]).any():
+        raise RuntimeError("insider open-market snapshot contains duplicate event keys")
+    if events[list(INSIDER_OPEN_MARKET_EVENT_COLUMNS)].isna().any().any():
+        raise RuntimeError("insider open-market snapshot contains missing contracted values")
+    if not events["insider_open_market_buy_share"].between(0.0, 1.0).all():
+        raise RuntimeError("insider open-market buy share falls outside [0, 1]")
+    counts = events["insider_open_market_event_count"]
+    if not counts.gt(0).all() or not np.equal(counts, np.floor(counts)).all():
+        raise RuntimeError("insider open-market event count must be a positive integer")
+    expected_event_dates = _nth_trading_day_after(
+        calendar,
+        events["insider_open_market_latest_transaction_date"],
+        sessions=3,
+    )
+    availability_errors = int((expected_event_dates != events["event_date"]).sum())
+    if availability_errors:
+        raise RuntimeError(
+            "insider open-market snapshot violates the frozen third-session availability rule"
+        )
+    daily = events.groupby("event_date")["insider_open_market_buy_share"].agg(
+        names="size", values="nunique"
+    )
+    ready = daily.loc[(daily["names"] >= 6) & (daily["values"] >= 2)]
+    quality_keys = (
+        "missing_or_non_a_share_rows_excluded",
+        "non_direct_market_reason_rows_excluded",
+        "direction_sign_inconsistent_or_zero_rows_excluded",
+        "calendar_mapping_rows_excluded",
+        "valid_direct_market_rows",
+        "buy_rows",
+        "sell_rows",
+    )
+    quality_totals = {
+        key: int(sum(int(record[key]) for record in partition_records)) for key in quality_keys
+    }
+    excluded_reason_counts: dict[str, int] = {}
+    for record in partition_records:
+        for reason, count in record["excluded_reason_counts"].items():
+            excluded_reason_counts[reason] = excluded_reason_counts.get(reason, 0) + int(count)
+    source_rows = int(sum(source_rows_by_year.values()))
+    reconciled_rows = (
+        quality_totals["missing_or_non_a_share_rows_excluded"]
+        + quality_totals["non_direct_market_reason_rows_excluded"]
+        + quality_totals["direction_sign_inconsistent_or_zero_rows_excluded"]
+        + quality_totals["calendar_mapping_rows_excluded"]
+        + quality_totals["valid_direct_market_rows"]
+    )
+    if source_rows != reconciled_rows or len(details) != quality_totals["valid_direct_market_rows"]:
+        raise RuntimeError("insider open-market source-row normalization does not reconcile")
+    _atomic_write_parquet(output, events)
+    result = {
+        "status": "completed",
+        "data_contract": {
+            "path": str(DEFAULT_INSIDER_OPEN_MARKET_DATA_CONTRACT.resolve()),
+            "sha256": file_sha256(DEFAULT_INSIDER_OPEN_MARKET_DATA_CONTRACT),
+            "preregistered_at": contract["preregistered_at"],
+            "forward_return_fields_read": False,
+        },
+        "source": {
+            "provider": source_contract["provider"],
+            "public_page": source_contract["public_page"],
+            "endpoint": EASTMONEY_DATACENTER_URL,
+            "report_name": EASTMONEY_INSIDER_OPEN_MARKET_REPORT,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "requested_fields": source_contract["requested_fields"],
+            "forbidden_fields_requested_or_stored": [],
+            "identity_fields_requested_or_stored": [],
+            "price_amount_market_state_or_return_fields_requested_or_stored": [],
+        },
+        "event_frequency": "conservative_dated_insider_direct_open_market_transaction_aggregate",
+        "transaction_years": requested_years,
+        "partition_policy": contract["snapshot_contract"]["partition_policy"],
+        "verified_partitions": partition_records,
+        "pages_by_transaction_year": pages_by_year,
+        "source_rows_by_transaction_year": source_rows_by_year,
+        "valid_direct_market_rows_by_transaction_year": valid_rows_by_year,
+        "normalization_quality": {
+            "source_rows": source_rows,
+            **quality_totals,
+            "excluded_reason_counts": dict(sorted(excluded_reason_counts.items())),
+            "source_row_reconciliation_errors": 0,
+            "event_rows_written": int(len(events)),
+            "duplicate_event_keys": 0,
+            "missing_values": 0,
+            "out_of_range_buy_share_rows": 0,
+            "non_positive_or_non_integer_event_count_rows": 0,
+            "availability_mapping_errors": availability_errors,
+            "distinct_buy_share_values": int(events["insider_open_market_buy_share"].nunique()),
+            "dates_with_at_least_six_names_and_two_values_before_quality_or_listing_gates": int(
+                len(ready)
+            ),
+            "such_dates_by_year": {
+                str(year): int(count)
+                for year, count in ready.groupby(ready.index.year).size().items()
+            },
+        },
+        "rows_by_transaction_year": {
+            str(year): int(len(group))
+            for year, group in details.groupby(
+                pd.to_datetime(details["transaction_date"]).dt.year, sort=True
+            )
+        },
+        "rows_by_event_year": {
+            str(year): int(len(group))
+            for year, group in events.groupby(pd.to_datetime(events["event_date"]).dt.year, sort=True)
+        },
+        "rows_written": int(len(events)),
+        "transaction_start": details["transaction_date"].min().date().isoformat(),
+        "transaction_end": details["transaction_date"].max().date().isoformat(),
+        "event_start": events["event_date"].min().date().isoformat(),
+        "event_end": events["event_date"].max().date().isoformat(),
+        "output": str(output.resolve()),
+        "sha256": file_sha256(output),
+        "price_fields_loaded": [],
+        "open_close_or_forward_return_fields_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "point_in_time_policy": contract["point_in_time_policy"],
+        "limitations": [
+            "The public transaction table is queried as it exists today and may revise or omit historical rows.",
+            "No uniform historical cross-exchange filing timestamp is available; availability is synthetically delayed to the third local session close strictly after the transaction date.",
+            "A filing later than the regulatory reporting window can still make synthetic availability earlier than actual publication.",
+            "Only transaction-row direction is used; identities, roles, transaction prices, amounts, and share-size weights are not requested or stored.",
             "This is a capacity candidate only until a separate no-return gate is frozen and passed.",
         ],
     }
@@ -19370,6 +19948,11 @@ def parse_args() -> argparse.Namespace:
         help="build the frozen 2019-2025 restricted-share unlock-pressure snapshot",
     )
 
+    subparsers.add_parser(
+        "sync-insider-open-market-events",
+        help="build the frozen 2019-2025 conservatively dated insider direct-market snapshot",
+    )
+
     sync_repurchase = subparsers.add_parser(
         "sync-repurchase-plan-events",
         help="download dated public initial repurchase plans for short-horizon event research",
@@ -20284,6 +20867,8 @@ def main() -> int:
         report = sync_analyst_rating_events()
     elif args.command == "sync-restricted-share-unlock-events":
         report = sync_restricted_share_unlock_events()
+    elif args.command == "sync-insider-open-market-events":
+        report = sync_insider_open_market_events()
     elif args.command == "sync-repurchase-plan-events":
         report = sync_repurchase_plan_events(Path(args.output), Path(args.manifest))
     elif args.command == "sync-holder-count-events":
