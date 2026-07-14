@@ -1148,6 +1148,7 @@ EXPLORATORY_DIAGNOSTIC_FACTORS = (
     "free_float_cap_small",
     "up_day_consistency_5",
     "signed_volume_pressure_5",
+    "close_above_vwap_1",
 )
 
 # This diagnostic catalog is fixed before a new candidate library exists.  It
@@ -4309,6 +4310,11 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
         "near_high_20": "$close/Max($high, 20) - 1",
         "intraday_strength": "$close/$open - 1",
         "close_to_high": "$close/$high",
+        # Same-session close relative to the day's transaction-weighted
+        # average price.  A positive value is predeclared as late-session
+        # demand persistence; it is distinct from the OHLC-only close-to-high
+        # location and remains fully known at the signal close.
+        "close_above_vwap_1": "$close/$vwap - 1",
         # Five-day close-location value weighted by each session's volume.
         # The sign is positive when volume repeatedly trades on bars that
         # finish nearer their high than their low.  This is a close-known
@@ -4407,6 +4413,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
         "near_high_20",
         "intraday_strength",
         "close_to_high",
+        "close_above_vwap_1",
         "signed_volume_pressure_5",
         "roe",
         "revenue_yoy",
@@ -4534,6 +4541,9 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     # artificial extreme rank.
     result["signed_volume_pressure_5"] = result["signed_volume_pressure_5"].where(
         np.isfinite(result["signed_volume_pressure_5"])
+    )
+    result["close_above_vwap_1"] = result["close_above_vwap_1"].where(
+        np.isfinite(result["close_above_vwap_1"])
     )
     # Event rows are forward-filled only so each row retains the event context
     # for auditing.  Once the explicitly declared event window expires, those
@@ -4680,6 +4690,7 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["near_high_20"] = result["rank_near_high_20"]
     result["intraday_strength"] = result["rank_intraday_strength"]
     result["close_to_high"] = result["rank_close_to_high"]
+    result["close_above_vwap_1"] = result["rank_close_above_vwap_1"]
     result["signed_volume_pressure_5"] = result["rank_signed_volume_pressure_5"]
     return result
 
