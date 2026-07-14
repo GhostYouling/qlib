@@ -59,6 +59,9 @@ DEFAULT_BAOSTOCK_5M_CONTRACT = REPO_ROOT / "docs" / "a_share_baostock_5m_data_co
 DEFAULT_BAOSTOCK_5M_FACTOR_SPEC = (
     REPO_ROOT / "docs" / "a_share_baostock_5m_factor_preregistration.json"
 )
+DEFAULT_BAOSTOCK_5M_SUSPENSION_AUDIT = (
+    REPO_ROOT / "docs" / "a_share_baostock_5m_suspension_placeholder_audit.json"
+)
 DEFAULT_FACTOR_UNIVERSE = (
     DATA_ROOT / "qlib" / "cn_a_share" / "instruments" / "factor_main_chinext_star.txt"
 )
@@ -99,6 +102,9 @@ BAOSTOCK_5M_CONTRACT_SHA256 = (
 )
 BAOSTOCK_5M_FACTOR_SPEC_SHA256 = (
     "a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8"
+)
+BAOSTOCK_5M_SUSPENSION_AUDIT_SHA256 = (
+    "5c29bd194ef70ed0d30a1e72aa3adc7e287ec1f513e0d3ee29d7551cf1dff47d"
 )
 BAOSTOCK_5M_MINIMUM_FREE_BYTES = 10 * 1024**3
 BAOSTOCK_5M_MAX_WORKERS = 4
@@ -368,6 +374,10 @@ def canonicalize_baostock_5m_bars(
 ) -> pd.DataFrame:
     """Normalize BaoStock bars without silently resolving duplicate timestamps."""
 
+    source_rows = 0 if frame is None else int(len(frame))
+    placeholder_rows = 0
+    placeholder_dates: list[str] = []
+    normalized = frame
     if frame is not None and not frame.empty:
         normalized = frame.copy()
         if not isinstance(normalized.index, pd.RangeIndex):
@@ -381,7 +391,46 @@ def canonicalize_baostock_5m_bars(
                 f"BaoStock returned duplicate five-minute timestamps for {code}; "
                 "the frozen contract forbids silent deduplication"
             )
-    return canonicalize_minute_bars(frame, "baostock", code, start, end)
+        resolved = {
+            field: _column(normalized, candidates)
+            for field, candidates in {
+                "open": ("open",),
+                "high": ("high",),
+                "low": ("low",),
+                "close": ("close",),
+                "volume": ("volume", "vol"),
+                "amount": ("amount", "money", "total_turnover", "turnover"),
+            }.items()
+        }
+        if missing := [field for field, column in resolved.items() if column is None]:
+            raise RichDataError(
+                "baostock minute response is missing required columns: " + ", ".join(missing)
+            )
+        numeric = pd.DataFrame(
+            {
+                field: pd.to_numeric(normalized[column], errors="coerce")
+                for field, column in resolved.items()
+                if column is not None
+            }
+        )
+        zero_price_placeholder = (
+            numeric[["open", "high", "low", "close"]].eq(0.0).all(axis=1)
+            & numeric["volume"].eq(0.0)
+            & numeric["amount"].eq(0.0)
+        )
+        placeholder_rows = int(zero_price_placeholder.sum())
+        placeholder_dates = sorted(
+            timestamps.loc[zero_price_placeholder & timestamps.notna()]
+            .dt.date.astype(str)
+            .unique()
+            .tolist()
+        )
+        normalized = normalized.loc[~zero_price_placeholder].copy()
+    result = canonicalize_minute_bars(normalized, "baostock", code, start, end)
+    result.attrs["source_rows"] = source_rows
+    result.attrs["zero_price_placeholder_rows_excluded"] = placeholder_rows
+    result.attrs["zero_price_placeholder_session_dates"] = placeholder_dates
+    return result
 
 
 def minute_daily_summary(frame: pd.DataFrame) -> list[dict[str, Any]]:
@@ -1501,6 +1550,42 @@ def load_baostock_5m_source_chain(
     }
 
 
+def load_baostock_5m_suspension_audit(
+    path: Path = DEFAULT_BAOSTOCK_5M_SUSPENSION_AUDIT,
+) -> dict[str, Any]:
+    """Validate the frozen treatment of BaoStock zero-price suspension rows."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != BAOSTOCK_5M_SUSPENSION_AUDIT_SHA256:
+        raise RichDataError("BaoStock five-minute suspension audit fingerprint mismatch")
+    audit = load_json_record(
+        path, kind="a_share_baostock_5m_suspension_placeholder_audit"
+    )
+    failure = audit.get("failed_full_attempt") or {}
+    raw = audit.get("isolated_raw_partition_audit") or {}
+    policy = audit.get("frozen_normalization_and_eligibility_treatment") or {}
+    verification = audit.get("post_change_partition_verification") or {}
+    if (
+        audit.get("status")
+        != "resolved_within_frozen_missing_or_halted_session_policy_before_full_retry"
+        or (failure.get("failed_partition") or {}).get("code") != "600027"
+        or (failure.get("failed_partition") or {}).get("year") != 2024
+        or failure.get("temporary_snapshot_deleted") is not True
+        or failure.get("final_snapshot_written") is not False
+        or raw.get("source_rows") != 11616
+        or raw.get("zero_price_zero_volume_zero_amount_placeholder_rows") != 478
+        or raw.get("placeholder_stock_sessions") != 10
+        or policy.get("silent_deduplication") is not False
+        or policy.get("fill_interpolate_or_borrow_another_source") is not False
+        or verification.get("canonical_rows_written") != 11138
+        or verification.get("complete_regular_positive_activity_sessions") != 232
+        or audit.get("forward_return_fields_read") is not False
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("BaoStock five-minute suspension audit violates its frozen protocol")
+    return audit
+
+
 def require_baostock_5m_runtime() -> None:
     """Require the exact anonymous SDK version frozen by the source contract."""
 
@@ -1613,7 +1698,11 @@ def validate_baostock_5m_partition(
             raise RichDataError(
                 f"BaoStock five-minute {code} {trade_date.date()} has too many bars"
             )
-        if observed_times == expected_times:
+        positive_activity = (
+            pd.to_numeric(group["volume"], errors="coerce").sum() > 0.0
+            and pd.to_numeric(group["amount"], errors="coerce").sum() > 0.0
+        )
+        if observed_times == expected_times and positive_activity:
             complete_dates.append(trade_date.date().isoformat())
     return complete_dates
 
@@ -1693,6 +1782,7 @@ def write_baostock_5m_preflight(
     """Record a source-chain and storage audit without issuing a network request."""
 
     source_chain = load_baostock_5m_source_chain(factor_spec_path)
+    load_baostock_5m_suspension_audit()
     require_baostock_5m_runtime()
     contract = source_chain["contract"]
     bulk = contract["bulk_snapshot_contract"]
@@ -1728,6 +1818,10 @@ def write_baostock_5m_preflight(
             "alignment_confirmation": {
                 "path": manifest_path(source_chain["alignment_path"]),
                 "sha256": file_digest(source_chain["alignment_path"]),
+            },
+            "suspension_placeholder_audit": {
+                "path": manifest_path(DEFAULT_BAOSTOCK_5M_SUSPENSION_AUDIT.resolve()),
+                "sha256": BAOSTOCK_5M_SUSPENSION_AUDIT_SHA256,
             },
         },
         "development_start": start.isoformat(),
@@ -2257,6 +2351,9 @@ def _sync_baostock_5m_history_unlocked(
     complete_counts: dict[str, int] = {}
     files: list[dict[str, Any]] = []
     total_rows = 0
+    source_rows = 0
+    zero_price_placeholder_rows = 0
+    zero_price_placeholder_sessions = 0
     complete_sessions = 0
     incomplete_sessions = 0
     download_started_at = dt.datetime.now(dt.timezone.utc).isoformat()
@@ -2274,10 +2371,21 @@ def _sync_baostock_5m_history_unlocked(
                 )
             task = task_by_key[key]
             complete_dates = validate_baostock_5m_partition(frame, task, calendar)
-            observed_dates = (
-                int(pd.to_datetime(frame["datetime"]).dt.normalize().nunique())
+            frame_dates = (
+                set(pd.to_datetime(frame["datetime"]).dt.date.astype(str))
                 if not frame.empty
-                else 0
+                else set()
+            )
+            placeholder_dates = set(
+                str(value)
+                for value in frame.attrs.get(
+                    "zero_price_placeholder_session_dates", []
+                )
+            )
+            observed_dates = len(frame_dates | placeholder_dates)
+            partition_source_rows = int(frame.attrs.get("source_rows", len(frame)))
+            partition_placeholder_rows = int(
+                frame.attrs.get("zero_price_placeholder_rows_excluded", 0)
             )
             for trade_date in complete_dates:
                 complete_counts[trade_date] = complete_counts.get(trade_date, 0) + 1
@@ -2298,6 +2406,9 @@ def _sync_baostock_5m_history_unlocked(
                 )
             atomic_write_frame(frame, temporary_destination)
             total_rows += int(len(frame))
+            source_rows += partition_source_rows
+            zero_price_placeholder_rows += partition_placeholder_rows
+            zero_price_placeholder_sessions += len(placeholder_dates)
             files.append(
                 {
                     "code": str(code),
@@ -2307,6 +2418,9 @@ def _sync_baostock_5m_history_unlocked(
                     "requested_end": task[2],
                     "path": manifest_path(final_destination),
                     "rows": int(len(frame)),
+                    "source_rows": partition_source_rows,
+                    "zero_price_placeholder_rows_excluded": partition_placeholder_rows,
+                    "zero_price_placeholder_sessions": len(placeholder_dates),
                     "observed_sessions": observed_dates,
                     "complete_regular_sessions": int(len(complete_dates)),
                     "sha256": frame_digest(frame),
@@ -2377,6 +2491,12 @@ def _sync_baostock_5m_history_unlocked(
                     "sha256": file_digest(source_chain["alignment_path"]),
                     "run_id": source_chain["alignment"].get("run_id"),
                 },
+                "suspension_placeholder_audit": {
+                    "path": manifest_path(
+                        DEFAULT_BAOSTOCK_5M_SUSPENSION_AUDIT.resolve()
+                    ),
+                    "sha256": BAOSTOCK_5M_SUSPENSION_AUDIT_SHA256,
+                },
             },
             "storage_preflight_record": {
                 "path": manifest_path(preflight_path),
@@ -2413,6 +2533,12 @@ def _sync_baostock_5m_history_unlocked(
                 "sessions": int(len(calendar)),
             },
             "rows": total_rows,
+            "normalization_quality": {
+                "source_rows": source_rows,
+                "rows_written": total_rows,
+                "zero_price_placeholder_rows_excluded": zero_price_placeholder_rows,
+                "zero_price_placeholder_sessions": zero_price_placeholder_sessions,
+            },
             "complete_regular_sessions": complete_sessions,
             "incomplete_observed_sessions": incomplete_sessions,
             "files": files,

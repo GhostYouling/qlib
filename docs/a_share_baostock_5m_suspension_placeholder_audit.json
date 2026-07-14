@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_baostock_5m_suspension_placeholder_audit",
+  "created_at": "2026-07-14T21:32:06Z",
+  "status": "resolved_within_frozen_missing_or_halted_session_policy_before_full_retry",
+  "purpose": "Record the first full-sync failure, distinguish BaoStock suspension placeholders from corrupt active bars, and freeze their eligibility treatment before retrying the complete snapshot.",
+  "source_chain": {
+    "data_contract_sha256": "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f",
+    "factor_spec_sha256": "a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8",
+    "acceptance_snapshot_sha256": "e3d2160fab34c3a51b1524623a7c14f800abdc75164a66f0371386cf29ac68cd",
+    "alignment_confirmation_sha256": "cf50051d254a3fcc2727d649b167ed053bbba2e2b3dfa2c939fae04166b54c6c",
+    "passed_external_preflight_sha256": "e957a47da878eef74f1fd5d99f22decedc9fb39658b1561d2e7fd0ac965d948f"
+  },
+  "failed_full_attempt": {
+    "command": "python scripts/a_share_rich_data.py sync-baostock-5m --data-root /Volumes/DIsk/qlib-rich-data --workers 4 --allow-large",
+    "failed_partition": {
+      "code": "600027",
+      "year": 2024,
+      "error": "baostock returned 478 invalid minute bars for 600027"
+    },
+    "progress_before_failure": {
+      "reported_partitions_completed": 100,
+      "total_partitions": 29246,
+      "reported_rows_written": 1162416
+    },
+    "temporary_snapshot_deleted": true,
+    "final_snapshot_written": false,
+    "final_manifest_written": false
+  },
+  "isolated_raw_partition_audit": {
+    "provider": "baostock",
+    "sdk_version": "0.9.3",
+    "frequency": "5",
+    "adjustflag": "3",
+    "code": "600027",
+    "requested_start": "2024-01-01",
+    "requested_end": "2024-12-31",
+    "source_rows": 11616,
+    "rows_with_missing_required_values": 0,
+    "rows_with_negative_volume": 0,
+    "rows_with_negative_amount": 0,
+    "rows_with_invalid_high_relation": 0,
+    "rows_with_invalid_low_relation": 0,
+    "zero_price_zero_volume_zero_amount_placeholder_rows": 478,
+    "placeholder_stock_sessions": 10,
+    "placeholder_rows_by_trade_date": {
+      "2024-07-19": 48,
+      "2024-07-22": 47,
+      "2024-07-23": 48,
+      "2024-07-24": 48,
+      "2024-07-25": 48,
+      "2024-07-26": 47,
+      "2024-07-29": 48,
+      "2024-07-30": 48,
+      "2024-07-31": 48,
+      "2024-08-01": 48
+    },
+    "zero_activity_reference_price_bars": [
+      {
+        "datetime": "2024-07-22T15:00:00",
+        "ohlc": 6.08,
+        "volume": 0,
+        "amount": 0
+      },
+      {
+        "datetime": "2024-07-26T15:00:00",
+        "ohlc": 5.93,
+        "volume": 0,
+        "amount": 0
+      }
+    ]
+  },
+  "frozen_normalization_and_eligibility_treatment": {
+    "zero_price_placeholder_definition": "open=high=low=close=0 and volume=amount=0",
+    "zero_price_placeholder_action": "exclude the placeholder rows from canonical calculable bars, count rows and stock-session dates in the full manifest, and leave the whole stock-session factor-ineligible",
+    "zero_activity_reference_price_bar_action": "retain the positive raw reference-price bar, but leave the stock-session ineligible because it lacks the exact 48-bar positive-activity contract",
+    "complete_session_requires": [
+      "the exact 48 unique 09:35 through 15:00 bar-end grid",
+      "strictly valid non-placeholder raw OHLC relationships",
+      "positive summed volume",
+      "positive summed amount"
+    ],
+    "still_fatal": [
+      "duplicate raw timestamps",
+      "non-placeholder zero or negative OHLC",
+      "negative volume or amount",
+      "invalid OHLC high/low relationships",
+      "unexpected timestamps, identities, dates, fields, or source partitions"
+    ],
+    "fill_interpolate_or_borrow_another_source": false,
+    "silent_deduplication": false
+  },
+  "post_change_partition_verification": {
+    "source_rows": 11616,
+    "canonical_rows_written": 11138,
+    "zero_price_placeholder_rows_excluded": 478,
+    "placeholder_stock_sessions": 10,
+    "complete_regular_positive_activity_sessions": 232,
+    "status": "passed_partition_contract_with_ten_ineligible_stock_sessions"
+  },
+  "raw_or_derived_factor_values_read": false,
+  "daily_open_close_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

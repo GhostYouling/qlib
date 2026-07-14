@@ -223,10 +223,46 @@ def test_baostock_5m_canonicalization_rejects_duplicate_timestamps():
         )
 
 
+def test_baostock_5m_zero_price_suspension_placeholders_are_counted_and_ineligible():
+    suspended = complete_baostock_5m_frame(["2024-07-19"])
+    suspended[["open", "high", "low", "close", "volume", "amount"]] = 0.0
+    normalized = RICH.canonicalize_baostock_5m_bars(
+        suspended,
+        "600519",
+        dt.date(2024, 7, 19),
+        dt.date(2024, 7, 19),
+    )
+    assert normalized.empty
+    assert normalized.attrs["source_rows"] == 48
+    assert normalized.attrs["zero_price_placeholder_rows_excluded"] == 48
+    assert normalized.attrs["zero_price_placeholder_session_dates"] == ["2024-07-19"]
+
+    non_placeholder_zero = suspended.copy()
+    non_placeholder_zero.loc[0, "volume"] = 1.0
+    with pytest.raises(RICH.RichDataError, match="invalid minute bars"):
+        RICH.canonicalize_baostock_5m_bars(
+            non_placeholder_zero,
+            "600519",
+            dt.date(2024, 7, 19),
+            dt.date(2024, 7, 19),
+        )
+
+    zero_activity = complete_baostock_5m_frame(["2024-07-19"])
+    zero_activity[["volume", "amount"]] = 0.0
+    assert RICH.validate_baostock_5m_partition(
+        zero_activity,
+        ("600519", "2024-07-19", "2024-07-19", 2024),
+        pd.DatetimeIndex(["2024-07-19"]),
+    ) == []
+
+
 def test_baostock_5m_source_chain_and_pit_year_partitioning_are_frozen():
     chain = RICH.load_baostock_5m_source_chain()
+    suspension = RICH.load_baostock_5m_suspension_audit()
     assert chain["acceptance"]["run_id"] == "20260714T210140Z_baostock_5m_be9dfe63"
     assert chain["alignment"]["bar_timestamp_label"] == "end"
+    assert suspension["post_change_partition_verification"]["canonical_rows_written"] == 11138
+    assert suspension["forward_return_fields_read"] is False
     intervals = pd.DataFrame(
         {
             "instrument": ["SH600519"],
@@ -694,6 +730,12 @@ def test_baostock_5m_full_sync_is_external_atomic_and_no_return(
     assert stored.is_relative_to(data_root)
     assert stored.exists()
     assert manifest["rows"] == 4 * 48
+    assert manifest["normalization_quality"] == {
+        "source_rows": 4 * 48,
+        "rows_written": 4 * 48,
+        "zero_price_placeholder_rows_excluded": 0,
+        "zero_price_placeholder_sessions": 0,
+    }
     assert manifest["coverage"]["gate_passed_before_prices"] is True
     assert manifest["forward_return_fields_read"] is False
     assert manifest["daily_or_forward_return_fields_read"] is False
