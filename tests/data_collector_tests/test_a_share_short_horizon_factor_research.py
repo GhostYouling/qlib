@@ -5179,6 +5179,45 @@ def test_analyst_rating_capacity_is_retained_without_returns(tmp_path):
     assert "| 否 |" in report
 
 
+def test_restricted_share_unlock_capacity_is_retained_without_returns(tmp_path):
+    (tmp_path / "20260714T000005Z_restricted_share_unlock_capacity_audit.json").write_text(
+        json.dumps(
+            {
+                "run_id": "restricted-share-unlock-capacity",
+                "status": "completed",
+                "purpose": RESEARCH.RESTRICTED_SHARE_UNLOCK_CAPACITY_PURPOSE,
+                "data": {
+                    "research_calendar_start": "2019-01-02",
+                    "research_calendar_end": "2025-12-31",
+                    "price_fields_loaded": [],
+                },
+                "run_contract": {"minimum_required_cohorts": 200},
+                "forward_return_fields_read": False,
+                "source_admitted_for_return_diagnostic": True,
+                "source_capacity": {
+                    "factor_capacity": {
+                        "restricted_share_unlock_pressure": {
+                            "potential_complete_cohorts": 244,
+                            "capacity_gate_passed": True,
+                        }
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    audits = RESEARCH.load_restricted_share_unlock_capacity_audits(tmp_path)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        restricted_share_unlock_capacity_audits=audits,
+    )
+    assert "限售股实际解禁压力容量审计" in report
+    assert "244 / 200" in report
+    assert "允许另行预注册诊断" in report
+    assert "| 否 |" in report
+
+
 def test_research_report_marks_non_promotable_historical_diagnostics():
     registry = {
         "iterations": [

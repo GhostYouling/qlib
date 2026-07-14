@@ -391,6 +391,8 @@ python scripts/a_share_short_horizon_factor_research.py restricted-share-unlock-
 python scripts/a_share_short_horizon_factor_research.py restricted-share-unlock-diagnostic
 ```
 
+唯一一次正式诊断已完成为 `20260714T191852Z_factor_diagnostic.json`（SHA-256 `7cff1cd500d046179d8568064288d68b63f500b9e4e47791c19b0abfe5d6a9a5`），完整默认稳定性与 Top‑3 可行性审计均为 `20260714T191908Z`，通过数均为 **0/1**。244 个 cohort 的平均/中位 Rank IC 为 **−0.03707/−0.03571**，正 IC 比例 43.85%，TopK-minus-BottomK 毛收益差 **−0.316%**；除 2022 外，其余六个年份平均 IC 全为负。Top‑3 扣费累计收益虽为 +62.65%、年化约 18.23%、胜率 54.10%，但它与截面关联方向相矛盾，2020、2025 年分别亏损 10.55%、9.89%，最大回撤 **−30.04%**，3 日净收益的 1%/5% 分位为 −7.54%/−5.80%，最差一期 −9.20%。稳定性审计 SHA-256 为 `a3cb59ce8d791b890a2c19072f3cce0ed14e7d78389a19bd3b689fcaa72eba93`，Top‑3 审计 SHA-256 为 `e1d706036e1330ff8a5c5e01772756a36f075757fe4abf81eec83456d3d06423`。因此停止 `restricted_share_unlock_pressure`，不进入聚合、当前评分或选股；不得在同一历史上反向为高解禁压力、改变事件年龄、提前使用日程、挑年份、增加事后过滤器，或与其他已淘汰事件因子组合。
+
 下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
 
 ```bash
