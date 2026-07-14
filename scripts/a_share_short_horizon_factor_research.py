@@ -4348,7 +4348,13 @@ def attach_dividend_plan_events_asof(
     return result
 
 
-def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size: int) -> pd.DataFrame:
+def load_market_data(
+    provider_uri: Path,
+    start: str,
+    end: str | None,
+    batch_size: int,
+    max_sessions_per_instrument: int | None = None,
+) -> pd.DataFrame:
     """Load the local buyable universe and precompute only non-forward factors."""
 
     if str(REPO_ROOT) not in sys.path:
@@ -4358,6 +4364,8 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
 
     if batch_size < 1:
         raise ValueError("--batch-size must be positive")
+    if max_sessions_per_instrument is not None and max_sessions_per_instrument < 1:
+        raise ValueError("max_sessions_per_instrument must be positive when provided")
     provider_uri = provider_uri.expanduser().resolve()
     if not provider_uri.exists():
         raise FileNotFoundError(f"Qlib provider directory does not exist: {provider_uri}")
@@ -4441,6 +4449,12 @@ def load_market_data(provider_uri: Path, start: str, end: str | None, batch_size
         batch = instruments[offset : offset + batch_size]
         frame = D.features(batch, expressions, start_time=start, end_time=end, freq="day")
         frame = frame.rename(columns={expression: name for name, expression in fields.items()}).reset_index()
+        if max_sessions_per_instrument is not None:
+            frame = (
+                frame.sort_values(["instrument", "datetime"], kind="stable")
+                .groupby("instrument", sort=False, group_keys=False)
+                .head(max_sessions_per_instrument)
+            )
         frames.append(frame)
         print(f"loaded {min(offset + len(batch), len(instruments))}/{len(instruments)} instruments")
     result = pd.concat(frames, ignore_index=True)
@@ -9918,7 +9932,13 @@ def run_rolling_window_semantics_audit(args: argparse.Namespace) -> dict[str, An
             "rolling-window-semantics-audit must start no later than the provider calendar start "
             f"{provider_start.date().isoformat()} so prior history is not hidden"
         )
-    market = load_market_data(provider_uri, args.start, args.end, args.batch_size)
+    market = load_market_data(
+        provider_uri,
+        args.start,
+        args.end,
+        args.batch_size,
+        max_sessions_per_instrument=max(ROLLING_FACTOR_PRIOR_CLOSE_REQUIREMENTS.values()) + 1,
+    )
     summary = summarize_rolling_window_semantics(market)
     run_id = _timestamp()
     audit = {
