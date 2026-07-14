@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "kind": "a_share_pledge_event_rebuild_preregistration",
+  "status": "frozen_after_no_return_capacity_pass_before_accepted_price_returns_observed",
+  "preregistered_at": "2026-07-14T16:33:36Z",
+  "purpose": "Rebuild all four original higher-is-better share-pledge announcement factors exactly once after the no-return capacity, point-in-time daily-price, and 20-session listing gates.",
+  "capacity_audit": {
+    "run_id": "20260714T163309Z",
+    "path": "data/experiments/short_horizon/20260714T163309Z_sparse_announcement_capacity_audit.json",
+    "sha256": "a0c435b53015e0b4ccfa0f406aa0e63b58533d3ea95b1ef236840b010cce7888",
+    "admitted_source": "share_pledges",
+    "rejected_sources": [
+      "repurchase_plans",
+      "holder_count_changes",
+      "dividend_plans"
+    ],
+    "forward_return_fields_read": false
+  },
+  "source_snapshots": {
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "share_pledges": {
+      "path": "data/raw/a_share/events/share_pledges.parquet",
+      "sha256": "b498ee3bdf9e01bc4a42536145712d853ff554c83c8388e7ebdeb54696b476de",
+      "manifest_path": "data/metadata/share_pledges_manifest.json",
+      "manifest_sha256": "3b278f54e30aa397993bfb7fc6b836e36bd2e93c508629ac1fad2da2846d395d",
+      "maximum_age_days": 3,
+      "effective_date": "strictly next local trading day after announcement_date"
+    }
+  },
+  "superseded_legacy_diagnostic": {
+    "run_id": "20260713T235418Z",
+    "path": "data/experiments/short_horizon/20260713T235418Z_factor_diagnostic.json",
+    "sha256": "c8a7378926a1e96fb554e8a96b5d7a4ac7509a0901251a5c8d244d975eb6d261",
+    "source": "share_pledges"
+  },
+  "factor_catalog": [
+    "pledge_share_count",
+    "pledge_total_share_ratio",
+    "pledge_event_count",
+    "pledge_freshness"
+  ],
+  "factor_direction": "higher",
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "stability_minimum_calendar_years": 5,
+    "stability_minimum_cohorts": 200
+  },
+  "rebuild_policy": {
+    "capacity_gate_passed_before_return_read": true,
+    "run_all_source_factors_together": true,
+    "accepted_price_returns_observed_before_registration": false,
+    "legacy_invalid_price_returns_were_observed": true,
+    "one_completed_rebuild_only": true,
+    "preserve_original_quarterly_quality_snapshot": true,
+    "no_direction_formula_age_cost_quality_source_or_factor_subset_override": true,
+    "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": true,
+    "passing_both_gates_only_allows_a_new_prospective_combination_registration": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

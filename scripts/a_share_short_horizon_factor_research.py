@@ -87,6 +87,9 @@ DEFAULT_ANNOUNCEMENT_EVENT_REBUILD_SPEC = (
 DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC = (
     REPO_ROOT / "docs" / "a_share_sparse_announcement_capacity_preregistration.json"
 )
+DEFAULT_PLEDGE_EVENT_REBUILD_SPEC = (
+    REPO_ROOT / "docs" / "a_share_pledge_event_rebuild_preregistration.json"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -344,6 +347,10 @@ SPARSE_ANNOUNCEMENT_SOURCE_FACTORS = {
 }
 SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE = (
     "sparse_announcement_factor_capacity_gate_without_price_or_forward_returns"
+)
+PLEDGE_EVENT_REBUILD_FACTOR_NAMES = PLEDGE_FACTOR_DIAGNOSTIC_COLUMNS
+PLEDGE_EVENT_REBUILD_PURPOSE = (
+    "development_only_preregistered_pledge_event_rebuild_research_not_investment_advice"
 )
 MARGIN_FINANCING_TOP_N = 100
 # This direction is deliberately not part of the development diagnostic
@@ -2227,6 +2234,162 @@ def validate_sparse_announcement_capacity_sources(spec: dict[str, Any]) -> dict[
             }
         )
     return evidence
+
+
+def load_pledge_event_rebuild_preregistration(
+    path: Path = DEFAULT_PLEDGE_EVENT_REBUILD_SPEC,
+) -> dict[str, Any]:
+    """Enforce the capacity-qualified one-time rebuild of share-pledge factors."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_pledge_event_rebuild_preregistration")
+    capacity = spec.get("capacity_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    legacy = spec.get("superseded_legacy_diagnostic") or {}
+    contract = spec.get("run_contract") or {}
+    policy = spec.get("rebuild_policy") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_no_return_capacity_pass_before_accepted_price_returns_observed"
+        and spec.get("preregistered_at") == "2026-07-14T16:33:36Z"
+        and tuple(spec.get("factor_catalog") or []) == PLEDGE_EVENT_REBUILD_FACTOR_NAMES
+        and spec.get("factor_direction") == "higher"
+        and set(snapshots) == {"quarterly_quality", "share_pledges"}
+        and snapshots["share_pledges"].get("maximum_age_days") == 3
+        and snapshots["share_pledges"].get("effective_date")
+        == "strictly next local trading day after announcement_date"
+        and capacity.get("run_id") == "20260714T163309Z"
+        and capacity.get("admitted_source") == "share_pledges"
+        and capacity.get("rejected_sources")
+        == ["repurchase_plans", "holder_count_changes", "dividend_plans"]
+        and capacity.get("forward_return_fields_read") is False
+        and legacy.get("run_id") == "20260713T235418Z"
+        and legacy.get("source") == "share_pledges"
+        and contract
+        == {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        and policy
+        == {
+            "capacity_gate_passed_before_return_read": True,
+            "run_all_source_factors_together": True,
+            "accepted_price_returns_observed_before_registration": False,
+            "legacy_invalid_price_returns_were_observed": True,
+            "one_completed_rebuild_only": True,
+            "preserve_original_quarterly_quality_snapshot": True,
+            "no_direction_formula_age_cost_quality_source_or_factor_subset_override": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_a_new_prospective_combination_registration": True,
+            "selection_or_promotion_allowed": False,
+        }
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("pledge-event rebuild preregistration does not match the frozen protocol")
+    return spec
+
+
+def validate_pledge_event_rebuild_sources(spec: dict[str, Any]) -> dict[str, Any]:
+    """Verify capacity, source snapshots, and invalid legacy evidence before returns."""
+
+    snapshots = spec.get("source_snapshots") or {}
+    evidence: dict[str, Any] = {"source_snapshots": {}}
+    for name, link in snapshots.items():
+        path = resolve_repository_record_path(str(link.get("path") or ""))
+        manifest_path = resolve_repository_record_path(str(link.get("manifest_path") or ""))
+        if not path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"pledge-event source or manifest is missing: {name}")
+        source_sha256 = file_sha256(path)
+        manifest_sha256 = file_sha256(manifest_path)
+        if source_sha256 != str(link.get("sha256") or ""):
+            raise ValueError(f"pledge-event source fingerprint mismatch: {path}")
+        if manifest_sha256 != str(link.get("manifest_sha256") or ""):
+            raise ValueError(f"pledge-event manifest fingerprint mismatch: {manifest_path}")
+        manifest = load_json_record(manifest_path)
+        if manifest.get("status") != "completed" or manifest.get("sha256") != source_sha256:
+            raise ValueError(f"pledge-event manifest does not accept its source: {manifest_path}")
+        evidence["source_snapshots"][name] = {
+            "path": str(path),
+            "sha256": source_sha256,
+            "manifest_path": str(manifest_path),
+            "manifest_sha256": manifest_sha256,
+        }
+
+    capacity_link = spec.get("capacity_audit") or {}
+    capacity_path = resolve_repository_record_path(str(capacity_link.get("path") or ""))
+    if not capacity_path.exists() or file_sha256(capacity_path) != str(capacity_link.get("sha256") or ""):
+        raise ValueError("pledge-event capacity audit is missing or has a fingerprint mismatch")
+    capacity = load_json_record(capacity_path)
+    pledge_capacity = ((capacity.get("source_capacity") or {}).get("share_pledges") or {})
+    factor_capacity = pledge_capacity.get("factor_capacity") or {}
+    if (
+        capacity.get("run_id") != capacity_link.get("run_id")
+        or capacity.get("purpose") != SPARSE_ANNOUNCEMENT_CAPACITY_PURPOSE
+        or capacity.get("forward_return_fields_read") is not False
+        or capacity.get("admitted_sources_for_return_rebuild") != ["share_pledges"]
+        or capacity.get("rejected_sources_without_return_rebuild")
+        != capacity_link.get("rejected_sources")
+        or tuple(factor_capacity) != PLEDGE_EVENT_REBUILD_FACTOR_NAMES
+        or not all(
+            (factor_capacity.get(factor) or {}).get("capacity_gate_passed") is True
+            for factor in PLEDGE_EVENT_REBUILD_FACTOR_NAMES
+        )
+    ):
+        raise ValueError("pledge-event capacity audit does not authorize the frozen source rebuild")
+    evidence["capacity_audit"] = {
+        "run_id": capacity.get("run_id"),
+        "path": str(capacity_path),
+        "sha256": file_sha256(capacity_path),
+        "forward_return_fields_read": False,
+        "factor_capacity": factor_capacity,
+    }
+
+    legacy_link = spec.get("superseded_legacy_diagnostic") or {}
+    legacy_path = resolve_repository_record_path(str(legacy_link.get("path") or ""))
+    if not legacy_path.exists() or file_sha256(legacy_path) != str(legacy_link.get("sha256") or ""):
+        raise ValueError("superseded pledge diagnostic is missing or has a fingerprint mismatch")
+    legacy = load_json_record(legacy_path)
+    if (
+        legacy.get("run_id") != legacy_link.get("run_id")
+        or not set(PLEDGE_EVENT_REBUILD_FACTOR_NAMES).issubset(set(legacy.get("factor_catalog") or []))
+        or ((legacy.get("pledge_events") or {}).get("sha256"))
+        != snapshots["share_pledges"]["sha256"]
+        or ((legacy.get("quality_gate") or {}).get("sha256"))
+        != snapshots["quarterly_quality"]["sha256"]
+        or (legacy.get("data") or {}).get("price_basis") == REQUIRED_PRICE_BASIS
+        or (legacy.get("data") or {}).get("minimum_listing_sessions") == MIN_LISTING_SESSIONS
+    ):
+        raise ValueError("superseded pledge diagnostic is not the frozen invalid legacy evidence")
+    evidence["superseded_legacy_diagnostic"] = {
+        "run_id": legacy.get("run_id"),
+        "path": str(legacy_path),
+        "sha256": file_sha256(legacy_path),
+        "evidence_status": "invalid_legacy_price_basis_and_missing_listing_gate",
+    }
+    return evidence
+
+
+def require_unconsumed_pledge_event_rebuild(experiment_root: Path) -> None:
+    """Prevent a second accepted-price read of the fixed pledge factor catalog."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == PLEDGE_EVENT_REBUILD_PURPOSE:
+            raise ValueError(f"accepted-price pledge-event rebuild is already consumed: {path}")
 
 
 def _load_fingerprinted_json_link(
@@ -12664,6 +12827,76 @@ def run_announcement_event_rebuild_diagnostic(args: argparse.Namespace) -> dict[
     return result
 
 
+def run_pledge_event_rebuild_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Rebuild all four capacity-qualified pledge factors once on accepted prices."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_pledge_event_rebuild_preregistration()
+    source_evidence = validate_pledge_event_rebuild_sources(spec)
+    require_unconsumed_pledge_event_rebuild(experiment_root)
+    snapshots = spec["source_snapshots"]
+    contract = spec["run_contract"]
+    diagnostic_args = argparse.Namespace(
+        provider_uri=args.provider_uri,
+        fundamentals=str(resolve_repository_record_path(snapshots["quarterly_quality"]["path"])),
+        performance_forecasts=None,
+        billboard_events=None,
+        major_holder_events=None,
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=None,
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=str(resolve_repository_record_path(snapshots["share_pledges"]["path"])),
+        dividend_plan_events=None,
+        experiment_root=str(experiment_root),
+        start=contract["start"],
+        end=contract["end"],
+        development_end=contract["development_end"],
+        hold_days=contract["holding_period_trading_days"],
+        topk=contract["topk"],
+        open_cost=contract["open_cost"],
+        close_cost=contract["close_cost"],
+        max_quality_age_days=contract["maximum_quality_age_days"],
+        max_forecast_age_days=30,
+        max_billboard_age_days=3,
+        max_major_holder_age_days=3,
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=3,
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=snapshots["share_pledges"]["maximum_age_days"],
+        max_dividend_plan_age_days=3,
+        batch_size=args.batch_size,
+        factor=list(PLEDGE_EVENT_REBUILD_FACTOR_NAMES),
+        diagnostic_purpose=PLEDGE_EVENT_REBUILD_PURPOSE,
+        diagnostic_preregistration={
+            "path": str(DEFAULT_PLEDGE_EVENT_REBUILD_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_PLEDGE_EVENT_REBUILD_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "accepted_price_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    result = run_factor_diagnostic(diagnostic_args)
+    audit = load_json_record(Path(result["audit_path"]))
+    if (
+        audit.get("purpose") != PLEDGE_EVENT_REBUILD_PURPOSE
+        or tuple(audit.get("factor_catalog") or []) != PLEDGE_EVENT_REBUILD_FACTOR_NAMES
+        or (audit.get("data") or {}).get("price_basis") != REQUIRED_PRICE_BASIS
+        or (audit.get("data") or {}).get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or (audit.get("quality_gate") or {}).get("sha256")
+        != snapshots["quarterly_quality"]["sha256"]
+        or (audit.get("pledge_events") or {}).get("max_pledge_age_days")
+        != snapshots["share_pledges"]["maximum_age_days"]
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RuntimeError("completed pledge-event rebuild does not match its frozen protocol")
+    return result
+
+
 def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the frozen five-factor minute diagnostic on development data only."""
 
@@ -14948,6 +15181,14 @@ def parse_args() -> argparse.Namespace:
     )
     announcement_event_rebuild.add_argument("--batch-size", type=int, default=500)
 
+    pledge_event_rebuild = subparsers.add_parser(
+        "pledge-event-rebuild-diagnostic",
+        help="rebuild all four capacity-qualified pledge factors once on accepted daily prices",
+    )
+    pledge_event_rebuild.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    pledge_event_rebuild.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    pledge_event_rebuild.add_argument("--batch-size", type=int, default=500)
+
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
         help="diagnose all five frozen one-minute factors under the fixed three-day protocol",
@@ -15550,6 +15791,8 @@ def main() -> int:
         report = run_transaction_event_rebuild_diagnostic(args)
     elif args.command == "announcement-event-rebuild-diagnostic":
         report = run_announcement_event_rebuild_diagnostic(args)
+    elif args.command == "pledge-event-rebuild-diagnostic":
+        report = run_pledge_event_rebuild_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":

@@ -952,6 +952,16 @@ python scripts/a_share_short_horizon_factor_research.py sparse-announcement-capa
 
 容量口径与正式诊断一致：2019–2025 每 3 个本地交易日取一个信号截面，季度质量年龄不超过 550 天、上市满 20 个会话；Top‑3 与 Bottom‑3 的关联诊断要求同一因子至少有 6 个有效名字且至少 2 个不同值。每个因子必须达到 200 个潜在完整 cohort。一个来源只要有一项原始因子达到门槛，后续就必须把该来源全部原始因子一起纳入唯一一次点时价格重建；若一个来源没有任何因子达到门槛，则在 `forward_return_fields_read=false` 状态下停止整个来源，不能改窗口、降低样本或借其他来源补足。
 
+固定容量审计已完成为 `20260714T163309Z_sparse_announcement_capacity_audit.json`，明确记录 `price_fields_loaded=[]` 和 `forward_return_fields_read=false`。回购三项只有 17、23、21 个潜在 cohort；股东人数三项为 194、194、178；分红四项为 123、49、4、110，三个来源全部在读取收益前停止。质押股数、质押占比、事件笔数和新鲜度分别达到 399、399、394、374，四项均超过 200，因此只有 `share_pledges` 获准进入下一阶段。
+
+质押重建协议随后在读取点时价格收益前写入 `docs/a_share_pledge_event_rebuild_preregistration.json`，同时绑定容量审计、季度质量、质押快照、清单和无效旧诊断。专用命令不暴露因子、方向、年龄、日期、质量源、TopK 或成本覆盖，一次运行全部四项原始高值方向：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py pledge-event-rebuild-diagnostic
+```
+
+完成后必须对整份四因子诊断运行默认稳定性和 Top‑3 可行性审计。只有同时通过两道门禁的因子才允许另写未来组合预注册；本次重建本身不能选股、晋级或登记策略，也只允许完成一次。
+
 ### 点时价格修复后的交易事件固定重建
 
 龙虎榜、块交易和融资流是当前公共数据中最接近成交行为的三类日度事件，但原诊断 `20260713T214915Z`、`20260713T222021Z`、`20260713T230129Z` 都形成于旧的混合价格口径，且没有 20 个本地交易日的上市门禁；这些收益结果只保留为无效历史，不能用于组合或淘汰。修复后重建协议在读取新口径事件收益前写入 `docs/a_share_transaction_event_rebuild_preregistration.json`，锁定原来的 5 个龙虎榜、4 个块交易和 4 个融资因子，方向全部保持高值，事件有效期分别为 3、3、0 个日历日。
