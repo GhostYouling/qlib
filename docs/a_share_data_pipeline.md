@@ -782,21 +782,43 @@ python scripts/install_a_share_launchd.py uninstall
 ```
 
 定时任务不在休眠的电脑上补跑；若错过一次，手动执行 `sync` 即可恢复。若将来换成需要登录的专业数据服务，不要把令牌写进 YAML 或 Git；由系统钥匙串、环境变量或本地 `.env`（已忽略）提供即可。
-# 受凭据保护的分钟与事件数据
+## 受凭据保护的分钟与事件数据
 
-日线管线继续是当前策略的唯一正式行情底座。若要研究三日持有期所需的尾盘、日内成交和资金流因子，使用独立的可审计接入器：
+日线管线继续是当前策略的唯一正式行情底座。三日持有期策略需要的尾盘、日内成交和资金流因子，使用独立且可审计的接入器；它不会覆盖日线数据或直接改动 Qlib 二进制。
+
+| 来源 | 当前接入范围 | 适用阶段 |
+| --- | --- | --- |
+| RQData | 原始分钟 OHLCV/成交额 | 首选的全市场分钟研究数据 |
+| JQData | 原始分钟 OHLCV/成交额 | RQData 的可替代分钟源 |
+| Tushare | 原始分钟线、`moneyflow`、涨跌停、龙虎榜 | 资金流和盘后事件补充 |
+
+供应商账户、分钟权限和历史深度必须由实际授权确认。不要购买、猜测权限或把凭据交给仓库。
+
+### 本机凭据和 SDK
+
+先看安全状态；输出只显示“已配置/缺失”，不会显示令牌或密码：
 
 ```bash
 python scripts/a_share_rich_data.py status
 ```
 
-它支持 Tushare（分钟线、`moneyflow`、涨跌停和龙虎榜）、JQData（分钟线）和 RQData（分钟线）。三者都需要各自的合法账户；凭据只从本机环境变量读取，永远不能提交到仓库。先安装可选 SDK：
+在已取得对应授权后，安装可选 SDK，并只在本机的 shell、钥匙串或被 Git 忽略的 `.env` 中提供凭据：
 
 ```bash
 python -m pip install -r scripts/data_collector/a_share_rich/requirements.txt
+
+export TUSHARE_TOKEN='...'
+export JQDATA_USERNAME='...'
+export JQDATA_PASSWORD='...'
+export RQDATA_USERNAME='...'
+export RQDATA_PASSWORD='...'
 ```
 
-在供应商授权完成后，先做一个已收盘交易日的小样本验收，而不是直接下载多年全市场数据：
+令牌和密码绝不能出现在 Git、命令历史、笔记本输出、研究清单或聊天中。未安装 SDK 或缺少变量时，程序会在发出网络请求前失败；不要用抓取公开网页的方式替代已授权数据源。
+
+### 必经验收流程
+
+只对一个已收盘交易日和四只代表性股票运行验收。`acceptance` 会保存原始快照，并自动检查字段、非负成交量/成交额、常规交易时段、同日 OHLC/收盘比值，以及与本地日线的成交额和成交量比值：
 
 ```bash
 python scripts/a_share_rich_data.py acceptance --provider rqdata --date 2026-07-13
@@ -805,4 +827,25 @@ python scripts/a_share_rich_data.py acceptance --provider tushare --date 2026-07
 python scripts/a_share_rich_data.py sync-tushare-events --start 2026-07-13 --end 2026-07-13
 ```
 
-分钟线默认按原始未复权价格保存到 `data/raw/a_share/rich/`，每次下载都有独立不可变快照、SHA-256 和日内汇总；运行清单写入 `data/metadata/rich_data/runs/`。它们都标记为 `pending`，在随机股票的分钟末价/成交量/成交额与日线核对，并确认事件仅于盘后下一交易日可用前，**不得**进入因子或模型。大批量请求还必须显式传入 `--allow-large`。
+现有日线价格是前复权，分钟线保存的是原始未复权价格。因此不比较两者的绝对价格或跨日收益；验收只比较不受同日复权比例影响的 OHLC/收盘比值、成交额和成交量。供应商的成交量单位可能是“股”或“手”，程序会记录与日线的比值；在确认并显式标准化之前，不得把不同供应商的量能字段混用。
+
+分钟快照清单的状态必须是 `automatic_checks_passed_pending_time_alignment`，才可进入下一步人工检查：
+
+1. 检查完整未停牌股票通常有约 240 根 1 分钟 bar；停牌/临停缺口必须保留，不能补零。
+2. 确认时间戳是 bar 起点还是终点，并固定为一种约定后再构造尾盘因子。
+3. 确认 Tushare 的盘后事件只从下一交易日开始可见；不能用当日收盘后才发布的字段解释当日买入。
+4. 用点时上市/退市股票池和当时可得的复权信息重新进行历史研究，避免现有股票池造成幸存者偏差。
+
+通过上述检查前，分钟和事件数据只属于“候选原始数据”，不得进入因子聚合、模型训练、纸面观察或选股评分。
+
+### 批量下载、存储与追溯
+
+验收通过后，才对明确的股票列表下载分钟数据：
+
+```bash
+python scripts/a_share_rich_data.py sync-minutes \
+  --provider rqdata --symbols 600519,000001,300750,688981 \
+  --start 2026-07-10 --end 2026-07-13 --frequency 1m
+```
+
+超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。

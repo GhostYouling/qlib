@@ -67,6 +67,55 @@ def test_canonicalize_minutes_rejects_invalid_ohlc():
         RICH.canonicalize_minute_bars(raw, "rqdata", "000001", dt.date(2026, 7, 13), dt.date(2026, 7, 13))
 
 
+def test_minute_acceptance_uses_scale_invariant_daily_price_checks(tmp_path, monkeypatch):
+    monkeypatch.setattr(RICH, "DAILY_RAW_DIR", tmp_path / "daily")
+    frame = pd.DataFrame(
+        {
+            "datetime": pd.to_datetime(["2026-07-13 09:31:00", "2026-07-13 09:32:00"]),
+            "symbol": ["SH600519", "SH600519"],
+            "source_symbol": ["600519.SH", "600519.SH"],
+            "open": [10.0, 10.1], "high": [10.15, 10.3], "low": [9.8, 10.0], "close": [10.1, 10.1],
+            "volume": [1.0, 2.0], "amount": [10.0, 20.0], "provider": ["tushare", "tushare"],
+        }
+    )
+    (tmp_path / "daily").mkdir()
+    pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2026-07-13"]), "symbol": ["SH600519"],
+            "open": [20.0], "high": [20.6], "low": [19.6], "close": [20.2],
+            "volume": [3.0], "amount": [30.0],
+        }
+    ).to_parquet(tmp_path / "daily" / "sh600519.parquet", index=False)
+    report = RICH.minute_acceptance_report(frame)
+    assert report["status"] == "automatic_checks_passed_pending_time_alignment"
+    assert report["daily_reconciliation"]["days"][0]["inferred_volume_unit"] == "lots"
+
+
+def test_minute_session_check_rejects_lunch_break_timestamp():
+    frame = pd.DataFrame(
+        {
+            "datetime": pd.to_datetime(["2026-07-13 12:00:00"]), "symbol": ["SH600519"],
+            "open": [10.0], "high": [10.0], "low": [10.0], "close": [10.0], "volume": [1.0], "amount": [10.0],
+        }
+    )
+    assert RICH.minute_session_check(frame)["status"] == "failed"
+
+
+def test_tushare_minute_request_uses_explicit_session_timestamps(monkeypatch):
+    captured = {}
+
+    class FakeTushare:
+        @staticmethod
+        def pro_bar(**kwargs):
+            captured.update(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(RICH, "_import_tushare", lambda: FakeTushare())
+    RICH.fetch_tushare_minutes("600519", dt.date(2026, 7, 13), dt.date(2026, 7, 13), "1m")
+    assert captured["start_date"] == "2026-07-13 09:00:00"
+    assert captured["end_date"] == "2026-07-13 17:00:00"
+
+
 def test_validate_range_requires_completed_session_and_large_request_confirmation():
     completed = RICH.latest_completed_session_date()
     with pytest.raises(RICH.RichDataError, match="not a completed"):

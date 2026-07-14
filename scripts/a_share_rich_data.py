@@ -39,6 +39,7 @@ DATA_ROOT = REPO_ROOT / "data"
 RAW_ROOT = DATA_ROOT / "raw" / "a_share" / "rich"
 METADATA_ROOT = DATA_ROOT / "metadata" / "rich_data"
 RUNS_ROOT = METADATA_ROOT / "runs"
+DAILY_RAW_DIR = DATA_ROOT / "raw" / "a_share" / "daily"
 
 DEFAULT_ACCEPTANCE_SYMBOLS = ("600519", "000001", "300750", "688981")
 PROVIDER_REQUIREMENTS = {
@@ -267,6 +268,130 @@ def minute_daily_summary(frame: pd.DataFrame) -> list[dict[str, Any]]:
     return summaries
 
 
+def _in_regular_session(timestamp: pd.Timestamp) -> bool:
+    """Accept either provider's start- or end-labelled A-share minute bar."""
+
+    time_of_day = timestamp.time()
+    return dt.time(9, 30) <= time_of_day <= dt.time(11, 30) or dt.time(13, 0) <= time_of_day <= dt.time(15, 0)
+
+
+def minute_session_check(frame: pd.DataFrame) -> dict[str, Any]:
+    """Check that minute bars are timestamped inside regular A-share sessions.
+
+    A provider may label a bar by its start (09:30) or end (09:31) minute, so
+    this deliberately accepts both conventions.  Trading halts can reduce the
+    count, therefore row count is diagnostic information rather than a reason
+    to silently fill or reject valid source data.
+    """
+
+    if frame.empty:
+        return {"status": "failed", "reason": "no_bars", "days": []}
+    work = frame.assign(trade_date=frame["datetime"].dt.date.astype(str))
+    days: list[dict[str, Any]] = []
+    for trade_date, group in work.groupby("trade_date", sort=True):
+        in_session = group["datetime"].map(_in_regular_session)
+        days.append(
+            {
+                "trade_date": trade_date,
+                "bars": int(len(group)),
+                "in_regular_session_bars": int(in_session.sum()),
+                "out_of_session_bars": int((~in_session).sum()),
+                "first_bar": group["datetime"].iloc[0].isoformat(),
+                "last_bar": group["datetime"].iloc[-1].isoformat(),
+            }
+        )
+    return {
+        "status": "passed" if all(day["out_of_session_bars"] == 0 for day in days) else "failed",
+        "days": days,
+    }
+
+
+def _relative_error(actual: float, expected: float) -> float | None:
+    if not pd.notna(actual) or not pd.notna(expected) or expected == 0:
+        return None
+    return abs(actual / expected - 1.0)
+
+
+def minute_daily_reconciliation(frame: pd.DataFrame) -> dict[str, Any]:
+    """Compare minute aggregates with local daily data without mixing prices.
+
+    Local daily prices are qfq while incoming minute prices are explicitly raw.
+    Absolute prices and close-to-close returns therefore are not comparable at
+    an ex-right/ex-dividend boundary.  Same-day OHLC/close ratios are invariant
+    to one day's price scale and can be reconciled safely.  Volume and amount
+    ratios are retained to discover provider unit conventions before factors
+    use the data.
+    """
+
+    if frame.empty:
+        return {"status": "failed", "reason": "no_bars", "days": []}
+    symbol = str(frame["symbol"].iloc[0]).lower()
+    path = DAILY_RAW_DIR / f"{symbol}.parquet"
+    if not path.exists():
+        return {"status": "unavailable", "reason": f"missing_local_daily:{path}", "days": []}
+    daily = pd.read_parquet(path)
+    daily["date"] = pd.to_datetime(daily["date"]).dt.normalize()
+    daily = daily.set_index("date")
+    work = frame.assign(trade_date=frame["datetime"].dt.normalize())
+    days: list[dict[str, Any]] = []
+    for trade_date, group in work.groupby("trade_date", sort=True):
+        daily_row = daily.loc[daily.index == trade_date]
+        if daily_row.empty:
+            days.append({"trade_date": trade_date.date().isoformat(), "status": "missing_local_daily"})
+            continue
+        reference = daily_row.iloc[-1]
+        minute_close = float(group["close"].iloc[-1])
+        minute_ohlc = {
+            "open": float(group["open"].iloc[0]),
+            "high": float(group["high"].max()),
+            "low": float(group["low"].min()),
+            "close": minute_close,
+        }
+        price_relative_errors = {
+            field: _relative_error(minute_ohlc[field] / minute_close, float(reference[field]) / float(reference["close"]))
+            for field in ("open", "high", "low")
+        }
+        volume_ratio = float(group["volume"].sum() / float(reference["volume"])) if float(reference["volume"]) else None
+        amount_ratio = float(group["amount"].sum() / float(reference["amount"])) if float(reference["amount"]) else None
+        price_ok = all(error is not None and error <= 0.002 for error in price_relative_errors.values())
+        amount_ok = amount_ratio is not None and abs(amount_ratio - 1.0) <= 0.005
+        # The public daily pipe reports volume in lots.  Sources can report
+        # shares or lots, so accept either 1x or 100x here but record the
+        # inferred ratio; never rescale a provider silently.
+        volume_ok = volume_ratio is not None and min(abs(volume_ratio - 1.0), abs(volume_ratio - 100.0)) <= 0.005
+        days.append(
+            {
+                "trade_date": trade_date.date().isoformat(),
+                "status": "passed" if price_ok and amount_ok and volume_ok else "failed",
+                "price_relative_errors": price_relative_errors,
+                "amount_ratio_to_local_daily": amount_ratio,
+                "volume_ratio_to_local_daily": volume_ratio,
+                "inferred_volume_unit": "shares" if volume_ratio is not None and abs(volume_ratio - 100.0) <= 0.005 else "lots",
+            }
+        )
+    statuses = [day["status"] for day in days]
+    if statuses and all(status == "passed" for status in statuses):
+        status = "passed"
+    elif "missing_local_daily" in statuses:
+        status = "unavailable"
+    else:
+        status = "failed"
+    return {"status": status, "daily_price_basis": "qfq_ratio_only", "days": days}
+
+
+def minute_acceptance_report(frame: pd.DataFrame) -> dict[str, Any]:
+    """Run the automatic checks required before minute data may become features."""
+
+    session = minute_session_check(frame)
+    reconciliation = minute_daily_reconciliation(frame)
+    passed = session["status"] == "passed" and reconciliation["status"] == "passed"
+    return {
+        "status": "automatic_checks_passed_pending_time_alignment" if passed else "automatic_checks_failed",
+        "session": session,
+        "daily_reconciliation": reconciliation,
+    }
+
+
 def _import_tushare() -> Any:
     import tushare as ts
 
@@ -283,8 +408,10 @@ def fetch_tushare_minutes(code: str, start: dt.date, end: dt.date, frequency: st
         asset="E",
         adj=None,
         freq=frequency,
-        start_date=start.strftime("%Y%m%d"),
-        end_date=end.strftime("%Y%m%d"),
+        # Tushare minute requests require time-of-day parameters and omit an
+        # end date supplied without a time component.
+        start_date=f"{start.isoformat()} 09:00:00",
+        end_date=f"{end.isoformat()} 17:00:00",
     )
 
 
@@ -424,6 +551,7 @@ def write_minute_snapshot(
     start: dt.date,
     end: dt.date,
     rows_by_code: dict[str, pd.DataFrame],
+    acceptance_by_code: dict[str, dict[str, Any]] | None = None,
 ) -> Path:
     """Persist one immutable minute-data snapshot and its complete manifest."""
 
@@ -441,6 +569,7 @@ def write_minute_snapshot(
                 "rows": int(len(frame)),
                 "sha256": frame_digest(frame),
                 "daily_summary": minute_daily_summary(frame),
+                "acceptance": (acceptance_by_code or {}).get(code),
             }
         )
     manifest = {
@@ -454,7 +583,11 @@ def write_minute_snapshot(
         "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "run_id": run_id,
         "files": files,
-        "acceptance_status": "pending_daily_reconciliation",
+        "acceptance_status": (
+            "automatic_checks_passed_pending_time_alignment"
+            if acceptance_by_code and all(report["status"].startswith("automatic_checks_passed") for report in acceptance_by_code.values())
+            else "not_run" if acceptance_by_code is None else "automatic_checks_failed"
+        ),
     }
     run_manifest_path = RUNS_ROOT / f"{run_id}.json"
     atomic_write_json(manifest, run_manifest_path)
@@ -468,6 +601,7 @@ def sync_minutes(
     end: dt.date,
     frequency: str,
     allow_large: bool,
+    acceptance: bool = False,
 ) -> Path:
     """Download and validate explicit-symbol minute bars into one snapshot."""
 
@@ -477,10 +611,20 @@ def sync_minutes(
     validate_range(start, end, allow_large=allow_large, unit_count=len(codes))
     fetcher = MINUTE_FETCHERS[provider]
     rows_by_code: dict[str, pd.DataFrame] = {}
+    acceptance_by_code: dict[str, dict[str, Any]] = {}
     for code in codes:
         raw = fetcher(code, start, end, frequency)
         rows_by_code[code] = canonicalize_minute_bars(raw, provider, code, start, end)
-    return write_minute_snapshot(provider, frequency, start, end, rows_by_code)
+        if acceptance:
+            acceptance_by_code[code] = minute_acceptance_report(rows_by_code[code])
+    return write_minute_snapshot(
+        provider,
+        frequency,
+        start,
+        end,
+        rows_by_code,
+        acceptance_by_code if acceptance else None,
+    )
 
 
 def sync_tushare_events(
@@ -586,7 +730,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.provider, args.symbols, args.start, args.end, args.frequency, args.allow_large
             )
         elif args.command == "acceptance":
-            manifest = sync_minutes(args.provider, args.symbols, args.date, args.date, args.frequency, False)
+            manifest = sync_minutes(args.provider, args.symbols, args.date, args.date, args.frequency, False, acceptance=True)
         elif args.command == "sync-tushare-events":
             datasets = [item.strip() for item in args.datasets.split(",") if item.strip()]
             manifest = sync_tushare_events(datasets, args.start, args.end, args.allow_large)
