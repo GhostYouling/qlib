@@ -19,6 +19,133 @@ sys.modules[SPEC.name] = RESEARCH
 SPEC.loader.exec_module(RESEARCH)
 
 
+def write_json_record(path: Path, payload: dict) -> None:
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def make_minute_feature_chain(
+    tmp_path: Path,
+    *,
+    dates: pd.DatetimeIndex | None = None,
+    symbols: tuple[str, ...] = tuple(f"SZ00000{index}" for index in range(1, 7)),
+) -> tuple[Path, pd.DataFrame]:
+    dates = dates if dates is not None else pd.DatetimeIndex([pd.Timestamp("2019-01-02")])
+    rows = []
+    for date in dates:
+        for position, symbol in enumerate(symbols, start=1):
+            rows.append(
+                {
+                    "symbol": symbol,
+                    "trade_date": pd.Timestamp(date),
+                    "provider": "rqdata",
+                    "bar_timestamp_label": "end",
+                    "minute_bars": 240,
+                    "complete_regular_session": True,
+                    "minute_feature_eligible": True,
+                    "opening_gap_return": 0.001 * position,
+                    "late_return_30m": 0.001 * position,
+                    "late_amount_share_30m": 0.10 + 0.005 * position,
+                    "late_vwap_to_day_vwap_30m": 0.0005 * position,
+                    "opening_gap_digestion": 0.002 * position,
+                    "intraday_realized_volatility": 0.10 - 0.0005 * position,
+                }
+            )
+    features = pd.DataFrame(rows)
+    output_path = tmp_path / "minute_features.parquet"
+    features.to_parquet(output_path, index=False)
+    stored_features = pd.read_parquet(output_path)
+
+    source_path = tmp_path / "bulk_snapshot.json"
+    write_json_record(
+        source_path,
+        {
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "minutes",
+            "provider": "rqdata",
+            "frequency": "1m",
+            "prices": "raw_unadjusted",
+            "run_id": "bulk-run",
+        },
+    )
+    acceptance_path = tmp_path / "acceptance_snapshot.json"
+    write_json_record(
+        acceptance_path,
+        {
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "minutes",
+            "provider": "rqdata",
+            "frequency": "1m",
+            "prices": "raw_unadjusted",
+            "run_id": "acceptance-run",
+            "acceptance_status": "automatic_checks_passed_pending_time_alignment",
+        },
+    )
+    alignment_path = tmp_path / "alignment.json"
+    write_json_record(
+        alignment_path,
+        {
+            "kind": "a_share_minute_alignment_confirmation",
+            "status": "passed_for_feature_research",
+            "provider": "rqdata",
+            "frequency": "1m",
+            "run_id": "alignment-run",
+            "bar_timestamp_label": "end",
+            "volume_unit": "shares",
+            "reviewed_boundaries": True,
+            "forward_return_fields_read": False,
+            "source_acceptance_snapshot": {
+                "path": str(acceptance_path),
+                "sha256": RESEARCH.file_sha256(acceptance_path),
+            },
+        },
+    )
+    spec = RESEARCH.load_minute_factor_preregistration()
+    manifest_path = tmp_path / "feature_run.json"
+    write_json_record(
+        manifest_path,
+        {
+            "schema_version": 1,
+            "kind": "a_share_minute_feature_run",
+            "status": "features_built_research_only",
+            "run_id": "feature-run",
+            "provider": "rqdata",
+            "frequency": "1m",
+            "feature_spec": {
+                "path": str(RESEARCH.DEFAULT_MINUTE_FACTOR_SPEC),
+                "sha256": RESEARCH.file_sha256(RESEARCH.DEFAULT_MINUTE_FACTOR_SPEC),
+                "version": 1,
+                "features": spec["features"],
+            },
+            "source_snapshot": {
+                "path": str(source_path),
+                "sha256": RESEARCH.file_sha256(source_path),
+                "run_id": "bulk-run",
+                "prices": "raw_unadjusted",
+            },
+            "alignment_confirmation": {
+                "path": str(alignment_path),
+                "sha256": RESEARCH.file_sha256(alignment_path),
+                "run_id": "alignment-run",
+                "bar_timestamp_label": "end",
+                "volume_unit": "shares",
+            },
+            "output": {
+                "path": str(output_path),
+                "sha256": RESEARCH.dataframe_content_sha256(stored_features),
+                "rows": len(stored_features),
+                "eligible_rows": len(stored_features),
+                "incomplete_session_rows": 0,
+                "calendar_start": pd.Timestamp(dates.min()).date().isoformat(),
+                "calendar_end": pd.Timestamp(dates.max()).date().isoformat(),
+            },
+            "forward_return_fields_read": False,
+            "future_price_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        },
+    )
+    return manifest_path, stored_features
+
+
 def test_annual_report_dates_and_symbol_mapping():
     assert RESEARCH.annual_report_dates(2023, 2025) == ["2023-12-31", "2024-12-31", "2025-12-31"]
     assert RESEARCH.quarterly_report_dates(2023, 2024) == [
@@ -1478,6 +1605,211 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
         }
     ]
     assert by_factor["bad"]["mean_rank_ic"] == pytest.approx(-1.0)
+
+
+def test_minute_feature_run_loader_verifies_the_full_manifest_chain(tmp_path):
+    manifest_path, expected = make_minute_feature_chain(tmp_path)
+    manifest, spec, observed, chain = RESEARCH.load_minute_feature_run(manifest_path)
+    assert manifest["run_id"] == "feature-run"
+    assert tuple(item["name"] for item in spec["features"]) == RESEARCH.MINUTE_FACTOR_NAMES
+    pd.testing.assert_frame_equal(observed.reset_index(drop=True), expected.reset_index(drop=True))
+    assert chain["source_snapshot_path"] == (tmp_path / "bulk_snapshot.json").resolve()
+    assert chain["acceptance_snapshot_path"] == (tmp_path / "acceptance_snapshot.json").resolve()
+
+    alignment_path = tmp_path / "alignment.json"
+    alignment_path.write_text(alignment_path.read_text() + "\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="alignment confirmation fingerprint mismatch"):
+        RESEARCH.load_minute_feature_run(manifest_path)
+
+
+def test_minute_factor_direction_is_ranked_after_quality_and_listing_gates(tmp_path):
+    symbols = tuple(f"SZ{index:06d}" for index in range(1, 52))
+    _, features = make_minute_feature_chain(tmp_path, symbols=symbols)
+    spec = RESEARCH.load_minute_factor_preregistration()
+    market = pd.DataFrame(
+        {
+            "datetime": pd.Timestamp("2019-01-02"),
+            "instrument": symbols,
+            "open": 10.0,
+            "close": 10.0,
+            "fundamental_quality_eligible": True,
+            "listing_seasoning_eligible": [True] * 50 + [False],
+            "quality_eligible": [True] * 50 + [False],
+            "listing_age_sessions": [100] * 50 + [19],
+        }
+    )
+    ranked, coverage = RESEARCH.attach_directional_minute_factors(market, features, spec)
+    by_symbol = ranked.set_index("instrument")
+    assert by_symbol.loc["SZ000050", "late_return_30m"] == pytest.approx(1.0)
+    assert by_symbol.loc["SZ000050", "intraday_realized_volatility"] == pytest.approx(1.0)
+    assert pd.isna(by_symbol.loc["SZ000051", "late_return_30m"])
+    assert by_symbol.loc["SZ000051", "minute_raw_late_return_30m"] > by_symbol.loc[
+        "SZ000050", "minute_raw_late_return_30m"
+    ]
+    assert coverage["quality_and_minute_eligible_rows"] == 50
+    assert coverage["factor_rank_eligible_rows"] == 50
+    assert coverage["coverage_gate_passed"] is True
+    assert coverage["listing_gate_applied_before_cross_sectional_ranking"] is True
+
+
+def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(tmp_path, monkeypatch):
+    dates = pd.bdate_range("2019-01-02", periods=8)
+    symbols = tuple(f"SZ{index:06d}" for index in range(1, 61))
+    feature_run_path, _ = make_minute_feature_chain(tmp_path, dates=dates, symbols=symbols)
+    provider_uri = tmp_path / "provider"
+    provider_uri.mkdir()
+    write_json_record(
+        provider_uri / RESEARCH.PRICE_BASIS_MANIFEST_NAME,
+        {
+            "status": "passed",
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "failures": {},
+            "future_corporate_actions_used": False,
+        },
+    )
+    fundamental_path = tmp_path / "fundamentals.parquet"
+    fundamental_path.write_bytes(b"offline-fixture")
+    market_rows = []
+    for date in dates:
+        for position, symbol in enumerate(symbols, start=1):
+            market_rows.append(
+                {
+                    "datetime": pd.Timestamp(date),
+                    "instrument": symbol,
+                    "open": 100.0,
+                    "close": 100.0 + position,
+                    "listing_age_sessions": 100,
+                }
+            )
+    market = pd.DataFrame(market_rows)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_market_execution_data",
+        lambda provider_uri, start, end, batch_size: market.copy(),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+
+    def attach_all_quality(frame, fundamentals, max_age_days=550):
+        result = frame.copy()
+        result["fundamental_quality_eligible"] = True
+        result["listing_seasoning_eligible"] = True
+        result["quality_eligible"] = True
+        return result
+
+    monkeypatch.setattr(RESEARCH, "attach_quality_asof", attach_all_quality)
+    experiment_root = tmp_path / "experiments"
+    diagnostic_result = RESEARCH.run_minute_factor_diagnostic(
+        SimpleNamespace(
+            feature_run=str(feature_run_path),
+            provider_uri=str(provider_uri),
+            fundamentals=str(fundamental_path),
+            experiment_root=str(experiment_root),
+            batch_size=500,
+        )
+    )
+    diagnostic_path = Path(diagnostic_result["audit_path"])
+    diagnostic = json.loads(diagnostic_path.read_text())
+    assert diagnostic_result["computed_factor_count"] == 5
+    assert diagnostic_result["unavailable_factors"] == []
+    assert diagnostic["strategy_timing"]["holding_period_trading_days"] == 3
+    assert diagnostic["strategy_timing"]["diagnostic_topk"] == 3
+    assert diagnostic["strategy_timing"]["open_cost"] == pytest.approx(0.00012)
+    assert diagnostic["strategy_timing"]["close_cost"] == pytest.approx(0.00062)
+    assert diagnostic["strategy_timing"]["parameters_read_from_preregistration"] is True
+    assert diagnostic["selection_or_promotion_allowed"] is False
+    assert diagnostic["data"]["price_basis"] == RESEARCH.REQUIRED_PRICE_BASIS
+    assert all(item["mean_rank_ic"] == pytest.approx(1.0) for item in diagnostic["ranking_by_development_rank_ic"])
+
+    stability = RESEARCH.run_factor_stability_audit(
+        SimpleNamespace(
+            diagnostic=str(diagnostic_path),
+            experiment_root=str(experiment_root),
+            factor=None,
+            minimum_calendar_years=1,
+            minimum_cohorts=1,
+        )
+    )
+    assert set(stability["qualified_factors"]) == set(RESEARCH.MINUTE_FACTOR_NAMES)
+    viability = RESEARCH.run_factor_topk_viability_audit(
+        SimpleNamespace(
+            diagnostic=str(diagnostic_path),
+            experiment_root=str(experiment_root),
+            factor=None,
+        )
+    )
+    assert viability["factor_count"] == 5
+    assert viability["qualified_factors"] == []
+
+
+def test_minute_coverage_gate_stops_before_forward_returns(tmp_path, monkeypatch):
+    feature_run_path, _ = make_minute_feature_chain(tmp_path)
+    provider_uri = tmp_path / "provider"
+    provider_uri.mkdir()
+    write_json_record(
+        provider_uri / RESEARCH.PRICE_BASIS_MANIFEST_NAME,
+        {
+            "status": "passed",
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "failures": {},
+            "future_corporate_actions_used": False,
+        },
+    )
+    fundamental_path = tmp_path / "fundamentals.parquet"
+    fundamental_path.write_bytes(b"offline-fixture")
+    market = pd.DataFrame(
+        {
+            "datetime": pd.Timestamp("2019-01-02"),
+            "instrument": [f"SZ{index:06d}" for index in range(1, 101)],
+            "open": 100.0,
+            "close": 100.0,
+            "listing_age_sessions": 100,
+        }
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_market_execution_data",
+        lambda provider_uri, start, end, batch_size: market.copy(),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+
+    def attach_all_quality(frame, fundamentals, max_age_days=550):
+        result = frame.copy()
+        result["fundamental_quality_eligible"] = True
+        result["listing_seasoning_eligible"] = True
+        result["quality_eligible"] = True
+        return result
+
+    monkeypatch.setattr(RESEARCH, "attach_quality_asof", attach_all_quality)
+    monkeypatch.setattr(
+        RESEARCH,
+        "forward_factor_return_frame",
+        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("forward returns must not be read")),
+    )
+    result = RESEARCH.run_minute_factor_diagnostic(
+        SimpleNamespace(
+            feature_run=str(feature_run_path),
+            provider_uri=str(provider_uri),
+            fundamentals=str(fundamental_path),
+            experiment_root=str(tmp_path / "experiments"),
+            batch_size=500,
+        )
+    )
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert result["status"] == "insufficient_data_coverage"
+    assert result["forward_return_fields_read"] is False
+    assert audit["forward_return_fields_read"] is False
+    assert audit["coverage"]["median_source_row_coverage"] == pytest.approx(0.06)
+    assert audit["coverage"]["coverage_gate_passed"] is False
+    coverage_audits = RESEARCH.load_minute_factor_coverage_audits(tmp_path / "experiments")
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        minute_factor_coverage_audits=coverage_audits,
+    )
+    assert "分钟因子数据覆盖门禁" in report
+    assert "rqdata / feature-run" in report
+    assert "读取未来收益" in report
 
 
 def test_rolling_window_semantics_audit_rejects_partial_history_without_reading_returns():

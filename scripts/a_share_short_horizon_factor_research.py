@@ -77,6 +77,7 @@ DEFAULT_PROSPECTIVE_FACTOR_REGISTRY = DEFAULT_EXPERIMENT_ROOT / "prospective_fac
 DEFAULT_PROSPECTIVE_FACTOR_LEDGER = DEFAULT_EXPERIMENT_ROOT / "three_day_prospective_factor_ledger.json"
 DEFAULT_RESEARCH_REPORT = DEFAULT_EXPERIMENT_ROOT / "three_day_research_report.md"
 DEFAULT_FACTOR_DIAGNOSTIC_INVALIDATIONS = REPO_ROOT / "docs" / "a_share_factor_diagnostic_invalidations.json"
+DEFAULT_MINUTE_FACTOR_SPEC = REPO_ROOT / "docs" / "a_share_minute_factor_preregistration.json"
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -85,6 +86,24 @@ PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
 # fixed execution-universe rule (roughly one trading month), not a tunable
 # factor parameter.  It is applied before every cross-sectional rank.
 MIN_LISTING_SESSIONS = 20
+MINUTE_FACTOR_NAMES = (
+    "late_return_30m",
+    "late_amount_share_30m",
+    "late_vwap_to_day_vwap_30m",
+    "opening_gap_digestion",
+    "intraday_realized_volatility",
+)
+MINUTE_FACTOR_DIRECTIONS = ("higher", "higher", "higher", "higher", "lower")
+MINUTE_FEATURE_BASE_COLUMNS = (
+    "symbol",
+    "trade_date",
+    "provider",
+    "bar_timestamp_label",
+    "minute_bars",
+    "complete_regular_session",
+    "minute_feature_eligible",
+    "opening_gap_return",
+)
 
 PROSPECTIVE_VWAP_FACTOR = "close_below_vwap_1"
 PROSPECTIVE_VWAP_SOURCE_FACTOR = "close_above_vwap_1"
@@ -1654,6 +1673,273 @@ def file_sha256(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def dataframe_content_sha256(frame: pd.DataFrame) -> str:
+    """Match the rich-data manifest's stable, storage-independent frame hash."""
+
+    content = frame.to_csv(index=False, lineterminator="\n").encode("utf-8")
+    return hashlib.sha256(content).hexdigest()
+
+
+def resolve_repository_record_path(value: str | Path) -> Path:
+    """Resolve repository-relative paths stored by immutable rich-data records."""
+
+    path = Path(value).expanduser()
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    return path.resolve()
+
+
+def load_json_record(path: Path, *, kind: str | None = None) -> dict[str, Any]:
+    """Load one immutable JSON record and optionally enforce its kind."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        raise FileNotFoundError(f"JSON record does not exist: {path}")
+    try:
+        record = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"JSON record is invalid: {path}") from error
+    if not isinstance(record, dict):
+        raise ValueError(f"JSON record must contain an object: {path}")
+    if kind is not None and record.get("kind") != kind:
+        raise ValueError(f"expected {kind!r}, got {record.get('kind')!r}: {path}")
+    return record
+
+
+def load_minute_factor_preregistration(
+    path: Path = DEFAULT_MINUTE_FACTOR_SPEC,
+) -> dict[str, Any]:
+    """Enforce the exact frozen v1 minute diagnostic protocol."""
+
+    path = path.expanduser().resolve()
+    spec = load_json_record(path, kind="a_share_minute_factor_preregistration")
+    features = list(spec.get("features") or [])
+    names = tuple(str(item.get("name")) for item in features if isinstance(item, dict))
+    directions = tuple(
+        str(item.get("diagnostic_direction")) for item in features if isinstance(item, dict)
+    )
+    holding = spec.get("holding_protocol") or {}
+    minute = spec.get("minute_contract") or {}
+    diagnostic = spec.get("diagnostic_protocol") or {}
+    coverage = spec.get("data_coverage_gate") or {}
+    universe = spec.get("universe_contract") or {}
+    valid = (
+        spec.get("version") == 1
+        and spec.get("status") == "frozen_before_minute_data_observed"
+        and names == MINUTE_FACTOR_NAMES
+        and directions == MINUTE_FACTOR_DIRECTIONS
+        and holding.get("holding_period_trading_days") == 3
+        and holding.get("non_overlapping_cohorts") is True
+        and holding.get("topk") == 3
+        and holding.get("open_cost") == 0.00012
+        and holding.get("close_cost") == 0.00062
+        and universe.get("holding_universe") == "buyable_main_chinext"
+        and universe.get("quality_data") == "announcement_asof_only"
+        and universe.get("maximum_quality_age_days") == 550
+        and universe.get("minimum_listing_sessions") == MIN_LISTING_SESSIONS
+        and universe.get("point_in_time_membership_required") is True
+        and minute.get("frequency") == "1m"
+        and minute.get("prices") == "raw_unadjusted"
+        and minute.get("timestamp_normalized_to") == "bar_end"
+        and minute.get("complete_regular_session_required") is True
+        and minute.get("expected_regular_session_bars") == 240
+        and diagnostic.get("development_start") == "2019-01-01"
+        and diagnostic.get("development_end") == "2025-12-31"
+        and diagnostic.get("minimum_observed_years") == FACTOR_STABILITY_MIN_CALENDAR_YEARS
+        and diagnostic.get("minimum_non_overlapping_cohorts") == FACTOR_STABILITY_MIN_COHORTS
+        and coverage.get("minimum_median_source_row_coverage") == 0.95
+        and coverage.get("minimum_p05_source_row_coverage") == 0.9
+        and coverage.get("minimum_eligible_names_per_cross_section") == 50
+        and coverage.get("failed_gate_policy")
+        == "write_coverage_audit_without_reading_forward_returns"
+        and spec.get("forward_return_fields_read") is False
+        and spec.get("selection_or_promotion_allowed") is False
+    )
+    if not valid:
+        raise ValueError("minute factor preregistration does not match the frozen v1 diagnostic protocol")
+    return spec
+
+
+def _load_fingerprinted_json_link(
+    link: dict[str, Any],
+    *,
+    kind: str,
+    label: str,
+) -> tuple[Path, dict[str, Any]]:
+    """Verify and load one JSON link from an immutable rich-data record."""
+
+    path_value = str(link.get("path") or "")
+    expected_sha256 = str(link.get("sha256") or "")
+    if not path_value or not expected_sha256:
+        raise ValueError(f"{label} link is missing its path or SHA-256")
+    path = resolve_repository_record_path(path_value)
+    if not path.exists():
+        raise FileNotFoundError(f"{label} record does not exist: {path}")
+    if file_sha256(path) != expected_sha256:
+        raise ValueError(f"{label} fingerprint mismatch: {path}")
+    return path, load_json_record(path, kind=kind)
+
+
+def load_minute_feature_run(
+    feature_run_path: Path,
+    *,
+    factor_spec_path: Path = DEFAULT_MINUTE_FACTOR_SPEC,
+) -> tuple[dict[str, Any], dict[str, Any], pd.DataFrame, dict[str, Any]]:
+    """Load a minute feature run only after validating its full manifest chain."""
+
+    feature_run_path = feature_run_path.expanduser().resolve()
+    manifest = load_json_record(feature_run_path, kind="a_share_minute_feature_run")
+    if (
+        manifest.get("status") != "features_built_research_only"
+        or manifest.get("frequency") != "1m"
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("future_price_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("minute feature run has not passed the research-only no-forward-data contract")
+
+    factor_spec_path = factor_spec_path.expanduser().resolve()
+    spec = load_minute_factor_preregistration(factor_spec_path)
+    spec_link = manifest.get("feature_spec") or {}
+    linked_spec_path, linked_spec = _load_fingerprinted_json_link(
+        spec_link,
+        kind="a_share_minute_factor_preregistration",
+        label="minute factor specification",
+    )
+    frozen_sha256 = file_sha256(factor_spec_path)
+    if (
+        file_sha256(linked_spec_path) != frozen_sha256
+        or linked_spec != spec
+        or spec_link.get("version") != 1
+        or list(spec_link.get("features") or []) != list(spec["features"])
+    ):
+        raise ValueError("minute feature run is not bound to the frozen repository preregistration")
+
+    source_path, source = _load_fingerprinted_json_link(
+        manifest.get("source_snapshot") or {},
+        kind="a_share_rich_data_snapshot",
+        label="minute source snapshot",
+    )
+    alignment_path, alignment = _load_fingerprinted_json_link(
+        manifest.get("alignment_confirmation") or {},
+        kind="a_share_minute_alignment_confirmation",
+        label="minute alignment confirmation",
+    )
+    provider = str(manifest.get("provider") or "")
+    if (
+        source.get("dataset") != "minutes"
+        or source.get("provider") != provider
+        or source.get("frequency") != "1m"
+        or source.get("prices") != "raw_unadjusted"
+        or (manifest.get("source_snapshot") or {}).get("run_id") != source.get("run_id")
+        or (manifest.get("source_snapshot") or {}).get("prices") != "raw_unadjusted"
+    ):
+        raise ValueError("minute source snapshot is incompatible with the feature run")
+    if (
+        alignment.get("status") != "passed_for_feature_research"
+        or alignment.get("provider") != provider
+        or alignment.get("frequency") != "1m"
+        or alignment.get("bar_timestamp_label") not in {"start", "end"}
+        or alignment.get("volume_unit") not in {"shares", "lots"}
+        or alignment.get("reviewed_boundaries") is not True
+        or alignment.get("forward_return_fields_read") is not False
+        or (manifest.get("alignment_confirmation") or {}).get("run_id")
+        != alignment.get("run_id")
+        or (manifest.get("alignment_confirmation") or {}).get("bar_timestamp_label")
+        != alignment.get("bar_timestamp_label")
+        or (manifest.get("alignment_confirmation") or {}).get("volume_unit")
+        != alignment.get("volume_unit")
+    ):
+        raise ValueError("minute alignment confirmation is incompatible with the feature run")
+    acceptance_path, acceptance = _load_fingerprinted_json_link(
+        alignment.get("source_acceptance_snapshot") or {},
+        kind="a_share_rich_data_snapshot",
+        label="minute acceptance snapshot",
+    )
+    if (
+        acceptance.get("acceptance_status")
+        != "automatic_checks_passed_pending_time_alignment"
+        or acceptance.get("dataset") != "minutes"
+        or acceptance.get("provider") != provider
+        or acceptance.get("frequency") != "1m"
+        or acceptance.get("prices") != "raw_unadjusted"
+    ):
+        raise ValueError("minute alignment is not bound to a compatible accepted snapshot")
+
+    output = manifest.get("output") or {}
+    output_path_value = str(output.get("path") or "")
+    if not output_path_value:
+        raise ValueError("minute feature run has no output path")
+    output_path = resolve_repository_record_path(output_path_value)
+    if not output_path.exists():
+        raise FileNotFoundError(f"minute feature output does not exist: {output_path}")
+    frame = pd.read_parquet(output_path)
+    if dataframe_content_sha256(frame) != str(output.get("sha256") or ""):
+        raise ValueError(f"minute feature output fingerprint mismatch: {output_path}")
+    if frame.empty:
+        raise ValueError("minute feature output is empty")
+    expected_columns = set(MINUTE_FEATURE_BASE_COLUMNS) | set(MINUTE_FACTOR_NAMES)
+    if set(frame.columns) != expected_columns:
+        missing = sorted(expected_columns - set(frame.columns))
+        extra = sorted(set(frame.columns) - expected_columns)
+        raise ValueError(f"minute feature output columns mismatch: missing={missing}, extra={extra}")
+    frame = frame.copy()
+    frame["trade_date"] = pd.to_datetime(frame["trade_date"], errors="coerce").dt.normalize()
+    if frame["trade_date"].isna().any() or frame["symbol"].astype(str).str.strip().eq("").any():
+        raise ValueError("minute feature output contains an invalid symbol or trade date")
+    if frame.duplicated(["trade_date", "symbol"]).any():
+        raise ValueError("minute feature output contains duplicate stock-day rows")
+    for column in MINUTE_FACTOR_NAMES:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame["opening_gap_return"] = pd.to_numeric(frame["opening_gap_return"], errors="coerce")
+    frame["minute_bars"] = pd.to_numeric(frame["minute_bars"], errors="coerce")
+    if not pd.api.types.is_bool_dtype(frame["complete_regular_session"]):
+        raise ValueError("complete_regular_session must be a boolean column")
+    if not pd.api.types.is_bool_dtype(frame["minute_feature_eligible"]):
+        raise ValueError("minute_feature_eligible must be a boolean column")
+    eligible = frame["minute_feature_eligible"]
+    if (
+        (eligible & ~frame["complete_regular_session"]).any()
+        or (eligible & frame["minute_bars"].ne(240)).any()
+        or not np.isfinite(frame.loc[eligible, list(MINUTE_FACTOR_NAMES)].to_numpy(dtype=float)).all()
+        or not np.isfinite(frame.loc[eligible, "opening_gap_return"].to_numpy(dtype=float)).all()
+        or frame.loc[eligible, "late_return_30m"].le(-1.0).any()
+        or not frame.loc[eligible, "late_amount_share_30m"].between(0.0, 1.0).all()
+        or frame.loc[eligible, "late_vwap_to_day_vwap_30m"].le(-1.0).any()
+        or frame.loc[eligible, "opening_gap_return"].le(-1.0).any()
+        or frame.loc[eligible, "intraday_realized_volatility"].lt(0.0).any()
+    ):
+        raise ValueError("minute feature eligibility conflicts with the frozen complete-session contract")
+    if set(frame["provider"].dropna().astype(str)) != {provider}:
+        raise ValueError("minute feature output contains a mixed or unexpected provider")
+    if set(frame["bar_timestamp_label"].dropna().astype(str)) != {
+        str(alignment["bar_timestamp_label"])
+    }:
+        raise ValueError("minute feature output conflicts with its alignment label")
+    if (
+        int(output.get("rows", -1)) != len(frame)
+        or int(output.get("eligible_rows", -1)) != int(eligible.sum())
+        or int(output.get("incomplete_session_rows", -1))
+        != int((~frame["complete_regular_session"]).sum())
+    ):
+        raise ValueError("minute feature output row counts conflict with its manifest")
+    observed_start = frame["trade_date"].min().date().isoformat()
+    observed_end = frame["trade_date"].max().date().isoformat()
+    if output.get("calendar_start") != observed_start or output.get("calendar_end") != observed_end:
+        raise ValueError("minute feature output calendar bounds conflict with its manifest")
+    chain = {
+        "feature_run_path": feature_run_path,
+        "feature_run_sha256": file_sha256(feature_run_path),
+        "feature_output_path": output_path,
+        "factor_spec_path": factor_spec_path,
+        "factor_spec_sha256": frozen_sha256,
+        "source_snapshot_path": source_path,
+        "alignment_path": alignment_path,
+        "acceptance_snapshot_path": acceptance_path,
+    }
+    return manifest, spec, frame.sort_values(["trade_date", "symbol"], kind="stable"), chain
 
 
 def qlib_symbol(code: Any) -> str | None:
@@ -4674,6 +4960,48 @@ def load_market_data(
     return result.sort_values(["datetime", "instrument"], kind="stable").reset_index(drop=True)
 
 
+def load_market_execution_data(
+    provider_uri: Path,
+    start: str,
+    end: str,
+    batch_size: int,
+) -> pd.DataFrame:
+    """Load only execution quotes and listing age for minute diagnostics."""
+
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    import qlib
+    from qlib.data import D
+
+    if batch_size < 1:
+        raise ValueError("--batch-size must be positive")
+    provider_uri = provider_uri.expanduser().resolve()
+    if not provider_uri.exists():
+        raise FileNotFoundError(f"Qlib provider directory does not exist: {provider_uri}")
+    require_research_price_basis(provider_uri)
+    qlib.init(provider_uri=str(provider_uri), region="cn", kernels=1)
+    universe = D.instruments(market="buyable_main_chinext")
+    listing_spans = D.list_instruments(universe, as_list=False)
+    provider_calendar = D.calendar(freq="day")
+    instruments = D.list_instruments(universe, start_time=start, end_time=end, as_list=True)
+    if not instruments:
+        raise RuntimeError("buyable_main_chinext has no local instruments in the minute diagnostic window")
+    fields = {"open": "$open", "close": "$close"}
+    expressions = list(fields.values())
+    frames: list[pd.DataFrame] = []
+    for offset in range(0, len(instruments), batch_size):
+        batch = instruments[offset : offset + batch_size]
+        frame = D.features(batch, expressions, start_time=start, end_time=end, freq="day")
+        frame = frame.rename(columns={expression: name for name, expression in fields.items()}).reset_index()
+        frames.append(frame)
+        print(f"loaded execution quotes for {min(offset + len(batch), len(instruments))}/{len(instruments)} instruments")
+    result = pd.concat(frames, ignore_index=True)
+    result["datetime"] = pd.to_datetime(result["datetime"]).dt.normalize()
+    result["instrument"] = result["instrument"].astype(str)
+    result = attach_listing_age_sessions(result, listing_spans, provider_calendar)
+    return result.sort_values(["datetime", "instrument"], kind="stable").reset_index(drop=True)
+
+
 def market_state_frame(frame: pd.DataFrame, eligible: pd.Series) -> pd.DataFrame:
     """Aggregate close-known market state and build strictly trailing risk thresholds."""
 
@@ -5122,6 +5450,124 @@ def rank_factor_frame(frame: pd.DataFrame) -> pd.DataFrame:
     result["max_return_20_low"] = 1.0 - result["rank_max_return_20"]
     result["signed_volume_pressure_5"] = result["rank_signed_volume_pressure_5"]
     return result
+
+
+def attach_directional_minute_factors(
+    market: pd.DataFrame,
+    minute_features: pd.DataFrame,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Join close-known minute values and rank only the eligible cross-section."""
+
+    required_market = {
+        "datetime",
+        "instrument",
+        "open",
+        "close",
+        "quality_eligible",
+        "fundamental_quality_eligible",
+        "listing_seasoning_eligible",
+        "listing_age_sessions",
+    }
+    if missing := sorted(required_market - set(market.columns)):
+        raise ValueError("minute diagnostic market frame is missing columns: " + ", ".join(missing))
+    features = list(spec.get("features") or [])
+    direction_by_factor = {
+        str(item["name"]): str(item["diagnostic_direction"]) for item in features
+    }
+    if tuple(direction_by_factor) != MINUTE_FACTOR_NAMES:
+        raise ValueError("minute factor directions do not match the frozen feature order")
+    minute = minute_features.rename(columns={"symbol": "instrument", "trade_date": "datetime"}).copy()
+    minute["datetime"] = pd.to_datetime(minute["datetime"]).dt.normalize()
+    join_columns = [
+        "datetime",
+        "instrument",
+        "provider",
+        "minute_bars",
+        "complete_regular_session",
+        "minute_feature_eligible",
+        *MINUTE_FACTOR_NAMES,
+    ]
+    result = market.merge(
+        minute[join_columns],
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    result["minute_feature_eligible"] = (
+        result["minute_feature_eligible"].astype("boolean").fillna(False).astype(bool)
+    )
+    coverage_contract = spec.get("data_coverage_gate") or {}
+    minimum_names = int(coverage_contract["minimum_eligible_names_per_cross_section"])
+    quality_eligible = result["quality_eligible"].fillna(False)
+    minute_eligible = quality_eligible & result["minute_feature_eligible"]
+    feature_start = minute["datetime"].min()
+    feature_end = minute["datetime"].max()
+    in_feature_span = result["datetime"].between(feature_start, feature_end)
+    quality_counts = (
+        result.loc[in_feature_span & quality_eligible].groupby("datetime", sort=True).size()
+    )
+    source_counts = (
+        result.loc[in_feature_span & quality_eligible & result["minute_bars"].notna()]
+        .groupby("datetime", sort=True)
+        .size()
+        .reindex(quality_counts.index, fill_value=0)
+    )
+    eligible_counts = (
+        result.loc[in_feature_span & minute_eligible]
+        .groupby("datetime", sort=True)
+        .size()
+        .reindex(quality_counts.index, fill_value=0)
+    )
+    source_coverage = source_counts / quality_counts
+    cross_section_dates = set(eligible_counts.loc[eligible_counts.ge(minimum_names)].index)
+    rank_eligible = minute_eligible & result["datetime"].isin(cross_section_dates)
+    for factor, direction in direction_by_factor.items():
+        raw_column = f"minute_raw_{factor}"
+        result[raw_column] = pd.to_numeric(result[factor], errors="coerce")
+        result[factor] = np.nan
+        ascending = direction == "higher"
+        scores = (
+            result.loc[rank_eligible]
+            .groupby("datetime", sort=False)[raw_column]
+            .rank(method="average", pct=True, ascending=ascending)
+        )
+        result.loc[scores.index, factor] = scores
+    median_source_coverage = float(source_coverage.median()) if len(source_coverage) else 0.0
+    p05_source_coverage = float(source_coverage.quantile(0.05)) if len(source_coverage) else 0.0
+    eligible_names_p05 = float(eligible_counts.quantile(0.05)) if len(eligible_counts) else 0.0
+    minimum_median_coverage = float(
+        coverage_contract["minimum_median_source_row_coverage"]
+    )
+    minimum_p05_coverage = float(coverage_contract["minimum_p05_source_row_coverage"])
+    coverage_gate_passed = bool(
+        median_source_coverage >= minimum_median_coverage
+        and p05_source_coverage >= minimum_p05_coverage
+        and eligible_names_p05 >= minimum_names
+    )
+    coverage = {
+        "feature_rows_in_requested_window": int(len(minute)),
+        "feature_instruments_in_requested_window": int(minute["instrument"].nunique()),
+        "feature_dates_in_requested_window": int(minute["datetime"].nunique()),
+        "feature_rows_matching_buyable_market": int(result["minute_bars"].notna().sum()),
+        "quality_eligible_dates_in_feature_span": int(len(quality_counts)),
+        "quality_and_minute_eligible_rows": int(minute_eligible.sum()),
+        "factor_rank_eligible_rows": int(rank_eligible.sum()),
+        "factor_rank_eligible_dates": int(len(cross_section_dates)),
+        "eligible_names_per_date_min": int(eligible_counts.min()) if len(eligible_counts) else 0,
+        "eligible_names_per_date_p05": eligible_names_p05,
+        "eligible_names_per_date_median": float(eligible_counts.median()) if len(eligible_counts) else 0.0,
+        "median_source_row_coverage": median_source_coverage,
+        "p05_source_row_coverage": p05_source_coverage,
+        "coverage_policy": {
+            "minimum_median_source_row_coverage": minimum_median_coverage,
+            "minimum_p05_source_row_coverage": minimum_p05_coverage,
+            "minimum_eligible_names_per_cross_section": minimum_names,
+        },
+        "coverage_gate_passed": coverage_gate_passed,
+        "listing_gate_applied_before_cross_sectional_ranking": True,
+    }
+    return result, coverage
 
 
 def add_billboard_holdout_factor(ranked: pd.DataFrame) -> pd.DataFrame:
@@ -7074,6 +7520,33 @@ def summarize_factor_diagnostics(
     )
 
 
+def unavailable_factor_diagnostic_summary(factor: str, hold_days: int) -> dict[str, Any]:
+    """Represent a frozen factor with no valid cross-sectional cohorts."""
+
+    return {
+        "factor": str(factor),
+        "diagnostic_status": "no_valid_cross_sectional_cohorts",
+        "cohorts": 0,
+        "mean_rank_ic": None,
+        "median_rank_ic": None,
+        "positive_rank_ic_rate": None,
+        "mean_top_minus_bottom_gross_return": None,
+        "mean_forward_gross_return_by_factor_quintile": {},
+        "topk": return_metrics(pd.DataFrame(), hold_days),
+        "topk_tail_risk": {
+            "p01_net_return": None,
+            "p05_net_return": None,
+            "median_net_return": None,
+            "negative_return_rate": None,
+            "below_minus_5pct_rate": None,
+            "below_minus_10pct_rate": None,
+            "worst_net_return": None,
+            "worst_cohorts": [],
+        },
+        "by_signal_year": {},
+    }
+
+
 def factor_stability_decision(
     summary: dict[str, Any],
     *,
@@ -8608,6 +9081,34 @@ def load_rolling_window_semantics_audits(experiment_root: Path) -> list[dict[str
     return audits
 
 
+def load_minute_factor_coverage_audits(experiment_root: Path) -> list[dict[str, Any]]:
+    """Read no-return minute-universe coverage failures for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(experiment_root.expanduser().glob("*_minute_factor_coverage_audit.json")):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if audit.get("status") != "insufficient_data_coverage":
+            continue
+        coverage = audit.get("coverage") or {}
+        feature_run = audit.get("feature_run") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "provider": str(feature_run.get("provider", "—")),
+                "feature_run_id": str(feature_run.get("run_id", "—")),
+                "median_source_row_coverage": coverage.get("median_source_row_coverage"),
+                "p05_source_row_coverage": coverage.get("p05_source_row_coverage"),
+                "eligible_names_per_date_p05": coverage.get("eligible_names_per_date_p05"),
+                "forward_return_fields_read": bool(audit.get("forward_return_fields_read", True)),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def pre_complete_window_invalid_factors(run_id: str, factors: Iterable[str]) -> set[str]:
     """Identify factor rows invalidated by the fixed full-window semantics audit."""
 
@@ -9376,6 +9877,7 @@ def render_three_day_research_report(
     prospective_factor_ledger: dict[str, Any] | None = None,
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
+    minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -9487,6 +9989,35 @@ def render_three_day_research_report(
                     failed=audit["failed_factor_count"],
                     forward="是" if audit["forward_return_fields_read"] else "否",
                     conclusion=conclusion,
+                )
+            )
+        lines.append("")
+    if minute_factor_coverage_audits:
+        lines.extend(
+            [
+                "",
+                "## 分钟因子数据覆盖门禁",
+                "",
+                "本节记录在读取任何未来收益前被拦截的分钟数据集；四只验收股票或不完整自选池不能充当全市场横截面诊断。",
+                "",
+                "| 审计 | 来源 / 特征运行 | 覆盖率中位数 | 覆盖率 P5 | 合格名称数 P5 | 读取未来收益 | 结论 |",
+                "| --- | --- | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        for audit in minute_factor_coverage_audits:
+            lines.append(
+                "| {run_id} | {provider} / {feature_run} | {median} | {p05} | {names} | {forward} | 覆盖不足，停止诊断 |".format(
+                    run_id=audit["run_id"],
+                    provider=audit["provider"],
+                    feature_run=audit["feature_run_id"],
+                    median=_percent(audit["median_source_row_coverage"]),
+                    p05=_percent(audit["p05_source_row_coverage"]),
+                    names=(
+                        "—"
+                        if audit["eligible_names_per_date_p05"] is None
+                        else f"{float(audit['eligible_names_per_date_p05']):.1f}"
+                    ),
+                    forward="是" if audit["forward_return_fields_read"] else "否",
                 )
             )
         lines.append("")
@@ -10195,6 +10726,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     no_eligible_studies = load_no_eligible_studies(experiment_root)
     factor_diagnostics = load_factor_diagnostics(experiment_root)
     rolling_window_semantics_audits = load_rolling_window_semantics_audits(experiment_root)
+    minute_factor_coverage_audits = load_minute_factor_coverage_audits(experiment_root)
     factor_stability_audits = load_factor_stability_audits(experiment_root)
     factor_topk_viability_audits = load_factor_topk_viability_audits(experiment_root)
     event_factor_holdouts = load_event_factor_holdouts(experiment_root)
@@ -10240,6 +10772,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         prospective_factor_ledger=prospective_factor_ledger,
         quarterly_event_capacity_audits=quarterly_event_capacity_audits,
         rolling_window_semantics_audits=rolling_window_semantics_audits,
+        minute_factor_coverage_audits=minute_factor_coverage_audits,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -10265,6 +10798,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "no_eligible_studies": len(no_eligible_studies),
         "factor_diagnostics": len(factor_diagnostics),
         "rolling_window_semantics_audits": len(rolling_window_semantics_audits),
+        "minute_factor_coverage_audits": len(minute_factor_coverage_audits),
         "factor_stability_audits": len(factor_stability_audits),
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
@@ -10860,6 +11394,209 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         "audit_path": str(destination.resolve()),
         "factor_count": len(summaries),
         "top_factors_by_development_rank_ic": summaries[: min(10, len(summaries))],
+    }
+
+
+def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen five-factor minute diagnostic on development data only."""
+
+    feature_run_path = Path(args.feature_run).expanduser()
+    provider_uri = Path(args.provider_uri).expanduser()
+    fundamental_path = Path(args.fundamentals).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    manifest, spec, minute_features, chain = load_minute_feature_run(feature_run_path)
+    holding = spec["holding_protocol"]
+    diagnostic_protocol = spec["diagnostic_protocol"]
+    start = str(diagnostic_protocol["development_start"])
+    end = str(diagnostic_protocol["development_end"])
+    hold_days = int(holding["holding_period_trading_days"])
+    topk = int(holding["topk"])
+    open_cost = float(holding["open_cost"])
+    close_cost = float(holding["close_cost"])
+    max_quality_age_days = int(spec["universe_contract"]["maximum_quality_age_days"])
+
+    selected_features = minute_features.loc[
+        minute_features["trade_date"].between(pd.Timestamp(start), pd.Timestamp(end))
+    ].copy()
+    if selected_features.empty:
+        raise ValueError("minute feature run has no rows inside the frozen 2019-2025 development window")
+    price_basis_metadata = research_price_basis_metadata(provider_uri)
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_execution_data(provider_uri, start, end, args.batch_size)
+    if pd.Timestamp(market["datetime"].max()) > pd.Timestamp(end):
+        raise ValueError("minute diagnostic loaded market rows after the frozen development end")
+    market = attach_quality_asof(market, fundamentals, max_age_days=max_quality_age_days)
+    ranked, coverage = attach_directional_minute_factors(market, selected_features, spec)
+    if not coverage["coverage_gate_passed"]:
+        run_id = _timestamp()
+        coverage_audit = {
+            "run_id": run_id,
+            "status": "insufficient_data_coverage",
+            "purpose": "minute_factor_coverage_gate_before_forward_returns",
+            "feature_run": {
+                "run_id": manifest.get("run_id"),
+                "provider": manifest.get("provider"),
+                "path": str(chain["feature_run_path"]),
+                "sha256": chain["feature_run_sha256"],
+                "factor_spec_path": str(chain["factor_spec_path"]),
+                "factor_spec_sha256": chain["factor_spec_sha256"],
+            },
+            "quality_gate": {
+                "source": str(fundamental_path.resolve()),
+                "sha256": file_sha256(fundamental_path),
+                "max_quality_age_days": max_quality_age_days,
+                "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+                "listing_gate_applied_before_cross_sectional_ranking": True,
+            },
+            "data": {
+                "provider_uri": str(provider_uri.resolve()),
+                **price_basis_metadata,
+                "development_start": start,
+                "development_end": end,
+            },
+            "coverage": coverage,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+            "limitations": [
+                "This record stops before entry, exit, or forward-return fields are formed.",
+                "A small acceptance list or incomplete historical universe cannot be used as a cross-sectional factor diagnostic.",
+                "Coverage thresholds were frozen before any licensed minute-factor return was observed.",
+            ],
+        }
+        experiment_root.mkdir(parents=True, exist_ok=True)
+        destination = experiment_root / f"{run_id}_minute_factor_coverage_audit.json"
+        _atomic_write_text(
+            destination,
+            json.dumps(coverage_audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+        )
+        return {
+            "status": "insufficient_data_coverage",
+            "audit_path": str(destination.resolve()),
+            "forward_return_fields_read": False,
+            "coverage": coverage,
+        }
+    forward_returns = forward_factor_return_frame(ranked, hold_days)
+    computed = summarize_factor_diagnostics(
+        forward_returns,
+        MINUTE_FACTOR_NAMES,
+        hold_days=hold_days,
+        topk=topk,
+        open_cost=open_cost,
+        close_cost=close_cost,
+    )
+    computed_names = {str(item["factor"]) for item in computed}
+    summaries = [
+        *computed,
+        *[
+            unavailable_factor_diagnostic_summary(factor, hold_days)
+            for factor in MINUTE_FACTOR_NAMES
+            if factor not in computed_names
+        ],
+    ]
+    feature_directions = {
+        str(item["name"]): str(item["diagnostic_direction"])
+        for item in spec["features"]
+    }
+    run_id = _timestamp()
+    feature_run_path = chain["feature_run_path"]
+    feature_output_path = chain["feature_output_path"]
+    factor_spec_path = chain["factor_spec_path"]
+    source_snapshot_path = chain["source_snapshot_path"]
+    alignment_path = chain["alignment_path"]
+    acceptance_snapshot_path = chain["acceptance_snapshot_path"]
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": "development_only_preregistered_minute_factor_diagnostic_research_not_investment_advice",
+        "factor_catalog": list(MINUTE_FACTOR_NAMES),
+        "factor_directions": feature_directions,
+        "strategy_timing": {
+            "universe": "buyable_main_chinext",
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
+            "holding_period_trading_days": hold_days,
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": "minute features known after the signal-session close",
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "diagnostic_topk": topk,
+            "open_cost": open_cost,
+            "close_cost": close_cost,
+            "parameters_read_from_preregistration": True,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": max_quality_age_days,
+            "fundamental_eligible_rows_before_listing_gate": int(
+                market["fundamental_quality_eligible"].fillna(False).sum()
+            ),
+            "eligible_rows_after_listing_gate": int(market["quality_eligible"].fillna(False).sum()),
+            "fundamental_rows_excluded_by_listing_gate": int(
+                (
+                    market["fundamental_quality_eligible"].fillna(False)
+                    & ~market["listing_seasoning_eligible"].fillna(False)
+                ).sum()
+            ),
+        },
+        "minute_features": {
+            "provider": manifest.get("provider"),
+            "feature_run_id": manifest.get("run_id"),
+            "feature_run_path": str(feature_run_path),
+            "feature_run_sha256": chain["feature_run_sha256"],
+            "feature_output_path": str(feature_output_path),
+            "feature_output_file_sha256": file_sha256(feature_output_path),
+            "factor_spec_path": str(factor_spec_path),
+            "factor_spec_sha256": chain["factor_spec_sha256"],
+            "source_snapshot_path": str(source_snapshot_path),
+            "source_snapshot_sha256": file_sha256(source_snapshot_path),
+            "alignment_path": str(alignment_path),
+            "alignment_sha256": file_sha256(alignment_path),
+            "acceptance_snapshot_path": str(acceptance_snapshot_path),
+            "acceptance_snapshot_sha256": file_sha256(acceptance_snapshot_path),
+            "manifest_rows": int((manifest.get("output") or {}).get("rows") or 0),
+            "manifest_eligible_rows": int((manifest.get("output") or {}).get("eligible_rows") or 0),
+            "development_rows_used": int(len(selected_features)),
+            "rows_outside_development_window_ignored": int(len(minute_features) - len(selected_features)),
+            "forward_return_fields_stored": False,
+            "selection_or_promotion_allowed": False,
+            **coverage,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            **price_basis_metadata,
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "development_end": end,
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "complete_forward_name_observations": int(len(forward_returns)),
+            "test_period_used_for_factor_design": False,
+        },
+        "ranking_by_development_rank_ic": summaries,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "This diagnoses only the five directions frozen before minute returns were observed; it does not choose weights or create a stock list.",
+            "A factor with no valid cross-sectional cohorts remains recorded as unavailable and fails the existing stability and Top-3 gates.",
+            "Only a separately preregistered combination of factors that pass both fixed gates may be evaluated later.",
+            "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
+            "Raw minute semantics are accepted and fingerprinted, but ordinary limit queues, suspensions, queue priority, and market impact are not simulated exactly.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_factor_diagnostic.json"
+    _atomic_write_text(destination, json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n")
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_count": len(summaries),
+        "computed_factor_count": len(computed),
+        "unavailable_factors": [
+            factor for factor in MINUTE_FACTOR_NAMES if factor not in computed_names
+        ],
+        "top_factors_by_development_rank_ic": computed[: min(5, len(computed))],
     }
 
 
@@ -12632,6 +13369,20 @@ def parse_args() -> argparse.Namespace:
         help="optional exact predeclared factor to diagnose; repeat to run an explicitly isolated factor set",
     )
 
+    minute_factor_diagnostic = subparsers.add_parser(
+        "minute-factor-diagnostic",
+        help="diagnose all five frozen one-minute factors under the fixed three-day protocol",
+    )
+    minute_factor_diagnostic.add_argument(
+        "--feature-run",
+        required=True,
+        help="immutable a_share_minute_feature_run manifest produced by a_share_rich_data.py",
+    )
+    minute_factor_diagnostic.add_argument("--provider-uri", default=str(DEFAULT_PROVIDER_URI))
+    minute_factor_diagnostic.add_argument("--fundamentals", default=str(DEFAULT_FUNDAMENTALS))
+    minute_factor_diagnostic.add_argument("--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT))
+    minute_factor_diagnostic.add_argument("--batch-size", type=int, default=500)
+
     rolling_window_semantics = subparsers.add_parser(
         "rolling-window-semantics-audit",
         help="verify that declared rolling fields stay missing until their full history exists, without returns",
@@ -13194,6 +13945,8 @@ def main() -> int:
         report = run_research(args)
     elif args.command == "factor-diagnostic":
         report = run_factor_diagnostic(args)
+    elif args.command == "minute-factor-diagnostic":
+        report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":
         report = run_rolling_window_semantics_audit(args)
     elif args.command == "factor-stability-audit":

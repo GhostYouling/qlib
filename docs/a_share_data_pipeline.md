@@ -1111,4 +1111,24 @@ python scripts/a_share_rich_data.py build-minute-features \
 
 输出 Parquet 位于 `data/derived/a_share/rich/minute_features/v1/`，运行清单位于 `data/metadata/rich_data/feature_runs/`。清单同时保存原始快照、口径确认和预注册文件的哈希，并明确记录 `forward_return_fields_read=false`、`selection_or_promotion_allowed=false`。此步骤仅生成当日收盘已知特征；后续关联诊断仍须使用固定 2019–2025 开发期、三日非重叠 cohort、Top‑3、万一佣金和卖出印花税门槛。任何方向失败，都不能在同一历史上反向或换窗口补测。
 
+不能用四只验收股票或自选小名单直接计算 Rank IC。预注册的数据代表性门禁要求：在特征首尾日期之间，以当日质量合格且上市满 20 个本地交易日的可持有股票为分母，分钟源行覆盖率中位数至少 95%、P5 至少 90%，并且每个可诊断截面至少有 50 个完整合格名称。运行统一分钟诊断：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py minute-factor-diagnostic \
+  --feature-run data/metadata/rich_data/feature_runs/<feature-run>.json
+```
+
+该命令不提供日期、方向、持有期、TopK、成本或财务新鲜度参数；全部从预注册文件读取（财务最大年龄固定 550 天），并一次运行全部五项，防止看过一部分结果后选择性修改。它会重新核验验收快照、口径确认、批量快照、特征文件和预注册文件的完整哈希链，使用轻量日线执行报价附加公告点时质量门禁，并在质量/上市门禁后才做分钟因子横截面方向排名。若覆盖不足，命令只写入 `*_minute_factor_coverage_audit.json`，记录 `forward_return_fields_read=false` 后停止；该拒绝记录会出现在三日研究报告中。
+
+覆盖通过时，输出沿用标准 `*_factor_diagnostic.json`，随后必须运行既有两道固定审计：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<run>_factor_diagnostic.json
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<run>_factor_diagnostic.json
+```
+
+任一因子没有有效横截面时也会作为 `no_valid_cross_sectional_cohorts` 留在诊断中，而不是被静默删除。只有同时通过跨年度关联稳定性与 Top‑3 可行性门禁的因子，才允许根据已记录结果另写一份组合预注册；诊断本身始终 `selection_or_promotion_allowed=false`，不会生成选股或仓位。
+
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。

@@ -3,6 +3,16 @@
   "kind": "a_share_minute_factor_preregistration",
   "status": "frozen_before_minute_data_observed",
   "preregistered_on": "2026-07-14",
+  "protocol_amendment_history": [
+    {
+      "amended_on": "2026-07-14",
+      "change": "Added structured development dates, fixed 550-day quality age, and source-coverage gates; feature formulas and directions were unchanged.",
+      "local_snapshot_manifest_count_before_change": 0,
+      "local_alignment_confirmation_count_before_change": 0,
+      "local_minute_feature_run_count_before_change": 0,
+      "minute_factor_returns_observed_before_change": false
+    }
+  ],
   "purpose": "Test five close-known one-minute path hypotheses for the fixed three-session A-share research protocol without observing minute-factor returns first.",
   "holding_protocol": {
     "signal_time": "after_signal_session_close",
@@ -17,6 +27,7 @@
   "universe_contract": {
     "holding_universe": "buyable_main_chinext",
     "quality_data": "announcement_asof_only",
+    "maximum_quality_age_days": 550,
     "minimum_listing_sessions": 20,
     "point_in_time_membership_required": true
   },
@@ -62,8 +73,17 @@
       "hypothesis": "Lower intraday path volatility reduces short-horizon tail risk for otherwise eligible stocks."
     }
   ],
+  "data_coverage_gate": {
+    "source_row_coverage_denominator": "quality_eligible_buyable_main_chinext_rows_between_first_and_last_feature_dates",
+    "minimum_median_source_row_coverage": 0.95,
+    "minimum_p05_source_row_coverage": 0.9,
+    "minimum_eligible_names_per_cross_section": 50,
+    "failed_gate_policy": "write_coverage_audit_without_reading_forward_returns"
+  },
   "diagnostic_protocol": {
-    "development_window": "2019-01-01_through_2025-12-31_if_licensed_coverage_allows",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "licensed_coverage_may_be_shorter_but_dates_may_not_extend_later": true,
     "minimum_observed_years": 5,
     "minimum_non_overlapping_cohorts": 200,
     "association_gate": "overall_and_each_year_mean_rank_ic_positive; positive_rank_ic_share_above_0.5; top3_minus_bottom3_mean_gross_return_positive",
