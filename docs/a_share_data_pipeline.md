@@ -584,6 +584,30 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 该聚合已按预注册版本完成。`20260714T091316Z_factor_diagnostic.json` 仅包含 `compression_consensus_min`：560 个非重叠 cohort 的平均 Rank IC 为 **+0.0457**，正 IC 比例 **64.3%**，且 2019–2025 每一年的平均 IC 都为正；但最高 3 只相对最低 3 只的平均毛收益差为 **−1.90%**，未通过极端篮子方向门槛。Top‑3 扣费累计收益虽为 **+55.60%**，最大回撤却达到 **−51.82%**，2021、2023 和 2024 年的扣费收益分别为负。`20260714T091342Z` 的稳定性和 Top‑3 可行性审计均没有合格因子，因此该非补偿式压缩共识被淘汰：它显示全横截面存在弱正单调关系，但最高分尾部不具备稳定可交易性；不得根据结果改成均值、几何平均、乘积、阈值组合、反向或替换输入重测。
 
+在既有日线字段覆盖已接近饱和、分钟供应商尚无本地验收快照的条件下，下一项机制独立假设预注册为 `max_return_20_low`：
+
+```text
+raw_max_return_20 = Max(close / Ref(close, 1) - 1, 20)
+max_return_20_low = 1 - cross_sectional_percentile_rank(raw_max_return_20)
+```
+
+20 个交易日包含信号日，输入使用本地前复权收盘价；不足 20 日或原始值无效时因子缺失。高值方向固定，表示过去约一个月没有出现极端正收益日。该方向源自 Bali、Cakici 与 Whitelaw 的 [MAX 彩票偏好研究](https://doi.org/10.1016/j.jfineco.2010.08.014) 及 [中国市场 MAX 证据](https://doi.org/10.1016/j.najef.2021.101475)：高 MAX 股票后续回报较低。原研究主要使用月度形成/持有期，并不能证明三日预测，因此本轮只检验把该机制转移到“收盘信号、次日开盘进入、第 3 日收盘退出”后是否仍成立；不测试 5/10/60 日窗口、最大负收益、绝对收益、均值或与波动率组合。
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
+  --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
+  --hold-days 3 --topk 3 --open-cost 0.00012 --close-cost 0.00062 \
+  --factor max_return_20_low
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor max_return_20_low
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json> \
+  --factor max_return_20_low
+```
+
+沿用至少 5 年、200 个非重叠 cohort、总体与逐年 IC 为正、正 IC 比例超过 50%、Top‑3/Bottom‑3 毛差为正、Top‑3 总体及逐年扣费收益为正且最大回撤不差于 −20% 的固定门槛。失败即淘汰三日低 MAX 方向；不得根据结果反向、改窗口或把论文的月度结果当成本项目验证。
+
 如果固定权重因子库和市场状态都不能通过稳定性门槛，可使用三日滚动模型审计来**检验**有限非线性交互，而不是继续事后微调权重。它使用同一组收盘可知因子、下一交易日开盘进入和第 3 个交易日收盘退出；Ridge、浅层 LightGBM 回归和浅层 LightGBM LambdaRank 均在每个评估年开始前用此前最多 336 个非重叠信号日重新训练。训练样本对每个信号日用与收益标签无关的确定性哈希最多取 384 只股票；LambdaRank 只在训练样本内按每个信号日的后续收益分为五档，直接学习横截面排序，绝不把未来标签带入评分时点。
 
 默认审计还将每种模型与三个**预先固定、收盘可知**的市场状态组合：始终交易、20 日广度为正、以及“20 日广度为正且波动不高于严格追溯的 75 分位”。这不是在全部状态中事后挑选；三种状态均来自已有的因子研究定义，并在同一开发期规则下和模型一起参与选择。停用状态时该轮完整按现金记录，不会用别的日期或股票替换。
