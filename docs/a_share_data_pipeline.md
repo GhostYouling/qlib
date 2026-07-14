@@ -415,6 +415,14 @@ python scripts/a_share_short_horizon_factor_research.py insider-open-market-capa
 
 容量命令只读取事件、日历、上市活动区间和季度质量，不加载价格或远期收益，并只能成功写出一次。容量不足即停止；容量通过也仅允许在读取价格前另行冻结一次精确的高买入占比收益诊断，不代表因子有效或可用于选股。
 
+唯一一次容量审计已完成为 `20260714T194453Z_insider_open_market_capacity_audit.json`（SHA-256 `fa4792b836fe4769dc0cb10ccbe852bea2b8e487bfad55c0aff516bd3c399081`）。三日事件展开后有 37,876 行候选值，季度质量与上市门槛后保留 9,049 行、530 个有值事件日，最终形成 **380/200** 个潜在完整 cohort；2019–2025 分别为 41、59、69、67、52、45、47。审计明确记录 `price_fields_loaded=[]`、`forward_return_fields_read=false` 和 `selection_or_promotion_allowed=false`。这只解锁一次预注册收益诊断，不是有效性或可交易性证据。
+
+唯一一次收益诊断已在读取行情前冻结为 `docs/a_share_insider_open_market_diagnostic_preregistration.json`。它只允许 `insider_open_market_buy_share` 高值方向，固定 2019–2025、事件年龄 3 天、Top‑3、开/平仓成本 0.012%/0.062%、550 日季度质量与上市满 20 会话，并绑定容量审计、事件快照和季度质量快照指纹。专用命令不暴露日期、方向、因子、年龄、成本、质量或 Top‑3 参数，只能运行一次，并必须随后执行完整默认稳定性与 Top‑3 可行性审计：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py insider-open-market-diagnostic
+```
+
 下一类独立假设是**首次股票回购计划公告**。公开清单一次覆盖 2005 年以来的 5,000 余条记录，脚本只请求首次计划记录日 `DIM_DATE`、计划回购占公告前一日总股本比例上限 `ZSZSX` 与计划金额上限 `JESX`；`UPDATEDATE`、实施进度、已回购股份与已回购金额都会在后续改变，故在请求、存储和评分中全部排除。公告时刻没有可靠的盘中时间，因此从公告后的下一本地交易日才生效，固定使用 3 个日历日窗口：
 
 ```bash

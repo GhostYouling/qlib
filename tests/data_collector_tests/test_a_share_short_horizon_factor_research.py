@@ -1618,6 +1618,40 @@ def test_restricted_unlock_join_is_close_known_on_or_after_event_date():
     assert next_session["restricted_share_unlock_effective_date"] == pd.Timestamp("2024-05-06")
 
 
+def test_insider_open_market_join_uses_synthetic_close_and_expires_by_calendar_age():
+    market = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"] * 4,
+            "datetime": pd.to_datetime(
+                ["2024-05-07", "2024-05-08", "2024-05-09", "2024-05-13"]
+            ),
+        }
+    )
+    events = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "event_date": pd.to_datetime(["2024-05-08"]),
+            "insider_open_market_latest_transaction_date": pd.to_datetime(["2024-04-30"]),
+            "insider_open_market_buy_share": [0.75],
+            "insider_open_market_event_count": [4],
+        }
+    )
+    joined = RESEARCH.attach_insider_open_market_events_asof(
+        market, events, max_age_days=3
+    )
+    before = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-07")].iloc[0]
+    effective = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-08")].iloc[0]
+    expired = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-13")].iloc[0]
+    assert not before["insider_open_market_available"]
+    assert effective["insider_open_market_available"]
+    assert effective["insider_open_market_effective_date"] == pd.Timestamp("2024-05-08")
+    assert effective["insider_open_market_buy_share"] == pytest.approx(0.75)
+    assert effective["insider_open_market_latest_transaction_date"] == pd.Timestamp(
+        "2024-04-30"
+    )
+    assert not expired["insider_open_market_available"]
+
+
 def test_repurchase_plan_normalization_excludes_later_implementation_fields():
     rows = [
         {
@@ -3341,6 +3375,78 @@ def test_restricted_share_unlock_diagnostic_is_capacity_bound_and_one_time(
     assert captured["diagnostic_purpose"] == RESEARCH.RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_PURPOSE
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_restricted_share_unlock_diagnostic(args)
+
+
+def test_insider_open_market_diagnostic_is_capacity_bound_and_one_time(
+    tmp_path, monkeypatch
+):
+    spec = RESEARCH.load_insider_open_market_diagnostic_preregistration()
+    assert spec["factor"]["name"] == RESEARCH.INSIDER_OPEN_MARKET_FACTOR_NAME
+    assert spec["factor"]["raw_direction"] == "higher_is_better"
+    assert spec["capacity_audit"]["potential_complete_cohorts"] == 380
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_INSIDER_OPEN_MARKET_DIAGNOSTIC_SPEC.read_text(encoding="utf-8")
+    )
+    changed["factor"]["raw_direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_insider_open_market_diagnostic.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="frozen protocol"):
+        RESEARCH.load_insider_open_market_diagnostic_preregistration(changed_path)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_insider_open_market_diagnostic_sources",
+        lambda loaded: {"source_snapshots": {}, "capacity_audit": {}},
+    )
+    captured = {}
+
+    def fake_diagnostic(args):
+        captured.update(vars(args))
+        run_id = "insider-open-market-diagnostic"
+        path = tmp_path / f"{run_id}_factor_diagnostic.json"
+        write_json_record(
+            path,
+            {
+                "run_id": run_id,
+                "status": "completed",
+                "purpose": RESEARCH.INSIDER_OPEN_MARKET_DIAGNOSTIC_PURPOSE,
+                "factor_catalog": [RESEARCH.INSIDER_OPEN_MARKET_FACTOR_NAME],
+                "data": {
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                    "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
+                },
+                "quality_gate": {
+                    "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
+                },
+                "insider_open_market_events": {
+                    "sha256": spec["source_snapshots"][
+                        "insider_open_market_transactions"
+                    ]["sha256"],
+                    "max_insider_open_market_age_days": 3,
+                    "score_direction": "higher raw direct-market buy share is better",
+                    "identity_role_price_amount_or_return_fields_stored": False,
+                    "synthetic_availability_residual_late_filing_risk_preserved": True,
+                },
+                "selection_or_promotion_allowed": False,
+            },
+        )
+        return {"status": "completed", "audit_path": str(path), "factor_count": 1}
+
+    monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
+    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path), batch_size=123)
+    result = RESEARCH.run_insider_open_market_diagnostic(args)
+    assert result["factor_count"] == 1
+    assert captured["factor"] == [RESEARCH.INSIDER_OPEN_MARKET_FACTOR_NAME]
+    assert captured["max_insider_open_market_age_days"] == 3
+    assert captured["hold_days"] == 3
+    assert captured["topk"] == 3
+    assert captured["open_cost"] == pytest.approx(0.00012)
+    assert captured["close_cost"] == pytest.approx(0.00062)
+    assert captured["diagnostic_purpose"] == RESEARCH.INSIDER_OPEN_MARKET_DIAGNOSTIC_PURPOSE
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_insider_open_market_diagnostic(args)
 
 
 def test_institutional_survey_event_diagnostic_is_capacity_bound_and_one_time(
