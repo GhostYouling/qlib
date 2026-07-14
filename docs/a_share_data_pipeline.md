@@ -781,6 +781,37 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 因此“五日盘中买盘延续”高值方向正式停止，不进入聚合或当前选股，也不反向测试低值、改变窗口或添加低波动/动量/成交量过滤器。最差 cohort 常同时具有极高 20 日动量、极低波动/振幅排名和高换手，只用于解释为什么极端 Top‑3 失效，不能转化为事后救援规则。该失败进一步支持下一阶段应取得真正的一分钟尾盘路径，而不是继续从日 OHLC 摘要中枚举相近公式。
 
+### 方向性收益序列依赖单因子
+
+继续设计日线机制前，先完成了不读取未来收益的同义性审计 `docs/a_share_directional_serial_dependence_uniqueness_audit.json`（SHA‑256 `1c41f2419713bcabda0b555d710dc5dac7718b364eb4244b596883c0e115c1d0`）。审计使用 2025 年 4,610 只历史可持有股票、243 个会话和 1,108,238 行 close-known 因子值；绝对日横截面 Spearman 相关中位数达到 0.80 即视为近同义。由此在收益访问前淘汰两个备选：低 `20 日绝对收益和/累计换手` 与 `liquidity_5` 的计分方向相关中位数为 **0.803605**；高 `20 日最差单日收益` 与 `volatility_low_20` 为 **0.805**。二者不得再做收益诊断或换公式救援。
+
+唯一通过独立性门禁的定义冻结在 `docs/a_share_directional_serial_dependence_preregistration.json`（SHA‑256 `aa7a356ce196f2cc72d7a7d1c4085f0063467c7d34e41f2679652a910ad96696`）：
+
+```text
+directional_serial_dependence_20 =
+  Sign(close / Ref(close, 1) - 1) *
+  (Corr(close / Ref(close, 1) - 1,
+        Ref(close / Ref(close, 1) - 1, 1), 20)
+   + 0 * Ref(close, 21))
+```
+
+高值同时覆盖两种预注册情形：当日上涨且收益序列正相关，代表上涨延续；当日下跌且收益序列负相关，代表下跌后的均值回归。它不看累计涨幅、波动大小或换手水平；对 35 个既有日线技术字段的最大绝对相关中位数只有 **0.139096**（`momentum_1`），有限值覆盖率为 99.8294%，每日唯一值中位数为 4,409。低相关仅证明不是明显重写，不代表有效。
+
+新表达式要求 20 对相邻收益和 21 个此前收盘。`20260714T204438Z_rolling_window_semantics_audit.json`（SHA‑256 `815911828c87f0288f45915feda26c8357261986efe982ee7160815981949f50`）在不读未来收益的情况下确认 31/31 个滚动字段通过：该因子前 21 个本地会话提前非空为 0，第 22 个会话才首次有效。收益前代码、公式和门槛随后以提交 `491d2116` 推送。专用命令不允许覆盖日期、方向、窗口、成本、质量源、持有期、TopK 或因子子集：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py rolling-window-semantics-audit
+python scripts/a_share_short_horizon_factor_research.py directional-serial-dependence-diagnostic
+python scripts/a_share_short_horizon_factor_research.py factor-stability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json>
+python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-audit \
+  --diagnostic data/experiments/short_horizon/<本轮_factor_diagnostic.json>
+```
+
+唯一正式诊断为 `20260714T205038Z_factor_diagnostic.json`（SHA‑256 `d726965cb83fe445c0888655d6a36f7a7e41a26e2b54a33d0e88f59b3d465285`）。560 个非重叠 cohort 的平均/中位 Rank IC 为 **+0.00034/−0.00269**，正 IC 比例 **48.21%**，Top‑3 相对 Bottom‑3 的平均毛差 **−0.249%**；2019、2020 年平均 IC 为负，其余年份虽略正但接近零。Top‑3 扣费累计收益 **−96.31%**、最大回撤 **−98.08%**、胜率 46.79%，仅 2019 年年度篮子收益为正。`20260714T205053Z_factor_stability_audit.json` 与 `20260714T205054Z_factor_topk_viability_audit.json`（SHA‑256 `90ad9db60fa240d4a8ecf892b01abc455f75949ac7c6415bc0ab4e32170c4cd4` / `e6ddab496128006d00e497ca3da3b4a1538bcb0e18aa9649a0933d06e5999fb8`）均为 **0/1**。
+
+因此该高值方向正式淘汰，不进入聚合、当前评分或选股。不得在相同历史上反向、改窗口、把当日收益符号换成幅度、增加动量/低波动/换手/质量过滤，或只选表现较好的年份。日线摘要中暂不继续枚举相近路径公式；下一项仍优先等待已冻结的 JQData 专业日级大单分类验收，其后才是有合法授权的全市场一分钟特征。
+
 在为稀疏季度公告事件写收益回测前，先运行**无收益样本容量审计**。它只读取季度报告字段、公告后下一交易日、买入股票池活动区间和交易日历；不会加载开盘、收盘或任何未来收益。事件仍固定在非重叠三日网格上，必须有完整 Top‑3，且最大可用 cohort 至少达到既有 200 门槛，才允许继续预注册收益审计：
 
 ```bash
