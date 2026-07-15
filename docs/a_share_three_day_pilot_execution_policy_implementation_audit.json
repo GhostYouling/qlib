@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_pilot_execution_policy_implementation_audit",
+  "status": "implemented_and_synthetic_tests_passed_before_any_lot_aware_factor_return",
+  "recorded_at": "2026-07-15T00:38:10Z",
+  "base_commit": "6b2e38de31ef4b82c44be977a6629f3815d7af73",
+  "policy": {
+    "path": "docs/a_share_three_day_pilot_execution_policy.json",
+    "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+    "prospective_only": true,
+    "existing_43_factor_frontier_retroactively_rerun": false,
+    "replaces_normalized_research_execution_gate": false
+  },
+  "implementation": {
+    "path": "scripts/a_share_short_horizon_factor_research.py",
+    "future_daily_and_minute_diagnostics_apply_policy": true,
+    "actual_price_restored_with_same_row_factor": true,
+    "buy_quantity_rounded_down_to_100_share_lots": true,
+    "corporate_action_economic_units_preserved": true,
+    "fees_match_project_execution_rules": true,
+    "slippage_rates_each_side": [
+      0.0,
+      0.0005,
+      0.001,
+      0.002
+    ],
+    "primary_gate_slippage_rate_each_side": 0.001,
+    "blocked_slot_budget_reallocated": false,
+    "lower_rank_substitution_performed": false,
+    "daily_amount_used_only_for_after_outcome_capacity_audit": true,
+    "individual_raw_daily_prices_persisted": false,
+    "individual_trade_notionals_persisted": false
+  },
+  "verification": {
+    "test_file": "tests/data_collector_tests/test_a_share_short_horizon_factor_research.py",
+    "tests_passed": 213,
+    "tests_failed": 0,
+    "synthetic_scenarios": [
+      "a stock above the fixed slot's one-lot budget remains cash without a lower-rank replacement",
+      "ten-basis-point adverse slippage produces a worse result than the zero-slippage fee-only scenario",
+      "a restoration-factor change between entry and exit does not create an artificial corporate-action loss",
+      "a filled trade above one percent of same-session amount fails the capacity gate",
+      "a prospective viability decision requires the pilot ledger in addition to association and normalized execution evidence",
+      "an existing-frontier factor is rejected before forward-return construction can run"
+    ],
+    "unified_report_rendered": true,
+    "ruff_passed": true,
+    "py_compile_passed": true,
+    "skill_validation_passed": true
+  },
+  "research_result": {
+    "new_factor_returns_observed": false,
+    "existing_factor_returns_recomputed": false,
+    "new_factor_or_combination_evaluated": false,
+    "factor_aggregation_allowed": false,
+    "stock_scoring_or_selection_allowed": false,
+    "orders_or_allocations_allowed": false
+  }
+}

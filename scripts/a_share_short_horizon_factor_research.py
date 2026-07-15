@@ -218,6 +218,12 @@ DEFAULT_PROSPECTIVE_EXECUTION_POLICY = (
 PROSPECTIVE_EXECUTION_POLICY_SHA256 = (
     "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
 )
+DEFAULT_PILOT_EXECUTION_POLICY = (
+    REPO_ROOT / "docs" / "a_share_three_day_pilot_execution_policy.json"
+)
+PILOT_EXECUTION_POLICY_SHA256 = (
+    "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+)
 DEFAULT_BAOSTOCK_5M_RESTORATION_PROBE_AUDIT = (
     REPO_ROOT / "docs" / "a_share_baostock_5m_restoration_probe_audit.json"
 )
@@ -2310,6 +2316,78 @@ def require_prospective_execution_policy_compatibility(
         raise ValueError(
             "future factor diagnostics must match the frozen prospective execution policy"
         )
+
+
+def load_pilot_execution_policy(
+    path: Path = DEFAULT_PILOT_EXECUTION_POLICY,
+) -> dict[str, Any]:
+    """Load the prospective CNY 200,000 board-lot execution policy."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != PILOT_EXECUTION_POLICY_SHA256:
+        raise ValueError("three-day pilot execution-policy fingerprint mismatch")
+    policy = load_json_record(path, kind="a_share_three_day_pilot_execution_policy")
+    bindings = policy.get("bindings") or {}
+    scope = policy.get("effective_scope") or {}
+    portfolio = policy.get("portfolio") or {}
+    rules = policy.get("market_rules") or {}
+    slippage = policy.get("slippage_sensitivity") or {}
+    capacity = policy.get("capacity_policy") or {}
+    gate = policy.get("pilot_gate") or {}
+    expected_slippage = [0.0, 0.0005, 0.001, 0.002]
+    if (
+        policy.get("version") != 1
+        or policy.get("status")
+        != "prospective_only_frozen_before_any_lot_aware_factor_return"
+        or (bindings.get("research_execution_policy") or {}).get("sha256")
+        != PROSPECTIVE_EXECUTION_POLICY_SHA256
+        or scope.get("existing_frontier_retroactive_rerun_allowed") is not False
+        or scope.get("factor_or_branch_exemptions_allowed") is not False
+        or scope.get("post_result_policy_changes_allowed") is not False
+        or scope.get("replaces_research_execution_gate") is not False
+        or scope.get("requires_research_execution_gate_to_pass") is not True
+        or portfolio.get("initial_capital_cny") != 200000.0
+        or portfolio.get("topk") != 3
+        or portfolio.get("target_weight_per_registered_slot") != 0.05
+        or portfolio.get("maximum_entry_gross_exposure") != 0.15
+        or rules.get("buy_lot_size_shares") != 100
+        or rules.get("commission_rate_each_side") != 0.0001
+        or rules.get("commission_minimum_cny") != 0.0
+        or rules.get("transfer_fee_rate_each_side") != 0.00002
+        or rules.get("stamp_duty_rate_sell_only") != 0.0005
+        or list(slippage.get("rates_each_side") or []) != expected_slippage
+        or slippage.get("primary_gate_rate_each_side") != 0.001
+        or capacity.get("daily_amount_field") != "$amount"
+        or capacity.get("maximum_filled_trade_daily_amount_participation")
+        != 0.01
+        or gate.get("minimum_scheduled_signal_count") != 200
+        or gate.get("primary_slippage_net_cumulative_return_gt") != 0.0
+        or gate.get(
+            "every_observed_signal_calendar_year_primary_slippage_return_gt"
+        )
+        != 0.0
+        or gate.get("board_lot_affordable_opportunity_rate_gte") != 0.9
+        or gate.get("terminal_unresolved_position_count") != 0
+        or gate.get("entry_gross_cap_violation_count") != 0
+        or gate.get("filled_trade_amount_missing_count") != 0
+        or gate.get("maximum_filled_trade_daily_amount_participation_lte")
+        != 0.01
+        or gate.get("research_association_and_execution_gates_must_also_pass")
+        is not True
+        or gate.get("selection_or_promotion_allowed_from_pilot_gate_alone")
+        is not False
+    ):
+        raise ValueError("three-day pilot execution policy is inconsistent")
+    AShareExecutionRules(
+        lot_size=int(rules["buy_lot_size_shares"]),
+        commission_rate=float(rules["commission_rate_each_side"]),
+        commission_min=float(rules["commission_minimum_cny"]),
+        transfer_fee_rate=float(rules["transfer_fee_rate_each_side"]),
+        stamp_duty_rate=float(rules["stamp_duty_rate_sell_only"]),
+        max_gross_exposure=float(portfolio["maximum_entry_gross_exposure"]),
+        target_weight=float(portfolio["target_weight_per_registered_slot"]),
+    ).validate()
+    return policy
 
 
 def load_jqdata_moneyflow_data_contract(
@@ -11151,6 +11229,8 @@ def load_market_data(
         "high": "$high",
         "low": "$low",
         "volume": "$volume",
+        "amount": "$amount",
+        "price_factor": "$factor",
         "momentum_1": "$close/Ref($close, 1) - 1",
         "momentum_2": "$close/Ref($close, 2) - 1",
         "momentum_3": "$close/Ref($close, 3) - 1",
@@ -11297,6 +11377,8 @@ def load_market_execution_data(
         "low": "$low",
         "close": "$close",
         "volume": "$volume",
+        "amount": "$amount",
+        "price_factor": "$factor",
     }
     expressions = list(fields.values())
     frames: list[pd.DataFrame] = []
@@ -15462,6 +15544,8 @@ def factor_topk_viability_decision(
     )
     execution = summary.get("execution_aware_topk")
     execution_policy_applied = isinstance(execution, dict)
+    pilot = summary.get("pilot_execution_topk")
+    pilot_execution_policy_applied = isinstance(pilot, dict)
     if execution_policy_applied:
         execution = dict(execution)
         topk = {
@@ -15502,6 +15586,40 @@ def factor_topk_viability_decision(
         or execution.get("raw_daily_prices_persisted") is not False
     ):
         failures.append("prospective execution ledger identity or safeguards are invalid")
+    if execution_policy_applied and not pilot_execution_policy_applied:
+        failures.append("prospective pilot execution ledger is missing")
+    if pilot_execution_policy_applied:
+        pilot = dict(pilot)
+        pilot_policy = pilot.get("policy") or {}
+        pilot_primary = pilot.get("primary") or {}
+        pilot_gate = pilot.get("gate") or {}
+        if (
+            pilot.get("status")
+            != "completed_prospective_pilot_execution_ledger"
+            or pilot_policy.get("sha256") != PILOT_EXECUTION_POLICY_SHA256
+            or pilot_policy.get("research_execution_policy_sha256")
+            != PROSPECTIVE_EXECUTION_POLICY_SHA256
+            or pilot.get("primary_slippage_rate_each_side") != 0.001
+            or (pilot.get("portfolio") or {}).get(
+                "lower_rank_substitution_performed"
+            )
+            is not False
+            or (pilot.get("portfolio") or {}).get(
+                "blocked_slot_budget_reallocated"
+            )
+            is not False
+            or pilot.get("raw_daily_prices_persisted") is not False
+            or pilot.get("individual_trade_notionals_persisted") is not False
+        ):
+            failures.append("prospective pilot ledger identity or safeguards are invalid")
+        if pilot_gate.get("passed") is not True:
+            pilot_failures = list(pilot_gate.get("failures") or [])
+            failures.extend(
+                f"pilot execution gate failed: {failure}"
+                for failure in (
+                    pilot_failures or ["pilot gate did not pass without a reason"]
+                )
+            )
     rounds = int(topk.get("rounds") or 0)
     net_return = topk.get("net_cumulative_return")
     max_drawdown = topk.get("max_drawdown")
@@ -15542,6 +15660,12 @@ def factor_topk_viability_decision(
             if execution_policy_applied
             else None
         ),
+        "pilot_execution_policy_applied": pilot_execution_policy_applied,
+        "pilot_execution_policy_sha256": (
+            (pilot.get("policy") or {}).get("sha256")
+            if pilot_execution_policy_applied
+            else None
+        ),
         "failures": failures,
         "observed_calendar_years": list(annual_topk_net_returns),
         "annual_topk_net_cumulative_return": annual_topk_net_returns,
@@ -15551,6 +15675,44 @@ def factor_topk_viability_decision(
             "max_drawdown": None if max_drawdown is None else float(max_drawdown),
             "median_holdings": topk.get("median_holdings"),
         },
+        "pilot_execution_metrics": (
+            {
+                "initial_capital_cny": (
+                    (pilot.get("portfolio") or {}).get("initial_capital_cny")
+                ),
+                "primary_slippage_rate_each_side": pilot.get(
+                    "primary_slippage_rate_each_side"
+                ),
+                "filled_slot_count": (pilot_primary.get("entry") or {}).get(
+                    "filled_slot_count"
+                ),
+                "board_lot_affordable_opportunity_rate": (
+                    (pilot_primary.get("entry") or {}).get(
+                        "board_lot_affordable_opportunity_rate"
+                    )
+                ),
+                "net_cumulative_return": (
+                    (pilot_primary.get("performance") or {}).get(
+                        "net_cumulative_return"
+                    )
+                ),
+                "maximum_filled_trade_daily_amount_participation": (
+                    (
+                        (pilot_primary.get("capacity") or {}).get(
+                            "filled_trade_daily_amount_participation"
+                        )
+                        or {}
+                    ).get("maximum")
+                ),
+                "terminal_unresolved_position_count": (
+                    (pilot_primary.get("exit") or {}).get(
+                        "terminal_unresolved_position_count"
+                    )
+                ),
+            }
+            if pilot_execution_policy_applied
+            else None
+        ),
         "criteria": {
             "requires_factor_association_stability_screen": True,
             "minimum_executable_topk_cohorts": minimum_cohorts,
@@ -15561,6 +15723,9 @@ def factor_topk_viability_decision(
                 0 if execution_policy_applied else None
             ),
             "naive_fixed_horizon_topk_gate_alone_is_sufficient": False,
+            "requires_cny_200000_board_lot_slippage_capacity_gate": (
+                execution_policy_applied
+            ),
         },
     }
 
@@ -18416,6 +18581,7 @@ def render_three_day_research_report(
     research_frontier_audit: dict[str, Any] | None = None,
     execution_tail_realism_audit: dict[str, Any] | None = None,
     prospective_execution_policy: dict[str, Any] | None = None,
+    pilot_execution_policy: dict[str, Any] | None = None,
     baostock_5m_restoration_probe_audit: dict[str, Any] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
@@ -19686,6 +19852,34 @@ def render_three_day_research_report(
                 "",
             ]
         )
+    if pilot_execution_policy is not None:
+        portfolio = pilot_execution_policy.get("portfolio") or {}
+        market_rules = pilot_execution_policy.get("market_rules") or {}
+        slippage = pilot_execution_policy.get("slippage_sensitivity") or {}
+        capacity = pilot_execution_policy.get("capacity_policy") or {}
+        lines.extend(
+            [
+                "## 未来新因子 20 万元实盘可实现性门",
+                "",
+                (
+                    f"未来新诊断还必须按 {portfolio.get('initial_capital_cny', 0):,.0f} 元、"
+                    f"单股 {float(portfolio.get('target_weight_per_registered_slot', 0)):.0%}、"
+                    f"总入场仓位 {float(portfolio.get('maximum_entry_gross_exposure', 0)):.0%}、"
+                    f"{market_rules.get('buy_lot_size_shares', 0)} 股整手重新核算。"
+                ),
+                (
+                    f"正式门禁按买卖两侧各 {float(slippage.get('primary_gate_rate_each_side', 0)):.2%} "
+                    "不利滑点；买不起一手、现金不足或延期持仓占满仓位时保留现金，不替补或挪用槽位预算。"
+                ),
+                (
+                    "整手可负担机会率至少 90%，每笔已成交金额不得超过当日成交额的 "
+                    f"{float(capacity.get('maximum_filled_trade_daily_amount_participation', 0)):.0%}；"
+                    "它只能作为原关联门和成交门之外的附加门，不能单独产生选股。"
+                ),
+                "既有 43 因子不回跑；当前尚无新因子收益被该门禁读取。",
+                "",
+            ]
+        )
     if baostock_5m_restoration_probe_audit is not None:
         evidence = baostock_5m_restoration_probe_audit.get("evidence") or {}
         lines.extend(
@@ -19772,6 +19966,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     research_frontier_audit = load_research_frontier_audit()
     execution_tail_realism_audit = load_execution_tail_realism_audit()
     prospective_execution_policy = load_prospective_execution_policy()
+    pilot_execution_policy = load_pilot_execution_policy()
     baostock_5m_restoration_probe_audit = (
         load_baostock_5m_restoration_probe_audit()
     )
@@ -19829,6 +20024,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         research_frontier_audit=research_frontier_audit,
         execution_tail_realism_audit=execution_tail_realism_audit,
         prospective_execution_policy=prospective_execution_policy,
+        pilot_execution_policy=pilot_execution_policy,
         baostock_5m_restoration_probe_audit=baostock_5m_restoration_probe_audit,
     )
     output = Path(args.output).expanduser()
@@ -19863,6 +20059,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "research_frontier_audit": research_frontier_audit is not None,
         "execution_tail_realism_audit": execution_tail_realism_audit is not None,
         "prospective_execution_policy": prospective_execution_policy is not None,
+        "pilot_execution_policy": pilot_execution_policy is not None,
         "baostock_5m_restoration_probe_audit": (
             baostock_5m_restoration_probe_audit is not None
         ),
@@ -20189,6 +20386,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         open_cost=args.open_cost,
         close_cost=args.close_cost,
     )
+    pilot_policy = load_pilot_execution_policy()
     price_basis_manifest = require_research_price_basis(provider_uri)
     price_basis_manifest_path = provider_uri.expanduser().resolve() / PRICE_BASIS_MANIFEST_NAME
     fundamentals = load_fundamentals(fundamental_path)
@@ -20282,7 +20480,6 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             market, dividend_plan_events, max_age_days=args.max_dividend_plan_age_days
         )
     ranked = rank_factor_frame(market)
-    forward_returns = forward_factor_return_frame(ranked, args.hold_days)
     factor_catalog = [
         factor
         for factor in (
@@ -20312,6 +20509,22 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         # Preserve the user's first-seen order while preventing a duplicated
         # factor from masquerading as another independent test.
         factor_catalog = list(dict.fromkeys(requested_factors))
+    frontier_contract = load_research_frontier_contract()
+    existing_frontier_factors = {
+        str(factor)
+        for group in frontier_contract.get("evidence_groups") or []
+        for factor in group.get("expected_factors") or []
+    }
+    prohibited_retroactive_factors = sorted(
+        set(factor_catalog) & existing_frontier_factors
+    )
+    if prohibited_retroactive_factors:
+        raise ValueError(
+            "prospective execution policies stop before forward returns because the "
+            "requested diagnostic would retroactively rerun existing frontier factors: "
+            + ", ".join(prohibited_retroactive_factors)
+        )
+    forward_returns = forward_factor_return_frame(ranked, args.hold_days)
     summaries = summarize_factor_diagnostics(
         forward_returns,
         factor_catalog,
@@ -20327,6 +20540,12 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             ranked,
             str(summary["factor"]),
             policy=execution_policy,
+        )
+        summary["pilot_execution_topk"] = simulate_pilot_execution_topk(
+            ranked,
+            str(summary["factor"]),
+            execution_policy=execution_policy,
+            pilot_policy=pilot_policy,
         )
     run_id = _timestamp()
     audit = {
@@ -20639,6 +20858,16 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "applied_to_every_reported_factor": True,
             "existing_43_factor_frontier_retroactively_rerun": False,
         },
+        "pilot_execution_policy": {
+            "path": str(DEFAULT_PILOT_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
         "ranking_by_development_rank_ic": summaries,
         "forward_return_fields_read": True,
         "selection_or_promotion_allowed": False,
@@ -20648,7 +20877,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "A later factor library must be declared independently and evaluated with an untouched future period; this diagnostic does not validate a combined model.",
             "The fixed twenty-session listing gate removes the known IPO one-price queue regime but does not model ordinary limit-up queue priority or guarantee an opening fill.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "The prospective execution ledger conservatively blocks one-price adverse queues and nonpositive-volume fills, but daily bars still cannot reconstruct exact queue priority, partial fills, slippage, or market impact.",
+            "The prospective ledgers conservatively block adverse one-price queues, enforce board lots, and stress fixed slippage/amount participation, but daily bars still cannot reconstruct exact queue priority, partial fills, or realized market impact.",
         ],
     }
     preregistration = getattr(args, "diagnostic_preregistration", None)
@@ -21483,6 +21712,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
         open_cost=open_cost,
         close_cost=close_cost,
     )
+    pilot_policy = load_pilot_execution_policy()
     if int(protocol["minimum_listing_sessions"]) != MIN_LISTING_SESSIONS:
         raise ValueError("minute protocol conflicts with the fixed listing-seasoning gate")
 
@@ -21573,6 +21803,12 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             ranked,
             str(summary["factor"]),
             policy=execution_policy,
+        )
+        summary["pilot_execution_topk"] = simulate_pilot_execution_topk(
+            ranked,
+            str(summary["factor"]),
+            execution_policy=execution_policy,
+            pilot_policy=pilot_policy,
         )
     feature_directions = {
         str(item["name"]): str(item["diagnostic_direction"])
@@ -21666,6 +21902,16 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "applied_to_every_reported_factor": True,
             "existing_43_factor_frontier_retroactively_rerun": False,
         },
+        "pilot_execution_policy": {
+            "path": str(DEFAULT_PILOT_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
         "ranking_by_development_rank_ic": summaries,
         "forward_return_fields_read": True,
         "selection_or_promotion_allowed": False,
@@ -21674,7 +21920,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "A factor with no valid cross-sectional cohorts remains recorded as unavailable and fails the existing stability and Top-3 gates.",
             "Only a separately preregistered combination of factors that pass both fixed gates may be evaluated later.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "The prospective execution ledger blocks nonpositive-volume and adverse one-price fills, but raw minute semantics still cannot reconstruct exact queue priority, slippage, or market impact.",
+            "The prospective ledgers block nonpositive-volume and adverse one-price fills, enforce board lots, and stress fixed slippage/amount participation, but the daily execution bars still cannot reconstruct exact queue priority, partial fills, or realized market impact.",
         ],
     }
     experiment_root.mkdir(parents=True, exist_ok=True)
@@ -21797,6 +22043,9 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
     execution_policy_applied = all(
         decision["prospective_execution_policy_applied"] for decision in decisions
     )
+    pilot_execution_policy_applied = all(
+        decision["pilot_execution_policy_applied"] for decision in decisions
+    )
     run_id = _timestamp()
     experiment_root = Path(args.experiment_root).expanduser()
     audit = {
@@ -21827,6 +22076,24 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
                 0 if execution_policy_applied else None
             ),
             "naive_fixed_horizon_topk_gate_alone_is_sufficient": False,
+            "pilot_execution_policy_applied": pilot_execution_policy_applied,
+            "pilot_execution_policy_sha256": (
+                PILOT_EXECUTION_POLICY_SHA256
+                if pilot_execution_policy_applied
+                else None
+            ),
+            "pilot_initial_capital_cny": (
+                200000.0 if pilot_execution_policy_applied else None
+            ),
+            "pilot_buy_lot_size_shares": (
+                100 if pilot_execution_policy_applied else None
+            ),
+            "pilot_primary_slippage_rate_each_side": (
+                0.001 if pilot_execution_policy_applied else None
+            ),
+            "pilot_maximum_daily_amount_participation": (
+                0.01 if pilot_execution_policy_applied else None
+            ),
             "selection_or_promotion_allowed": False,
         },
         "requested_factors": requested_factors or None,
@@ -21835,7 +22102,8 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
         "limitations": [
             "A prospective-policy diagnostic uses its cash-and-position ledger; a legacy diagnostic retains its recorded fixed-horizon TopK result only as historical rejection evidence.",
             "Passing it still requires a separately predeclared full-strategy evaluation and genuinely future paper observations before any execution discussion.",
-            "The prospective ledger conservatively blocks adverse one-price queues but daily bars cannot reconstruct exact queue priority, slippage, or market impact.",
+            "The prospective ledgers conservatively block adverse one-price queues and add fixed board-lot/slippage/amount-capacity stress, but daily bars cannot reconstruct exact queue priority, partial fills, or realized market impact.",
+            "A newly generated prospective diagnostic must also pass the CNY 200,000 board-lot, ten-basis-point slippage, and daily-amount capacity gate; legacy rejection evidence is not rerun.",
         ],
     }
     destination = experiment_root / f"{run_id}_factor_topk_viability_audit.json"
@@ -22297,6 +22565,61 @@ def _one_price_execution_bar(
     )
 
 
+def _prospective_entry_block_reason(
+    quote: dict[str, Any] | None,
+    *,
+    signal_close: float,
+    move_threshold: float,
+    absolute_tolerance: float,
+    relative_tolerance: float,
+) -> str | None:
+    """Apply the frozen daily-bar entry outcome without changing the order list."""
+
+    if not _valid_execution_ohlc(quote):
+        return "invalid_entry_quote"
+    if _nonpositive_or_missing_execution_volume(quote):
+        return "nonpositive_entry_volume"
+    if (
+        _one_price_execution_bar(
+            quote,
+            absolute_tolerance=absolute_tolerance,
+            relative_tolerance=relative_tolerance,
+        )
+        and float(quote["open"]) / signal_close - 1.0 >= move_threshold
+    ):
+        return "upper_limit_like_queue"
+    return None
+
+
+def _prospective_exit_block_reason(
+    quote: dict[str, Any] | None,
+    previous_quote: dict[str, Any] | None,
+    *,
+    move_threshold: float,
+    absolute_tolerance: float,
+    relative_tolerance: float,
+) -> str | None:
+    """Apply the frozen daily-bar exit outcome for a planned or delayed sale."""
+
+    if not _valid_execution_ohlc(quote):
+        return "invalid_exit_quote"
+    if _nonpositive_or_missing_execution_volume(quote):
+        return "nonpositive_exit_volume"
+    if not _valid_execution_close(previous_quote):
+        return "missing_previous_close_reference"
+    if (
+        _one_price_execution_bar(
+            quote,
+            absolute_tolerance=absolute_tolerance,
+            relative_tolerance=relative_tolerance,
+        )
+        and float(quote["close"]) / float(previous_quote["close"]) - 1.0
+        <= -move_threshold
+    ):
+        return "lower_limit_like_queue"
+    return None
+
+
 def simulate_prospective_execution_topk(
     scored: pd.DataFrame,
     factor: str,
@@ -22438,46 +22761,6 @@ def simulate_prospective_execution_topk(
     equity_rows: list[dict[str, Any]] = []
     next_position_id = 0
 
-    def entry_block_reason(
-        quote: dict[str, Any] | None, *, signal_close: float
-    ) -> str | None:
-        if not _valid_execution_ohlc(quote):
-            return "invalid_entry_quote"
-        if _nonpositive_or_missing_execution_volume(quote):
-            return "nonpositive_entry_volume"
-        if (
-            _one_price_execution_bar(
-                quote,
-                absolute_tolerance=absolute_tolerance,
-                relative_tolerance=relative_tolerance,
-            )
-            and float(quote["open"]) / signal_close - 1.0 >= move_threshold
-        ):
-            return "upper_limit_like_queue"
-        return None
-
-    def exit_block_reason(
-        quote: dict[str, Any] | None,
-        previous_quote: dict[str, Any] | None,
-    ) -> str | None:
-        if not _valid_execution_ohlc(quote):
-            return "invalid_exit_quote"
-        if _nonpositive_or_missing_execution_volume(quote):
-            return "nonpositive_exit_volume"
-        if not _valid_execution_close(previous_quote):
-            return "missing_previous_close_reference"
-        if (
-            _one_price_execution_bar(
-                quote,
-                absolute_tolerance=absolute_tolerance,
-                relative_tolerance=relative_tolerance,
-            )
-            and float(quote["close"]) / float(previous_quote["close"]) - 1.0
-            <= -move_threshold
-        ):
-            return "lower_limit_like_queue"
-        return None
-
     for date in calendar:
         for cohort in pending_entries.get(date, []):
             slot_budget = cash / topk
@@ -22487,8 +22770,12 @@ def simulate_prospective_execution_topk(
                 reason = (
                     "capital_unavailable"
                     if slot_budget <= 0.0
-                    else entry_block_reason(
-                        quote, signal_close=float(slot["signal_close"])
+                    else _prospective_entry_block_reason(
+                        quote,
+                        signal_close=float(slot["signal_close"]),
+                        move_threshold=move_threshold,
+                        absolute_tolerance=absolute_tolerance,
+                        relative_tolerance=relative_tolerance,
                     )
                 )
                 if reason is not None:
@@ -22542,7 +22829,13 @@ def simulate_prospective_execution_topk(
                 if current_position > 0
                 else None
             )
-            reason = exit_block_reason(quote, previous_quote)
+            reason = _prospective_exit_block_reason(
+                quote,
+                previous_quote,
+                move_threshold=move_threshold,
+                absolute_tolerance=absolute_tolerance,
+                relative_tolerance=relative_tolerance,
+            )
             if reason is None:
                 cash += (
                     float(position["shares"])
@@ -22702,6 +22995,619 @@ def simulate_prospective_execution_topk(
         },
         "raw_daily_prices_persisted": False,
         "lower_rank_substitution_performed": False,
+        "selection_or_promotion_allowed": False,
+    }
+
+
+def simulate_pilot_execution_topk(
+    scored: pd.DataFrame,
+    factor: str,
+    *,
+    execution_policy: dict[str, Any] | None = None,
+    pilot_policy: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Run the frozen CNY 200,000 board-lot and slippage sensitivity ledger."""
+
+    execution_policy = (
+        execution_policy
+        if execution_policy is not None
+        else load_prospective_execution_policy()
+    )
+    pilot_policy = (
+        pilot_policy if pilot_policy is not None else load_pilot_execution_policy()
+    )
+    execution_strategy = execution_policy.get("strategy") or {}
+    limit_policy = execution_policy.get("one_price_limit_like_policy") or {}
+    portfolio = pilot_policy.get("portfolio") or {}
+    market_rules = pilot_policy.get("market_rules") or {}
+    slippage_policy = pilot_policy.get("slippage_sensitivity") or {}
+    gate_policy = pilot_policy.get("pilot_gate") or {}
+    if (
+        ((pilot_policy.get("bindings") or {}).get("research_execution_policy") or {}).get(
+            "sha256"
+        )
+        != PROSPECTIVE_EXECUTION_POLICY_SHA256
+        or int(portfolio["topk"]) != int(execution_strategy["topk"])
+    ):
+        raise ValueError("pilot execution policy is not bound to the research ledger")
+
+    hold_days = int(execution_strategy["holding_period_trading_days"])
+    stride = int(execution_strategy["signal_stride_trading_days"])
+    topk = int(execution_strategy["topk"])
+    maximum_exit_delay = int(execution_strategy["maximum_exit_delay_trading_days"])
+    move_threshold = float(limit_policy["absolute_move_threshold"])
+    absolute_tolerance = float(limit_policy["one_price_absolute_tolerance"])
+    relative_tolerance = float(limit_policy["one_price_relative_tolerance"])
+    initial_capital = float(portfolio["initial_capital_cny"])
+    target_weight = float(portfolio["target_weight_per_registered_slot"])
+    maximum_gross_exposure = float(portfolio["maximum_entry_gross_exposure"])
+    rules = AShareExecutionRules(
+        lot_size=int(market_rules["buy_lot_size_shares"]),
+        commission_rate=float(market_rules["commission_rate_each_side"]),
+        commission_min=float(market_rules["commission_minimum_cny"]),
+        transfer_fee_rate=float(market_rules["transfer_fee_rate_each_side"]),
+        stamp_duty_rate=float(market_rules["stamp_duty_rate_sell_only"]),
+        max_gross_exposure=maximum_gross_exposure,
+        target_weight=target_weight,
+    )
+    rules.validate()
+    slippage_rates = [
+        float(value) for value in slippage_policy["rates_each_side"]
+    ]
+    primary_slippage = float(slippage_policy["primary_gate_rate_each_side"])
+    if primary_slippage not in slippage_rates:
+        raise ValueError("primary pilot slippage must be one of the frozen scenarios")
+
+    required = [
+        "datetime",
+        "instrument",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "price_factor",
+        "quality_eligible",
+        factor,
+    ]
+    if missing := sorted(set(required) - set(scored.columns)):
+        raise ValueError(
+            "pilot execution frame is missing columns: " + ", ".join(missing)
+        )
+    frame = scored[required].copy()
+    frame["datetime"] = pd.to_datetime(frame["datetime"]).dt.normalize()
+    frame["instrument"] = frame["instrument"].astype(str)
+    for column in (
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "price_factor",
+        factor,
+    ):
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    if frame.duplicated(["instrument", "datetime"]).any():
+        raise ValueError("pilot execution frame contains duplicate instrument sessions")
+    calendar = pd.DatetimeIndex(frame["datetime"].dropna().unique()).sort_values()
+    if len(calendar) < hold_days + maximum_exit_delay + 1:
+        raise ValueError(
+            "pilot execution frame is too short for the frozen exit-delay window"
+        )
+    calendar_position = {date: position for position, date in enumerate(calendar)}
+    quote_lookup = {
+        (str(row.instrument), pd.Timestamp(row.datetime).normalize()): {
+            field: getattr(row, field)
+            for field in (
+                "open",
+                "high",
+                "low",
+                "close",
+                "volume",
+                "amount",
+                "price_factor",
+            )
+        }
+        for row in frame.itertuples(index=False)
+    }
+    signal_stop = len(calendar) - hold_days - maximum_exit_delay
+    signal_positions = list(range(0, signal_stop, stride))
+    pending_entries: dict[pd.Timestamp, list[dict[str, Any]]] = {}
+    complete_signal_dates: list[pd.Timestamp] = []
+    incomplete_signal_count = 0
+    for signal_position in signal_positions:
+        signal_date = calendar[signal_position]
+        signal_rows = frame.loc[frame["datetime"].eq(signal_date)].copy()
+        signal_rows = signal_rows.loc[
+            signal_rows["quality_eligible"].fillna(False)
+            & np.isfinite(signal_rows[factor])
+        ].copy()
+        signal_rows["signal_bar_valid"] = [
+            _valid_execution_ohlc(
+                {
+                    "open": row.open,
+                    "high": row.high,
+                    "low": row.low,
+                    "close": row.close,
+                }
+            )
+            and not _nonpositive_or_missing_execution_volume(
+                {"volume": row.volume}
+            )
+            for row in signal_rows.itertuples(index=False)
+        ]
+        selected = (
+            signal_rows.loc[signal_rows["signal_bar_valid"]]
+            .sort_values(
+                [factor, "instrument"],
+                ascending=[False, True],
+                kind="stable",
+            )
+            .head(topk)
+        )
+        if len(selected) != topk:
+            incomplete_signal_count += 1
+            continue
+        entry_date = calendar[signal_position + 1]
+        complete_signal_dates.append(signal_date)
+        pending_entries.setdefault(entry_date, []).append(
+            {
+                "signal_date": signal_date,
+                "entry_date": entry_date,
+                "planned_exit_date": calendar[signal_position + hold_days],
+                "slots": [
+                    {
+                        "instrument": str(row.instrument),
+                        "signal_close": float(row.close),
+                        "rank": rank,
+                    }
+                    for rank, row in enumerate(selected.itertuples(index=False), 1)
+                ],
+            }
+        )
+
+    def positive_price_factor(quote: dict[str, Any] | None) -> float | None:
+        try:
+            value = float((quote or {}).get("price_factor"))
+        except (TypeError, ValueError):
+            return None
+        return value if np.isfinite(value) and value > 0.0 else None
+
+    def run_scenario(slippage_rate: float) -> dict[str, Any]:
+        entry_block_counts = {
+            "invalid_entry_quote": 0,
+            "nonpositive_entry_volume": 0,
+            "upper_limit_like_queue": 0,
+            "invalid_entry_price_factor": 0,
+            "board_lot_unaffordable": 0,
+            "cash_unavailable": 0,
+            "gross_cap_unavailable": 0,
+        }
+        exit_block_attempt_counts = {
+            "invalid_exit_quote": 0,
+            "nonpositive_exit_volume": 0,
+            "missing_previous_close_reference": 0,
+            "lower_limit_like_queue": 0,
+            "invalid_exit_price_factor": 0,
+        }
+        entry_block_examples: list[dict[str, Any]] = []
+        unresolved_examples: list[dict[str, Any]] = []
+        registered_slots = len(complete_signal_dates) * topk
+        filled_entries = 0
+        on_time_exits = 0
+        delayed_exits = 0
+        exit_delays: list[int] = []
+        affordability_opportunities = 0
+        affordable_opportunities = 0
+        participation_ratios: list[float] = []
+        amount_missing_count = 0
+        entry_gross_cap_violation_count = 0
+        entry_gross_exposure_ratios: list[float] = []
+        cash = initial_capital
+        positions: list[dict[str, Any]] = []
+        equity_rows: list[dict[str, Any]] = []
+        next_position_id = 0
+
+        def record_participation(
+            notional: float, quote: dict[str, Any] | None
+        ) -> None:
+            nonlocal amount_missing_count
+            try:
+                amount = float((quote or {}).get("amount"))
+            except (TypeError, ValueError):
+                amount = math.nan
+            if not np.isfinite(amount) or amount <= 0.0:
+                amount_missing_count += 1
+                return
+            participation_ratios.append(float(notional / amount))
+
+        for date in calendar:
+            for cohort in pending_entries.get(date, []):
+                equity_before_open = (
+                    float(equity_rows[-1]["equity"])
+                    if equity_rows
+                    else initial_capital
+                )
+                target_budget = equity_before_open * target_weight
+                gross_cap = equity_before_open * maximum_gross_exposure
+                gross_committed = sum(
+                    float(position["economic_units"])
+                    * float(position["last_mark_close"])
+                    for position in positions
+                )
+                for slot in cohort["slots"]:
+                    instrument = str(slot["instrument"])
+                    quote = quote_lookup.get((instrument, date))
+                    reason = _prospective_entry_block_reason(
+                        quote,
+                        signal_close=float(slot["signal_close"]),
+                        move_threshold=move_threshold,
+                        absolute_tolerance=absolute_tolerance,
+                        relative_tolerance=relative_tolerance,
+                    )
+                    price_factor = positive_price_factor(quote)
+                    if reason is None and price_factor is None:
+                        reason = "invalid_entry_price_factor"
+                    quantity = 0
+                    adverse_raw_open = math.nan
+                    if reason is None:
+                        adverse_raw_open = (
+                            float(quote["open"])
+                            / float(price_factor)
+                            * (1.0 + slippage_rate)
+                        )
+                        one_lot_cash = buy_cash_required(
+                            adverse_raw_open, rules.lot_size, rules
+                        )
+                        affordability_opportunities += 1
+                        if one_lot_cash <= target_budget + 1e-9:
+                            affordable_opportunities += 1
+                        else:
+                            reason = "board_lot_unaffordable"
+                    if reason is None:
+                        gross_headroom = max(0.0, gross_cap - gross_committed)
+                        if cash + 1e-9 < one_lot_cash:
+                            reason = "cash_unavailable"
+                        elif gross_headroom + 1e-9 < one_lot_cash:
+                            reason = "gross_cap_unavailable"
+                        else:
+                            available_budget = min(
+                                target_budget, cash, gross_headroom
+                            )
+                            quantity = affordable_board_lots(
+                                adverse_raw_open, available_budget, rules
+                            )
+                            if quantity == 0:
+                                reason = "gross_cap_unavailable"
+                    if reason is not None:
+                        entry_block_counts[reason] += 1
+                        if len(entry_block_examples) < 20:
+                            entry_block_examples.append(
+                                {
+                                    "instrument": instrument,
+                                    "signal_date": cohort[
+                                        "signal_date"
+                                    ].date().isoformat(),
+                                    "entry_date": date.date().isoformat(),
+                                    "rank": int(slot["rank"]),
+                                    "reason": reason,
+                                }
+                            )
+                        continue
+                    buy_notional = float(quantity) * adverse_raw_open
+                    buy_cash = buy_notional + a_share_trade_fees(
+                        buy_notional, "buy", rules
+                    )["total"]
+                    cash -= buy_cash
+                    gross_committed += buy_cash
+                    if gross_committed > gross_cap + 1e-7:
+                        entry_gross_cap_violation_count += 1
+                    economic_units = float(quantity) / float(price_factor)
+                    positions.append(
+                        {
+                            "position_id": next_position_id,
+                            "instrument": instrument,
+                            "signal_date": cohort["signal_date"],
+                            "entry_date": date,
+                            "planned_exit_date": cohort["planned_exit_date"],
+                            "economic_units": economic_units,
+                            "last_mark_close": float(quote["open"]),
+                            "terminal_unresolved": False,
+                        }
+                    )
+                    next_position_id += 1
+                    filled_entries += 1
+                    record_participation(buy_notional, quote)
+                if equity_before_open > 0.0:
+                    entry_gross_exposure_ratios.append(
+                        float(gross_committed / equity_before_open)
+                    )
+
+            for position in positions:
+                quote = quote_lookup.get((position["instrument"], date))
+                if _valid_execution_close(quote):
+                    position["last_mark_close"] = float(quote["close"])
+
+            retained_positions: list[dict[str, Any]] = []
+            for position in positions:
+                if position["terminal_unresolved"]:
+                    retained_positions.append(position)
+                    continue
+                planned_position = calendar_position[position["planned_exit_date"]]
+                current_position = calendar_position[date]
+                if current_position < planned_position:
+                    retained_positions.append(position)
+                    continue
+                delay = current_position - planned_position
+                quote = quote_lookup.get((position["instrument"], date))
+                previous_quote = (
+                    quote_lookup.get(
+                        (position["instrument"], calendar[current_position - 1])
+                    )
+                    if current_position > 0
+                    else None
+                )
+                reason = _prospective_exit_block_reason(
+                    quote,
+                    previous_quote,
+                    move_threshold=move_threshold,
+                    absolute_tolerance=absolute_tolerance,
+                    relative_tolerance=relative_tolerance,
+                )
+                if reason is None and positive_price_factor(quote) is None:
+                    reason = "invalid_exit_price_factor"
+                if reason is None:
+                    sell_notional = (
+                        float(position["economic_units"])
+                        * float(quote["close"])
+                        * (1.0 - slippage_rate)
+                    )
+                    cash += sell_notional - a_share_trade_fees(
+                        sell_notional, "sell", rules
+                    )["total"]
+                    record_participation(sell_notional, quote)
+                    exit_delays.append(delay)
+                    if delay == 0:
+                        on_time_exits += 1
+                    else:
+                        delayed_exits += 1
+                    continue
+                exit_block_attempt_counts[reason] += 1
+                if delay >= maximum_exit_delay:
+                    position["terminal_unresolved"] = True
+                    if len(unresolved_examples) < 20:
+                        unresolved_examples.append(
+                            {
+                                "instrument": position["instrument"],
+                                "entry_date": position[
+                                    "entry_date"
+                                ].date().isoformat(),
+                                "planned_exit_date": position[
+                                    "planned_exit_date"
+                                ].date().isoformat(),
+                                "last_attempt_date": date.date().isoformat(),
+                                "reason": reason,
+                            }
+                        )
+                retained_positions.append(position)
+            positions = retained_positions
+            marked_positions = sum(
+                float(position["economic_units"])
+                * float(position["last_mark_close"])
+                for position in positions
+            )
+            equity = cash + marked_positions
+            equity_rows.append(
+                {
+                    "datetime": date,
+                    "equity": equity,
+                    "cash": cash,
+                    "gross_exposure": (
+                        marked_positions / equity if equity > 0.0 else math.inf
+                    ),
+                    "open_positions": len(positions),
+                }
+            )
+
+        equity = pd.DataFrame(equity_rows)
+        equity_values = equity["equity"].astype(float)
+        drawdowns = equity_values / equity_values.cummax() - 1.0
+        final_equity = float(equity_values.iloc[-1])
+        net_return = final_equity / initial_capital - 1.0
+        signal_years = sorted({date.year for date in complete_signal_dates})
+        annual_returns: dict[str, float] = {}
+        for year in signal_years:
+            current_year = equity.loc[equity["datetime"].dt.year.eq(year)]
+            prior = equity.loc[equity["datetime"].dt.year.lt(year)]
+            start_equity = (
+                float(prior.iloc[-1]["equity"])
+                if not prior.empty
+                else initial_capital
+            )
+            annual_returns[str(year)] = float(
+                float(current_year.iloc[-1]["equity"]) / start_equity - 1.0
+            )
+        terminal_unresolved_count = sum(
+            bool(position["terminal_unresolved"]) for position in positions
+        )
+        participation = np.asarray(participation_ratios, dtype=float)
+        participation_summary = {
+            "observation_count": int(len(participation)),
+            "p50": (
+                float(np.quantile(participation, 0.50))
+                if len(participation)
+                else None
+            ),
+            "p95": (
+                float(np.quantile(participation, 0.95))
+                if len(participation)
+                else None
+            ),
+            "maximum": float(participation.max()) if len(participation) else None,
+        }
+        affordability_rate = (
+            affordable_opportunities / affordability_opportunities
+            if affordability_opportunities
+            else None
+        )
+        delay_distribution = {
+            str(delay): int(count)
+            for delay, count in pd.Series(exit_delays, dtype="int64")
+            .value_counts()
+            .sort_index()
+            .items()
+        }
+        return {
+            "slippage_rate_each_side": slippage_rate,
+            "entry": {
+                "registered_slot_count": registered_slots,
+                "filled_slot_count": filled_entries,
+                "blocked_slot_count": registered_slots - filled_entries,
+                "blocked_by_reason": entry_block_counts,
+                "blocked_examples": entry_block_examples,
+                "board_lot_affordability_opportunity_count": affordability_opportunities,
+                "board_lot_affordable_opportunity_count": affordable_opportunities,
+                "board_lot_affordable_opportunity_rate": affordability_rate,
+                "entry_gross_cap_violation_count": entry_gross_cap_violation_count,
+                "maximum_entry_gross_exposure": max(
+                    entry_gross_exposure_ratios, default=None
+                ),
+            },
+            "exit": {
+                "on_time_position_count": on_time_exits,
+                "delayed_position_count": delayed_exits,
+                "blocked_attempts_by_reason": exit_block_attempt_counts,
+                "delay_trading_day_distribution": delay_distribution,
+                "terminal_unresolved_position_count": terminal_unresolved_count,
+                "unresolved_examples": unresolved_examples,
+            },
+            "capacity": {
+                "filled_trade_amount_missing_count": amount_missing_count,
+                "filled_trade_daily_amount_participation": participation_summary,
+            },
+            "performance": {
+                "initial_capital_cny": initial_capital,
+                "final_marked_equity_cny": final_equity,
+                "net_cumulative_return": net_return,
+                "maximum_drawdown": float(drawdowns.min()),
+                "maximum_marked_gross_exposure": float(
+                    equity["gross_exposure"].max()
+                ),
+                "annual_net_cumulative_return_by_signal_year": annual_returns,
+            },
+        }
+
+    scenario_results = {
+        f"{rate:.4f}": run_scenario(rate) for rate in slippage_rates
+    }
+    primary = scenario_results[f"{primary_slippage:.4f}"]
+    complete_signal_count = len(complete_signal_dates)
+    failures: list[str] = []
+    if complete_signal_count < int(gate_policy["minimum_scheduled_signal_count"]):
+        failures.append(
+            f"fewer than {int(gate_policy['minimum_scheduled_signal_count'])} "
+            "complete scheduled signals"
+        )
+    primary_performance = primary["performance"]
+    if float(primary_performance["net_cumulative_return"]) <= float(
+        gate_policy["primary_slippage_net_cumulative_return_gt"]
+    ):
+        failures.append("non-positive pilot return under ten-basis-point slippage")
+    non_positive_years = [
+        year
+        for year, value in primary_performance[
+            "annual_net_cumulative_return_by_signal_year"
+        ].items()
+        if value
+        <= float(
+            gate_policy[
+                "every_observed_signal_calendar_year_primary_slippage_return_gt"
+            ]
+        )
+    ]
+    if non_positive_years:
+        failures.append(
+            "non-positive pilot signal-year return under ten-basis-point slippage: "
+            + ", ".join(non_positive_years)
+        )
+    affordability_rate = primary["entry"][
+        "board_lot_affordable_opportunity_rate"
+    ]
+    if affordability_rate is None or float(affordability_rate) < float(
+        gate_policy["board_lot_affordable_opportunity_rate_gte"]
+    ):
+        failures.append("board-lot affordability opportunity rate is below 90%")
+    if int(primary["exit"]["terminal_unresolved_position_count"]) != int(
+        gate_policy["terminal_unresolved_position_count"]
+    ):
+        failures.append("pilot positions remain unresolved after the exit-delay cap")
+    if int(primary["entry"]["entry_gross_cap_violation_count"]) != int(
+        gate_policy["entry_gross_cap_violation_count"]
+    ):
+        failures.append("pilot entry gross-exposure cap was violated")
+    if int(primary["capacity"]["filled_trade_amount_missing_count"]) != int(
+        gate_policy["filled_trade_amount_missing_count"]
+    ):
+        failures.append("filled pilot trades are missing valid daily amount")
+    maximum_participation = primary["capacity"][
+        "filled_trade_daily_amount_participation"
+    ]["maximum"]
+    if maximum_participation is not None and float(maximum_participation) > float(
+        gate_policy["maximum_filled_trade_daily_amount_participation_lte"]
+    ):
+        failures.append("a filled pilot trade exceeds one percent of daily amount")
+    return {
+        "factor": factor,
+        "status": "completed_prospective_pilot_execution_ledger",
+        "policy": {
+            "path": str(DEFAULT_PILOT_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "research_execution_policy_sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+        },
+        "scope": {
+            "calendar_start": calendar[0].date().isoformat(),
+            "calendar_end": calendar[-1].date().isoformat(),
+            "grid_signal_count": len(signal_positions),
+            "complete_signal_count": complete_signal_count,
+            "incomplete_signal_count": incomplete_signal_count,
+            "registered_entry_slot_count": complete_signal_count * topk,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
+        "portfolio": {
+            "initial_capital_cny": initial_capital,
+            "target_weight_per_registered_slot": target_weight,
+            "maximum_entry_gross_exposure": maximum_gross_exposure,
+            "buy_lot_size_shares": rules.lot_size,
+            "lower_rank_substitution_performed": False,
+            "blocked_slot_budget_reallocated": False,
+        },
+        "primary_slippage_rate_each_side": primary_slippage,
+        "primary": primary,
+        "slippage_sensitivity": {
+            key: {
+                "slippage_rate_each_side": result["slippage_rate_each_side"],
+                "filled_slot_count": result["entry"]["filled_slot_count"],
+                "net_cumulative_return": result["performance"][
+                    "net_cumulative_return"
+                ],
+                "maximum_drawdown": result["performance"]["maximum_drawdown"],
+                "terminal_unresolved_position_count": result["exit"][
+                    "terminal_unresolved_position_count"
+                ],
+            }
+            for key, result in scenario_results.items()
+        },
+        "gate": {
+            "passed": not failures,
+            "failures": failures,
+            "criteria": gate_policy,
+            "research_association_and_execution_gates_also_required": True,
+        },
+        "raw_daily_prices_persisted": False,
+        "individual_trade_notionals_persisted": False,
         "selection_or_promotion_allowed": False,
     }
 

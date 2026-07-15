@@ -4440,6 +4440,8 @@ def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(tmp_path, mo
                     "low": 100.0,
                     "close": 100.0 + position,
                     "volume": 100.0,
+                    "amount": 10_000_000.0,
+                    "price_factor": 1.0,
                     "listing_age_sessions": 100,
                 }
             )
@@ -4534,6 +4536,8 @@ def test_baostock_5m_diagnostic_uses_2020_2025_protocol(tmp_path, monkeypatch):
                     "low": 100.0,
                     "close": 100.0 + position,
                     "volume": 100.0,
+                    "amount": 10_000_000.0,
+                    "price_factor": 1.0,
                     "listing_age_sessions": 100,
                 }
             for date in dates
@@ -4888,6 +4892,7 @@ def test_tail_execution_classification_separates_no_fill_from_queue_ambiguity():
 def test_committed_tail_execution_audit_renders_without_promoting_factors():
     audit = RESEARCH.load_execution_tail_realism_audit()
     policy = RESEARCH.load_prospective_execution_policy()
+    pilot_policy = RESEARCH.load_pilot_execution_policy()
     restoration = RESEARCH.load_baostock_5m_restoration_probe_audit()
     assert audit is not None
     assert restoration is not None
@@ -4899,6 +4904,7 @@ def test_committed_tail_execution_audit_renders_without_promoting_factors():
         {"signals": [], "settlements": []},
         execution_tail_realism_audit=audit,
         prospective_execution_policy=policy,
+        pilot_execution_policy=pilot_policy,
         baostock_5m_restoration_probe_audit=restoration,
     )
     assert "尾部样本成交真实性审计" in report
@@ -4906,6 +4912,8 @@ def test_committed_tail_execution_audit_renders_without_promoting_factors():
     assert "明确的计划日成交失败：7 条" in report
     assert "未来新因子统一成交协议" in report
     assert "入场受阻的槽位保留现金且不替补" in report
+    assert "未来新因子 20 万元实盘可实现性门" in report
+    assert "100 股整手重新核算" in report
     assert "BaoStock 五分钟恢复状态" in report
     assert "本研究会话不得重复探针或启动全量" in report
     assert "Level2 继续延期" in report
@@ -4990,6 +4998,206 @@ def test_prospective_execution_ledger_fails_with_position_stuck_beyond_delay_cap
     ]["failures"]
 
 
+def test_pilot_execution_ledger_enforces_board_lots_slippage_and_amount_capacity():
+    dates = pd.bdate_range("2024-01-02", periods=30)
+    rows = []
+    for instrument, score, price in (
+        ("A", 0.9, 150.0),
+        ("B", 0.8, 10.0),
+        ("C", 0.7, 10.0),
+    ):
+        for date in dates:
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "open": price,
+                    "high": price * 1.01,
+                    "low": price * 0.99,
+                    "close": price,
+                    "volume": 10000.0,
+                    "amount": 10_000_000.0,
+                    "price_factor": 1.0,
+                    "quality_eligible": True,
+                    "factor_test": score,
+                }
+            )
+    ledger = RESEARCH.simulate_pilot_execution_topk(
+        pd.DataFrame(rows), "factor_test"
+    )
+    primary = ledger["primary"]
+    assert ledger["scope"]["complete_signal_count"] == 3
+    assert primary["entry"]["registered_slot_count"] == 9
+    assert primary["entry"]["filled_slot_count"] == 6
+    assert primary["entry"]["blocked_by_reason"]["board_lot_unaffordable"] == 3
+    assert primary["entry"]["board_lot_affordable_opportunity_rate"] == pytest.approx(
+        2 / 3
+    )
+    assert primary["entry"]["entry_gross_cap_violation_count"] == 0
+    assert primary["entry"]["maximum_entry_gross_exposure"] < 0.15
+    assert primary["capacity"]["filled_trade_amount_missing_count"] == 0
+    assert (
+        primary["capacity"]["filled_trade_daily_amount_participation"]["maximum"]
+        < 0.01
+    )
+    assert primary["performance"]["net_cumulative_return"] < 0.0
+    assert not ledger["gate"]["passed"]
+    assert "board-lot affordability opportunity rate is below 90%" in ledger["gate"][
+        "failures"
+    ]
+    assert ledger["raw_daily_prices_persisted"] is False
+    assert ledger["individual_trade_notionals_persisted"] is False
+
+
+def test_pilot_execution_ledger_uses_restoration_factor_without_corporate_action_loss():
+    dates = pd.bdate_range("2024-01-02", periods=24)
+    rows = []
+    for instrument, score in (("A", 0.9), ("B", 0.8), ("C", 0.7)):
+        for position, date in enumerate(dates):
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "open": 10.0,
+                    "high": 10.1,
+                    "low": 9.9,
+                    "close": 10.0,
+                    "volume": 10000.0,
+                    "amount": 10_000_000.0,
+                    "price_factor": 2.0 if position >= 3 else 1.0,
+                    "quality_eligible": True,
+                    "factor_test": score,
+                }
+            )
+    changed = RESEARCH.simulate_pilot_execution_topk(
+        pd.DataFrame(rows), "factor_test"
+    )
+    unchanged_frame = pd.DataFrame(rows)
+    unchanged_frame["price_factor"] = 1.0
+    unchanged = RESEARCH.simulate_pilot_execution_topk(
+        unchanged_frame, "factor_test"
+    )
+    assert changed["primary"]["performance"][
+        "net_cumulative_return"
+    ] == pytest.approx(
+        unchanged["primary"]["performance"]["net_cumulative_return"],
+        abs=1e-12,
+    )
+    zero_slippage = changed["slippage_sensitivity"]["0.0000"]
+    primary = changed["slippage_sensitivity"]["0.0010"]
+    assert zero_slippage["net_cumulative_return"] < 0.0
+    assert primary["net_cumulative_return"] < zero_slippage["net_cumulative_return"]
+
+
+def test_pilot_execution_ledger_fails_excessive_daily_amount_participation():
+    dates = pd.bdate_range("2024-01-02", periods=30)
+    frame = pd.DataFrame(
+        [
+            {
+                "datetime": date,
+                "instrument": instrument,
+                "open": 10.0,
+                "high": 10.1,
+                "low": 9.9,
+                "close": 10.0,
+                "volume": 10000.0,
+                "amount": 500_000.0,
+                "price_factor": 1.0,
+                "quality_eligible": True,
+                "factor_test": score,
+            }
+            for instrument, score in (("A", 0.9), ("B", 0.8), ("C", 0.7))
+            for date in dates
+        ]
+    )
+    ledger = RESEARCH.simulate_pilot_execution_topk(frame, "factor_test")
+    assert (
+        ledger["primary"]["capacity"]["filled_trade_daily_amount_participation"][
+            "maximum"
+        ]
+        > 0.01
+    )
+    assert "a filled pilot trade exceeds one percent of daily amount" in ledger[
+        "gate"
+    ]["failures"]
+
+
+def test_future_factor_diagnostic_stops_existing_frontier_before_forward_returns(
+    tmp_path, monkeypatch
+):
+    market = pd.DataFrame(
+        {
+            "datetime": [pd.Timestamp("2024-01-02")],
+            "instrument": ["A"],
+            "quality_eligible": [True],
+            "amplitude_low": [0.9],
+        }
+    )
+    monkeypatch.setattr(
+        RESEARCH, "require_research_price_basis", lambda path: {"status": "passed"}
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "load_market_data", lambda *args, **kwargs: market.copy()
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "attach_quality_asof",
+        lambda frame, fundamentals, max_age_days: frame.copy(),
+    )
+    monkeypatch.setattr(
+        RESEARCH, "rank_factor_frame", lambda frame: frame.copy()
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "forward_factor_return_frame",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("retroactive guard must stop before forward returns")
+        ),
+    )
+    args = SimpleNamespace(
+        provider_uri=str(tmp_path),
+        fundamentals=str(tmp_path / "fundamentals.parquet"),
+        performance_forecasts=None,
+        billboard_events=None,
+        major_holder_events=None,
+        block_trade_events=None,
+        margin_financing_events=None,
+        institutional_survey_events=None,
+        institutional_survey_timing_events=None,
+        analyst_rating_events=None,
+        restricted_share_unlock_events=None,
+        insider_open_market_events=None,
+        repurchase_events=None,
+        holder_count_events=None,
+        pledge_events=None,
+        dividend_plan_events=None,
+        experiment_root=str(tmp_path / "experiments"),
+        start="2024-01-01",
+        end="2024-01-31",
+        development_end="2024-01-31",
+        hold_days=3,
+        topk=3,
+        open_cost=0.00012,
+        close_cost=0.00062,
+        max_quality_age_days=550,
+        max_forecast_age_days=30,
+        max_billboard_age_days=3,
+        max_major_holder_age_days=3,
+        max_block_trade_age_days=3,
+        max_margin_financing_age_days=0,
+        max_institutional_survey_age_days=3,
+        max_repurchase_age_days=3,
+        max_holder_count_age_days=3,
+        max_pledge_age_days=3,
+        max_dividend_plan_age_days=3,
+        batch_size=500,
+        factor=["amplitude_low"],
+    )
+    with pytest.raises(ValueError, match="retroactively rerun existing frontier"):
+        RESEARCH.run_factor_diagnostic(args)
+
+
 def test_factor_topk_viability_uses_prospective_execution_ledger_when_present():
     summary = {
         "factor": "new_factor",
@@ -5025,11 +5233,48 @@ def test_factor_topk_viability_uses_prospective_execution_ledger_when_present():
             "lower_rank_substitution_performed": False,
             "raw_daily_prices_persisted": False,
         },
+        "pilot_execution_topk": {
+            "status": "completed_prospective_pilot_execution_ledger",
+            "policy": {
+                "sha256": RESEARCH.PILOT_EXECUTION_POLICY_SHA256,
+                "research_execution_policy_sha256": (
+                    RESEARCH.PROSPECTIVE_EXECUTION_POLICY_SHA256
+                ),
+            },
+            "portfolio": {
+                "initial_capital_cny": 200000.0,
+                "lower_rank_substitution_performed": False,
+                "blocked_slot_budget_reallocated": False,
+            },
+            "primary_slippage_rate_each_side": 0.001,
+            "primary": {
+                "entry": {
+                    "filled_slot_count": 700,
+                    "board_lot_affordable_opportunity_rate": 0.98,
+                },
+                "exit": {"terminal_unresolved_position_count": 0},
+                "capacity": {
+                    "filled_trade_daily_amount_participation": {
+                        "maximum": 0.001
+                    }
+                },
+                "performance": {"net_cumulative_return": 0.05},
+            },
+            "gate": {"passed": True, "failures": []},
+            "raw_daily_prices_persisted": False,
+            "individual_trade_notionals_persisted": False,
+        },
     }
     decision = RESEARCH.factor_topk_viability_decision(summary)
     assert decision["passed"]
     assert decision["prospective_execution_policy_applied"]
+    assert decision["pilot_execution_policy_applied"]
     assert decision["topk_metrics"]["net_cumulative_return"] == pytest.approx(0.50)
+    missing_pilot = RESEARCH.factor_topk_viability_decision(
+        {key: value for key, value in summary.items() if key != "pilot_execution_topk"}
+    )
+    assert not missing_pilot["passed"]
+    assert "prospective pilot execution ledger is missing" in missing_pilot["failures"]
     failed = RESEARCH.factor_topk_viability_decision(
         {
             **summary,
@@ -5043,6 +5288,25 @@ def test_factor_topk_viability_uses_prospective_execution_ledger_when_present():
     assert "terminal unresolved positions remain after the exit-delay cap" in failed[
         "failures"
     ]
+    pilot_failed = RESEARCH.factor_topk_viability_decision(
+        {
+            **summary,
+            "pilot_execution_topk": {
+                **summary["pilot_execution_topk"],
+                "gate": {
+                    "passed": False,
+                    "failures": [
+                        "board-lot affordability opportunity rate is below 90%"
+                    ],
+                },
+            },
+        }
+    )
+    assert not pilot_failed["passed"]
+    assert (
+        "pilot execution gate failed: board-lot affordability opportunity rate is below 90%"
+        in pilot_failed["failures"]
+    )
 
 
 def test_baostock_5m_combination_registration_freezes_all_dual_gate_passers(

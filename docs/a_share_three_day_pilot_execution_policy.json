@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_pilot_execution_policy",
+  "status": "prospective_only_frozen_before_any_lot_aware_factor_return",
+  "frozen_at": "2026-07-15T00:27:52Z",
+  "purpose": "Add a CNY 200,000 board-lot, fee, slippage, exposure, and turnover-capacity gate to every future three-session factor diagnostic without rerunning the rejected historical frontier.",
+  "bindings": {
+    "research_execution_policy": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_source": "baostock"
+    }
+  },
+  "effective_scope": {
+    "applies_to": "Every factor diagnostic newly executed after this policy is implemented.",
+    "existing_frontier_factor_count": 43,
+    "existing_frontier_retroactive_rerun_allowed": false,
+    "factor_or_branch_exemptions_allowed": false,
+    "post_result_policy_changes_allowed": false,
+    "replaces_research_execution_gate": false,
+    "requires_research_execution_gate_to_pass": true
+  },
+  "portfolio": {
+    "initial_capital_cny": 200000.0,
+    "topk": 3,
+    "target_weight_per_registered_slot": 0.05,
+    "maximum_entry_gross_exposure": 0.15,
+    "target_budget_reference": "Portfolio equity marked at the preceding local close; the initial capital is used for the first cohort.",
+    "delayed_positions_consume_cash_and_gross_capacity": true,
+    "blocked_or_unaffordable_slot_budget_reallocated": false,
+    "lower_rank_substitution_allowed": false
+  },
+  "market_rules": {
+    "buy_lot_size_shares": 100,
+    "sell_entire_position_including_corporate_action_odd_lot": true,
+    "minimum_price_tick_modelled": false,
+    "commission_rate_each_side": 0.0001,
+    "commission_minimum_cny": 0.0,
+    "transfer_fee_rate_each_side": 0.00002,
+    "stamp_duty_rate_sell_only": 0.0005,
+    "broker_commission_source": "User-provided all-in broker quote of CNY 1 per CNY 10,000 with no assumed CNY 5 minimum."
+  },
+  "price_and_corporate_action_policy": {
+    "actual_price": "point-in-time adjusted OHLC divided by the same-row positive restoration factor",
+    "entry_actual_price": "raw entry open multiplied by one plus the scenario adverse slippage rate",
+    "exit_actual_price": "raw eligible close multiplied by one minus the scenario adverse slippage rate",
+    "entry_quantity": "Largest nonnegative multiple of 100 shares whose actual buy notional plus fees fits the fixed slot budget, available cash, and entry gross-cap headroom.",
+    "economic_units": "entry raw share quantity divided by the entry restoration factor",
+    "mark_value": "economic units multiplied by the point-in-time adjusted close",
+    "exit_quantity": "economic units multiplied by the exit restoration factor; sell the whole position so a corporate-action odd lot is not stranded.",
+    "future_corporate_actions_used": false
+  },
+  "execution_policy": {
+    "selection_and_queue_rules": "Exactly reuse the bound prospective research execution policy, including signal-close fixed Top3, no substitution, positive-volume rules, conservative one-price queue handling, and the twenty-session exit-delay cap.",
+    "entry_capital_order": "Process registered slots by factor rank, then instrument ascending; each slot keeps its own five-percent target and cannot receive another slot's unused cash.",
+    "capital_unavailable": "Skip that slot and retain cash; do not borrow, resize an existing position, or replace the name.",
+    "daily_amount_use": "Use same-session source amount only after the fixed order outcome to audit capacity; never use it to change the signal ranking or substitute another stock.",
+    "raw_daily_prices_persisted": false
+  },
+  "slippage_sensitivity": {
+    "rates_each_side": [
+      0.0,
+      0.0005,
+      0.001,
+      0.002
+    ],
+    "primary_gate_rate_each_side": 0.001,
+    "interpretation": "Ten basis points adverse on entry and ten basis points adverse on exit is the fixed pilot gate; zero, five, and twenty basis points are descriptive sensitivities only.",
+    "market_impact_or_queue_priority_claimed": false
+  },
+  "capacity_policy": {
+    "daily_amount_field": "$amount",
+    "amount_unit": "CNY",
+    "filled_trade_participation": "actual adverse-price trade notional divided by same-session source amount",
+    "maximum_filled_trade_daily_amount_participation": 0.01,
+    "missing_or_nonpositive_amount_on_a_filled_trade_fails_gate": true,
+    "daily_amount_proves_open_or_close_fill": false
+  },
+  "pilot_gate": {
+    "minimum_scheduled_signal_count": 200,
+    "primary_slippage_net_cumulative_return_gt": 0.0,
+    "every_observed_signal_calendar_year_primary_slippage_return_gt": 0.0,
+    "board_lot_affordable_opportunity_rate_gte": 0.9,
+    "terminal_unresolved_position_count": 0,
+    "entry_gross_cap_violation_count": 0,
+    "filled_trade_amount_missing_count": 0,
+    "maximum_filled_trade_daily_amount_participation_lte": 0.01,
+    "research_association_and_execution_gates_must_also_pass": true,
+    "selection_or_promotion_allowed_from_pilot_gate_alone": false
+  },
+  "output_requirements": {
+    "record_policy_path_and_sha256": true,
+    "record_primary_entry_block_and_board_lot_counts": true,
+    "record_primary_exit_delay_and_unresolved_counts": true,
+    "record_primary_cash_equity_and_entry_gross_exposure": true,
+    "record_amount_participation_distribution": true,
+    "record_all_slippage_scenario_returns": true,
+    "persist_individual_raw_daily_prices": false,
+    "persist_individual_trade_notionals": false,
+    "factor_subset_weight_or_threshold_search_allowed": false
+  },
+  "research_boundaries": {
+    "current_factor_aggregation_allowed": false,
+    "current_stock_scoring_or_selection_allowed": false,
+    "current_order_or_allocation_allowed": false,
+    "investment_advice": false
+  },
+  "official_references": [
+    "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+    "https://www.szse.cn/www/investor/institute/rules/t20230706_601604.html",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5193058/content.html",
+    "https://fgk.chinatax.gov.cn/zcfgk/c102416/c5211343/content.html",
+    "https://www.chinaclear.cn/zdjs/editor_file/20220627143504384.pdf"
+  ]
+}
