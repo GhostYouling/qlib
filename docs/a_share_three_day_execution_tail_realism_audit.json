@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_execution_tail_realism_audit",
+  "status": "completed_tail_sample_daily_execution_audit",
+  "audited_at": "2026-07-14T23:55:20Z",
+  "purpose": "Freeze the daily-OHLCV execution-realism result for every stored worst-tail Top3 occurrence across the accepted 3-day factor frontier, without recomputing returns or changing factor evidence.",
+  "preregistration": {
+    "path": "docs/a_share_three_day_execution_tail_realism_preregistration.json",
+    "sha256": "1bccc93a5018738f437fcee3456ad4ceda3bb07b9ed5bf64f80cdd5feef2b144"
+  },
+  "source_audit": {
+    "run_id": "20260714T235520Z",
+    "path": "data/experiments/short_horizon/20260714T235520Z_execution_tail_realism_audit.json",
+    "sha256": "645099f7db8d00884ee02244c8d252db6775fe526545ec5d7255161017fe65e9"
+  },
+  "bindings": {
+    "frontier_audit": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_sources": [
+        "baostock"
+      ]
+    }
+  },
+  "scope": {
+    "tail_sample_only": true,
+    "all_historical_selection_incidence_estimated": false,
+    "evidence_group_count": 11,
+    "unique_factor_count": 43,
+    "worst_cohort_count": 215,
+    "selected_occurrence_count": 645,
+    "unique_instrument_count": 495,
+    "requested_instrument_session_key_count": 2241,
+    "quote_start": "2019-03-05",
+    "quote_end": "2025-11-24",
+    "quote_fields": [
+      "$open",
+      "$high",
+      "$low",
+      "$close",
+      "$volume"
+    ]
+  },
+  "classification_policy": {
+    "one_price_absolute_tolerance": 1e-08,
+    "one_price_relative_tolerance": 1e-08,
+    "limit_like_absolute_move_threshold": 0.045,
+    "definite_execution_failure": "Entry or planned-exit OHLC is missing/nonpositive, or valid OHLC has missing/nonpositive volume.",
+    "queue_dependent_execution_ambiguity": "A one-price entry is up at least 4.5% from signal close, or a one-price planned exit is down at least 4.5% from the previous local close."
+  },
+  "summary": {
+    "selected_occurrence_count": 645,
+    "entry_missing_or_nonpositive_quote_count": 0,
+    "entry_nonpositive_volume_count": 7,
+    "entry_one_price_upper_limit_like_count": 3,
+    "exit_missing_or_nonpositive_quote_count": 0,
+    "exit_nonpositive_volume_count": 4,
+    "exit_one_price_lower_limit_like_count": 3,
+    "definite_execution_failure_count": 7,
+    "definite_execution_failure_tail_sample_rate": 0.010852713178294573,
+    "queue_dependent_execution_ambiguity_count": 6,
+    "queue_dependent_execution_ambiguity_tail_sample_rate": 0.009302325581395349,
+    "definite_and_queue_ambiguity_overlap_count": 0,
+    "daily_bar_not_flagged_count": 632,
+    "daily_bar_not_flagged_tail_sample_rate": 0.9798449612403101
+  },
+  "flagged_branches": [
+    {
+      "branch": "daily_ohlcv_summary",
+      "selected_occurrence_count": 120,
+      "definite_execution_failure_count": 7,
+      "queue_dependent_execution_ambiguity_count": 3
+    },
+    {
+      "branch": "transaction_events",
+      "selected_occurrence_count": 195,
+      "definite_execution_failure_count": 0,
+      "queue_dependent_execution_ambiguity_count": 3
+    }
+  ],
+  "unflagged_branch_summary": {
+    "branch_count": 9,
+    "selected_occurrence_count": 330,
+    "definite_execution_failure_count": 0,
+    "queue_dependent_execution_ambiguity_count": 0
+  },
+  "flagged_factors": [
+    {
+      "factor": "amplitude_low",
+      "branch": "daily_ohlcv_summary",
+      "definite_execution_failure_count": 1,
+      "queue_dependent_execution_ambiguity_count": 0
+    },
+    {
+      "factor": "amplitude_low_1",
+      "branch": "daily_ohlcv_summary",
+      "definite_execution_failure_count": 3,
+      "queue_dependent_execution_ambiguity_count": 1
+    },
+    {
+      "factor": "compression_consensus_min",
+      "branch": "daily_ohlcv_summary",
+      "definite_execution_failure_count": 1,
+      "queue_dependent_execution_ambiguity_count": 0
+    },
+    {
+      "factor": "volatility_low_20",
+      "branch": "daily_ohlcv_summary",
+      "definite_execution_failure_count": 1,
+      "queue_dependent_execution_ambiguity_count": 0
+    },
+    {
+      "factor": "volume_dry_up",
+      "branch": "daily_ohlcv_summary",
+      "definite_execution_failure_count": 1,
+      "queue_dependent_execution_ambiguity_count": 1
+    },
+    {
+      "factor": "close_to_high",
+      "branch": "daily_ohlcv_summary",
+      "definite_execution_failure_count": 0,
+      "queue_dependent_execution_ambiguity_count": 1
+    },
+    {
+      "factor": "billboard_freshness",
+      "branch": "transaction_events",
+      "definite_execution_failure_count": 0,
+      "queue_dependent_execution_ambiguity_count": 1
+    },
+    {
+      "factor": "billboard_reason_count",
+      "branch": "transaction_events",
+      "definite_execution_failure_count": 0,
+      "queue_dependent_execution_ambiguity_count": 2
+    }
+  ],
+  "examples": {
+    "definite_entry_nonpositive_volume": [
+      "SZ300613@2023-05-10",
+      "SH600110@2022-10-27",
+      "SH600575@2024-12-27",
+      "SZ301033@2025-06-05",
+      "SH600008@2020-09-28",
+      "SZ000029@2020-01-23",
+      "SZ000062@2019-06-04"
+    ],
+    "queue_dependent_entry_upper_limit_like": [
+      "SZ000880@2022-10-27",
+      "SH600817@2020-01-23",
+      "SH603663@2023-11-22"
+    ],
+    "queue_dependent_exit_lower_limit_like": [
+      "SH603883@2024-09-11#close_to_high",
+      "SH603883@2024-09-11#billboard_freshness",
+      "SZ002953@2024-12-23"
+    ]
+  },
+  "input_policy": {
+    "preexisting_diagnostic_json_contains_returns": true,
+    "preexisting_return_values_used": false,
+    "new_forward_return_calculated": false,
+    "additional_forward_return_fields_read": false,
+    "raw_daily_ohlcv_fields_read": true,
+    "raw_prices_persisted": false,
+    "return_values_persisted": false
+  },
+  "interpretation": {
+    "zero_volume": "The existing harness can currently treat a positive-price suspension bar as a fill. The seven entry occurrences prove an execution-infrastructure defect in this tail sample.",
+    "one_price_limit_like": "The six occurrences require queue priority or order-level evidence to establish fill. They do not prove zero trading or impossible fills.",
+    "rate_scope": "The reported rates describe only the deliberately selected worst five Top3 cohorts per factor and must not be presented as full-history execution-event rates.",
+    "historical_factor_results": "No factor gate, ranking, score, or return is changed by this audit. Existing returns remain based on their recorded daily-bar fill assumptions.",
+    "level2": "Level2 remains deferred because the accepted frontier still has zero factors passing both the stability and TopK viability gates."
+  },
+  "decision": {
+    "factor_selection_or_promotion_allowed": false,
+    "factor_aggregation_allowed": false,
+    "historical_execution_corrected_return_rerun_allowed": false,
+    "level2_status": "deferred_no_dual_gate_qualified_factor",
+    "required_before_any_execution_corrected_rerun": "Freeze a separate all-43-factor, all-branch execution policy that applies the same suspension and queue assumptions uniformly.",
+    "next_research_step": "Add a prospective execution-validity gate to future factor protocols, then continue with an independent mechanism rather than retuning these tail observations."
+  },
+  "official_limit_rule_references": [
+    "https://www.sse.com.cn/lawandrules/sselawsrules2025/repeal/rules/c/c_20250612_10824490.shtml",
+    "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020210331716400676919.pdf"
+  ]
+}

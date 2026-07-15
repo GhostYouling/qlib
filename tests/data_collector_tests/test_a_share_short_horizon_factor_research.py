@@ -4748,6 +4748,154 @@ def test_research_frontier_audit_rejects_partial_gate_audit(tmp_path, monkeypatc
         )
 
 
+def test_tail_execution_occurrence_extraction_ignores_stored_returns(tmp_path):
+    diagnostic_path = tmp_path / "diagnostic-tail_factor_diagnostic.json"
+    selected = [
+        {
+            "instrument": f"SZ00000{index}",
+            "entry_date": "2025-01-03",
+            "exit_date": "2025-01-07",
+            "factor_value": 100.0 + index,
+            "forward_gross_return": -0.10 * index,
+        }
+        for index in range(1, 4)
+    ]
+    write_json_record(
+        diagnostic_path,
+        {
+            "run_id": "diagnostic-tail",
+            "status": "completed",
+            "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
+            "ranking_by_development_rank_ic": [
+                {
+                    "factor": "factor_tail",
+                    "mean_rank_ic": -999.0,
+                    "topk_tail_risk": {
+                        "worst_cohorts": [
+                            {
+                                "signal_date": "2025-01-02",
+                                "topk_net_return": -999.0,
+                                "selected_stocks": selected,
+                            }
+                        ]
+                    },
+                }
+            ],
+        },
+    )
+    frontier = {
+        "evidence_groups": [
+            {
+                "branch": "test_branch",
+                "factor_count": 1,
+                "diagnostic": {
+                    "run_id": "diagnostic-tail",
+                    "sha256": RESEARCH.file_sha256(diagnostic_path),
+                },
+            }
+        ]
+    }
+    occurrences, lineage = RESEARCH.extract_tail_execution_occurrences(
+        frontier,
+        tmp_path,
+        expected_evidence_groups=1,
+        expected_unique_factors=1,
+    )
+    assert list(occurrences.columns) == [
+        "branch",
+        "diagnostic_run_id",
+        "factor",
+        "signal_date",
+        "entry_date",
+        "exit_date",
+        "instrument",
+    ]
+    assert len(occurrences) == 3
+    assert "forward_gross_return" not in occurrences
+    assert "factor_value" not in occurrences
+    assert lineage[0]["selected_occurrence_count"] == 3
+
+
+def test_tail_execution_classification_separates_no_fill_from_queue_ambiguity():
+    dates = pd.DatetimeIndex(
+        ["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"]
+    )
+    instruments = ["SZ000001", "SZ000002", "SZ000003"]
+    occurrences = pd.DataFrame(
+        [
+            {
+                "branch": "test_branch",
+                "diagnostic_run_id": "diagnostic-tail",
+                "factor": f"factor_{index}",
+                "signal_date": dates[0],
+                "entry_date": dates[1],
+                "exit_date": dates[3],
+                "instrument": instrument,
+            }
+            for index, instrument in enumerate(instruments, start=1)
+        ]
+    )
+    rows = []
+    for instrument in instruments:
+        for date in dates:
+            rows.append(
+                {
+                    "instrument": instrument,
+                    "datetime": date,
+                    "open": 10.0,
+                    "high": 10.1,
+                    "low": 9.9,
+                    "close": 10.0,
+                    "volume": 100.0,
+                }
+            )
+    quotes = pd.DataFrame(rows)
+    quotes.loc[
+        (quotes["instrument"] == "SZ000001") & (quotes["datetime"] == dates[1]),
+        "volume",
+    ] = 0.0
+    quotes.loc[
+        (quotes["instrument"] == "SZ000002") & (quotes["datetime"] == dates[1]),
+        ["open", "high", "low", "close"],
+    ] = 10.5
+    quotes.loc[
+        (quotes["instrument"] == "SZ000003") & (quotes["datetime"] == dates[3]),
+        ["open", "high", "low", "close"],
+    ] = 9.5
+    audited = RESEARCH.classify_tail_execution_occurrences(
+        occurrences,
+        quotes,
+        dates,
+        move_threshold=0.045,
+        absolute_tolerance=1e-08,
+        relative_tolerance=1e-08,
+    )
+    summary = RESEARCH.summarize_tail_execution_flags(audited)
+    assert summary["counts"]["entry_nonpositive_volume"] == 1
+    assert summary["counts"]["entry_one_price_upper_limit_like"] == 1
+    assert summary["counts"]["exit_one_price_lower_limit_like"] == 1
+    assert summary["counts"]["definite_execution_failure"] == 1
+    assert summary["counts"]["queue_dependent_execution_ambiguity"] == 2
+    assert summary["counts"]["daily_bar_not_flagged"] == 0
+
+
+def test_committed_tail_execution_audit_renders_without_promoting_factors():
+    audit = RESEARCH.load_execution_tail_realism_audit()
+    assert audit is not None
+    assert audit["summary"]["definite_execution_failure_count"] == 7
+    assert audit["summary"]["queue_dependent_execution_ambiguity_count"] == 6
+    assert audit["decision"]["factor_aggregation_allowed"] is False
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        execution_tail_realism_audit=audit,
+    )
+    assert "尾部样本成交真实性审计" in report
+    assert "645 条因子—股票记录" in report
+    assert "明确的计划日成交失败：7 条" in report
+    assert "Level2 继续延期" in report
+
+
 def test_baostock_5m_combination_registration_freezes_all_dual_gate_passers(
     tmp_path, monkeypatch
 ):

@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_execution_tail_realism_preregistration",
+  "status": "frozen_before_selected_entry_exit_ohlcv_observed",
+  "preregistered_at": "2026-07-14T23:47:20Z",
+  "purpose": "Audit whether the stored worst-tail Top3 selections from the accepted 3-day research frontier were mechanically tradable under daily OHLCV, without recomputing returns or changing factor evidence.",
+  "bindings": {
+    "frontier_audit": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "expected_evidence_groups": 11,
+      "expected_unique_factors": 43,
+      "expected_dual_gate_passes": 0
+    },
+    "price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "expected_status": "passed",
+      "expected_daily_source": "baostock",
+      "expected_price_basis_id": "close_known_raw_pct_chg_chain_v1"
+    }
+  },
+  "scope": {
+    "development_period": {
+      "start": "2019-01-01",
+      "end": "2025-12-31"
+    },
+    "evidence_groups": "Every evidence group bound by the frontier audit.",
+    "factors": "Every factor summary in each bound diagnostic; exactly 43 unique factors are expected.",
+    "cohorts": "The existing topk_tail_risk.worst_cohorts stored in each factor summary, with a maximum of five cohorts per factor.",
+    "selections": "Every stored selected_stocks member in each in-scope worst cohort; the registered TopK is three.",
+    "sampling_limitation": "This is a tail-sample execution audit. It does not estimate execution-event incidence across all historical selections.",
+    "factor_changes_allowed": false,
+    "direction_changes_allowed": false,
+    "weight_changes_allowed": false,
+    "factor_subset_selection_allowed": false
+  },
+  "diagnostic_input_policy": {
+    "allowed_extracted_fields": [
+      "branch",
+      "diagnostic_run_id",
+      "factor",
+      "signal_date",
+      "entry_date",
+      "exit_date",
+      "instrument"
+    ],
+    "ignored_fields": [
+      "factor_value",
+      "forward_gross_return",
+      "cohort_forward_gross_returns",
+      "rank_ic",
+      "development_rank_ic",
+      "validation_rank_ic",
+      "cost_adjusted_returns"
+    ],
+    "preexisting_diagnostic_json_contains_returns": true,
+    "preexisting_return_values_used": false,
+    "new_forward_return_calculated": false,
+    "additional_forward_return_fields_read": false
+  },
+  "quote_observations": {
+    "provider": "qlib_local_cn_a_share",
+    "fields": [
+      "$open",
+      "$high",
+      "$low",
+      "$close",
+      "$volume"
+    ],
+    "sessions": [
+      "signal_date",
+      "entry_date",
+      "planned_exit_date",
+      "previous_local_session_before_planned_exit"
+    ],
+    "adjustment_note": "The local accepted economic-price chain is used. Same-session one-price equality and zero volume are invariant to the stored adjustment factors."
+  },
+  "classifications": {
+    "one_price_absolute_tolerance": 1e-08,
+    "one_price_relative_tolerance": 1e-08,
+    "limit_like_absolute_move_threshold": 0.045,
+    "entry_missing_or_nonpositive_quote": "Any missing or nonpositive entry OHLC value.",
+    "entry_nonpositive_volume": "Entry volume is missing or nonpositive after a valid OHLC quote; zero volume makes the planned daily-bar fill mechanically impossible.",
+    "entry_one_price_upper_limit_like": "Entry OHLC are equal and entry price divided by signal close minus one is at least 4.5%; daily data cannot establish queue priority or guaranteed fill.",
+    "exit_missing_or_nonpositive_quote": "Any missing or nonpositive planned-exit OHLC value.",
+    "exit_nonpositive_volume": "Planned-exit volume is missing or nonpositive after a valid OHLC quote; zero volume makes the planned daily-bar exit mechanically impossible.",
+    "exit_one_price_lower_limit_like": "Planned-exit OHLC are equal and planned-exit price divided by the previous local session close minus one is at most -4.5%; daily data cannot establish queue priority or guaranteed fill."
+  },
+  "threshold_rationale": {
+    "description": "The 4.5% threshold sits below the historical minimum 5% daily price limit applicable to risk-warning main-board shares during the development window. Requiring a one-price OHLC bar makes the label deliberately conservative and descriptive rather than an exact exchange-limit reconstruction.",
+    "official_references": [
+      "https://www.sse.com.cn/lawandrules/sselawsrules2025/repeal/rules/c/c_20250612_10824490.shtml",
+      "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020210331716400676919.pdf"
+    ]
+  },
+  "interpretation": {
+    "nonpositive_volume": "Definite daily-bar execution impossibility at the planned session.",
+    "one_price_limit_like": "Queue-dependent execution ambiguity. It is not proof that the market had no trades or that an order could never fill.",
+    "research_action": "Do not change, promote, reject, aggregate, or rerun any factor from this audit alone.",
+    "level2_action": "Because no factor currently passes both frozen evidence gates, Level2 remains deferred even if queue ambiguity is observed.",
+    "future_return_rerun": "Any execution-corrected performance rerun requires a separate immutable preregistration and must be applied uniformly to all 43 factors and all evidence branches."
+  },
+  "output_policy": {
+    "experiment_output": "Write an ignored machine-readable audit under data/experiments/short_horizon.",
+    "tracked_summary": "After the audit completes, freeze only aggregate counts, rates, compact examples, bindings, and conclusions into a tracked document.",
+    "persist_raw_prices": false,
+    "persist_return_values": false,
+    "selection_or_promotion_decision_allowed": false
+  }
+}

@@ -200,6 +200,18 @@ DEFAULT_RESEARCH_FRONTIER_AUDIT = (
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
 )
+DEFAULT_EXECUTION_TAIL_REALISM_SPEC = (
+    REPO_ROOT / "docs" / "a_share_three_day_execution_tail_realism_preregistration.json"
+)
+EXECUTION_TAIL_REALISM_SPEC_SHA256 = (
+    "1bccc93a5018738f437fcee3456ad4ceda3bb07b9ed5bf64f80cdd5feef2b144"
+)
+DEFAULT_EXECUTION_TAIL_REALISM_AUDIT = (
+    REPO_ROOT / "docs" / "a_share_three_day_execution_tail_realism_audit.json"
+)
+EXECUTION_TAIL_REALISM_AUDIT_SHA256 = (
+    "9eb7ef62b099aece3b122d3fdabc44050bf0146dacc137b1575645277cb8d8f3"
+)
 DEFAULT_JQDATA_MONEYFLOW_DATA_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
@@ -2175,6 +2187,45 @@ def load_research_frontier_contract(
     if not groups or any(not isinstance(item, dict) for item in groups):
         raise ValueError("three-day research frontier evidence groups must be non-empty objects")
     return contract
+
+
+def load_execution_tail_realism_preregistration(
+    path: Path = DEFAULT_EXECUTION_TAIL_REALISM_SPEC,
+) -> dict[str, Any]:
+    """Load the immutable no-return contract for the tail execution audit."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != EXECUTION_TAIL_REALISM_SPEC_SHA256:
+        raise ValueError("three-day tail execution preregistration fingerprint mismatch")
+    spec = load_json_record(
+        path, kind="a_share_three_day_execution_tail_realism_preregistration"
+    )
+    frontier = (spec.get("bindings") or {}).get("frontier_audit") or {}
+    price_basis = (spec.get("bindings") or {}).get("price_basis") or {}
+    classifications = spec.get("classifications") or {}
+    diagnostic_policy = spec.get("diagnostic_input_policy") or {}
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_before_selected_entry_exit_ohlcv_observed"
+        or frontier.get("expected_evidence_groups") != 11
+        or frontier.get("expected_unique_factors") != 43
+        or frontier.get("expected_dual_gate_passes") != 0
+        or price_basis.get("expected_status") != "passed"
+        or price_basis.get("expected_daily_source") != "baostock"
+        or price_basis.get("expected_price_basis_id") != REQUIRED_PRICE_BASIS
+        or classifications.get("limit_like_absolute_move_threshold") != 0.045
+        or classifications.get("one_price_absolute_tolerance") != 1e-08
+        or classifications.get("one_price_relative_tolerance") != 1e-08
+        or diagnostic_policy.get("preexisting_diagnostic_json_contains_returns") is not True
+        or diagnostic_policy.get("preexisting_return_values_used") is not False
+        or diagnostic_policy.get("new_forward_return_calculated") is not False
+        or diagnostic_policy.get("additional_forward_return_fields_read") is not False
+        or (spec.get("output_policy") or {}).get("selection_or_promotion_decision_allowed")
+        is not False
+    ):
+        raise ValueError("three-day tail execution preregistration is inconsistent")
+    return spec
 
 
 def load_jqdata_moneyflow_data_contract(
@@ -17766,6 +17817,50 @@ def load_research_frontier_audit(
     return audit
 
 
+def load_execution_tail_realism_audit(
+    path: Path = DEFAULT_EXECUTION_TAIL_REALISM_AUDIT,
+) -> dict[str, Any] | None:
+    """Load the committed no-return summary of tail-sample execution realism."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        return None
+    if file_sha256(path) != EXECUTION_TAIL_REALISM_AUDIT_SHA256:
+        raise ValueError("three-day tail execution audit fingerprint mismatch")
+    audit = load_json_record(
+        path, kind="a_share_three_day_execution_tail_realism_audit"
+    )
+    summary = audit.get("summary") or {}
+    scope = audit.get("scope") or {}
+    input_policy = audit.get("input_policy") or {}
+    decision = audit.get("decision") or {}
+    if (
+        audit.get("version") != 1
+        or audit.get("status") != "completed_tail_sample_daily_execution_audit"
+        or (audit.get("preregistration") or {}).get("sha256")
+        != EXECUTION_TAIL_REALISM_SPEC_SHA256
+        or scope.get("tail_sample_only") is not True
+        or scope.get("all_historical_selection_incidence_estimated") is not False
+        or scope.get("unique_factor_count") != 43
+        or scope.get("selected_occurrence_count") != 645
+        or summary.get("definite_execution_failure_count") != 7
+        or summary.get("queue_dependent_execution_ambiguity_count") != 6
+        or summary.get("daily_bar_not_flagged_count") != 632
+        or input_policy.get("preexisting_return_values_used") is not False
+        or input_policy.get("new_forward_return_calculated") is not False
+        or input_policy.get("additional_forward_return_fields_read") is not False
+        or input_policy.get("return_values_persisted") is not False
+        or decision.get("factor_selection_or_promotion_allowed") is not False
+        or decision.get("factor_aggregation_allowed") is not False
+        or decision.get("historical_execution_corrected_return_rerun_allowed")
+        is not False
+        or decision.get("level2_status")
+        != "deferred_no_dual_gate_qualified_factor"
+    ):
+        raise ValueError("three-day tail execution audit is inconsistent")
+    return audit
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -18125,6 +18220,7 @@ def render_three_day_research_report(
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
     baostock_5m_combination_registrations: list[dict[str, Any]] | None = None,
     research_frontier_audit: dict[str, Any] | None = None,
+    execution_tail_realism_audit: dict[str, Any] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -19340,6 +19436,38 @@ def render_three_day_research_report(
                 )
             )
         lines.append("")
+    if execution_tail_realism_audit is not None:
+        execution_scope = execution_tail_realism_audit.get("scope") or {}
+        execution_summary = execution_tail_realism_audit.get("summary") or {}
+        lines.extend(
+            [
+                "## 尾部样本成交真实性审计",
+                "",
+                (
+                    f"在 {execution_scope.get('unique_factor_count', 0)} 个因子各自最差 5 个 "
+                    f"Top3 cohort 中，共复核 {execution_scope.get('selected_occurrence_count', 0)} "
+                    "条因子—股票记录。该样本刻意富集尾部风险，不能解释为全历史发生率。"
+                ),
+                "",
+                (
+                    f"- 明确的计划日成交失败：{execution_summary.get('definite_execution_failure_count', 0)} 条；"
+                    f"其中入场日零/缺成交量 {execution_summary.get('entry_nonpositive_volume_count', 0)} 条，"
+                    f"计划退出日零/缺成交量 {execution_summary.get('exit_nonpositive_volume_count', 0)} 条。"
+                ),
+                (
+                    f"- 单价涨跌停样队列不确定：{execution_summary.get('queue_dependent_execution_ambiguity_count', 0)} 条；"
+                    f"入场端 {execution_summary.get('entry_one_price_upper_limit_like_count', 0)} 条，"
+                    f"退出端 {execution_summary.get('exit_one_price_lower_limit_like_count', 0)} 条。"
+                ),
+                (
+                    f"- 日线层面未标记：{execution_summary.get('daily_bar_not_flagged_count', 0)} 条。"
+                    "单价板仅说明需要队列优先级证据，不等同于绝对无成交。"
+                ),
+                "- 本审计未使用或重算收益，不改变任何因子门禁；当前双门禁交集仍为 0，Level2 继续延期。",
+                "- 后续若修正历史成交假设，必须另行冻结覆盖全部 43 因子和 11 条分支的统一协议。",
+                "",
+            ]
+        )
     lines.extend(
         [
             "## 下一步规则",
@@ -19409,6 +19537,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         load_official_securities_lending_source_acceptance_audit()
     )
     research_frontier_audit = load_research_frontier_audit()
+    execution_tail_realism_audit = load_execution_tail_realism_audit()
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -19461,6 +19590,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         minute_combination_holdouts=minute_combination_holdouts,
         baostock_5m_combination_registrations=baostock_5m_combination_registrations,
         research_frontier_audit=research_frontier_audit,
+        execution_tail_realism_audit=execution_tail_realism_audit,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -19492,6 +19622,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
             baostock_5m_combination_registrations
         ),
         "research_frontier_audit": research_frontier_audit is not None,
+        "execution_tail_realism_audit": execution_tail_realism_audit is not None,
         "factor_stability_audits": len(factor_stability_audits),
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
@@ -21641,6 +21772,582 @@ def run_research_frontier_audit(args: argparse.Namespace) -> dict[str, Any]:
         "stability_qualified_factor_count": len(stability_qualified),
         "topk_qualified_factor_count": len(topk_qualified),
         "dual_gate_qualified_factor_count": len(dual_gate_qualified),
+    }
+
+
+TAIL_EXECUTION_CLASSIFICATION_COLUMNS = (
+    "entry_missing_or_nonpositive_quote",
+    "entry_nonpositive_volume",
+    "entry_one_price_upper_limit_like",
+    "exit_missing_or_nonpositive_quote",
+    "exit_nonpositive_volume",
+    "exit_one_price_lower_limit_like",
+    "entry_move_reference_missing",
+    "exit_move_reference_missing",
+    "definite_execution_failure",
+    "queue_dependent_execution_ambiguity",
+    "daily_bar_not_flagged",
+)
+
+
+def extract_tail_execution_occurrences(
+    frontier: dict[str, Any],
+    experiment_root: Path,
+    *,
+    expected_evidence_groups: int,
+    expected_unique_factors: int,
+) -> tuple[pd.DataFrame, list[dict[str, Any]]]:
+    """Extract only registered identifiers and dates from stored worst cohorts."""
+
+    rows: list[dict[str, str]] = []
+    lineage: list[dict[str, Any]] = []
+    observed_factors: set[str] = set()
+    groups = list(frontier.get("evidence_groups") or [])
+    if len(groups) != expected_evidence_groups:
+        raise ValueError("tail execution audit evidence-group count changed")
+    for group in groups:
+        branch = str(group.get("branch") or "")
+        diagnostic_metadata = group.get("diagnostic") or {}
+        run_id = str(diagnostic_metadata.get("run_id") or "")
+        expected_sha256 = str(diagnostic_metadata.get("sha256") or "")
+        if not branch or not run_id or not expected_sha256:
+            raise ValueError("tail execution audit frontier group is incomplete")
+        diagnostic_path = (
+            experiment_root.expanduser().resolve()
+            / f"{run_id}_factor_diagnostic.json"
+        )
+        if file_sha256(diagnostic_path) != expected_sha256:
+            raise ValueError(f"tail execution diagnostic fingerprint mismatch: {branch}")
+        diagnostic = load_json_record(diagnostic_path)
+        require_diagnostic_price_basis(diagnostic)
+        summaries = list(diagnostic.get("ranking_by_development_rank_ic") or [])
+        factor_count = int(group.get("factor_count") or 0)
+        if (
+            diagnostic.get("status") != "completed"
+            or str(diagnostic.get("run_id")) != run_id
+            or len(summaries) != factor_count
+        ):
+            raise ValueError(f"tail execution diagnostic identity mismatch: {branch}")
+        branch_factors: list[str] = []
+        branch_cohorts = 0
+        branch_selections = 0
+        for summary in summaries:
+            factor = str(summary.get("factor") or "")
+            if not factor or factor in observed_factors:
+                raise ValueError("tail execution factor catalogs overlap or are incomplete")
+            observed_factors.add(factor)
+            branch_factors.append(factor)
+            worst_cohorts = list(
+                ((summary.get("topk_tail_risk") or {}).get("worst_cohorts") or [])
+            )
+            if len(worst_cohorts) > 5:
+                raise ValueError(f"tail execution worst-cohort cap changed: {factor}")
+            for cohort in worst_cohorts:
+                signal_date = pd.Timestamp(cohort.get("signal_date")).normalize()
+                selected = list(cohort.get("selected_stocks") or [])
+                if pd.isna(signal_date) or len(selected) != 3:
+                    raise ValueError(f"tail execution stored Top3 cohort is invalid: {factor}")
+                branch_cohorts += 1
+                for stock in selected:
+                    entry_date = pd.Timestamp(stock.get("entry_date")).normalize()
+                    exit_date = pd.Timestamp(stock.get("exit_date")).normalize()
+                    instrument = str(stock.get("instrument") or "")
+                    if (
+                        not instrument
+                        or pd.isna(entry_date)
+                        or pd.isna(exit_date)
+                        or not signal_date < entry_date <= exit_date
+                    ):
+                        raise ValueError(
+                            f"tail execution selected-stock identity is invalid: {factor}"
+                        )
+                    rows.append(
+                        {
+                            "branch": branch,
+                            "diagnostic_run_id": run_id,
+                            "factor": factor,
+                            "signal_date": signal_date,
+                            "entry_date": entry_date,
+                            "exit_date": exit_date,
+                            "instrument": instrument,
+                        }
+                    )
+                    branch_selections += 1
+        lineage.append(
+            {
+                "branch": branch,
+                "diagnostic_run_id": run_id,
+                "diagnostic_sha256": expected_sha256,
+                "factor_count": len(branch_factors),
+                "worst_cohort_count": branch_cohorts,
+                "selected_occurrence_count": branch_selections,
+            }
+        )
+    if len(observed_factors) != expected_unique_factors:
+        raise ValueError("tail execution unique-factor count changed")
+    frame = pd.DataFrame(rows)
+    if frame.empty:
+        raise ValueError("tail execution audit has no stored selected occurrences")
+    return frame.sort_values(
+        ["branch", "factor", "signal_date", "instrument"], kind="stable"
+    ).reset_index(drop=True), lineage
+
+
+def load_tail_execution_quotes(
+    provider_uri: Path,
+    instruments: Iterable[str],
+    *,
+    start: str,
+    end: str,
+    batch_size: int,
+) -> tuple[pd.DataFrame, pd.DatetimeIndex]:
+    """Load only daily OHLCV needed by the frozen execution audit."""
+
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    import qlib
+    from qlib.data import D
+
+    if batch_size < 1:
+        raise ValueError("--batch-size must be positive")
+    provider_uri = provider_uri.expanduser().resolve()
+    if not provider_uri.exists():
+        raise FileNotFoundError(f"Qlib provider directory does not exist: {provider_uri}")
+    require_research_price_basis(provider_uri)
+    qlib.init(provider_uri=str(provider_uri), region="cn", kernels=1)
+    requested = sorted({str(instrument) for instrument in instruments})
+    if not requested:
+        raise ValueError("tail execution audit instrument set is empty")
+    fields = {
+        "open": "$open",
+        "high": "$high",
+        "low": "$low",
+        "close": "$close",
+        "volume": "$volume",
+    }
+    expressions = list(fields.values())
+    frames: list[pd.DataFrame] = []
+    for offset in range(0, len(requested), batch_size):
+        batch = requested[offset : offset + batch_size]
+        frame = D.features(
+            batch, expressions, start_time=start, end_time=end, freq="day"
+        )
+        frame = frame.rename(
+            columns={expression: name for name, expression in fields.items()}
+        ).reset_index()
+        frames.append(frame)
+        print(
+            "loaded tail execution OHLCV for "
+            f"{min(offset + len(batch), len(requested))}/{len(requested)} instruments"
+        )
+    quotes = pd.concat(frames, ignore_index=True)
+    quotes["datetime"] = pd.to_datetime(quotes["datetime"]).dt.normalize()
+    quotes["instrument"] = quotes["instrument"].astype(str)
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(
+            D.calendar(start_time=start, end_time=end, freq="day"), errors="coerce"
+        )
+    ).normalize()
+    if calendar.empty or pd.isna(calendar).any():
+        raise ValueError("tail execution audit local calendar is invalid")
+    return quotes.sort_values(
+        ["datetime", "instrument"], kind="stable"
+    ).reset_index(drop=True), calendar.unique().sort_values()
+
+
+def _valid_execution_ohlc(quote: dict[str, Any] | None) -> bool:
+    if quote is None:
+        return False
+    values = np.asarray(
+        [quote.get(field) for field in ("open", "high", "low", "close")],
+        dtype=float,
+    )
+    return bool(np.isfinite(values).all() and (values > 0.0).all())
+
+
+def _valid_execution_close(quote: dict[str, Any] | None) -> bool:
+    if quote is None:
+        return False
+    try:
+        close = float(quote.get("close"))
+    except (TypeError, ValueError):
+        return False
+    return bool(np.isfinite(close) and close > 0.0)
+
+
+def _nonpositive_or_missing_execution_volume(quote: dict[str, Any]) -> bool:
+    try:
+        volume = float(quote.get("volume"))
+    except (TypeError, ValueError):
+        return True
+    return bool(not np.isfinite(volume) or volume <= 0.0)
+
+
+def _one_price_execution_bar(
+    quote: dict[str, Any], *, absolute_tolerance: float, relative_tolerance: float
+) -> bool:
+    values = np.asarray(
+        [quote[field] for field in ("open", "high", "low", "close")], dtype=float
+    )
+    return bool(
+        np.allclose(
+            values,
+            np.repeat(values[0], len(values)),
+            atol=absolute_tolerance,
+            rtol=relative_tolerance,
+        )
+    )
+
+
+def classify_tail_execution_occurrences(
+    occurrences: pd.DataFrame,
+    quotes: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    *,
+    move_threshold: float,
+    absolute_tolerance: float,
+    relative_tolerance: float,
+) -> pd.DataFrame:
+    """Classify definite no-fill bars and queue ambiguity without returns."""
+
+    required_occurrence_columns = {
+        "branch",
+        "diagnostic_run_id",
+        "factor",
+        "signal_date",
+        "entry_date",
+        "exit_date",
+        "instrument",
+    }
+    required_quote_columns = {
+        "datetime",
+        "instrument",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+    }
+    if missing := sorted(required_occurrence_columns - set(occurrences.columns)):
+        raise ValueError(f"tail execution occurrences are missing: {', '.join(missing)}")
+    if missing := sorted(required_quote_columns - set(quotes.columns)):
+        raise ValueError(f"tail execution quotes are missing: {', '.join(missing)}")
+    normalized_quotes = quotes.copy()
+    normalized_quotes["datetime"] = pd.to_datetime(
+        normalized_quotes["datetime"]
+    ).dt.normalize()
+    normalized_quotes["instrument"] = normalized_quotes["instrument"].astype(str)
+    if normalized_quotes.duplicated(["instrument", "datetime"]).any():
+        raise ValueError("tail execution quotes contain duplicate instrument sessions")
+    quote_lookup = {
+        (str(row.instrument), pd.Timestamp(row.datetime).normalize()): {
+            field: getattr(row, field)
+            for field in ("open", "high", "low", "close", "volume")
+        }
+        for row in normalized_quotes.itertuples(index=False)
+    }
+    sessions = pd.DatetimeIndex(pd.to_datetime(calendar)).normalize().unique().sort_values()
+    session_positions = {date: position for position, date in enumerate(sessions)}
+    classified: list[dict[str, Any]] = []
+    for occurrence in occurrences.to_dict(orient="records"):
+        instrument = str(occurrence["instrument"])
+        signal_date = pd.Timestamp(occurrence["signal_date"]).normalize()
+        entry_date = pd.Timestamp(occurrence["entry_date"]).normalize()
+        exit_date = pd.Timestamp(occurrence["exit_date"]).normalize()
+        if (
+            signal_date not in session_positions
+            or entry_date not in session_positions
+            or exit_date not in session_positions
+            or session_positions[entry_date] != session_positions[signal_date] + 1
+            or session_positions[exit_date] != session_positions[signal_date] + 3
+        ):
+            raise ValueError("tail execution occurrence violates the fixed three-day calendar")
+        previous_exit_date = sessions[session_positions[exit_date] - 1]
+        signal_quote = quote_lookup.get((instrument, signal_date))
+        entry_quote = quote_lookup.get((instrument, entry_date))
+        exit_quote = quote_lookup.get((instrument, exit_date))
+        previous_exit_quote = quote_lookup.get((instrument, previous_exit_date))
+        signal_close_valid = _valid_execution_close(signal_quote)
+        entry_quote_valid = _valid_execution_ohlc(entry_quote)
+        exit_quote_valid = _valid_execution_ohlc(exit_quote)
+        previous_exit_close_valid = _valid_execution_close(previous_exit_quote)
+        entry_volume_invalid = bool(
+            entry_quote_valid
+            and _nonpositive_or_missing_execution_volume(entry_quote)
+        )
+        exit_volume_invalid = bool(
+            exit_quote_valid
+            and _nonpositive_or_missing_execution_volume(exit_quote)
+        )
+        entry_limit_like = bool(
+            signal_close_valid
+            and entry_quote_valid
+            and _one_price_execution_bar(
+                entry_quote,
+                absolute_tolerance=absolute_tolerance,
+                relative_tolerance=relative_tolerance,
+            )
+            and float(entry_quote["open"]) / float(signal_quote["close"]) - 1.0
+            >= move_threshold
+        )
+        exit_limit_like = bool(
+            previous_exit_close_valid
+            and exit_quote_valid
+            and _one_price_execution_bar(
+                exit_quote,
+                absolute_tolerance=absolute_tolerance,
+                relative_tolerance=relative_tolerance,
+            )
+            and float(exit_quote["close"]) / float(previous_exit_quote["close"])
+            - 1.0
+            <= -move_threshold
+        )
+        definite_failure = bool(
+            not entry_quote_valid
+            or entry_volume_invalid
+            or not exit_quote_valid
+            or exit_volume_invalid
+        )
+        queue_ambiguity = bool(entry_limit_like or exit_limit_like)
+        classified.append(
+            {
+                **occurrence,
+                "entry_missing_or_nonpositive_quote": not entry_quote_valid,
+                "entry_nonpositive_volume": entry_volume_invalid,
+                "entry_one_price_upper_limit_like": entry_limit_like,
+                "exit_missing_or_nonpositive_quote": not exit_quote_valid,
+                "exit_nonpositive_volume": exit_volume_invalid,
+                "exit_one_price_lower_limit_like": exit_limit_like,
+                "entry_move_reference_missing": not signal_close_valid,
+                "exit_move_reference_missing": not previous_exit_close_valid,
+                "definite_execution_failure": definite_failure,
+                "queue_dependent_execution_ambiguity": queue_ambiguity,
+                "daily_bar_not_flagged": not definite_failure and not queue_ambiguity,
+            }
+        )
+    return pd.DataFrame(classified)
+
+
+def summarize_tail_execution_flags(frame: pd.DataFrame) -> dict[str, Any]:
+    """Return compact counts and rates for one tail-execution slice."""
+
+    total = int(len(frame))
+    if total < 1:
+        raise ValueError("tail execution summary slice is empty")
+    counts = {
+        column: int(frame[column].fillna(False).astype(bool).sum())
+        for column in TAIL_EXECUTION_CLASSIFICATION_COLUMNS
+    }
+    return {
+        "selected_occurrence_count": total,
+        "counts": counts,
+        "rates": {column: count / total for column, count in counts.items()},
+    }
+
+
+def run_execution_tail_realism_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Audit stored worst-tail selections under daily OHLCV execution constraints."""
+
+    spec = load_execution_tail_realism_preregistration()
+    bindings = spec["bindings"]
+    frontier_binding = bindings["frontier_audit"]
+    price_basis_binding = bindings["price_basis"]
+    frontier_path = resolve_repository_record_path(frontier_binding["path"])
+    if file_sha256(frontier_path) != frontier_binding["sha256"]:
+        raise ValueError("tail execution frontier audit fingerprint mismatch")
+    frontier = load_research_frontier_audit(frontier_path)
+    if frontier is None:
+        raise FileNotFoundError(f"research frontier audit does not exist: {frontier_path}")
+    frontier_summary = frontier.get("summary") or {}
+    if (
+        frontier_summary.get("evidence_group_count")
+        != frontier_binding["expected_evidence_groups"]
+        or frontier_summary.get("historical_factor_count")
+        != frontier_binding["expected_unique_factors"]
+        or frontier_summary.get("dual_gate_qualified_factor_count")
+        != frontier_binding["expected_dual_gate_passes"]
+    ):
+        raise ValueError("tail execution frontier summary changed")
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    price_basis_path = provider_uri / PRICE_BASIS_MANIFEST_NAME
+    if file_sha256(price_basis_path) != price_basis_binding["sha256"]:
+        raise ValueError("tail execution price-basis fingerprint mismatch")
+    price_basis = load_json_record(price_basis_path)
+    if (
+        price_basis.get("status") != price_basis_binding["expected_status"]
+        or price_basis.get("price_basis")
+        != price_basis_binding["expected_price_basis_id"]
+        or price_basis_binding["expected_daily_source"]
+        not in (price_basis.get("daily_sources") or [])
+    ):
+        raise ValueError("tail execution price-basis metadata changed")
+    occurrences, lineage = extract_tail_execution_occurrences(
+        frontier,
+        Path(args.experiment_root),
+        expected_evidence_groups=int(frontier_binding["expected_evidence_groups"]),
+        expected_unique_factors=int(frontier_binding["expected_unique_factors"]),
+    )
+    quote_start = pd.Timestamp(occurrences["signal_date"].min()).date().isoformat()
+    quote_end = pd.Timestamp(occurrences["exit_date"].max()).date().isoformat()
+    quotes, calendar = load_tail_execution_quotes(
+        provider_uri,
+        occurrences["instrument"].unique(),
+        start=quote_start,
+        end=quote_end,
+        batch_size=args.batch_size,
+    )
+    classification = spec["classifications"]
+    audited = classify_tail_execution_occurrences(
+        occurrences,
+        quotes,
+        calendar,
+        move_threshold=float(classification["limit_like_absolute_move_threshold"]),
+        absolute_tolerance=float(classification["one_price_absolute_tolerance"]),
+        relative_tolerance=float(classification["one_price_relative_tolerance"]),
+    )
+    aggregate = summarize_tail_execution_flags(audited)
+    by_branch = [
+        {"branch": str(branch), **summarize_tail_execution_flags(group)}
+        for branch, group in audited.groupby("branch", sort=True)
+    ]
+    by_factor = [
+        {
+            "branch": str(group.iloc[0]["branch"]),
+            "factor": str(factor),
+            **summarize_tail_execution_flags(group),
+        }
+        for factor, group in audited.groupby("factor", sort=True)
+    ]
+    example_columns = [
+        "branch",
+        "factor",
+        "signal_date",
+        "entry_date",
+        "exit_date",
+        "instrument",
+    ]
+
+    def flag_examples(column: str) -> list[dict[str, Any]]:
+        selected = audited.loc[audited[column], example_columns].head(10).copy()
+        for date_column in ("signal_date", "entry_date", "exit_date"):
+            selected[date_column] = pd.to_datetime(selected[date_column]).dt.date.astype(str)
+        return selected.to_dict(orient="records")
+
+    examples = {
+        column: flag_examples(column)
+        for column in TAIL_EXECUTION_CLASSIFICATION_COLUMNS[:6]
+    }
+    session_positions = {date: position for position, date in enumerate(calendar)}
+    requested_quote_keys = {
+        (str(row.instrument), pd.Timestamp(date).normalize())
+        for row in audited.itertuples(index=False)
+        for date in (
+            row.signal_date,
+            row.entry_date,
+            row.exit_date,
+            calendar[session_positions[pd.Timestamp(row.exit_date).normalize()] - 1],
+        )
+    }
+    run_id = _timestamp()
+    audit = {
+        "version": 1,
+        "kind": "a_share_three_day_execution_tail_realism_audit",
+        "run_id": run_id,
+        "status": "completed_tail_sample_daily_execution_audit",
+        "purpose": (
+            "daily_ohlcv_execution_realism_of_stored_worst_tail_top3_without_returns"
+        ),
+        "preregistration": {
+            "path": str(DEFAULT_EXECUTION_TAIL_REALISM_SPEC.relative_to(REPO_ROOT)),
+            "sha256": EXECUTION_TAIL_REALISM_SPEC_SHA256,
+            "preregistered_at": spec["preregistered_at"],
+        },
+        "bindings": {
+            "frontier_audit": {
+                "path": str(frontier_path),
+                "sha256": frontier_binding["sha256"],
+            },
+            "price_basis": {
+                "path": str(price_basis_path),
+                "sha256": price_basis_binding["sha256"],
+                "status": price_basis["status"],
+                "price_basis": price_basis["price_basis"],
+                "daily_sources": list(price_basis.get("daily_sources") or []),
+            },
+            "diagnostics": lineage,
+        },
+        "scope": {
+            "tail_sample_only": True,
+            "all_historical_selection_incidence_estimated": False,
+            "evidence_group_count": len(lineage),
+            "unique_factor_count": int(audited["factor"].nunique()),
+            "worst_cohort_count": int(
+                audited[["factor", "signal_date"]].drop_duplicates().shape[0]
+            ),
+            "selected_occurrence_count": int(len(audited)),
+            "unique_instrument_count": int(audited["instrument"].nunique()),
+            "quote_start": quote_start,
+            "quote_end": quote_end,
+            "quote_fields": ["$open", "$high", "$low", "$close", "$volume"],
+            "requested_instrument_session_key_count": len(requested_quote_keys),
+        },
+        "classification_policy": classification,
+        "summary": aggregate,
+        "by_branch": by_branch,
+        "by_factor": by_factor,
+        "examples": examples,
+        "input_policy": {
+            "preexisting_diagnostic_json_contains_returns": True,
+            "preexisting_return_values_used": False,
+            "new_forward_return_calculated": False,
+            "additional_forward_return_fields_read": False,
+            "raw_daily_ohlcv_fields_read": True,
+            "raw_prices_persisted": False,
+            "return_values_persisted": False,
+        },
+        "decision": {
+            "factor_selection_or_promotion_allowed": False,
+            "factor_aggregation_allowed": False,
+            "historical_execution_corrected_return_rerun_allowed": False,
+            "level2_status": "deferred_no_dual_gate_qualified_factor",
+            "next_step": (
+                "Record this infrastructure result; any return correction requires a new "
+                "uniform all-factor preregistration."
+            ),
+        },
+        "limitations": [
+            "The stored worst five cohorts per factor are a deliberately enriched tail sample, not every historical selection.",
+            "A one-price limit-like bar identifies queue-dependent execution ambiguity; it does not prove that no trades or fills occurred.",
+            "Daily OHLCV cannot reconstruct order submission time, queue priority, partial fills, or market impact.",
+            "This audit reads no new forward-return value and cannot change any factor gate result.",
+        ],
+    }
+    experiment_root = Path(args.experiment_root).expanduser().resolve()
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    requested_output = str(getattr(args, "output", "") or "")
+    destination = (
+        Path(requested_output).expanduser().resolve()
+        if requested_output
+        else experiment_root / f"{run_id}_execution_tail_realism_audit.json"
+    )
+    if destination.exists():
+        raise RuntimeError(f"tail execution audit already exists: {destination}")
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": audit["status"],
+        "audit_path": str(destination),
+        "unique_factor_count": audit["scope"]["unique_factor_count"],
+        "selected_occurrence_count": audit["scope"]["selected_occurrence_count"],
+        "definite_execution_failure_count": aggregate["counts"][
+            "definite_execution_failure"
+        ],
+        "queue_dependent_execution_ambiguity_count": aggregate["counts"][
+            "queue_dependent_execution_ambiguity"
+        ],
+        "additional_forward_return_fields_read": False,
     }
 
 
@@ -23913,6 +24620,24 @@ def parse_args() -> argparse.Namespace:
         "--output", default=str(DEFAULT_RESEARCH_FRONTIER_AUDIT)
     )
 
+    execution_tail_realism = subparsers.add_parser(
+        "execution-tail-realism-audit",
+        help=(
+            "audit daily-bar tradability of every stored worst-tail Top3 selection "
+            "without reading returns"
+        ),
+    )
+    execution_tail_realism.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    execution_tail_realism.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    execution_tail_realism.add_argument(
+        "--output", help="optional exact ignored audit path"
+    )
+    execution_tail_realism.add_argument("--batch-size", type=int, default=500)
+
     factor_stability_audit = subparsers.add_parser(
         "factor-stability-audit",
         help="apply one fixed development-only cross-year stability screen to a saved factor diagnostic",
@@ -24615,6 +25340,8 @@ def main() -> int:
         report = run_rolling_window_semantics_audit(args)
     elif args.command == "research-frontier-audit":
         report = run_research_frontier_audit(args)
+    elif args.command == "execution-tail-realism-audit":
+        report = run_execution_tail_realism_audit(args)
     elif args.command == "factor-stability-audit":
         report = run_factor_stability_audit(args)
     elif args.command == "factor-topk-viability-audit":
