@@ -4412,7 +4412,7 @@ def test_minute_factor_direction_is_ranked_after_quality_and_listing_gates(tmp_p
 
 
 def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(tmp_path, monkeypatch):
-    dates = pd.bdate_range("2019-01-02", periods=8)
+    dates = pd.bdate_range("2019-01-02", periods=30)
     symbols = tuple(f"SZ{index:06d}" for index in range(1, 61))
     feature_run_path, _ = make_minute_feature_chain(tmp_path, dates=dates, symbols=symbols)
     provider_uri = tmp_path / "provider"
@@ -4436,7 +4436,10 @@ def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(tmp_path, mo
                     "datetime": pd.Timestamp(date),
                     "instrument": symbol,
                     "open": 100.0,
+                    "high": 100.0 + position,
+                    "low": 100.0,
                     "close": 100.0 + position,
+                    "volume": 100.0,
                     "listing_age_sessions": 100,
                 }
             )
@@ -4523,13 +4526,16 @@ def test_baostock_5m_diagnostic_uses_2020_2025_protocol(tmp_path, monkeypatch):
     fundamental_path.write_bytes(b"offline-fixture")
     market = pd.DataFrame(
         [
-            {
-                "datetime": pd.Timestamp(date),
-                "instrument": symbol,
-                "open": 100.0,
-                "close": 100.0 + position,
-                "listing_age_sessions": 100,
-            }
+                {
+                    "datetime": pd.Timestamp(date),
+                    "instrument": symbol,
+                    "open": 100.0,
+                    "high": 100.0 + position,
+                    "low": 100.0,
+                    "close": 100.0 + position,
+                    "volume": 100.0,
+                    "listing_age_sessions": 100,
+                }
             for date in dates
             for position, symbol in enumerate(symbols, start=1)
         ]
@@ -4881,7 +4887,10 @@ def test_tail_execution_classification_separates_no_fill_from_queue_ambiguity():
 
 def test_committed_tail_execution_audit_renders_without_promoting_factors():
     audit = RESEARCH.load_execution_tail_realism_audit()
+    policy = RESEARCH.load_prospective_execution_policy()
+    restoration = RESEARCH.load_baostock_5m_restoration_probe_audit()
     assert audit is not None
+    assert restoration is not None
     assert audit["summary"]["definite_execution_failure_count"] == 7
     assert audit["summary"]["queue_dependent_execution_ambiguity_count"] == 6
     assert audit["decision"]["factor_aggregation_allowed"] is False
@@ -4889,11 +4898,151 @@ def test_committed_tail_execution_audit_renders_without_promoting_factors():
         {"iterations": []},
         {"signals": [], "settlements": []},
         execution_tail_realism_audit=audit,
+        prospective_execution_policy=policy,
+        baostock_5m_restoration_probe_audit=restoration,
     )
     assert "尾部样本成交真实性审计" in report
     assert "645 条因子—股票记录" in report
     assert "明确的计划日成交失败：7 条" in report
+    assert "未来新因子统一成交协议" in report
+    assert "入场受阻的槽位保留现金且不替补" in report
+    assert "BaoStock 五分钟恢复状态" in report
+    assert "本研究会话不得重复探针或启动全量" in report
     assert "Level2 继续延期" in report
+
+
+def test_prospective_execution_ledger_keeps_blocked_entry_cash_and_delays_exits():
+    dates = pd.bdate_range("2024-01-02", periods=30)
+    rows = []
+    for instrument, score in (("A", 0.9), ("B", 0.8), ("C", 0.7)):
+        for date in dates:
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "open": 10.0,
+                    "high": 10.1,
+                    "low": 9.9,
+                    "close": 10.0,
+                    "volume": 100.0,
+                    "quality_eligible": True,
+                    "factor_test": score,
+                }
+            )
+    frame = pd.DataFrame(rows)
+    frame.loc[
+        (frame["instrument"] == "A") & (frame["datetime"] == dates[1]),
+        ["open", "high", "low", "close"],
+    ] = 10.5
+    frame.loc[
+        (frame["instrument"] == "B") & (frame["datetime"] == dates[3]),
+        "volume",
+    ] = 0.0
+    frame.loc[
+        (frame["instrument"] == "C") & (frame["datetime"] == dates[3]),
+        ["open", "high", "low", "close"],
+    ] = 9.5
+    ledger = RESEARCH.simulate_prospective_execution_topk(frame, "factor_test")
+    assert ledger["scope"]["grid_signal_count"] == 3
+    assert ledger["scope"]["complete_signal_count"] == 2
+    assert ledger["scope"]["incomplete_signal_count"] == 1
+    assert ledger["scope"]["registered_entry_slot_count"] == 6
+    assert ledger["entry"]["filled_slot_count"] == 5
+    assert ledger["entry"]["blocked_by_reason"]["upper_limit_like_queue"] == 1
+    assert ledger["entry"]["lower_rank_substitution_performed"] is False
+    assert ledger["exit"]["on_time_position_count"] == 3
+    assert ledger["exit"]["delayed_position_count"] == 2
+    assert ledger["exit"]["delay_trading_day_distribution"] == {"0": 3, "1": 2}
+    assert ledger["exit"]["terminal_unresolved_position_count"] == 0
+    assert ledger["raw_daily_prices_persisted"] is False
+
+
+def test_prospective_execution_ledger_fails_with_position_stuck_beyond_delay_cap():
+    dates = pd.bdate_range("2024-01-02", periods=25)
+    rows = []
+    for instrument, score in (("A", 0.9), ("B", 0.8), ("C", 0.7)):
+        for date in dates:
+            rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "open": 10.0,
+                    "high": 10.1,
+                    "low": 9.9,
+                    "close": 10.0,
+                    "volume": 100.0,
+                    "quality_eligible": True,
+                    "factor_test": score,
+                }
+            )
+    frame = pd.DataFrame(rows)
+    frame.loc[
+        (frame["instrument"] == "B")
+        & frame["datetime"].between(dates[3], dates[23]),
+        "volume",
+    ] = 0.0
+    ledger = RESEARCH.simulate_prospective_execution_topk(frame, "factor_test")
+    assert ledger["scope"]["complete_signal_count"] == 1
+    assert ledger["exit"]["terminal_unresolved_position_count"] == 1
+    assert not ledger["gate"]["passed"]
+    assert "terminal unresolved positions remain after the exit-delay cap" in ledger[
+        "gate"
+    ]["failures"]
+
+
+def test_factor_topk_viability_uses_prospective_execution_ledger_when_present():
+    summary = {
+        "factor": "new_factor",
+        "cohorts": 240,
+        "mean_rank_ic": 0.03,
+        "positive_rank_ic_rate": 0.56,
+        "mean_top_minus_bottom_gross_return": 0.004,
+        "by_signal_year": {
+            str(year): {
+                "mean_rank_ic": 0.01,
+                "topk_net_cumulative_return": -0.99,
+            }
+            for year in range(2019, 2024)
+        },
+        "topk": {
+            "rounds": 240,
+            "net_cumulative_return": -0.99,
+            "max_drawdown": -0.99,
+            "median_holdings": 3,
+        },
+        "execution_aware_topk": {
+            "status": "completed_prospective_execution_ledger",
+            "policy": {"sha256": RESEARCH.PROSPECTIVE_EXECUTION_POLICY_SHA256},
+            "scope": {"complete_signal_count": 240},
+            "exit": {"terminal_unresolved_position_count": 0},
+            "performance": {
+                "net_cumulative_return": 0.50,
+                "maximum_drawdown": -0.15,
+                "annual_net_cumulative_return_by_signal_year": {
+                    str(year): 0.05 for year in range(2019, 2024)
+                },
+            },
+            "lower_rank_substitution_performed": False,
+            "raw_daily_prices_persisted": False,
+        },
+    }
+    decision = RESEARCH.factor_topk_viability_decision(summary)
+    assert decision["passed"]
+    assert decision["prospective_execution_policy_applied"]
+    assert decision["topk_metrics"]["net_cumulative_return"] == pytest.approx(0.50)
+    failed = RESEARCH.factor_topk_viability_decision(
+        {
+            **summary,
+            "execution_aware_topk": {
+                **summary["execution_aware_topk"],
+                "exit": {"terminal_unresolved_position_count": 1},
+            },
+        }
+    )
+    assert not failed["passed"]
+    assert "terminal unresolved positions remain after the exit-delay cap" in failed[
+        "failures"
+    ]
 
 
 def test_baostock_5m_combination_registration_freezes_all_dual_gate_passers(

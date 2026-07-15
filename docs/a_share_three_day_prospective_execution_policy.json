@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_prospective_execution_policy",
+  "status": "prospective_only_frozen_after_tail_audit_before_any_execution_aware_factor_return",
+  "frozen_at": "2026-07-15T00:06:44Z",
+  "purpose": "Define one execution-aware cash-and-position ledger for every future three-session factor diagnostic without selectively rerunning the rejected 43-factor historical frontier.",
+  "bindings": {
+    "tail_execution_audit": {
+      "path": "docs/a_share_three_day_execution_tail_realism_audit.json",
+      "sha256": "9eb7ef62b099aece3b122d3fdabc44050bf0146dacc137b1575645277cb8d8f3",
+      "definite_execution_failure_count": 7,
+      "queue_dependent_execution_ambiguity_count": 6,
+      "tail_sample_only": true
+    },
+    "price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_source": "baostock"
+    }
+  },
+  "effective_scope": {
+    "applies_to": "Every factor diagnostic newly executed after this policy is implemented, including future daily, event, minute, and classified-moneyflow mechanisms.",
+    "existing_frontier_factor_count": 43,
+    "existing_frontier_retroactive_rerun_allowed": false,
+    "existing_frontier_selection_or_promotion_allowed": false,
+    "factor_or_branch_exemptions_allowed": false,
+    "post_result_policy_changes_allowed": false
+  },
+  "strategy": {
+    "universe": "buyable_main_chinext",
+    "minimum_listing_sessions": 20,
+    "holding_period_trading_days": 3,
+    "signal_stride_trading_days": 3,
+    "topk": 3,
+    "initial_equity": 1.0,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_exit_delay_trading_days": 20,
+    "lot_size_or_integer_share_modelled": false,
+    "slippage_market_impact_or_capacity_modelled": false
+  },
+  "signal_policy": {
+    "information_time": "signal-session close",
+    "eligible_before_ranking": [
+      "quality_eligible is true",
+      "factor score is finite",
+      "signal-session OHLC are finite and positive",
+      "signal-session volume is finite and positive"
+    ],
+    "ranking": "Descending directional factor score, then instrument ascending.",
+    "complete_signal_basket_required": true,
+    "future_entry_or_exit_information_used_for_ranking": false
+  },
+  "entry_policy": {
+    "session": "next local trading-session open",
+    "orders": "Submit only the close-known Top3 names; do not inspect or substitute lower-ranked names after an entry outcome.",
+    "nominal_slot_budget": "Free cash at the entry open divided equally across all three registered slots.",
+    "fill_requires": [
+      "entry-session OHLC are finite and positive",
+      "entry-session volume is finite and positive",
+      "entry bar is not one-price upper-limit-like"
+    ],
+    "blocked_slot": "Keep that slot's budget in cash for the cohort; do not reallocate it to another selected or unselected name.",
+    "partial_basket_allowed": true,
+    "entry_price": "entry-session adjusted open",
+    "entry_cost_application": "shares = nominal_slot_budget * (1 - open_cost) / entry_open"
+  },
+  "exit_policy": {
+    "planned_session": "third local trading-session close after the signal close",
+    "planned_or_delayed_fill_requires": [
+      "exit-session OHLC are finite and positive",
+      "exit-session volume is finite and positive",
+      "exit bar is not one-price lower-limit-like"
+    ],
+    "blocked_exit": "Retain the position and attempt the same full-position sale at each later local close.",
+    "maximum_delay": "Twenty local sessions after the planned exit; an unfilled position after the cap makes the execution gate fail.",
+    "exit_price": "first eligible planned-or-delayed session adjusted close",
+    "exit_cost_application": "cash proceeds = shares * exit_close * (1 - close_cost)",
+    "capital_reuse": "Exit proceeds become available only after that close and may fund an entry from the next local session onward."
+  },
+  "one_price_limit_like_policy": {
+    "absolute_move_threshold": 0.045,
+    "one_price_absolute_tolerance": 1e-08,
+    "one_price_relative_tolerance": 1e-08,
+    "entry_upper_reference": "entry one-price OHLC divided by signal close minus one",
+    "exit_lower_reference": "exit one-price OHLC divided by previous local-session close minus one",
+    "interpretation": "A limit-like bar does not prove no market trades. The ledger conservatively assumes no fill because queue priority is unavailable.",
+    "exact_exchange_limit_reconstruction_claimed": false
+  },
+  "ledger_policy": {
+    "event_order_within_session": [
+      "process any registered entry at the session open using cash available before the open",
+      "mark all open positions at the session close",
+      "process planned or delayed exits at the session close"
+    ],
+    "multiple_cohorts": "Delayed positions keep their capital locked; later scheduled cohorts may invest only cash still available before their entry open.",
+    "same_instrument_multiple_lots": "Keep each cohort lot separate because planned exit dates can differ.",
+    "equity_curve": "Daily close cash plus marked value of every open lot; carry the most recent positive close through a suspended session only for marking, never for a claimed fill.",
+    "signal_cutoff": "Form no signal whose planned exit plus the maximum delay would exceed the diagnostic data window.",
+    "entry_failure_return_imputation": "No return is imputed; the unfilled slot remains cash.",
+    "exit_failure_return_imputation": "No sale or realized return is imputed; the lot stays open until a valid exit or terminal failure."
+  },
+  "execution_gate": {
+    "minimum_scheduled_signal_count": 200,
+    "net_cumulative_return_gt": 0.0,
+    "maximum_drawdown_gte": -0.2,
+    "every_observed_signal_calendar_year_net_return_gt": 0.0,
+    "terminal_unresolved_position_count": 0,
+    "selection_or_promotion_requires_association_stability_gate": true,
+    "selection_or_promotion_requires_execution_gate": true,
+    "naive_fixed_horizon_topk_gate_alone_is_sufficient": false
+  },
+  "output_requirements": {
+    "record_policy_path_and_sha256": true,
+    "record_signal_and_slot_counts": true,
+    "record_entry_block_reasons": true,
+    "record_on_time_and_delayed_exit_counts": true,
+    "record_exit_delay_distribution": true,
+    "record_terminal_unresolved_positions": true,
+    "record_daily_equity_metrics_and_signal_year_returns": true,
+    "persist_individual_raw_daily_prices": false,
+    "factor_subset_or_weight_search_allowed": false
+  },
+  "research_boundaries": {
+    "current_factor_aggregation_allowed": false,
+    "current_stock_scoring_or_selection_allowed": false,
+    "level2_required": false,
+    "level2_reconsideration": "Only after a lower-cost factor passes association and this execution gate and the remaining uncertainty is specifically attributable to queue or fill priority.",
+    "investment_advice": false
+  },
+  "official_limit_rule_references": [
+    "https://www.sse.com.cn/lawandrules/sselawsrules2025/repeal/rules/c/c_20250612_10824490.shtml",
+    "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020210331716400676919.pdf"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_prospective_execution_policy_implementation_audit",
+  "status": "implemented_and_synthetic_tests_passed_before_any_new_factor_return",
+  "recorded_at": "2026-07-15T00:17:42Z",
+  "base_commit": "35e499d04ad192924d08ce594a70c5a68157b817",
+  "policy": {
+    "path": "docs/a_share_three_day_prospective_execution_policy.json",
+    "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc",
+    "prospective_only": true,
+    "existing_43_factor_frontier_retroactively_rerun": false
+  },
+  "implementation": {
+    "path": "scripts/a_share_short_horizon_factor_research.py",
+    "new_factor_diagnostics_require_exact_policy_parameters": true,
+    "signal_close_top3_frozen_before_entry_outcome": true,
+    "lower_rank_substitution_performed": false,
+    "blocked_entry_budget_stays_cash": true,
+    "blocked_exit_position_and_capital_remain_in_ledger": true,
+    "maximum_exit_delay_trading_days": 20,
+    "terminal_unresolved_positions_fail_gate": true,
+    "naive_fixed_horizon_topk_gate_alone_is_sufficient": false,
+    "individual_raw_daily_prices_persisted": false
+  },
+  "verification": {
+    "test_file": "tests/data_collector_tests/test_a_share_short_horizon_factor_research.py",
+    "tests_passed": 209,
+    "tests_failed": 0,
+    "synthetic_scenarios": [
+      "upper-limit-like entry leaves the registered slot in cash with no replacement",
+      "nonpositive-volume and lower-limit-like exits retain positions and fill only on a later valid close",
+      "a position still blocked after twenty local sessions fails the execution gate",
+      "the viability decision uses the prospective ledger instead of a contradictory naive fixed-horizon return"
+    ],
+    "ruff_passed": true,
+    "py_compile_passed": true
+  },
+  "research_result": {
+    "new_factor_returns_observed": false,
+    "new_factor_or_combination_evaluated": false,
+    "factor_aggregation_allowed": false,
+    "stock_scoring_or_selection_allowed": false
+  }
+}

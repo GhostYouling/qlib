@@ -212,6 +212,18 @@ DEFAULT_EXECUTION_TAIL_REALISM_AUDIT = (
 EXECUTION_TAIL_REALISM_AUDIT_SHA256 = (
     "9eb7ef62b099aece3b122d3fdabc44050bf0146dacc137b1575645277cb8d8f3"
 )
+DEFAULT_PROSPECTIVE_EXECUTION_POLICY = (
+    REPO_ROOT / "docs" / "a_share_three_day_prospective_execution_policy.json"
+)
+PROSPECTIVE_EXECUTION_POLICY_SHA256 = (
+    "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+)
+DEFAULT_BAOSTOCK_5M_RESTORATION_PROBE_AUDIT = (
+    REPO_ROOT / "docs" / "a_share_baostock_5m_restoration_probe_audit.json"
+)
+BAOSTOCK_5M_RESTORATION_PROBE_AUDIT_SHA256 = (
+    "7d97216087a73c05bded07a05c0c3f5eecf936962d38bc7e48712f8d15220eba"
+)
 DEFAULT_JQDATA_MONEYFLOW_DATA_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
@@ -2226,6 +2238,78 @@ def load_execution_tail_realism_preregistration(
     ):
         raise ValueError("three-day tail execution preregistration is inconsistent")
     return spec
+
+
+def load_prospective_execution_policy(
+    path: Path = DEFAULT_PROSPECTIVE_EXECUTION_POLICY,
+) -> dict[str, Any]:
+    """Load the prospective-only cash and position execution policy."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != PROSPECTIVE_EXECUTION_POLICY_SHA256:
+        raise ValueError("three-day prospective execution-policy fingerprint mismatch")
+    policy = load_json_record(
+        path, kind="a_share_three_day_prospective_execution_policy"
+    )
+    strategy = policy.get("strategy") or {}
+    limit_policy = policy.get("one_price_limit_like_policy") or {}
+    gate = policy.get("execution_gate") or {}
+    effective_scope = policy.get("effective_scope") or {}
+    if (
+        policy.get("version") != 1
+        or policy.get("status")
+        != "prospective_only_frozen_after_tail_audit_before_any_execution_aware_factor_return"
+        or (policy.get("bindings") or {}).get("tail_execution_audit", {}).get(
+            "sha256"
+        )
+        != EXECUTION_TAIL_REALISM_AUDIT_SHA256
+        or effective_scope.get("existing_frontier_retroactive_rerun_allowed")
+        is not False
+        or effective_scope.get("factor_or_branch_exemptions_allowed") is not False
+        or strategy.get("holding_period_trading_days") != 3
+        or strategy.get("signal_stride_trading_days") != 3
+        or strategy.get("topk") != 3
+        or strategy.get("open_cost") != 0.00012
+        or strategy.get("close_cost") != 0.00062
+        or strategy.get("maximum_exit_delay_trading_days") != 20
+        or limit_policy.get("absolute_move_threshold") != 0.045
+        or limit_policy.get("one_price_absolute_tolerance") != 1e-08
+        or limit_policy.get("one_price_relative_tolerance") != 1e-08
+        or gate.get("minimum_scheduled_signal_count") != 200
+        or gate.get("net_cumulative_return_gt") != 0.0
+        or gate.get("maximum_drawdown_gte") != STRICT_DEVELOPMENT_MAX_DRAWDOWN
+        or gate.get("every_observed_signal_calendar_year_net_return_gt") != 0.0
+        or gate.get("terminal_unresolved_position_count") != 0
+        or gate.get("naive_fixed_horizon_topk_gate_alone_is_sufficient") is not False
+    ):
+        raise ValueError("three-day prospective execution policy is inconsistent")
+    return policy
+
+
+def require_prospective_execution_policy_compatibility(
+    policy: dict[str, Any],
+    *,
+    hold_days: int,
+    topk: int,
+    open_cost: float,
+    close_cost: float,
+) -> None:
+    """Reject future diagnostics that drift from the frozen three-day ledger."""
+
+    strategy = policy.get("strategy") or {}
+    if (
+        int(hold_days) != int(strategy.get("holding_period_trading_days") or -1)
+        or int(topk) != int(strategy.get("topk") or -1)
+        or not math.isclose(
+            float(open_cost), float(strategy.get("open_cost")), abs_tol=1e-12
+        )
+        or not math.isclose(
+            float(close_cost), float(strategy.get("close_cost")), abs_tol=1e-12
+        )
+    ):
+        raise ValueError(
+            "future factor diagnostics must match the frozen prospective execution policy"
+        )
 
 
 def load_jqdata_moneyflow_data_contract(
@@ -11064,6 +11148,9 @@ def load_market_data(
     fields = {
         "close": "$close",
         "open": "$open",
+        "high": "$high",
+        "low": "$low",
+        "volume": "$volume",
         "momentum_1": "$close/Ref($close, 1) - 1",
         "momentum_2": "$close/Ref($close, 2) - 1",
         "momentum_3": "$close/Ref($close, 3) - 1",
@@ -11204,7 +11291,13 @@ def load_market_execution_data(
     instruments = D.list_instruments(universe, start_time=start, end_time=end, as_list=True)
     if not instruments:
         raise RuntimeError("buyable_main_chinext has no local instruments in the minute diagnostic window")
-    fields = {"open": "$open", "close": "$close"}
+    fields = {
+        "open": "$open",
+        "high": "$high",
+        "low": "$low",
+        "close": "$close",
+        "volume": "$volume",
+    }
     expressions = list(fields.values())
     frames: list[pd.DataFrame] = []
     for offset in range(0, len(instruments), batch_size):
@@ -15367,31 +15460,88 @@ def factor_topk_viability_decision(
         minimum_calendar_years=minimum_calendar_years,
         minimum_cohorts=minimum_cohorts,
     )
-    topk = dict(summary.get("topk") or {})
-    annual = dict(summary.get("by_signal_year") or {})
+    execution = summary.get("execution_aware_topk")
+    execution_policy_applied = isinstance(execution, dict)
+    if execution_policy_applied:
+        execution = dict(execution)
+        topk = {
+            "rounds": (execution.get("scope") or {}).get("complete_signal_count"),
+            "net_cumulative_return": (execution.get("performance") or {}).get(
+                "net_cumulative_return"
+            ),
+            "max_drawdown": (execution.get("performance") or {}).get(
+                "maximum_drawdown"
+            ),
+            "median_holdings": None,
+        }
+        annual_topk_source = dict(
+            (execution.get("performance") or {}).get(
+                "annual_net_cumulative_return_by_signal_year"
+            )
+            or {}
+        )
+    else:
+        topk = dict(summary.get("topk") or {})
+        annual_topk_source = {
+            str(year): (
+                (metrics or {}).get("topk_net_cumulative_return")
+                if isinstance(metrics, dict)
+                else None
+            )
+            for year, metrics in dict(summary.get("by_signal_year") or {}).items()
+        }
     annual_topk_net_returns: dict[str, float | None] = {}
-    for year, metrics in sorted(annual.items()):
-        value = (metrics or {}).get("topk_net_cumulative_return") if isinstance(metrics, dict) else None
+    for year, value in sorted(annual_topk_source.items()):
         annual_topk_net_returns[str(year)] = float(value) if value is not None and np.isfinite(value) else None
     failures = [f"association screen failed: {failure}" for failure in association["failures"]]
+    if execution_policy_applied and (
+        execution.get("status") != "completed_prospective_execution_ledger"
+        or (execution.get("policy") or {}).get("sha256")
+        != PROSPECTIVE_EXECUTION_POLICY_SHA256
+        or execution.get("lower_rank_substitution_performed") is not False
+        or execution.get("raw_daily_prices_persisted") is not False
+    ):
+        failures.append("prospective execution ledger identity or safeguards are invalid")
     rounds = int(topk.get("rounds") or 0)
     net_return = topk.get("net_cumulative_return")
     max_drawdown = topk.get("max_drawdown")
     if rounds < minimum_cohorts:
-        failures.append(f"fewer than {minimum_cohorts} executable TopK cohorts")
+        unit = "complete scheduled signals" if execution_policy_applied else "executable TopK cohorts"
+        failures.append(f"fewer than {minimum_cohorts} {unit}")
     if net_return is None or not np.isfinite(net_return) or float(net_return) <= 0.0:
-        failures.append("non-positive TopK net cumulative return after diagnostic costs")
+        qualifier = "execution-aware " if execution_policy_applied else ""
+        failures.append(
+            f"non-positive {qualifier}TopK net cumulative return after diagnostic costs"
+        )
     if max_drawdown is None or not np.isfinite(max_drawdown) or float(max_drawdown) < STRICT_DEVELOPMENT_MAX_DRAWDOWN:
-        failures.append(f"TopK maximum drawdown worse than {STRICT_DEVELOPMENT_MAX_DRAWDOWN:.0%}")
+        qualifier = "execution-aware " if execution_policy_applied else ""
+        failures.append(
+            f"{qualifier}TopK maximum drawdown worse than "
+            f"{STRICT_DEVELOPMENT_MAX_DRAWDOWN:.0%}"
+        )
     non_positive_years = [
         year for year, value in annual_topk_net_returns.items() if value is None or value <= 0.0
     ]
     if non_positive_years:
-        failures.append("non-positive annual TopK net cumulative return: " + ", ".join(non_positive_years))
+        qualifier = "execution-aware " if execution_policy_applied else ""
+        failures.append(
+            f"non-positive annual {qualifier}TopK net cumulative return: "
+            + ", ".join(non_positive_years)
+        )
+    if execution_policy_applied and int(
+        (execution.get("exit") or {}).get("terminal_unresolved_position_count") or 0
+    ) != 0:
+        failures.append("terminal unresolved positions remain after the exit-delay cap")
     return {
         "factor": str(summary.get("factor", "")),
         "passed": not failures,
         "association_screen_passed": association["passed"],
+        "prospective_execution_policy_applied": execution_policy_applied,
+        "prospective_execution_policy_sha256": (
+            (execution.get("policy") or {}).get("sha256")
+            if execution_policy_applied
+            else None
+        ),
         "failures": failures,
         "observed_calendar_years": list(annual_topk_net_returns),
         "annual_topk_net_cumulative_return": annual_topk_net_returns,
@@ -15407,6 +15557,10 @@ def factor_topk_viability_decision(
             "topk_net_cumulative_return_gt": 0.0,
             "topk_max_drawdown_gte": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
             "every_observed_calendar_year_topk_net_cumulative_return_gt": 0.0,
+            "terminal_unresolved_position_count": (
+                0 if execution_policy_applied else None
+            ),
+            "naive_fixed_horizon_topk_gate_alone_is_sufficient": False,
         },
     }
 
@@ -17861,6 +18015,46 @@ def load_execution_tail_realism_audit(
     return audit
 
 
+def load_baostock_5m_restoration_probe_audit(
+    path: Path = DEFAULT_BAOSTOCK_5M_RESTORATION_PROBE_AUDIT,
+) -> dict[str, Any] | None:
+    """Load the tracked post-cooldown provider-restoration decision."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        return None
+    if file_sha256(path) != BAOSTOCK_5M_RESTORATION_PROBE_AUDIT_SHA256:
+        raise ValueError("BaoStock five-minute restoration audit fingerprint mismatch")
+    audit = load_json_record(path, kind="a_share_baostock_5m_restoration_probe_audit")
+    evidence = audit.get("evidence") or {}
+    barrier = audit.get("information_barrier") or {}
+    decision = audit.get("decision") or {}
+    if (
+        audit.get("schema_version") != 1
+        or audit.get("status") != "provider_rejected_stop_before_bulk_retry"
+        or evidence.get("manifest_sha256")
+        != "50ade9c89c476f55a0f3600c68609a92fca488be73836caa571ca9abea452d84"
+        or evidence.get("history_query_succeeded") is not False
+        or evidence.get("rows") != 0
+        or any(
+            barrier.get(field) is not False
+            for field in (
+                "daily_open_close_fields_read",
+                "raw_or_derived_factor_values_read",
+                "forward_return_fields_read",
+                "selection_or_promotion_allowed",
+            )
+        )
+        or decision.get("bulk_snapshot_allowed") is not False
+        or decision.get("repeat_probe_in_current_research_session_allowed")
+        is not False
+        or decision.get("five_minute_factor_construction_allowed") is not False
+        or decision.get("five_minute_forward_return_read_allowed") is not False
+    ):
+        raise ValueError("BaoStock five-minute restoration audit is inconsistent")
+    return audit
+
+
 def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read basket-overlap evidence without treating similar candidates as independent."""
 
@@ -18221,6 +18415,8 @@ def render_three_day_research_report(
     baostock_5m_combination_registrations: list[dict[str, Any]] | None = None,
     research_frontier_audit: dict[str, Any] | None = None,
     execution_tail_realism_audit: dict[str, Any] | None = None,
+    prospective_execution_policy: dict[str, Any] | None = None,
+    baostock_5m_restoration_probe_audit: dict[str, Any] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -19468,6 +19664,43 @@ def render_three_day_research_report(
                 "",
             ]
         )
+    if prospective_execution_policy is not None:
+        strategy = prospective_execution_policy.get("strategy") or {}
+        gate = prospective_execution_policy.get("execution_gate") or {}
+        lines.extend(
+            [
+                "## 未来新因子统一成交协议",
+                "",
+                (
+                    "协议已在任何新成交感知因子收益前冻结。今后新诊断固定为"
+                    f"信号收盘 Top{strategy.get('topk', 0)}、持有 "
+                    f"{strategy.get('holding_period_trading_days', 0)} 个本地会话；"
+                    "入场受阻的槽位保留现金且不替补，退出受阻的持仓继续占资并逐日重试。"
+                ),
+                (
+                    f"退出最多延迟 {strategy.get('maximum_exit_delay_trading_days', 0)} 个会话；"
+                    f"成交门至少要求 {gate.get('minimum_scheduled_signal_count', 0)} 个完整信号、"
+                    "累计收益和逐信号年收益为正、最大回撤不差于 −20%、终局未解决持仓为 0。"
+                ),
+                "既有 43 因子不会选择性重跑；朴素固定三日 TopK 收益不再单独构成通过证据。Level2 仍延期。",
+                "",
+            ]
+        )
+    if baostock_5m_restoration_probe_audit is not None:
+        evidence = baostock_5m_restoration_probe_audit.get("evidence") or {}
+        lines.extend(
+            [
+                "## BaoStock 五分钟恢复状态",
+                "",
+                (
+                    f"{str(evidence.get('created_at', '—'))} 的单次冷却后探针仍在匿名登录阶段被拒绝；"
+                    f"历史查询成功={str(bool(evidence.get('history_query_succeeded'))).lower()}，"
+                    f"返回 {evidence.get('rows', 0)} 行。"
+                ),
+                "本研究会话不得重复探针或启动全量；未读取日线开收盘、因子或未来收益，五分钟因子路径继续休眠。",
+                "",
+            ]
+        )
     lines.extend(
         [
             "## 下一步规则",
@@ -19538,6 +19771,10 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     )
     research_frontier_audit = load_research_frontier_audit()
     execution_tail_realism_audit = load_execution_tail_realism_audit()
+    prospective_execution_policy = load_prospective_execution_policy()
+    baostock_5m_restoration_probe_audit = (
+        load_baostock_5m_restoration_probe_audit()
+    )
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -19591,6 +19828,8 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         baostock_5m_combination_registrations=baostock_5m_combination_registrations,
         research_frontier_audit=research_frontier_audit,
         execution_tail_realism_audit=execution_tail_realism_audit,
+        prospective_execution_policy=prospective_execution_policy,
+        baostock_5m_restoration_probe_audit=baostock_5m_restoration_probe_audit,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -19623,6 +19862,10 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         ),
         "research_frontier_audit": research_frontier_audit is not None,
         "execution_tail_realism_audit": execution_tail_realism_audit is not None,
+        "prospective_execution_policy": prospective_execution_policy is not None,
+        "baostock_5m_restoration_probe_audit": (
+            baostock_5m_restoration_probe_audit is not None
+        ),
         "factor_stability_audits": len(factor_stability_audits),
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),
@@ -19938,6 +20181,14 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     pledge_path = Path(args.pledge_events).expanduser() if args.pledge_events else None
     dividend_plan_path = Path(args.dividend_plan_events).expanduser() if args.dividend_plan_events else None
     experiment_root = Path(args.experiment_root).expanduser()
+    execution_policy = load_prospective_execution_policy()
+    require_prospective_execution_policy_compatibility(
+        execution_policy,
+        hold_days=args.hold_days,
+        topk=args.topk,
+        open_cost=args.open_cost,
+        close_cost=args.close_cost,
+    )
     price_basis_manifest = require_research_price_basis(provider_uri)
     price_basis_manifest_path = provider_uri.expanduser().resolve() / PRICE_BASIS_MANIFEST_NAME
     fundamentals = load_fundamentals(fundamental_path)
@@ -20071,6 +20322,12 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     )
     if not summaries:
         raise RuntimeError("no factor diagnostics could be computed from complete future quotes")
+    for summary in summaries:
+        summary["execution_aware_topk"] = simulate_prospective_execution_topk(
+            ranked,
+            str(summary["factor"]),
+            policy=execution_policy,
+        )
     run_id = _timestamp()
     audit = {
         "run_id": run_id,
@@ -20375,6 +20632,13 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "development_end": args.development_end,
             "test_period_used_for_factor_design": False,
         },
+        "prospective_execution_policy": {
+            "path": str(DEFAULT_PROSPECTIVE_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": execution_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
         "ranking_by_development_rank_ic": summaries,
         "forward_return_fields_read": True,
         "selection_or_promotion_allowed": False,
@@ -20384,7 +20648,7 @@ def run_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "A later factor library must be declared independently and evaluated with an untouched future period; this diagnostic does not validate a combined model.",
             "The fixed twenty-session listing gate removes the known IPO one-price queue regime but does not model ordinary limit-up queue priority or guarantee an opening fill.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Prices use the accepted close-known adjusted/raw restoration contract; exchange limit queues, suspensions, and market impact are still not simulated exactly.",
+            "The prospective execution ledger conservatively blocks one-price adverse queues and nonpositive-volume fills, but daily bars still cannot reconstruct exact queue priority, partial fills, slippage, or market impact.",
         ],
     }
     preregistration = getattr(args, "diagnostic_preregistration", None)
@@ -21211,6 +21475,14 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     open_cost = float(protocol["open_cost"])
     close_cost = float(protocol["close_cost"])
     max_quality_age_days = int(protocol["maximum_quality_age_days"])
+    execution_policy = load_prospective_execution_policy()
+    require_prospective_execution_policy_compatibility(
+        execution_policy,
+        hold_days=hold_days,
+        topk=topk,
+        open_cost=open_cost,
+        close_cost=close_cost,
+    )
     if int(protocol["minimum_listing_sessions"]) != MIN_LISTING_SESSIONS:
         raise ValueError("minute protocol conflicts with the fixed listing-seasoning gate")
 
@@ -21296,6 +21568,12 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             if factor not in computed_names
         ],
     ]
+    for summary in summaries:
+        summary["execution_aware_topk"] = simulate_prospective_execution_topk(
+            ranked,
+            str(summary["factor"]),
+            policy=execution_policy,
+        )
     feature_directions = {
         str(item["name"]): str(item["diagnostic_direction"])
         for item in spec["features"]
@@ -21381,6 +21659,13 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "complete_forward_name_observations": int(len(forward_returns)),
             "test_period_used_for_factor_design": False,
         },
+        "prospective_execution_policy": {
+            "path": str(DEFAULT_PROSPECTIVE_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": execution_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
         "ranking_by_development_rank_ic": summaries,
         "forward_return_fields_read": True,
         "selection_or_promotion_allowed": False,
@@ -21389,7 +21674,7 @@ def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
             "A factor with no valid cross-sectional cohorts remains recorded as unavailable and fails the existing stability and Top-3 gates.",
             "Only a separately preregistered combination of factors that pass both fixed gates may be evaluated later.",
             "The current holding universe is derived from a current listing snapshot and can introduce survivorship bias in historical results.",
-            "Raw minute semantics are accepted and fingerprinted, but ordinary limit queues, suspensions, queue priority, and market impact are not simulated exactly.",
+            "The prospective execution ledger blocks nonpositive-volume and adverse one-price fills, but raw minute semantics still cannot reconstruct exact queue priority, slippage, or market impact.",
         ],
     }
     experiment_root.mkdir(parents=True, exist_ok=True)
@@ -21509,6 +21794,9 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
     else:
         summaries = ranking
     decisions = [factor_topk_viability_decision(summary) for summary in summaries]
+    execution_policy_applied = all(
+        decision["prospective_execution_policy_applied"] for decision in decisions
+    )
     run_id = _timestamp()
     experiment_root = Path(args.experiment_root).expanduser()
     audit = {
@@ -21529,15 +21817,25 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
             "topk_net_cumulative_return_gt": 0.0,
             "topk_max_drawdown_gte": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
             "every_observed_calendar_year_topk_net_cumulative_return_gt": 0.0,
+            "prospective_execution_policy_applied": execution_policy_applied,
+            "prospective_execution_policy_sha256": (
+                PROSPECTIVE_EXECUTION_POLICY_SHA256
+                if execution_policy_applied
+                else None
+            ),
+            "terminal_unresolved_position_count": (
+                0 if execution_policy_applied else None
+            ),
+            "naive_fixed_horizon_topk_gate_alone_is_sufficient": False,
             "selection_or_promotion_allowed": False,
         },
         "requested_factors": requested_factors or None,
         "factor_decisions": decisions,
         "qualified_factors": [decision["factor"] for decision in decisions if decision["passed"]],
         "limitations": [
-            "This screen uses the factor diagnostic's development-only TopK reconstruction and is not an independent strategy test.",
+            "A prospective-policy diagnostic uses its cash-and-position ledger; a legacy diagnostic retains its recorded fixed-horizon TopK result only as historical rejection evidence.",
             "Passing it still requires a separately predeclared full-strategy evaluation and genuinely future paper observations before any execution discussion.",
-            "Prices use the accepted point-in-time restoration contract but do not provide exact limit-queue or fill simulation.",
+            "The prospective ledger conservatively blocks adverse one-price queues but daily bars cannot reconstruct exact queue priority, slippage, or market impact.",
         ],
     }
     destination = experiment_root / f"{run_id}_factor_topk_viability_audit.json"
@@ -21997,6 +22295,415 @@ def _one_price_execution_bar(
             rtol=relative_tolerance,
         )
     )
+
+
+def simulate_prospective_execution_topk(
+    scored: pd.DataFrame,
+    factor: str,
+    *,
+    policy: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Run the frozen cash-and-position ledger for one directional factor.
+
+    Selection uses signal-close information only.  Entry outcomes never
+    substitute another stock, while blocked exits retain their capital and
+    are retried at later closes.  The returned record contains aggregates and
+    compact identifiers, never raw daily prices.
+    """
+
+    policy = policy if policy is not None else load_prospective_execution_policy()
+    strategy = policy.get("strategy") or {}
+    limit_policy = policy.get("one_price_limit_like_policy") or {}
+    gate_policy = policy.get("execution_gate") or {}
+    hold_days = int(strategy["holding_period_trading_days"])
+    stride = int(strategy["signal_stride_trading_days"])
+    topk = int(strategy["topk"])
+    open_cost = float(strategy["open_cost"])
+    close_cost = float(strategy["close_cost"])
+    maximum_exit_delay = int(strategy["maximum_exit_delay_trading_days"])
+    initial_equity = float(strategy["initial_equity"])
+    move_threshold = float(limit_policy["absolute_move_threshold"])
+    absolute_tolerance = float(limit_policy["one_price_absolute_tolerance"])
+    relative_tolerance = float(limit_policy["one_price_relative_tolerance"])
+    required = {
+        "datetime",
+        "instrument",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "quality_eligible",
+        factor,
+    }
+    if missing := sorted(required - set(scored.columns)):
+        raise ValueError(
+            "prospective execution frame is missing columns: " + ", ".join(missing)
+        )
+    frame = scored[list(required)].copy()
+    frame["datetime"] = pd.to_datetime(frame["datetime"]).dt.normalize()
+    frame["instrument"] = frame["instrument"].astype(str)
+    for column in ("open", "high", "low", "close", "volume", factor):
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    if frame.duplicated(["instrument", "datetime"]).any():
+        raise ValueError("prospective execution frame contains duplicate instrument sessions")
+    calendar = pd.DatetimeIndex(frame["datetime"].dropna().unique()).sort_values()
+    minimum_calendar_length = hold_days + maximum_exit_delay + 1
+    if len(calendar) < minimum_calendar_length:
+        raise ValueError(
+            "prospective execution frame is too short for the frozen exit-delay window"
+        )
+    calendar_position = {date: position for position, date in enumerate(calendar)}
+    quote_lookup = {
+        (str(row.instrument), pd.Timestamp(row.datetime).normalize()): {
+            field: getattr(row, field)
+            for field in ("open", "high", "low", "close", "volume")
+        }
+        for row in frame.itertuples(index=False)
+    }
+    signal_stop = len(calendar) - hold_days - maximum_exit_delay
+    signal_positions = list(range(0, signal_stop, stride))
+    pending_entries: dict[pd.Timestamp, list[dict[str, Any]]] = {}
+    grid_signal_count = len(signal_positions)
+    complete_signal_dates: list[pd.Timestamp] = []
+    incomplete_signal_count = 0
+    for signal_position in signal_positions:
+        signal_date = calendar[signal_position]
+        signal_rows = frame.loc[frame["datetime"].eq(signal_date)].copy()
+        signal_rows = signal_rows.loc[
+            signal_rows["quality_eligible"].fillna(False)
+            & np.isfinite(signal_rows[factor])
+        ].copy()
+        signal_rows["signal_bar_valid"] = [
+            _valid_execution_ohlc(
+                {
+                    "open": row.open,
+                    "high": row.high,
+                    "low": row.low,
+                    "close": row.close,
+                }
+            )
+            and not _nonpositive_or_missing_execution_volume(
+                {"volume": row.volume}
+            )
+            for row in signal_rows.itertuples(index=False)
+        ]
+        signal_rows = signal_rows.loc[signal_rows["signal_bar_valid"]]
+        selected = signal_rows.sort_values(
+            [factor, "instrument"], ascending=[False, True], kind="stable"
+        ).head(topk)
+        if len(selected) != topk:
+            incomplete_signal_count += 1
+            continue
+        entry_date = calendar[signal_position + 1]
+        planned_exit_date = calendar[signal_position + hold_days]
+        complete_signal_dates.append(signal_date)
+        pending_entries.setdefault(entry_date, []).append(
+            {
+                "signal_date": signal_date,
+                "entry_date": entry_date,
+                "planned_exit_date": planned_exit_date,
+                "slots": [
+                    {
+                        "instrument": str(row.instrument),
+                        "signal_close": float(row.close),
+                    }
+                    for row in selected.itertuples(index=False)
+                ],
+            }
+        )
+
+    entry_block_counts = {
+        "invalid_entry_quote": 0,
+        "nonpositive_entry_volume": 0,
+        "upper_limit_like_queue": 0,
+        "capital_unavailable": 0,
+    }
+    exit_block_attempt_counts = {
+        "invalid_exit_quote": 0,
+        "nonpositive_exit_volume": 0,
+        "missing_previous_close_reference": 0,
+        "lower_limit_like_queue": 0,
+    }
+    entry_block_examples: list[dict[str, Any]] = []
+    delayed_exit_examples: list[dict[str, Any]] = []
+    unresolved_examples: list[dict[str, Any]] = []
+    registered_entry_slots = len(complete_signal_dates) * topk
+    filled_entry_slots = 0
+    on_time_exit_count = 0
+    delayed_exit_count = 0
+    exit_delays: list[int] = []
+    cash = initial_equity
+    positions: list[dict[str, Any]] = []
+    equity_rows: list[dict[str, Any]] = []
+    next_position_id = 0
+
+    def entry_block_reason(
+        quote: dict[str, Any] | None, *, signal_close: float
+    ) -> str | None:
+        if not _valid_execution_ohlc(quote):
+            return "invalid_entry_quote"
+        if _nonpositive_or_missing_execution_volume(quote):
+            return "nonpositive_entry_volume"
+        if (
+            _one_price_execution_bar(
+                quote,
+                absolute_tolerance=absolute_tolerance,
+                relative_tolerance=relative_tolerance,
+            )
+            and float(quote["open"]) / signal_close - 1.0 >= move_threshold
+        ):
+            return "upper_limit_like_queue"
+        return None
+
+    def exit_block_reason(
+        quote: dict[str, Any] | None,
+        previous_quote: dict[str, Any] | None,
+    ) -> str | None:
+        if not _valid_execution_ohlc(quote):
+            return "invalid_exit_quote"
+        if _nonpositive_or_missing_execution_volume(quote):
+            return "nonpositive_exit_volume"
+        if not _valid_execution_close(previous_quote):
+            return "missing_previous_close_reference"
+        if (
+            _one_price_execution_bar(
+                quote,
+                absolute_tolerance=absolute_tolerance,
+                relative_tolerance=relative_tolerance,
+            )
+            and float(quote["close"]) / float(previous_quote["close"]) - 1.0
+            <= -move_threshold
+        ):
+            return "lower_limit_like_queue"
+        return None
+
+    for date in calendar:
+        for cohort in pending_entries.get(date, []):
+            slot_budget = cash / topk
+            for slot in cohort["slots"]:
+                instrument = str(slot["instrument"])
+                quote = quote_lookup.get((instrument, date))
+                reason = (
+                    "capital_unavailable"
+                    if slot_budget <= 0.0
+                    else entry_block_reason(
+                        quote, signal_close=float(slot["signal_close"])
+                    )
+                )
+                if reason is not None:
+                    entry_block_counts[reason] += 1
+                    if len(entry_block_examples) < 20:
+                        entry_block_examples.append(
+                            {
+                                "instrument": instrument,
+                                "signal_date": cohort["signal_date"].date().isoformat(),
+                                "entry_date": date.date().isoformat(),
+                                "reason": reason,
+                            }
+                        )
+                    continue
+                shares = slot_budget * (1.0 - open_cost) / float(quote["open"])
+                cash -= slot_budget
+                positions.append(
+                    {
+                        "position_id": next_position_id,
+                        "instrument": instrument,
+                        "signal_date": cohort["signal_date"],
+                        "entry_date": date,
+                        "planned_exit_date": cohort["planned_exit_date"],
+                        "shares": shares,
+                        "last_mark_close": float(quote["open"]),
+                        "terminal_unresolved": False,
+                    }
+                )
+                next_position_id += 1
+                filled_entry_slots += 1
+
+        for position in positions:
+            quote = quote_lookup.get((position["instrument"], date))
+            if _valid_execution_close(quote):
+                position["last_mark_close"] = float(quote["close"])
+
+        retained_positions: list[dict[str, Any]] = []
+        for position in positions:
+            if position["terminal_unresolved"]:
+                retained_positions.append(position)
+                continue
+            planned_position = calendar_position[position["planned_exit_date"]]
+            current_position = calendar_position[date]
+            if current_position < planned_position:
+                retained_positions.append(position)
+                continue
+            delay = current_position - planned_position
+            quote = quote_lookup.get((position["instrument"], date))
+            previous_quote = (
+                quote_lookup.get((position["instrument"], calendar[current_position - 1]))
+                if current_position > 0
+                else None
+            )
+            reason = exit_block_reason(quote, previous_quote)
+            if reason is None:
+                cash += (
+                    float(position["shares"])
+                    * float(quote["close"])
+                    * (1.0 - close_cost)
+                )
+                exit_delays.append(delay)
+                if delay == 0:
+                    on_time_exit_count += 1
+                else:
+                    delayed_exit_count += 1
+                    if len(delayed_exit_examples) < 20:
+                        delayed_exit_examples.append(
+                            {
+                                "instrument": position["instrument"],
+                                "entry_date": position["entry_date"].date().isoformat(),
+                                "planned_exit_date": position[
+                                    "planned_exit_date"
+                                ].date().isoformat(),
+                                "actual_exit_date": date.date().isoformat(),
+                                "delay_trading_days": delay,
+                            }
+                        )
+                continue
+            exit_block_attempt_counts[reason] += 1
+            if delay >= maximum_exit_delay:
+                position["terminal_unresolved"] = True
+                if len(unresolved_examples) < 20:
+                    unresolved_examples.append(
+                        {
+                            "instrument": position["instrument"],
+                            "entry_date": position["entry_date"].date().isoformat(),
+                            "planned_exit_date": position[
+                                "planned_exit_date"
+                            ].date().isoformat(),
+                            "last_attempt_date": date.date().isoformat(),
+                            "reason": reason,
+                        }
+                    )
+            retained_positions.append(position)
+        positions = retained_positions
+        marked_positions = sum(
+            float(position["shares"]) * float(position["last_mark_close"])
+            for position in positions
+        )
+        equity_rows.append(
+            {
+                "datetime": date,
+                "equity": cash + marked_positions,
+                "cash": cash,
+                "open_positions": len(positions),
+            }
+        )
+
+    equity = pd.DataFrame(equity_rows)
+    equity_values = equity["equity"].astype(float)
+    running_peak = equity_values.cummax()
+    drawdowns = equity_values / running_peak - 1.0
+    final_equity = float(equity_values.iloc[-1])
+    net_cumulative_return = final_equity / initial_equity - 1.0
+    maximum_drawdown = float(drawdowns.min())
+    signal_years = sorted({date.year for date in complete_signal_dates})
+    annual_returns: dict[str, float] = {}
+    for year in signal_years:
+        current_year = equity.loc[equity["datetime"].dt.year.eq(year)]
+        prior = equity.loc[equity["datetime"].dt.year.lt(year)]
+        start_equity = (
+            float(prior.iloc[-1]["equity"]) if not prior.empty else initial_equity
+        )
+        annual_returns[str(year)] = float(
+            float(current_year.iloc[-1]["equity"]) / start_equity - 1.0
+        )
+    terminal_unresolved_count = sum(
+        bool(position["terminal_unresolved"]) for position in positions
+    )
+    failures: list[str] = []
+    complete_signal_count = len(complete_signal_dates)
+    minimum_signals = int(gate_policy["minimum_scheduled_signal_count"])
+    if complete_signal_count < minimum_signals:
+        failures.append(f"fewer than {minimum_signals} complete scheduled signals")
+    if net_cumulative_return <= float(gate_policy["net_cumulative_return_gt"]):
+        failures.append("non-positive execution-aware net cumulative return")
+    if maximum_drawdown < float(gate_policy["maximum_drawdown_gte"]):
+        failures.append(
+            "execution-aware maximum drawdown worse than "
+            f"{float(gate_policy['maximum_drawdown_gte']):.0%}"
+        )
+    non_positive_years = [
+        year for year, value in annual_returns.items() if value <= 0.0
+    ]
+    if non_positive_years:
+        failures.append(
+            "non-positive execution-aware signal-year return: "
+            + ", ".join(non_positive_years)
+        )
+    if terminal_unresolved_count != int(
+        gate_policy["terminal_unresolved_position_count"]
+    ):
+        failures.append("terminal unresolved positions remain after the exit-delay cap")
+    delay_distribution = {
+        str(delay): int(count)
+        for delay, count in pd.Series(exit_delays, dtype="int64")
+        .value_counts()
+        .sort_index()
+        .items()
+    }
+    return {
+        "factor": factor,
+        "status": "completed_prospective_execution_ledger",
+        "policy": {
+            "path": str(DEFAULT_PROSPECTIVE_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": policy["frozen_at"],
+        },
+        "scope": {
+            "calendar_start": calendar[0].date().isoformat(),
+            "calendar_end": calendar[-1].date().isoformat(),
+            "grid_signal_count": grid_signal_count,
+            "complete_signal_count": complete_signal_count,
+            "incomplete_signal_count": incomplete_signal_count,
+            "registered_entry_slot_count": registered_entry_slots,
+            "signal_cutoff_reserves_maximum_exit_delay": True,
+        },
+        "entry": {
+            "filled_slot_count": filled_entry_slots,
+            "blocked_slot_count": registered_entry_slots - filled_entry_slots,
+            "fill_rate": (
+                filled_entry_slots / registered_entry_slots
+                if registered_entry_slots
+                else None
+            ),
+            "blocked_by_reason": entry_block_counts,
+            "blocked_examples": entry_block_examples,
+            "lower_rank_substitution_performed": False,
+        },
+        "exit": {
+            "on_time_position_count": on_time_exit_count,
+            "delayed_position_count": delayed_exit_count,
+            "blocked_attempts_by_reason": exit_block_attempt_counts,
+            "delay_trading_day_distribution": delay_distribution,
+            "maximum_observed_delay_trading_days": max(exit_delays, default=None),
+            "terminal_unresolved_position_count": terminal_unresolved_count,
+            "delayed_examples": delayed_exit_examples,
+            "unresolved_examples": unresolved_examples,
+        },
+        "performance": {
+            "initial_equity": initial_equity,
+            "final_marked_equity": final_equity,
+            "net_cumulative_return": net_cumulative_return,
+            "maximum_drawdown": maximum_drawdown,
+            "annual_net_cumulative_return_by_signal_year": annual_returns,
+        },
+        "gate": {
+            "passed": not failures,
+            "failures": failures,
+            "criteria": gate_policy,
+        },
+        "raw_daily_prices_persisted": False,
+        "lower_rank_substitution_performed": False,
+        "selection_or_promotion_allowed": False,
+    }
 
 
 def classify_tail_execution_occurrences(
