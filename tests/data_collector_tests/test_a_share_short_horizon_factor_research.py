@@ -2048,6 +2048,42 @@ def test_official_securities_lending_source_rejection_is_frozen_and_rendered(tmp
         RESEARCH.load_official_securities_lending_source_acceptance_audit(changed_path)
 
 
+def test_public_five_minute_source_rejection_is_frozen_and_rendered(tmp_path):
+    audit = RESEARCH.load_public_five_minute_source_availability_audit()
+    assert audit is not None
+    assert audit["target_start"] == "2020-01-01"
+    assert audit["target_end"] == "2025-12-31"
+    assert audit["eastmoney_attempts"] == 12
+    assert audit["eastmoney_result"] == "remote_connection_closed_without_response"
+    assert audit["sina_successful_depth"] == 1500
+    assert audit["sina_window_start"] == "2026-05-29 14:05:00"
+    assert audit["sina_window_end"] == "2026-07-14 15:00:00"
+    assert audit["sina_first_empty_requested_depth"] == 2000
+    assert audit["forward_return_fields_read"] is False
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        public_five_minute_source_availability_audit=audit,
+    )
+    assert "公开五分钟历史源可用性审计" in report
+    assert "四股票、三个历史锚点共 12 次" in report
+    assert "最大深度为 1500 根" in report
+    assert "不能作为 2020–2025 历史适配器" in report
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_PUBLIC_FIVE_MINUTE_SOURCE_AVAILABILITY_AUDIT.read_text(
+            encoding="utf-8"
+        )
+    )
+    changed["sources"]["sina"]["observations"][
+        "successful_maximum_depth_observed"
+    ] = 2000
+    changed_path = tmp_path / "changed_public_five_minute_availability.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_public_five_minute_source_availability_audit(changed_path)
+
+
 def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {

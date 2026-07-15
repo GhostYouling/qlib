@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "kind": "a_share_public_five_minute_source_availability_audit",
+  "status": "rejected_before_historical_snapshot_factor_values_or_returns",
+  "audited_at": "2026-07-15T00:48:50Z",
+  "purpose": "Check whether unauthenticated public five-minute quote routes can provide a stable 2020-2025 A-share history before implementing an adapter or reading factor returns.",
+  "target_history": {
+    "start": "2020-01-01",
+    "end": "2025-12-31",
+    "frequency": "5m",
+    "expected_complete_session_bars": 48,
+    "point_in_time_full_market_history_required": true
+  },
+  "sample_symbols": [
+    {
+      "code": "600519",
+      "market": "Shanghai main board"
+    },
+    {
+      "code": "000001",
+      "market": "Shenzhen main board"
+    },
+    {
+      "code": "300750",
+      "market": "ChiNext"
+    },
+    {
+      "code": "688981",
+      "market": "STAR Market"
+    }
+  ],
+  "sources": {
+    "eastmoney": {
+      "provider": "Eastmoney public quote chart route",
+      "quote_page": "https://quote.eastmoney.com/",
+      "endpoint": "https://push2his.eastmoney.com/api/qt/stock/kline/get",
+      "request_contract": {
+        "frequency_parameter": "klt=5",
+        "adjustment_parameter": "fqt=0",
+        "requested_begin": "20190101",
+        "requested_ends": [
+          "20201231",
+          "20251231",
+          "20260713"
+        ],
+        "requested_field_ids": [
+          "f51",
+          "f52",
+          "f53",
+          "f54",
+          "f55",
+          "f56",
+          "f57",
+          "f58",
+          "f59",
+          "f60",
+          "f61"
+        ],
+        "authentication_or_cookie_used": false
+      },
+      "observations": {
+        "four_symbol_three_anchor_attempts": 12,
+        "four_symbol_three_anchor_result": "remote_connection_closed_without_response",
+        "single_symbol_small_protocol_probe": {
+          "symbol": "600519",
+          "requested_rows": 10,
+          "http_client_exit_code": 52,
+          "result": "empty_reply_from_server"
+        },
+        "source_schema_or_rows_observed": false,
+        "inference": "This is a connection-access failure in the current environment, not evidence that Eastmoney has no five-minute archive."
+      }
+    },
+    "sina": {
+      "provider": "Sina public quote JSONP route",
+      "endpoint": "https://quotes.sina.cn/cn/api/jsonp_v2.php/var%20probe=/CN_MarketDataService.getKLineData",
+      "request_contract": {
+        "frequency_parameter": "scale=5",
+        "moving_average_parameter": "ma=no",
+        "depth_parameter": "datalen",
+        "authentication_or_cookie_used": false
+      },
+      "observations": {
+        "returned_fields": [
+          "amount",
+          "close",
+          "day",
+          "high",
+          "low",
+          "open",
+          "volume"
+        ],
+        "four_symbol_depth_checks": [
+          {
+            "requested_rows": 1023,
+            "symbols_checked": 4,
+            "rows_per_symbol": 1023,
+            "unique_timestamps_per_symbol": 1023,
+            "common_min_timestamp": "2026-06-12 13:50:00",
+            "common_max_timestamp": "2026-07-14 15:00:00"
+          },
+          {
+            "requested_rows": 1024,
+            "symbols_checked": 4,
+            "rows_per_symbol": 1024,
+            "unique_timestamps_per_symbol": 1024,
+            "common_min_timestamp": "2026-06-12 13:45:00",
+            "common_max_timestamp": "2026-07-14 15:00:00"
+          }
+        ],
+        "single_symbol_depth_checks": [
+          {
+            "symbol": "600519",
+            "requested_rows": 1500,
+            "returned_rows": 1500,
+            "min_timestamp": "2026-05-29 14:05:00",
+            "max_timestamp": "2026-07-14 15:00:00"
+          },
+          {
+            "symbol": "600519",
+            "requested_rows": 2000,
+            "returned_rows": 0
+          },
+          {
+            "symbol": "600519",
+            "requested_rows": 2500,
+            "returned_rows": 0
+          },
+          {
+            "symbol": "600519",
+            "requested_rows": 3000,
+            "returned_rows": 0
+          },
+          {
+            "symbol": "600519",
+            "requested_rows": 4000,
+            "returned_rows": 0
+          },
+          {
+            "symbol": "600519",
+            "requested_rows": 4999,
+            "returned_rows": 0
+          },
+          {
+            "symbol": "600519",
+            "requested_rows": 5000,
+            "returned_rows": 0
+          },
+          {
+            "symbol": "600519",
+            "requested_rows": 100000,
+            "returned_rows": 0
+          }
+        ],
+        "successful_maximum_depth_observed": 1500,
+        "successful_maximum_depth_start": "2026-05-29 14:05:00",
+        "historical_date_cursor_observed": false,
+        "requested_2020_2025_history_observed": false
+      }
+    }
+  },
+  "data_use": {
+    "source_minute_ohlcv_amount_payload_observed": true,
+    "source_row_values_persisted": false,
+    "local_daily_open_close_or_return_fields_loaded": false,
+    "factor_values_constructed": false,
+    "forward_return_fields_read": false
+  },
+  "acceptance": {
+    "eastmoney_historical_source_accepted": false,
+    "sina_historical_source_accepted": false,
+    "public_five_minute_historical_adapter_allowed": false,
+    "full_snapshot_allowed": false,
+    "factor_diagnostic_allowed": false,
+    "aggregation_scoring_selection_or_ordering_allowed": false,
+    "prospective_observation_use_requires_a_separate_future_only_contract": true
+  },
+  "decision": {
+    "outcome": "stop_public_five_minute_history_candidates_before_adapter_or_returns",
+    "reason": "Eastmoney returned no response in the current environment, while Sina exposed only a recent depth-limited window and no observed historical date cursor; neither route established continuous 2020-2025 history.",
+    "remaining_research_routes": [
+      "Wait for one future BaoStock restoration probe in a new research session, then use the already frozen atomic 2020-2025 contract only if that probe passes.",
+      "Use JQData or RQData only after lawful local credentials and the required product entitlement are confirmed.",
+      "Keep Level-2 deferred until a lower-cost minute or classified-moneyflow factor passes both fixed research gates and a remaining failure specifically requires queue evidence."
+    ],
+    "prohibited_rescues": [
+      "treat the Eastmoney empty response as proof of global source absence",
+      "scrape an authenticated retail client or copy its cookies",
+      "repeat or fan out public requests to bypass the observed access or depth limits",
+      "backfill 2020-2025 from the recent Sina window",
+      "mix the two public routes into a synthetic historical source",
+      "run factor values, forward returns, aggregation, current scores, or stock selection from either route"
+    ]
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

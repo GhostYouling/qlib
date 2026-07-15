@@ -179,6 +179,12 @@ DEFAULT_OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT = (
 DEFAULT_OFFICIAL_SECURITIES_LENDING_SOURCE_ACCEPTANCE_AUDIT = (
     REPO_ROOT / "docs" / "a_share_official_securities_lending_source_acceptance_audit.json"
 )
+DEFAULT_PUBLIC_FIVE_MINUTE_SOURCE_AVAILABILITY_AUDIT = (
+    REPO_ROOT / "docs" / "a_share_public_five_minute_source_availability_audit.json"
+)
+PUBLIC_FIVE_MINUTE_SOURCE_AVAILABILITY_AUDIT_SHA256 = (
+    "743a7751f74c87dd11162f326b02c5d87f2e736456e160754fb6e45097078830"
+)
 DEFAULT_RESEARCH_FRONTIER_EXTENSION = (
     REPO_ROOT / "docs" / "a_share_three_day_research_frontier_extension.json"
 )
@@ -18111,6 +18117,98 @@ def load_official_securities_lending_source_acceptance_audit(
     }
 
 
+def load_public_five_minute_source_availability_audit(
+    path: Path = DEFAULT_PUBLIC_FIVE_MINUTE_SOURCE_AVAILABILITY_AUDIT,
+) -> dict[str, Any] | None:
+    """Load the immutable no-return rejection of two public five-minute routes."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        return None
+    if file_sha256(path) != PUBLIC_FIVE_MINUTE_SOURCE_AVAILABILITY_AUDIT_SHA256:
+        raise ValueError("public five-minute source availability audit fingerprint mismatch")
+    audit = load_json_record(
+        path, kind="a_share_public_five_minute_source_availability_audit"
+    )
+    target = audit.get("target_history") or {}
+    sources = audit.get("sources") or {}
+    eastmoney = sources.get("eastmoney") or {}
+    eastmoney_observations = eastmoney.get("observations") or {}
+    sina = sources.get("sina") or {}
+    sina_observations = sina.get("observations") or {}
+    four_symbol_checks = list(sina_observations.get("four_symbol_depth_checks") or [])
+    single_symbol_checks = list(sina_observations.get("single_symbol_depth_checks") or [])
+    data_use = audit.get("data_use") or {}
+    acceptance = audit.get("acceptance") or {}
+    decision = audit.get("decision") or {}
+    if (
+        audit.get("version") != 1
+        or audit.get("status")
+        != "rejected_before_historical_snapshot_factor_values_or_returns"
+        or target.get("start") != "2020-01-01"
+        or target.get("end") != "2025-12-31"
+        or target.get("frequency") != "5m"
+        or target.get("expected_complete_session_bars") != 48
+        or eastmoney_observations.get("four_symbol_three_anchor_attempts") != 12
+        or eastmoney_observations.get("four_symbol_three_anchor_result")
+        != "remote_connection_closed_without_response"
+        or eastmoney_observations.get("source_schema_or_rows_observed") is not False
+        or [item.get("requested_rows") for item in four_symbol_checks] != [1023, 1024]
+        or any(item.get("symbols_checked") != 4 for item in four_symbol_checks)
+        or any(
+            item.get("rows_per_symbol") != item.get("requested_rows")
+            or item.get("unique_timestamps_per_symbol") != item.get("requested_rows")
+            for item in four_symbol_checks
+        )
+        or sina_observations.get("successful_maximum_depth_observed") != 1500
+        or sina_observations.get("successful_maximum_depth_start")
+        != "2026-05-29 14:05:00"
+        or not any(
+            item.get("requested_rows") == 2000 and item.get("returned_rows") == 0
+            for item in single_symbol_checks
+        )
+        or sina_observations.get("historical_date_cursor_observed") is not False
+        or sina_observations.get("requested_2020_2025_history_observed") is not False
+        or data_use.get("source_row_values_persisted") is not False
+        or data_use.get("local_daily_open_close_or_return_fields_loaded") is not False
+        or data_use.get("factor_values_constructed") is not False
+        or data_use.get("forward_return_fields_read") is not False
+        or acceptance.get("public_five_minute_historical_adapter_allowed") is not False
+        or acceptance.get("full_snapshot_allowed") is not False
+        or acceptance.get("factor_diagnostic_allowed") is not False
+        or acceptance.get("aggregation_scoring_selection_or_ordering_allowed") is not False
+        or decision.get("outcome")
+        != "stop_public_five_minute_history_candidates_before_adapter_or_returns"
+        or audit.get("forward_return_fields_read") is not False
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("public five-minute source availability audit is inconsistent")
+    successful_depth = next(
+        item for item in single_symbol_checks if item.get("requested_rows") == 1500
+    )
+    return {
+        "audited_at": str(audit["audited_at"]),
+        "target_start": str(target["start"]),
+        "target_end": str(target["end"]),
+        "eastmoney_attempts": int(
+            eastmoney_observations["four_symbol_three_anchor_attempts"]
+        ),
+        "eastmoney_result": str(
+            eastmoney_observations["four_symbol_three_anchor_result"]
+        ),
+        "sina_fields": list(sina_observations["returned_fields"]),
+        "sina_successful_depth": int(
+            sina_observations["successful_maximum_depth_observed"]
+        ),
+        "sina_window_start": str(successful_depth["min_timestamp"]),
+        "sina_window_end": str(successful_depth["max_timestamp"]),
+        "sina_first_empty_requested_depth": 2000,
+        "outcome": str(decision["outcome"]),
+        "forward_return_fields_read": False,
+        "path": str(path),
+    }
+
+
 def load_research_frontier_audit(
     path: Path = DEFAULT_RESEARCH_FRONTIER_AUDIT,
 ) -> dict[str, Any] | None:
@@ -18574,6 +18672,7 @@ def render_three_day_research_report(
     insider_open_market_capacity_audits: list[dict[str, Any]] | None = None,
     securities_lending_source_coverage_audit: dict[str, Any] | None = None,
     official_securities_lending_source_acceptance_audit: dict[str, Any] | None = None,
+    public_five_minute_source_availability_audit: dict[str, Any] | None = None,
     rolling_window_semantics_audits: list[dict[str, Any]] | None = None,
     minute_factor_coverage_audits: list[dict[str, Any]] | None = None,
     minute_combination_holdouts: list[dict[str, Any]] | None = None,
@@ -19360,6 +19459,33 @@ def render_three_day_research_report(
                 "",
             ]
         )
+    if public_five_minute_source_availability_audit:
+        audit = public_five_minute_source_availability_audit
+        lines.extend(
+            [
+                "",
+                "## 公开五分钟历史源可用性审计",
+                "",
+                (
+                    f"本节只探查能否形成 {audit['target_start']} 至 {audit['target_end']} 的"
+                    "连续五分钟历史；未构造因子、未读取本地日线开收盘或未来收益。"
+                ),
+                "",
+                (
+                    f"- Eastmoney：四股票、三个历史锚点共 {audit['eastmoney_attempts']} 次小样本请求"
+                    "均在当前网络被远端断开；这只证明当前接入失败，不证明该源全局没有历史。"
+                ),
+                (
+                    f"- Sina：四股票都能取得近期 OHLCV/成交额；单股成功探查的最大深度为 "
+                    f"{audit['sina_successful_depth']} 根，窗口仅为 {audit['sina_window_start']} 至 "
+                    f"{audit['sina_window_end']}；请求 {audit['sina_first_empty_requested_depth']} 根"
+                    "已返回空集，且未观察到历史日期游标。"
+                ),
+                "- 结论：两条公开路线均不能作为 2020–2025 历史适配器，不下载全市场、不进入因子、聚合、评分或选股。",
+                f"- 读取未来收益：{'是（无效）' if audit['forward_return_fields_read'] else '否'}。",
+                "",
+            ]
+        )
     if candidate_overlap_audits:
         lines.extend(
             [
@@ -19963,6 +20089,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     official_securities_lending_source_acceptance_audit = (
         load_official_securities_lending_source_acceptance_audit()
     )
+    public_five_minute_source_availability_audit = (
+        load_public_five_minute_source_availability_audit()
+    )
     research_frontier_audit = load_research_frontier_audit()
     execution_tail_realism_audit = load_execution_tail_realism_audit()
     prospective_execution_policy = load_prospective_execution_policy()
@@ -20016,6 +20145,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         securities_lending_source_coverage_audit=securities_lending_source_coverage_audit,
         official_securities_lending_source_acceptance_audit=(
             official_securities_lending_source_acceptance_audit
+        ),
+        public_five_minute_source_availability_audit=(
+            public_five_minute_source_availability_audit
         ),
         rolling_window_semantics_audits=rolling_window_semantics_audits,
         minute_factor_coverage_audits=minute_factor_coverage_audits,
@@ -20089,6 +20221,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         ),
         "official_securities_lending_source_acceptance_audits": int(
             official_securities_lending_source_acceptance_audit is not None
+        ),
+        "public_five_minute_source_availability_audits": int(
+            public_five_minute_source_availability_audit is not None
         ),
         "candidate_overlap_audits": len(candidate_overlap_audits),
         "regime_audits": len(regime_audits),
