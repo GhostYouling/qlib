@@ -3295,7 +3295,132 @@ def sync_jqdata_moneyflow(
         raise
 
 
-def status_payload() -> dict[str, Any]:
+def advisory_lock_status(path: Path) -> dict[str, Any]:
+    """Inspect an advisory lock without deleting, truncating, or acquiring it long-term."""
+
+    path = path.expanduser().resolve()
+    if not path.exists():
+        return {
+            "path": str(path),
+            "exists": False,
+            "recorded_owner_pid": None,
+            "advisory_lock_currently_held": False,
+        }
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            owner = handle.read().strip() or None
+            try:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                held = True
+            else:
+                held = False
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+    except FileNotFoundError:  # The owner may exit between exists() and open().
+        return {
+            "path": str(path),
+            "exists": False,
+            "recorded_owner_pid": None,
+            "advisory_lock_currently_held": False,
+        }
+    return {
+        "path": str(path),
+        "exists": True,
+        "recorded_owner_pid": owner,
+        "advisory_lock_currently_held": held,
+    }
+
+
+def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
+    """Summarize one five-minute storage root without network access or mutation."""
+
+    resolved = data_root.expanduser().resolve()
+    raw_root = resolved / "raw" / "a_share" / "rich" / "baostock" / "minutes" / "5m"
+    runs_root = resolved / "metadata" / "rich_data" / "runs"
+    availability_root = resolved / "metadata" / "rich_data" / "availability"
+    preflight_root = resolved / "metadata" / "rich_data" / "preflights"
+    raw_files = sorted(raw_root.rglob("*.parquet")) if raw_root.exists() else []
+    run_paths = sorted(runs_root.glob("*.json")) if runs_root.exists() else []
+    history_manifests: list[Path] = []
+    for path in run_paths:
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        if record.get("dataset") == "baostock_five_minute_history":
+            history_manifests.append(path)
+
+    availability_paths = (
+        sorted(availability_root.glob("*.json")) if availability_root.exists() else []
+    )
+    latest_probe: dict[str, Any] | None = None
+    if availability_paths:
+        latest_path = availability_paths[-1]
+        try:
+            record = load_json_record(
+                latest_path, kind="a_share_baostock_5m_restoration_probe"
+            )
+        except (RichDataError, ValueError, OSError, json.JSONDecodeError):
+            latest_probe = {
+                "path": str(latest_path.resolve()),
+                "record_valid": False,
+                "status": "invalid_record",
+                "created_at": None,
+                "history_query_succeeded": False,
+                "rows": 0,
+            }
+        else:
+            latest_probe = {
+                "path": str(latest_path.resolve()),
+                "record_valid": True,
+                "status": str(record.get("status") or "unknown"),
+                "created_at": record.get("created_at"),
+                "history_query_succeeded": bool(
+                    record.get("history_query_succeeded", False)
+                ),
+                "rows": int(record.get("rows") or 0),
+            }
+
+    preflight_paths = sorted(preflight_root.glob("*.json")) if preflight_root.exists() else []
+    latest_preflight: dict[str, Any] | None = None
+    if preflight_paths:
+        latest_path = preflight_paths[-1]
+        try:
+            record = load_json_record(latest_path, kind="a_share_baostock_5m_preflight")
+        except (RichDataError, ValueError, OSError, json.JSONDecodeError):
+            latest_preflight = {
+                "path": str(latest_path.resolve()),
+                "record_valid": False,
+                "status": "invalid_record",
+            }
+        else:
+            latest_preflight = {
+                "path": str(latest_path.resolve()),
+                "record_valid": True,
+                "status": str(record.get("status") or "unknown"),
+                "observed_free_gib": record.get("observed_free_gib"),
+                "network_request_issued": bool(
+                    record.get("network_request_issued", False)
+                ),
+            }
+
+    return {
+        "data_root": str(resolved),
+        "network_request_issued": False,
+        "raw_parquet_file_count": len(raw_files),
+        "history_manifest_count": len(history_manifests),
+        "latest_history_manifest": (
+            str(history_manifests[-1].resolve()) if history_manifests else None
+        ),
+        "latest_restoration_probe": latest_probe,
+        "latest_preflight": latest_preflight,
+        "process_lock": advisory_lock_status(
+            resolved / ".a_share_baostock_5m.lock"
+        ),
+    }
+
+
+def status_payload(data_root: Path = DATA_ROOT) -> dict[str, Any]:
     """Return safe machine-readable readiness information."""
 
     manifests = sorted(RUNS_ROOT.glob("*.json")) if RUNS_ROOT.exists() else []
@@ -3311,6 +3436,7 @@ def status_payload() -> dict[str, Any]:
         "latest_alignment_confirmation": str(alignments[-1]) if alignments else None,
         "minute_feature_run_count": len(feature_runs),
         "latest_minute_feature_run": str(feature_runs[-1]) if feature_runs else None,
+        "baostock_five_minute_storage": baostock_5m_storage_status(data_root),
     }
 
 
@@ -3319,7 +3445,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
-    subparsers.add_parser("status", help="show safe provider readiness and stored snapshots")
+    status = subparsers.add_parser(
+        "status", help="show safe provider readiness and stored snapshots"
+    )
+    status.add_argument(
+        "--data-root",
+        type=Path,
+        default=DATA_ROOT,
+        help="inspect this BaoStock five-minute storage root without network access",
+    )
 
     minute = subparsers.add_parser("sync-minutes", help="download explicit-symbol minute bars")
     minute.add_argument("--provider", choices=sorted(MINUTE_FETCHERS), required=True)
@@ -3443,7 +3577,14 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         if args.command == "status":
-            print(json.dumps(status_payload(), ensure_ascii=False, indent=2, sort_keys=True))
+            print(
+                json.dumps(
+                    status_payload(args.data_root),
+                    ensure_ascii=False,
+                    indent=2,
+                    sort_keys=True,
+                )
+            )
             return 0
         if args.command == "sync-minutes":
             manifest = sync_minutes(

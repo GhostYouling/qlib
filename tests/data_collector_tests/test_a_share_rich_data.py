@@ -143,6 +143,89 @@ def test_provider_status_never_returns_credential_values(monkeypatch):
     assert RICH.provider_availability("baostock").missing_environment == ()
 
 
+def test_status_reports_external_baostock_storage_without_mutation(tmp_path):
+    data_root = tmp_path / "rich-root"
+    raw_path = (
+        data_root
+        / "raw/a_share/rich/baostock/minutes/5m/snapshots/example/600519/2025.parquet"
+    )
+    raw_path.parent.mkdir(parents=True)
+    raw_path.write_bytes(b"test-only-placeholder")
+    lock_path = data_root / ".a_share_baostock_5m.lock"
+    lock_path.write_text("999999", encoding="utf-8")
+    probe_path = (
+        data_root
+        / "metadata/rich_data/availability/20260715T000353Z_baostock_5m_probe.json"
+    )
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_baostock_5m_restoration_probe",
+            "status": "provider_rejected_stop_before_bulk_retry",
+            "created_at": "2026-07-15T00:03:53+00:00",
+            "history_query_succeeded": False,
+            "rows": 0,
+        },
+        probe_path,
+    )
+    preflight_path = (
+        data_root
+        / "metadata/rich_data/preflights/20260714T222229Z_baostock_5m_preflight.json"
+    )
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_baostock_5m_preflight",
+            "status": "passed_before_network",
+            "observed_free_gib": 100.0,
+            "network_request_issued": False,
+        },
+        preflight_path,
+    )
+    before_lock = lock_path.read_bytes()
+
+    payload = RICH.status_payload(data_root)
+    storage = payload["baostock_five_minute_storage"]
+    assert storage["data_root"] == str(data_root.resolve())
+    assert storage["network_request_issued"] is False
+    assert storage["raw_parquet_file_count"] == 1
+    assert storage["history_manifest_count"] == 0
+    assert storage["latest_restoration_probe"] == {
+        "path": str(probe_path.resolve()),
+        "record_valid": True,
+        "status": "provider_rejected_stop_before_bulk_retry",
+        "created_at": "2026-07-15T00:03:53+00:00",
+        "history_query_succeeded": False,
+        "rows": 0,
+    }
+    assert storage["latest_preflight"] == {
+        "path": str(preflight_path.resolve()),
+        "record_valid": True,
+        "status": "passed_before_network",
+        "observed_free_gib": 100.0,
+        "network_request_issued": False,
+    }
+    assert storage["process_lock"] == {
+        "path": str(lock_path.resolve()),
+        "exists": True,
+        "recorded_owner_pid": "999999",
+        "advisory_lock_currently_held": False,
+    }
+    assert lock_path.read_bytes() == before_lock
+
+
+def test_advisory_lock_status_distinguishes_active_and_inactive_marker(tmp_path):
+    lock_path = tmp_path / "baostock.lock"
+    with RICH.RichDataProcessLock(lock_path):
+        active = RICH.advisory_lock_status(lock_path)
+        assert active["exists"] is True
+        assert active["recorded_owner_pid"] == str(RICH.os.getpid())
+        assert active["advisory_lock_currently_held"] is True
+
+    inactive = RICH.advisory_lock_status(lock_path)
+    assert inactive["exists"] is True
+    assert inactive["recorded_owner_pid"] == str(RICH.os.getpid())
+    assert inactive["advisory_lock_currently_held"] is False
+
+
 def test_baostock_5m_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_baostock_5m_contract()
     assert contract["source"]["requested_fields"] == [

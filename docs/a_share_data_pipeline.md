@@ -1374,6 +1374,14 @@ python scripts/install_a_share_launchd.py uninstall
 python scripts/a_share_rich_data.py status
 ```
 
+BaoStock 全量使用外置根时，显式检查同一个目录；该命令只读本地状态，不登录供应商、不请求行情，也不删除锁：
+
+```bash
+python scripts/a_share_rich_data.py status --data-root /Volumes/DIsk/qlib-rich-data
+```
+
+`baostock_five_minute_storage.history_manifest_count` 是是否已有完整历史清单的权威计数，`raw_parquet_file_count` 只说明磁盘上有多少 Parquet，不能单独证明来源门禁通过。`latest_restoration_probe` 和 `latest_preflight` 只返回安全状态字段，不显示凭据或供应商错误正文。锁文件可能在进程退出后保留 PID 文本；只有 `process_lock.advisory_lock_currently_held=true` 才表示活动任务，不能因为文件存在就删除它。当前外置根检查为历史清单 **0**、历史 Parquet **0**、最新探针 `provider_rejected_stop_before_bulk_retry`，锁文件记录 PID 24906 但 advisory lock 未持有。
+
 BaoStock SDK 无需凭据；其余来源只有在已取得对应授权后才配置环境变量：
 
 ```bash
