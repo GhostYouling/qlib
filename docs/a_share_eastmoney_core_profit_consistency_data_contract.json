@@ -1,0 +1,320 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_core_profit_consistency_data_contract",
+  "status": "frozen_before_new_income_statement_provider_rows_factor_values_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-16T23:37:00Z",
+  "purpose": "Ingest and no-return screen one positive core-profit-consistency mechanism from a count-complete public full-market income-statement report for the fixed three-session A-share protocol without sweeping statement fields, formulas, directions, dates, prices, or returns.",
+  "freeze_evidence": {
+    "official_akshare_documentation_observed": true,
+    "pinned_akshare_source_observed": true,
+    "eastmoney_income_statement_provider_row_observed": false,
+    "factor_value_observed": false,
+    "full_history_observed": false,
+    "price_or_factor_return_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "mechanism_selection": {
+    "path": "docs/a_share_three_day_core_profit_consistency_mechanism_overlap_reaudit_20260717.json",
+    "sha256_at_contract_freeze": "ca5ac438068dbf8d1911658ec4fcd72e20196d748ba1cfda4d610a105e96ed82",
+    "selected_candidate_count": 1,
+    "same_report_alternative_field_sweep_allowed": false
+  },
+  "pinned_public_adapter": {
+    "project": "AKShare",
+    "repository": "https://github.com/akfamily/akshare",
+    "commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+    "source_path": "akshare/stock_feature/stock_report_em.py",
+    "source_file_sha256": "2012492017222a405d5cd396d3a29a384bc79dd8c1dc4d3e8737f1d2361bd783",
+    "function": "stock_lrb_em",
+    "function_lines": "302-435",
+    "function_block_sha256": "9702cd6ff8cbf49e32f9b7ca97170a4ecf954393c6972f06d5985610f44bb97c",
+    "official_documentation": "https://github.com/akfamily/akshare/blob/main/docs/data/stock/stock.md",
+    "target_page": "https://data.eastmoney.com/bbsj/202003/lrb.html"
+  },
+  "source": {
+    "provider": "Eastmoney public datacenter",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_DMSK_FN_INCOME",
+    "request_parameters": {
+      "sortColumns": "NOTICE_DATE,SECURITY_CODE",
+      "sortTypes": "-1,-1",
+      "pageSize": 500,
+      "columns": "ALL",
+      "filter_template": "(SECURITY_TYPE_CODE in (\"058001001\",\"058001008\"))(TRADE_MARKET_CODE!=\"069001017\")(REPORT_DATE='YYYY-MM-DD')"
+    },
+    "maximum_pages_per_partition": 20,
+    "maximum_attempts_per_page": 4,
+    "retry_backoff_seconds": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "credentials_required": [],
+    "tushare_token_read": false,
+    "authentication_cookie_proxy_or_retail_session_allowed": false,
+    "source_schema_policy": {
+      "raw_json_data_object_zero_based_positions": {
+        "stock_code": 1,
+        "announcement_date": 12,
+        "operating_profit": 24,
+        "total_profit": 25
+      },
+      "minimum_raw_columns": 26,
+      "schema_position_change_allowed": false,
+      "ordered_raw_schema_sha256_frozen_at_acceptance": true,
+      "unused_transported_columns_may_be_persisted": false
+    },
+    "provider_history_start_documented_by_adapter": "2012-03-31"
+  },
+  "factor": {
+    "name": "eastmoney_core_profit_consistency",
+    "formula": "min(operating_profit, total_profit) / max(operating_profit, total_profit)",
+    "equivalent_formula_for_audit": "1 - abs(total_profit - operating_profit) / max(operating_profit, total_profit)",
+    "direction": "higher_is_better",
+    "valid_row": "stock code and announcement date are complete; operating_profit and total_profit are finite and strictly positive; the derived value is finite",
+    "invalid_row_policy": "exclude and count without clipping, filling, absolute-profit rescue, sign changes, winsorization, offset, field substitution, or inference",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "score_formula_if_all_future_gates_pass": "cross_sectional_percentile_rank(eastmoney_core_profit_consistency)",
+    "same_report_cost_margin_expense_growth_or_net_profit_factor_allowed": false
+  },
+  "point_in_time_policy": {
+    "provider_snapshot_semantics": "current historical snapshot with possible later corrections rather than immutable historical versions",
+    "conservative_partition_activation": "for each report period, globally clear every older-period value on the first local session strictly after the minimum valid displayed announcement date in that partition",
+    "individual_value_availability": "first local trading session strictly after that instrument's displayed announcement_date",
+    "older_report_carry_after_new_partition_activation_allowed": false,
+    "late_older_correction_can_supersede_newer_report": false,
+    "conservative_availability": "first local trading session strictly after announcement_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_age_calendar_days": 550,
+    "missing_or_invalid_new_period_value_policy": "remain missing after global activation; never carry the older period through the gap",
+    "correction_date_risk_disclosed": true
+  },
+  "normalized_snapshot": {
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "operating_profit",
+      "total_profit",
+      "eastmoney_core_profit_consistency",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "report_date"
+    ],
+    "provider_value": "eastmoney",
+    "duplicate_event_keys_allowed": false,
+    "security_name_persisted": false,
+    "net_profit_revenue_cost_or_expense_fields_persisted": false,
+    "credential_price_market_cap_valuation_or_return_fields_persisted": false
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "terminal_balance_sheet_result": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json",
+      "sha256": "b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_report_date": "2025-12-31",
+    "one_count_complete_partition_only": true,
+    "minimum_complete_identity_holding_names": 4000,
+    "minimum_complete_identity_holding_coverage": 0.9,
+    "minimum_valid_factor_holding_names": 2500,
+    "minimum_valid_factor_holding_coverage": 0.55,
+    "minimum_distinct_factor_values": 100,
+    "maximum_equivalent_formula_absolute_error": 1e-12,
+    "required_checks": [
+      "the pinned mechanism audit, contract, local universe, calendar, quarterly-quality, price-basis, and latest terminal-result fingerprints match before network access",
+      "the response reports positive pages and rows, remains within twenty 500-row pages, and every advertised page is fetched exactly once",
+      "the concatenated received row count equals the provider-advertised total and page numbers are neither omitted nor duplicated",
+      "the response contains at least twenty-six ordered source columns and the four frozen positions parse with unchanged semantics",
+      "complete-identity main-board and ChiNext coverage is measured before excluding nonpositive profit values",
+      "invalid factor rows are excluded and counted under the exact frozen policy without inspecting alternate fields",
+      "every retained factor exactly matches both frozen equivalent formulas and remains within zero and one",
+      "valid-factor coverage, valid-name count, and distinct-value count meet their frozen thresholds",
+      "the published frame contains only the seven normalized columns and no security name, unused income-statement value, price, market cap, valuation, credential, or return"
+    ],
+    "success_status": "accepted_schema_formula_and_current_coverage_pending_full_history_no_return_gates",
+    "failed_acceptance_policy": "write one terminal no-return source rejection and stop without another date, provider, field position, formula, direction, threshold, full sync, capacity, comparison, price, return, score, selection, sizing, or order",
+    "one_shot_policy": "The exact acceptance may publish at most one terminal success or rejection record and every clone must reject a second attempt before loading the contract or issuing a request.",
+    "tracked_record_path": "docs/a_share_eastmoney_core_profit_consistency_source_acceptance_record.json"
+  },
+  "full_snapshot_framework": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "report_dates": [
+      "2019-03-31",
+      "2019-06-30",
+      "2019-09-30",
+      "2019-12-31",
+      "2020-03-31",
+      "2020-06-30",
+      "2020-09-30",
+      "2020-12-31",
+      "2021-03-31",
+      "2021-06-30",
+      "2021-09-30",
+      "2021-12-31",
+      "2022-03-31",
+      "2022-06-30",
+      "2022-09-30",
+      "2022-12-31",
+      "2023-03-31",
+      "2023-06-30",
+      "2023-09-30",
+      "2023-12-31",
+      "2024-03-31",
+      "2024-06-30",
+      "2024-09-30",
+      "2024-12-31",
+      "2025-03-31",
+      "2025-06-30",
+      "2025-09-30",
+      "2025-12-31"
+    ],
+    "required_report_date_count": 28,
+    "accepted_partition_may_be_reused_without_network": "2025-12-31",
+    "new_network_partition_count_if_acceptance_passes": 27,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "partial_snapshot_accepted": false,
+    "immutable_partition_files_and_manifest": true,
+    "full_source_and_no_return_record_must_be_frozen_after_acceptance_before_another_partition": true
+  },
+  "capacity_contract": {
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_factor_age_calendar_days": 550,
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "comparison_fields_or_prices_allowed_before_capacity_passes": false
+  },
+  "uniqueness_contract": {
+    "screen_start": "2025-01-01",
+    "screen_end": "2025-12-31",
+    "method": "Within each eligible session, percentile-rank core-profit consistency and one preregistered dense comparison field, compute Spearman correlation on pairwise-complete names, then gate the comparison field's absolute median daily correlation.",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_dense_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "all_dense_comparison_fields_must_have_minimum_sessions_and_pass": true,
+    "required_named_near_neighbors": [
+      "roe",
+      "profit_yoy",
+      "tushare_positive_book_to_market",
+      "eastmoney_balance_sheet_resilience"
+    ],
+    "dense_comparison_factors": [
+      "momentum_1",
+      "momentum_2",
+      "momentum_3",
+      "momentum_5",
+      "up_day_ratio_5",
+      "momentum_10",
+      "momentum_20",
+      "momentum_60",
+      "trend_ma_5",
+      "trend_ma_20",
+      "trend_ma_60",
+      "volume_surge_1",
+      "volume_surge",
+      "volume_surge_3",
+      "turnover_surge",
+      "turnover_surge_3",
+      "turnover_surge_1",
+      "liquidity_5",
+      "free_float_cap_proxy",
+      "volatility_5",
+      "volatility_10",
+      "volatility_20",
+      "amplitude_1",
+      "amplitude_5",
+      "gap_1",
+      "near_high_10",
+      "near_high_20",
+      "intraday_strength",
+      "intraday_return_sum_5",
+      "directional_serial_dependence_20",
+      "close_to_high",
+      "close_above_vwap_1",
+      "signed_efficiency_ratio_10",
+      "return_turnover_correlation_10",
+      "max_return_20",
+      "signed_volume_pressure_5",
+      "roe",
+      "revenue_yoy",
+      "profit_yoy",
+      "quality_age_days",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration",
+      "tushare_large_order_net_inflow_share",
+      "tushare_positive_book_to_market",
+      "sw1_three_session_leave_one_out_breadth",
+      "eastmoney_balance_sheet_resilience"
+    ],
+    "dense_comparison_factor_count": 47,
+    "sparse_event_factors_excluded_from_statistical_pass_fail": [
+      "billboard_net_flow_to_float",
+      "billboard_net_flow_to_deal",
+      "billboard_deal_to_float",
+      "billboard_reason_count",
+      "billboard_freshness",
+      "holder_count_change_ratio",
+      "holder_count_change_absolute",
+      "holder_count_freshness"
+    ],
+    "sparse_exclusion_evidence": {
+      "record": "docs/a_share_tushare_free_float_scarcity_research_record.json",
+      "sha256": "9804ef63da08be5beec4a13460dc8ac0e36fdff3e203dd3f00dc9d148b88a24a"
+    },
+    "catalog_change_after_source_rows_allowed": false,
+    "next_session_open_future_close_forward_return_score_or_selection_fields_allowed": false
+  },
+  "prohibited_actions": [
+    "request or persist any income-statement field outside the four frozen raw positions as a factor input",
+    "use Tushare Token, credentials, cookies, proxy, browser session, or retail-client state",
+    "change field positions, report date, formula, valid-sign policy, direction, timing, age, universe, quality, capacity, or uniqueness thresholds after a provider row",
+    "read prices or returns, aggregate, score, select, size, order, or justify Level-2 before every no-return gate passes"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

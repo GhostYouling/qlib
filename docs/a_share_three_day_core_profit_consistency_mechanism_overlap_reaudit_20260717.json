@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_core_profit_consistency_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_new_provider_rows_factor_values_prices_or_returns",
+  "recorded_at": "2026-07-16T23:36:00Z",
+  "purpose": "Re-audit the three-session research frontier after the terminal Eastmoney balance-sheet-resilience return and execution result, and select at most one economically independent, reproducible public-data mechanism before observing a new provider row or factor value.",
+  "frontier_state": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "stability_qualified_factor_count": 7,
+      "topk_qualified_factor_count": 0,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "latest_terminal_mechanism": {
+      "mechanism": "eastmoney_balance_sheet_resilience",
+      "record": "docs/a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json",
+      "sha256": "b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf",
+      "decision": "terminal_after_default_return_stability_and_top3_execution_gates"
+    },
+    "terminal_accounting_neighbors": [
+      {
+        "mechanism": "tushare_operating_cash_conversion",
+        "record": "docs/a_share_tushare_cash_conversion_research_record.json",
+        "sha256": "c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819"
+      },
+      {
+        "mechanism": "tushare_single_quarter_gross_margin_yoy_change",
+        "record": "docs/a_share_tushare_gross_margin_research_record.json",
+        "sha256": "83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18"
+      }
+    ],
+    "new_provider_row_requested_by_this_audit": false,
+    "new_factor_value_observed": false,
+    "new_price_or_return_read": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "tushare_fina_indicator_inventory_or_receivables_turnover_improvement",
+      "decision": "rejected_before_rows_as_a_terminal_source_route_replay",
+      "reason": "The standard per-stock fina_indicator route already failed its one full-source attempt on an incomplete required identity, announcement-date, report-period, or version field. Selecting inv_turn, ar_turn, or assets_turn after that failure would replay the same source path and create a financial-field sweep."
+    },
+    {
+      "candidate": "eastmoney_cashflow_self_funding_share",
+      "decision": "rejected_before_rows_as_the_same_economic_family",
+      "reason": "Operating cash generation relative to investing or financing cash flow is too close to the terminal operating-cash-conversion mechanism. A public-provider substitute does not create an independent earnings-cash-quality hypothesis."
+    },
+    {
+      "candidate": "eastmoney_income_statement_cost_or_expense_margin",
+      "decision": "rejected_before_rows_as_a_profitability_structure_neighbor",
+      "reason": "Operating-cost, selling-expense, management-expense, and finance-expense ratios are direct margin decompositions near the terminal gross-margin route and the existing ROE/profitability quality fields. Testing them after seeing the documented source catalog would be a same-report field sweep."
+    },
+    {
+      "candidate": "eastmoney_core_profit_consistency",
+      "decision": "selected_as_the_only_independent_no_return_candidate",
+      "reason": "The difference between operating profit and total profit isolates the materiality of non-operating gains or losses. It is an earnings-composition mechanism, not leverage, valuation, cash conversion, gross margin, growth, price path, trading flow, ownership, or an announcement-event count."
+    }
+  ],
+  "public_adapter_evidence": {
+    "project": "AKShare",
+    "repository": "https://github.com/akfamily/akshare",
+    "official_documentation": "https://github.com/akfamily/akshare/blob/main/docs/data/stock/stock.md",
+    "pinned_main_commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+    "source_path": "akshare/stock_feature/stock_report_em.py",
+    "source_file_sha256": "2012492017222a405d5cd396d3a29a384bc79dd8c1dc4d3e8737f1d2361bd783",
+    "stock_lrb_em_lines": "302-435",
+    "stock_lrb_em_function_block_sha256": "9702cd6ff8cbf49e32f9b7ca97170a4ecf954393c6972f06d5985610f44bb97c",
+    "documented_target_page": "https://data.eastmoney.com/bbsj/202003/lrb.html",
+    "documented_history_start": "2012-03-31",
+    "documented_outputs_used_for_source_selection": [
+      "stock code",
+      "announcement date",
+      "operating profit",
+      "total profit"
+    ],
+    "provider_endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "provider_report_name": "RPT_DMSK_FN_INCOME",
+    "provider_rows_observed_by_this_audit": false
+  },
+  "selected_candidate": {
+    "economic_mechanism": "Among already profitable and growing issuers, closer agreement between positive operating profit and positive total profit indicates that disclosed earnings are less dominated by non-operating gains or losses and may be incorporated more consistently over the next three sessions.",
+    "factor_name": "eastmoney_core_profit_consistency",
+    "formula": "min(operating_profit, total_profit) / max(operating_profit, total_profit)",
+    "equivalent_formula": "1 - abs(total_profit - operating_profit) / max(operating_profit, total_profit)",
+    "direction": "higher_is_better",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "valid_row": "stock code and announcement date are complete; operating profit and total profit are finite and strictly positive; the denominator is finite and strictly positive",
+    "invalid_row_policy": "exclude and count without clipping, filling, sign changes, field substitution, absolute-profit rescue, or inference",
+    "availability": "first local trading session strictly after the source announcement date",
+    "maximum_age_calendar_days": 550,
+    "same_announcement_session_trade_allowed": false,
+    "holding_universe": "buyable_main_chinext",
+    "quality_gate": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY under the existing next-session point-in-time policy",
+    "selection_or_promotion_allowed": false
+  },
+  "economic_independence": {
+    "versus_existing_quarterly_quality": "ROE, net-profit sign, revenue growth, profit growth, and their accelerations remain eligibility or comparison fields. The candidate uses neither their values nor weights and must pass a no-return correlation gate against them.",
+    "versus_balance_sheet_resilience": "The terminal balance-sheet factor used total assets and total liabilities. The selected factor requests neither asset nor liability values and measures earnings composition from a different statement report.",
+    "versus_cash_conversion": "The candidate requests no operating cash flow, financing cash flow, investment cash flow, attributable net income, or cash-conversion ratio.",
+    "versus_gross_margin": "Gross margin measures revenue less direct operating cost. Core-profit consistency instead compares operating profit after operating expenses with pre-tax total profit to isolate non-operating materiality.",
+    "versus_price_volume_and_event_factors": "No OHLCV, turnover, order flow, valuation, market capitalization, ownership, analyst, billboard, block-trade, pledge, repurchase, unlock, holder, or management field enters the formula."
+  },
+  "required_gate_order": [
+    "freeze the exact provider report, pinned adapter, source positions, factor formula, direction, timing, invalid-row, completeness, atomicity, capacity, and uniqueness rules before any income-statement provider row",
+    "implement and locally test count-complete pagination, positional schema rejection, formula derivation, atomic publication, and one-shot cross-clone guards",
+    "run one fixed 2025-12-31 no-price source acceptance and permanently consume it",
+    "only after acceptance, freeze a separate full-source and no-return protocol before another historical partition",
+    "run capacity before comparison fields or prices, and uniqueness before any factor return",
+    "freeze a separate one-time return and execution diagnostic only if every no-return gate passes"
+  ],
+  "prohibited_actions": [
+    "request or persist security name, net profit, revenue, revenue growth, operating costs, selling expense, management expense, finance expense, price, market capitalization, valuation, precomputed return, or forward return as factor inputs",
+    "replace the formula with a margin, expense ratio, operating-profit growth, non-operating direction, cash-flow field, leverage field, industry residual, or financial-sector exception after seeing rows",
+    "accept a zero or negative operating profit or total profit, or treat a missing row as perfect consistency",
+    "use same-day announcement trading, a different carry age, reversed direction, different report range, clipping, winsorization, or a lower gate",
+    "read returns, aggregate, score, select, size, order, or justify Level-2 before all no-return gates pass"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

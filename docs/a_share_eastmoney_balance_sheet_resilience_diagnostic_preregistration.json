@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_balance_sheet_resilience_diagnostic_preregistration",
+  "status": "frozen_after_combined_no_return_capacity_and_dense_uniqueness_pass_before_factor_returns_observed",
+  "preregistered_at": "2026-07-16T23:15:00Z",
+  "purpose": "Run one accepted-price diagnostic of the frozen conservative balance-sheet-resilience state after source, three-session capacity, and 46-field dense uniqueness gates passed without factor returns.",
+  "combined_no_return_audit": {
+    "run_id": "20260716T231333Z",
+    "path": "data/experiments/short_horizon/20260716T231333Z_eastmoney_balance_sheet_resilience_no_return_audit.json",
+    "sha256": "665399d5df3e2513f4b3095fd3a887d1c3f1e3a2aefdb1ad8490fad229c00967",
+    "research_record_path": "docs/a_share_eastmoney_balance_sheet_resilience_research_record.json",
+    "research_record_sha256": "4ae66604ed4c9a2ea2e8cf9cd9dc05883b8163f6848616dc55280609d1af450b",
+    "factor": "eastmoney_balance_sheet_resilience",
+    "potential_complete_cohorts": 460,
+    "observed_calendar_years": 7,
+    "dense_comparison_field_count": 46,
+    "fields_with_minimum_sessions": 46,
+    "fields_below_correlation_threshold": 46,
+    "nearest_existing_field": "free_float_cap_proxy",
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.25859789492211777,
+    "capacity_gate_passed": true,
+    "uniqueness_gate_passed": true,
+    "both_no_return_gates_passed": true,
+    "forward_return_fields_read": false,
+    "source_admitted_for_return_diagnostic": true
+  },
+  "source_snapshots": {
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6.json",
+      "sha256": "b69e71c57ecbef956709e853d5da6054fd28f6c44d53ead2b51273641ecba9fe",
+      "run_id": "20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6",
+      "status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness",
+      "rows": 113916,
+      "partitions": 28,
+      "development_start": "2019-01-01",
+      "development_end": "2025-12-31",
+      "provider": "eastmoney"
+    },
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_data_contract.json",
+      "sha256": "44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_no_return_preregistration.json",
+      "sha256": "fac1c2aefb4c263704e7d93ff7affa6d7e1aa085e1f86dac04c18029ac632a6c"
+    },
+    "full_source_record": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_full_source_record.json",
+      "sha256": "8c523f2e5b2b14cb46b98a9becf114ef5efab582af2b84482524f6676caf6cc6"
+    },
+    "state_materialization_preregistration": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_state_materialization_preregistration.json",
+      "sha256": "80e00a7991ac52627956eb35a04a10755c88cf769c60298ae02c3332789c9d91"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_sources": [
+        "baostock"
+      ],
+      "future_corporate_actions_used": false,
+      "status": "passed"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+      "range_clipped_sha256": "2b3a2fba2ebb6938853fe9c6e1f6649517bef844e0ee6347a032e2b74945394c",
+      "range_clipped_intervals": 4794
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "range_clipped_sha256": "c408af553ff2aa780f302eda8bc860d06d875a1a34c6bf37cd1341c6f890623c",
+      "range_clipped_sessions": 1699
+    }
+  },
+  "factor": {
+    "name": "eastmoney_balance_sheet_resilience",
+    "raw_column": "eastmoney_balance_sheet_resilience",
+    "source_formula": "1 - total_liabilities / total_assets for frozen valid rows only",
+    "raw_direction": "higher_is_better",
+    "score_formula": "cross_sectional_percentile_rank(eastmoney_balance_sheet_resilience)",
+    "maximum_event_age_days": 550,
+    "same_session_trade_allowed": false,
+    "signal_availability": "the conservative state materialization: global reset on the first local session after a partition's earliest displayed announcement, then instrument value availability on the first local session strictly after its own displayed announcement",
+    "older_report_carry_after_partition_activation_allowed": false,
+    "late_older_correction_can_supersede_newer_report": false,
+    "alternative_leverage_transform_threshold_industry_residual_or_financial_sector_exception_allowed": false
+  },
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_valid_names_per_factor_cohort": 50,
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "stability_minimum_calendar_years": 5,
+    "stability_minimum_cohorts": 200
+  },
+  "execution_policies": {
+    "prospective_execution_policy_path": "docs/a_share_three_day_prospective_execution_policy.json",
+    "prospective_execution_policy_sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc",
+    "pilot_execution_policy_path": "docs/a_share_three_day_pilot_execution_policy.json",
+    "pilot_execution_policy_sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+    "pilot_initial_capital_cny": 200000.0,
+    "buy_lot_size_shares": 100,
+    "primary_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01
+  },
+  "diagnostic_policy": {
+    "source_capacity_and_uniqueness_gates_passed_before_return_read": true,
+    "single_factor_only": true,
+    "factor_returns_observed_before_registration": false,
+    "prior_balance_sheet_resilience_price_diagnostic_exists": false,
+    "one_completed_diagnostic_only": true,
+    "preserve_source_state_quality_and_no_return_evidence": true,
+    "no_direction_formula_state_reset_date_cost_quality_source_factor_or_threshold_override": true,
+    "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": true,
+    "passing_diagnostic_gates_does_not_allow_immediate_current_scoring_selection_or_orders": true,
+    "separate_newly_dated_prospective_protocol_required_after_any_dual_gate_pass": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

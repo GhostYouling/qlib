@@ -31,6 +31,7 @@ import hashlib
 import importlib.metadata
 import importlib.util
 import json
+import math
 import os
 import shutil
 import tempfile
@@ -143,6 +144,55 @@ DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC = (
 )
 DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_free_float_scarcity_data_contract.json"
+)
+DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_free_float_scarcity_source_acceptance_record.json"
+)
+DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_free_float_scarcity_no_return_preregistration.json"
+)
+DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_FULL_SOURCE_RECORD = (
+    REPO_ROOT / "docs" / "a_share_tushare_free_float_scarcity_full_source_record.json"
+)
+DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_eastmoney_balance_sheet_resilience_data_contract.json"
+)
+DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_balance_sheet_resilience_source_acceptance_record.json"
+)
+DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_balance_sheet_resilience_no_return_preregistration.json"
+)
+DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_SOURCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_balance_sheet_resilience_full_source_record.json"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_eastmoney_core_profit_consistency_data_contract.json"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_source_acceptance_record.json"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_no_return_preregistration.json"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_full_source_record.json"
 )
 DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_sw_industry_breadth_data_contract.json"
@@ -303,6 +353,42 @@ TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256 = (
 )
 TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT_SHA256 = (
     "a5897cf4bda28bb55e4a0f5c8db6fc328e916c68494e71931a313357d43bc1eb"
+)
+TUSHARE_FREE_FLOAT_SCARCITY_ACCEPTANCE_RECORD_SHA256 = (
+    "7f3a929b08ca4da2a95284bca557e3ff3783bbc747cf31e821c5f48a8e2c125d"
+)
+TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC_SHA256 = (
+    "963e8c7d9f41da9c0ea7287399960ee5ecfdf02a1372cada25c6f7b7184f700f"
+)
+TUSHARE_FREE_FLOAT_SCARCITY_FULL_SOURCE_RECORD_SHA256 = (
+    "2d9855e286e8fd8233e9bafe38301e2381fc4d2ca221a4a69626d580285adc13"
+)
+EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT_SHA256 = (
+    "44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4"
+)
+EASTMONEY_BALANCE_SHEET_RESILIENCE_MECHANISM_AUDIT_SHA256 = (
+    "ea3522891cee10446b01ba79ee875bdb9c16ac9ad63470b5894253a4ee0968ca"
+)
+EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD_SHA256 = (
+    "9a014c7bfa25cfe40f1a5deca0168fe28f5c98f10c1da2bc782366cb15c94baf"
+)
+EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC_SHA256 = (
+    "fac1c2aefb4c263704e7d93ff7affa6d7e1aa085e1f86dac04c18029ac632a6c"
+)
+EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_SOURCE_RECORD_SHA256 = (
+    "8c523f2e5b2b14cb46b98a9becf114ef5efab582af2b84482524f6676caf6cc6"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256 = (
+    "2ae3be4b134e16681e702171157b48e8be5bc6c1f72aa9cecfc9a285518d7a45"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_MECHANISM_AUDIT_SHA256 = (
+    "ca5ac438068dbf8d1911658ec4fcd72e20196d748ba1cfda4d610a105e96ed82"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256 = (
+    "1372ee0af59cf45e4f46659ba05730d0cbaac99232f49464b014e578cd89bf34"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256 = (
+    "47884d88736a19715bb3a615f9941611309322f9d6f1f1f4a0456ce924fb3943"
 )
 TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256 = (
     "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
@@ -646,6 +732,37 @@ TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS = (
     "free_share",
     "tushare_free_float_scarcity",
     "provider",
+)
+EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS = (
+    "instrument",
+    "report_date",
+    "announcement_date",
+    "total_assets",
+    "total_liabilities",
+    "eastmoney_balance_sheet_resilience",
+    "provider",
+)
+EASTMONEY_BALANCE_SHEET_RAW_POSITION_NAMES = (
+    "stock_code",
+    "announcement_date",
+    "total_assets",
+    "total_liabilities",
+    "vendor_asset_liability_ratio_percent_for_formula_audit_only",
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS = (
+    "instrument",
+    "report_date",
+    "announcement_date",
+    "operating_profit",
+    "total_profit",
+    "eastmoney_core_profit_consistency",
+    "provider",
+)
+EASTMONEY_CORE_PROFIT_RAW_POSITION_NAMES = (
+    "stock_code",
+    "announcement_date",
+    "operating_profit",
+    "total_profit",
 )
 TUSHARE_SW_CLASSIFICATION_RAW_FIELDS = (
     "index_code",
@@ -1352,9 +1469,7 @@ def fetch_baostock_5m_request_worker(
             raw = _query_baostock_5m(_BAOSTOCK_WORKER_CLIENT, code, start, end)
             frame = canonicalize_baostock_5m_bars(raw, code, start, end)
             return code, start_value, end_value, frame
-        except (
-            Exception
-        ) as exc:  # noqa: BLE001 - worker must preserve the final provider error.
+        except Exception as exc:  # noqa: BLE001 - worker must preserve the final provider error.
             error = exc
             if "黑名单用户" in str(exc):
                 break
@@ -1557,8 +1672,7 @@ def fetch_tushare_earnings_forecast(
         )
     except Exception as exc:
         raise RichDataError(
-            "Tushare forecast request failed for "
-            f"{ts_code}: {safe_exception_text(exc)}"
+            f"Tushare forecast request failed for {ts_code}: {safe_exception_text(exc)}"
         ) from exc
     if result is None:
         return pd.DataFrame()
@@ -2865,9 +2979,7 @@ def canonicalize_tushare_gross_margin_indicators(
             "Tushare fina_indicator response lacks requested fields: "
             + ", ".join(missing_columns)
         )
-    unexpected_columns = sorted(
-        set(raw.columns) - set(TUSHARE_GROSS_MARGIN_RAW_FIELDS)
-    )
+    unexpected_columns = sorted(set(raw.columns) - set(TUSHARE_GROSS_MARGIN_RAW_FIELDS))
     if unexpected_columns:
         raise RichDataError(
             "Tushare fina_indicator response contains fields outside the frozen "
@@ -2894,9 +3006,7 @@ def canonicalize_tushare_gross_margin_indicators(
     report_period = pd.to_datetime(
         raw["end_date"].astype("string"), format="%Y%m%d", errors="coerce"
     ).dt.normalize()
-    update_flag = (
-        raw["update_flag"].astype("string").str.strip().replace("", pd.NA)
-    )
+    update_flag = raw["update_flag"].astype("string").str.strip().replace("", pd.NA)
     margin = pd.to_numeric(raw["q_gsprofit_margin"], errors="coerce")
     invalid_key = (
         source_code.isna()
@@ -2920,7 +3030,10 @@ def canonicalize_tushare_gross_margin_indicators(
             "Tushare fina_indicator response contains BSE rows outside the frozen source universe"
         )
     if not update_flag.isin({"0", "1"}).all():
-        unknown = sorted(str(value) for value in update_flag.loc[~update_flag.isin({"0", "1"})].unique())
+        unknown = sorted(
+            str(value)
+            for value in update_flag.loc[~update_flag.isin({"0", "1"})].unique()
+        )
         raise RichDataError(
             "Tushare fina_indicator response contains unknown update_flag values: "
             + ", ".join(unknown)
@@ -2976,8 +3089,9 @@ def canonicalize_tushare_gross_margin_indicators(
         )
 
     current = complete_initial.assign(
-        prior_report_period=lambda values: values["report_period"]
-        - pd.DateOffset(years=1)
+        prior_report_period=lambda values: (
+            values["report_period"] - pd.DateOffset(years=1)
+        )
     )
     prior = complete_initial.loc[
         :, ["report_period", "announcement_date", "q_gsprofit_margin"]
@@ -2990,18 +3104,14 @@ def canonicalize_tushare_gross_margin_indicators(
     )
     paired = current.merge(prior, on="prior_report_period", how="left", validate="m:1")
     has_prior = paired["prior_q_gsprofit_margin"].notna()
-    prior_is_earlier = paired["prior_announcement_date"].lt(
-        paired["announcement_date"]
-    )
+    prior_is_earlier = paired["prior_announcement_date"].lt(paired["announcement_date"])
     eligible = has_prior & prior_is_earlier
     paired = paired.loc[eligible].copy()
     paired["tushare_q_gross_margin_yoy_change_pp"] = (
         paired["q_gsprofit_margin"] - paired["prior_q_gsprofit_margin"]
     )
     finite_factor = np.isfinite(
-        paired["tushare_q_gross_margin_yoy_change_pp"].to_numpy(
-            dtype=float, copy=False
-        )
+        paired["tushare_q_gross_margin_yoy_change_pp"].to_numpy(dtype=float, copy=False)
     )
     if not finite_factor.all():
         raise RichDataError(
@@ -3019,7 +3129,9 @@ def canonicalize_tushare_gross_margin_indicators(
     paired = paired.assign(instrument=instrument, provider="tushare")
     result = (
         paired.loc[:, list(TUSHARE_GROSS_MARGIN_COLUMNS)]
-        .sort_values(["announcement_date", "report_period", "instrument"], kind="stable")
+        .sort_values(
+            ["announcement_date", "report_period", "instrument"], kind="stable"
+        )
         .reset_index(drop=True)
     )
     factor = result["tushare_q_gross_margin_yoy_change_pp"]
@@ -3067,9 +3179,7 @@ def canonicalize_tushare_management_continuity(
         )
     raw = frame.copy()
     missing_columns = [
-        field
-        for field in TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS
-        if field not in raw
+        field for field in TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS if field not in raw
     ]
     if missing_columns:
         raise RichDataError(
@@ -3082,8 +3192,7 @@ def canonicalize_tushare_management_continuity(
     if unexpected_columns:
         raise RichDataError(
             "Tushare stk_managers response contains fields outside the frozen "
-            "whitelist: "
-            + ", ".join(unexpected_columns)
+            "whitelist: " + ", ".join(unexpected_columns)
         )
     expected_code = str(expected_ts_code).strip().upper()
     expected_parts = pd.Series([expected_code], dtype="string").str.extract(
@@ -3194,9 +3303,7 @@ def canonicalize_tushare_management_continuity(
         .reset_index(drop=True)
     )
     manager_count = pd.to_numeric(events["manager_count"], errors="coerce")
-    departing_count = pd.to_numeric(
-        events["departing_manager_count"], errors="coerce"
-    )
+    departing_count = pd.to_numeric(events["departing_manager_count"], errors="coerce")
     if (
         manager_count.isna().any()
         or manager_count.le(0).any()
@@ -3310,9 +3417,7 @@ def canonicalize_tushare_stock_st_membership(
             "Tushare stock_st response contains a type outside the frozen literal ST: "
             + ", ".join(unsupported)
         )
-    source_keys = pd.DataFrame(
-        {"ts_code": source_code, "trade_date": trade_date}
-    )
+    source_keys = pd.DataFrame({"ts_code": source_code, "trade_date": trade_date})
     if source_keys.duplicated(["ts_code", "trade_date"]).any():
         raise RichDataError(
             "Tushare stock_st response contains duplicate stock-date keys"
@@ -4110,9 +4215,7 @@ def canonicalize_tushare_free_float_scarcity(
         )
     raw = frame.copy()
     missing_columns = [
-        field
-        for field in TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
-        if field not in raw
+        field for field in TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS if field not in raw
     ]
     if missing_columns:
         raise RichDataError(
@@ -4125,8 +4228,7 @@ def canonicalize_tushare_free_float_scarcity(
     if unexpected_columns:
         raise RichDataError(
             "Tushare daily_basic free-float response contains fields outside the "
-            "frozen whitelist: "
-            + ", ".join(unexpected_columns)
+            "frozen whitelist: " + ", ".join(unexpected_columns)
         )
 
     def instrument(value: Any) -> str | None:
@@ -4179,8 +4281,7 @@ def canonicalize_tushare_free_float_scarcity(
         )
 
     finite = pd.Series(
-        np.isfinite(normalized["total_share"])
-        & np.isfinite(normalized["free_share"]),
+        np.isfinite(normalized["total_share"]) & np.isfinite(normalized["free_share"]),
         index=normalized.index,
     )
     missing_or_nonfinite = ~finite
@@ -4188,9 +4289,7 @@ def canonicalize_tushare_free_float_scarcity(
         normalized["total_share"].le(0.0) | normalized["free_share"].le(0.0)
     )
     above_total = (
-        finite
-        & ~nonpositive
-        & normalized["free_share"].gt(normalized["total_share"])
+        finite & ~nonpositive & normalized["free_share"].gt(normalized["total_share"])
     )
     eligible = finite & ~nonpositive & ~above_total
     accepted = normalized.loc[eligible].copy()
@@ -4216,9 +4315,7 @@ def canonicalize_tushare_free_float_scarcity(
     )
     return result, {
         "input_rows": int(len(raw)),
-        "missing_or_nonfinite_share_rows_excluded": int(
-            missing_or_nonfinite.sum()
-        ),
+        "missing_or_nonfinite_share_rows_excluded": int(missing_or_nonfinite.sum()),
         "nonpositive_share_rows_excluded": int(nonpositive.sum()),
         "free_share_above_total_share_rows_excluded": int(above_total.sum()),
         "rows_written": int(len(result)),
@@ -5271,7 +5368,7 @@ def load_tushare_earnings_forecast_acceptance_record(
         linked_sha = str(link.get("sha256") or "")
         if linked_path.exists() and file_digest(linked_path) != linked_sha:
             raise RichDataError(
-                "Tushare earnings-forecast terminal evidence changed: " f"{linked_path}"
+                f"Tushare earnings-forecast terminal evidence changed: {linked_path}"
             )
         manifest_value = link.get("manifest_path")
         manifest_sha = link.get("manifest_sha256")
@@ -5406,8 +5503,7 @@ def load_tushare_disclosure_promptness_contract(
                 or file_digest(manifest_file) != str(manifest_sha)
             ):
                 raise RichDataError(
-                    "Tushare disclosure-promptness manifest context changed: "
-                    f"{label}"
+                    f"Tushare disclosure-promptness manifest context changed: {label}"
                 )
     return contract
 
@@ -5545,7 +5641,7 @@ def load_tushare_audit_opinion_contract(
                 or file_digest(manifest_file) != str(manifest_sha)
             ):
                 raise RichDataError(
-                    "Tushare audit-opinion manifest context changed: " f"{label}"
+                    f"Tushare audit-opinion manifest context changed: {label}"
                 )
     return contract
 
@@ -5571,9 +5667,7 @@ def load_tushare_gross_margin_contract(
     path = path.expanduser().resolve()
     if file_digest(path) != TUSHARE_GROSS_MARGIN_CONTRACT_SHA256:
         raise RichDataError("Tushare gross-margin contract fingerprint mismatch")
-    contract = load_json_record(
-        path, kind="a_share_tushare_gross_margin_data_contract"
-    )
+    contract = load_json_record(path, kind="a_share_tushare_gross_margin_data_contract")
     selection = contract.get("source_selection") or {}
     mechanism = contract.get("mechanism_identity") or {}
     overlap = mechanism.get("mechanism_overlap_audit") or {}
@@ -5611,8 +5705,7 @@ def load_tushare_gross_margin_contract(
         or timing.get("same_announcement_session_trade_allowed") is not False
         or timing.get("maximum_event_age_calendar_days") != 3
         or timing.get("forward_fill_beyond_event_age_allowed") is not False
-        or factor.get("name")
-        != "tushare_single_quarter_gross_margin_yoy_change"
+        or factor.get("name") != "tushare_single_quarter_gross_margin_yoy_change"
         or factor.get("raw_column") != "tushare_q_gross_margin_yoy_change_pp"
         or factor.get("direction") != "higher_is_better"
         or factor.get("formula")
@@ -5621,14 +5714,12 @@ def load_tushare_gross_margin_contract(
         != TUSHARE_GROSS_MARGIN_ACCEPTANCE_TS_CODES
         or acceptance.get("report_period_start")
         != TUSHARE_GROSS_MARGIN_ACCEPTANCE_START
-        or acceptance.get("report_period_end")
-        != TUSHARE_GROSS_MARGIN_ACCEPTANCE_END
+        or acceptance.get("report_period_end") != TUSHARE_GROSS_MARGIN_ACCEPTANCE_END
         or acceptance.get("provider_calls") != 3
         or acceptance.get("minimum_source_rows_per_stock") != 20
         or acceptance.get("minimum_initial_quarter_rows_per_stock") != 18
         or acceptance.get("minimum_derived_yoy_events_per_stock") != 12
-        or acceptance.get("minimum_distinct_derived_values_across_acceptance")
-        != 6
+        or acceptance.get("minimum_distinct_derived_values_across_acceptance") != 6
         or acceptance.get("documented_row_ceiling_is_strict") is not True
         or acceptance.get("success_status")
         != "accepted_entitlement_schema_initial_version_policy_and_formula_pending_full_history"
@@ -5637,8 +5728,7 @@ def load_tushare_gross_margin_contract(
         or snapshot.get("source_report_period_end") != "2025-12-31"
         or snapshot.get("provider_call_partition")
         != "two frozen report-period slices per source-universe stock: 20180101-20211231 and 20220101-20251231"
-        or tuple(snapshot.get("output_columns") or ())
-        != TUSHARE_GROSS_MARGIN_COLUMNS
+        or tuple(snapshot.get("output_columns") or ()) != TUSHARE_GROSS_MARGIN_COLUMNS
         or snapshot.get("raw_provider_frames_persisted") is not False
         or snapshot.get("revised_values_persisted") is not False
         or completeness.get("minimum_complete_derived_factor_events") != 20000
@@ -5687,7 +5777,7 @@ def load_tushare_gross_margin_contract(
                 or file_digest(manifest_file) != str(manifest_sha)
             ):
                 raise RichDataError(
-                    "Tushare gross-margin manifest context changed: " f"{label}"
+                    f"Tushare gross-margin manifest context changed: {label}"
                 )
     return contract
 
@@ -5747,11 +5837,9 @@ def load_tushare_management_continuity_contract(
         or identity.get("maximum_event_age_calendar_days") != 3
         or identity.get("forward_fill_beyond_event_age_allowed") is not False
         or factor.get("name") != "tushare_management_continuity"
-        or factor.get("raw_column")
-        != "tushare_management_continuity_share"
+        or factor.get("raw_column") != "tushare_management_continuity_share"
         or factor.get("direction") != "higher_is_better"
-        or factor.get("formula")
-        != "1 - departing_manager_count / manager_count"
+        or factor.get("formula") != "1 - departing_manager_count / manager_count"
         or tuple(acceptance.get("fixed_ts_codes") or ())
         != TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_TS_CODES
         or acceptance.get("announcement_start")
@@ -5764,8 +5852,7 @@ def load_tushare_management_continuity_contract(
         or acceptance.get("minimum_events_across_acceptance") != 15
         or acceptance.get("minimum_distinct_factor_values_across_acceptance") != 2
         or acceptance.get("must_observe_at_least_one_departing_identity") is not True
-        or acceptance.get("must_observe_at_least_one_nondeparting_identity")
-        is not True
+        or acceptance.get("must_observe_at_least_one_nondeparting_identity") is not True
         or acceptance.get("defensive_response_row_ceiling_is_strict") is not True
         or acceptance.get("success_status")
         != "accepted_entitlement_schema_identity_privacy_date_policy_and_formula_pending_full_history"
@@ -5829,8 +5916,7 @@ def load_tushare_management_continuity_contract(
                 or file_digest(manifest_file) != str(manifest_sha)
             ):
                 raise RichDataError(
-                    "Tushare management-continuity manifest context changed: "
-                    f"{label}"
+                    f"Tushare management-continuity manifest context changed: {label}"
                 )
     return contract
 
@@ -5855,8 +5941,7 @@ def load_tushare_management_continuity_acceptance_record(
     if (
         record.get("status")
         != "terminal_source_rejected_before_identity_aggregation_factor_values_full_history_or_returns"
-        or contract.get("sha256")
-        != TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT_SHA256
+        or contract.get("sha256") != TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT_SHA256
         or acceptance.get("manifest_sha256")
         != "1de603f276d14e77fafc993ed552f709d9c2d35456607c336875e3a70a06d45b"
         or acceptance.get("acceptance_status")
@@ -5886,9 +5971,7 @@ def load_tushare_management_continuity_acceptance_record(
         or decision.get("full_source_sync_allowed") is not False
         or decision.get("capacity_uniqueness_or_return_work_allowed") is not False
     ):
-        raise RichDataError(
-            "Tushare management-continuity acceptance record changed"
-        )
+        raise RichDataError("Tushare management-continuity acceptance record changed")
     for link in (
         record.get("mechanism_overlap_audit") or {},
         contract,
@@ -5930,9 +6013,7 @@ def load_tushare_st_recovery_contract(
     path = path.expanduser().resolve()
     if file_digest(path) != TUSHARE_ST_RECOVERY_CONTRACT_SHA256:
         raise RichDataError("Tushare ST-recovery contract fingerprint mismatch")
-    contract = load_json_record(
-        path, kind="a_share_tushare_st_recovery_data_contract"
-    )
+    contract = load_json_record(path, kind="a_share_tushare_st_recovery_data_contract")
     mechanism = contract.get("mechanism_identity") or {}
     overlap = mechanism.get("mechanism_overlap_audit") or {}
     selection = contract.get("source_selection") or {}
@@ -5971,10 +6052,11 @@ def load_tushare_st_recovery_contract(
         or accepted_frame.get("trade_date") != "2026-07-13"
         or tuple(accepted_frame.get("relevant_columns_to_revalidate") or ())
         != ("ts_code", "trade_date", "type", "provider", "dataset")
-        or accepted_frame.get("name_or_type_name_values_may_be_read_by_dedicated_revalidation")
+        or accepted_frame.get(
+            "name_or_type_name_values_may_be_read_by_dedicated_revalidation"
+        )
         is not False
-        or tuple(canonical.get("output_columns") or ())
-        != TUSHARE_ST_MEMBERSHIP_COLUMNS
+        or tuple(canonical.get("output_columns") or ()) != TUSHARE_ST_MEMBERSHIP_COLUMNS
         or canonical.get("raw_provider_frame_persisted") is not False
         or canonical.get("name_or_type_name_persisted") is not False
         or canonical.get("factor_value_persisted_by_full_sync") is not False
@@ -6038,19 +6120,16 @@ def load_tushare_st_recovery_contract(
     for label, (sha_key, manifest_sha_key) in context_files.items():
         evidence = context.get(label) or {}
         linked_path = resolve_record_path(str(evidence.get("path") or ""))
-        if (
-            not linked_path.exists()
-            or file_digest(linked_path) != str(evidence.get(sha_key) or "")
+        if not linked_path.exists() or file_digest(linked_path) != str(
+            evidence.get(sha_key) or ""
         ):
             raise RichDataError(f"Tushare ST-recovery local context changed: {label}")
         if manifest_sha_key is not None:
             manifest_file = resolve_record_path(
                 str(evidence.get("manifest_path") or "")
             )
-            if (
-                not manifest_file.exists()
-                or file_digest(manifest_file)
-                != str(evidence.get(manifest_sha_key) or "")
+            if not manifest_file.exists() or file_digest(manifest_file) != str(
+                evidence.get(manifest_sha_key) or ""
             ):
                 raise RichDataError(
                     f"Tushare ST-recovery manifest context changed: {label}"
@@ -6110,8 +6189,7 @@ def load_tushare_stock_st_acceptance_record(
         or boundary.get("forward_return_fields_read") is not False
         or decision.get("source_entitlement_schema_and_literal_type_accepted")
         is not True
-        or decision.get("full_history_authorized_only_under_exact_contract")
-        is not True
+        or decision.get("full_history_authorized_only_under_exact_contract") is not True
         or decision.get("acceptance_call_may_be_repeated") is not False
         or decision.get("static_st_membership_may_be_ranked") is not False
         or decision.get("factor_or_return_stage_authorized") is not False
@@ -6135,7 +6213,9 @@ def load_tushare_stock_st_acceptance_record(
         raise RichDataError("Tushare stock_st accepted evidence fingerprint changed")
     manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
     files = [
-        item for item in manifest.get("files") or [] if item.get("dataset") == "stock-st"
+        item
+        for item in manifest.get("files") or []
+        if item.get("dataset") == "stock-st"
     ]
     if (
         manifest.get("dataset") != "tushare_events"
@@ -6189,8 +6269,7 @@ def load_tushare_st_recovery_no_return_spec(
         != TUSHARE_ST_RECOVERY_CONTRACT_SHA256
         or (source.get("source_acceptance_record") or {}).get("sha256")
         != TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256
-        or source.get("required_full_snapshot_dataset")
-        != "tushare_stock_st_membership"
+        or source.get("required_full_snapshot_dataset") != "tushare_stock_st_membership"
         or source.get("required_full_snapshot_status")
         != "full_source_continuity_passed_pending_no_return_capacity_and_uniqueness"
         or source.get("required_local_sessions") != 1699
@@ -6222,7 +6301,11 @@ def load_tushare_st_recovery_no_return_spec(
         or spec.get("selection_or_promotion_allowed") is not False
     ):
         raise RichDataError("Tushare ST-recovery no-return spec changed")
-    for label in ("mechanism_overlap_audit", "data_contract", "source_acceptance_record"):
+    for label in (
+        "mechanism_overlap_audit",
+        "data_contract",
+        "source_acceptance_record",
+    ):
         link = source.get(label) or {}
         linked_path = resolve_record_path(str(link.get("path") or ""))
         if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
@@ -6238,9 +6321,7 @@ def load_tushare_st_recovery_research_record(
     path = path.expanduser().resolve()
     if file_digest(path) != TUSHARE_ST_RECOVERY_RESEARCH_RECORD_SHA256:
         raise RichDataError("Tushare ST-recovery terminal-record fingerprint mismatch")
-    record = load_json_record(
-        path, kind="a_share_tushare_st_recovery_research_record"
-    )
+    record = load_json_record(path, kind="a_share_tushare_st_recovery_research_record")
     mechanism = record.get("mechanism") or {}
     evidence = record.get("frozen_evidence") or {}
     attempt = record.get("full_source_attempt") or {}
@@ -6268,8 +6349,7 @@ def load_tushare_st_recovery_research_record(
         or overlap.get("sha256")
         != "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
         or contract.get("sha256") != TUSHARE_ST_RECOVERY_CONTRACT_SHA256
-        or acceptance.get("sha256")
-        != TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256
+        or acceptance.get("sha256") != TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256
         or no_return.get("sha256") != TUSHARE_ST_RECOVERY_NO_RETURN_SPEC_SHA256
         or failure.get("sha256")
         != "58e12ab4b03dafd8f99725c03a8b8988d5df797f98163164cb3e221075640a75"
@@ -6322,7 +6402,9 @@ def load_tushare_st_recovery_research_record(
         or decision.get("partial_58_session_history_use_allowed") is not False
         or decision.get("capacity_comparison_uniqueness_or_return_work_allowed")
         is not False
-        or decision.get("combine_aggregate_score_select_size_order_or_level2_justification_allowed")
+        or decision.get(
+            "combine_aggregate_score_select_size_order_or_level2_justification_allowed"
+        )
         is not False
     ):
         raise RichDataError("Tushare ST-recovery terminal record changed")
@@ -6443,8 +6525,7 @@ def load_tushare_gross_margin_acceptance_record(
         or quality.get("source_margin_levels_persisted") is not False
         or quality.get("revised_values_persisted_or_used") is not False
         or privacy.get("raw_provider_frames_persisted") is not False
-        or privacy.get("initial_or_revised_source_margin_levels_persisted")
-        is not False
+        or privacy.get("initial_or_revised_source_margin_levels_persisted") is not False
         or privacy.get("credentials_logged_or_stored") is not False
         or privacy.get("price_fields_loaded") != []
         or privacy.get("forward_return_fields_read") is not False
@@ -6526,9 +6607,7 @@ def load_tushare_gross_margin_source_chain(
         or len(frame) != int(published["rows"])
         or frame_digest(frame) != published["content_sha256"]
         or set(frame["instrument"].astype(str)) != expected_instruments
-        or frame.duplicated(
-            ["instrument", "announcement_date", "report_period"]
-        ).any()
+        or frame.duplicated(["instrument", "announcement_date", "report_period"]).any()
         or frame[["announcement_date", "report_period"]].isna().any().any()
         or factor.isna().any()
         or not np.isfinite(factor.to_numpy(dtype=float, copy=False)).all()
@@ -6576,9 +6655,7 @@ def load_tushare_gross_margin_research_record(
     path = path.expanduser().resolve()
     if file_digest(path) != TUSHARE_GROSS_MARGIN_RESEARCH_RECORD_SHA256:
         raise RichDataError("Tushare gross-margin research-record fingerprint mismatch")
-    record = load_json_record(
-        path, kind="a_share_tushare_gross_margin_research_record"
-    )
+    record = load_json_record(path, kind="a_share_tushare_gross_margin_research_record")
     attempt = record.get("full_source_attempt") or {}
     scope = record.get("scope_and_safety") or {}
     decision = record.get("terminal_decision") or {}
@@ -6614,7 +6691,7 @@ def load_tushare_gross_margin_research_record(
         linked_sha = str(link.get("sha256") or "")
         if linked_path.exists() and file_digest(linked_path) != linked_sha:
             raise RichDataError(
-                "Tushare gross-margin terminal evidence changed: " f"{linked_path}"
+                f"Tushare gross-margin terminal evidence changed: {linked_path}"
             )
     return record
 
@@ -7394,9 +7471,7 @@ def load_tushare_free_float_scarcity_contract(
 
     path = path.expanduser().resolve()
     if file_digest(path) != TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT_SHA256:
-        raise RichDataError(
-            "Tushare free-float-scarcity contract fingerprint mismatch"
-        )
+        raise RichDataError("Tushare free-float-scarcity contract fingerprint mismatch")
     contract = load_json_record(
         path, kind="a_share_tushare_free_float_scarcity_data_contract"
     )
@@ -7420,12 +7495,13 @@ def load_tushare_free_float_scarcity_contract(
         or source.get("authorized_account_points") != 3000
         or tuple(source.get("requested_fields") or ())
         != TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
-        or tuple(snapshot.get("columns") or ())
-        != TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
+        or tuple(snapshot.get("columns") or ()) != TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
         or factor.get("name") != "tushare_free_float_scarcity"
         or factor.get("formula") != "1 - free_share / total_share"
         or factor.get("direction") != "higher_is_better"
-        or point_in_time.get("availability", point_in_time.get("source_row_availability"))
+        or point_in_time.get(
+            "availability", point_in_time.get("source_row_availability")
+        )
         != "after the documented 15:00-17:00 update on trade_date"
         or point_in_time.get("maximum_event_age_calendar_days") != 0
         or acceptance.get("fixed_completed_session") != "2026-07-13"
@@ -7439,8 +7515,7 @@ def load_tushare_free_float_scarcity_contract(
         or partition.get("provider_documented_maximum_rows_per_call") != 6000
         or partition.get("minimum_seconds_between_calls") != 0.32
         or partition.get("maximum_attempts_per_session") != 3
-        or completeness.get("minimum_median_valid_holding_universe_coverage")
-        != 0.95
+        or completeness.get("minimum_median_valid_holding_universe_coverage") != 0.95
         or completeness.get("minimum_p05_valid_holding_universe_coverage") != 0.9
         or capacity.get("minimum_required_cohorts") != 200
         or capacity.get("minimum_observed_years") != 5
@@ -7449,8 +7524,7 @@ def load_tushare_free_float_scarcity_contract(
         or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
         != 0.8
         or uniqueness.get("minimum_pairwise_sessions") != 100
-        or uniqueness.get("required_named_near_neighbor")
-        != "free_float_cap_proxy"
+        or uniqueness.get("required_named_near_neighbor") != "free_float_cap_proxy"
         or contract.get("provider_rows_observed_before_freeze") is not False
         or contract.get("factor_values_observed_before_freeze") is not False
         or contract.get("price_fields_loaded") != []
@@ -7474,6 +7548,673 @@ def load_tushare_free_float_scarcity_contract(
                 f"Tushare free-float-scarcity local context changed: {label}"
             )
     return contract
+
+
+def load_tushare_free_float_scarcity_acceptance_record(
+    path: Path = DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the tracked cross-clone record for the consumed source probe."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_FREE_FLOAT_SCARCITY_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError(
+            "Tushare free-float-scarcity acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind="a_share_tushare_free_float_scarcity_source_acceptance_record",
+    )
+    contract = record.get("data_contract") or {}
+    audit = record.get("mechanism_and_capacity_audit") or {}
+    manifest = record.get("acceptance_manifest") or {}
+    frame = record.get("accepted_frame") or {}
+    request = record.get("source_request") or {}
+    observed = record.get("observed_result") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_pending_frozen_full_history_capacity_and_uniqueness"
+        or record.get("created_at") != "2026-07-16T21:33:33Z"
+        or contract.get("path")
+        != "docs/a_share_tushare_free_float_scarcity_data_contract.json"
+        or contract.get("sha256") != TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT_SHA256
+        or contract.get("preregistered_at") != "2026-07-16T21:21:37Z"
+        or contract.get("provider_rows_observed_before_freeze") is not False
+        or contract.get("factor_values_observed_before_freeze") is not False
+        or audit.get("path")
+        != "docs/a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json"
+        or audit.get("sha256")
+        != "62c6affbf4ea77a8d85a162f6a641a92bca17dc2d0a661744ed68b8e49b5c3d7"
+        or manifest.get("path")
+        != "data/metadata/rich_data/runs/20260716T213248Z_tushare_free_float_scarcity_acceptance_76551e6b.json"
+        or manifest.get("sha256")
+        != "459fe609a218c1ed336740796dce04e967d015b328391cfe3b67651cd2b1569a"
+        or manifest.get("run_id")
+        != "20260716T213248Z_tushare_free_float_scarcity_acceptance_76551e6b"
+        or manifest.get("requested_session") != "2026-07-13"
+        or manifest.get("acceptance_status")
+        != "accepted_entitlement_formula_and_current_coverage_pending_full_history_and_frozen_no_return_protocol"
+        or frame.get("path")
+        != "data/raw/a_share/rich/tushare/free_float_scarcity/acceptance/20260716T213248Z_tushare_free_float_scarcity_acceptance_76551e6b/free_float_scarcity.parquet"
+        or frame.get("content_sha256")
+        != "e9bb5984673c0fa903bb6cf6c15e24509ddd971db918f08f7ea75302bc62cc0c"
+        or frame.get("file_sha256")
+        != "7f12d2db8de0c0bb97478dab53926256a92ec91617b446a1c20ad723cd3327d7"
+        or int(frame.get("rows") or -1) != 4586
+        or tuple(frame.get("columns") or ()) != TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
+        or request.get("provider") != "tushare"
+        or request.get("api") != "daily_basic"
+        or tuple(request.get("fields") or ()) != TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+        or request.get("provider_calls") != 1
+        or request.get("all_market_source_rows") != 5524
+        or request.get("forbidden_fields_requested_or_stored") != []
+        or request.get("credentials_logged_or_stored") is not False
+        or observed.get("expected_point_in_time_holding_names") != 4592
+        or observed.get("valid_free_float_holding_names") != 4586
+        or observed.get("valid_free_float_holding_coverage") != 0.9986933797909407
+        or observed.get("distinct_factor_values") != 4568
+        or observed.get("formula_max_absolute_error") != 0.0
+        or observed.get("schema_formula_and_current_coverage_gate_passed") is not True
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare free-float-scarcity acceptance record is inconsistent"
+        )
+    return record
+
+
+def load_eastmoney_balance_sheet_resilience_contract(
+    path: Path = DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT,
+) -> dict[str, Any]:
+    """Load and verify the frozen pre-row balance-sheet resilience contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT_SHA256:
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_eastmoney_balance_sheet_resilience_data_contract"
+    )
+    source = contract.get("source") or {}
+    request = source.get("request_parameters") or {}
+    schema = source.get("source_schema_policy") or {}
+    positions = schema.get("raw_json_data_object_zero_based_positions") or {}
+    adapter = contract.get("pinned_public_adapter") or {}
+    factor = contract.get("factor") or {}
+    point_in_time = contract.get("point_in_time_policy") or {}
+    normalized = contract.get("normalized_snapshot") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    full = contract.get("full_snapshot_contract") or {}
+    capacity = contract.get("capacity_contract") or {}
+    uniqueness = contract.get("uniqueness_contract") or {}
+    mechanism = contract.get("mechanism_selection") or {}
+    expected_positions = {
+        "stock_code": 1,
+        "announcement_date": 12,
+        "total_assets": 14,
+        "total_liabilities": 22,
+        "vendor_asset_liability_ratio_percent_for_formula_audit_only": 32,
+    }
+    report_dates = list(full.get("report_dates") or [])
+    expected_report_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    dense = list(uniqueness.get("dense_comparison_factors") or [])
+    sparse = list(
+        uniqueness.get("sparse_event_factors_excluded_from_statistical_pass_fail") or []
+    )
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_new_balance_sheet_provider_rows_factor_values_capacity_uniqueness_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-16T22:33:14Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_balance_sheet_resilience_mechanism_overlap_reaudit_20260717.json"
+        or mechanism.get("sha256_at_contract_freeze")
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_MECHANISM_AUDIT_SHA256
+        or source.get("provider") != "Eastmoney public datacenter"
+        or source.get("endpoint")
+        != "https://datacenter-web.eastmoney.com/api/data/v1/get"
+        or source.get("report_name") != "RPT_DMSK_FN_BALANCE"
+        or request.get("sortColumns") != "NOTICE_DATE,SECURITY_CODE"
+        or request.get("sortTypes") != "-1,-1"
+        or request.get("pageSize") != 500
+        or request.get("columns") != "ALL"
+        or request.get("filter_template")
+        != '(SECURITY_TYPE_CODE in ("058001001","058001008"))(TRADE_MARKET_CODE!="069001017")(REPORT_DATE=\'YYYY-MM-DD\')'
+        or source.get("maximum_pages_per_partition") != 20
+        or source.get("maximum_attempts_per_page") != 4
+        or source.get("retry_backoff_seconds") != [0.5, 1.0, 2.0, 4.0]
+        or source.get("credentials_required") != []
+        or source.get("authentication_cookie_proxy_or_retail_session_allowed")
+        is not False
+        or positions != expected_positions
+        or schema.get("minimum_raw_columns") != 33
+        or schema.get("schema_position_change_allowed") is not False
+        or adapter.get("commit") != "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28"
+        or adapter.get("source_path") != "akshare/stock_feature/stock_report_em.py"
+        or adapter.get("source_file_sha256")
+        != "2012492017222a405d5cd396d3a29a384bc79dd8c1dc4d3e8737f1d2361bd783"
+        or adapter.get("function") != "stock_zcfz_em"
+        or adapter.get("function_lines") != "20-158"
+        or adapter.get("function_block_sha256")
+        != "2b56023d50c0c1f7c9c73e8cc27cc0d7d03b6573a90174f2698a63094b3ba903"
+        or factor.get("name") != "eastmoney_balance_sheet_resilience"
+        or factor.get("formula") != "1 - total_liabilities / total_assets"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("valid_range") != [0.0, 1.0]
+        or point_in_time.get("conservative_availability")
+        != "first local trading session strictly after announcement_date"
+        or point_in_time.get("same_announcement_session_trade_allowed") is not False
+        or point_in_time.get("maximum_age_calendar_days") != 550
+        or tuple(normalized.get("columns") or ())
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+        or tuple(normalized.get("event_key") or ()) != ("instrument", "report_date")
+        or normalized.get("provider_value") != "eastmoney"
+        or normalized.get("duplicate_event_keys_allowed") is not False
+        or acceptance.get("fixed_report_date") != "2025-12-31"
+        or acceptance.get("one_count_complete_partition_only") is not True
+        or acceptance.get("minimum_valid_holding_names") != 4000
+        or acceptance.get("minimum_valid_point_in_time_holding_coverage") != 0.9
+        or acceptance.get("minimum_distinct_factor_values") != 100
+        or acceptance.get("maximum_formula_absolute_error") != 1e-8
+        or report_dates != expected_report_dates
+        or full.get("required_report_date_count") != 28
+        or full.get("minimum_valid_active_holding_coverage_per_report_date") != 0.85
+        or full.get("minimum_median_valid_active_holding_coverage") != 0.95
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 50
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_factor_age_calendar_days") != 550
+        or uniqueness.get("dense_comparison_factor_count") != 46
+        or len(dense) != 46
+        or len(set(dense)) != 46
+        or len(sparse) != 8
+        or len(set(sparse)) != 8
+        or uniqueness.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience contract does not match the frozen protocol"
+        )
+
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience mechanism audit changed"
+        )
+    for label, link in (contract.get("local_context") or {}).items():
+        if not isinstance(link, dict) or "path" not in link or "sha256" not in link:
+            continue
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(
+                f"Eastmoney balance-sheet-resilience local context changed: {label}"
+            )
+    return contract
+
+
+def load_eastmoney_core_profit_consistency_contract(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT,
+) -> dict[str, Any]:
+    """Load and verify the frozen pre-row core-profit contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256:
+        raise RichDataError(
+            "Eastmoney core-profit-consistency contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_eastmoney_core_profit_consistency_data_contract"
+    )
+    mechanism = contract.get("mechanism_selection") or {}
+    adapter = contract.get("pinned_public_adapter") or {}
+    source = contract.get("source") or {}
+    request = source.get("request_parameters") or {}
+    schema = source.get("source_schema_policy") or {}
+    positions = schema.get("raw_json_data_object_zero_based_positions") or {}
+    factor = contract.get("factor") or {}
+    point_in_time = contract.get("point_in_time_policy") or {}
+    normalized = contract.get("normalized_snapshot") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    full = contract.get("full_snapshot_framework") or {}
+    capacity = contract.get("capacity_contract") or {}
+    uniqueness = contract.get("uniqueness_contract") or {}
+    expected_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    expected_positions = {
+        "stock_code": 1,
+        "announcement_date": 12,
+        "operating_profit": 24,
+        "total_profit": 25,
+    }
+    dense = list(uniqueness.get("dense_comparison_factors") or [])
+    sparse = list(
+        uniqueness.get("sparse_event_factors_excluded_from_statistical_pass_fail")
+        or []
+    )
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_new_income_statement_provider_rows_factor_values_capacity_uniqueness_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-16T23:37:00Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_core_profit_consistency_mechanism_overlap_reaudit_20260717.json"
+        or mechanism.get("sha256_at_contract_freeze")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_MECHANISM_AUDIT_SHA256
+        or adapter.get("commit") != "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28"
+        or adapter.get("source_path")
+        != "akshare/stock_feature/stock_report_em.py"
+        or adapter.get("source_file_sha256")
+        != "2012492017222a405d5cd396d3a29a384bc79dd8c1dc4d3e8737f1d2361bd783"
+        or adapter.get("function") != "stock_lrb_em"
+        or adapter.get("function_lines") != "302-435"
+        or adapter.get("function_block_sha256")
+        != "9702cd6ff8cbf49e32f9b7ca97170a4ecf954393c6972f06d5985610f44bb97c"
+        or source.get("provider") != "Eastmoney public datacenter"
+        or source.get("endpoint")
+        != "https://datacenter-web.eastmoney.com/api/data/v1/get"
+        or source.get("report_name") != "RPT_DMSK_FN_INCOME"
+        or request.get("sortColumns") != "NOTICE_DATE,SECURITY_CODE"
+        or request.get("sortTypes") != "-1,-1"
+        or request.get("pageSize") != 500
+        or request.get("columns") != "ALL"
+        or request.get("filter_template")
+        != '(SECURITY_TYPE_CODE in ("058001001","058001008"))(TRADE_MARKET_CODE!="069001017")(REPORT_DATE=\'YYYY-MM-DD\')'
+        or source.get("maximum_pages_per_partition") != 20
+        or source.get("maximum_attempts_per_page") != 4
+        or source.get("retry_backoff_seconds") != [0.5, 1.0, 2.0, 4.0]
+        or source.get("credentials_required") != []
+        or source.get("tushare_token_read") is not False
+        or source.get("authentication_cookie_proxy_or_retail_session_allowed")
+        is not False
+        or positions != expected_positions
+        or schema.get("minimum_raw_columns") != 26
+        or schema.get("schema_position_change_allowed") is not False
+        or factor.get("name") != "eastmoney_core_profit_consistency"
+        or factor.get("formula")
+        != "min(operating_profit, total_profit) / max(operating_profit, total_profit)"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("valid_range") != [0.0, 1.0]
+        or point_in_time.get("same_announcement_session_trade_allowed") is not False
+        or point_in_time.get("older_report_carry_after_new_partition_activation_allowed")
+        is not False
+        or point_in_time.get("late_older_correction_can_supersede_newer_report")
+        is not False
+        or point_in_time.get("maximum_age_calendar_days") != 550
+        or tuple(normalized.get("columns") or ())
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+        or tuple(normalized.get("event_key") or ())
+        != ("instrument", "report_date")
+        or normalized.get("provider_value") != "eastmoney"
+        or normalized.get("duplicate_event_keys_allowed") is not False
+        or acceptance.get("fixed_report_date") != "2025-12-31"
+        or acceptance.get("one_count_complete_partition_only") is not True
+        or acceptance.get("minimum_complete_identity_holding_names") != 4000
+        or acceptance.get("minimum_complete_identity_holding_coverage") != 0.9
+        or acceptance.get("minimum_valid_factor_holding_names") != 2500
+        or acceptance.get("minimum_valid_factor_holding_coverage") != 0.55
+        or acceptance.get("minimum_distinct_factor_values") != 100
+        or acceptance.get("maximum_equivalent_formula_absolute_error") != 1e-12
+        or full.get("report_dates") != expected_dates
+        or full.get("required_report_date_count") != 28
+        or full.get("new_network_partition_count_if_acceptance_passes") != 27
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 50
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_factor_age_calendar_days") != 550
+        or uniqueness.get("dense_comparison_factor_count") != 47
+        or len(dense) != 47
+        or len(set(dense)) != 47
+        or dense[-1:] != ["eastmoney_balance_sheet_resilience"]
+        or len(sparse) != 8
+        or len(set(sparse)) != 8
+        or uniqueness.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency contract does not match the frozen protocol"
+        )
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError("Eastmoney core-profit-consistency mechanism audit changed")
+    for label, link in (contract.get("local_context") or {}).items():
+        if not isinstance(link, dict) or "path" not in link or "sha256" not in link:
+            continue
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(
+                f"Eastmoney core-profit-consistency local context changed: {label}"
+            )
+    return contract
+
+
+def load_tushare_free_float_scarcity_source_chain(
+    path: Path = DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Verify the post-acceptance, pre-history structural-scarcity chain."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC_SHA256:
+        raise RichDataError(
+            "Tushare free-float-scarcity no-return preregistration fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind="a_share_tushare_free_float_scarcity_no_return_preregistration",
+    )
+    source = spec.get("source_protocol") or {}
+    snapshot = spec.get("full_source_snapshot_contract") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    policy = spec.get("no_return_gate_policy") or {}
+    contract_link = source.get("data_contract") or {}
+    record_link = source.get("source_acceptance_record") or {}
+    manifest_link = source.get("source_acceptance_manifest") or {}
+    frame_link = source.get("source_acceptance_frame") or {}
+    contract = load_tushare_free_float_scarcity_contract(
+        resolve_record_path(str(contract_link.get("path") or ""))
+    )
+    record = load_tushare_free_float_scarcity_acceptance_record(
+        resolve_record_path(str(record_link.get("path") or ""))
+    )
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_single_session_acceptance_before_full_history_capacity_uniqueness_or_factor_returns_observed"
+        or spec.get("preregistered_at") != "2026-07-16T21:37:09Z"
+        or contract_link.get("sha256") != TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT_SHA256
+        or contract_link.get("preregistered_at") != contract.get("preregistered_at")
+        or record_link.get("sha256")
+        != TUSHARE_FREE_FLOAT_SCARCITY_ACCEPTANCE_RECORD_SHA256
+        or source.get("provider") != "tushare"
+        or source.get("api") != "daily_basic"
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+        or source.get("factor") != "tushare_free_float_scarcity"
+        or source.get("formula") != "1 - free_share / total_share"
+        or source.get("direction") != "higher_is_better"
+        or snapshot.get("dataset") != "tushare_free_float_scarcity"
+        or snapshot.get("provider") != "tushare"
+        or snapshot.get("required_success_status")
+        != "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+        or snapshot.get("requested_start") != "2019-01-01"
+        or snapshot.get("requested_end") != "2025-12-31"
+        or snapshot.get("required_local_trading_sessions") != 1699
+        or snapshot.get("expected_provider_calls") != 1699
+        or snapshot.get("provider_documented_maximum_rows_per_call") != 6000
+        or snapshot.get("minimum_seconds_between_calls") != 0.32
+        or snapshot.get("maximum_attempts_per_session") != 3
+        or tuple(snapshot.get("retry_backoff_seconds") or ()) != (2, 5)
+        or snapshot.get("requests_are_sequential") is not True
+        or snapshot.get("one_full_snapshot_attempt_after_acceptance") is not True
+        or tuple(snapshot.get("required_partition_years") or ())
+        != tuple(range(2019, 2026))
+        or tuple(snapshot.get("required_columns") or ())
+        != TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
+        or tuple(snapshot.get("event_key") or ()) != ("instrument", "trade_date")
+        or snapshot.get("minimum_median_valid_holding_universe_coverage") != 0.95
+        or snapshot.get("minimum_p05_valid_holding_universe_coverage") != 0.9
+        or snapshot.get("minimum_sessions_with_fifty_valid_names") != 200
+        or snapshot.get("minimum_observed_source_years") != 5
+        or snapshot.get("all_years_share_one_hidden_temporary_root") is not True
+        or snapshot.get("partial_snapshot_accepted") is not False
+        or capacity.get("development_start") != "2019-01-01"
+        or capacity.get("development_end") != "2025-12-31"
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("non_overlapping_cohorts") is not True
+        or capacity.get("minimum_eligible_names_per_cross_section") != 50
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("screen_start") != "2025-01-01"
+        or uniqueness.get("screen_end") != "2025-12-31"
+        or uniqueness.get("minimum_pairwise_names_per_session") != 50
+        or uniqueness.get("minimum_pairwise_sessions_per_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or uniqueness.get("required_named_near_neighbor") != "free_float_cap_proxy"
+        or uniqueness.get("comparison_factor_count") != 54
+        or len(uniqueness.get("comparison_factors") or []) != 54
+        or "free_float_cap_proxy" not in set(uniqueness.get("comparison_factors") or [])
+        or policy.get("capacity_must_run_before_close_known_comparison_fields")
+        is not True
+        or policy.get("both_capacity_and_uniqueness_must_pass") is not True
+        or policy.get("one_completed_combined_audit_per_full_snapshot") is not True
+        or spec.get("price_fields_loaded") != []
+        or spec.get("open_close_or_forward_return_fields_read") is not False
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare free-float-scarcity no-return preregistration is inconsistent"
+        )
+
+    manifest_path_value = resolve_record_path(str(manifest_link.get("path") or ""))
+    frame_path = resolve_record_path(str(frame_link.get("path") or ""))
+    if (
+        not manifest_path_value.exists()
+        or file_digest(manifest_path_value) != manifest_link.get("sha256")
+        or not frame_path.exists()
+        or file_digest(frame_path) != frame_link.get("file_sha256")
+    ):
+        raise RichDataError(
+            "Tushare free-float-scarcity acceptance evidence fingerprint mismatch"
+        )
+    manifest = load_json_record(manifest_path_value, kind="a_share_rich_data_snapshot")
+    files = list(manifest.get("files") or [])
+    request = manifest.get("source_request") or {}
+    quality = manifest.get("source_quality") or {}
+    record_manifest = record.get("acceptance_manifest") or {}
+    record_frame = record.get("accepted_frame") or {}
+    if (
+        record_manifest.get("sha256") != manifest_link.get("sha256")
+        or record_frame.get("content_sha256") != frame_link.get("content_sha256")
+        or record_frame.get("file_sha256") != frame_link.get("file_sha256")
+        or manifest.get("dataset") != "tushare_free_float_scarcity_acceptance"
+        or manifest.get("provider") != "tushare"
+        or manifest.get("requested_start") != "2026-07-13"
+        or manifest.get("requested_end") != "2026-07-13"
+        or manifest.get("acceptance_status")
+        != "accepted_entitlement_formula_and_current_coverage_pending_full_history_and_frozen_no_return_protocol"
+        or request.get("api") != "daily_basic"
+        or tuple(request.get("fields") or ()) != TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+        or request.get("forbidden_fields_requested_or_stored") != []
+        or request.get("credentials_logged_or_stored") is not False
+        or quality.get("valid_free_float_holding_names") != 4586
+        or quality.get("valid_free_float_holding_coverage") != 0.9986933797909407
+        or quality.get("distinct_factor_values") != 4568
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or len(files) != 1
+        or files[0].get("path") != frame_link.get("path")
+        or files[0].get("sha256") != frame_link.get("content_sha256")
+        or int(files[0].get("rows") or -1) != int(frame_link.get("rows") or -2)
+    ):
+        raise RichDataError(
+            "Tushare free-float-scarcity acceptance evidence identity mismatch"
+        )
+    frame = load_snapshot_frame(files[0])
+    dates = pd.to_datetime(frame["trade_date"], errors="coerce").dt.normalize()
+    total_share = pd.to_numeric(frame["total_share"], errors="coerce")
+    free_share = pd.to_numeric(frame["free_share"], errors="coerce")
+    factor = pd.to_numeric(frame["tushare_free_float_scarcity"], errors="coerce")
+    if (
+        tuple(frame.columns) != TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
+        or len(frame) != int(frame_link["rows"])
+        or dates.isna().any()
+        or not dates.eq(pd.Timestamp("2026-07-13")).all()
+        or frame["instrument"].astype("string").isna().any()
+        or frame["instrument"].nunique() != len(frame)
+        or not np.isfinite(total_share).all()
+        or not np.isfinite(free_share).all()
+        or not total_share.gt(0.0).all()
+        or not free_share.gt(0.0).all()
+        or not free_share.le(total_share).all()
+        or not np.isfinite(factor).all()
+        or not np.allclose(
+            factor.to_numpy(dtype="float64"),
+            1.0
+            - free_share.to_numpy(dtype="float64")
+            / total_share.to_numpy(dtype="float64"),
+            rtol=0.0,
+            atol=1e-12,
+        )
+        or not frame["provider"].eq("tushare").all()
+    ):
+        raise RichDataError(
+            "Tushare free-float-scarcity acceptance formula audit failed"
+        )
+
+    context_paths: dict[str, Path] = {}
+    context = spec.get("point_in_time_context") or {}
+    for label, link, digest_key in (
+        ("holding_universe", context.get("holding_universe") or {}, "file_sha256"),
+        ("local_calendar", context.get("local_calendar") or {}, "file_sha256"),
+        ("quarterly_quality", context.get("quarterly_quality") or {}, "sha256"),
+        (
+            "accepted_price_basis",
+            context.get("accepted_price_basis_for_later_comparison_or_return_work")
+            or {},
+            "sha256",
+        ),
+        (
+            "accepted_price_frontier",
+            context.get("accepted_price_frontier") or {},
+            "sha256",
+        ),
+    ):
+        linked = resolve_record_path(str(link.get("path") or ""))
+        if not linked.exists() or file_digest(linked) != link.get(digest_key):
+            raise RichDataError(
+                f"Tushare free-float-scarcity {label} fingerprint mismatch"
+            )
+        context_paths[label] = linked
+    quality_link = context.get("quarterly_quality") or {}
+    quality_manifest = resolve_record_path(str(quality_link.get("manifest_path") or ""))
+    if not quality_manifest.exists() or file_digest(
+        quality_manifest
+    ) != quality_link.get("manifest_sha256"):
+        raise RichDataError(
+            "Tushare free-float-scarcity quarterly-quality manifest changed"
+        )
+    return {
+        "spec_path": path,
+        "spec": spec,
+        "contract": contract,
+        "record_path": resolve_record_path(str(record_link["path"])),
+        "record": record,
+        "manifest_path": manifest_path_value,
+        "manifest": manifest,
+        "frame_path": frame_path,
+        "context_paths": context_paths,
+    }
+
+
+def load_tushare_free_float_scarcity_full_source_record(
+    path: Path = DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_FULL_SOURCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the tracked cross-clone full-source completion record."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_FREE_FLOAT_SCARCITY_FULL_SOURCE_RECORD_SHA256:
+        raise RichDataError(
+            "Tushare free-float-scarcity full-source record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path, kind="a_share_tushare_free_float_scarcity_full_source_record"
+    )
+    chain = record.get("source_chain") or {}
+    manifest = record.get("full_manifest") or {}
+    request = record.get("source_request") or {}
+    quality = record.get("normalization_quality") or {}
+    coverage = record.get("coverage") or {}
+    partitions = list(record.get("partitions") or [])
+    years = tuple(int(item.get("year") or 0) for item in partitions)
+    rows = tuple(int(item.get("rows") or 0) for item in partitions)
+    expected_rows = (880012, 912940, 986192, 1040146, 1079358, 1094386, 1105230)
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_full_source_pending_no_return_capacity_and_uniqueness"
+        or record.get("created_at") != "2026-07-16T21:56:44Z"
+        or ((chain.get("data_contract") or {}).get("sha256"))
+        != TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT_SHA256
+        or ((chain.get("source_acceptance_record") or {}).get("sha256"))
+        != TUSHARE_FREE_FLOAT_SCARCITY_ACCEPTANCE_RECORD_SHA256
+        or ((chain.get("no_return_preregistration") or {}).get("sha256"))
+        != TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC_SHA256
+        or manifest.get("path")
+        != "data/metadata/rich_data/runs/20260716T214522Z_tushare_free_float_scarcity_c647ce28.json"
+        or manifest.get("sha256")
+        != "b5653c447c59588e169ed24dd1915adc5b1b2d37b8769dbd682bdc2505797965"
+        or manifest.get("run_id")
+        != "20260716T214522Z_tushare_free_float_scarcity_c647ce28"
+        or manifest.get("requested_start") != "2019-01-01"
+        or manifest.get("requested_end") != "2025-12-31"
+        or manifest.get("acceptance_status")
+        != "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+        or years != tuple(range(2019, 2026))
+        or rows != expected_rows
+        or len(partitions) != 7
+        or any(not item.get("content_sha256") for item in partitions)
+        or any(not item.get("file_sha256") for item in partitions)
+        or request.get("provider") != "tushare"
+        or request.get("api") != "daily_basic"
+        or tuple(request.get("fields") or ()) != TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+        or request.get("completed_provider_calls") != 1699
+        or request.get("forbidden_fields_requested_or_stored") != []
+        or request.get("credentials_logged_or_stored") is not False
+        or quality.get("all_market_source_rows") != 7931826
+        or quality.get("valid_holding_rows_written") != 7098264
+        or quality.get("duplicate_stock_date_rows") != 0
+        or quality.get("invalid_retained_share_or_factor_rows") != 0
+        or quality.get("formula_max_absolute_error") != 0.0
+        or coverage.get("calendar_sessions") != 1699
+        or coverage.get("observed_source_years") != 7
+        or coverage.get("median_valid_holding_universe_coverage") != 0.9968066814050602
+        or coverage.get("p05_valid_holding_universe_coverage") != 0.9917082362759253
+        or coverage.get("sessions_with_at_least_fifty_valid_names") != 1699
+        or coverage.get("source_coverage_gate_passed") is not True
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare free-float-scarcity full-source record is inconsistent"
+        )
+    return record
 
 
 def load_tushare_sw_industry_breadth_contract(
@@ -8194,7 +8935,9 @@ def write_minute_snapshot(
                 report["status"].startswith("automatic_checks_passed")
                 for report in acceptance_by_code.values()
             )
-            else "not_run" if acceptance_by_code is None else "automatic_checks_failed"
+            else "not_run"
+            if acceptance_by_code is None
+            else "automatic_checks_failed"
         ),
     }
     if data_contract is not None:
@@ -11474,9 +12217,7 @@ def sync_tushare_gross_margin_acceptance() -> Path:
     try:
         frames: list[pd.DataFrame] = []
         row_ceiling = int(
-            contract["source_selection"][
-                "provider_documented_maximum_rows_per_call"
-            ]
+            contract["source_selection"]["provider_documented_maximum_rows_per_call"]
         )
         for ts_code in ts_codes:
             current_ts_code = ts_code
@@ -11516,7 +12257,9 @@ def sync_tushare_gross_margin_acceptance() -> Path:
                 )
             frames.append(normalized)
         if calls_issued != int(acceptance["provider_calls"]):
-            raise RichDataError("Tushare gross-margin acceptance omitted a frozen request")
+            raise RichDataError(
+                "Tushare gross-margin acceptance omitted a frozen request"
+            )
         combined = pd.concat(frames, ignore_index=True)
         event_key = ["instrument", "announcement_date", "report_period"]
         if combined.duplicated(event_key).any():
@@ -11690,8 +12433,7 @@ def sync_tushare_management_continuity_acceptance() -> Path:
     if prior_records:
         raise RichDataError(
             "Tushare management-continuity acceptance is one-shot and was already "
-            "consumed: "
-            + ", ".join(str(path) for path in prior_records)
+            "consumed: " + ", ".join(str(path) for path in prior_records)
         )
     require_provider("tushare")
     acceptance = contract["acceptance_protocol"]
@@ -11703,9 +12445,7 @@ def sync_tushare_management_continuity_acceptance() -> Path:
         str(acceptance["announcement_end"]), "%Y%m%d"
     ).date()
     run_id = new_run_id("tushare_management_continuity_acceptance")
-    run_root = (
-        RAW_ROOT / "tushare" / "management_continuity" / "acceptance" / run_id
-    )
+    run_root = RAW_ROOT / "tushare" / "management_continuity" / "acceptance" / run_id
     temporary_root = run_root.parent / f".{run_id}.tmp"
     if run_root.exists() or temporary_root.exists():
         raise RichDataError(
@@ -11798,12 +12538,8 @@ def sync_tushare_management_continuity_acceptance() -> Path:
             "run_id": run_id,
             "retrieved_at": retrieved_at,
             "data_contract": {
-                "path": manifest_path(
-                    DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT
-                ),
-                "sha256": file_digest(
-                    DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT
-                ),
+                "path": manifest_path(DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT),
                 "preregistered_at": contract["preregistered_at"],
             },
             "source_request": {
@@ -11891,12 +12627,8 @@ def sync_tushare_management_continuity_acceptance() -> Path:
             "retrieved_at": retrieved_at,
             "failed_ts_code": current_ts_code,
             "data_contract": {
-                "path": manifest_path(
-                    DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT
-                ),
-                "sha256": file_digest(
-                    DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT
-                ),
+                "path": manifest_path(DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT),
                 "preregistered_at": contract["preregistered_at"],
             },
             "source_request": {
@@ -11989,10 +12721,8 @@ def sync_tushare_stock_st_membership(
         validate_range(start, end, allow_large=allow_large, unit_count=1)
         resolved_calendar = calendar_path.expanduser().resolve()
         expected_calendar = contract["local_context"]["calendar"]
-        if (
-            not resolved_calendar.exists()
-            or file_digest(resolved_calendar)
-            != str(expected_calendar["file_sha256"])
+        if not resolved_calendar.exists() or file_digest(resolved_calendar) != str(
+            expected_calendar["file_sha256"]
         ):
             raise RichDataError("Tushare stock_st local calendar fingerprint mismatch")
         calendar = local_calendar_dates(start, end, resolved_calendar)
@@ -12016,9 +12746,7 @@ def sync_tushare_stock_st_membership(
         retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
         minimum_interval = float(snapshot["minimum_seconds_between_calls"])
         maximum_attempts = int(snapshot["maximum_attempts_per_session"])
-        retry_backoffs = [
-            float(value) for value in snapshot["retry_backoff_seconds"]
-        ]
+        retry_backoffs = [float(value) for value in snapshot["retry_backoff_seconds"]]
         row_ceiling = int(
             contract["source_selection"]["documented_maximum_rows_per_call"]
         )
@@ -12147,7 +12875,9 @@ def sync_tushare_stock_st_membership(
                     "mechanism_overlap_audit"
                 ],
                 "source_acceptance": {
-                    "path": manifest_path(DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD),
+                    "path": manifest_path(
+                        DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD
+                    ),
                     "sha256": file_digest(
                         DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD
                     ),
@@ -12239,7 +12969,9 @@ def sync_tushare_stock_st_membership(
                     "preregistered_at": contract["preregistered_at"],
                 },
                 "source_acceptance": {
-                    "path": manifest_path(DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD),
+                    "path": manifest_path(
+                        DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD
+                    ),
                     "sha256": file_digest(
                         DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD
                     ),
@@ -12373,14 +13105,14 @@ def sync_tushare_gross_margin(
                 "gross-margin source-universe or slice count changed: "
                 f"{len(intervals)} * {len(report_slices)} != {total_planned_calls}"
             )
-        source_start = dt.date.fromisoformat(str(snapshot["source_report_period_start"]))
+        source_start = dt.date.fromisoformat(
+            str(snapshot["source_report_period_start"])
+        )
         source_end = dt.date.fromisoformat(str(snapshot["source_report_period_end"]))
         development_start = dt.date.fromisoformat(
             str(snapshot["development_signal_start"])
         )
-        development_end = dt.date.fromisoformat(
-            str(snapshot["development_signal_end"])
-        )
+        development_end = dt.date.fromisoformat(str(snapshot["development_signal_end"]))
         if (
             report_slices[0][0] != source_start
             or report_slices[-1][1] != source_end
@@ -12397,9 +13129,7 @@ def sync_tushare_gross_margin(
         require_provider("tushare")
 
         row_ceiling = int(
-            contract["source_selection"][
-                "provider_documented_maximum_rows_per_call"
-            ]
+            contract["source_selection"]["provider_documented_maximum_rows_per_call"]
         )
         minimum_interval = float(snapshot["minimum_seconds_between_calls"])
         maximum_attempts = int(snapshot["maximum_attempts_per_stock_slice"])
@@ -12420,8 +13150,7 @@ def sync_tushare_gross_margin(
         temporary_root.mkdir(parents=True)
 
         yearly_frames: dict[int, list[pd.DataFrame]] = {
-            year: []
-            for year in range(development_start.year, development_end.year + 1)
+            year: [] for year in range(development_start.year, development_end.year + 1)
         }
         fixed_report_periods = tuple(
             dt.date(year, month, day)
@@ -12534,7 +13263,9 @@ def sync_tushare_gross_margin(
                             observed_instruments_by_period[period_key].add(
                                 current_instrument
                             )
-                            observed_rows_by_period[period_key] += int(len(period_frame))
+                            observed_rows_by_period[period_key] += int(
+                                len(period_frame)
+                            )
                     years = pd.to_datetime(
                         normalized["announcement_date"]
                     ).dt.year.astype(int)
@@ -12554,9 +13285,8 @@ def sync_tushare_gross_margin(
                             ]
                         )
                 completed_instruments += 1
-                if (
-                    completed_instruments % 25 == 0
-                    or completed_instruments == len(intervals)
+                if completed_instruments % 25 == 0 or completed_instruments == len(
+                    intervals
                 ):
                     elapsed = max(time.monotonic() - started, 0.001)
                     print(
@@ -12617,16 +13347,21 @@ def sync_tushare_gross_margin(
                         f"gross-margin {year} partition has duplicate event keys"
                     )
                 factor = pd.to_numeric(partition[factor_name], errors="coerce")
-                if factor.isna().any() or not np.isfinite(
-                    factor.to_numpy(dtype=float, copy=False)
-                ).all():
+                if (
+                    factor.isna().any()
+                    or not np.isfinite(factor.to_numpy(dtype=float, copy=False)).all()
+                ):
                     raise RichDataError(
                         f"gross-margin {year} partition has a non-finite factor"
                     )
                 year_min = float(factor.min())
                 year_max = float(factor.max())
-                factor_min = year_min if factor_min is None else min(factor_min, year_min)
-                factor_max = year_max if factor_max is None else max(factor_max, year_max)
+                factor_min = (
+                    year_min if factor_min is None else min(factor_min, year_min)
+                )
+                factor_max = (
+                    year_max if factor_max is None else max(factor_max, year_max)
+                )
                 destination = temporary_root / f"{year}.parquet"
                 atomic_write_frame(partition, destination)
                 total_rows += int(len(partition))
@@ -12721,9 +13456,7 @@ def sync_tushare_gross_margin(
                     "manifest_path": manifest_path(source_chain["manifest_path"]),
                     "manifest_sha256": file_digest(source_chain["manifest_path"]),
                     "factor_frame_path": manifest_path(source_chain["frame_path"]),
-                    "factor_frame_content_sha256": frame_digest(
-                        source_chain["frame"]
-                    ),
+                    "factor_frame_content_sha256": frame_digest(source_chain["frame"]),
                 },
                 "point_in_time_source_universe": {
                     "path": manifest_path(universe_path),
@@ -13612,8 +14345,7 @@ def sync_tushare_cash_conversion_acceptance() -> Path:
             "source_request": {
                 "apis": list(endpoints),
                 "request_mode": (
-                    "one stock and one frozen announcement-date range per "
-                    "endpoint call"
+                    "one stock and one frozen announcement-date range per endpoint call"
                 ),
                 "symbols": list(symbols),
                 "provider_calls_issued": provider_calls_issued,
@@ -13698,8 +14430,7 @@ def sync_tushare_cash_conversion_acceptance() -> Path:
             "source_request": {
                 "apis": list(endpoints),
                 "request_mode": (
-                    "one stock and one frozen announcement-date range per "
-                    "endpoint call"
+                    "one stock and one frozen announcement-date range per endpoint call"
                 ),
                 "symbols": list(symbols),
                 "provider_calls_issued": provider_calls_issued,
@@ -13733,6 +14464,2405 @@ def sync_tushare_cash_conversion_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def fetch_eastmoney_balance_sheet_partition(
+    report_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+    session: Any | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Fetch one count-complete frozen Eastmoney balance-sheet partition."""
+
+    frozen = contract or load_eastmoney_balance_sheet_resilience_contract()
+    source = frozen["source"]
+    request = source["request_parameters"]
+    endpoint = str(source["endpoint"])
+    page_size = int(request["pageSize"])
+    maximum_pages = int(source["maximum_pages_per_partition"])
+    maximum_attempts = int(source["maximum_attempts_per_page"])
+    backoffs = [float(value) for value in source["retry_backoff_seconds"]]
+    if session is None:
+        try:
+            import requests
+        except ImportError as exc:  # pragma: no cover - workspace dependency.
+            raise RichDataError("requests is required for Eastmoney intake") from exc
+        requester = requests
+    else:
+        requester = session
+
+    base_params = {
+        "sortColumns": str(request["sortColumns"]),
+        "sortTypes": str(request["sortTypes"]),
+        "pageSize": str(page_size),
+        "reportName": str(source["report_name"]),
+        "columns": str(request["columns"]),
+        "filter": str(request["filter_template"]).replace(
+            "YYYY-MM-DD", report_date.isoformat()
+        ),
+    }
+
+    def fetch_page(page_number: int) -> dict[str, Any]:
+        params = {**base_params, "pageNumber": str(page_number)}
+        last_error: BaseException | None = None
+        for attempt in range(maximum_attempts):
+            try:
+                response = requester.get(endpoint, params=params, timeout=30)
+                if hasattr(response, "raise_for_status"):
+                    response.raise_for_status()
+                payload = response.json()
+                result = payload.get("result") if isinstance(payload, dict) else None
+                if not isinstance(result, dict):
+                    raise RichDataError(
+                        f"Eastmoney page {page_number} has no result object"
+                    )
+                if not isinstance(result.get("data"), list):
+                    raise RichDataError(
+                        f"Eastmoney page {page_number} has no data list"
+                    )
+                return result
+            except Exception as exc:  # requests and schema failures share one policy.
+                last_error = exc
+                if attempt + 1 >= maximum_attempts:
+                    break
+                time.sleep(backoffs[attempt])
+        assert last_error is not None
+        raise RichDataError(
+            f"Eastmoney balance-sheet page {page_number} failed after "
+            f"{maximum_attempts} attempts: {safe_exception_text(last_error)}"
+        ) from last_error
+
+    first = fetch_page(1)
+    try:
+        pages = int(first["pages"])
+        advertised_count = int(first["count"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise RichDataError(
+            "Eastmoney balance-sheet page 1 has invalid pages or count"
+        ) from exc
+    if pages <= 0 or pages > maximum_pages or advertised_count <= 0:
+        raise RichDataError(
+            "Eastmoney balance-sheet advertised pages/count violate the frozen bounds: "
+            f"pages={pages}, count={advertised_count}"
+        )
+
+    rows: list[dict[str, Any]] = []
+    requested_pages: list[int] = []
+    for page_number in range(1, pages + 1):
+        result = first if page_number == 1 else fetch_page(page_number)
+        try:
+            result_pages = int(result["pages"])
+            result_count = int(result["count"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise RichDataError(
+                f"Eastmoney balance-sheet page {page_number} metadata is invalid"
+            ) from exc
+        if result_pages != pages or result_count != advertised_count:
+            raise RichDataError(
+                "Eastmoney balance-sheet pagination metadata changed within the partition"
+            )
+        page_rows = result["data"]
+        if any(not isinstance(row, dict) for row in page_rows):
+            raise RichDataError(
+                f"Eastmoney balance-sheet page {page_number} contains a non-object row"
+            )
+        rows.extend(page_rows)
+        requested_pages.append(page_number)
+    if requested_pages != list(range(1, pages + 1)) or len(rows) != advertised_count:
+        raise RichDataError(
+            "Eastmoney balance-sheet count-complete pagination failed: "
+            f"received={len(rows)}, advertised={advertised_count}"
+        )
+
+    ordered_keys: list[str] = []
+    seen_keys: set[str] = set()
+    for row in rows:
+        for key in row:
+            if key not in seen_keys:
+                seen_keys.add(key)
+                ordered_keys.append(key)
+    schema_sha256 = hashlib.sha256(
+        json.dumps(ordered_keys, ensure_ascii=False, separators=(",", ":")).encode(
+            "utf-8"
+        )
+    ).hexdigest()
+    return rows, {
+        "report_date": report_date.isoformat(),
+        "advertised_pages": pages,
+        "requested_pages": requested_pages,
+        "advertised_rows": advertised_count,
+        "received_rows": len(rows),
+        "page_size": page_size,
+        "ordered_source_column_count": len(ordered_keys),
+        "ordered_source_columns_sha256": schema_sha256,
+        "provider_calls": pages,
+    }
+
+
+def fetch_eastmoney_core_profit_consistency_partition(
+    report_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+    session: Any | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Fetch one count-complete frozen Eastmoney income-statement partition."""
+
+    frozen = contract or load_eastmoney_core_profit_consistency_contract()
+    return fetch_eastmoney_balance_sheet_partition(
+        report_date,
+        contract=frozen,
+        session=session,
+    )
+
+
+def _eastmoney_core_profit_positional_frame(
+    rows: list[dict[str, Any]],
+    contract: dict[str, Any],
+) -> tuple[pd.DataFrame, list[str]]:
+    """Extract only the four predeclared income-statement positions."""
+
+    if not rows or any(not isinstance(row, dict) for row in rows):
+        raise RichDataError(
+            "Eastmoney core-profit partition is empty or contains a non-object row"
+        )
+    ordered_keys: list[str] = []
+    seen_keys: set[str] = set()
+    for row in rows:
+        for key in row:
+            if key not in seen_keys:
+                seen_keys.add(key)
+                ordered_keys.append(key)
+    schema = contract["source"]["source_schema_policy"]
+    positions = schema["raw_json_data_object_zero_based_positions"]
+    minimum_columns = int(schema["minimum_raw_columns"])
+    if len(ordered_keys) < minimum_columns:
+        raise RichDataError(
+            "Eastmoney core-profit positional schema is too short: "
+            f"{len(ordered_keys)} < {minimum_columns}"
+        )
+    if max(int(value) for value in positions.values()) >= len(ordered_keys):
+        raise RichDataError("Eastmoney core-profit positional schema is incomplete")
+    extracted = [
+        {
+            name: row.get(ordered_keys[int(positions[name])])
+            for name in EASTMONEY_CORE_PROFIT_RAW_POSITION_NAMES
+        }
+        for row in rows
+    ]
+    return pd.DataFrame(extracted), ordered_keys
+
+
+def canonicalize_eastmoney_core_profit_consistency(
+    rows: list[dict[str, Any]],
+    report_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Derive the sole frozen core-profit factor from four positional values."""
+
+    frozen = contract or load_eastmoney_core_profit_consistency_contract()
+    raw, ordered_keys = _eastmoney_core_profit_positional_frame(rows, frozen)
+    codes = raw["stock_code"].astype("string").str.strip()
+    complete_code = codes.str.fullmatch(r"\d{6}", na=False)
+    supported_code = codes.str.fullmatch(
+        r"(?:60[0135]\d{3}|00[0-3]\d{3}|30[01]\d{3})", na=False
+    )
+    instrument = pd.Series(pd.NA, index=raw.index, dtype="string")
+    instrument.loc[supported_code] = codes.loc[supported_code].map(qlib_symbol)
+    duplicate_keys = int(instrument.loc[supported_code].duplicated(keep=False).sum())
+    if duplicate_keys:
+        raise RichDataError(
+            "Eastmoney core-profit partition contains duplicate instrument/report-period keys"
+        )
+    announcement = pd.to_datetime(
+        raw["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    operating_profit = pd.to_numeric(raw["operating_profit"], errors="coerce")
+    total_profit = pd.to_numeric(raw["total_profit"], errors="coerce")
+    finite_operating = np.isfinite(operating_profit)
+    finite_total = np.isfinite(total_profit)
+    positive_operating = operating_profit.gt(0.0)
+    positive_total = total_profit.gt(0.0)
+    denominator = np.maximum(operating_profit, total_profit)
+    primary = np.minimum(operating_profit, total_profit) / denominator
+    equivalent = 1.0 - (total_profit - operating_profit).abs() / denominator
+    formula_error = (primary - equivalent).abs()
+    maximum_error = float(
+        frozen["acceptance_protocol"][
+            "maximum_equivalent_formula_absolute_error"
+        ]
+    )
+    formula_consistent = formula_error.le(maximum_error)
+    complete_identity = supported_code & announcement.notna()
+    valid = (
+        complete_identity
+        & finite_operating
+        & finite_total
+        & positive_operating
+        & positive_total
+        & np.isfinite(primary)
+        & formula_consistent
+    )
+    result = pd.DataFrame(
+        {
+            "instrument": instrument.loc[valid].astype("string"),
+            "report_date": pd.Timestamp(report_date),
+            "announcement_date": announcement.loc[valid],
+            "operating_profit": operating_profit.loc[valid].astype("float64"),
+            "total_profit": total_profit.loc[valid].astype("float64"),
+            "eastmoney_core_profit_consistency": primary.loc[valid].astype(
+                "float64"
+            ),
+            "provider": "eastmoney",
+        }
+    )
+    result = (
+        result.loc[:, list(EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS)]
+        .sort_values(["report_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if (
+        result.empty
+        or result.duplicated(["instrument", "report_date"]).any()
+        or not result["eastmoney_core_profit_consistency"].between(0.0, 1.0).all()
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit normalized frame failed frozen integrity checks"
+        )
+    accepted_error = formula_error.loc[valid]
+    complete_identity_instruments = sorted(
+        instrument.loc[complete_identity].dropna().astype(str).unique().tolist()
+    )
+    return result, {
+        "input_rows": int(len(raw)),
+        "ordered_source_column_count": int(len(ordered_keys)),
+        "missing_or_malformed_stock_code_rows_excluded": int((~complete_code).sum()),
+        "unsupported_board_rows_excluded": int((complete_code & ~supported_code).sum()),
+        "missing_announcement_date_rows_excluded": int(announcement.isna().sum()),
+        "complete_identity_main_chinext_names": int(
+            len(complete_identity_instruments)
+        ),
+        "complete_identity_instruments_for_acceptance_only": (
+            complete_identity_instruments
+        ),
+        "nonfinite_operating_or_total_profit_rows_excluded": int(
+            (~finite_operating | ~finite_total).sum()
+        ),
+        "nonpositive_operating_profit_rows_excluded": int(
+            (finite_operating & ~positive_operating).sum()
+        ),
+        "nonpositive_total_profit_rows_excluded": int(
+            (finite_total & ~positive_total).sum()
+        ),
+        "equivalent_formula_inconsistent_rows_excluded": int(
+            (
+                complete_identity
+                & finite_operating
+                & finite_total
+                & positive_operating
+                & positive_total
+                & ~formula_consistent
+            ).sum()
+        ),
+        "accepted_formula_max_absolute_error": float(accepted_error.max()),
+        "rows_written": int(len(result)),
+    }
+
+
+def canonicalize_eastmoney_balance_sheet_resilience(
+    rows: list[dict[str, Any]],
+    report_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Derive the sole frozen balance-sheet factor from five positional values."""
+
+    frozen = contract or load_eastmoney_balance_sheet_resilience_contract()
+    schema = frozen["source"]["source_schema_policy"]
+    positions = schema["raw_json_data_object_zero_based_positions"]
+    minimum_columns = int(schema["minimum_raw_columns"])
+    maximum_formula_error = float(
+        frozen["acceptance_protocol"]["maximum_formula_absolute_error"]
+    )
+    if not rows:
+        raise RichDataError("Eastmoney balance-sheet partition returned no rows")
+    if any(not isinstance(row, dict) for row in rows):
+        raise RichDataError(
+            "Eastmoney balance-sheet partition contains a non-object row"
+        )
+
+    ordered_keys: list[str] = []
+    seen_keys: set[str] = set()
+    for row in rows:
+        for key in row:
+            if key not in seen_keys:
+                seen_keys.add(key)
+                ordered_keys.append(key)
+    if len(ordered_keys) < minimum_columns:
+        raise RichDataError(
+            "Eastmoney balance-sheet positional schema is too short: "
+            f"{len(ordered_keys)} < {minimum_columns}"
+        )
+    maximum_position = max(int(value) for value in positions.values())
+    if maximum_position >= len(ordered_keys):
+        raise RichDataError("Eastmoney balance-sheet positional schema is incomplete")
+
+    extracted: list[dict[str, Any]] = []
+    for row in rows:
+        extracted.append(
+            {
+                name: row.get(ordered_keys[int(positions[name])])
+                for name in EASTMONEY_BALANCE_SHEET_RAW_POSITION_NAMES
+            }
+        )
+    raw = pd.DataFrame(extracted)
+    codes = raw["stock_code"].astype("string").str.strip()
+    complete_code = codes.str.fullmatch(r"\d{6}", na=False)
+    supported_code = codes.str.fullmatch(
+        r"(?:60[0135]\d{3}|00[0-3]\d{3}|30[01]\d{3})", na=False
+    )
+    instrument = pd.Series(pd.NA, index=raw.index, dtype="string")
+    instrument.loc[supported_code] = codes.loc[supported_code].map(qlib_symbol)
+    duplicate_keys = int(instrument.loc[supported_code].duplicated(keep=False).sum())
+    if duplicate_keys:
+        raise RichDataError(
+            "Eastmoney balance-sheet partition contains duplicate instrument/report-period keys"
+        )
+
+    announcement = pd.to_datetime(
+        raw["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    assets = pd.to_numeric(raw["total_assets"], errors="coerce")
+    liabilities = pd.to_numeric(raw["total_liabilities"], errors="coerce")
+    vendor_ratio = pd.to_numeric(
+        raw["vendor_asset_liability_ratio_percent_for_formula_audit_only"],
+        errors="coerce",
+    )
+    finite_assets = np.isfinite(assets)
+    finite_liabilities = np.isfinite(liabilities)
+    finite_ratio = np.isfinite(vendor_ratio)
+    positive_assets = assets.gt(0.0)
+    nonnegative_liabilities = liabilities.ge(0.0)
+    liabilities_within_assets = liabilities.le(assets)
+    derived = 1.0 - liabilities / assets
+    formula_error = (1.0 - vendor_ratio / 100.0 - derived).abs()
+    formula_consistent = formula_error.le(maximum_formula_error)
+    valid = (
+        supported_code
+        & announcement.notna()
+        & finite_assets
+        & finite_liabilities
+        & positive_assets
+        & nonnegative_liabilities
+        & liabilities_within_assets
+        & finite_ratio
+        & formula_consistent
+    )
+
+    result = pd.DataFrame(
+        {
+            "instrument": instrument.loc[valid].astype("string"),
+            "report_date": pd.Timestamp(report_date),
+            "announcement_date": announcement.loc[valid],
+            "total_assets": assets.loc[valid].astype("float64"),
+            "total_liabilities": liabilities.loc[valid].astype("float64"),
+            "eastmoney_balance_sheet_resilience": derived.loc[valid].astype("float64"),
+            "provider": "eastmoney",
+        }
+    )
+    result = (
+        result.loc[:, list(EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS)]
+        .sort_values(["report_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if (
+        result.empty
+        or result.duplicated(["instrument", "report_date"]).any()
+        or not result["eastmoney_balance_sheet_resilience"].between(0.0, 1.0).all()
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet normalized frame failed the frozen integrity checks"
+        )
+    accepted_error = formula_error.loc[valid]
+    accounting_base = (
+        supported_code
+        & announcement.notna()
+        & finite_assets
+        & finite_liabilities
+        & positive_assets
+        & nonnegative_liabilities
+        & liabilities_within_assets
+    )
+    return result, {
+        "input_rows": int(len(raw)),
+        "ordered_source_column_count": int(len(ordered_keys)),
+        "missing_or_malformed_stock_code_rows_excluded": int((~complete_code).sum()),
+        "unsupported_board_rows_excluded": int((complete_code & ~supported_code).sum()),
+        "missing_announcement_date_rows_excluded": int(announcement.isna().sum()),
+        "nonfinite_asset_or_liability_rows_excluded": int(
+            (~finite_assets | ~finite_liabilities).sum()
+        ),
+        "nonpositive_total_asset_rows_excluded": int(
+            (finite_assets & ~positive_assets).sum()
+        ),
+        "negative_total_liability_rows_excluded": int(
+            (finite_liabilities & ~nonnegative_liabilities).sum()
+        ),
+        "liability_above_asset_rows_excluded": int(
+            (finite_assets & finite_liabilities & ~liabilities_within_assets).sum()
+        ),
+        "missing_or_nonfinite_vendor_ratio_rows_excluded": int(
+            (accounting_base & ~finite_ratio).sum()
+        ),
+        "formula_inconsistent_rows_excluded": int(
+            (accounting_base & finite_ratio & ~formula_consistent).sum()
+        ),
+        "accepted_formula_max_absolute_error": float(accepted_error.max()),
+        "rows_written": int(len(result)),
+    }
+
+
+def load_eastmoney_balance_sheet_resilience_acceptance_record(
+    path: Path = DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the cross-clone terminal record for the consumed public probe."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind="a_share_eastmoney_balance_sheet_resilience_source_acceptance_record",
+    )
+    contract = record.get("data_contract") or {}
+    mechanism = record.get("mechanism_audit") or {}
+    manifest_link = record.get("acceptance_manifest") or {}
+    frame_link = record.get("accepted_frame") or {}
+    request = record.get("source_request") or {}
+    observed = record.get("observed_result") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_pending_frozen_full_history_and_no_return_gates"
+        or record.get("created_at") != "2026-07-16T22:47:58Z"
+        or contract.get("path")
+        != "docs/a_share_eastmoney_balance_sheet_resilience_data_contract.json"
+        or contract.get("sha256") != EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT_SHA256
+        or contract.get("preregistered_at") != "2026-07-16T22:33:14Z"
+        or contract.get("provider_rows_observed_before_freeze") is not False
+        or contract.get("factor_values_observed_before_freeze") is not False
+        or mechanism.get("path")
+        != "docs/a_share_three_day_balance_sheet_resilience_mechanism_overlap_reaudit_20260717.json"
+        or mechanism.get("sha256")
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_MECHANISM_AUDIT_SHA256
+        or mechanism.get("source_locator_corrected_before_provider_rows") is not True
+        or mechanism.get(
+            "formula_direction_timing_threshold_or_gate_changed_during_correction"
+        )
+        is not False
+        or manifest_link.get("path")
+        != "data/metadata/rich_data/runs/20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4.json"
+        or manifest_link.get("sha256")
+        != "08badce50927da1083d684c1614e88ba260d3c2d54acf8d74cf59cf58c65ca8c"
+        or manifest_link.get("run_id")
+        != "20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4"
+        or manifest_link.get("requested_report_date") != "2025-12-31"
+        or manifest_link.get("acceptance_status")
+        != "accepted_schema_formula_and_current_coverage_pending_full_history_no_return_gates"
+        or frame_link.get("path")
+        != "data/raw/a_share/rich/eastmoney/balance_sheet_resilience/acceptance/20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4/balance_sheet_resilience.parquet"
+        or frame_link.get("content_sha256")
+        != "a8c1c71071ecff9cf9b4d944b9962c861445c713d4fe2f12c479124e50850b25"
+        or frame_link.get("file_sha256")
+        != "1328eb3d32cba118281ee94eb3a07d8f4e312a2331f4e1e95c24f988c3b85014"
+        or frame_link.get("rows") != 4543
+        or tuple(frame_link.get("columns") or ())
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+        or request.get("provider") != "eastmoney"
+        or request.get("report_name") != "RPT_DMSK_FN_BALANCE"
+        or request.get("advertised_pages") != 11
+        or request.get("requested_pages") != list(range(1, 12))
+        or request.get("provider_calls") != 11
+        or request.get("advertised_rows") != 5218
+        or request.get("received_rows") != 5218
+        or request.get("ordered_source_column_count") != 57
+        or request.get("ordered_source_columns_sha256")
+        != "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3"
+        or request.get("credentials_required_logged_or_stored") is not False
+        or request.get("cookies_proxy_or_retail_session_used") is not False
+        or request.get("unused_transported_fields_persisted") is not False
+        or observed.get("all_market_source_rows") != 5218
+        or observed.get("expected_point_in_time_holding_names") != 4581
+        or observed.get("valid_holding_names") != 4543
+        or observed.get("valid_holding_coverage") != 0.9917048679327658
+        or observed.get("distinct_factor_values") != 4543
+        or observed.get("accepted_formula_max_absolute_error") != 4.99933427988708e-13
+        or observed.get("formula_inconsistent_rows_excluded") != 0
+        or observed.get("schema_formula_and_current_coverage_gate_passed") is not True
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience acceptance record is incompatible"
+        )
+
+    manifest_file = resolve_record_path(str(manifest_link["path"]))
+    frame_file = resolve_record_path(str(frame_link["path"]))
+    if (
+        not manifest_file.exists()
+        or file_digest(manifest_file) != manifest_link["sha256"]
+        or not frame_file.exists()
+        or file_digest(frame_file) != frame_link["file_sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience acceptance evidence fingerprint mismatch"
+        )
+    manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
+    files = list(manifest.get("files") or [])
+    if (
+        manifest.get("dataset") != "eastmoney_balance_sheet_resilience_acceptance"
+        or manifest.get("provider") != "eastmoney"
+        or manifest.get("run_id") != manifest_link["run_id"]
+        or manifest.get("requested_report_date") != "2025-12-31"
+        or manifest.get("acceptance_status") != manifest_link["acceptance_status"]
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or len(files) != 1
+        or files[0].get("path") != frame_link["path"]
+        or files[0].get("rows") != 4543
+        or files[0].get("sha256") != frame_link["content_sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience acceptance manifest identity mismatch"
+        )
+    frame = pd.read_parquet(frame_file)
+    assets = pd.to_numeric(frame["total_assets"], errors="coerce")
+    liabilities = pd.to_numeric(frame["total_liabilities"], errors="coerce")
+    factor = pd.to_numeric(frame["eastmoney_balance_sheet_resilience"], errors="coerce")
+    if (
+        tuple(frame.columns) != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+        or len(frame) != 4543
+        or frame_digest(frame) != frame_link["content_sha256"]
+        or frame.duplicated(["instrument", "report_date"]).any()
+        or not pd.to_datetime(frame["report_date"], errors="coerce")
+        .dt.normalize()
+        .eq(pd.Timestamp("2025-12-31"))
+        .all()
+        or pd.to_datetime(frame["announcement_date"], errors="coerce").isna().any()
+        or not np.isfinite(assets).all()
+        or not assets.gt(0.0).all()
+        or not np.isfinite(liabilities).all()
+        or not liabilities.ge(0.0).all()
+        or not liabilities.le(assets).all()
+        or not np.isfinite(factor).all()
+        or not np.allclose(
+            factor.to_numpy(dtype="float64"),
+            1.0
+            - liabilities.to_numpy(dtype="float64") / assets.to_numpy(dtype="float64"),
+            rtol=0.0,
+            atol=1e-12,
+        )
+        or not frame["provider"].eq("eastmoney").all()
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience accepted factor integrity audit failed"
+        )
+    return record
+
+
+def load_eastmoney_balance_sheet_resilience_source_chain(
+    path: Path = DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Verify the accepted source and frozen pre-history no-return protocol."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC_SHA256:
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience no-return spec fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind="a_share_eastmoney_balance_sheet_resilience_no_return_preregistration",
+    )
+    contract = load_eastmoney_balance_sheet_resilience_contract()
+    record = load_eastmoney_balance_sheet_resilience_acceptance_record()
+    source_chain = spec.get("source_chain") or {}
+    full = spec.get("full_source_snapshot_contract") or {}
+    normalization = spec.get("normalization_contract") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    expected_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_source_acceptance_before_full_source_capacity_uniqueness_prices_or_returns"
+        or spec.get("preregistered_at") != "2026-07-16T22:49:30Z"
+        or (source_chain.get("data_contract") or {}).get("sha256")
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT_SHA256
+        or (source_chain.get("mechanism_audit") or {}).get("sha256")
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_MECHANISM_AUDIT_SHA256
+        or (source_chain.get("acceptance_record") or {}).get("sha256")
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD_SHA256
+        or (source_chain.get("acceptance_manifest") or {}).get("sha256")
+        != "08badce50927da1083d684c1614e88ba260d3c2d54acf8d74cf59cf58c65ca8c"
+        or (source_chain.get("accepted_frame") or {}).get("content_sha256")
+        != "a8c1c71071ecff9cf9b4d944b9962c861445c713d4fe2f12c479124e50850b25"
+        or (source_chain.get("accepted_frame") or {}).get("file_sha256")
+        != "1328eb3d32cba118281ee94eb3a07d8f4e312a2331f4e1e95c24f988c3b85014"
+        or (source_chain.get("accepted_frame") or {}).get("report_date") != "2025-12-31"
+        or (source_chain.get("accepted_frame") or {}).get("rows") != 4543
+        or (source_chain.get("accepted_ordered_source_schema") or {}).get(
+            "ordered_source_column_count"
+        )
+        != 57
+        or (source_chain.get("accepted_ordered_source_schema") or {}).get(
+            "ordered_source_columns_sha256"
+        )
+        != "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3"
+        or full.get("report_dates") != expected_dates
+        or full.get("required_report_date_count") != 28
+        or full.get("accepted_partition_reused_without_network") != "2025-12-31"
+        or full.get("new_network_partitions") != 27
+        or full.get("maximum_new_provider_calls") != 540
+        or full.get("minimum_valid_active_holding_coverage_per_report_date") != 0.85
+        or full.get("minimum_median_valid_active_holding_coverage") != 0.95
+        or full.get("minimum_distinct_factor_values_per_nonempty_partition") != 100
+        or tuple(normalization.get("columns") or ())
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+        or normalization.get("factor_formula") != "1 - total_liabilities / total_assets"
+        or normalization.get("maximum_formula_absolute_error") != 1e-8
+        or capacity.get("must_run_before_comparison_fields_or_prices") is not True
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or uniqueness.get("allowed_only_after_capacity_passes") is not True
+        or uniqueness.get("dense_comparison_factor_count") != 46
+        or uniqueness.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or spec.get("historical_provider_rows_observed_before_freeze") is not False
+        or spec.get("historical_factor_values_observed_before_freeze") is not False
+        or spec.get("price_fields_loaded") != []
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience no-return spec does not match the frozen protocol"
+        )
+    for label, link in source_chain.items():
+        if not isinstance(link, dict) or "path" not in link or "sha256" not in link:
+            continue
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(
+                f"Eastmoney balance-sheet-resilience source-chain evidence changed: {label}"
+            )
+    frame_path = resolve_record_path(
+        str((source_chain.get("accepted_frame") or {}).get("path") or "")
+    )
+    if not frame_path.exists() or file_digest(frame_path) != (
+        source_chain.get("accepted_frame") or {}
+    ).get("file_sha256"):
+        raise RichDataError("Eastmoney balance-sheet-resilience accepted frame changed")
+    accepted_frame = pd.read_parquet(frame_path)
+    if (
+        tuple(accepted_frame.columns) != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+        or len(accepted_frame) != 4543
+        or frame_digest(accepted_frame)
+        != (source_chain.get("accepted_frame") or {}).get("content_sha256")
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience accepted frame integrity failed"
+        )
+    return {
+        "spec_path": path,
+        "spec": spec,
+        "contract": contract,
+        "acceptance_record": record,
+        "accepted_frame_path": frame_path,
+        "accepted_frame": accepted_frame,
+    }
+
+
+def eastmoney_balance_sheet_resilience_acceptance_records() -> list[Path]:
+    """Return prior local success or rejection manifests for the one-shot probe."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*eastmoney_balance_sheet_resilience_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "eastmoney_balance_sheet_resilience_acceptance":
+            records.append(path)
+    return records
+
+
+def sync_eastmoney_balance_sheet_resilience_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Run the sole frozen no-price public balance-sheet source acceptance."""
+
+    if DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD.exists():
+        load_eastmoney_balance_sheet_resilience_acceptance_record()
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience acceptance is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    with RichDataProcessLock(
+        METADATA_ROOT / ".eastmoney_balance_sheet_resilience_acceptance.lock"
+    ):
+        if DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD.exists():
+            load_eastmoney_balance_sheet_resilience_acceptance_record()
+            raise RichDataError(
+                "Eastmoney balance-sheet-resilience acceptance is permanently consumed; "
+                "another provider request is forbidden"
+            )
+        prior_records = eastmoney_balance_sheet_resilience_acceptance_records()
+        if prior_records:
+            raise RichDataError(
+                "Eastmoney balance-sheet-resilience acceptance is one-shot and already "
+                f"consumed by {prior_records[-1]}"
+            )
+        contract = load_eastmoney_balance_sheet_resilience_contract()
+        acceptance = contract["acceptance_protocol"]
+        report_date = dt.date.fromisoformat(acceptance["fixed_report_date"])
+        run_id = new_run_id("eastmoney_balance_sheet_resilience_acceptance")
+        run_root = (
+            RAW_ROOT / "eastmoney" / "balance_sheet_resilience" / "acceptance" / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Eastmoney balance-sheet-resilience acceptance already exists: {run_id}"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        try:
+            provider_request_issued = True
+            raw_rows, request_quality = fetch_eastmoney_balance_sheet_partition(
+                report_date, contract=contract
+            )
+            normalized, quality = canonicalize_eastmoney_balance_sheet_resilience(
+                raw_rows, report_date, contract=contract
+            )
+            intervals = load_factor_universe_intervals(universe_path)
+            report_session = pd.Timestamp(report_date)
+            active_rows = intervals[
+                intervals["start_date"].le(report_session)
+                & intervals["end_date"].ge(report_session)
+            ]
+            active_instruments = set(active_rows["instrument"].astype(str))
+            if not active_instruments:
+                raise RichDataError(
+                    "buyable holding universe has no active balance-sheet report-date names"
+                )
+            in_universe = normalized["instrument"].isin(active_instruments)
+            outside_universe = int((~in_universe).sum())
+            accepted = normalized.loc[in_universe].reset_index(drop=True)
+            expected_names = int(len(active_instruments))
+            observed_names = int(accepted["instrument"].nunique())
+            coverage = observed_names / expected_names
+            minimum_names = int(acceptance["minimum_valid_holding_names"])
+            minimum_coverage = float(
+                acceptance["minimum_valid_point_in_time_holding_coverage"]
+            )
+            if observed_names < minimum_names:
+                raise RichDataError(
+                    "Eastmoney balance-sheet acceptance has too few valid holding names: "
+                    f"{observed_names} < {minimum_names}"
+                )
+            if coverage < minimum_coverage:
+                raise RichDataError(
+                    "Eastmoney balance-sheet holding coverage failed: "
+                    f"{coverage:.6f} < {minimum_coverage:.6f}"
+                )
+            distinct_values = int(
+                accepted["eastmoney_balance_sheet_resilience"].nunique(dropna=True)
+            )
+            minimum_values = int(acceptance["minimum_distinct_factor_values"])
+            if distinct_values < minimum_values:
+                raise RichDataError(
+                    "Eastmoney balance-sheet acceptance lacks factor variation: "
+                    f"{distinct_values} < {minimum_values}"
+                )
+            formula_error = float(quality["accepted_formula_max_absolute_error"])
+            if formula_error > float(acceptance["maximum_formula_absolute_error"]):
+                raise RichDataError(
+                    "Eastmoney balance-sheet accepted formula audit exceeded tolerance"
+                )
+            if (
+                tuple(accepted.columns) != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+                or accepted.duplicated(["instrument", "report_date"]).any()
+            ):
+                raise RichDataError(
+                    "Eastmoney balance-sheet accepted frame violates the frozen schema"
+                )
+
+            temporary_destination = temporary_root / "balance_sheet_resilience.parquet"
+            final_destination = run_root / "balance_sheet_resilience.parquet"
+            atomic_write_frame(accepted, temporary_destination)
+            resolved_universe = universe_path.expanduser().resolve()
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_balance_sheet_resilience_acceptance",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_report_date": report_date.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT
+                    ),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_selection"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "active_names_on_report_date": expected_names,
+                },
+                "source_request": {
+                    "endpoint": contract["source"]["endpoint"],
+                    "report_name": contract["source"]["report_name"],
+                    "request_mode": "one fixed count-complete quarterly partition",
+                    "provider_request_issued": provider_request_issued,
+                    "credentials_required_logged_or_stored": False,
+                    "cookies_proxy_or_retail_session_used": False,
+                    "unused_transported_fields_persisted": False,
+                    **request_quality,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(accepted)),
+                        "sha256": frame_digest(accepted),
+                    }
+                ],
+                "source_quality": {
+                    **quality,
+                    "outside_point_in_time_holding_universe_rows_excluded": (
+                        outside_universe
+                    ),
+                    "expected_active_holding_names": expected_names,
+                    "valid_holding_names": observed_names,
+                    "valid_holding_coverage": coverage,
+                    "distinct_factor_values": distinct_values,
+                },
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_balance_sheet_resilience_acceptance",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_report_date": report_date.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["source"]["endpoint"],
+                    "report_name": contract["source"]["report_name"],
+                    "provider_request_issued": provider_request_issued,
+                    "credentials_required_logged_or_stored": False,
+                    "cookies_proxy_or_retail_session_used": False,
+                },
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": "terminal_schema_formula_or_current_coverage_rejected_stop_before_full_history_capacity_uniqueness_or_returns",
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
+def load_eastmoney_core_profit_consistency_acceptance_record(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the cross-clone record for the consumed public income probe."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind="a_share_eastmoney_core_profit_consistency_source_acceptance_record",
+    )
+    contract = record.get("data_contract") or {}
+    mechanism = record.get("mechanism_audit") or {}
+    manifest_link = record.get("acceptance_manifest") or {}
+    frame_link = record.get("accepted_frame") or {}
+    request = record.get("source_request") or {}
+    observed = record.get("observed_result") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_pending_frozen_full_history_and_no_return_gates"
+        or contract.get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256
+        or mechanism.get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_MECHANISM_AUDIT_SHA256
+        or manifest_link.get("sha256")
+        != "c7be7442df45d017c5c4b74500c9949f05f6142e09503b6ff989d1fcbc20ea12"
+        or manifest_link.get("run_id")
+        != "20260716T234306Z_eastmoney_core_profit_consistency_acceptance_722adbdf"
+        or manifest_link.get("requested_report_date") != "2025-12-31"
+        or manifest_link.get("acceptance_status")
+        != "accepted_schema_formula_and_current_coverage_pending_full_history_no_return_gates"
+        or frame_link.get("content_sha256")
+        != "7a487d4fc8df60ecee8763772dd4aac4b88423aa491c1a580398b5008c84e794"
+        or frame_link.get("file_sha256")
+        != "2c7e83fb6916cd73073687cfb194df7862bd549cd244133dffd1baf7c2570f57"
+        or frame_link.get("rows") != 3370
+        or tuple(frame_link.get("columns") or ())
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+        or request.get("report_name") != "RPT_DMSK_FN_INCOME"
+        or request.get("advertised_pages") != 11
+        or request.get("requested_pages") != list(range(1, 12))
+        or request.get("provider_calls") != 11
+        or request.get("advertised_rows") != 5218
+        or request.get("received_rows") != 5218
+        or request.get("ordered_source_column_count") != 46
+        or request.get("ordered_source_columns_sha256")
+        != "81e5eff36c353c65bbb7728780a4e9663fbbad7b779e44c74921ce57d1f6656f"
+        or request.get("tushare_token_read") is not False
+        or observed.get("expected_point_in_time_holding_names") != 4581
+        or observed.get("complete_identity_holding_names") != 4574
+        or observed.get("valid_factor_holding_names") != 3370
+        or observed.get("distinct_factor_values") != 3369
+        or not math.isclose(
+            float(observed.get("complete_identity_holding_coverage")),
+            0.9984719493560358,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or not math.isclose(
+            float(observed.get("valid_factor_holding_coverage")),
+            0.7356472385941935,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or observed.get("schema_formula_and_current_coverage_gate_passed")
+        is not True
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency acceptance record is inconsistent"
+        )
+    for label, link in (
+        ("contract", contract),
+        ("mechanism audit", mechanism),
+    ):
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(
+                f"Eastmoney core-profit-consistency {label} changed"
+            )
+    manifest_file = resolve_record_path(str(manifest_link.get("path") or ""))
+    frame_file = resolve_record_path(str(frame_link.get("path") or ""))
+    if (
+        not manifest_file.exists()
+        or file_digest(manifest_file) != manifest_link["sha256"]
+        or not frame_file.exists()
+        or file_digest(frame_file) != frame_link["file_sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency acceptance evidence changed"
+        )
+    manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
+    files = list(manifest.get("files") or [])
+    if (
+        manifest.get("dataset") != "eastmoney_core_profit_consistency_acceptance"
+        or manifest.get("run_id") != manifest_link["run_id"]
+        or manifest.get("requested_report_date") != "2025-12-31"
+        or manifest.get("acceptance_status") != manifest_link["acceptance_status"]
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or len(files) != 1
+        or files[0].get("path") != frame_link["path"]
+        or files[0].get("rows") != 3370
+        or files[0].get("sha256") != frame_link["content_sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency acceptance manifest changed"
+        )
+    frame = pd.read_parquet(frame_file)
+    operating = pd.to_numeric(frame["operating_profit"], errors="coerce")
+    total = pd.to_numeric(frame["total_profit"], errors="coerce")
+    factor = pd.to_numeric(
+        frame["eastmoney_core_profit_consistency"], errors="coerce"
+    )
+    recomputed = np.minimum(operating, total) / np.maximum(operating, total)
+    if (
+        tuple(frame.columns) != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+        or len(frame) != 3370
+        or frame_digest(frame) != frame_link["content_sha256"]
+        or frame.duplicated(["instrument", "report_date"]).any()
+        or not operating.gt(0.0).all()
+        or not total.gt(0.0).all()
+        or not np.isfinite(factor).all()
+        or not np.allclose(
+            factor.to_numpy(dtype="float64"),
+            recomputed.to_numpy(dtype="float64"),
+            rtol=0.0,
+            atol=1e-12,
+        )
+        or not frame["provider"].eq("eastmoney").all()
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency accepted factor integrity failed"
+        )
+    return record
+
+
+def load_eastmoney_core_profit_consistency_source_chain(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Verify the accepted source and frozen pre-history no-return protocol."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256:
+        raise RichDataError(
+            "Eastmoney core-profit no-return preregistration fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind="a_share_eastmoney_core_profit_consistency_no_return_preregistration",
+    )
+    contract = load_eastmoney_core_profit_consistency_contract()
+    record = load_eastmoney_core_profit_consistency_acceptance_record()
+    chain = spec.get("source_chain") or {}
+    full = spec.get("full_source_snapshot_contract") or {}
+    normalization = spec.get("normalization_contract") or {}
+    state = spec.get("conservative_state_contract") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    expected_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_source_acceptance_before_full_source_capacity_uniqueness_prices_or_returns"
+        or spec.get("preregistered_at") != "2026-07-16T23:46:00Z"
+        or (chain.get("mechanism_audit") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_MECHANISM_AUDIT_SHA256
+        or (chain.get("data_contract") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256
+        or (chain.get("acceptance_record") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256
+        or (chain.get("acceptance_manifest") or {}).get("sha256")
+        != "c7be7442df45d017c5c4b74500c9949f05f6142e09503b6ff989d1fcbc20ea12"
+        or (chain.get("accepted_frame") or {}).get("content_sha256")
+        != "7a487d4fc8df60ecee8763772dd4aac4b88423aa491c1a580398b5008c84e794"
+        or (chain.get("accepted_frame") or {}).get("file_sha256")
+        != "2c7e83fb6916cd73073687cfb194df7862bd549cd244133dffd1baf7c2570f57"
+        or (chain.get("accepted_frame") or {}).get("rows") != 3370
+        or (chain.get("accepted_ordered_source_schema") or {}).get(
+            "ordered_source_column_count"
+        )
+        != 46
+        or (chain.get("accepted_ordered_source_schema") or {}).get(
+            "ordered_source_columns_sha256"
+        )
+        != "81e5eff36c353c65bbb7728780a4e9663fbbad7b779e44c74921ce57d1f6656f"
+        or full.get("report_dates") != expected_dates
+        or full.get("required_report_date_count") != 28
+        or full.get("accepted_partition_reused_without_network") != "2025-12-31"
+        or full.get("new_network_partitions") != 27
+        or full.get("maximum_new_provider_calls") != 540
+        or full.get("minimum_complete_identity_active_holding_coverage_per_report_date")
+        != 0.85
+        or full.get("minimum_median_complete_identity_active_holding_coverage")
+        != 0.95
+        or full.get("minimum_valid_factor_active_holding_coverage_per_report_date")
+        != 0.45
+        or full.get("minimum_median_valid_factor_active_holding_coverage") != 0.6
+        or tuple(normalization.get("columns") or ())
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+        or normalization.get("factor_formula")
+        != "min(operating_profit, total_profit) / max(operating_profit, total_profit)"
+        or normalization.get("maximum_formula_absolute_error") != 1e-12
+        or state.get("clear_all_older_values_at_global_partition_activation")
+        is not True
+        or state.get("carry_older_value_when_new_partition_has_missing_or_invalid_instrument")
+        is not False
+        or state.get("late_older_correction_can_supersede_newer_period") is not False
+        or state.get("maximum_age_calendar_days") != 550
+        or capacity.get("must_run_before_comparison_fields_or_prices") is not True
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or uniqueness.get("allowed_only_after_capacity_passes") is not True
+        or uniqueness.get("dense_comparison_factor_count") != 47
+        or len(uniqueness.get("dense_comparison_factors") or []) != 47
+        or uniqueness.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or uniqueness.get("sparse_event_factors_loaded") != []
+        or spec.get("historical_provider_rows_observed_before_freeze") is not False
+        or spec.get("historical_factor_values_observed_before_freeze") is not False
+        or spec.get("price_fields_loaded") != []
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit no-return spec does not match the frozen protocol"
+        )
+    for label, link in chain.items():
+        if not isinstance(link, dict) or "path" not in link or "sha256" not in link:
+            continue
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(
+                f"Eastmoney core-profit source-chain evidence changed: {label}"
+            )
+    frame_path = resolve_record_path(
+        str((chain.get("accepted_frame") or {}).get("path") or "")
+    )
+    if not frame_path.exists() or file_digest(frame_path) != (
+        chain.get("accepted_frame") or {}
+    ).get("file_sha256"):
+        raise RichDataError("Eastmoney core-profit accepted frame changed")
+    accepted_frame = pd.read_parquet(frame_path)
+    if (
+        tuple(accepted_frame.columns)
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+        or len(accepted_frame) != 3370
+        or frame_digest(accepted_frame)
+        != (chain.get("accepted_frame") or {}).get("content_sha256")
+    ):
+        raise RichDataError("Eastmoney core-profit accepted frame integrity failed")
+    return {
+        "spec_path": path,
+        "spec": spec,
+        "contract": contract,
+        "acceptance_record": record,
+        "accepted_frame_path": frame_path,
+        "accepted_frame": accepted_frame,
+    }
+
+
+def eastmoney_core_profit_consistency_acceptance_records() -> list[Path]:
+    """Return prior local manifests for the one-shot public income probe."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*eastmoney_core_profit_consistency_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "eastmoney_core_profit_consistency_acceptance":
+            records.append(path)
+    return records
+
+
+def sync_eastmoney_core_profit_consistency_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Run the sole frozen no-price public core-profit source acceptance."""
+
+    if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD.exists():
+        load_eastmoney_core_profit_consistency_acceptance_record()
+        raise RichDataError(
+            "Eastmoney core-profit-consistency acceptance is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    with RichDataProcessLock(
+        METADATA_ROOT / ".eastmoney_core_profit_consistency_acceptance.lock"
+    ):
+        if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD.exists():
+            load_eastmoney_core_profit_consistency_acceptance_record()
+            raise RichDataError(
+                "Eastmoney core-profit-consistency acceptance is permanently consumed; "
+                "another provider request is forbidden"
+            )
+        prior_records = eastmoney_core_profit_consistency_acceptance_records()
+        if prior_records:
+            raise RichDataError(
+                "Eastmoney core-profit-consistency acceptance is one-shot and already "
+                f"consumed by {prior_records[-1]}"
+            )
+        contract = load_eastmoney_core_profit_consistency_contract()
+        acceptance = contract["acceptance_protocol"]
+        report_date = dt.date.fromisoformat(acceptance["fixed_report_date"])
+        run_id = new_run_id("eastmoney_core_profit_consistency_acceptance")
+        run_root = (
+            RAW_ROOT
+            / "eastmoney"
+            / "core_profit_consistency"
+            / "acceptance"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Eastmoney core-profit-consistency acceptance already exists: {run_id}"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        try:
+            provider_request_issued = True
+            raw_rows, request_quality = (
+                fetch_eastmoney_core_profit_consistency_partition(
+                    report_date, contract=contract
+                )
+            )
+            normalized, quality = canonicalize_eastmoney_core_profit_consistency(
+                raw_rows,
+                report_date,
+                contract=contract,
+            )
+            complete_identity_instruments = set(
+                quality.pop("complete_identity_instruments_for_acceptance_only")
+            )
+            intervals = load_factor_universe_intervals(universe_path)
+            report_session = pd.Timestamp(report_date)
+            active_rows = intervals[
+                intervals["start_date"].le(report_session)
+                & intervals["end_date"].ge(report_session)
+            ]
+            active_instruments = set(active_rows["instrument"].astype(str))
+            if not active_instruments:
+                raise RichDataError(
+                    "buyable holding universe has no active core-profit report-date names"
+                )
+            expected_names = int(len(active_instruments))
+            complete_identity_names = int(
+                len(complete_identity_instruments & active_instruments)
+            )
+            complete_identity_coverage = complete_identity_names / expected_names
+            in_universe = normalized["instrument"].isin(active_instruments)
+            outside_universe = int((~in_universe).sum())
+            accepted = normalized.loc[in_universe].reset_index(drop=True)
+            valid_factor_names = int(accepted["instrument"].nunique())
+            valid_factor_coverage = valid_factor_names / expected_names
+            if complete_identity_names < int(
+                acceptance["minimum_complete_identity_holding_names"]
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit acceptance has too few complete-identity "
+                    f"holding names: {complete_identity_names}"
+                )
+            if complete_identity_coverage < float(
+                acceptance["minimum_complete_identity_holding_coverage"]
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit complete-identity coverage failed: "
+                    f"{complete_identity_coverage:.6f}"
+                )
+            if valid_factor_names < int(
+                acceptance["minimum_valid_factor_holding_names"]
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit acceptance has too few valid factor names: "
+                    f"{valid_factor_names}"
+                )
+            if valid_factor_coverage < float(
+                acceptance["minimum_valid_factor_holding_coverage"]
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit valid-factor coverage failed: "
+                    f"{valid_factor_coverage:.6f}"
+                )
+            distinct_values = int(
+                accepted["eastmoney_core_profit_consistency"].nunique(dropna=True)
+            )
+            if distinct_values < int(acceptance["minimum_distinct_factor_values"]):
+                raise RichDataError(
+                    "Eastmoney core-profit acceptance lacks factor variation: "
+                    f"{distinct_values}"
+                )
+            if float(quality["accepted_formula_max_absolute_error"]) > float(
+                acceptance["maximum_equivalent_formula_absolute_error"]
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit accepted formula audit exceeded tolerance"
+                )
+            if (
+                tuple(accepted.columns)
+                != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+                or accepted.duplicated(["instrument", "report_date"]).any()
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit accepted frame violates the frozen schema"
+                )
+
+            temporary_destination = temporary_root / "core_profit_consistency.parquet"
+            final_destination = run_root / "core_profit_consistency.parquet"
+            atomic_write_frame(accepted, temporary_destination)
+            resolved_universe = universe_path.expanduser().resolve()
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_core_profit_consistency_acceptance",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_report_date": report_date.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT
+                    ),
+                    "sha256": EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256,
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_selection"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "active_names_on_report_date": expected_names,
+                },
+                "source_request": {
+                    "endpoint": contract["source"]["endpoint"],
+                    "report_name": contract["source"]["report_name"],
+                    "request_mode": "one fixed count-complete quarterly partition",
+                    "provider_request_issued": provider_request_issued,
+                    "credentials_required_logged_or_stored": False,
+                    "tushare_token_read": False,
+                    "cookies_proxy_or_retail_session_used": False,
+                    "unused_transported_fields_persisted": False,
+                    **request_quality,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(accepted)),
+                        "sha256": frame_digest(accepted),
+                    }
+                ],
+                "source_quality": {
+                    **quality,
+                    "outside_point_in_time_holding_universe_rows_excluded": (
+                        outside_universe
+                    ),
+                    "expected_active_holding_names": expected_names,
+                    "complete_identity_holding_names": complete_identity_names,
+                    "complete_identity_holding_coverage": (
+                        complete_identity_coverage
+                    ),
+                    "valid_factor_holding_names": valid_factor_names,
+                    "valid_factor_holding_coverage": valid_factor_coverage,
+                    "distinct_factor_values": distinct_values,
+                },
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_core_profit_consistency_acceptance",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_report_date": report_date.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT
+                    ),
+                    "sha256": EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256,
+                },
+                "source_request": {
+                    "endpoint": contract["source"]["endpoint"],
+                    "report_name": contract["source"]["report_name"],
+                    "provider_request_issued": provider_request_issued,
+                    "credentials_required_logged_or_stored": False,
+                    "tushare_token_read": False,
+                    "cookies_proxy_or_retail_session_used": False,
+                },
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": "terminal_schema_formula_or_current_coverage_rejected_stop_before_full_history_capacity_uniqueness_or_returns",
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
+def load_eastmoney_balance_sheet_resilience_full_source_record(
+    path: Path = DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_SOURCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the cross-clone terminal record for the consumed full source."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_SOURCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience full-source-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind="a_share_eastmoney_balance_sheet_resilience_full_source_record",
+    )
+    contract = record.get("data_contract") or {}
+    acceptance = record.get("source_acceptance_record") or {}
+    spec = record.get("no_return_preregistration") or {}
+    manifest_link = record.get("full_source_manifest") or {}
+    snapshot = record.get("published_snapshot") or {}
+    request = record.get("source_request") or {}
+    coverage = record.get("coverage") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_full_source_pending_no_return_capacity_and_uniqueness"
+        or record.get("created_at") != "2026-07-16T22:58:31Z"
+        or contract.get("sha256") != EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT_SHA256
+        or acceptance.get("sha256")
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD_SHA256
+        or spec.get("sha256")
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC_SHA256
+        or manifest_link.get("path")
+        != "data/metadata/rich_data/runs/20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6.json"
+        or manifest_link.get("sha256")
+        != "b69e71c57ecbef956709e853d5da6054fd28f6c44d53ead2b51273641ecba9fe"
+        or manifest_link.get("run_id")
+        != "20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6"
+        or manifest_link.get("status")
+        != "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+        or snapshot.get("partition_count") != 28
+        or snapshot.get("total_rows") != 113916
+        or snapshot.get("minimum_partition_rows") != 3374
+        or snapshot.get("maximum_partition_rows") != 4543
+        or tuple(snapshot.get("columns") or ())
+        != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+        or snapshot.get("canonical_partition_file_sha256_listing_sha256")
+        != "669ea5aebbbe9467b5b538b4110ea7ed9de6fa8ca0f9e721545b0a8573ac68a3"
+        or request.get("new_network_partitions") != 27
+        or request.get("accepted_partitions_reused_without_network") != 1
+        or request.get("new_provider_calls") != 277
+        or request.get("ordered_source_column_count") != 57
+        or request.get("ordered_source_columns_sha256")
+        != "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3"
+        or coverage.get("minimum_valid_active_holding_coverage") != 0.9374826340650181
+        or coverage.get("median_valid_active_holding_coverage") != 0.9661019339064675
+        or coverage.get("maximum_valid_active_holding_coverage") != 0.9917048679327658
+        or coverage.get("all_28_partitions_present") is not True
+        or coverage.get("source_coverage_gate_passed") is not True
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience full-source record is incompatible"
+        )
+
+    manifest_file = resolve_record_path(str(manifest_link["path"]))
+    if (
+        not manifest_file.exists()
+        or file_digest(manifest_file) != manifest_link["sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience full-source manifest changed"
+        )
+    manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
+    files = sorted(
+        list(manifest.get("files") or []), key=lambda item: item.get("report_date", "")
+    )
+    expected_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    if (
+        manifest.get("dataset") != "eastmoney_balance_sheet_resilience"
+        or manifest.get("provider") != "eastmoney"
+        or manifest.get("run_id") != manifest_link["run_id"]
+        or manifest.get("status") != manifest_link["status"]
+        or manifest.get("coverage")
+        != {
+            "maximum": 0.9917048679327658,
+            "median": 0.9661019339064675,
+            "minimum": 0.9374826340650181,
+            "minimum_required_median": 0.95,
+            "minimum_required_per_partition": 0.85,
+            "source_coverage_gate_passed": True,
+        }
+        or [item.get("report_date") for item in files] != expected_dates
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience full-source manifest identity mismatch"
+        )
+    listing_lines: list[str] = []
+    total_rows = 0
+    for item in files:
+        frame_path = resolve_record_path(str(item.get("path") or ""))
+        if not frame_path.exists():
+            raise RichDataError(
+                f"Eastmoney balance-sheet-resilience partition is missing: {frame_path}"
+            )
+        listing_lines.append(f"{item['report_date']}\t{file_digest(frame_path)}\n")
+        frame = pd.read_parquet(frame_path)
+        assets = pd.to_numeric(frame["total_assets"], errors="coerce")
+        liabilities = pd.to_numeric(frame["total_liabilities"], errors="coerce")
+        factor = pd.to_numeric(
+            frame["eastmoney_balance_sheet_resilience"], errors="coerce"
+        )
+        if (
+            tuple(frame.columns) != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+            or len(frame) != int(item.get("rows") or -1)
+            or frame_digest(frame) != item.get("sha256")
+            or frame.duplicated(["instrument", "report_date"]).any()
+            or not pd.to_datetime(frame["report_date"], errors="coerce")
+            .dt.normalize()
+            .eq(pd.Timestamp(item["report_date"]))
+            .all()
+            or pd.to_datetime(frame["announcement_date"], errors="coerce").isna().any()
+            or not np.isfinite(assets).all()
+            or not assets.gt(0.0).all()
+            or not np.isfinite(liabilities).all()
+            or not liabilities.ge(0.0).all()
+            or not liabilities.le(assets).all()
+            or not np.isfinite(factor).all()
+            or not np.allclose(
+                factor.to_numpy(dtype="float64"),
+                1.0
+                - liabilities.to_numpy(dtype="float64")
+                / assets.to_numpy(dtype="float64"),
+                rtol=0.0,
+                atol=1e-12,
+            )
+            or not frame["provider"].eq("eastmoney").all()
+        ):
+            raise RichDataError(
+                "Eastmoney balance-sheet-resilience full partition integrity failed: "
+                f"{item['report_date']}"
+            )
+        total_rows += len(frame)
+    listing_digest = hashlib.sha256("".join(listing_lines).encode("utf-8")).hexdigest()
+    if (
+        total_rows != snapshot["total_rows"]
+        or listing_digest != snapshot["canonical_partition_file_sha256_listing_sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience full snapshot aggregate changed"
+        )
+    return record
+
+
+def eastmoney_balance_sheet_resilience_full_records() -> list[Path]:
+    """Return prior local success or failure manifests for the full source."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*eastmoney_balance_sheet_resilience*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "eastmoney_balance_sheet_resilience":
+            records.append(path)
+    return records
+
+
+def sync_eastmoney_balance_sheet_resilience(
+    *,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Store the sole frozen 2019-2025 quarterly public balance-sheet snapshot."""
+
+    if not allow_large:
+        raise RichDataError(
+            "pass --allow-large only after reviewing the accepted source and frozen 27-partition full-source protocol"
+        )
+    if DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_SOURCE_RECORD.exists():
+        load_eastmoney_balance_sheet_resilience_full_source_record()
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience full snapshot is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    prior_records = eastmoney_balance_sheet_resilience_full_records()
+    if prior_records:
+        raise RichDataError(
+            "Eastmoney balance-sheet-resilience full snapshot is one-shot and already "
+            f"consumed by {prior_records[-1]}"
+        )
+    with RichDataProcessLock(
+        METADATA_ROOT / ".eastmoney_balance_sheet_resilience.lock"
+    ):
+        if DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_SOURCE_RECORD.exists():
+            load_eastmoney_balance_sheet_resilience_full_source_record()
+            raise RichDataError(
+                "Eastmoney balance-sheet-resilience full snapshot is permanently consumed; "
+                "another provider request is forbidden"
+            )
+        prior_records = eastmoney_balance_sheet_resilience_full_records()
+        if prior_records:
+            raise RichDataError(
+                "Eastmoney balance-sheet-resilience full snapshot is one-shot and already "
+                f"consumed by {prior_records[-1]}"
+            )
+        chain = load_eastmoney_balance_sheet_resilience_source_chain()
+        spec = chain["spec"]
+        contract = chain["contract"]
+        full = spec["full_source_snapshot_contract"]
+        report_dates = [dt.date.fromisoformat(value) for value in full["report_dates"]]
+        reused_date = dt.date.fromisoformat(
+            full["accepted_partition_reused_without_network"]
+        )
+        intervals = load_factor_universe_intervals(universe_path)
+        resolved_universe = universe_path.expanduser().resolve()
+        run_id = new_run_id("eastmoney_balance_sheet_resilience")
+        parent = RAW_ROOT / "eastmoney" / "balance_sheet_resilience" / "snapshots"
+        run_root = parent / run_id
+        temporary_root = parent / f".{run_id}.partial"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Eastmoney balance-sheet-resilience snapshot already exists: {run_id}"
+            )
+        temporary_root.mkdir(parents=True)
+        files: list[dict[str, Any]] = []
+        partition_quality: list[dict[str, Any]] = []
+        completed_network_partitions = 0
+        provider_calls = 0
+        current_report_date: dt.date | None = None
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        accepted_schema = spec["source_chain"]["accepted_ordered_source_schema"]
+        try:
+            for index, report_date in enumerate(report_dates, start=1):
+                current_report_date = report_date
+                if report_date == reused_date:
+                    normalized = chain["accepted_frame"].copy()
+                    quality: dict[str, Any] = {
+                        "input_rows": int(len(normalized)),
+                        "rows_written": int(len(normalized)),
+                        "accepted_formula_max_absolute_error": float(
+                            chain["acceptance_record"]["observed_result"][
+                                "accepted_formula_max_absolute_error"
+                            ]
+                        ),
+                    }
+                    request_quality = {
+                        "provider_calls": 0,
+                        "advertised_pages": 0,
+                        "advertised_rows": int(len(normalized)),
+                        "received_rows": int(len(normalized)),
+                        "ordered_source_column_count": int(
+                            accepted_schema["ordered_source_column_count"]
+                        ),
+                        "ordered_source_columns_sha256": accepted_schema[
+                            "ordered_source_columns_sha256"
+                        ],
+                    }
+                    source_mode = "reused_immutable_acceptance_partition"
+                else:
+                    raw_rows, request_quality = fetch_eastmoney_balance_sheet_partition(
+                        report_date, contract=contract
+                    )
+                    if (
+                        request_quality["ordered_source_column_count"]
+                        != accepted_schema["ordered_source_column_count"]
+                        or request_quality["ordered_source_columns_sha256"]
+                        != accepted_schema["ordered_source_columns_sha256"]
+                    ):
+                        raise RichDataError(
+                            "Eastmoney balance-sheet historical positional schema changed "
+                            f"for {report_date.isoformat()}"
+                        )
+                    normalized, quality = (
+                        canonicalize_eastmoney_balance_sheet_resilience(
+                            raw_rows, report_date, contract=contract
+                        )
+                    )
+                    completed_network_partitions += 1
+                    provider_calls += int(request_quality["provider_calls"])
+                    source_mode = "new_count_complete_public_partition"
+
+                session = pd.Timestamp(report_date)
+                active_rows = intervals[
+                    intervals["start_date"].le(session)
+                    & intervals["end_date"].ge(session)
+                ]
+                active_instruments = set(active_rows["instrument"].astype(str))
+                if not active_instruments:
+                    raise RichDataError(
+                        "buyable holding universe has no active names for "
+                        f"{report_date.isoformat()}"
+                    )
+                in_universe = normalized["instrument"].isin(active_instruments)
+                outside_universe = int((~in_universe).sum())
+                partition = normalized.loc[in_universe].reset_index(drop=True)
+                expected_names = int(len(active_instruments))
+                observed_names = int(partition["instrument"].nunique())
+                coverage = observed_names / expected_names
+                minimum_coverage = float(
+                    full["minimum_valid_active_holding_coverage_per_report_date"]
+                )
+                if coverage < minimum_coverage:
+                    raise RichDataError(
+                        "Eastmoney balance-sheet historical coverage failed for "
+                        f"{report_date.isoformat()}: {coverage:.6f} < {minimum_coverage:.6f}"
+                    )
+                distinct_values = int(
+                    partition["eastmoney_balance_sheet_resilience"].nunique(dropna=True)
+                )
+                minimum_values = int(
+                    full["minimum_distinct_factor_values_per_nonempty_partition"]
+                )
+                if distinct_values < minimum_values:
+                    raise RichDataError(
+                        "Eastmoney balance-sheet historical factor variation failed for "
+                        f"{report_date.isoformat()}: {distinct_values} < {minimum_values}"
+                    )
+                if (
+                    tuple(partition.columns)
+                    != EASTMONEY_BALANCE_SHEET_RESILIENCE_COLUMNS
+                    or partition.duplicated(["instrument", "report_date"]).any()
+                ):
+                    raise RichDataError(
+                        "Eastmoney balance-sheet historical partition violates the frozen schema"
+                    )
+                filename = f"{report_date.isoformat()}.parquet"
+                temporary_destination = temporary_root / filename
+                final_destination = run_root / filename
+                atomic_write_frame(partition, temporary_destination)
+                files.append(
+                    {
+                        "path": manifest_path(final_destination),
+                        "report_date": report_date.isoformat(),
+                        "rows": int(len(partition)),
+                        "sha256": frame_digest(partition),
+                        "source_mode": source_mode,
+                    }
+                )
+                partition_quality.append(
+                    {
+                        "report_date": report_date.isoformat(),
+                        "source_mode": source_mode,
+                        "expected_active_holding_names": expected_names,
+                        "valid_holding_names": observed_names,
+                        "valid_holding_coverage": coverage,
+                        "distinct_factor_values": distinct_values,
+                        "outside_point_in_time_holding_universe_rows_excluded": (
+                            outside_universe
+                        ),
+                        "normalization": quality,
+                        "request": request_quality,
+                    }
+                )
+                print(
+                    "Eastmoney balance-sheet full source "
+                    f"{index}/{len(report_dates)}: {report_date.isoformat()} "
+                    f"rows={len(partition)} coverage={coverage:.6f}"
+                )
+
+            coverages = [
+                float(item["valid_holding_coverage"]) for item in partition_quality
+            ]
+            median_coverage = float(np.median(coverages))
+            if median_coverage < float(
+                full["minimum_median_valid_active_holding_coverage"]
+            ):
+                raise RichDataError(
+                    "Eastmoney balance-sheet median historical coverage failed: "
+                    f"{median_coverage:.6f}"
+                )
+            if (
+                len(files) != int(full["required_report_date_count"])
+                or completed_network_partitions != int(full["new_network_partitions"])
+                or provider_calls > int(full["maximum_new_provider_calls"])
+            ):
+                raise RichDataError(
+                    "Eastmoney balance-sheet full-source partition or call count changed"
+                )
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_balance_sheet_resilience",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_start_report_date": report_dates[0].isoformat(),
+                "requested_end_report_date": report_dates[-1].isoformat(),
+                "source_chain": {
+                    "data_contract": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT
+                        ),
+                        "sha256": EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT_SHA256,
+                    },
+                    "acceptance_record": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD
+                        ),
+                        "sha256": EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD_SHA256,
+                    },
+                    "no_return_preregistration": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC
+                        ),
+                        "sha256": EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC_SHA256,
+                    },
+                },
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                },
+                "source_request": {
+                    "new_network_partitions": completed_network_partitions,
+                    "accepted_partitions_reused_without_network": 1,
+                    "new_provider_calls": provider_calls,
+                    "maximum_allowed_new_provider_calls": int(
+                        full["maximum_new_provider_calls"]
+                    ),
+                    "ordered_source_column_count": int(
+                        accepted_schema["ordered_source_column_count"]
+                    ),
+                    "ordered_source_columns_sha256": accepted_schema[
+                        "ordered_source_columns_sha256"
+                    ],
+                    "credentials_required_logged_or_stored": False,
+                    "cookies_proxy_or_retail_session_used": False,
+                    "unused_transported_fields_persisted": False,
+                },
+                "files": files,
+                "partition_quality": partition_quality,
+                "coverage": {
+                    "minimum": float(min(coverages)),
+                    "median": median_coverage,
+                    "maximum": float(max(coverages)),
+                    "minimum_required_per_partition": float(
+                        full["minimum_valid_active_holding_coverage_per_report_date"]
+                    ),
+                    "minimum_required_median": float(
+                        full["minimum_median_valid_active_holding_coverage"]
+                    ),
+                    "source_coverage_gate_passed": True,
+                },
+                "status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness",
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_balance_sheet_resilience",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "current_report_date": (
+                    current_report_date.isoformat() if current_report_date else None
+                ),
+                "completed_network_partitions": completed_network_partitions,
+                "new_provider_calls": provider_calls,
+                "data_contract_sha256": (
+                    EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT_SHA256
+                ),
+                "no_return_preregistration_sha256": (
+                    EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC_SHA256
+                ),
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "status": "terminal_full_source_rejected_stop_before_capacity_uniqueness_prices_or_returns",
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
+def eastmoney_core_profit_consistency_full_records() -> list[Path]:
+    """Return prior local success or failure manifests for the full source."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*eastmoney_core_profit_consistency*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "eastmoney_core_profit_consistency":
+            records.append(path)
+    return records
+
+
+def sync_eastmoney_core_profit_consistency(
+    *,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Store the sole frozen 2019-2025 quarterly public income snapshot."""
+
+    if not allow_large:
+        raise RichDataError(
+            "pass --allow-large only after reviewing the accepted source and frozen "
+            "27-partition core-profit protocol"
+        )
+    if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD.exists():
+        raise RichDataError(
+            "Eastmoney core-profit-consistency full snapshot is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    prior_records = eastmoney_core_profit_consistency_full_records()
+    if prior_records:
+        raise RichDataError(
+            "Eastmoney core-profit-consistency full snapshot is one-shot and already "
+            f"consumed by {prior_records[-1]}"
+        )
+    with RichDataProcessLock(
+        METADATA_ROOT / ".eastmoney_core_profit_consistency.lock"
+    ):
+        if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD.exists():
+            raise RichDataError(
+                "Eastmoney core-profit-consistency full snapshot is permanently "
+                "consumed; another provider request is forbidden"
+            )
+        prior_records = eastmoney_core_profit_consistency_full_records()
+        if prior_records:
+            raise RichDataError(
+                "Eastmoney core-profit-consistency full snapshot is one-shot and "
+                f"already consumed by {prior_records[-1]}"
+            )
+        chain = load_eastmoney_core_profit_consistency_source_chain()
+        spec = chain["spec"]
+        contract = chain["contract"]
+        full = spec["full_source_snapshot_contract"]
+        report_dates = [dt.date.fromisoformat(value) for value in full["report_dates"]]
+        reused_date = dt.date.fromisoformat(
+            full["accepted_partition_reused_without_network"]
+        )
+        intervals = load_factor_universe_intervals(universe_path)
+        resolved_universe = universe_path.expanduser().resolve()
+        run_id = new_run_id("eastmoney_core_profit_consistency")
+        parent = RAW_ROOT / "eastmoney" / "core_profit_consistency" / "snapshots"
+        run_root = parent / run_id
+        temporary_root = parent / f".{run_id}.partial"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Eastmoney core-profit-consistency snapshot already exists: {run_id}"
+            )
+        temporary_root.mkdir(parents=True)
+        files: list[dict[str, Any]] = []
+        partition_quality: list[dict[str, Any]] = []
+        completed_network_partitions = 0
+        provider_calls = 0
+        current_report_date: dt.date | None = None
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        accepted_schema = spec["source_chain"]["accepted_ordered_source_schema"]
+        try:
+            for index, report_date in enumerate(report_dates, start=1):
+                current_report_date = report_date
+                if report_date == reused_date:
+                    normalized = chain["accepted_frame"].copy()
+                    complete_identity_names = int(
+                        chain["acceptance_record"]["observed_result"][
+                            "complete_identity_holding_names"
+                        ]
+                    )
+                    quality: dict[str, Any] = {
+                        "input_rows": 5218,
+                        "rows_written": int(len(normalized)),
+                        "accepted_formula_max_absolute_error": float(
+                            chain["acceptance_record"]["observed_result"][
+                                "accepted_formula_max_absolute_error"
+                            ]
+                        ),
+                    }
+                    request_quality = {
+                        "provider_calls": 0,
+                        "advertised_pages": 0,
+                        "advertised_rows": int(len(normalized)),
+                        "received_rows": int(len(normalized)),
+                        "ordered_source_column_count": int(
+                            accepted_schema["ordered_source_column_count"]
+                        ),
+                        "ordered_source_columns_sha256": accepted_schema[
+                            "ordered_source_columns_sha256"
+                        ],
+                    }
+                    source_mode = "reused_immutable_acceptance_partition"
+                else:
+                    raw_rows, request_quality = (
+                        fetch_eastmoney_core_profit_consistency_partition(
+                            report_date, contract=contract
+                        )
+                    )
+                    if (
+                        request_quality["ordered_source_column_count"]
+                        != accepted_schema["ordered_source_column_count"]
+                        or request_quality["ordered_source_columns_sha256"]
+                        != accepted_schema["ordered_source_columns_sha256"]
+                    ):
+                        raise RichDataError(
+                            "Eastmoney core-profit historical positional schema "
+                            f"changed for {report_date.isoformat()}"
+                        )
+                    normalized, quality = (
+                        canonicalize_eastmoney_core_profit_consistency(
+                            raw_rows, report_date, contract=contract
+                        )
+                    )
+                    complete_identity_instruments = set(
+                        quality.pop(
+                            "complete_identity_instruments_for_acceptance_only"
+                        )
+                    )
+                    completed_network_partitions += 1
+                    provider_calls += int(request_quality["provider_calls"])
+                    source_mode = "new_count_complete_public_partition"
+
+                session = pd.Timestamp(report_date)
+                active_rows = intervals[
+                    intervals["start_date"].le(session)
+                    & intervals["end_date"].ge(session)
+                ]
+                active_instruments = set(active_rows["instrument"].astype(str))
+                if not active_instruments:
+                    raise RichDataError(
+                        "buyable holding universe has no active names for "
+                        f"{report_date.isoformat()}"
+                    )
+                if report_date != reused_date:
+                    complete_identity_names = int(
+                        len(complete_identity_instruments & active_instruments)
+                    )
+                expected_names = int(len(active_instruments))
+                complete_identity_coverage = complete_identity_names / expected_names
+                in_universe = normalized["instrument"].isin(active_instruments)
+                outside_universe = int((~in_universe).sum())
+                partition = normalized.loc[in_universe].reset_index(drop=True)
+                valid_factor_names = int(partition["instrument"].nunique())
+                valid_factor_coverage = valid_factor_names / expected_names
+                if complete_identity_coverage < float(
+                    full[
+                        "minimum_complete_identity_active_holding_coverage_per_report_date"
+                    ]
+                ):
+                    raise RichDataError(
+                        "Eastmoney core-profit complete-identity coverage failed for "
+                        f"{report_date.isoformat()}: {complete_identity_coverage:.6f}"
+                    )
+                if valid_factor_coverage < float(
+                    full[
+                        "minimum_valid_factor_active_holding_coverage_per_report_date"
+                    ]
+                ):
+                    raise RichDataError(
+                        "Eastmoney core-profit valid-factor coverage failed for "
+                        f"{report_date.isoformat()}: {valid_factor_coverage:.6f}"
+                    )
+                distinct_values = int(
+                    partition["eastmoney_core_profit_consistency"].nunique(
+                        dropna=True
+                    )
+                )
+                if distinct_values < int(
+                    full["minimum_distinct_factor_values_per_nonempty_partition"]
+                ):
+                    raise RichDataError(
+                        "Eastmoney core-profit historical variation failed for "
+                        f"{report_date.isoformat()}: {distinct_values}"
+                    )
+                if (
+                    tuple(partition.columns)
+                    != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+                    or partition.duplicated(["instrument", "report_date"]).any()
+                ):
+                    raise RichDataError(
+                        "Eastmoney core-profit historical partition violates the "
+                        "frozen schema"
+                    )
+                filename = f"{report_date.isoformat()}.parquet"
+                temporary_destination = temporary_root / filename
+                final_destination = run_root / filename
+                atomic_write_frame(partition, temporary_destination)
+                files.append(
+                    {
+                        "path": manifest_path(final_destination),
+                        "report_date": report_date.isoformat(),
+                        "rows": int(len(partition)),
+                        "sha256": frame_digest(partition),
+                        "source_mode": source_mode,
+                    }
+                )
+                partition_quality.append(
+                    {
+                        "report_date": report_date.isoformat(),
+                        "source_mode": source_mode,
+                        "expected_active_holding_names": expected_names,
+                        "complete_identity_holding_names": complete_identity_names,
+                        "complete_identity_holding_coverage": (
+                            complete_identity_coverage
+                        ),
+                        "valid_factor_holding_names": valid_factor_names,
+                        "valid_factor_holding_coverage": valid_factor_coverage,
+                        "distinct_factor_values": distinct_values,
+                        "outside_point_in_time_holding_universe_rows_excluded": (
+                            outside_universe
+                        ),
+                        "normalization": quality,
+                        "request": request_quality,
+                    }
+                )
+                print(
+                    "Eastmoney core-profit full source "
+                    f"{index}/{len(report_dates)}: {report_date.isoformat()} "
+                    f"rows={len(partition)} identity={complete_identity_coverage:.6f} "
+                    f"factor={valid_factor_coverage:.6f}"
+                )
+
+            identity_coverages = [
+                float(item["complete_identity_holding_coverage"])
+                for item in partition_quality
+            ]
+            factor_coverages = [
+                float(item["valid_factor_holding_coverage"])
+                for item in partition_quality
+            ]
+            median_identity = float(np.median(identity_coverages))
+            median_factor = float(np.median(factor_coverages))
+            if median_identity < float(
+                full["minimum_median_complete_identity_active_holding_coverage"]
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit median complete-identity coverage failed: "
+                    f"{median_identity:.6f}"
+                )
+            if median_factor < float(
+                full["minimum_median_valid_factor_active_holding_coverage"]
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit median valid-factor coverage failed: "
+                    f"{median_factor:.6f}"
+                )
+            if (
+                len(files) != int(full["required_report_date_count"])
+                or completed_network_partitions
+                != int(full["new_network_partitions"])
+                or provider_calls > int(full["maximum_new_provider_calls"])
+            ):
+                raise RichDataError(
+                    "Eastmoney core-profit full-source partition or call count changed"
+                )
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_core_profit_consistency",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_start_report_date": report_dates[0].isoformat(),
+                "requested_end_report_date": report_dates[-1].isoformat(),
+                "source_chain": {
+                    "data_contract": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT
+                        ),
+                        "sha256": EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256,
+                    },
+                    "acceptance_record": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD
+                        ),
+                        "sha256": (
+                            EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256
+                        ),
+                    },
+                    "no_return_preregistration": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC
+                        ),
+                        "sha256": (
+                            EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256
+                        ),
+                    },
+                },
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                },
+                "source_request": {
+                    "new_network_partitions": completed_network_partitions,
+                    "accepted_partitions_reused_without_network": 1,
+                    "new_provider_calls": provider_calls,
+                    "maximum_allowed_new_provider_calls": int(
+                        full["maximum_new_provider_calls"]
+                    ),
+                    "ordered_source_column_count": int(
+                        accepted_schema["ordered_source_column_count"]
+                    ),
+                    "ordered_source_columns_sha256": accepted_schema[
+                        "ordered_source_columns_sha256"
+                    ],
+                    "credentials_required_logged_or_stored": False,
+                    "tushare_token_read": False,
+                    "cookies_proxy_or_retail_session_used": False,
+                    "unused_transported_fields_persisted": False,
+                },
+                "files": files,
+                "partition_quality": partition_quality,
+                "coverage": {
+                    "complete_identity": {
+                        "minimum": float(min(identity_coverages)),
+                        "median": median_identity,
+                        "maximum": float(max(identity_coverages)),
+                        "minimum_required_per_partition": float(
+                            full[
+                                "minimum_complete_identity_active_holding_coverage_per_report_date"
+                            ]
+                        ),
+                        "minimum_required_median": float(
+                            full[
+                                "minimum_median_complete_identity_active_holding_coverage"
+                            ]
+                        ),
+                    },
+                    "valid_factor": {
+                        "minimum": float(min(factor_coverages)),
+                        "median": median_factor,
+                        "maximum": float(max(factor_coverages)),
+                        "minimum_required_per_partition": float(
+                            full[
+                                "minimum_valid_factor_active_holding_coverage_per_report_date"
+                            ]
+                        ),
+                        "minimum_required_median": float(
+                            full[
+                                "minimum_median_valid_factor_active_holding_coverage"
+                            ]
+                        ),
+                    },
+                    "source_coverage_gate_passed": True,
+                },
+                "conservative_state_contract": spec[
+                    "conservative_state_contract"
+                ],
+                "status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness",
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_core_profit_consistency",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "current_report_date": (
+                    current_report_date.isoformat() if current_report_date else None
+                ),
+                "completed_network_partitions": completed_network_partitions,
+                "new_provider_calls": provider_calls,
+                "data_contract_sha256": (
+                    EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256
+                ),
+                "no_return_preregistration_sha256": (
+                    EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256
+                ),
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "status": "terminal_full_source_rejected_stop_before_capacity_uniqueness_prices_or_returns",
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def tushare_free_float_scarcity_acceptance_records() -> list[Path]:
     """Return prior local acceptance or rejection manifests for this mechanism."""
 
@@ -13751,9 +16881,21 @@ def sync_tushare_free_float_scarcity_acceptance(
 ) -> Path:
     """Run the sole frozen one-session free-float entitlement and coverage check."""
 
+    if DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_ACCEPTANCE_RECORD.exists():
+        load_tushare_free_float_scarcity_acceptance_record()
+        raise RichDataError(
+            "Tushare free-float-scarcity acceptance is permanently consumed; "
+            "another provider request is forbidden"
+        )
     with RichDataProcessLock(
         METADATA_ROOT / ".tushare_free_float_scarcity_acceptance.lock"
     ):
+        if DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_ACCEPTANCE_RECORD.exists():
+            load_tushare_free_float_scarcity_acceptance_record()
+            raise RichDataError(
+                "Tushare free-float-scarcity acceptance is permanently consumed; "
+                "another provider request is forbidden"
+            )
         contract = load_tushare_free_float_scarcity_contract()
         prior_records = tushare_free_float_scarcity_acceptance_records()
         if prior_records:
@@ -13765,13 +16907,7 @@ def sync_tushare_free_float_scarcity_acceptance(
         acceptance = contract["acceptance_protocol"]
         trade_date = dt.date.fromisoformat(acceptance["fixed_completed_session"])
         run_id = new_run_id("tushare_free_float_scarcity_acceptance")
-        run_root = (
-            RAW_ROOT
-            / "tushare"
-            / "free_float_scarcity"
-            / "acceptance"
-            / run_id
-        )
+        run_root = RAW_ROOT / "tushare" / "free_float_scarcity" / "acceptance" / run_id
         temporary_root = run_root.parent / f".{run_id}.tmp"
         if run_root.exists() or temporary_root.exists():
             raise RichDataError(
@@ -13788,9 +16924,7 @@ def sync_tushare_free_float_scarcity_acceptance(
                     "Tushare daily_basic free-float acceptance returned too few "
                     f"all-market rows: {len(raw)} < {minimum_rows}"
                 )
-            row_ceiling = int(
-                acceptance["provider_documented_maximum_rows_per_call"]
-            )
+            row_ceiling = int(acceptance["provider_documented_maximum_rows_per_call"])
             if len(raw) >= row_ceiling:
                 raise RichDataError(
                     "Tushare daily_basic free-float acceptance reached the provider "
@@ -13802,8 +16936,7 @@ def sync_tushare_free_float_scarcity_acceptance(
             intervals = load_factor_universe_intervals(universe_path)
             session = pd.Timestamp(trade_date)
             active_rows = intervals[
-                intervals["start_date"].le(session)
-                & intervals["end_date"].ge(session)
+                intervals["start_date"].le(session) & intervals["end_date"].ge(session)
             ]
             active_instruments = set(active_rows["instrument"].astype(str))
             if not active_instruments:
@@ -13857,12 +16990,8 @@ def sync_tushare_free_float_scarcity_acceptance(
                 "requested_start": trade_date.isoformat(),
                 "requested_end": trade_date.isoformat(),
                 "data_contract": {
-                    "path": manifest_path(
-                        DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT
-                    ),
-                    "sha256": file_digest(
-                        DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT
-                    ),
+                    "path": manifest_path(DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT),
                     "preregistered_at": contract["preregistered_at"],
                 },
                 "mechanism_audit": contract["freeze_evidence"][
@@ -13931,12 +17060,8 @@ def sync_tushare_free_float_scarcity_acceptance(
                 "requested_start": trade_date.isoformat(),
                 "requested_end": trade_date.isoformat(),
                 "data_contract": {
-                    "path": manifest_path(
-                        DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT
-                    ),
-                    "sha256": file_digest(
-                        DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT
-                    ),
+                    "path": manifest_path(DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT),
                 },
                 "source_request": {
                     "api": "daily_basic",
@@ -13957,6 +17082,449 @@ def sync_tushare_free_float_scarcity_acceptance(
             failure_path = RUNS_ROOT / f"{run_id}.json"
             atomic_write_json(failure, failure_path)
             raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
+def tushare_free_float_scarcity_full_records() -> list[Path]:
+    """Return prior local full-snapshot success or failure records."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*tushare_free_float_scarcity*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_free_float_scarcity":
+            records.append(path)
+    return records
+
+
+def _fetch_tushare_free_float_scarcity_with_policy(
+    trade_date: dt.date,
+    *,
+    minimum_interval: float,
+    maximum_attempts: int,
+    retry_backoffs: list[float],
+    last_request_started: list[float | None],
+) -> pd.DataFrame:
+    """Apply the frozen sequential throttle and retry policy to share counts."""
+
+    for attempt in range(maximum_attempts):
+        previous = last_request_started[0]
+        if previous is not None:
+            remaining = minimum_interval - (time.monotonic() - previous)
+            if remaining > 0.0:
+                time.sleep(remaining)
+        last_request_started[0] = time.monotonic()
+        try:
+            return fetch_tushare_free_float_scarcity(trade_date)
+        except RichDataError:
+            if attempt + 1 >= maximum_attempts:
+                raise
+            time.sleep(retry_backoffs[attempt])
+    raise AssertionError("unreachable Tushare free-float retry state")
+
+
+def sync_tushare_free_float_scarcity(
+    *,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Store the sole frozen 2019-2025 structural-scarcity source snapshot."""
+
+    if DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_FULL_SOURCE_RECORD.exists():
+        load_tushare_free_float_scarcity_full_source_record()
+        raise RichDataError(
+            "Tushare free-float-scarcity full snapshot is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    prior_records = tushare_free_float_scarcity_full_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare free-float-scarcity full snapshot is one-shot and already "
+            f"consumed by {prior_records[-1]}"
+        )
+    with RichDataProcessLock(METADATA_ROOT / ".tushare_free_float_scarcity.lock"):
+        if DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_FULL_SOURCE_RECORD.exists():
+            load_tushare_free_float_scarcity_full_source_record()
+            raise RichDataError(
+                "Tushare free-float-scarcity full snapshot is permanently consumed; "
+                "another provider request is forbidden"
+            )
+        prior_records = tushare_free_float_scarcity_full_records()
+        if prior_records:
+            raise RichDataError(
+                "Tushare free-float-scarcity full snapshot is one-shot and already "
+                f"consumed by {prior_records[-1]}"
+            )
+        source_chain = load_tushare_free_float_scarcity_source_chain()
+        contract = source_chain["contract"]
+        spec = source_chain["spec"]
+        full_contract = spec["full_source_snapshot_contract"]
+        require_provider("tushare")
+        start = dt.date.fromisoformat(full_contract["requested_start"])
+        end = dt.date.fromisoformat(full_contract["requested_end"])
+        validate_range(start, end, allow_large=allow_large, unit_count=1)
+        all_intervals = load_factor_universe_intervals(universe_path)
+        calendar = local_calendar_dates(start, end, calendar_path)
+        expected_calls = int(full_contract["expected_provider_calls"])
+        if len(calendar) != expected_calls:
+            raise RichDataError(
+                "Tushare free-float-scarcity local calendar changed: "
+                f"{len(calendar)} != {expected_calls}"
+            )
+        overlap = all_intervals["start_date"].le(pd.Timestamp(end)) & all_intervals[
+            "end_date"
+        ].ge(pd.Timestamp(start))
+        intervals = all_intervals.loc[overlap].copy()
+        if intervals.empty:
+            raise RichDataError(
+                "holding universe has no instruments in the frozen free-float range"
+            )
+
+        run_id = new_run_id("tushare_free_float_scarcity")
+        parent = RAW_ROOT / "tushare" / "free_float_scarcity" / "snapshots"
+        run_root = parent / run_id
+        temporary_root = parent / f".{run_id}.partial"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Tushare free-float-scarcity snapshot already exists: {run_id}"
+            )
+        temporary_root.mkdir(parents=True)
+        files: list[dict[str, Any]] = []
+        all_daily_coverage: list[dict[str, Any]] = []
+        quality_keys = (
+            "input_rows",
+            "missing_or_nonfinite_share_rows_excluded",
+            "nonpositive_share_rows_excluded",
+            "free_share_above_total_share_rows_excluded",
+            "outside_point_in_time_holding_universe_rows_excluded",
+            "rows_written",
+        )
+        quality_totals = {key: 0 for key in quality_keys}
+        minimum_interval = float(full_contract["minimum_seconds_between_calls"])
+        maximum_attempts = int(full_contract["maximum_attempts_per_session"])
+        retry_backoffs = [
+            float(value) for value in full_contract["retry_backoff_seconds"]
+        ]
+        last_request_started: list[float | None] = [None]
+        completed_calls = 0
+        current_session_date: dt.date | None = None
+        current_year_quality = {key: 0 for key in quality_keys}
+        try:
+            for year in range(start.year, end.year + 1):
+                partition_start = max(start, dt.date(year, 1, 1))
+                partition_end = min(end, dt.date(year, 12, 31))
+                partition_calendar = calendar[
+                    (calendar >= pd.Timestamp(partition_start))
+                    & (calendar <= pd.Timestamp(partition_end))
+                ]
+                if partition_calendar.empty:
+                    continue
+                year_frames: list[pd.DataFrame] = []
+                current_year_quality = {key: 0 for key in quality_keys}
+                for session in partition_calendar:
+                    session_date = pd.Timestamp(session).date()
+                    current_session_date = session_date
+                    raw = _fetch_tushare_free_float_scarcity_with_policy(
+                        session_date,
+                        minimum_interval=minimum_interval,
+                        maximum_attempts=maximum_attempts,
+                        retry_backoffs=retry_backoffs,
+                        last_request_started=last_request_started,
+                    )
+                    if raw.empty:
+                        raise RichDataError(
+                            "Tushare free-float-scarcity returned an empty frame for "
+                            f"{session_date.isoformat()}"
+                        )
+                    if len(raw) >= int(
+                        full_contract["provider_documented_maximum_rows_per_call"]
+                    ):
+                        raise RichDataError(
+                            "Tushare free-float-scarcity reached the provider row "
+                            f"ceiling for {session_date.isoformat()}"
+                        )
+                    normalized, quality = canonicalize_tushare_free_float_scarcity(
+                        raw, session_date, session_date
+                    )
+                    session_ts = pd.Timestamp(session)
+                    active_rows = intervals[
+                        intervals["start_date"].le(session_ts)
+                        & intervals["end_date"].ge(session_ts)
+                    ]
+                    active_instruments = set(active_rows["instrument"].astype(str))
+                    in_universe = normalized["instrument"].isin(active_instruments)
+                    outside_universe = int((~in_universe).sum())
+                    normalized = normalized.loc[in_universe].reset_index(drop=True)
+                    quality["outside_point_in_time_holding_universe_rows_excluded"] = (
+                        outside_universe
+                    )
+                    quality["rows_written"] = int(len(normalized))
+                    for key in quality_keys:
+                        current_year_quality[key] += int(quality.get(key, 0))
+                    observed_names = int(normalized["instrument"].nunique())
+                    expected_names = int(len(active_instruments))
+                    all_daily_coverage.append(
+                        {
+                            "trade_date": session_date.isoformat(),
+                            "expected_active_holding_names": expected_names,
+                            "valid_free_float_holding_names": observed_names,
+                            "coverage": (
+                                observed_names / expected_names
+                                if expected_names
+                                else None
+                            ),
+                        }
+                    )
+                    if not normalized.empty:
+                        year_frames.append(normalized)
+                    completed_calls += 1
+                    if completed_calls % 50 == 0 or completed_calls == expected_calls:
+                        print(
+                            json.dumps(
+                                {
+                                    "dataset": "tushare_free_float_scarcity",
+                                    "progress_calls": completed_calls,
+                                    "total_calls": expected_calls,
+                                    "latest_session": session_date.isoformat(),
+                                },
+                                ensure_ascii=False,
+                            ),
+                            flush=True,
+                        )
+                if not year_frames:
+                    raise RichDataError(
+                        f"Tushare free-float-scarcity {year} has no eligible rows"
+                    )
+                partition_frame = (
+                    pd.concat(year_frames, ignore_index=True)
+                    .sort_values(["trade_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                if (
+                    tuple(partition_frame.columns)
+                    != TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
+                ):
+                    raise RichDataError(
+                        f"Tushare free-float-scarcity {year} columns changed"
+                    )
+                if partition_frame.duplicated(["instrument", "trade_date"]).any():
+                    raise RichDataError(
+                        f"Tushare free-float-scarcity {year} has duplicate keys"
+                    )
+                destination = temporary_root / f"{year}.parquet"
+                atomic_write_frame(partition_frame, destination)
+                for key in quality_keys:
+                    quality_totals[key] += current_year_quality[key]
+                files.append(
+                    {
+                        "year": year,
+                        "requested_start": partition_start.isoformat(),
+                        "requested_end": partition_end.isoformat(),
+                        "provider_calls": int(len(partition_calendar)),
+                        "path": manifest_path(run_root / destination.name),
+                        "rows": int(len(partition_frame)),
+                        "sha256": frame_digest(partition_frame),
+                        "quality": dict(current_year_quality),
+                    }
+                )
+                print(
+                    json.dumps(
+                        {
+                            "dataset": "tushare_free_float_scarcity",
+                            "completed_year": year,
+                            "rows": int(len(partition_frame)),
+                        },
+                        ensure_ascii=False,
+                    ),
+                    flush=True,
+                )
+            if completed_calls != expected_calls or not files:
+                raise RichDataError(
+                    "Tushare free-float-scarcity full snapshot omitted a frozen call"
+                )
+            coverages = pd.Series(
+                [
+                    row["coverage"]
+                    for row in all_daily_coverage
+                    if row["coverage"] is not None
+                ],
+                dtype="float64",
+            )
+            median_coverage = float(coverages.median()) if len(coverages) else 0.0
+            p05_coverage = float(coverages.quantile(0.05)) if len(coverages) else 0.0
+            dates_with_minimum_names = int(
+                sum(
+                    row["valid_free_float_holding_names"] >= 50
+                    for row in all_daily_coverage
+                )
+            )
+            observed_years = len({int(item["year"]) for item in files})
+            coverage_gate_passed = bool(
+                len(coverages) == expected_calls
+                and median_coverage
+                >= float(
+                    full_contract["minimum_median_valid_holding_universe_coverage"]
+                )
+                and p05_coverage
+                >= float(full_contract["minimum_p05_valid_holding_universe_coverage"])
+                and dates_with_minimum_names
+                >= int(full_contract["minimum_sessions_with_fifty_valid_names"])
+                and observed_years
+                >= int(full_contract["minimum_observed_source_years"])
+            )
+            if not coverage_gate_passed:
+                raise RichDataError(
+                    "Tushare free-float-scarcity full source coverage gate failed"
+                )
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "tushare_free_float_scarcity",
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "requested_start": start.isoformat(),
+                "requested_end": end.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "no_return_preregistration": {
+                    "path": manifest_path(source_chain["spec_path"]),
+                    "sha256": file_digest(source_chain["spec_path"]),
+                    "preregistered_at": spec["preregistered_at"],
+                },
+                "source_acceptance": {
+                    "record_path": manifest_path(source_chain["record_path"]),
+                    "record_sha256": file_digest(source_chain["record_path"]),
+                    "manifest_path": manifest_path(source_chain["manifest_path"]),
+                    "manifest_sha256": file_digest(source_chain["manifest_path"]),
+                    "run_id": source_chain["manifest"].get("run_id"),
+                    "frame_path": manifest_path(source_chain["frame_path"]),
+                    "frame_content_sha256": source_chain["manifest"]["files"][0][
+                        "sha256"
+                    ],
+                },
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(universe_path.expanduser().resolve()),
+                    "sha256": file_digest(universe_path.expanduser().resolve()),
+                    "intervals": int(len(all_intervals)),
+                },
+                "local_calendar": {
+                    "path": manifest_path(calendar_path.expanduser().resolve()),
+                    "sha256": file_digest(calendar_path.expanduser().resolve()),
+                    "sessions_in_requested_range": int(len(calendar)),
+                },
+                "source_request": {
+                    "api": "daily_basic",
+                    "frequency": "daily_after_close",
+                    "request_mode": "one completed local trading session per call",
+                    "fields": list(TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS),
+                    "forbidden_fields_requested_or_stored": [],
+                    "credentials_logged_or_stored": False,
+                    "minimum_seconds_between_calls": minimum_interval,
+                    "maximum_attempts_per_session": maximum_attempts,
+                    "completed_provider_calls": completed_calls,
+                },
+                "files": files,
+                "normalization_quality": quality_totals,
+                "coverage": {
+                    "calendar_sessions": int(len(calendar)),
+                    "observed_source_years": observed_years,
+                    "median_valid_free_float_holding_universe_coverage": (
+                        median_coverage
+                    ),
+                    "p05_valid_free_float_holding_universe_coverage": p05_coverage,
+                    "sessions_with_at_least_fifty_valid_free_float_names": (
+                        dates_with_minimum_names
+                    ),
+                    "gate_passed_before_comparison_fields_or_prices": True,
+                    "daily": all_daily_coverage,
+                },
+                "factor_policy": {
+                    "factor": "tushare_free_float_scarcity",
+                    "formula": "1 - free_share / total_share",
+                    "direction": "higher_is_better",
+                    "earliest_entry": "next local trading session open",
+                    "maximum_event_age_calendar_days": 0,
+                },
+                "acceptance_status": full_contract["required_success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            message = safe_exception_text(exc)
+            if "empty frame" in message:
+                failure_code = "source_empty_session"
+            elif "row ceiling" in message:
+                failure_code = "provider_row_ceiling_possible_truncation"
+            elif "duplicate" in message:
+                failure_code = "source_duplicate_key"
+            elif "outside the request" in message:
+                failure_code = "source_date_outside_request"
+            elif "fields outside" in message or "lacks requested fields" in message:
+                failure_code = "source_schema_mismatch"
+            elif "coverage gate failed" in message:
+                failure_code = "full_source_coverage_gate_failed"
+            elif "share" in message and "excluded" in message:
+                failure_code = "source_share_domain_failure"
+            else:
+                failure_code = "provider_or_local_snapshot_failure"
+            failure_path = RUNS_ROOT / f"{run_id}_source_failure.json"
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_source_failure",
+                "dataset": "tushare_free_float_scarcity",
+                "provider": "tushare",
+                "run_id": run_id,
+                "failed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "requested_start": start.isoformat(),
+                "requested_end": end.isoformat(),
+                "failed_session": (
+                    current_session_date.isoformat()
+                    if current_session_date is not None
+                    else None
+                ),
+                "completed_provider_calls_before_failure": completed_calls,
+                "total_planned_provider_calls": expected_calls,
+                "failure_code": failure_code,
+                "error": message,
+                "partial_snapshot_deleted": not temporary_root.exists(),
+                "final_snapshot_published": run_root.exists(),
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT),
+                },
+                "no_return_preregistration": {
+                    "path": manifest_path(source_chain["spec_path"]),
+                    "sha256": file_digest(source_chain["spec_path"]),
+                },
+                "credentials_logged_or_stored": False,
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            atomic_write_json(failure, failure_path)
+            if isinstance(exc, RichDataError):
+                raise RichDataError(
+                    f"{message}; rejection_record={failure_path}"
+                ) from exc
+            raise
 
 
 def sync_tushare_daily_pb_acceptance(
@@ -16668,6 +20236,64 @@ def build_parser() -> argparse.ArgumentParser:
         "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
     )
 
+    eastmoney_balance_acceptance = subparsers.add_parser(
+        "acceptance-eastmoney-balance-sheet-resilience",
+        help="run the frozen public quarterly balance-sheet resilience acceptance",
+    )
+    eastmoney_balance_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+
+    eastmoney_core_profit_acceptance = subparsers.add_parser(
+        "acceptance-eastmoney-core-profit-consistency",
+        help="run the frozen public quarterly core-profit consistency acceptance",
+    )
+    eastmoney_core_profit_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+
+    eastmoney_balance_full = subparsers.add_parser(
+        "sync-eastmoney-balance-sheet-resilience",
+        help="download the frozen 2019-2025 quarterly balance-sheet snapshot",
+    )
+    eastmoney_balance_full.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    eastmoney_balance_full.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the accepted one-shot 27-partition public request",
+    )
+
+    eastmoney_core_profit_full = subparsers.add_parser(
+        "sync-eastmoney-core-profit-consistency",
+        help="download the frozen 2019-2025 quarterly core-profit snapshot",
+    )
+    eastmoney_core_profit_full.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    eastmoney_core_profit_full.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the accepted one-shot 27-partition public request",
+    )
+
+    ts_free_float = subparsers.add_parser(
+        "sync-tushare-free-float-scarcity",
+        help="download the frozen 2019-2025 structural free-float snapshot",
+    )
+    ts_free_float.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    ts_free_float.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+    ts_free_float.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the accepted 1699-call sequential licensed request",
+    )
+
     ts_daily_pb_acceptance = subparsers.add_parser(
         "acceptance-tushare-daily-pb",
         help="run the frozen completed-session positive book-to-market acceptance",
@@ -16864,6 +20490,30 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_free_float_scarcity_acceptance(
                 universe_path=args.universe_file
             )
+        elif args.command == "acceptance-eastmoney-balance-sheet-resilience":
+            manifest = sync_eastmoney_balance_sheet_resilience_acceptance(
+                universe_path=args.universe_file
+            )
+        elif args.command == "acceptance-eastmoney-core-profit-consistency":
+            manifest = sync_eastmoney_core_profit_consistency_acceptance(
+                universe_path=args.universe_file
+            )
+        elif args.command == "sync-eastmoney-balance-sheet-resilience":
+            manifest = sync_eastmoney_balance_sheet_resilience(
+                allow_large=args.allow_large,
+                universe_path=args.universe_file,
+            )
+        elif args.command == "sync-eastmoney-core-profit-consistency":
+            manifest = sync_eastmoney_core_profit_consistency(
+                allow_large=args.allow_large,
+                universe_path=args.universe_file,
+            )
+        elif args.command == "sync-tushare-free-float-scarcity":
+            manifest = sync_tushare_free_float_scarcity(
+                allow_large=args.allow_large,
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+            )
         elif args.command == "acceptance-tushare-daily-pb":
             manifest = sync_tushare_daily_pb_acceptance(
                 universe_path=args.universe_file
@@ -16919,6 +20569,21 @@ def main(argv: list[str] | None = None) -> int:
         "sync-tushare-daily-pb": "stored_pending_no_return_uniqueness_and_capacity",
         "acceptance-tushare-free-float-scarcity": (
             "stored_no_return_structural_free_float_acceptance"
+        ),
+        "acceptance-eastmoney-balance-sheet-resilience": (
+            "stored_no_return_public_balance_sheet_acceptance"
+        ),
+        "acceptance-eastmoney-core-profit-consistency": (
+            "stored_no_return_public_core_profit_acceptance"
+        ),
+        "sync-eastmoney-balance-sheet-resilience": (
+            "stored_pending_no_return_capacity_and_uniqueness"
+        ),
+        "sync-eastmoney-core-profit-consistency": (
+            "stored_pending_no_return_capacity_and_uniqueness"
+        ),
+        "sync-tushare-free-float-scarcity": (
+            "stored_pending_no_return_capacity_and_uniqueness"
         ),
         "acceptance-tushare-top-inst": (
             "stored_no_return_entitlement_and_top_list_acceptance"

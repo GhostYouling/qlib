@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_core_profit_consistency_source_acceptance_record",
+  "status": "accepted_pending_frozen_full_history_and_no_return_gates",
+  "created_at": "2026-07-16T23:44:00Z",
+  "purpose": "Permanently bind the sole frozen Eastmoney 2025-12-31 core-profit-consistency acceptance so every clone stops before another provider request and downstream work remains gated on a separately frozen atomic full source plus no-return capacity and uniqueness audits.",
+  "data_contract": {
+    "path": "docs/a_share_eastmoney_core_profit_consistency_data_contract.json",
+    "sha256": "2ae3be4b134e16681e702171157b48e8be5bc6c1f72aa9cecfc9a285518d7a45",
+    "preregistered_at": "2026-07-16T23:37:00Z",
+    "provider_rows_observed_before_freeze": false,
+    "factor_values_observed_before_freeze": false
+  },
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_core_profit_consistency_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "ca5ac438068dbf8d1911658ec4fcd72e20196d748ba1cfda4d610a105e96ed82",
+    "selected_candidate_count": 1,
+    "same_report_alternative_field_sweep_allowed": false
+  },
+  "acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T234306Z_eastmoney_core_profit_consistency_acceptance_722adbdf.json",
+    "sha256": "c7be7442df45d017c5c4b74500c9949f05f6142e09503b6ff989d1fcbc20ea12",
+    "run_id": "20260716T234306Z_eastmoney_core_profit_consistency_acceptance_722adbdf",
+    "requested_report_date": "2025-12-31",
+    "retrieved_at": "2026-07-16T23:43:06.446858+00:00",
+    "acceptance_status": "accepted_schema_formula_and_current_coverage_pending_full_history_no_return_gates"
+  },
+  "accepted_frame": {
+    "path": "data/raw/a_share/rich/eastmoney/core_profit_consistency/acceptance/20260716T234306Z_eastmoney_core_profit_consistency_acceptance_722adbdf/core_profit_consistency.parquet",
+    "content_sha256": "7a487d4fc8df60ecee8763772dd4aac4b88423aa491c1a580398b5008c84e794",
+    "file_sha256": "2c7e83fb6916cd73073687cfb194df7862bd549cd244133dffd1baf7c2570f57",
+    "rows": 3370,
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "operating_profit",
+      "total_profit",
+      "eastmoney_core_profit_consistency",
+      "provider"
+    ]
+  },
+  "source_request": {
+    "provider": "eastmoney",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_DMSK_FN_INCOME",
+    "advertised_pages": 11,
+    "requested_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "provider_calls": 11,
+    "advertised_rows": 5218,
+    "received_rows": 5218,
+    "ordered_source_column_count": 46,
+    "ordered_source_columns_sha256": "81e5eff36c353c65bbb7728780a4e9663fbbad7b779e44c74921ce57d1f6656f",
+    "credentials_required_logged_or_stored": false,
+    "tushare_token_read": false,
+    "cookies_proxy_or_retail_session_used": false,
+    "unused_transported_fields_persisted": false
+  },
+  "observed_result": {
+    "all_market_source_rows": 5218,
+    "complete_identity_main_board_and_chinext_names_before_universe_filter": 4605,
+    "normalized_valid_factor_rows_before_universe_filter": 3400,
+    "expected_point_in_time_holding_names": 4581,
+    "complete_identity_holding_names": 4574,
+    "complete_identity_holding_coverage": 0.9984719493560358,
+    "valid_factor_holding_names": 3370,
+    "valid_factor_holding_coverage": 0.7356472385941935,
+    "distinct_factor_values": 3369,
+    "accepted_formula_max_absolute_error": 1.1102230246251565e-16,
+    "equivalent_formula_inconsistent_rows_excluded": 0,
+    "nonpositive_operating_profit_rows_excluded": 1391,
+    "nonpositive_total_profit_rows_excluded": 1383,
+    "unsupported_board_rows_excluded": 613,
+    "outside_point_in_time_holding_universe_rows_excluded": 30,
+    "schema_formula_and_current_coverage_gate_passed": true
+  },
+  "next_gate": {
+    "allowed": "Freeze a post-acceptance, pre-full-source record binding the exact 28 quarterly partitions, this acceptance evidence, conservative state materialization, atomic publication, completeness thresholds, and the 47-dense-field no-return capacity and uniqueness rules; then run at most one full source snapshot.",
+    "forbidden": "Do not repeat acceptance; do not change provider, source positions, report dates, fields, formula, sign policy, direction, timing, invalid-row policy, thresholds, or comparison catalogs; do not inspect unused transported fields; do not read prices or returns; do not aggregate, score, select, size, or order."
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

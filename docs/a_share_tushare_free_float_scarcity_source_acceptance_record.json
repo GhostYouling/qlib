@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_free_float_scarcity_source_acceptance_record",
+  "status": "accepted_pending_frozen_full_history_capacity_and_uniqueness",
+  "created_at": "2026-07-16T21:33:33Z",
+  "purpose": "Preserve the one allowed no-return entitlement, four-field schema, structural-scarcity formula, and current point-in-time holding-universe coverage outcome before any full history, comparison field, price, or return is accessed.",
+  "data_contract": {
+    "path": "docs/a_share_tushare_free_float_scarcity_data_contract.json",
+    "sha256": "a5897cf4bda28bb55e4a0f5c8db6fc328e916c68494e71931a313357d43bc1eb",
+    "preregistered_at": "2026-07-16T21:21:37Z",
+    "provider_rows_observed_before_freeze": false,
+    "factor_values_observed_before_freeze": false
+  },
+  "mechanism_and_capacity_audit": {
+    "path": "docs/a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "62c6affbf4ea77a8d85a162f6a641a92bca17dc2d0a661744ed68b8e49b5c3d7"
+  },
+  "acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T213248Z_tushare_free_float_scarcity_acceptance_76551e6b.json",
+    "sha256": "459fe609a218c1ed336740796dce04e967d015b328391cfe3b67651cd2b1569a",
+    "run_id": "20260716T213248Z_tushare_free_float_scarcity_acceptance_76551e6b",
+    "requested_session": "2026-07-13",
+    "retrieved_at": "2026-07-16T21:32:48.980020+00:00",
+    "acceptance_status": "accepted_entitlement_formula_and_current_coverage_pending_full_history_and_frozen_no_return_protocol"
+  },
+  "accepted_frame": {
+    "path": "data/raw/a_share/rich/tushare/free_float_scarcity/acceptance/20260716T213248Z_tushare_free_float_scarcity_acceptance_76551e6b/free_float_scarcity.parquet",
+    "content_sha256": "e9bb5984673c0fa903bb6cf6c15e24509ddd971db918f08f7ea75302bc62cc0c",
+    "file_sha256": "7f12d2db8de0c0bb97478dab53926256a92ec91617b446a1c20ad723cd3327d7",
+    "rows": 4586,
+    "columns": [
+      "trade_date",
+      "instrument",
+      "total_share",
+      "free_share",
+      "tushare_free_float_scarcity",
+      "provider"
+    ]
+  },
+  "source_request": {
+    "provider": "tushare",
+    "api": "daily_basic",
+    "fields": [
+      "ts_code",
+      "trade_date",
+      "total_share",
+      "free_share"
+    ],
+    "provider_calls": 1,
+    "all_market_source_rows": 5524,
+    "forbidden_fields_requested_or_stored": [],
+    "credentials_logged_or_stored": false
+  },
+  "observed_result": {
+    "normalized_valid_share_rows_before_holding_universe": 5524,
+    "expected_point_in_time_holding_names": 4592,
+    "valid_free_float_holding_names": 4586,
+    "valid_free_float_holding_coverage": 0.9986933797909407,
+    "minimum_required_acceptance_coverage": 0.95,
+    "missing_or_nonfinite_share_rows_excluded": 0,
+    "nonpositive_share_rows_excluded": 0,
+    "free_share_above_total_share_rows_excluded": 0,
+    "outside_point_in_time_holding_universe_rows_excluded": 938,
+    "duplicate_event_key_rows": 0,
+    "distinct_factor_values": 4568,
+    "factor_min": 0.0,
+    "factor_max": 0.9840503642204255,
+    "formula_max_absolute_error": 0.0,
+    "schema_formula_and_current_coverage_gate_passed": true
+  },
+  "interpretation": {
+    "what_passed": "The configured 3000-point account can read the exact four-field daily_basic request; every returned source row had valid positive share counts with free_share no greater than total_share; the retained factor exactly equals 1-free_share/total_share; and current-session buyable-universe coverage exceeds the frozen 95 percent threshold.",
+    "what_did_not_pass": "No 2019-2025 source continuity or completeness, no-return three-session capacity, no-return uniqueness against 54 frozen fields, return, association stability, prospective execution, CNY 200000 board-lot, TopK, aggregation, current score, selection, sizing, or order gate has run.",
+    "factor_return_conclusion": "none; no price or factor return was read"
+  },
+  "next_allowed_step": "Freeze a post-acceptance no-return protocol fingerprint-bound to this record, manifest, accepted frame, contract, holding universe, calendar, and accepted price basis before implementing or running the fixed 2019-2025 full source snapshot.",
+  "stop_rules": [
+    "The one-session acceptance is permanently consumed and must be rejected before contract, credential, or provider access in every clone.",
+    "Do not infer historical source completeness, factor efficacy, or tradability from entitlement and current-session coverage.",
+    "Do not request another daily_basic field, another date, or another provider under this hypothesis.",
+    "Do not access comparison fields before capacity passes, and do not access prices or returns before both capacity and uniqueness pass under a separately frozen protocol.",
+    "Do not aggregate, score, select, size, or order from the acceptance frame."
+  ],
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

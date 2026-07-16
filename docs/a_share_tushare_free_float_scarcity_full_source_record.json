@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_free_float_scarcity_full_source_record",
+  "status": "accepted_full_source_pending_no_return_capacity_and_uniqueness",
+  "created_at": "2026-07-16T21:56:44Z",
+  "purpose": "Preserve and independently revalidate the sole atomic 2019-2025 structural free-float-scarcity source snapshot before any capacity comparison field price or return is accessed.",
+  "source_chain": {
+    "data_contract": {
+      "path": "docs/a_share_tushare_free_float_scarcity_data_contract.json",
+      "sha256": "a5897cf4bda28bb55e4a0f5c8db6fc328e916c68494e71931a313357d43bc1eb"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_free_float_scarcity_source_acceptance_record.json",
+      "sha256": "7f3a929b08ca4da2a95284bca557e3ff3783bbc747cf31e821c5f48a8e2c125d"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_free_float_scarcity_no_return_preregistration.json",
+      "sha256": "963e8c7d9f41da9c0ea7287399960ee5ecfdf02a1372cada25c6f7b7184f700f",
+      "preregistered_at": "2026-07-16T21:37:09Z"
+    }
+  },
+  "full_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T214522Z_tushare_free_float_scarcity_c647ce28.json",
+    "sha256": "b5653c447c59588e169ed24dd1915adc5b1b2d37b8769dbd682bdc2505797965",
+    "run_id": "20260716T214522Z_tushare_free_float_scarcity_c647ce28",
+    "retrieved_at": "2026-07-16T21:54:55.987629+00:00",
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31",
+    "acceptance_status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+  },
+  "partitions": [
+    {
+      "year": 2019,
+      "path": "data/raw/a_share/rich/tushare/free_float_scarcity/snapshots/20260716T214522Z_tushare_free_float_scarcity_c647ce28/2019.parquet",
+      "rows": 880012,
+      "content_sha256": "02db9bd50e9bc8b47a143ca9c8d0be5e97666a7ce793e81bfe971021e2e541b4",
+      "file_sha256": "6e64ffbceb1a21c9ba58bae8a8a42a4e96cc68efd3c5d49ca936be5e231323a8"
+    },
+    {
+      "year": 2020,
+      "path": "data/raw/a_share/rich/tushare/free_float_scarcity/snapshots/20260716T214522Z_tushare_free_float_scarcity_c647ce28/2020.parquet",
+      "rows": 912940,
+      "content_sha256": "2ab3d992ba43c3849c1ef895ef877aab85d2323575caec3670636bc5816323b2",
+      "file_sha256": "4b19b3f42539735d4fc763f272eb4501e93e36b57f5e704022dfa8c8f085dbe3"
+    },
+    {
+      "year": 2021,
+      "path": "data/raw/a_share/rich/tushare/free_float_scarcity/snapshots/20260716T214522Z_tushare_free_float_scarcity_c647ce28/2021.parquet",
+      "rows": 986192,
+      "content_sha256": "eb8444e66bf7313b2e432cfcaf77073f5791b59487dceb0082dbbeb256444bda",
+      "file_sha256": "300cd637baed61870bf55b81d8d28c28dd8d99af150f602e01cc557679e58e16"
+    },
+    {
+      "year": 2022,
+      "path": "data/raw/a_share/rich/tushare/free_float_scarcity/snapshots/20260716T214522Z_tushare_free_float_scarcity_c647ce28/2022.parquet",
+      "rows": 1040146,
+      "content_sha256": "1f25c7b2e5e6c2809a59e859e39afa38504a4d3e0e0363adf5f12ec89c58aa13",
+      "file_sha256": "fdd73374563922cc73f4ba91efb6a3cb6d2d89f5144f1fefa988176819405267"
+    },
+    {
+      "year": 2023,
+      "path": "data/raw/a_share/rich/tushare/free_float_scarcity/snapshots/20260716T214522Z_tushare_free_float_scarcity_c647ce28/2023.parquet",
+      "rows": 1079358,
+      "content_sha256": "3ef6ed3710a1aaeafda5019b6f167cd4ad968fde85da138d51ba6b65f9eed18a",
+      "file_sha256": "a666e914225a01e70f29f9e69b0d0f7b12d71301e4db5f5aa7bb7edb6b5521ed"
+    },
+    {
+      "year": 2024,
+      "path": "data/raw/a_share/rich/tushare/free_float_scarcity/snapshots/20260716T214522Z_tushare_free_float_scarcity_c647ce28/2024.parquet",
+      "rows": 1094386,
+      "content_sha256": "930715e94aee2a7c9e33faadc5195e3122985900f203e355c4dd81c719cd106e",
+      "file_sha256": "8f8e2c9ff6a3d1bce5a6fd61ab2a0e30c056197011a139890caaeb1176ca019c"
+    },
+    {
+      "year": 2025,
+      "path": "data/raw/a_share/rich/tushare/free_float_scarcity/snapshots/20260716T214522Z_tushare_free_float_scarcity_c647ce28/2025.parquet",
+      "rows": 1105230,
+      "content_sha256": "fb649567222daa2b39e599b0ce97c236fa75599f41aad0a57302b62ab6eaa919",
+      "file_sha256": "a0ac0a3be2e8f644f15564e9070f3318ac309eed7238f9103ef3c68fb799062a"
+    }
+  ],
+  "source_request": {
+    "provider": "tushare",
+    "api": "daily_basic",
+    "fields": [
+      "ts_code",
+      "trade_date",
+      "total_share",
+      "free_share"
+    ],
+    "completed_provider_calls": 1699,
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_session": 3,
+    "forbidden_fields_requested_or_stored": [],
+    "credentials_logged_or_stored": false
+  },
+  "normalization_quality": {
+    "all_market_source_rows": 7931826,
+    "missing_or_nonfinite_share_rows_excluded": 363,
+    "nonpositive_share_rows_excluded": 0,
+    "free_share_above_total_share_rows_excluded": 0,
+    "outside_point_in_time_holding_universe_rows_excluded": 833199,
+    "valid_holding_rows_written": 7098264,
+    "duplicate_stock_date_rows": 0,
+    "invalid_retained_share_or_factor_rows": 0,
+    "formula_max_absolute_error": 0.0,
+    "point_in_time_holding_universe_outside_rows_after_filter": 0
+  },
+  "coverage": {
+    "calendar_sessions": 1699,
+    "observed_source_years": 7,
+    "median_valid_holding_universe_coverage": 0.9968066814050602,
+    "p05_valid_holding_universe_coverage": 0.9917082362759253,
+    "sessions_with_at_least_fifty_valid_names": 1699,
+    "independent_daily_observed_name_counts_match_manifest": true,
+    "independent_daily_expected_name_counts_match_manifest": true,
+    "independent_daily_coverage_values_match_manifest": true,
+    "source_coverage_gate_passed": true
+  },
+  "interpretation": {
+    "what_passed": "All 1699 fixed local sessions returned below the 6000-row ceiling; seven atomic partitions and their fingerprints reloaded; retained rows exactly satisfy the frozen structural-scarcity formula and point-in-time holding universe; median and P05 coverage exceed 95 and 90 percent.",
+    "what_did_not_pass": "No quarterly-quality and listing-seasoned three-session capacity, 54-field uniqueness, price, return, association stability, prospective execution, CNY 200000 board-lot, TopK, aggregation, current score, selection, sizing, or order gate has run.",
+    "factor_return_conclusion": "none; no price or return was read"
+  },
+  "next_allowed_step": "Run exactly one combined no-return audit from the already frozen preregistration: capacity first without comparison fields, then and only if capacity passes the exact 54-field uniqueness screen without forward returns.",
+  "stop_rules": [
+    "The full source attempt is permanently consumed and must be rejected before source-chain credential or provider access in every clone.",
+    "Do not change the formula direction dates fields provider universe coverage thresholds quality gate listing gate cohort grid or uniqueness catalog.",
+    "Do not load a close-known comparison field before capacity passes.",
+    "Do not load an entry open future close forward return score or selection field before both no-return gates pass and a new diagnostic protocol is frozen."
+  ],
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

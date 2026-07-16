@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_balance_sheet_resilience_full_source_record",
+  "status": "accepted_full_source_pending_no_return_capacity_and_uniqueness",
+  "created_at": "2026-07-16T22:58:31Z",
+  "purpose": "Permanently bind the sole complete 2019-2025 Eastmoney balance-sheet-resilience source snapshot so every clone rejects another source attempt before network access and downstream research remains gated on the frozen no-return capacity and uniqueness protocol.",
+  "data_contract": {
+    "path": "docs/a_share_eastmoney_balance_sheet_resilience_data_contract.json",
+    "sha256": "44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4"
+  },
+  "source_acceptance_record": {
+    "path": "docs/a_share_eastmoney_balance_sheet_resilience_source_acceptance_record.json",
+    "sha256": "9a014c7bfa25cfe40f1a5deca0168fe28f5c98f10c1da2bc782366cb15c94baf"
+  },
+  "no_return_preregistration": {
+    "path": "docs/a_share_eastmoney_balance_sheet_resilience_no_return_preregistration.json",
+    "sha256": "fac1c2aefb4c263704e7d93ff7affa6d7e1aa085e1f86dac04c18029ac632a6c"
+  },
+  "full_source_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6.json",
+    "sha256": "b69e71c57ecbef956709e853d5da6054fd28f6c44d53ead2b51273641ecba9fe",
+    "run_id": "20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6",
+    "status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+  },
+  "published_snapshot": {
+    "root": "data/raw/a_share/rich/eastmoney/balance_sheet_resilience/snapshots/20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6",
+    "partition_count": 28,
+    "first_report_date": "2019-03-31",
+    "last_report_date": "2025-12-31",
+    "total_rows": 113916,
+    "minimum_partition_rows": 3374,
+    "maximum_partition_rows": 4543,
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "total_assets",
+      "total_liabilities",
+      "eastmoney_balance_sheet_resilience",
+      "provider"
+    ],
+    "canonical_partition_file_sha256_listing_algorithm": "SHA256 of report_date, one tab, parquet file SHA256, and one newline for all manifest partitions sorted by report_date",
+    "canonical_partition_file_sha256_listing_sha256": "669ea5aebbbe9467b5b538b4110ea7ed9de6fa8ca0f9e721545b0a8573ac68a3"
+  },
+  "source_request": {
+    "new_network_partitions": 27,
+    "accepted_partitions_reused_without_network": 1,
+    "new_provider_calls": 277,
+    "maximum_allowed_new_provider_calls": 540,
+    "ordered_source_column_count": 57,
+    "ordered_source_columns_sha256": "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3",
+    "every_new_partition_count_complete": true,
+    "every_historical_partition_matched_accepted_ordered_schema": true,
+    "credentials_required_logged_or_stored": false,
+    "cookies_proxy_or_retail_session_used": false,
+    "unused_transported_fields_persisted": false
+  },
+  "coverage": {
+    "minimum_valid_active_holding_coverage": 0.9374826340650181,
+    "median_valid_active_holding_coverage": 0.9661019339064675,
+    "maximum_valid_active_holding_coverage": 0.9917048679327658,
+    "minimum_required_per_partition": 0.85,
+    "minimum_required_median": 0.95,
+    "all_28_partitions_present": true,
+    "source_coverage_gate_passed": true
+  },
+  "atomicity": {
+    "all_partitions_shared_one_hidden_temporary_root": true,
+    "final_root_published_only_after_every_source_gate_passed": true,
+    "partial_or_mixed_snapshot_published": false
+  },
+  "next_gate": {
+    "allowed": "Run the single frozen no-return capacity audit first. Only if at least 200 non-overlapping three-session cohorts across at least five years contain 50 eligible names and two factor values may the fixed 46-field dense uniqueness audit and eight-field sparse mechanism review run.",
+    "forbidden": "Do not repeat or repair the source; do not change source, positions, report dates, formula, direction, timing, carry age, quality gate, capacity threshold, comparison catalogs, or sparse mechanism rule; do not read prices or returns; do not aggregate, score, select, size, or order."
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

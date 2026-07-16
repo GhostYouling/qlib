@@ -12,8 +12,14 @@ import pandas as pd
 import pytest
 
 
-SCRIPT_PATH = Path(__file__).resolve().parents[2] / "scripts" / "a_share_short_horizon_factor_research.py"
-SPEC = importlib.util.spec_from_file_location("a_share_short_horizon_factor_research", SCRIPT_PATH)
+SCRIPT_PATH = (
+    Path(__file__).resolve().parents[2]
+    / "scripts"
+    / "a_share_short_horizon_factor_research.py"
+)
+SPEC = importlib.util.spec_from_file_location(
+    "a_share_short_horizon_factor_research", SCRIPT_PATH
+)
 RESEARCH = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 sys.modules[SPEC.name] = RESEARCH
@@ -21,7 +27,9 @@ SPEC.loader.exec_module(RESEARCH)
 
 
 def write_json_record(path: Path, payload: dict) -> None:
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
 
 
 def test_tushare_sw_membership_collapses_same_l1_and_rejects_conflicts():
@@ -139,21 +147,17 @@ def test_tushare_sw_factor_coverage_filters_to_active_holding_intervals():
             {
                 "trade_date": date,
                 "instrument": instrument,
-                RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME: (
-                    position % 2
-                ),
+                RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME: (position % 2),
             }
             for date in calendar
             for position, instrument in enumerate(instruments)
         ]
     )
-    active, audit = (
-        RESEARCH.summarize_tushare_sw_industry_breadth_factor_coverage(
-            factor_frame,
-            holding_universe,
-            calendar,
-            minimum_sessions_with_fifty_values=4,
-        )
+    active, audit = RESEARCH.summarize_tushare_sw_industry_breadth_factor_coverage(
+        factor_frame,
+        holding_universe,
+        calendar,
+        minimum_sessions_with_fifty_values=4,
     )
     assert len(active) == 200
     assert audit["sessions_with_at_least_fifty_factor_values"] == 4
@@ -174,9 +178,7 @@ def test_tushare_sw_capacity_counts_quality_seasoned_three_session_cohorts():
             {
                 "trade_date": date,
                 "instrument": instrument,
-                RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME: (
-                    position % 2
-                ),
+                RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME: (position % 2),
             }
             for date in research_calendar
             for position, instrument in enumerate(instruments)
@@ -279,8 +281,7 @@ def test_tushare_sw_uniqueness_checks_all_45_fields_and_rejects_synonym():
 
     synonym = comparison_frame.copy()
     synonym["momentum_1"] = [
-        (position % len(instruments) + 1) / 100.0
-        for position in range(len(synonym))
+        (position % len(instruments) + 1) / 100.0 for position in range(len(synonym))
     ]
     rejected = RESEARCH.summarize_tushare_sw_industry_breadth_uniqueness(
         factor_frame,
@@ -310,12 +311,8 @@ def test_tushare_sw_capacity_failure_stops_before_comparison_load(
     calendar_path.parent.mkdir(parents=True)
     source_path.parent.mkdir(parents=True)
     calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
-    source_path.write_text(
-        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
-    )
-    holding_path.write_text(
-        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
-    )
+    source_path.write_text("SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8")
+    holding_path.write_text("SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8")
     write_json_record(
         price_basis_path,
         {
@@ -351,12 +348,8 @@ def test_tushare_sw_capacity_failure_stops_before_comparison_load(
             "candidate_minimum_listing_sessions": 20,
         },
         "combined_no_return_audit": {
-            "membership_coverage": {
-                "minimum_sessions_with_fifty_factor_values": 200
-            },
-            "capacity": {
-                "minimum_eligible_names_per_cross_section": 50
-            },
+            "membership_coverage": {"minimum_sessions_with_fifty_factor_values": 200},
+            "capacity": {"minimum_eligible_names_per_cross_section": 50},
             "uniqueness": {
                 "screen_start": "2025-01-01",
                 "screen_end": "2025-12-31",
@@ -448,7 +441,9 @@ def test_tushare_sw_capacity_failure_stops_before_comparison_load(
         RESEARCH,
         "load_tushare_sw_terminal_comparison_factors",
         lambda *args, **kwargs: (_ for _ in ()).throw(
-            AssertionError("rich comparison factors must not load after capacity failure")
+            AssertionError(
+                "rich comparison factors must not load after capacity failure"
+            )
         ),
     )
     monkeypatch.setattr(
@@ -500,7 +495,9 @@ def make_research_frontier_evidence(
         },
     ]
     for group in groups:
-        diagnostic_path = tmp_path / f"{group['diagnostic_run_id']}_factor_diagnostic.json"
+        diagnostic_path = (
+            tmp_path / f"{group['diagnostic_run_id']}_factor_diagnostic.json"
+        )
         write_json_record(
             diagnostic_path,
             {
@@ -607,7 +604,9 @@ def make_minute_feature_chain(
     dates: pd.DatetimeIndex | None = None,
     symbols: tuple[str, ...] = tuple(f"SZ00000{index}" for index in range(1, 7)),
 ) -> tuple[Path, pd.DataFrame]:
-    dates = dates if dates is not None else pd.DatetimeIndex([pd.Timestamp("2019-01-02")])
+    dates = (
+        dates if dates is not None else pd.DatetimeIndex([pd.Timestamp("2019-01-02")])
+    )
     rows = []
     for date in dates:
         for position, symbol in enumerate(symbols, start=1):
@@ -730,7 +729,9 @@ def make_baostock_5m_feature_chain(
     dates: pd.DatetimeIndex | None = None,
     symbols: tuple[str, ...] = tuple(f"SZ00000{index}" for index in range(1, 7)),
 ) -> tuple[Path, pd.DataFrame]:
-    dates = dates if dates is not None else pd.DatetimeIndex([pd.Timestamp("2020-01-02")])
+    dates = (
+        dates if dates is not None else pd.DatetimeIndex([pd.Timestamp("2020-01-02")])
+    )
     rows = []
     for date in dates:
         for position, symbol in enumerate(symbols, start=1):
@@ -808,7 +809,9 @@ def make_baostock_5m_feature_chain(
             "frequency": "5m",
             "feature_spec": {
                 "path": str(RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC),
-                "sha256": RESEARCH.file_sha256(RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC),
+                "sha256": RESEARCH.file_sha256(
+                    RESEARCH.DEFAULT_BAOSTOCK_5M_FACTOR_SPEC
+                ),
                 "version": 1,
                 "features": spec["features"],
             },
@@ -862,9 +865,7 @@ def make_minute_gate_records(
         "status": "completed",
         "purpose": "development_only_preregistered_minute_factor_diagnostic_research_not_investment_advice",
         "factor_catalog": list(factor_names),
-        "factor_directions": dict(
-            zip(factor_names, factor_directions)
-        ),
+        "factor_directions": dict(zip(factor_names, factor_directions)),
         "strategy_timing": {
             "holding_period_trading_days": 3,
             "diagnostic_topk": 3,
@@ -967,7 +968,11 @@ def make_baostock_5m_gate_records(
 
 
 def test_annual_report_dates_and_symbol_mapping():
-    assert RESEARCH.annual_report_dates(2023, 2025) == ["2023-12-31", "2024-12-31", "2025-12-31"]
+    assert RESEARCH.annual_report_dates(2023, 2025) == [
+        "2023-12-31",
+        "2024-12-31",
+        "2025-12-31",
+    ]
     assert RESEARCH.quarterly_report_dates(2023, 2024) == [
         "2023-03-31",
         "2023-06-30",
@@ -988,7 +993,9 @@ def test_listing_age_uses_provider_span_and_full_trading_calendar():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001", "SZ000001", "SZ000002", "SZ000003"],
-            "datetime": pd.to_datetime(["2024-01-02", "2024-01-05", "2024-01-04", "2024-01-05"]),
+            "datetime": pd.to_datetime(
+                ["2024-01-02", "2024-01-05", "2024-01-04", "2024-01-05"]
+            ),
         }
     )
     spans = {
@@ -1018,7 +1025,9 @@ def test_quality_join_waits_until_next_trading_day():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     fundamentals = pd.DataFrame(
@@ -1033,7 +1042,9 @@ def test_quality_join_waits_until_next_trading_day():
         }
     )
     joined = RESEARCH.attach_quality_asof(market, fundamentals)
-    assert not joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30"), "quality_eligible"].item()
+    assert not joined.loc[
+        joined["datetime"] == pd.Timestamp("2024-04-30"), "quality_eligible"
+    ].item()
     effective = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
     assert effective["quality_eligible"]
     assert effective["quality_effective_date"] == pd.Timestamp("2024-05-06")
@@ -1068,7 +1079,9 @@ def test_fundamental_acceleration_becomes_available_only_with_newer_announcement
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     fundamentals = pd.DataFrame(
@@ -1114,7 +1127,9 @@ def test_quarterly_acceleration_compares_only_the_same_fiscal_quarter():
     assert latest["profit_yoy_acceleration"] == pytest.approx(7.0)
 
 
-def test_quarterly_snapshot_merge_is_atomic_and_keeps_the_earliest_announcement(tmp_path):
+def test_quarterly_snapshot_merge_is_atomic_and_keeps_the_earliest_announcement(
+    tmp_path,
+):
     columns = {
         "instrument": ["SZ000001"],
         "report_date": pd.to_datetime(["2024-03-31"]),
@@ -1123,15 +1138,21 @@ def test_quarterly_snapshot_merge_is_atomic_and_keeps_the_earliest_announcement(
         "revenue_yoy": [10.0],
         "profit_yoy": [12.0],
     }
-    first = pd.DataFrame({**columns, "announcement_date": pd.to_datetime(["2024-04-22"])})
-    second = pd.DataFrame({**columns, "announcement_date": pd.to_datetime(["2024-04-20"])})
+    first = pd.DataFrame(
+        {**columns, "announcement_date": pd.to_datetime(["2024-04-22"])}
+    )
+    second = pd.DataFrame(
+        {**columns, "announcement_date": pd.to_datetime(["2024-04-20"])}
+    )
     first_path = tmp_path / "quarterly_first.parquet"
     second_path = tmp_path / "quarterly_second.parquet"
     first.to_parquet(first_path, index=False)
     second.to_parquet(second_path, index=False)
     output = tmp_path / "quarterly_merged.parquet"
     manifest = tmp_path / "quarterly_manifest.json"
-    result = RESEARCH.merge_quarterly_fundamentals([first_path, second_path], output, manifest)
+    result = RESEARCH.merge_quarterly_fundamentals(
+        [first_path, second_path], output, manifest
+    )
     merged = pd.read_parquet(output)
     assert result["report_frequency"] == "quarterly"
     assert result["report_dates"] == ["2024-03-31"]
@@ -1173,7 +1194,9 @@ def test_performance_forecast_normalization_keeps_later_notices_as_separate_even
     normalized = RESEARCH.normalize_performance_forecast_rows(rows, "2024-03-31")
     assert normalized["instrument"].tolist() == ["SZ000001", "SZ000001"]
     assert normalized["forecast_profit_yoy"].tolist() == pytest.approx([20.0, 30.0])
-    assert normalized["forecast_profit_yoy_width"].tolist() == pytest.approx([20.0, 20.0])
+    assert normalized["forecast_profit_yoy_width"].tolist() == pytest.approx(
+        [20.0, 20.0]
+    )
     assert normalized["forecast_turnaround"].tolist() == pytest.approx([0.0, 0.0])
 
 
@@ -1201,7 +1224,9 @@ def test_performance_forecast_join_waits_for_next_session_and_expires_old_events
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-06-10"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-06-10"]
+            ),
         }
     )
     forecasts = pd.DataFrame(
@@ -1215,7 +1240,9 @@ def test_performance_forecast_join_waits_for_next_session_and_expires_old_events
             "forecast_profit_yoy_width": [10.0],
         }
     )
-    joined = RESEARCH.attach_performance_forecasts_asof(market, forecasts, max_age_days=30)
+    joined = RESEARCH.attach_performance_forecasts_asof(
+        market, forecasts, max_age_days=30
+    )
     before = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
     effective = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
     expired = joined.loc[joined["datetime"] == pd.Timestamp("2024-06-10")].iloc[0]
@@ -1262,7 +1289,9 @@ def test_billboard_join_uses_same_close_for_next_open_and_expires_old_events():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -1320,7 +1349,9 @@ def test_major_holder_join_waits_for_next_session_and_expires_old_notices():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -1334,7 +1365,9 @@ def test_major_holder_join_waits_for_next_session_and_expires_old_notices():
         }
     )
     joined = RESEARCH.attach_major_holder_events_asof(market, events, max_age_days=0)
-    announcement_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
+    announcement_day = joined.loc[
+        joined["datetime"] == pd.Timestamp("2024-04-30")
+    ].iloc[0]
     effective = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
     expired = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-07")].iloc[0]
     assert not announcement_day["major_holder_available"]
@@ -1377,7 +1410,9 @@ def test_block_trade_join_uses_same_close_and_expires_after_calendar_window():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -1438,7 +1473,9 @@ def test_margin_financing_join_uses_same_close_and_default_zero_age_window():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -1484,7 +1521,8 @@ def test_margin_financing_incremental_merge_replaces_only_refetched_stock_days()
     merged = RESEARCH.merge_margin_financing_event_frames(existing, fetched)
     assert len(merged) == 3
     assert merged.loc[
-        (merged["instrument"] == "SZ000001") & (merged["trade_date"] == pd.Timestamp("2024-04-29")),
+        (merged["instrument"] == "SZ000001")
+        & (merged["trade_date"] == pd.Timestamp("2024-04-29")),
         "margin_net_buy_to_market_cap",
     ].item() == pytest.approx(0.11)
     assert "SZ000002" in set(merged["instrument"])
@@ -1524,7 +1562,9 @@ def test_institutional_survey_normalization_uses_notice_date_and_deduplicates_pa
         },
     ]
     normalized = RESEARCH.normalize_institutional_survey_rows(rows)
-    assert normalized.columns.tolist() == list(RESEARCH.INSTITUTIONAL_SURVEY_EVENT_COLUMNS)
+    assert normalized.columns.tolist() == list(
+        RESEARCH.INSTITUTIONAL_SURVEY_EVENT_COLUMNS
+    )
     assert len(normalized) == 1
     row = normalized.iloc[0]
     assert row["instrument"] == "SZ000001"
@@ -1536,12 +1576,16 @@ def test_institutional_survey_normalization_uses_notice_date_and_deduplicates_pa
 
 def test_institutional_survey_timing_contract_is_fingerprint_frozen(tmp_path):
     contract = RESEARCH.load_institutional_survey_timing_data_contract()
-    assert contract["factor"]["name"] == RESEARCH.INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME
+    assert (
+        contract["factor"]["name"] == RESEARCH.INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME
+    )
     assert contract["factor"]["direction"] == "lower_raw_lag_is_better"
     assert contract["forward_return_fields_read"] is False
 
     changed = json.loads(
-        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT.read_text(encoding="utf-8")
+        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DATA_CONTRACT.read_text(
+            encoding="utf-8"
+        )
     )
     changed["factor"]["direction"] = "higher_raw_lag_is_better"
     changed_path = tmp_path / "changed_timing_contract.json"
@@ -1564,7 +1608,9 @@ def test_institutional_survey_timing_uses_latest_received_end_and_excludes_negat
         }
     )
     timing, quality = RESEARCH.aggregate_institutional_survey_timing_details(details)
-    assert timing.columns.tolist() == list(RESEARCH.INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS)
+    assert timing.columns.tolist() == list(
+        RESEARCH.INSTITUTIONAL_SURVEY_TIMING_EVENT_COLUMNS
+    )
     assert timing["instrument"].tolist() == ["SZ000001", "SZ000003"]
     assert timing.loc[
         timing["instrument"] == "SZ000001", "institutional_survey_disclosure_lag_days"
@@ -1605,7 +1651,9 @@ def test_institutional_survey_partition_bisects_before_unsafe_page_offsets(monke
     def fake_request(session, start_date, end_date, page_number):
         calls.append((start_date, end_date, page_number))
         if start_date == "2024-01-01" and end_date == "2024-01-31":
-            return {"result": {"pages": 41, "count": 2050, "data": [{"discarded": True}]}}
+            return {
+                "result": {"pages": 41, "count": 2050, "data": [{"discarded": True}]}
+            }
         rows = [
             {
                 "SECURITY_CODE": "000001",
@@ -1617,7 +1665,9 @@ def test_institutional_survey_partition_bisects_before_unsafe_page_offsets(monke
         ]
         return {"result": {"pages": 1, "count": 1, "data": rows}}
 
-    monkeypatch.setattr(RESEARCH, "_eastmoney_institutional_survey_request", fake_request)
+    monkeypatch.setattr(
+        RESEARCH, "_eastmoney_institutional_survey_request", fake_request
+    )
     frames, records = RESEARCH.fetch_institutional_survey_partition_details(
         object(),
         "2024-01-01",
@@ -1641,18 +1691,24 @@ def test_institutional_survey_partition_bisects_before_unsafe_page_offsets(monke
 
 def test_institutional_survey_partition_rejects_incomplete_pagination(monkeypatch):
     def fake_request(session, start_date, end_date, page_number):
-        rows = [
-            {
-                "SECURITY_CODE": "000001",
-                "NOTICE_DATE": start_date,
-                "RECEIVE_START_DATE": start_date,
-                "RECEIVE_END_DATE": start_date,
-                "SUM": 2,
-            }
-        ] if page_number == 1 else []
+        rows = (
+            [
+                {
+                    "SECURITY_CODE": "000001",
+                    "NOTICE_DATE": start_date,
+                    "RECEIVE_START_DATE": start_date,
+                    "RECEIVE_END_DATE": start_date,
+                    "SUM": 2,
+                }
+            ]
+            if page_number == 1
+            else []
+        )
         return {"result": {"pages": 2, "count": 3, "data": rows}}
 
-    monkeypatch.setattr(RESEARCH, "_eastmoney_institutional_survey_request", fake_request)
+    monkeypatch.setattr(
+        RESEARCH, "_eastmoney_institutional_survey_request", fake_request
+    )
     with pytest.raises(RuntimeError, match="row-count mismatch"):
         RESEARCH.fetch_institutional_survey_partition_details(
             object(),
@@ -1663,7 +1719,9 @@ def test_institutional_survey_partition_rejects_incomplete_pagination(monkeypatc
         )
 
 
-def test_institutional_survey_sync_writes_only_after_verified_partitions(tmp_path, monkeypatch):
+def test_institutional_survey_sync_writes_only_after_verified_partitions(
+    tmp_path, monkeypatch
+):
     details = pd.DataFrame(
         {
             "instrument": ["SZ000001"],
@@ -1709,16 +1767,22 @@ def test_institutional_survey_sync_writes_only_after_verified_partitions(tmp_pat
     def fail_partition(*args, **kwargs):
         raise RuntimeError("incomplete partition")
 
-    monkeypatch.setattr(RESEARCH, "fetch_institutional_survey_partition_details", fail_partition)
+    monkeypatch.setattr(
+        RESEARCH, "fetch_institutional_survey_partition_details", fail_partition
+    )
     failed_output = tmp_path / "failed.parquet"
     failed_manifest = tmp_path / "failed.json"
     with pytest.raises(RuntimeError, match="incomplete partition"):
-        RESEARCH.sync_institutional_survey_events(2024, 2024, failed_output, failed_manifest)
+        RESEARCH.sync_institutional_survey_events(
+            2024, 2024, failed_output, failed_manifest
+        )
     assert not failed_output.exists()
     assert not failed_manifest.exists()
 
 
-def test_institutional_survey_timing_sync_writes_separate_no_price_snapshot(tmp_path, monkeypatch):
+def test_institutional_survey_timing_sync_writes_separate_no_price_snapshot(
+    tmp_path, monkeypatch
+):
     details = pd.DataFrame(
         {
             "instrument": ["SZ000001", "SZ000002"],
@@ -1783,7 +1847,9 @@ def test_analyst_rating_contract_is_fingerprint_frozen(tmp_path):
     ]
     assert contract["forward_return_fields_read"] is False
 
-    changed = json.loads(RESEARCH.DEFAULT_ANALYST_RATING_DATA_CONTRACT.read_text(encoding="utf-8"))
+    changed = json.loads(
+        RESEARCH.DEFAULT_ANALYST_RATING_DATA_CONTRACT.read_text(encoding="utf-8")
+    )
     changed["factor"]["direction"] = "lower_upgrade_share_is_better"
     changed_path = tmp_path / "changed_analyst_rating_contract.json"
     write_json_record(changed_path, changed)
@@ -1793,11 +1859,36 @@ def test_analyst_rating_contract_is_fingerprint_frozen(tmp_path):
 
 def test_analyst_rating_normalization_uses_only_recognized_adjustments():
     rows = [
-        {"stockCode": "000001", "publishDate": "2024-04-30", "infoCode": "A", "ratingChange": 0},
-        {"stockCode": "000001", "publishDate": "2024-04-30", "infoCode": "B", "ratingChange": 3},
-        {"stockCode": "000001", "publishDate": "2024-04-30", "infoCode": "C", "ratingChange": 4},
-        {"stockCode": "600000", "publishDate": "2024-04-30", "infoCode": "D", "ratingChange": 1},
-        {"stockCode": "920106", "publishDate": "2024-04-30", "infoCode": "E", "ratingChange": 0},
+        {
+            "stockCode": "000001",
+            "publishDate": "2024-04-30",
+            "infoCode": "A",
+            "ratingChange": 0,
+        },
+        {
+            "stockCode": "000001",
+            "publishDate": "2024-04-30",
+            "infoCode": "B",
+            "ratingChange": 3,
+        },
+        {
+            "stockCode": "000001",
+            "publishDate": "2024-04-30",
+            "infoCode": "C",
+            "ratingChange": 4,
+        },
+        {
+            "stockCode": "600000",
+            "publishDate": "2024-04-30",
+            "infoCode": "D",
+            "ratingChange": 1,
+        },
+        {
+            "stockCode": "920106",
+            "publishDate": "2024-04-30",
+            "infoCode": "E",
+            "ratingChange": 0,
+        },
     ]
     normalized, quality = RESEARCH.normalize_analyst_rating_rows(rows)
     assert normalized.columns.tolist() == list(RESEARCH.ANALYST_RATING_EVENT_COLUMNS)
@@ -1815,14 +1906,18 @@ def test_analyst_rating_normalization_uses_only_recognized_adjustments():
 
 def test_analyst_rating_partition_rejects_incomplete_pagination(monkeypatch):
     def fake_request(session, start_date, end_date, page_number):
-        rows = [
-            {
-                "stockCode": "000001",
-                "publishDate": start_date,
-                "infoCode": f"A{page_number}",
-                "ratingChange": 0,
-            }
-        ] if page_number == 1 else []
+        rows = (
+            [
+                {
+                    "stockCode": "000001",
+                    "publishDate": start_date,
+                    "infoCode": f"A{page_number}",
+                    "ratingChange": 0,
+                }
+            ]
+            if page_number == 1
+            else []
+        )
         return {"TotalPage": 2, "hits": 3, "data": rows}
 
     monkeypatch.setattr(RESEARCH, "_eastmoney_analyst_rating_request", fake_request)
@@ -1836,7 +1931,9 @@ def test_analyst_rating_partition_rejects_incomplete_pagination(monkeypatch):
         )
 
 
-def test_analyst_rating_sync_writes_only_frozen_no_price_snapshot(tmp_path, monkeypatch):
+def test_analyst_rating_sync_writes_only_frozen_no_price_snapshot(
+    tmp_path, monkeypatch
+):
     details = pd.DataFrame(
         {
             "info_code": ["A", "B", "C"],
@@ -1887,7 +1984,9 @@ def test_analyst_rating_sync_writes_only_frozen_no_price_snapshot(tmp_path, monk
 def test_restricted_share_unlock_contract_is_fingerprint_frozen(tmp_path):
     contract = RESEARCH.load_restricted_share_unlock_data_contract()
     assert contract["factor"]["name"] == RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME
-    assert contract["factor"]["direction"] == "lower_actual_unlock_share_ratio_is_better"
+    assert (
+        contract["factor"]["direction"] == "lower_actual_unlock_share_ratio_is_better"
+    )
     assert contract["source"]["explicitly_forbidden_fields"] == [
         "LIFT_MARKET_CAP",
         "FREE_RATIO",
@@ -1898,7 +1997,9 @@ def test_restricted_share_unlock_contract_is_fingerprint_frozen(tmp_path):
     assert contract["forward_return_fields_read"] is False
 
     changed = json.loads(
-        RESEARCH.DEFAULT_RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT.read_text(encoding="utf-8")
+        RESEARCH.DEFAULT_RESTRICTED_SHARE_UNLOCK_DATA_CONTRACT.read_text(
+            encoding="utf-8"
+        )
     )
     changed["factor"]["direction"] = "higher_actual_unlock_share_ratio_is_better"
     changed_path = tmp_path / "changed_unlock_contract.json"
@@ -1927,11 +2028,17 @@ def test_restricted_share_unlock_normalization_excludes_prices_returns_and_non_a
         },
     ]
     normalized, quality = RESEARCH.normalize_restricted_share_unlock_rows(rows)
-    assert normalized.columns.tolist() == list(RESEARCH.RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)
+    assert normalized.columns.tolist() == list(
+        RESEARCH.RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS
+    )
     assert normalized["instrument"].tolist() == ["SZ000001"]
     assert normalized["event_date"].item() == pd.Timestamp("2024-04-30")
-    assert normalized["restricted_unlock_total_share_ratio"].item() == pytest.approx(0.05)
-    assert normalized["restricted_unlock_actual_shares"].item() == pytest.approx(10_000_000)
+    assert normalized["restricted_unlock_total_share_ratio"].item() == pytest.approx(
+        0.05
+    )
+    assert normalized["restricted_unlock_actual_shares"].item() == pytest.approx(
+        10_000_000
+    )
     assert quality["missing_or_non_a_share_rows_excluded"] == 1
     assert "NEW" not in normalized.columns
     assert "A20_ADJCHRATE" not in normalized.columns
@@ -1939,17 +2046,23 @@ def test_restricted_share_unlock_normalization_excludes_prices_returns_and_non_a
 
 def test_restricted_share_unlock_partition_rejects_incomplete_pagination(monkeypatch):
     def fake_request(session, start_date, end_date, page_number):
-        rows = [
-            {
-                "SECURITY_CODE": "000001",
-                "FREE_DATE": start_date,
-                "CURRENT_FREE_SHARES": 1_000_000,
-                "TOTAL_RATIO": 0.01,
-            }
-        ] if page_number == 1 else []
+        rows = (
+            [
+                {
+                    "SECURITY_CODE": "000001",
+                    "FREE_DATE": start_date,
+                    "CURRENT_FREE_SHARES": 1_000_000,
+                    "TOTAL_RATIO": 0.01,
+                }
+            ]
+            if page_number == 1
+            else []
+        )
         return {"result": {"pages": 2, "count": 3, "data": rows}}
 
-    monkeypatch.setattr(RESEARCH, "_eastmoney_restricted_share_unlock_request", fake_request)
+    monkeypatch.setattr(
+        RESEARCH, "_eastmoney_restricted_share_unlock_request", fake_request
+    )
     with pytest.raises(RuntimeError, match="row-count mismatch"):
         RESEARCH.fetch_restricted_share_unlock_partition(
             object(),
@@ -1971,10 +2084,14 @@ def test_restricted_share_unlock_sync_writes_only_frozen_no_price_snapshot(
             "restricted_unlock_actual_shares": [10_000_000.0, 20_000_000.0],
         }
     )
-    contract = json.loads(json.dumps(RESEARCH.load_restricted_share_unlock_data_contract()))
+    contract = json.loads(
+        json.dumps(RESEARCH.load_restricted_share_unlock_data_contract())
+    )
     contract["source"]["event_start"] = "2024-01-01"
     contract["source"]["event_end"] = "2024-12-31"
-    monkeypatch.setattr(RESEARCH, "load_restricted_share_unlock_data_contract", lambda: contract)
+    monkeypatch.setattr(
+        RESEARCH, "load_restricted_share_unlock_data_contract", lambda: contract
+    )
     monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
     monkeypatch.setattr(
         RESEARCH,
@@ -2009,7 +2126,9 @@ def test_restricted_share_unlock_sync_writes_only_frozen_no_price_snapshot(
     assert result["price_fields_loaded"] == []
     assert result["forward_return_fields_read"] is False
     stored = pd.read_parquet(output)
-    assert stored.columns.tolist() == list(RESEARCH.RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS)
+    assert stored.columns.tolist() == list(
+        RESEARCH.RESTRICTED_SHARE_UNLOCK_EVENT_COLUMNS
+    )
     assert manifest.exists()
 
 
@@ -2024,9 +2143,12 @@ def test_insider_open_market_contract_is_fingerprint_frozen(tmp_path):
         "BDFX",
         "BDYY",
     ]
-    assert contract["point_in_time_policy"][
-        "source_has_cross_exchange_historical_publication_timestamp"
-    ] is False
+    assert (
+        contract["point_in_time_policy"][
+            "source_has_cross_exchange_historical_publication_timestamp"
+        ]
+        is False
+    )
     assert contract["forward_return_fields_read"] is False
 
     changed = json.loads(
@@ -2060,9 +2182,16 @@ def test_insider_open_market_request_uses_only_frozen_non_identity_non_price_fie
         Session(), "2024-01-01", "2024-01-31", 1
     )
     assert captured["params"]["columns"] == "SCODE,TDATE,CHANNUM,BDFX,BDYY"
-    assert captured["params"]["reportName"] == RESEARCH.EASTMONEY_INSIDER_OPEN_MARKET_REPORT
+    assert (
+        captured["params"]["reportName"]
+        == RESEARCH.EASTMONEY_INSIDER_OPEN_MARKET_REPORT
+    )
     requested = set(captured["params"]["columns"].split(","))
-    forbidden = set(RESEARCH.load_insider_open_market_data_contract()["source"]["explicitly_forbidden_fields"])
+    forbidden = set(
+        RESEARCH.load_insider_open_market_data_contract()["source"][
+            "explicitly_forbidden_fields"
+        ]
+    )
     assert requested.isdisjoint(forbidden)
 
 
@@ -2126,7 +2255,9 @@ def test_insider_open_market_normalization_delays_three_sessions_and_excludes_me
         },
     ]
     normalized, quality = RESEARCH.normalize_insider_open_market_rows(rows, calendar)
-    assert normalized.columns.tolist() == list(RESEARCH.INSIDER_OPEN_MARKET_EVENT_COLUMNS)
+    assert normalized.columns.tolist() == list(
+        RESEARCH.INSIDER_OPEN_MARKET_EVENT_COLUMNS
+    )
     assert normalized["instrument"].tolist() == ["SH600000", "SZ000001"]
     assert normalized["event_date"].eq(pd.Timestamp("2024-05-08")).all()
     sz = normalized.loc[normalized["instrument"] == "SZ000001"].iloc[0]
@@ -2142,18 +2273,24 @@ def test_insider_open_market_normalization_delays_three_sessions_and_excludes_me
 
 def test_insider_open_market_partition_rejects_incomplete_pagination(monkeypatch):
     def fake_request(session, start_date, end_date, page_number):
-        rows = [
-            {
-                "SCODE": "000001",
-                "TDATE": start_date,
-                "CHANNUM": 100,
-                "BDFX": "增持",
-                "BDYY": "竞价交易",
-            }
-        ] if page_number == 1 else []
+        rows = (
+            [
+                {
+                    "SCODE": "000001",
+                    "TDATE": start_date,
+                    "CHANNUM": 100,
+                    "BDFX": "增持",
+                    "BDYY": "竞价交易",
+                }
+            ]
+            if page_number == 1
+            else []
+        )
         return {"result": {"pages": 2, "count": 3, "data": rows}}
 
-    monkeypatch.setattr(RESEARCH, "_eastmoney_insider_open_market_request", fake_request)
+    monkeypatch.setattr(
+        RESEARCH, "_eastmoney_insider_open_market_request", fake_request
+    )
     with pytest.raises(RuntimeError, match="row-count mismatch"):
         RESEARCH.fetch_insider_open_market_partition_details(
             object(),
@@ -2180,8 +2317,12 @@ def test_insider_open_market_sync_writes_only_frozen_aggregates(tmp_path, monkey
     contract = json.loads(json.dumps(RESEARCH.load_insider_open_market_data_contract()))
     contract["source"]["transaction_start"] = "2024-01-01"
     contract["source"]["transaction_end"] = "2024-12-31"
-    monkeypatch.setattr(RESEARCH, "load_insider_open_market_data_contract", lambda: contract)
-    monkeypatch.setattr(RESEARCH, "local_trading_calendar", lambda provider_uri: calendar)
+    monkeypatch.setattr(
+        RESEARCH, "load_insider_open_market_data_contract", lambda: contract
+    )
+    monkeypatch.setattr(
+        RESEARCH, "local_trading_calendar", lambda provider_uri: calendar
+    )
     monkeypatch.setattr(RESEARCH, "_eastmoney_session", lambda: object())
     monkeypatch.setattr(
         RESEARCH,
@@ -2223,7 +2364,9 @@ def test_insider_open_market_sync_writes_only_frozen_aggregates(tmp_path, monkey
     assert result["forward_return_fields_read"] is False
     stored = pd.read_parquet(output)
     assert stored.columns.tolist() == list(RESEARCH.INSIDER_OPEN_MARKET_EVENT_COLUMNS)
-    assert stored.loc[stored["instrument"] == "SZ000001", "insider_open_market_buy_share"].item() == pytest.approx(0.5)
+    assert stored.loc[
+        stored["instrument"] == "SZ000001", "insider_open_market_buy_share"
+    ].item() == pytest.approx(0.5)
     assert manifest.exists()
 
 
@@ -2267,7 +2410,9 @@ def test_securities_lending_request_uses_only_frozen_non_financing_fields():
 
     RESEARCH._eastmoney_securities_lending_request(Session(), "2024-04-30", 1)
     assert captured["params"]["columns"] == "DATE,SCODE,RQYL,RQMCL,RQCHL"
-    assert captured["params"]["reportName"] == RESEARCH.EASTMONEY_MARGIN_FINANCING_REPORT
+    assert (
+        captured["params"]["reportName"] == RESEARCH.EASTMONEY_MARGIN_FINANCING_REPORT
+    )
     requested = set(captured["params"]["columns"].split(","))
     forbidden = set(
         RESEARCH.load_securities_lending_data_contract()["source"][
@@ -2279,7 +2424,13 @@ def test_securities_lending_request_uses_only_frozen_non_financing_fields():
 
 def test_securities_lending_normalization_uses_frozen_formula_and_exclusions():
     rows = [
-        {"DATE": "2024-04-30", "SCODE": "000001", "RQYL": 100, "RQMCL": 30, "RQCHL": 70},
+        {
+            "DATE": "2024-04-30",
+            "SCODE": "000001",
+            "RQYL": 100,
+            "RQMCL": 30,
+            "RQCHL": 70,
+        },
         {"DATE": "2024-04-30", "SCODE": "600000", "RQYL": 50, "RQMCL": 5, "RQCHL": 0},
         {"DATE": "2024-04-30", "SCODE": "300001", "RQYL": 0, "RQMCL": 0, "RQCHL": 0},
         {"DATE": "2024-04-30", "SCODE": "000002", "RQYL": 10, "RQMCL": -1, "RQCHL": 2},
@@ -2287,7 +2438,9 @@ def test_securities_lending_normalization_uses_frozen_formula_and_exclusions():
         {"DATE": "2024-04-30", "SCODE": "000003", "RQYL": None, "RQMCL": 1, "RQCHL": 2},
     ]
     normalized, quality = RESEARCH.normalize_securities_lending_rows(rows)
-    assert normalized.columns.tolist() == list(RESEARCH.SECURITIES_LENDING_EVENT_COLUMNS)
+    assert normalized.columns.tolist() == list(
+        RESEARCH.SECURITIES_LENDING_EVENT_COLUMNS
+    )
     assert normalized["instrument"].tolist() == ["SH600000", "SZ000001"]
     assert normalized.loc[
         normalized["instrument"] == "SZ000001",
@@ -2326,7 +2479,9 @@ def test_securities_lending_sync_streams_only_frozen_schema(tmp_path, monkeypatc
     contract["source"]["trade_start"] = "2024-04-29"
     contract["source"]["trade_end"] = "2024-04-30"
     calendar = pd.DatetimeIndex(pd.to_datetime(["2024-04-29", "2024-04-30"]))
-    monkeypatch.setattr(RESEARCH, "load_securities_lending_data_contract", lambda: contract)
+    monkeypatch.setattr(
+        RESEARCH, "load_securities_lending_data_contract", lambda: contract
+    )
     monkeypatch.setattr(
         RESEARCH, "local_trading_calendar", lambda provider_uri, end=None: calendar
     )
@@ -2334,7 +2489,13 @@ def test_securities_lending_sync_streams_only_frozen_schema(tmp_path, monkeypatc
 
     def fake_fetch(session, trade_date, **kwargs):
         rows = [
-            {"DATE": trade_date, "SCODE": "000001", "RQYL": 100, "RQMCL": 30, "RQCHL": 70},
+            {
+                "DATE": trade_date,
+                "SCODE": "000001",
+                "RQYL": 100,
+                "RQMCL": 30,
+                "RQCHL": 70,
+            },
             {"DATE": trade_date, "SCODE": "600000", "RQYL": 50, "RQMCL": 5, "RQCHL": 0},
         ]
         frame, quality = RESEARCH.normalize_securities_lending_rows(rows)
@@ -2366,12 +2527,16 @@ def test_securities_lending_sync_streams_only_frozen_schema(tmp_path, monkeypatc
     assert result["manifest_sha256"] == RESEARCH.file_sha256(manifest)
 
 
-def test_securities_lending_sync_leaves_no_partial_snapshot_on_failure(tmp_path, monkeypatch):
+def test_securities_lending_sync_leaves_no_partial_snapshot_on_failure(
+    tmp_path, monkeypatch
+):
     contract = json.loads(json.dumps(RESEARCH.load_securities_lending_data_contract()))
     contract["source"]["trade_start"] = "2024-04-29"
     contract["source"]["trade_end"] = "2024-04-30"
     calendar = pd.DatetimeIndex(pd.to_datetime(["2024-04-29", "2024-04-30"]))
-    monkeypatch.setattr(RESEARCH, "load_securities_lending_data_contract", lambda: contract)
+    monkeypatch.setattr(
+        RESEARCH, "load_securities_lending_data_contract", lambda: contract
+    )
     monkeypatch.setattr(
         RESEARCH, "local_trading_calendar", lambda provider_uri, end=None: calendar
     )
@@ -2458,7 +2623,9 @@ def test_official_securities_lending_contract_is_fingerprint_frozen(tmp_path):
     assert contract["forward_return_fields_read"] is False
 
     changed = json.loads(
-        RESEARCH.DEFAULT_OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT.read_text(encoding="utf-8")
+        RESEARCH.DEFAULT_OFFICIAL_SECURITIES_LENDING_DATA_CONTRACT.read_text(
+            encoding="utf-8"
+        )
     )
     changed["factor"]["direction"] = "lower_net_cover_ratio_is_better"
     changed_path = tmp_path / "changed_official_securities_lending_contract.json"
@@ -2477,7 +2644,10 @@ def test_official_securities_lending_source_rejection_is_frozen_and_rendered(tmp
         "2020-12-31",
         "2021-06-30",
     ]
-    assert audit["szse_failure_class"] == "connection_access_unavailable_in_current_environment"
+    assert (
+        audit["szse_failure_class"]
+        == "connection_access_unavailable_in_current_environment"
+    )
     assert audit["forward_return_fields_read"] is False
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -2528,9 +2698,9 @@ def test_public_five_minute_source_rejection_is_frozen_and_rendered(tmp_path):
             encoding="utf-8"
         )
     )
-    changed["sources"]["sina"]["observations"][
-        "successful_maximum_depth_observed"
-    ] = 2000
+    changed["sources"]["sina"]["observations"]["successful_maximum_depth_observed"] = (
+        2000
+    )
     changed_path = tmp_path / "changed_public_five_minute_availability.json"
     write_json_record(changed_path, changed)
     with pytest.raises(ValueError, match="fingerprint mismatch"):
@@ -2541,7 +2711,9 @@ def test_institutional_survey_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -2552,12 +2724,16 @@ def test_institutional_survey_join_waits_until_strictly_after_notice_date():
             "institutional_survey_event_count": [2.0],
         }
     )
-    joined = RESEARCH.attach_institutional_survey_events_asof(market, events, max_age_days=3)
+    joined = RESEARCH.attach_institutional_survey_events_asof(
+        market, events, max_age_days=3
+    )
     notice_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-04-30")].iloc[0]
     effective_day = joined.loc[joined["datetime"] == pd.Timestamp("2024-05-06")].iloc[0]
     assert not notice_day["institutional_survey_available"]
     assert effective_day["institutional_survey_available"]
-    assert effective_day["institutional_survey_effective_date"] == pd.Timestamp("2024-05-06")
+    assert effective_day["institutional_survey_effective_date"] == pd.Timestamp(
+        "2024-05-06"
+    )
     assert effective_day["institutional_survey_org_count"] == pytest.approx(7.0)
 
 
@@ -2574,7 +2750,9 @@ def test_institutional_survey_timing_join_waits_until_strictly_after_notice_date
         {
             "instrument": ["SZ000001"],
             "announcement_date": pd.to_datetime(["2024-04-30"]),
-            "institutional_survey_latest_receive_end_date": pd.to_datetime(["2024-04-29"]),
+            "institutional_survey_latest_receive_end_date": pd.to_datetime(
+                ["2024-04-29"]
+            ),
             "institutional_survey_disclosure_lag_days": [1.0],
         }
     )
@@ -2654,7 +2832,9 @@ def test_restricted_unlock_join_is_close_known_on_or_after_event_date():
     assert same_session["restricted_unlock_total_share_ratio"] == pytest.approx(0.02)
     assert not expired_after_holiday["restricted_share_unlock_available"]
     assert next_session["restricted_share_unlock_available"]
-    assert next_session["restricted_share_unlock_effective_date"] == pd.Timestamp("2024-05-06")
+    assert next_session["restricted_share_unlock_effective_date"] == pd.Timestamp(
+        "2024-05-06"
+    )
 
 
 def test_insider_open_market_join_uses_synthetic_close_and_expires_by_calendar_age():
@@ -2670,7 +2850,9 @@ def test_insider_open_market_join_uses_synthetic_close_and_expires_by_calendar_a
         {
             "instrument": ["SZ000001"],
             "event_date": pd.to_datetime(["2024-05-08"]),
-            "insider_open_market_latest_transaction_date": pd.to_datetime(["2024-04-30"]),
+            "insider_open_market_latest_transaction_date": pd.to_datetime(
+                ["2024-04-30"]
+            ),
             "insider_open_market_buy_share": [0.75],
             "insider_open_market_event_count": [4],
         }
@@ -2718,7 +2900,9 @@ def test_repurchase_plan_join_waits_until_strictly_after_announcement_date():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -2749,7 +2933,11 @@ def test_holder_count_normalization_uses_notice_date_and_excludes_price_fields()
             "INTERVAL_CHRATE": 99.0,
             "AVG_MARKET_CAP": 123.0,
         },
-        {"SECURITY_CODE": "159001", "HOLD_NOTICE_DATE": "2024-04-30", "HOLDER_NUM_CHANGE": 9.0},
+        {
+            "SECURITY_CODE": "159001",
+            "HOLD_NOTICE_DATE": "2024-04-30",
+            "HOLDER_NUM_CHANGE": 9.0,
+        },
     ]
     normalized = RESEARCH.normalize_holder_count_rows(rows)
     assert normalized.columns.tolist() == list(RESEARCH.HOLDER_COUNT_EVENT_COLUMNS)
@@ -2766,7 +2954,9 @@ def test_holder_count_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -2822,7 +3012,9 @@ def test_pledge_join_waits_until_strictly_after_notice_date():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -2862,7 +3054,11 @@ def test_dividend_plan_normalization_uses_plan_notice_and_excludes_later_fields(
             "BONUS_IT_RATIO": 0.25,
             "EX_DIVIDEND_DATE": "2024-06-30",
         },
-        {"SECURITY_CODE": "159001", "PLAN_NOTICE_DATE": "2024-04-30", "PRETAX_BONUS_RMB": 9.0},
+        {
+            "SECURITY_CODE": "159001",
+            "PLAN_NOTICE_DATE": "2024-04-30",
+            "PRETAX_BONUS_RMB": 9.0,
+        },
     ]
     normalized = RESEARCH.normalize_dividend_plan_rows(rows)
     assert normalized.columns.tolist() == list(RESEARCH.DIVIDEND_PLAN_EVENT_COLUMNS)
@@ -2880,7 +3076,9 @@ def test_dividend_plan_join_waits_until_strictly_after_plan_notice_date():
     market = pd.DataFrame(
         {
             "instrument": ["SZ000001"] * 4,
-            "datetime": pd.to_datetime(["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]),
+            "datetime": pd.to_datetime(
+                ["2024-04-29", "2024-04-30", "2024-05-06", "2024-05-07"]
+            ),
         }
     )
     events = pd.DataFrame(
@@ -2904,7 +3102,9 @@ def test_dividend_plan_join_waits_until_strictly_after_plan_notice_date():
 def test_billboard_holdout_factor_reverses_only_the_ranked_event_intensity():
     ranked = pd.DataFrame({"billboard_deal_to_float": [0.10, 0.80, float("nan")]})
     result = RESEARCH.add_billboard_holdout_factor(ranked)
-    assert result[RESEARCH.BILLBOARD_HOLDOUT_FACTOR].tolist()[:2] == pytest.approx([0.90, 0.20])
+    assert result[RESEARCH.BILLBOARD_HOLDOUT_FACTOR].tolist()[:2] == pytest.approx(
+        [0.90, 0.20]
+    )
     assert pd.isna(result[RESEARCH.BILLBOARD_HOLDOUT_FACTOR].iloc[2])
     with pytest.raises(ValueError, match="requires billboard_deal_to_float"):
         RESEARCH.add_billboard_holdout_factor(pd.DataFrame({"other": [1.0]}))
@@ -3056,16 +3256,30 @@ def test_candidate_sweep_compaction_keeps_only_eligible_required_columns():
 
 def test_winner_uses_development_only():
     summaries = [
-        {"candidate": "development_winner", "development_selection_score": 0.20, "test": {"annualized_return": -0.99}},
-        {"candidate": "test_winner", "development_selection_score": 0.10, "test": {"annualized_return": 9.99}},
+        {
+            "candidate": "development_winner",
+            "development_selection_score": 0.20,
+            "test": {"annualized_return": -0.99},
+        },
+        {
+            "candidate": "test_winner",
+            "development_selection_score": 0.10,
+            "test": {"annualized_return": 9.99},
+        },
     ]
     assert RESEARCH.choose_winner(summaries) == "development_winner"
 
 
 def test_no_development_candidate_is_selected_when_every_policy_score_is_missing():
     summaries = [
-        {"candidate": "one", "selection_scores": {"positive_year_stability_mdd20": None}},
-        {"candidate": "two", "selection_scores": {"positive_year_stability_mdd20": None}},
+        {
+            "candidate": "one",
+            "selection_scores": {"positive_year_stability_mdd20": None},
+        },
+        {
+            "candidate": "two",
+            "selection_scores": {"positive_year_stability_mdd20": None},
+        },
     ]
     assert RESEARCH.choose_winner(summaries, "positive_year_stability_mdd20") is None
 
@@ -3112,13 +3326,23 @@ def test_regime_ranking_uses_development_score_only_and_keeps_unqualified_rules_
             },
         ),
     ]
-    ranked = RESEARCH.rank_regimes_by_development(summaries, "positive_year_stability_mdd20")
-    assert [item[0] for item in ranked] == ["breadth_5_above_20", "always", "breadth_20_positive"]
+    ranked = RESEARCH.rank_regimes_by_development(
+        summaries, "positive_year_stability_mdd20"
+    )
+    assert [item[0] for item in ranked] == [
+        "breadth_5_above_20",
+        "always",
+        "breadth_20_positive",
+    ]
 
 
 def test_basket_overlap_summary_counts_common_dates_and_pairwise_similarity():
     left = {"2025-01-01": {"A", "B", "C"}, "2025-01-06": {"D", "E", "F"}}
-    right = {"2025-01-01": {"A", "B", "G"}, "2025-01-06": {"D", "E", "F"}, "2025-01-09": {"X", "Y", "Z"}}
+    right = {
+        "2025-01-01": {"A", "B", "G"},
+        "2025-01-06": {"D", "E", "F"},
+        "2025-01-09": {"X", "Y", "Z"},
+    }
     metrics = RESEARCH.basket_overlap_metrics(left, right)
     assert metrics["common_signal_dates"] == 2
     assert metrics["mean_jaccard"] == pytest.approx(0.75)
@@ -3132,30 +3356,67 @@ def test_basket_correlation_uses_only_trailing_close_known_returns():
         {
             "datetime": list(dates) * 3,
             "instrument": ["A"] * 4 + ["B"] * 4 + ["C"] * 4,
-            "close": [100.0, 110.0, 99.0, 108.9, 100.0, 120.0, 96.0, 115.2, 100.0, 90.0, 99.0, 89.1],
+            "close": [
+                100.0,
+                110.0,
+                99.0,
+                108.9,
+                100.0,
+                120.0,
+                96.0,
+                115.2,
+                100.0,
+                90.0,
+                99.0,
+                89.1,
+            ],
         }
     )
-    rows = RESEARCH.basket_correlation_rows(scored, {"2025-01-07": {"A", "B", "C"}}, lookback_days=3)
+    rows = RESEARCH.basket_correlation_rows(
+        scored, {"2025-01-07": {"A", "B", "C"}}, lookback_days=3
+    )
     row = rows.iloc[0]
     assert row["valid_return_days"] == 3
     assert row["mean_pairwise_correlation"] == pytest.approx(-1.0 / 3.0)
     assert row["max_pairwise_correlation"] == pytest.approx(1.0)
     summary = RESEARCH.summarize_basket_correlation(
-        rows, pd.DataFrame({"signal_date": dates[-1:], "net_return": [-0.02]}), lookback_days=3
+        rows,
+        pd.DataFrame({"signal_date": dates[-1:], "net_return": [-0.02]}),
+        lookback_days=3,
     )
     assert summary["basket_count"] == 1
     assert summary["valid_correlation_basket_count"] == 1
     with pytest.raises(ValueError, match="at least two"):
-        RESEARCH.basket_correlation_rows(scored, {"2025-01-07": {"A", "B"}}, lookback_days=1)
+        RESEARCH.basket_correlation_rows(
+            scored, {"2025-01-07": {"A", "B"}}, lookback_days=1
+        )
 
 
 def test_diversified_topk_skips_highly_correlated_name_and_requires_a_complete_basket():
-    dates = pd.to_datetime(["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07", "2025-01-08"])
+    dates = pd.to_datetime(
+        ["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07", "2025-01-08"]
+    )
     scored = pd.DataFrame(
         {
             "datetime": list(dates) * 3,
             "instrument": ["A"] * 5 + ["B"] * 5 + ["C"] * 5,
-            "close": [100.0, 110.0, 99.0, 108.9, 98.01, 100.0, 120.0, 96.0, 115.2, 92.16, 100.0, 90.0, 99.0, 89.1, 98.01],
+            "close": [
+                100.0,
+                110.0,
+                99.0,
+                108.9,
+                98.01,
+                100.0,
+                120.0,
+                96.0,
+                115.2,
+                92.16,
+                100.0,
+                90.0,
+                99.0,
+                89.1,
+                98.01,
+            ],
             "score": [0.9] * 5 + [0.8] * 5 + [0.7] * 5,
         }
     )
@@ -3169,9 +3430,16 @@ def test_diversified_topk_skips_highly_correlated_name_and_requires_a_complete_b
         candidate_pool=3,
     )
     latest_signal = dates[2]
-    assert statuses.loc[statuses["datetime"] == latest_signal, "diversification_basket_formed"].item()
-    assert set(selected.loc[selected["datetime"] == latest_signal, "instrument"]) == {"A", "C"}
-    assert not statuses.loc[statuses["datetime"] == dates[0], "diversification_basket_formed"].item()
+    assert statuses.loc[
+        statuses["datetime"] == latest_signal, "diversification_basket_formed"
+    ].item()
+    assert set(selected.loc[selected["datetime"] == latest_signal, "instrument"]) == {
+        "A",
+        "C",
+    }
+    assert not statuses.loc[
+        statuses["datetime"] == dates[0], "diversification_basket_formed"
+    ].item()
     with pytest.raises(ValueError, match="between -1 and 1"):
         RESEARCH.select_diversified_topk(scored, 1, 2, "always", 1.1, 2, 3)
 
@@ -3183,8 +3451,14 @@ def test_selection_risk_gates_require_close_known_low_volatility_and_low_range_r
             "amplitude_low": [0.50, 0.30, 0.60],
         }
     )
-    assert RESEARCH.apply_selection_risk_gates(frame, 0.20, None).index.tolist() == [1, 2]
-    assert RESEARCH.apply_selection_risk_gates(frame, None, 0.40).index.tolist() == [0, 2]
+    assert RESEARCH.apply_selection_risk_gates(frame, 0.20, None).index.tolist() == [
+        1,
+        2,
+    ]
+    assert RESEARCH.apply_selection_risk_gates(frame, None, 0.40).index.tolist() == [
+        0,
+        2,
+    ]
     assert RESEARCH.apply_selection_risk_gates(frame, 0.20, 0.40).index.tolist() == [2]
     with pytest.raises(ValueError, match="between zero and one"):
         RESEARCH.apply_selection_risk_gates(frame, 1.01, None)
@@ -3208,8 +3482,12 @@ def test_selected_basket_trade_details_uses_next_open_and_scheduled_exit_close()
     assert details["entry_date"].tolist() == [pd.Timestamp("2025-01-03")] * 2
     assert details["exit_date"].tolist() == [pd.Timestamp("2025-01-06")] * 2
     assert details["entry_gap_return"].tolist() == pytest.approx([0.0, 0.0])
-    assert details.loc[details["instrument"] == "A", "net_return"].item() == pytest.approx(0.10)
-    assert details.loc[details["instrument"] == "B", "net_return"].item() == pytest.approx(-0.05)
+    assert details.loc[
+        details["instrument"] == "A", "net_return"
+    ].item() == pytest.approx(0.10)
+    assert details.loc[
+        details["instrument"] == "B", "net_return"
+    ].item() == pytest.approx(-0.05)
 
 
 def test_entry_gap_cap_holds_cash_for_the_entire_incomplete_topk_cohort():
@@ -3296,7 +3574,9 @@ def test_human_report_includes_no_eligible_pressure_scans_without_creating_a_win
 
 
 def test_strict_stability_policy_requires_a_development_drawdown_at_or_above_minus_twenty_percent():
-    assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.20) == pytest.approx(0.02)
+    assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.20) == pytest.approx(
+        0.02
+    )
     assert RESEARCH.stability_score_with_drawdown_cap(0.02, -0.200001) is None
     assert RESEARCH.stability_score_with_drawdown_cap(None, -0.05) is None
     summaries = [
@@ -3311,15 +3591,22 @@ def test_strict_stability_policy_requires_a_development_drawdown_at_or_above_min
             "test": {"net_cumulative_return": -9.0},
         },
     ]
-    assert RESEARCH.choose_winner(summaries, "positive_year_stability_mdd20") == "risk_capped"
+    assert (
+        RESEARCH.choose_winner(summaries, "positive_year_stability_mdd20")
+        == "risk_capped"
+    )
 
 
 def test_walk_forward_fold_selects_only_on_completed_training_cohorts():
     def rounds(training_return: float, test_return: float) -> pd.DataFrame:
         return pd.DataFrame(
             {
-                "signal_date": pd.to_datetime(["2019-06-03", "2020-06-01", "2021-06-01", "2020-12-30"]),
-                "exit_date": pd.to_datetime(["2019-06-05", "2020-06-03", "2021-06-03", "2021-01-05"]),
+                "signal_date": pd.to_datetime(
+                    ["2019-06-03", "2020-06-01", "2021-06-01", "2020-12-30"]
+                ),
+                "exit_date": pd.to_datetime(
+                    ["2019-06-05", "2020-06-03", "2021-06-03", "2021-01-05"]
+                ),
                 "net_return": [training_return, training_return, test_return, 0.50],
                 "gross_return": [training_return, training_return, test_return, 0.50],
                 "holdings": [3, 3, 3, 3],
@@ -3346,7 +3633,9 @@ def test_walk_forward_fold_selects_only_on_completed_training_cohorts():
 
 
 def test_positive_year_stability_requires_every_development_year_to_be_positive():
-    assert RESEARCH.positive_year_stability_score([0.03, 0.01], -0.08) == pytest.approx(-0.03)
+    assert RESEARCH.positive_year_stability_score([0.03, 0.01], -0.08) == pytest.approx(
+        -0.03
+    )
     assert RESEARCH.positive_year_stability_score([0.03, -0.01, 0.08], -0.08) is None
     assert RESEARCH.positive_year_stability_score([0.03], -0.08) is None
     assert RESEARCH.positive_year_stability_score([0.03, 0.01], None) is None
@@ -3366,7 +3655,14 @@ def test_close_loss_cap_uses_the_first_breaching_daily_close_without_reallocatin
         {
             "instrument": ["SZ000001"] * 3 + ["SZ000002"] * 3,
             "datetime": pd.to_datetime(
-                ["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-02", "2025-01-03", "2025-01-06"]
+                [
+                    "2025-01-02",
+                    "2025-01-03",
+                    "2025-01-06",
+                    "2025-01-02",
+                    "2025-01-03",
+                    "2025-01-06",
+                ]
             ),
             "close": [98.0, 94.0, 101.0, 96.0, 97.0, 99.0],
         }
@@ -3386,8 +3682,16 @@ def test_close_loss_cap_uses_the_first_breaching_daily_close_without_reallocatin
 
 
 def test_candidate_lookup_rejects_unrecorded_factor_mix():
-    assert RESEARCH.candidate_by_name("quality_trend_pullback").weights["momentum_10"] == 0.25
-    assert RESEARCH.candidate_by_name("expanded_multi_horizon_q25_profit").weights["quality_profit"] == 0.25
+    assert (
+        RESEARCH.candidate_by_name("quality_trend_pullback").weights["momentum_10"]
+        == 0.25
+    )
+    assert (
+        RESEARCH.candidate_by_name("expanded_multi_horizon_q25_profit").weights[
+            "quality_profit"
+        ]
+        == 0.25
+    )
     with pytest.raises(ValueError, match="unknown candidate"):
         RESEARCH.candidate_by_name("made_up_factor_mix")
 
@@ -3399,7 +3703,10 @@ def test_candidate_library_contains_exactly_one_hundred_predeclared_strategies()
     assert len(RESEARCH.BASELINE_CANDIDATES) == 5
     assert len(RESEARCH.EXPANDED_SIGNAL_BLUEPRINTS) == 19
     assert len(RESEARCH.QUALITY_OVERLAYS) == 5
-    assert all(sum(candidate.weights.values()) == pytest.approx(1.0) for candidate in candidates)
+    assert all(
+        sum(candidate.weights.values()) == pytest.approx(1.0)
+        for candidate in candidates
+    )
 
 
 def test_v2_microstructure_library_is_versioned_and_keeps_v1_intact():
@@ -3407,11 +3714,15 @@ def test_v2_microstructure_library_is_versioned_and_keeps_v1_intact():
     v2 = RESEARCH.candidate_library("v2_microstructure")
     assert len(v1) == 100
     assert len(v2) == 150
-    assert tuple(candidate.name for candidate in v2[:100]) == tuple(candidate.name for candidate in v1)
-    assert RESEARCH.candidate_by_name("expanded_v2_micro_reversal_1_q05_composite", "v2_microstructure").weights[
-        "reversal_1"
-    ] == pytest.approx(0.304)
-    assert RESEARCH.candidate_library_fingerprint(v1) != RESEARCH.candidate_library_fingerprint(v2)
+    assert tuple(candidate.name for candidate in v2[:100]) == tuple(
+        candidate.name for candidate in v1
+    )
+    assert RESEARCH.candidate_by_name(
+        "expanded_v2_micro_reversal_1_q05_composite", "v2_microstructure"
+    ).weights["reversal_1"] == pytest.approx(0.304)
+    assert RESEARCH.candidate_library_fingerprint(
+        v1
+    ) != RESEARCH.candidate_library_fingerprint(v2)
     with pytest.raises(ValueError, match="unknown candidate_library"):
         RESEARCH.candidate_library("unrecorded")
 
@@ -3422,8 +3733,14 @@ def test_v3_quality_grid_is_a_nonduplicating_systematic_extension_of_v2():
     additions = v3[len(v2) :]
     assert len(v3) == 170
     assert len(additions) == 20
-    assert tuple(candidate.name for candidate in v3[: len(v2)]) == tuple(candidate.name for candidate in v2)
-    assert {candidate.weights.get("quality_revenue") for candidate in additions if "quality_revenue" in candidate.weights} == {
+    assert tuple(candidate.name for candidate in v3[: len(v2)]) == tuple(
+        candidate.name for candidate in v2
+    )
+    assert {
+        candidate.weights.get("quality_revenue")
+        for candidate in additions
+        if "quality_revenue" in candidate.weights
+    } == {
         0.05,
         0.10,
         0.15,
@@ -3431,10 +3748,13 @@ def test_v3_quality_grid_is_a_nonduplicating_systematic_extension_of_v2():
         0.25,
     }
     v2_signatures = {tuple(sorted(candidate.weights.items())) for candidate in v2}
-    assert all(tuple(sorted(candidate.weights.items())) not in v2_signatures for candidate in additions)
-    assert RESEARCH.candidate_by_name("expanded_v3_quiet_long_trend_q10_growth", "v3_quality_grid").weights[
-        "trend_ma_60"
-    ] == pytest.approx(0.27)
+    assert all(
+        tuple(sorted(candidate.weights.items())) not in v2_signatures
+        for candidate in additions
+    )
+    assert RESEARCH.candidate_by_name(
+        "expanded_v3_quiet_long_trend_q10_growth", "v3_quality_grid"
+    ).weights["trend_ma_60"] == pytest.approx(0.27)
 
 
 def test_v4_freshness_library_adds_close_known_disclosure_age_weight_variants():
@@ -3443,8 +3763,12 @@ def test_v4_freshness_library_adds_close_known_disclosure_age_weight_variants():
     additions = v4[len(v3) :]
     assert len(v4) == 176
     assert len(additions) == 6
-    assert tuple(candidate.name for candidate in v4[: len(v3)]) == tuple(candidate.name for candidate in v3)
-    candidate = RESEARCH.candidate_by_name("expanded_v4_quiet_long_trend_q15_revenue_f10", "v4_freshness")
+    assert tuple(candidate.name for candidate in v4[: len(v3)]) == tuple(
+        candidate.name for candidate in v3
+    )
+    candidate = RESEARCH.candidate_by_name(
+        "expanded_v4_quiet_long_trend_q15_revenue_f10", "v4_freshness"
+    )
     assert candidate.weights["quality_revenue"] == pytest.approx(0.15)
     assert candidate.weights["quality_freshness"] == pytest.approx(0.10)
     assert candidate.weights["trend_ma_60"] == pytest.approx(0.225)
@@ -3456,18 +3780,28 @@ def test_v5_defensive_library_systematically_adds_low_volatility_and_low_range_v
     additions = v5[len(v4) :]
     assert len(v5) == 206
     assert len(additions) == 30
-    assert tuple(candidate.name for candidate in v5[: len(v4)]) == tuple(candidate.name for candidate in v4)
+    assert tuple(candidate.name for candidate in v5[: len(v4)]) == tuple(
+        candidate.name for candidate in v4
+    )
     assert {candidate.name.split("_q", 1)[0] for candidate in additions} == {
         "expanded_v5_defensive_low_volatility",
         "expanded_v5_defensive_low_range",
         "expanded_v5_defensive_dual_risk",
     }
-    assert {candidate.weights.get("quality_roe") for candidate in additions if "quality_roe" in candidate.weights} == {
+    assert {
+        candidate.weights.get("quality_roe")
+        for candidate in additions
+        if "quality_roe" in candidate.weights
+    } == {
         0.10,
         0.15,
     }
-    low_volatility = RESEARCH.candidate_by_name("expanded_v5_defensive_low_volatility_q15_revenue", "v5_defensive")
-    dual_risk = RESEARCH.candidate_by_name("expanded_v5_defensive_dual_risk_q10_growth", "v5_defensive")
+    low_volatility = RESEARCH.candidate_by_name(
+        "expanded_v5_defensive_low_volatility_q15_revenue", "v5_defensive"
+    )
+    dual_risk = RESEARCH.candidate_by_name(
+        "expanded_v5_defensive_dual_risk_q10_growth", "v5_defensive"
+    )
     assert low_volatility.weights["volatility_low_20"] == pytest.approx(0.17)
     assert dual_risk.weights["volatility_low_20"] == pytest.approx(0.18)
     assert dual_risk.weights["amplitude_low"] == pytest.approx(0.162)
@@ -3479,18 +3813,27 @@ def test_v6_soft_risk_library_adds_close_pullback_and_short_reversal_without_har
     additions = v6[len(v5) :]
     assert len(v6) == 246
     assert len(additions) == 40
-    assert tuple(candidate.name for candidate in v6[: len(v5)]) == tuple(candidate.name for candidate in v5)
+    assert tuple(candidate.name for candidate in v6[: len(v5)]) == tuple(
+        candidate.name for candidate in v5
+    )
     assert {candidate.name.split("_q", 1)[0] for candidate in additions} == {
         "expanded_v6_soft_close_pullback_defensive",
         "expanded_v6_soft_short_reversal_defensive",
         "expanded_v6_soft_close_pullback_low_volatility",
         "expanded_v6_soft_short_reversal_low_volatility",
     }
-    pullback = RESEARCH.candidate_by_name("expanded_v6_soft_close_pullback_defensive_q15_revenue", "v6_soft_risk")
-    reversal = RESEARCH.candidate_by_name("expanded_v6_soft_short_reversal_defensive_q10_roe", "v6_soft_risk")
+    pullback = RESEARCH.candidate_by_name(
+        "expanded_v6_soft_close_pullback_defensive_q15_revenue", "v6_soft_risk"
+    )
+    reversal = RESEARCH.candidate_by_name(
+        "expanded_v6_soft_short_reversal_defensive_q10_roe", "v6_soft_risk"
+    )
     assert pullback.weights["close_pullback"] == pytest.approx(0.1105)
     assert reversal.weights["reversal_1"] == pytest.approx(0.117)
-    assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
+    assert all(
+        math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9)
+        for candidate in additions
+    )
 
 
 def test_v7_reversion_ic_library_adds_a_diagnostic_only_quality_gate_mode():
@@ -3499,9 +3842,13 @@ def test_v7_reversion_ic_library_adds_a_diagnostic_only_quality_gate_mode():
     additions = v7[len(v6) :]
     assert len(v7) == 258
     assert len(additions) == 12
-    assert tuple(candidate.name for candidate in v7[: len(v6)]) == tuple(candidate.name for candidate in v6)
+    assert tuple(candidate.name for candidate in v7[: len(v6)]) == tuple(
+        candidate.name for candidate in v6
+    )
     assert {
-        candidate.name.replace("_gate_only", "").replace("_q05_growth", "").replace("_q10_composite", "")
+        candidate.name.replace("_gate_only", "")
+        .replace("_q05_growth", "")
+        .replace("_q10_composite", "")
         for candidate in additions
     } == {
         "expanded_v7_reversal_dry_gap_pullback",
@@ -3509,13 +3856,20 @@ def test_v7_reversion_ic_library_adds_a_diagnostic_only_quality_gate_mode():
         "expanded_v7_gap_dry_reversal",
         "expanded_v7_quiet_reversal_pullback",
     }
-    gate_only = RESEARCH.candidate_by_name("expanded_v7_reversal_dry_gap_gate_only", "v7_reversion_ic")
-    growth = RESEARCH.candidate_by_name("expanded_v7_reversal_dry_gap_q05_growth", "v7_reversion_ic")
+    gate_only = RESEARCH.candidate_by_name(
+        "expanded_v7_reversal_dry_gap_gate_only", "v7_reversion_ic"
+    )
+    growth = RESEARCH.candidate_by_name(
+        "expanded_v7_reversal_dry_gap_q05_growth", "v7_reversion_ic"
+    )
     assert "quality_score" not in gate_only.weights
     assert "quality_growth" not in gate_only.weights
     assert growth.weights["quality_growth"] == pytest.approx(0.05)
     assert gate_only.weights["reversal_5"] == pytest.approx(0.45)
-    assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
+    assert all(
+        math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9)
+        for candidate in additions
+    )
 
 
 def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
@@ -3524,7 +3878,18 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
         {
             "signal_date": dates,
             "instrument": [f"S{index}" for index in range(10)],
-            "forward_gross_return": [0.01, 0.02, 0.03, 0.04, 0.05, 0.02, 0.03, 0.04, 0.05, 0.06],
+            "forward_gross_return": [
+                0.01,
+                0.02,
+                0.03,
+                0.04,
+                0.05,
+                0.02,
+                0.03,
+                0.04,
+                0.05,
+                0.06,
+            ],
             "good": [0.1, 0.2, 0.3, 0.4, 0.5, 0.1, 0.2, 0.3, 0.4, 0.5],
             "bad": [0.5, 0.4, 0.3, 0.2, 0.1, 0.5, 0.4, 0.3, 0.2, 0.1],
         }
@@ -3541,7 +3906,9 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
     assert by_factor["good"]["cohorts"] == 2
     assert by_factor["good"]["mean_rank_ic"] == pytest.approx(1.0)
     assert by_factor["good"]["positive_rank_ic_rate"] == pytest.approx(1.0)
-    assert by_factor["good"]["mean_top_minus_bottom_gross_return"] == pytest.approx(0.04)
+    assert by_factor["good"]["mean_top_minus_bottom_gross_return"] == pytest.approx(
+        0.04
+    )
     assert by_factor["good"]["mean_forward_gross_return_by_factor_quintile"] == {
         "1": pytest.approx(0.015),
         "2": pytest.approx(0.025),
@@ -3549,7 +3916,9 @@ def test_factor_diagnostic_uses_non_overlapping_rank_ic_and_topk_spread():
         "4": pytest.approx(0.045),
         "5": pytest.approx(0.055),
     }
-    assert by_factor["good"]["topk"]["net_cumulative_return"] == pytest.approx((1.05 * 1.06) - 1.0)
+    assert by_factor["good"]["topk"]["net_cumulative_return"] == pytest.approx(
+        (1.05 * 1.06) - 1.0
+    )
     tail = by_factor["good"]["topk_tail_risk"]
     assert tail["p01_net_return"] == pytest.approx(0.0501)
     assert tail["p05_net_return"] == pytest.approx(0.0505)
@@ -3578,10 +3947,17 @@ def test_minute_feature_run_loader_verifies_the_full_manifest_chain(tmp_path):
     manifest_path, expected = make_minute_feature_chain(tmp_path)
     manifest, spec, observed, chain = RESEARCH.load_minute_feature_run(manifest_path)
     assert manifest["run_id"] == "feature-run"
-    assert tuple(item["name"] for item in spec["features"]) == RESEARCH.MINUTE_FACTOR_NAMES
-    pd.testing.assert_frame_equal(observed.reset_index(drop=True), expected.reset_index(drop=True))
+    assert (
+        tuple(item["name"] for item in spec["features"]) == RESEARCH.MINUTE_FACTOR_NAMES
+    )
+    pd.testing.assert_frame_equal(
+        observed.reset_index(drop=True), expected.reset_index(drop=True)
+    )
     assert chain["source_snapshot_path"] == (tmp_path / "bulk_snapshot.json").resolve()
-    assert chain["acceptance_snapshot_path"] == (tmp_path / "acceptance_snapshot.json").resolve()
+    assert (
+        chain["acceptance_snapshot_path"]
+        == (tmp_path / "acceptance_snapshot.json").resolve()
+    )
 
     alignment_path = tmp_path / "alignment.json"
     alignment_path.write_text(alignment_path.read_text() + "\n", encoding="utf-8")
@@ -3600,8 +3976,13 @@ def test_baostock_5m_feature_run_loader_uses_its_separate_frozen_protocol(tmp_pa
     assert protocol["development_start"] == "2020-01-01"
     assert protocol["expected_bars"] == 48
     assert protocol["names"] == RESEARCH.BAOSTOCK_5M_FACTOR_NAMES
-    assert chain["source_snapshot_path"] == (tmp_path / "baostock_5m_history.json").resolve()
-    pd.testing.assert_frame_equal(observed.reset_index(drop=True), expected.reset_index(drop=True))
+    assert (
+        chain["source_snapshot_path"]
+        == (tmp_path / "baostock_5m_history.json").resolve()
+    )
+    pd.testing.assert_frame_equal(
+        observed.reset_index(drop=True), expected.reset_index(drop=True)
+    )
 
     changed = expected.copy()
     changed.loc[0, "minute_bars"] = 240
@@ -3630,7 +4011,9 @@ def test_minute_preregistration_freezes_the_holdout_consumption_rule(tmp_path):
 
 def test_transaction_event_rebuild_is_one_frozen_full_catalog(tmp_path, monkeypatch):
     spec = RESEARCH.load_transaction_event_rebuild_preregistration()
-    assert tuple(spec["factor_catalog"]) == RESEARCH.TRANSACTION_EVENT_REBUILD_FACTOR_NAMES
+    assert (
+        tuple(spec["factor_catalog"]) == RESEARCH.TRANSACTION_EVENT_REBUILD_FACTOR_NAMES
+    )
     assert spec["run_contract"]["minimum_listing_sessions"] == 20
     assert spec["rebuild_policy"]["one_completed_rebuild_only"] is True
 
@@ -3693,10 +4076,15 @@ def test_transaction_event_rebuild_is_one_frozen_full_catalog(tmp_path, monkeypa
 
 def test_announcement_event_rebuild_is_one_frozen_full_catalog(tmp_path, monkeypatch):
     spec = RESEARCH.load_announcement_event_rebuild_preregistration()
-    assert tuple(spec["factor_catalog"]) == RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES
+    assert (
+        tuple(spec["factor_catalog"])
+        == RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES
+    )
     assert spec["source_snapshots"]["performance_forecasts"]["maximum_age_days"] == 30
     assert spec["source_snapshots"]["major_holder_changes"]["maximum_age_days"] == 3
-    assert spec["rebuild_policy"]["preserve_original_quarterly_quality_snapshot"] is True
+    assert (
+        spec["rebuild_policy"]["preserve_original_quarterly_quality_snapshot"] is True
+    )
 
     changed = json.loads(
         RESEARCH.DEFAULT_ANNOUNCEMENT_EVENT_REBUILD_SPEC.read_text(encoding="utf-8")
@@ -3723,7 +4111,9 @@ def test_announcement_event_rebuild_is_one_frozen_full_catalog(tmp_path, monkeyp
                 "run_id": "fixed-announcement",
                 "status": "completed",
                 "purpose": RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_PURPOSE,
-                "factor_catalog": list(RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES),
+                "factor_catalog": list(
+                    RESEARCH.ANNOUNCEMENT_EVENT_REBUILD_FACTOR_NAMES
+                ),
                 "quality_gate": {
                     "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
                 },
@@ -3765,7 +4155,9 @@ def test_sparse_announcement_capacity_protocol_is_frozen(tmp_path):
     assert tuple(spec["factor_catalog"]) == RESEARCH.SPARSE_ANNOUNCEMENT_FACTOR_NAMES
     assert spec["run_contract"]["minimum_valid_names_per_factor_cohort"] == 6
     assert spec["run_contract"]["minimum_required_cohorts"] == 200
-    assert spec["capacity_policy"]["open_close_or_forward_return_fields_allowed"] is False
+    assert (
+        spec["capacity_policy"]["open_close_or_forward_return_fields_allowed"] is False
+    )
 
     changed = json.loads(
         RESEARCH.DEFAULT_SPARSE_ANNOUNCEMENT_CAPACITY_SPEC.read_text(encoding="utf-8")
@@ -3782,7 +4174,8 @@ def test_sparse_announcement_capacity_counts_factor_ready_cohorts_without_prices
     research_calendar = pd.bdate_range("2019-01-02", periods=10)
     instruments = [f"SZ{index:06d}" for index in range(1, 7)]
     intervals = {
-        instrument: [(full_calendar[0], full_calendar[-1])] for instrument in instruments
+        instrument: [(full_calendar[0], full_calendar[-1])]
+        for instrument in instruments
     }
     fundamentals = pd.DataFrame(
         {
@@ -3822,15 +4215,24 @@ def test_sparse_announcement_capacity_counts_factor_ready_cohorts_without_prices
         minimum_required_cohorts=1,
         maximum_quality_age_days=550,
     )
-    assert capacity["factor_capacity"]["repurchase_planned_share_ratio"][
-        "potential_complete_cohorts"
-    ] == 1
-    assert capacity["factor_capacity"]["repurchase_planned_amount"][
-        "potential_complete_cohorts"
-    ] == 1
-    assert capacity["factor_capacity"]["repurchase_freshness"][
-        "potential_complete_cohorts"
-    ] == 0
+    assert (
+        capacity["factor_capacity"]["repurchase_planned_share_ratio"][
+            "potential_complete_cohorts"
+        ]
+        == 1
+    )
+    assert (
+        capacity["factor_capacity"]["repurchase_planned_amount"][
+            "potential_complete_cohorts"
+        ]
+        == 1
+    )
+    assert (
+        capacity["factor_capacity"]["repurchase_freshness"][
+            "potential_complete_cohorts"
+        ]
+        == 0
+    )
     assert capacity["source_admitted_for_return_rebuild"] is True
 
 
@@ -3839,7 +4241,8 @@ def test_restricted_unlock_capacity_can_start_on_unlock_session_close():
     research_calendar = pd.bdate_range("2019-01-02", periods=10)
     instruments = [f"SZ{index:06d}" for index in range(1, 7)]
     intervals = {
-        instrument: [(full_calendar[0], full_calendar[-1])] for instrument in instruments
+        instrument: [(full_calendar[0], full_calendar[-1])]
+        for instrument in instruments
     }
     fundamentals = pd.DataFrame(
         {
@@ -3881,18 +4284,26 @@ def test_restricted_unlock_capacity_can_start_on_unlock_session_close():
         event_date_column="event_date",
         strictly_after_event_date=False,
     )
-    assert capacity["factor_capacity"][RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME][
-        "potential_complete_cohorts"
-    ] == 1
+    assert (
+        capacity["factor_capacity"][RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME][
+            "potential_complete_cohorts"
+        ]
+        == 1
+    )
     assert capacity["source_admitted_for_return_rebuild"] is True
 
 
 def test_institutional_survey_capacity_protocol_is_frozen(tmp_path):
     spec = RESEARCH.load_institutional_survey_capacity_preregistration()
-    assert tuple(spec["factor_catalog"]) == RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+    assert (
+        tuple(spec["factor_catalog"])
+        == RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+    )
     assert spec["run_contract"]["minimum_required_cohorts"] == 200
     assert spec["source_snapshots"]["institutional_surveys"]["maximum_age_days"] == 3
-    assert spec["capacity_policy"]["open_close_or_forward_return_fields_allowed"] is False
+    assert (
+        spec["capacity_policy"]["open_close_or_forward_return_fields_allowed"] is False
+    )
 
     changed = json.loads(
         RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_CAPACITY_SPEC.read_text(encoding="utf-8")
@@ -3910,17 +4321,26 @@ def test_institutional_survey_capacity_audit_reads_no_price_and_is_one_time(
     monkeypatch.setattr(
         RESEARCH,
         "validate_institutional_survey_capacity_sources",
-        lambda spec: {"source_snapshots": {}, "institutional_survey_acceptance": {"rows": 6}},
+        lambda spec: {
+            "source_snapshots": {},
+            "institutional_survey_acceptance": {"rows": 6},
+        },
     )
     calendar = pd.bdate_range("2018-12-01", "2025-12-31")
     research_calendar = pd.bdate_range("2019-01-01", "2025-12-31")
     monkeypatch.setattr(
         RESEARCH,
         "local_market_capacity_context",
-        lambda *args, **kwargs: (calendar, research_calendar, {"SZ000001": [(calendar[0], calendar[-1])]}),
+        lambda *args, **kwargs: (
+            calendar,
+            research_calendar,
+            {"SZ000001": [(calendar[0], calendar[-1])]},
+        ),
     )
     monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
-    monkeypatch.setattr(RESEARCH, "load_institutional_survey_events", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "load_institutional_survey_events", lambda path: pd.DataFrame()
+    )
     captured = {}
 
     def fake_capacity(*args, **kwargs):
@@ -3957,7 +4377,9 @@ def test_institutional_survey_capacity_audit_reads_no_price_and_is_one_time(
         RESEARCH.run_institutional_survey_capacity_audit(args)
 
 
-def test_institutional_survey_timing_capacity_is_frozen_and_one_time(tmp_path, monkeypatch):
+def test_institutional_survey_timing_capacity_is_frozen_and_one_time(
+    tmp_path, monkeypatch
+):
     spec = RESEARCH.load_institutional_survey_timing_capacity_preregistration()
     assert spec["factor_catalog"] == [RESEARCH.INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME]
     assert spec["snapshot_acceptance"]["rows"] == 107913
@@ -3966,7 +4388,9 @@ def test_institutional_survey_timing_capacity_is_frozen_and_one_time(tmp_path, m
     assert spec["forward_return_fields_read"] is False
 
     changed = json.loads(
-        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_TIMING_CAPACITY_SPEC.read_text(encoding="utf-8")
+        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_TIMING_CAPACITY_SPEC.read_text(
+            encoding="utf-8"
+        )
     )
     changed["run_contract"]["minimum_required_cohorts"] = 20
     changed_path = tmp_path / "changed_timing_capacity.json"
@@ -4036,7 +4460,9 @@ def test_analyst_rating_capacity_is_frozen_and_one_time(tmp_path, monkeypatch):
     assert spec["run_contract"]["minimum_required_cohorts"] == 200
     assert spec["forward_return_fields_read"] is False
 
-    changed = json.loads(RESEARCH.DEFAULT_ANALYST_RATING_CAPACITY_SPEC.read_text(encoding="utf-8"))
+    changed = json.loads(
+        RESEARCH.DEFAULT_ANALYST_RATING_CAPACITY_SPEC.read_text(encoding="utf-8")
+    )
     changed["run_contract"]["minimum_required_cohorts"] = 20
     changed_path = tmp_path / "changed_analyst_rating_capacity.json"
     write_json_record(changed_path, changed)
@@ -4060,7 +4486,9 @@ def test_analyst_rating_capacity_is_frozen_and_one_time(tmp_path, monkeypatch):
         ),
     )
     monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
-    monkeypatch.setattr(RESEARCH, "load_analyst_rating_events", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "load_analyst_rating_events", lambda path: pd.DataFrame()
+    )
     captured = {}
 
     def fake_capacity(*args, **kwargs):
@@ -4104,7 +4532,9 @@ def test_restricted_share_unlock_capacity_is_frozen_and_one_time(tmp_path, monke
     assert spec["forward_return_fields_read"] is False
 
     changed = json.loads(
-        RESEARCH.DEFAULT_RESTRICTED_SHARE_UNLOCK_CAPACITY_SPEC.read_text(encoding="utf-8")
+        RESEARCH.DEFAULT_RESTRICTED_SHARE_UNLOCK_CAPACITY_SPEC.read_text(
+            encoding="utf-8"
+        )
     )
     changed["run_contract"]["minimum_required_cohorts"] = 20
     changed_path = tmp_path / "changed_restricted_share_unlock_capacity.json"
@@ -4115,7 +4545,10 @@ def test_restricted_share_unlock_capacity_is_frozen_and_one_time(tmp_path, monke
     monkeypatch.setattr(
         RESEARCH,
         "validate_restricted_share_unlock_capacity_sources",
-        lambda loaded: {"source_snapshots": {}, "restricted_share_unlock_acceptance": {}},
+        lambda loaded: {
+            "source_snapshots": {},
+            "restricted_share_unlock_acceptance": {},
+        },
     )
     calendar = pd.bdate_range("2018-12-01", "2025-12-31")
     research_calendar = pd.bdate_range("2019-01-01", "2025-12-31")
@@ -4203,7 +4636,9 @@ def test_insider_open_market_capacity_is_frozen_and_one_time(tmp_path, monkeypat
         ),
     )
     monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
-    monkeypatch.setattr(RESEARCH, "load_insider_open_market_events", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "load_insider_open_market_events", lambda path: pd.DataFrame()
+    )
     captured = {}
 
     def fake_capacity(*args, **kwargs):
@@ -4250,13 +4685,17 @@ def test_institutional_survey_timing_diagnostic_is_capacity_bound_and_one_time(
     assert spec["forward_return_fields_read"] is False
 
     changed = json.loads(
-        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC.read_text(encoding="utf-8")
+        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_SPEC.read_text(
+            encoding="utf-8"
+        )
     )
     changed["factor"]["raw_direction"] = "higher_is_better"
     changed_path = tmp_path / "changed_timing_diagnostic.json"
     write_json_record(changed_path, changed)
     with pytest.raises(ValueError, match="frozen protocol"):
-        RESEARCH.load_institutional_survey_timing_diagnostic_preregistration(changed_path)
+        RESEARCH.load_institutional_survey_timing_diagnostic_preregistration(
+            changed_path
+        )
 
     monkeypatch.setattr(
         RESEARCH,
@@ -4284,7 +4723,9 @@ def test_institutional_survey_timing_diagnostic_is_capacity_bound_and_one_time(
                     "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
                 },
                 "institutional_survey_timing_events": {
-                    "sha256": spec["source_snapshots"]["institutional_survey_timing"]["sha256"],
+                    "sha256": spec["source_snapshots"]["institutional_survey_timing"][
+                        "sha256"
+                    ],
                     "max_institutional_survey_timing_age_days": 3,
                     "score_direction": "lower raw disclosure lag is better",
                 },
@@ -4294,7 +4735,9 @@ def test_institutional_survey_timing_diagnostic_is_capacity_bound_and_one_time(
         return {"status": "completed", "audit_path": str(path), "factor_count": 1}
 
     monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
-    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path), batch_size=123)
+    args = SimpleNamespace(
+        provider_uri="provider", experiment_root=str(tmp_path), batch_size=123
+    )
     result = RESEARCH.run_institutional_survey_timing_diagnostic(args)
     assert result["factor_count"] == 1
     assert captured["factor"] == [RESEARCH.INSTITUTIONAL_SURVEY_TIMING_FACTOR_NAME]
@@ -4303,12 +4746,17 @@ def test_institutional_survey_timing_diagnostic_is_capacity_bound_and_one_time(
     assert captured["topk"] == 3
     assert captured["open_cost"] == pytest.approx(0.00012)
     assert captured["close_cost"] == pytest.approx(0.00062)
-    assert captured["diagnostic_purpose"] == RESEARCH.INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE
+    assert (
+        captured["diagnostic_purpose"]
+        == RESEARCH.INSTITUTIONAL_SURVEY_TIMING_DIAGNOSTIC_PURPOSE
+    )
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_institutional_survey_timing_diagnostic(args)
 
 
-def test_analyst_rating_diagnostic_is_capacity_bound_and_one_time(tmp_path, monkeypatch):
+def test_analyst_rating_diagnostic_is_capacity_bound_and_one_time(
+    tmp_path, monkeypatch
+):
     spec = RESEARCH.load_analyst_rating_diagnostic_preregistration()
     assert spec["factor"]["name"] == RESEARCH.ANALYST_RATING_FACTOR_NAME
     assert spec["factor"]["raw_direction"] == "higher_is_better"
@@ -4350,7 +4798,9 @@ def test_analyst_rating_diagnostic_is_capacity_bound_and_one_time(tmp_path, monk
                     "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
                 },
                 "analyst_rating_events": {
-                    "sha256": spec["source_snapshots"]["analyst_rating_changes"]["sha256"],
+                    "sha256": spec["source_snapshots"]["analyst_rating_changes"][
+                        "sha256"
+                    ],
                     "max_analyst_rating_age_days": 3,
                     "score_direction": "higher raw upgrade share is better",
                     "report_text_or_broker_identity_stored": False,
@@ -4362,7 +4812,9 @@ def test_analyst_rating_diagnostic_is_capacity_bound_and_one_time(tmp_path, monk
         return {"status": "completed", "audit_path": str(path), "factor_count": 1}
 
     monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
-    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path), batch_size=123)
+    args = SimpleNamespace(
+        provider_uri="provider", experiment_root=str(tmp_path), batch_size=123
+    )
     result = RESEARCH.run_analyst_rating_diagnostic(args)
     assert result["factor_count"] == 1
     assert captured["factor"] == [RESEARCH.ANALYST_RATING_FACTOR_NAME]
@@ -4386,7 +4838,9 @@ def test_restricted_share_unlock_diagnostic_is_capacity_bound_and_one_time(
     assert spec["forward_return_fields_read"] is False
 
     changed = json.loads(
-        RESEARCH.DEFAULT_RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_SPEC.read_text(encoding="utf-8")
+        RESEARCH.DEFAULT_RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_SPEC.read_text(
+            encoding="utf-8"
+        )
     )
     changed["factor"]["raw_direction"] = "higher_is_better"
     changed_path = tmp_path / "changed_restricted_share_unlock_diagnostic.json"
@@ -4420,7 +4874,9 @@ def test_restricted_share_unlock_diagnostic_is_capacity_bound_and_one_time(
                     "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
                 },
                 "restricted_share_unlock_events": {
-                    "sha256": spec["source_snapshots"]["restricted_share_unlocks"]["sha256"],
+                    "sha256": spec["source_snapshots"]["restricted_share_unlocks"][
+                        "sha256"
+                    ],
                     "max_restricted_share_unlock_age_days": 3,
                     "score_direction": "lower raw actual unlock share ratio is better",
                     "market_value_or_return_fields_stored": False,
@@ -4432,7 +4888,9 @@ def test_restricted_share_unlock_diagnostic_is_capacity_bound_and_one_time(
         return {"status": "completed", "audit_path": str(path), "factor_count": 1}
 
     monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
-    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path), batch_size=123)
+    args = SimpleNamespace(
+        provider_uri="provider", experiment_root=str(tmp_path), batch_size=123
+    )
     result = RESEARCH.run_restricted_share_unlock_diagnostic(args)
     assert result["factor_count"] == 1
     assert captured["factor"] == [RESEARCH.RESTRICTED_SHARE_UNLOCK_FACTOR_NAME]
@@ -4441,7 +4899,10 @@ def test_restricted_share_unlock_diagnostic_is_capacity_bound_and_one_time(
     assert captured["topk"] == 3
     assert captured["open_cost"] == pytest.approx(0.00012)
     assert captured["close_cost"] == pytest.approx(0.00062)
-    assert captured["diagnostic_purpose"] == RESEARCH.RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_PURPOSE
+    assert (
+        captured["diagnostic_purpose"]
+        == RESEARCH.RESTRICTED_SHARE_UNLOCK_DIAGNOSTIC_PURPOSE
+    )
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_restricted_share_unlock_diagnostic(args)
 
@@ -4504,7 +4965,9 @@ def test_insider_open_market_diagnostic_is_capacity_bound_and_one_time(
         return {"status": "completed", "audit_path": str(path), "factor_count": 1}
 
     monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
-    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path), batch_size=123)
+    args = SimpleNamespace(
+        provider_uri="provider", experiment_root=str(tmp_path), batch_size=123
+    )
     result = RESEARCH.run_insider_open_market_diagnostic(args)
     assert result["factor_count"] == 1
     assert captured["factor"] == [RESEARCH.INSIDER_OPEN_MARKET_FACTOR_NAME]
@@ -4513,7 +4976,10 @@ def test_insider_open_market_diagnostic_is_capacity_bound_and_one_time(
     assert captured["topk"] == 3
     assert captured["open_cost"] == pytest.approx(0.00012)
     assert captured["close_cost"] == pytest.approx(0.00062)
-    assert captured["diagnostic_purpose"] == RESEARCH.INSIDER_OPEN_MARKET_DIAGNOSTIC_PURPOSE
+    assert (
+        captured["diagnostic_purpose"]
+        == RESEARCH.INSIDER_OPEN_MARKET_DIAGNOSTIC_PURPOSE
+    )
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_insider_open_market_diagnostic(args)
 
@@ -4522,22 +4988,32 @@ def test_institutional_survey_event_diagnostic_is_capacity_bound_and_one_time(
     tmp_path, monkeypatch
 ):
     spec = RESEARCH.load_institutional_survey_event_diagnostic_preregistration()
-    assert tuple(spec["factor_catalog"]) == RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+    assert (
+        tuple(spec["factor_catalog"])
+        == RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+    )
     assert spec["capacity_audit"]["factor_capacity"] == {
         "institutional_survey_org_count": 507,
         "institutional_survey_event_count": 402,
         "institutional_survey_freshness": 495,
     }
-    assert spec["diagnostic_policy"]["accepted_price_returns_observed_before_registration"] is False
+    assert (
+        spec["diagnostic_policy"]["accepted_price_returns_observed_before_registration"]
+        is False
+    )
 
     changed = json.loads(
-        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC.read_text(encoding="utf-8")
+        RESEARCH.DEFAULT_INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_SPEC.read_text(
+            encoding="utf-8"
+        )
     )
     changed["run_contract"]["topk"] = 5
     changed_path = tmp_path / "changed_institutional_survey_event_diagnostic.json"
     write_json_record(changed_path, changed)
     with pytest.raises(ValueError, match="frozen protocol"):
-        RESEARCH.load_institutional_survey_event_diagnostic_preregistration(changed_path)
+        RESEARCH.load_institutional_survey_event_diagnostic_preregistration(
+            changed_path
+        )
 
     monkeypatch.setattr(
         RESEARCH,
@@ -4556,7 +5032,9 @@ def test_institutional_survey_event_diagnostic_is_capacity_bound_and_one_time(
                 "run_id": run_id,
                 "status": "completed",
                 "purpose": RESEARCH.INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE,
-                "factor_catalog": list(RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS),
+                "factor_catalog": list(
+                    RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+                ),
                 "data": {
                     "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
                     "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
@@ -4565,7 +5043,9 @@ def test_institutional_survey_event_diagnostic_is_capacity_bound_and_one_time(
                     "sha256": spec["source_snapshots"]["quarterly_quality"]["sha256"]
                 },
                 "institutional_survey_events": {
-                    "sha256": spec["source_snapshots"]["institutional_surveys"]["sha256"],
+                    "sha256": spec["source_snapshots"]["institutional_surveys"][
+                        "sha256"
+                    ],
                     "max_institutional_survey_age_days": 3,
                 },
                 "selection_or_promotion_allowed": False,
@@ -4581,14 +5061,19 @@ def test_institutional_survey_event_diagnostic_is_capacity_bound_and_one_time(
     )
     result = RESEARCH.run_institutional_survey_event_diagnostic(args)
     assert result["factor_count"] == 3
-    assert captured["factor"] == list(RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS)
+    assert captured["factor"] == list(
+        RESEARCH.INSTITUTIONAL_SURVEY_FACTOR_DIAGNOSTIC_COLUMNS
+    )
     assert captured["hold_days"] == 3
     assert captured["topk"] == 3
     assert captured["open_cost"] == pytest.approx(0.00012)
     assert captured["close_cost"] == pytest.approx(0.00062)
     assert captured["max_quality_age_days"] == 550
     assert captured["max_institutional_survey_age_days"] == 3
-    assert captured["diagnostic_purpose"] == RESEARCH.INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE
+    assert (
+        captured["diagnostic_purpose"]
+        == RESEARCH.INSTITUTIONAL_SURVEY_EVENT_DIAGNOSTIC_PURPOSE
+    )
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_institutional_survey_event_diagnostic(args)
 
@@ -4657,7 +5142,9 @@ def test_pledge_event_rebuild_is_capacity_bound_and_one_time(tmp_path, monkeypat
         RESEARCH.run_pledge_event_rebuild_diagnostic(args)
 
 
-def test_intraday_demand_persistence_is_frozen_semantics_gated_and_one_time(tmp_path, monkeypatch):
+def test_intraday_demand_persistence_is_frozen_semantics_gated_and_one_time(
+    tmp_path, monkeypatch
+):
     spec = RESEARCH.load_intraday_demand_persistence_preregistration()
     assert spec["factor"]["name"] == RESEARCH.INTRADAY_DEMAND_PERSISTENCE_FACTOR_NAME
     assert spec["factor"]["formula"] == RESEARCH.INTRADAY_RETURN_SUM_5_EXPRESSION
@@ -4728,7 +5215,9 @@ def test_intraday_demand_persistence_is_frozen_semantics_gated_and_one_time(tmp_
     assert captured["open_cost"] == pytest.approx(0.00012)
     assert captured["close_cost"] == pytest.approx(0.00062)
     assert captured["fundamentals"].endswith("annual_quality.parquet")
-    assert captured["diagnostic_purpose"] == RESEARCH.INTRADAY_DEMAND_PERSISTENCE_PURPOSE
+    assert (
+        captured["diagnostic_purpose"] == RESEARCH.INTRADAY_DEMAND_PERSISTENCE_PURPOSE
+    )
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_intraday_demand_persistence_diagnostic(args)
 
@@ -4767,14 +5256,24 @@ def test_intraday_demand_requires_a_no_return_complete_window_audit(tmp_path):
         RESEARCH.require_intraday_demand_window_semantics(invalid_root)
 
 
-def test_directional_serial_dependence_is_frozen_semantics_gated_and_one_time(tmp_path, monkeypatch):
+def test_directional_serial_dependence_is_frozen_semantics_gated_and_one_time(
+    tmp_path, monkeypatch
+):
     spec = RESEARCH.load_directional_serial_dependence_preregistration()
     assert spec["factor"]["name"] == RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME
-    assert spec["factor"]["formula"] == RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_20_EXPRESSION
+    assert (
+        spec["factor"]["formula"]
+        == RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_20_EXPRESSION
+    )
     assert spec["factor"]["diagnostic_direction"] == "higher"
-    assert spec["source_snapshots"]["uniqueness_audit"]["forward_return_fields_read"] is False
+    assert (
+        spec["source_snapshots"]["uniqueness_audit"]["forward_return_fields_read"]
+        is False
+    )
 
-    changed = json.loads(RESEARCH.DEFAULT_DIRECTIONAL_SERIAL_DEPENDENCE_SPEC.read_text(encoding="utf-8"))
+    changed = json.loads(
+        RESEARCH.DEFAULT_DIRECTIONAL_SERIAL_DEPENDENCE_SPEC.read_text(encoding="utf-8")
+    )
     changed["factor"]["required_prior_close_sessions"] = 20
     changed_path = tmp_path / "changed_directional_serial_dependence.json"
     write_json_record(changed_path, changed)
@@ -4784,13 +5283,19 @@ def test_directional_serial_dependence_is_frozen_semantics_gated_and_one_time(tm
     monkeypatch.setattr(
         RESEARCH,
         "validate_directional_serial_dependence_sources",
-        lambda loaded: {"price_basis_manifest": {}, "annual_quality": {}, "uniqueness_audit": {}},
+        lambda loaded: {
+            "price_basis_manifest": {},
+            "annual_quality": {},
+            "uniqueness_audit": {},
+        },
     )
     semantics = {
         "run_id": "semantics",
         "path": str(tmp_path / "semantics.json"),
         "sha256": "semantics-sha256",
-        "factor_decision": {"factor": RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME},
+        "factor_decision": {
+            "factor": RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME
+        },
         "forward_return_fields_read": False,
     }
     monkeypatch.setattr(
@@ -4810,7 +5315,9 @@ def test_directional_serial_dependence_is_frozen_semantics_gated_and_one_time(tm
                 "status": "completed",
                 "purpose": RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_PURPOSE,
                 "factor_catalog": [RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME],
-                "quality_gate": {"sha256": spec["source_snapshots"]["annual_quality"]["sha256"]},
+                "quality_gate": {
+                    "sha256": spec["source_snapshots"]["annual_quality"]["sha256"]
+                },
                 "data": {
                     "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
                     "minimum_listing_sessions": RESEARCH.MIN_LISTING_SESSIONS,
@@ -4822,7 +5329,9 @@ def test_directional_serial_dependence_is_frozen_semantics_gated_and_one_time(tm
         return {"status": "completed", "audit_path": str(path), "factor_count": 1}
 
     monkeypatch.setattr(RESEARCH, "run_factor_diagnostic", fake_diagnostic)
-    args = SimpleNamespace(provider_uri="provider", experiment_root=str(tmp_path), batch_size=123)
+    args = SimpleNamespace(
+        provider_uri="provider", experiment_root=str(tmp_path), batch_size=123
+    )
     result = RESEARCH.run_directional_serial_dependence_diagnostic(args)
     assert result["factor_count"] == 1
     assert captured["factor"] == [RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_FACTOR_NAME]
@@ -4831,12 +5340,16 @@ def test_directional_serial_dependence_is_frozen_semantics_gated_and_one_time(tm
     assert captured["open_cost"] == pytest.approx(0.00012)
     assert captured["close_cost"] == pytest.approx(0.00062)
     assert captured["fundamentals"].endswith("annual_quality.parquet")
-    assert captured["diagnostic_purpose"] == RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_PURPOSE
+    assert (
+        captured["diagnostic_purpose"] == RESEARCH.DIRECTIONAL_SERIAL_DEPENDENCE_PURPOSE
+    )
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_directional_serial_dependence_diagnostic(args)
 
 
-def test_directional_serial_dependence_requires_a_no_return_complete_window_audit(tmp_path):
+def test_directional_serial_dependence_requires_a_no_return_complete_window_audit(
+    tmp_path,
+):
     audit_path = tmp_path / "20260714T000000Z_rolling_window_semantics_audit.json"
     write_json_record(
         audit_path,
@@ -4886,24 +5399,33 @@ def test_minute_factor_direction_is_ranked_after_quality_and_listing_gates(tmp_p
             "listing_age_sessions": [100] * 50 + [19],
         }
     )
-    ranked, coverage = RESEARCH.attach_directional_minute_factors(market, features, spec)
+    ranked, coverage = RESEARCH.attach_directional_minute_factors(
+        market, features, spec
+    )
     by_symbol = ranked.set_index("instrument")
     assert by_symbol.loc["SZ000050", "late_return_30m"] == pytest.approx(1.0)
-    assert by_symbol.loc["SZ000050", "intraday_realized_volatility"] == pytest.approx(1.0)
+    assert by_symbol.loc["SZ000050", "intraday_realized_volatility"] == pytest.approx(
+        1.0
+    )
     assert pd.isna(by_symbol.loc["SZ000051", "late_return_30m"])
-    assert by_symbol.loc["SZ000051", "minute_raw_late_return_30m"] > by_symbol.loc[
-        "SZ000050", "minute_raw_late_return_30m"
-    ]
+    assert (
+        by_symbol.loc["SZ000051", "minute_raw_late_return_30m"]
+        > by_symbol.loc["SZ000050", "minute_raw_late_return_30m"]
+    )
     assert coverage["quality_and_minute_eligible_rows"] == 50
     assert coverage["factor_rank_eligible_rows"] == 50
     assert coverage["coverage_gate_passed"] is True
     assert coverage["listing_gate_applied_before_cross_sectional_ranking"] is True
 
 
-def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(tmp_path, monkeypatch):
+def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(
+    tmp_path, monkeypatch
+):
     dates = pd.bdate_range("2019-01-02", periods=30)
     symbols = tuple(f"SZ{index:06d}" for index in range(1, 61))
-    feature_run_path, _ = make_minute_feature_chain(tmp_path, dates=dates, symbols=symbols)
+    feature_run_path, _ = make_minute_feature_chain(
+        tmp_path, dates=dates, symbols=symbols
+    )
     provider_uri = tmp_path / "provider"
     provider_uri.mkdir()
     write_json_record(
@@ -4973,7 +5495,10 @@ def test_minute_diagnostic_uses_frozen_protocol_and_existing_audits(tmp_path, mo
     assert diagnostic["selection_or_promotion_allowed"] is False
     assert diagnostic["forward_return_fields_read"] is True
     assert diagnostic["data"]["price_basis"] == RESEARCH.REQUIRED_PRICE_BASIS
-    assert all(item["mean_rank_ic"] == pytest.approx(1.0) for item in diagnostic["ranking_by_development_rank_ic"])
+    assert all(
+        item["mean_rank_ic"] == pytest.approx(1.0)
+        for item in diagnostic["ranking_by_development_rank_ic"]
+    )
 
     stability = RESEARCH.run_factor_stability_audit(
         SimpleNamespace(
@@ -5017,18 +5542,18 @@ def test_baostock_5m_diagnostic_uses_2020_2025_protocol(tmp_path, monkeypatch):
     fundamental_path.write_bytes(b"offline-fixture")
     market = pd.DataFrame(
         [
-                {
-                    "datetime": pd.Timestamp(date),
-                    "instrument": symbol,
-                    "open": 100.0,
-                    "high": 100.0 + position,
-                    "low": 100.0,
-                    "close": 100.0 + position,
-                    "volume": 100.0,
-                    "amount": 10_000_000.0,
-                    "price_factor": 1.0,
-                    "listing_age_sessions": 100,
-                }
+            {
+                "datetime": pd.Timestamp(date),
+                "instrument": symbol,
+                "open": 100.0,
+                "high": 100.0 + position,
+                "low": 100.0,
+                "close": 100.0 + position,
+                "volume": 100.0,
+                "amount": 10_000_000.0,
+                "price_factor": 1.0,
+                "listing_age_sessions": 100,
+            }
             for date in dates
             for position, symbol in enumerate(symbols, start=1)
         ]
@@ -5114,7 +5639,9 @@ def test_minute_coverage_gate_stops_before_forward_returns(tmp_path, monkeypatch
     monkeypatch.setattr(
         RESEARCH,
         "forward_factor_return_frame",
-        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("forward returns must not be read")),
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("forward returns must not be read")
+        ),
     )
     result = RESEARCH.run_minute_factor_diagnostic(
         SimpleNamespace(
@@ -5131,7 +5658,9 @@ def test_minute_coverage_gate_stops_before_forward_returns(tmp_path, monkeypatch
     assert audit["forward_return_fields_read"] is False
     assert audit["coverage"]["median_source_row_coverage"] == pytest.approx(0.06)
     assert audit["coverage"]["coverage_gate_passed"] is False
-    coverage_audits = RESEARCH.load_minute_factor_coverage_audits(tmp_path / "experiments")
+    coverage_audits = RESEARCH.load_minute_factor_coverage_audits(
+        tmp_path / "experiments"
+    )
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
         {"signals": [], "settlements": []},
@@ -5316,9 +5845,7 @@ def test_tail_execution_occurrence_extraction_ignores_stored_returns(tmp_path):
 
 
 def test_tail_execution_classification_separates_no_fill_from_queue_ambiguity():
-    dates = pd.DatetimeIndex(
-        ["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"]
-    )
+    dates = pd.DatetimeIndex(["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"])
     instruments = ["SZ000001", "SZ000002", "SZ000003"]
     occurrences = pd.DataFrame(
         [
@@ -5474,17 +6001,17 @@ def test_prospective_execution_ledger_fails_with_position_stuck_beyond_delay_cap
             )
     frame = pd.DataFrame(rows)
     frame.loc[
-        (frame["instrument"] == "B")
-        & frame["datetime"].between(dates[3], dates[23]),
+        (frame["instrument"] == "B") & frame["datetime"].between(dates[3], dates[23]),
         "volume",
     ] = 0.0
     ledger = RESEARCH.simulate_prospective_execution_topk(frame, "factor_test")
     assert ledger["scope"]["complete_signal_count"] == 1
     assert ledger["exit"]["terminal_unresolved_position_count"] == 1
     assert not ledger["gate"]["passed"]
-    assert "terminal unresolved positions remain after the exit-delay cap" in ledger[
-        "gate"
-    ]["failures"]
+    assert (
+        "terminal unresolved positions remain after the exit-delay cap"
+        in ledger["gate"]["failures"]
+    )
 
 
 def test_pilot_execution_ledger_enforces_board_lots_slippage_and_amount_capacity():
@@ -5511,9 +6038,7 @@ def test_pilot_execution_ledger_enforces_board_lots_slippage_and_amount_capacity
                     "factor_test": score,
                 }
             )
-    ledger = RESEARCH.simulate_pilot_execution_topk(
-        pd.DataFrame(rows), "factor_test"
-    )
+    ledger = RESEARCH.simulate_pilot_execution_topk(pd.DataFrame(rows), "factor_test")
     primary = ledger["primary"]
     assert ledger["scope"]["complete_signal_count"] == 3
     assert primary["entry"]["registered_slot_count"] == 9
@@ -5526,14 +6051,14 @@ def test_pilot_execution_ledger_enforces_board_lots_slippage_and_amount_capacity
     assert primary["entry"]["maximum_entry_gross_exposure"] < 0.15
     assert primary["capacity"]["filled_trade_amount_missing_count"] == 0
     assert (
-        primary["capacity"]["filled_trade_daily_amount_participation"]["maximum"]
-        < 0.01
+        primary["capacity"]["filled_trade_daily_amount_participation"]["maximum"] < 0.01
     )
     assert primary["performance"]["net_cumulative_return"] < 0.0
     assert not ledger["gate"]["passed"]
-    assert "board-lot affordability opportunity rate is below 90%" in ledger["gate"][
-        "failures"
-    ]
+    assert (
+        "board-lot affordability opportunity rate is below 90%"
+        in ledger["gate"]["failures"]
+    )
     assert ledger["raw_daily_prices_persisted"] is False
     assert ledger["individual_trade_notionals_persisted"] is False
 
@@ -5558,17 +6083,11 @@ def test_pilot_execution_ledger_uses_restoration_factor_without_corporate_action
                     "factor_test": score,
                 }
             )
-    changed = RESEARCH.simulate_pilot_execution_topk(
-        pd.DataFrame(rows), "factor_test"
-    )
+    changed = RESEARCH.simulate_pilot_execution_topk(pd.DataFrame(rows), "factor_test")
     unchanged_frame = pd.DataFrame(rows)
     unchanged_frame["price_factor"] = 1.0
-    unchanged = RESEARCH.simulate_pilot_execution_topk(
-        unchanged_frame, "factor_test"
-    )
-    assert changed["primary"]["performance"][
-        "net_cumulative_return"
-    ] == pytest.approx(
+    unchanged = RESEARCH.simulate_pilot_execution_topk(unchanged_frame, "factor_test")
+    assert changed["primary"]["performance"]["net_cumulative_return"] == pytest.approx(
         unchanged["primary"]["performance"]["net_cumulative_return"],
         abs=1e-12,
     )
@@ -5606,9 +6125,10 @@ def test_pilot_execution_ledger_fails_excessive_daily_amount_participation():
         ]
         > 0.01
     )
-    assert "a filled pilot trade exceeds one percent of daily amount" in ledger[
-        "gate"
-    ]["failures"]
+    assert (
+        "a filled pilot trade exceeds one percent of daily amount"
+        in ledger["gate"]["failures"]
+    )
 
 
 def test_future_factor_diagnostic_stops_existing_frontier_before_forward_returns(
@@ -5634,9 +6154,7 @@ def test_future_factor_diagnostic_stops_existing_frontier_before_forward_returns
         "attach_quality_asof",
         lambda frame, fundamentals, max_age_days: frame.copy(),
     )
-    monkeypatch.setattr(
-        RESEARCH, "rank_factor_frame", lambda frame: frame.copy()
-    )
+    monkeypatch.setattr(RESEARCH, "rank_factor_frame", lambda frame: frame.copy())
     monkeypatch.setattr(
         RESEARCH,
         "forward_factor_return_frame",
@@ -5743,9 +6261,7 @@ def test_factor_topk_viability_uses_prospective_execution_ledger_when_present():
                 },
                 "exit": {"terminal_unresolved_position_count": 0},
                 "capacity": {
-                    "filled_trade_daily_amount_participation": {
-                        "maximum": 0.001
-                    }
+                    "filled_trade_daily_amount_participation": {"maximum": 0.001}
                 },
                 "performance": {"net_cumulative_return": 0.05},
             },
@@ -5774,9 +6290,10 @@ def test_factor_topk_viability_uses_prospective_execution_ledger_when_present():
         }
     )
     assert not failed["passed"]
-    assert "terminal unresolved positions remain after the exit-delay cap" in failed[
-        "failures"
-    ]
+    assert (
+        "terminal unresolved positions remain after the exit-delay cap"
+        in failed["failures"]
+    )
     pilot_failed = RESEARCH.factor_topk_viability_decision(
         {
             **summary,
@@ -5809,7 +6326,9 @@ def test_baostock_5m_combination_registration_freezes_all_dual_gate_passers(
         topk_qualified=qualified,
     )
     monkeypatch.setattr(
-        RESEARCH, "latest_provider_date", lambda provider_uri: pd.Timestamp("2026-07-13")
+        RESEARCH,
+        "latest_provider_date",
+        lambda provider_uri: pd.Timestamp("2026-07-13"),
     )
     monkeypatch.setattr(
         RESEARCH,
@@ -5882,7 +6401,9 @@ def test_baostock_5m_combination_registration_stops_below_two_without_dates(tmp_
     assert record["additional_forward_return_fields_read"] is False
 
 
-def test_minute_combination_capacity_gate_stops_before_holdout_returns(tmp_path, monkeypatch):
+def test_minute_combination_capacity_gate_stops_before_holdout_returns(
+    tmp_path, monkeypatch
+):
     qualified = RESEARCH.MINUTE_FACTOR_NAMES[:2]
     diagnostic_path, stability_path, topk_path = make_minute_gate_records(
         tmp_path,
@@ -5891,7 +6412,9 @@ def test_minute_combination_capacity_gate_stops_before_holdout_returns(tmp_path,
     )
     dates = pd.bdate_range("2026-01-02", periods=30)
     symbols = tuple(f"SZ{index:06d}" for index in range(1, 61))
-    feature_run_path, _ = make_minute_feature_chain(tmp_path, dates=dates, symbols=symbols)
+    feature_run_path, _ = make_minute_feature_chain(
+        tmp_path, dates=dates, symbols=symbols
+    )
     provider_uri = tmp_path / "provider"
     provider_uri.mkdir()
     write_json_record(
@@ -5936,7 +6459,9 @@ def test_minute_combination_capacity_gate_stops_before_holdout_returns(tmp_path,
     monkeypatch.setattr(
         RESEARCH,
         "forward_factor_return_frame",
-        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("holdout returns must not be read")),
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("holdout returns must not be read")
+        ),
     )
     result = RESEARCH.run_minute_combination_holdout(
         SimpleNamespace(
@@ -5956,7 +6481,9 @@ def test_minute_combination_capacity_gate_stops_before_holdout_returns(tmp_path,
     assert audit["capacity"]["potential_complete_topk_cohorts"] < 20
 
 
-def test_minute_combination_consumes_one_conditional_holdout_once(tmp_path, monkeypatch):
+def test_minute_combination_consumes_one_conditional_holdout_once(
+    tmp_path, monkeypatch
+):
     qualified = RESEARCH.MINUTE_FACTOR_NAMES[:2]
     diagnostic_path, stability_path, topk_path = make_minute_gate_records(
         tmp_path,
@@ -5965,7 +6492,9 @@ def test_minute_combination_consumes_one_conditional_holdout_once(tmp_path, monk
     )
     dates = pd.bdate_range("2026-01-02", periods=75)
     symbols = tuple(f"SZ{index:06d}" for index in range(1, 61))
-    feature_run_path, _ = make_minute_feature_chain(tmp_path, dates=dates, symbols=symbols)
+    feature_run_path, _ = make_minute_feature_chain(
+        tmp_path, dates=dates, symbols=symbols
+    )
     provider_uri = tmp_path / "provider"
     provider_uri.mkdir()
     write_json_record(
@@ -6081,7 +6610,9 @@ def test_pure_factor_aggregation_reproduces_the_diagnostic_topk_timing_and_costs
                     "open": 100.0,
                     # Each signal's one-day exit has the same increasing
                     # return ordering as the close-known factor ranks.
-                    "close": 100.0 if date_position == 0 else 100.0 + instrument_position,
+                    "close": 100.0
+                    if date_position == 0
+                    else 100.0 + instrument_position,
                     "quality_eligible": True,
                     "amplitude_low": (instrument_position + 1) / 6.0,
                 }
@@ -6115,7 +6646,9 @@ def test_pure_factor_aggregation_reproduces_the_diagnostic_topk_timing_and_costs
     assert aggregate["development"]["net_cumulative_return"] == pytest.approx(
         diagnostic["topk"]["net_cumulative_return"]
     )
-    assert aggregate["development"]["max_drawdown"] == pytest.approx(diagnostic["topk"]["max_drawdown"])
+    assert aggregate["development"]["max_drawdown"] == pytest.approx(
+        diagnostic["topk"]["max_drawdown"]
+    )
 
 
 def test_factor_diagnostic_catalog_includes_unused_close_known_technical_fields():
@@ -6175,19 +6708,27 @@ def test_factor_stability_decision_requires_positive_rank_ic_in_every_observed_y
         "positive_rank_ic_rate": 0.56,
         "mean_top_minus_bottom_gross_return": 0.004,
         "by_signal_year": {
-            str(year): {"mean_rank_ic": 0.01 + year * 0.0}
-            for year in range(2019, 2024)
+            str(year): {"mean_rank_ic": 0.01 + year * 0.0} for year in range(2019, 2024)
         },
     }
     decision = RESEARCH.factor_stability_decision(
         stable, minimum_calendar_years=5, minimum_cohorts=200
     )
     assert decision["passed"]
-    assert decision["observed_calendar_years"] == ["2019", "2020", "2021", "2022", "2023"]
+    assert decision["observed_calendar_years"] == [
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+    ]
 
     unstable = {
         **stable,
-        "by_signal_year": {**stable["by_signal_year"], "2021": {"mean_rank_ic": -0.001}},
+        "by_signal_year": {
+            **stable["by_signal_year"],
+            "2021": {"mean_rank_ic": -0.001},
+        },
     }
     rejected = RESEARCH.factor_stability_decision(
         unstable, minimum_calendar_years=5, minimum_cohorts=200
@@ -6214,7 +6755,9 @@ def test_factor_stability_audits_are_retained_without_strategy_promotion(tmp_pat
     )
     audits = RESEARCH.load_factor_stability_audits(tmp_path)
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, factor_stability_audits=audits
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        factor_stability_audits=audits,
     )
     assert "开发期因子稳定性审计" in report
     assert "amplitude_low" in report
@@ -6232,7 +6775,12 @@ def test_factor_topk_viability_requires_drawdown_and_annual_portfolio_stability(
             str(year): {"mean_rank_ic": 0.01, "topk_net_cumulative_return": 0.05}
             for year in range(2019, 2024)
         },
-        "topk": {"rounds": 240, "net_cumulative_return": 0.50, "max_drawdown": -0.15, "median_holdings": 3},
+        "topk": {
+            "rounds": 240,
+            "net_cumulative_return": 0.50,
+            "max_drawdown": -0.15,
+            "median_holdings": 3,
+        },
     }
     assert RESEARCH.factor_topk_viability_decision(summary)["passed"]
     rejected = RESEARCH.factor_topk_viability_decision(
@@ -6256,7 +6804,9 @@ def test_factor_topk_viability_audits_are_retained_without_strategy_promotion(tm
     )
     audits = RESEARCH.load_factor_topk_viability_audits(tmp_path)
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, factor_topk_viability_audits=audits
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        factor_topk_viability_audits=audits,
     )
     assert "单因子 Top‑3 组合可行性审计" in report
     assert "| topk-viability | factor-diagnostic | 有效 | 1 | 无 |" in report
@@ -6267,13 +6817,22 @@ def test_v8_ten_day_reversal_grid_is_small_predeclared_and_does_not_rewrite_v7()
     additions = RESEARCH.V8_TEN_DAY_REVERSION_CANDIDATES
     assert len(additions) == 12
     assert len(RESEARCH.candidate_library("v8_reversal_10_ic")) == 12
-    assert all(candidate.name.startswith("expanded_v8_reversal_10_") for candidate in additions)
-    gate_only = RESEARCH.candidate_by_name("expanded_v8_reversal_10_dry_gap_gate_only", "v8_reversal_10_ic")
-    growth = RESEARCH.candidate_by_name("expanded_v8_reversal_10_dry_gap_q05_growth", "v8_reversal_10_ic")
+    assert all(
+        candidate.name.startswith("expanded_v8_reversal_10_") for candidate in additions
+    )
+    gate_only = RESEARCH.candidate_by_name(
+        "expanded_v8_reversal_10_dry_gap_gate_only", "v8_reversal_10_ic"
+    )
+    growth = RESEARCH.candidate_by_name(
+        "expanded_v8_reversal_10_dry_gap_q05_growth", "v8_reversal_10_ic"
+    )
     assert gate_only.weights["reversal_10"] == pytest.approx(0.45)
     assert "quality_growth" not in gate_only.weights
     assert growth.weights["quality_growth"] == pytest.approx(0.05)
-    assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
+    assert all(
+        math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9)
+        for candidate in additions
+    )
 
 
 def test_v9_compression_reversal_grid_is_small_predeclared_and_keeps_v8_immutable():
@@ -6283,7 +6842,8 @@ def test_v9_compression_reversal_grid_is_small_predeclared_and_keeps_v8_immutabl
     assert len(RESEARCH.candidate_library("v9_compression_reversal_ic")) == 12
     assert all(candidate.name.startswith("expanded_v9_") for candidate in additions)
     dual = RESEARCH.candidate_by_name(
-        "expanded_v9_reversal_10_dual_compression_gate_only", "v9_compression_reversal_ic"
+        "expanded_v9_reversal_10_dual_compression_gate_only",
+        "v9_compression_reversal_ic",
     )
     pure = RESEARCH.candidate_by_name(
         "expanded_v9_quiet_dual_compression_q10_composite", "v9_compression_reversal_ic"
@@ -6291,7 +6851,10 @@ def test_v9_compression_reversal_grid_is_small_predeclared_and_keeps_v8_immutabl
     assert dual.weights["reversal_10"] == pytest.approx(0.35)
     assert dual.weights["amplitude_low"] == pytest.approx(0.20)
     assert pure.weights["quality_score"] == pytest.approx(0.10)
-    assert all(math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9) for candidate in additions)
+    assert all(
+        math.isclose(sum(candidate.weights.values()), 1.0, abs_tol=1e-9)
+        for candidate in additions
+    )
 
 
 def test_overlap_candidate_references_support_explicit_cross_library_comparisons():
@@ -6309,7 +6872,10 @@ def test_overlap_candidate_references_support_explicit_cross_library_comparisons
     ]
     assert [item[1] for item in references] == ["v2_microstructure", "v3_quality_grid"]
     legacy = RESEARCH.overlap_candidate_references(
-        ["expanded_v2_quiet_long_trend_q10_roe", "expanded_v2_quiet_long_trend_q15_growth"],
+        [
+            "expanded_v2_quiet_long_trend_q10_roe",
+            "expanded_v2_quiet_long_trend_q15_growth",
+        ],
         "v2_microstructure",
         None,
     )
@@ -6336,7 +6902,9 @@ def test_candidate_overlap_loader_preserves_cross_library_summary(tmp_path):
             {"mean_jaccard": 0.5, "cohort_net_return_correlation": 0.75},
         ],
     }
-    (tmp_path / "cross_candidate_overlap_audit.json").write_text(json.dumps(payload), encoding="utf-8")
+    (tmp_path / "cross_candidate_overlap_audit.json").write_text(
+        json.dumps(payload), encoding="utf-8"
+    )
     summary = RESEARCH.load_candidate_overlap_audits(tmp_path)
     assert summary == [
         {
@@ -6355,15 +6923,23 @@ def test_candidate_overlap_loader_preserves_cross_library_summary(tmp_path):
 
 
 def test_overlap_audit_discloses_post_development_observations():
-    assert not RESEARCH.overlap_uses_post_development_observations("2025-12-31", "2025-12-31")
-    assert RESEARCH.overlap_uses_post_development_observations("2026-01-05", "2025-12-31")
+    assert not RESEARCH.overlap_uses_post_development_observations(
+        "2025-12-31", "2025-12-31"
+    )
+    assert RESEARCH.overlap_uses_post_development_observations(
+        "2026-01-05", "2025-12-31"
+    )
 
 
 def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_path):
     winner = {
         "candidate": "expanded_reversal_trend_20_q25_profit",
         "development_selection_score": 0.12,
-        "development": {"rounds": 100, "net_cumulative_return": 0.25, "max_drawdown": -0.10},
+        "development": {
+            "rounds": 100,
+            "net_cumulative_return": 0.25,
+            "max_drawdown": -0.10,
+        },
         "test": {"rounds": 24, "net_cumulative_return": 0.05, "max_drawdown": -0.08},
     }
     iteration = RESEARCH.build_iteration_record(
@@ -6373,7 +6949,10 @@ def test_iteration_registry_is_append_only_and_uses_a_predeclared_test_gate(tmp_
         study_path=tmp_path / "study.json",
         winner=winner,
         candidate_count=100,
-        data={"calendar_end": "2026-07-13", "price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
+        data={
+            "calendar_end": "2026-07-13",
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+        },
     )
     assert iteration["promotion"]["status"] == "passed_initial_test"
     assert not iteration["selection"]["test_metrics_used_for_selection"]
@@ -6401,11 +6980,17 @@ def test_top_three_requires_three_valid_members_instead_of_an_impossible_floor_o
         RESEARCH.minimum_required_holdings(0)
 
 
-def test_research_only_iteration_cannot_be_promoted_even_if_its_historical_test_passes(tmp_path):
+def test_research_only_iteration_cannot_be_promoted_even_if_its_historical_test_passes(
+    tmp_path,
+):
     winner = {
         "candidate": "expanded_trend_ma_confirmation_q20_composite",
         "development_selection_score": 0.12,
-        "development": {"rounds": 100, "net_cumulative_return": 0.25, "max_drawdown": -0.10},
+        "development": {
+            "rounds": 100,
+            "net_cumulative_return": 0.25,
+            "max_drawdown": -0.10,
+        },
         "test": {"rounds": 24, "net_cumulative_return": 0.05, "max_drawdown": -0.08},
     }
     iteration = RESEARCH.build_iteration_record(
@@ -6430,12 +7015,28 @@ def test_market_breadth_regime_filter_is_close_known_and_validated():
             "market_breadth_20": [-0.02, 0.02, 0.01, -0.02],
         }
     )
-    assert RESEARCH.apply_regime_filter(frame, "breadth_5_positive").index.tolist() == [1, 2, 3]
-    assert RESEARCH.apply_regime_filter(frame, "breadth_20_positive").index.tolist() == [1, 2]
-    assert RESEARCH.apply_regime_filter(frame, "breadth_5_above_20").index.tolist() == [0, 2, 3]
-    assert RESEARCH.apply_regime_filter(frame, "breadth_5_and_20_positive").index.tolist() == [1, 2]
-    assert RESEARCH.apply_regime_filter(frame, "breadth_5_positive_and_above_20").index.tolist() == [2, 3]
-    assert RESEARCH.apply_regime_filter(frame, "breadth_5_above_20_and_20_positive").index.tolist() == [2]
+    assert RESEARCH.apply_regime_filter(frame, "breadth_5_positive").index.tolist() == [
+        1,
+        2,
+        3,
+    ]
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_20_positive"
+    ).index.tolist() == [1, 2]
+    assert RESEARCH.apply_regime_filter(frame, "breadth_5_above_20").index.tolist() == [
+        0,
+        2,
+        3,
+    ]
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_5_and_20_positive"
+    ).index.tolist() == [1, 2]
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_5_positive_and_above_20"
+    ).index.tolist() == [2, 3]
+    assert RESEARCH.apply_regime_filter(
+        frame, "breadth_5_above_20_and_20_positive"
+    ).index.tolist() == [2]
     with pytest.raises(ValueError, match="unknown regime_filter"):
         RESEARCH.apply_regime_filter(frame, "not_a_regime")
 
@@ -6465,7 +7066,8 @@ def test_market_risk_state_regimes_require_close_known_trailing_thresholds():
         frame, "breadth_20_positive_and_above_ma20_majority"
     ).index.tolist() == [0, 2]
     assert RESEARCH.apply_regime_filter(
-        frame, "breadth_20_positive_and_volatility_below_trailing_p75_and_above_ma20_majority"
+        frame,
+        "breadth_20_positive_and_volatility_below_trailing_p75_and_above_ma20_majority",
     ).index.tolist() == [2]
 
 
@@ -6507,27 +7109,45 @@ def test_return_metrics_exposes_state_activity_without_dropping_cash_cohorts():
 
 def test_execution_plan_refuses_an_inactive_regime_screen(tmp_path):
     screen_path = tmp_path / "inactive_screen.json"
-    screen_path.write_text(json.dumps({"execution_allowed": False, "top_candidates": []}), encoding="utf-8")
+    screen_path.write_text(
+        json.dumps({"execution_allowed": False, "top_candidates": []}), encoding="utf-8"
+    )
     with pytest.raises(ValueError, match="regime is inactive"):
         RESEARCH.run_execution_plan(SimpleNamespace(screen_path=str(screen_path)))
 
 
 def test_paper_settlement_waits_for_future_sessions_and_applies_research_costs():
-    calendar = pd.DatetimeIndex(pd.to_datetime(["2026-01-01", "2026-01-02", "2026-01-05", "2026-01-06"]))
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(["2026-01-01", "2026-01-02", "2026-01-05", "2026-01-06"])
+    )
     instruments = [f"SZ00000{number}" for number in range(1, 6)]
     signal = {
         "signal_id": "iteration:2026-01-01",
         "signal_date": "2026-01-01",
-        "strategy": {"holding_period_trading_days": 3, "open_cost": 0.001, "close_cost": 0.002},
+        "strategy": {
+            "holding_period_trading_days": 3,
+            "open_cost": 0.001,
+            "close_cost": 0.002,
+        },
         "top_candidates": [{"instrument": instrument} for instrument in instruments],
     }
     quotes = pd.DataFrame(
         [
-            {"datetime": calendar[1], "instrument": instrument, "open": 10.0, "close": 10.0}
+            {
+                "datetime": calendar[1],
+                "instrument": instrument,
+                "open": 10.0,
+                "close": 10.0,
+            }
             for instrument in instruments
         ]
         + [
-            {"datetime": calendar[3], "instrument": instrument, "open": 11.0, "close": 11.0}
+            {
+                "datetime": calendar[3],
+                "instrument": instrument,
+                "open": 11.0,
+                "close": 11.0,
+            }
             for instrument in instruments
         ]
     )
@@ -6536,7 +7156,9 @@ def test_paper_settlement_waits_for_future_sessions_and_applies_research_costs()
     assert settlement["entry_date"] == "2026-01-02"
     assert settlement["exit_date"] == "2026-01-06"
     assert settlement["holdings"] == 5
-    assert settlement["net_return"] == pytest.approx((1 - 0.001) * 1.1 * (1 - 0.002) - 1)
+    assert settlement["net_return"] == pytest.approx(
+        (1 - 0.001) * 1.1 * (1 - 0.002) - 1
+    )
     assert RESEARCH.paper_settlement(signal, calendar[:3], quotes) is None
 
 
@@ -6547,7 +7169,10 @@ def test_promoted_iteration_selects_the_latest_passed_record(tmp_path):
             {
                 "schema_version": 1,
                 "iterations": [
-                    {"iteration_id": "failed", "promotion": {"status": "research_only_not_promoted"}},
+                    {
+                        "iteration_id": "failed",
+                        "promotion": {"status": "research_only_not_promoted"},
+                    },
                     {
                         "iteration_id": "passed",
                         "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
@@ -6559,17 +7184,24 @@ def test_promoted_iteration_selects_the_latest_passed_record(tmp_path):
         encoding="utf-8",
     )
     assert RESEARCH.promoted_iteration(registry_path)["iteration_id"] == "passed"
-    assert RESEARCH.promoted_iteration(registry_path, "passed")["iteration_id"] == "passed"
+    assert (
+        RESEARCH.promoted_iteration(registry_path, "passed")["iteration_id"] == "passed"
+    )
 
 
-def test_promoted_iteration_rejects_a_legacy_price_basis_even_if_the_old_gate_passed(tmp_path):
+def test_promoted_iteration_rejects_a_legacy_price_basis_even_if_the_old_gate_passed(
+    tmp_path,
+):
     registry_path = tmp_path / "registry.json"
     registry_path.write_text(
         json.dumps(
             {
                 "schema_version": 1,
                 "iterations": [
-                    {"iteration_id": "legacy-passed", "promotion": {"status": "passed_initial_test"}}
+                    {
+                        "iteration_id": "legacy-passed",
+                        "promotion": {"status": "passed_initial_test"},
+                    }
                 ],
             }
         ),
@@ -6596,7 +7228,9 @@ def test_close_below_vwap_is_isolated_from_historical_factor_catalogs():
     )
 
 
-def test_prospective_vwap_registration_requires_a_genuinely_unseen_start_and_is_append_only(tmp_path):
+def test_prospective_vwap_registration_requires_a_genuinely_unseen_start_and_is_append_only(
+    tmp_path,
+):
     path = tmp_path / "prospective_registry.json"
     source = {
         "run_id": "source-diagnostic",
@@ -6651,7 +7285,9 @@ def test_prospective_vwap_registration_requires_a_genuinely_unseen_start_and_is_
         )
 
 
-def test_prospective_vwap_source_record_is_bound_to_the_isolated_failed_diagnostic(tmp_path):
+def test_prospective_vwap_source_record_is_bound_to_the_isolated_failed_diagnostic(
+    tmp_path,
+):
     path = tmp_path / "source.json"
     payload = {
         "run_id": RESEARCH.PROSPECTIVE_VWAP_SOURCE_RUN_ID,
@@ -6686,9 +7322,15 @@ def test_prospective_vwap_source_record_rejects_the_real_legacy_price_basis(tmp_
                 "run_id": RESEARCH.PROSPECTIVE_VWAP_SOURCE_RUN_ID,
                 "status": "completed",
                 "factor_catalog": [RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR],
-                "data": {"calendar_end": "2025-12-31", "test_period_used_for_factor_design": False},
+                "data": {
+                    "calendar_end": "2025-12-31",
+                    "test_period_used_for_factor_design": False,
+                },
                 "ranking_by_development_rank_ic": [
-                    {"factor": RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR, "mean_rank_ic": -0.02}
+                    {
+                        "factor": RESEARCH.PROSPECTIVE_VWAP_SOURCE_FACTOR,
+                        "mean_rank_ic": -0.02,
+                    }
                 ],
             }
         ),
@@ -6699,7 +7341,11 @@ def test_prospective_vwap_source_record_rejects_the_real_legacy_price_basis(tmp_
 
 
 def test_prospective_vwap_rebalance_grid_is_non_overlapping():
-    calendar = pd.DatetimeIndex(pd.to_datetime(["2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17"]))
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(
+            ["2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17"]
+        )
+    )
     assert RESEARCH.prospective_rebalance_due(
         calendar, not_before="2026-07-14", as_of="2026-07-14", hold_days=3
     )
@@ -6714,7 +7360,9 @@ def test_prospective_vwap_rebalance_grid_is_non_overlapping():
     )
 
 
-def test_prospective_vwap_monitor_does_not_touch_a_ledger_before_the_registered_date(tmp_path, monkeypatch):
+def test_prospective_vwap_monitor_does_not_touch_a_ledger_before_the_registered_date(
+    tmp_path, monkeypatch
+):
     registry_path = tmp_path / "prospective_registry.json"
     ledger_path = tmp_path / "prospective_ledger.json"
     registry_path.write_text(
@@ -6735,11 +7383,15 @@ def test_prospective_vwap_monitor_does_not_touch_a_ledger_before_the_registered_
         ),
         encoding="utf-8",
     )
-    monkeypatch.setattr(RESEARCH, "latest_provider_date", lambda *_: pd.Timestamp("2026-07-13"))
+    monkeypatch.setattr(
+        RESEARCH, "latest_provider_date", lambda *_: pd.Timestamp("2026-07-13")
+    )
     monkeypatch.setattr(
         RESEARCH,
         "local_trading_calendar",
-        lambda *_args, **_kwargs: pytest.fail("calendar must not load before not_before"),
+        lambda *_args, **_kwargs: pytest.fail(
+            "calendar must not load before not_before"
+        ),
     )
     result = RESEARCH.run_prospective_vwap_monitor(
         SimpleNamespace(
@@ -6754,7 +7406,9 @@ def test_prospective_vwap_monitor_does_not_touch_a_ledger_before_the_registered_
     assert not ledger_path.exists()
 
 
-def test_prospective_vwap_monitor_never_backfills_a_missed_signal_date(tmp_path, monkeypatch):
+def test_prospective_vwap_monitor_never_backfills_a_missed_signal_date(
+    tmp_path, monkeypatch
+):
     registry_path = tmp_path / "prospective_registry.json"
     ledger_path = tmp_path / "prospective_ledger.json"
     registry_path.write_text(
@@ -6775,7 +7429,9 @@ def test_prospective_vwap_monitor_never_backfills_a_missed_signal_date(tmp_path,
         ),
         encoding="utf-8",
     )
-    monkeypatch.setattr(RESEARCH, "latest_provider_date", lambda *_: pd.Timestamp("2026-07-15"))
+    monkeypatch.setattr(
+        RESEARCH, "latest_provider_date", lambda *_: pd.Timestamp("2026-07-15")
+    )
     monkeypatch.setattr(
         RESEARCH,
         "local_trading_calendar",
@@ -6786,7 +7442,9 @@ def test_prospective_vwap_monitor_never_backfills_a_missed_signal_date(tmp_path,
     monkeypatch.setattr(
         RESEARCH,
         "run_prospective_vwap_screen",
-        lambda *_args, **_kwargs: pytest.fail("a missed 2026-07-14 signal must not be reconstructed"),
+        lambda *_args, **_kwargs: pytest.fail(
+            "a missed 2026-07-14 signal must not be reconstructed"
+        ),
     )
     result = RESEARCH.run_prospective_vwap_monitor(
         SimpleNamespace(
@@ -6803,7 +7461,9 @@ def test_prospective_vwap_monitor_never_backfills_a_missed_signal_date(tmp_path,
     assert not ledger_path.exists()
 
 
-def test_development_only_iteration_can_be_explicitly_registered_for_separate_forward_observation(tmp_path):
+def test_development_only_iteration_can_be_explicitly_registered_for_separate_forward_observation(
+    tmp_path,
+):
     iteration = {
         "iteration_id": "v2-development-only",
         "strategy": {"candidate_library": "v2_microstructure"},
@@ -6817,19 +7477,30 @@ def test_development_only_iteration_can_be_explicitly_registered_for_separate_fo
         "promotion": {"status": "research_only_not_promoted"},
     }
     registry_path = tmp_path / "strategy_registry.json"
-    registry_path.write_text(json.dumps({"schema_version": 1, "iterations": [iteration]}), encoding="utf-8")
-    selected = RESEARCH.research_observation_iteration(registry_path, "v2-development-only")
+    registry_path.write_text(
+        json.dumps({"schema_version": 1, "iterations": [iteration]}), encoding="utf-8"
+    )
+    selected = RESEARCH.research_observation_iteration(
+        registry_path, "v2-development-only"
+    )
     shadow_path = tmp_path / "shadow_observations.json"
     plan = RESEARCH.append_shadow_observation(
         shadow_path, iteration=selected, not_before="2026-07-14"
     )
-    assert plan["observations"][0]["candidate"] == "expanded_v2_quiet_long_trend_q20_composite"
+    assert (
+        plan["observations"][0]["candidate"]
+        == "expanded_v2_quiet_long_trend_q20_composite"
+    )
     assert plan["observations"][0]["not_before"] == "2026-07-14"
     with pytest.raises(ValueError, match="already contains"):
-        RESEARCH.append_shadow_observation(shadow_path, iteration=selected, not_before="2026-07-14")
+        RESEARCH.append_shadow_observation(
+            shadow_path, iteration=selected, not_before="2026-07-14"
+        )
 
 
-def test_shadow_observation_refuses_an_iteration_with_a_historical_test_window(tmp_path):
+def test_shadow_observation_refuses_an_iteration_with_a_historical_test_window(
+    tmp_path,
+):
     registry_path = tmp_path / "strategy_registry.json"
     registry_path.write_text(
         json.dumps(
@@ -6855,14 +7526,20 @@ def test_shadow_observation_refuses_an_iteration_with_a_historical_test_window(t
         RESEARCH.research_observation_iteration(registry_path, "historical-diagnostic")
 
 
-def test_shadow_suspension_preserves_registration_and_monitor_skips_it(tmp_path, monkeypatch):
+def test_shadow_suspension_preserves_registration_and_monitor_skips_it(
+    tmp_path, monkeypatch
+):
     plan_path = tmp_path / "shadow_observations.json"
     plan_path.write_text(
         json.dumps(
             {
                 "schema_version": 1,
                 "observations": [
-                    {"iteration_id": "pending-review", "candidate": "candidate", "not_before": "2026-07-14"}
+                    {
+                        "iteration_id": "pending-review",
+                        "candidate": "candidate",
+                        "not_before": "2026-07-14",
+                    }
                 ],
             }
         ),
@@ -6870,14 +7547,20 @@ def test_shadow_suspension_preserves_registration_and_monitor_skips_it(tmp_path,
     )
     suspension_path = tmp_path / "suspensions.json"
     suspended = RESEARCH.append_shadow_suspension(
-        suspension_path, iteration_id="pending-review", reason="metric correction review"
+        suspension_path,
+        iteration_id="pending-review",
+        reason="metric correction review",
     )
     assert suspended["suspensions"][0]["iteration_id"] == "pending-review"
     with pytest.raises(ValueError, match="already suspended"):
         RESEARCH.append_shadow_suspension(
             suspension_path, iteration_id="pending-review", reason="duplicate"
         )
-    monkeypatch.setattr(RESEARCH, "run_paper_monitor", lambda *_: pytest.fail("suspended observation was monitored"))
+    monkeypatch.setattr(
+        RESEARCH,
+        "run_paper_monitor",
+        lambda *_: pytest.fail("suspended observation was monitored"),
+    )
     result = RESEARCH.run_shadow_monitor(
         SimpleNamespace(
             shadow_registry_path=str(plan_path),
@@ -6902,8 +7585,15 @@ def test_research_report_renders_registry_and_only_counts_settled_paper_returns(
                 "iteration_id": "three-day-cycle",
                 "label": "three_day_cycle",
                 "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
-                "strategy": {"holding_period_trading_days": 3, "topk": 10, "regime_filter": "breadth_5_above_20"},
-                "selection": {"winner": "candidate", "development": {"net_cumulative_return": 0.1}},
+                "strategy": {
+                    "holding_period_trading_days": 3,
+                    "topk": 10,
+                    "regime_filter": "breadth_5_above_20",
+                },
+                "selection": {
+                    "winner": "candidate",
+                    "development": {"net_cumulative_return": 0.1},
+                },
                 "initial_test": {"net_cumulative_return": 0.02, "max_drawdown": -0.05},
                 "promotion": {"status": "passed_initial_test"},
             }
@@ -6953,31 +7643,38 @@ def test_research_report_keeps_post_development_factor_evidence_separate():
     assert "禁止历史反向回测" in report
 
 
-def test_walk_forward_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
+def test_walk_forward_audits_are_retained_in_the_research_report_without_promotion(
+    tmp_path,
+):
     (tmp_path / "20260714T000000Z_walk_forward_selection_audit.json").write_text(
         json.dumps(
             {
                 "run_id": "walk-forward-v2",
                 "status": "completed",
                 "candidate_library": {"id": "v2_microstructure", "count": 150},
-                    "data": {
-                        "calendar_start": "2019-01-02",
-                        "calendar_end": "2025-12-31",
-                        "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
-                    },
+                "data": {
+                    "calendar_start": "2019-01-02",
+                    "calendar_end": "2025-12-31",
+                    "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+                },
                 "protocol": {"first_test_year": 2021, "last_test_year": 2025},
                 "folds": [
                     {"winner_selected_on_training_only": "candidate"},
                     {"winner_selected_on_training_only": None},
                 ],
-                "aggregate_selected_out_of_sample": {"net_cumulative_return": 0.12, "max_drawdown": -0.08},
+                "aggregate_selected_out_of_sample": {
+                    "net_cumulative_return": 0.12,
+                    "max_drawdown": -0.08,
+                },
             }
         ),
         encoding="utf-8",
     )
     audits = RESEARCH.load_walk_forward_selection_audits(tmp_path)
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, walk_forward_selection_audits=audits
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        walk_forward_selection_audits=audits,
     )
     assert "滚动候选选择审计" in report
     assert "walk-forward-v2" in report
@@ -6985,7 +7682,9 @@ def test_walk_forward_audits_are_retained_in_the_research_report_without_promoti
     assert "不能自动晋级或替换前瞻候选" in report
 
 
-def test_selection_multiplicity_audit_uses_development_only_and_retains_report_record(tmp_path):
+def test_selection_multiplicity_audit_uses_development_only_and_retains_report_record(
+    tmp_path,
+):
     dates = pd.bdate_range("2024-01-02", periods=20)
 
     def write_candidate(path, candidate, development_return, test_return):
@@ -7007,7 +7706,9 @@ def test_selection_multiplicity_audit_uses_development_only_and_retains_report_r
                 "holdings": 3,
             }
         )
-        path.write_text(json.dumps({"candidate": candidate, "cohorts": cohorts}), encoding="utf-8")
+        path.write_text(
+            json.dumps({"candidate": candidate, "cohorts": cohorts}), encoding="utf-8"
+        )
 
     winner_path = tmp_path / "winner.json"
     alternate_path = tmp_path / "alternate.json"
@@ -7055,7 +7756,9 @@ def test_selection_multiplicity_audit_uses_development_only_and_retains_report_r
     assert audit["data"]["test_period_used"] is False
     audits = RESEARCH.load_selection_multiplicity_audits(tmp_path)
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, selection_multiplicity_audits=audits
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        selection_multiplicity_audits=audits,
     )
     assert "候选选择多重尝试审计" in report
     assert "绝不读取测试期" in report
@@ -7078,8 +7781,14 @@ def test_selection_multiplicity_infers_legacy_drawdown_only_for_historical_repro
     selection_input = RESEARCH.SelectionMultiplicityInput(
         study={
             "ranking_by_development": [
-                {"candidate": "legacy-winner", "development_selection_score": float(legacy_scores[0])},
-                {"candidate": "other", "development_selection_score": float(legacy_scores[1])},
+                {
+                    "candidate": "legacy-winner",
+                    "development_selection_score": float(legacy_scores[0]),
+                },
+                {
+                    "candidate": "other",
+                    "development_selection_score": float(legacy_scores[1]),
+                },
             ]
         },
         candidates=("legacy-winner", "other"),
@@ -7088,11 +7797,16 @@ def test_selection_multiplicity_infers_legacy_drawdown_only_for_historical_repro
         holdings=RESEARCH.np.ones_like(returns),
         observed=observed,
     )
-    convention = RESEARCH.infer_selection_score_drawdown_convention(selection_input, hold_days=3)
+    convention = RESEARCH.infer_selection_score_drawdown_convention(
+        selection_input, hold_days=3
+    )
     assert convention["drawdown_convention"] == "legacy_post_first_cohort_high_water"
     assert not convention["include_initial_equity"]
     assert convention["stored_scores_verified"]
-    assert RESEARCH.pooled_return_drawdown_scores(returns, 3, observed)[0] < legacy_scores[0]
+    assert (
+        RESEARCH.pooled_return_drawdown_scores(returns, 3, observed)[0]
+        < legacy_scores[0]
+    )
 
 
 def test_limit_like_event_mask_uses_distinct_main_and_chinext_hurdles():
@@ -7142,7 +7856,10 @@ def test_limit_like_event_rounds_select_turnover_ranked_complete_next_open_baske
     assert rounds.iloc[0]["holdings"] == 3
     assert rounds.iloc[0]["gross_return"] == pytest.approx(0.10)
     assert rounds.iloc[0]["net_return"] == pytest.approx(0.10)
-    assert "fewer than 200 executable event cohorts" in RESEARCH.limit_like_event_decision(rounds, 3)["failures"]
+    assert (
+        "fewer than 200 executable event cohorts"
+        in RESEARCH.limit_like_event_decision(rounds, 3)["failures"]
+    )
 
 
 def test_limit_like_event_audits_are_retained_without_strategy_promotion(tmp_path):
@@ -7159,7 +7876,11 @@ def test_limit_like_event_audits_are_retained_without_strategy_promotion(tmp_pat
                 },
                 "result": {
                     "passed": False,
-                    "performance": {"rounds": 205, "net_cumulative_return": -0.02, "max_drawdown": -0.22},
+                    "performance": {
+                        "rounds": 205,
+                        "net_cumulative_return": -0.02,
+                        "max_drawdown": -0.22,
+                    },
                 },
             }
         ),
@@ -7167,7 +7888,9 @@ def test_limit_like_event_audits_are_retained_without_strategy_promotion(tmp_pat
     )
     audits = RESEARCH.load_limit_like_event_audits(tmp_path)
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, limit_like_event_audits=audits
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        limit_like_event_audits=audits,
     )
     assert "限价样强势收盘事件审计" in report
     assert "limit-like" in report
@@ -7192,7 +7915,9 @@ def test_quarterly_profit_acceleration_event_uses_only_newly_effective_positive_
                     "open": 10.0,
                     "close": 11.0 if position == 3 else 10.0,
                     "quality_eligible": True,
-                    "quality_effective_date": date if newly_effective else dates[0] - pd.Timedelta(days=1),
+                    "quality_effective_date": date
+                    if newly_effective
+                    else dates[0] - pd.Timedelta(days=1),
                     "profit_yoy_acceleration": acceleration,
                 }
             )
@@ -7260,7 +7985,9 @@ def test_quarterly_event_capacity_rejects_sparse_ideas_without_return_fields():
     assert capacity["complete_topk_event_cohorts_by_year"] == {"2024": 1}
     assert capacity["capacity_gate_passed"] is False
     assert capacity["forward_return_fields_read"] is False
-    assert all("return" not in key or key == "forward_return_fields_read" for key in capacity)
+    assert all(
+        "return" not in key or key == "forward_return_fields_read" for key in capacity
+    )
     with pytest.raises(ValueError, match="unknown quarterly acceleration metric"):
         RESEARCH.quarterly_acceleration_event_capacity(
             pd.DataFrame(rows),
@@ -7294,9 +8021,7 @@ def test_jqdata_moneyflow_full_snapshot_recomputes_bound_source_coverage(tmp_pat
     symbols = [f"SZ{index:06d}" for index in range(1, 51)]
     universe_path = tmp_path / "factor_main_chinext_star.txt"
     universe_path.write_text(
-        "".join(
-            f"{symbol}\t2019-01-01\t2025-12-31\n" for symbol in symbols
-        ),
+        "".join(f"{symbol}\t2019-01-01\t2025-12-31\n" for symbol in symbols),
         encoding="utf-8",
     )
     calendar = pd.DatetimeIndex(
@@ -7535,16 +8260,16 @@ def test_jqdata_moneyflow_capacity_counts_only_quality_seasoned_cross_sections()
     assert rejected["capacity_gate_passed"] is False
 
 
-def test_jqdata_moneyflow_capacity_audit_is_one_shot_and_reported(tmp_path, monkeypatch):
+def test_jqdata_moneyflow_capacity_audit_is_one_shot_and_reported(
+    tmp_path, monkeypatch
+):
     provider = tmp_path / "provider"
     calendar_path = provider / "calendars" / "day.txt"
     universe_path = provider / "instruments" / "buyable_main_chinext.txt"
     calendar_path.parent.mkdir(parents=True)
     universe_path.parent.mkdir(parents=True)
     calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
-    universe_path.write_text(
-        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
-    )
+    universe_path.write_text("SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8")
     contract = {
         "start": "2019-01-01",
         "end": "2025-12-31",
@@ -7576,7 +8301,9 @@ def test_jqdata_moneyflow_capacity_audit_is_one_shot_and_reported(tmp_path, monk
         },
         "local_calendar": {"sha256": RESEARCH.file_sha256(calendar_path)},
     }
-    full_calendar = pd.DatetimeIndex([pd.Timestamp("2019-01-02"), pd.Timestamp("2025-12-31")])
+    full_calendar = pd.DatetimeIndex(
+        [pd.Timestamp("2019-01-02"), pd.Timestamp("2025-12-31")]
+    )
     capacity = {
         "potential_complete_cohorts": 220,
         "minimum_required_cohorts": 200,
@@ -7614,16 +8341,16 @@ def test_jqdata_moneyflow_capacity_audit_is_one_shot_and_reported(tmp_path, monk
     )
     result = RESEARCH.run_jqdata_moneyflow_capacity_audit(args)
     audit = json.loads(Path(result["audit_path"]).read_text())
-    assert audit["source_admitted_for_separate_return_diagnostic_preregistration"] is True
+    assert (
+        audit["source_admitted_for_separate_return_diagnostic_preregistration"] is True
+    )
     assert audit["data"]["price_fields_loaded"] == []
     assert audit["forward_return_fields_read"] is False
     assert audit["selection_or_promotion_allowed"] is False
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_jqdata_moneyflow_capacity_audit(args)
 
-    audits = RESEARCH.load_jqdata_moneyflow_capacity_audits(
-        tmp_path / "experiments"
-    )
+    audits = RESEARCH.load_jqdata_moneyflow_capacity_audits(tmp_path / "experiments")
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
         {"signals": [], "settlements": []},
@@ -7641,9 +8368,12 @@ def test_tushare_moneyflow_capacity_preregistration_is_fingerprint_frozen(tmp_pa
     assert spec["run_contract"]["holding_universe"] == "buyable_main_chinext"
     assert spec["run_contract"]["holding_period_trading_days"] == 3
     assert spec["run_contract"]["minimum_required_cohorts"] == 200
-    assert spec["mechanism_identity"][
-        "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors"
-    ] is False
+    assert (
+        spec["mechanism_identity"][
+            "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors"
+        ]
+        is False
+    )
     assert spec["forward_return_fields_read"] is False
 
     changed = json.loads(RESEARCH.DEFAULT_TUSHARE_MONEYFLOW_CAPACITY_SPEC.read_text())
@@ -7796,8 +8526,7 @@ def test_tushare_daily_pb_uniqueness_rejects_a_close_known_synonym():
 
     synonym = comparison_frame.copy()
     synonym["momentum_1"] = [
-        (position % len(symbols) + 1) / 100.0
-        for position in range(len(synonym))
+        (position % len(symbols) + 1) / 100.0 for position in range(len(synonym))
     ]
     rejected = RESEARCH.summarize_tushare_daily_pb_uniqueness(
         pb_frame, synonym, contract=contract
@@ -7822,9 +8551,7 @@ def test_tushare_daily_pb_capacity_failure_stops_before_market_load(
     calendar_path.parent.mkdir(parents=True)
     universe_path.parent.mkdir(parents=True)
     calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
-    universe_path.write_text(
-        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
-    )
+    universe_path.write_text("SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8")
     contract = {
         "start": "2019-01-01",
         "end": "2025-12-31",
@@ -7914,9 +8641,7 @@ def test_tushare_daily_pb_capacity_failure_stops_before_market_load(
     assert audit["data"]["close_known_comparison_fields_loaded"] == []
     assert audit["forward_return_fields_read"] is False
     assert audit["selection_or_promotion_allowed"] is False
-    audits = RESEARCH.load_tushare_daily_pb_no_return_audits(
-        tmp_path / "experiments"
-    )
+    audits = RESEARCH.load_tushare_daily_pb_no_return_audits(tmp_path / "experiments")
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
         {"signals": [], "settlements": []},
@@ -7927,6 +8652,541 @@ def test_tushare_daily_pb_capacity_failure_stops_before_market_load(
     assert "容量不足，停止" in report
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_tushare_daily_pb_no_return_audit(args)
+
+
+def test_eastmoney_balance_sheet_resilience_no_return_source_chain_is_frozen():
+    spec = RESEARCH.load_eastmoney_balance_sheet_resilience_no_return_preregistration()
+    state = RESEARCH.load_eastmoney_balance_sheet_resilience_state_preregistration()
+    record = RESEARCH.load_eastmoney_balance_sheet_resilience_full_source_record()
+    events, evidence = (
+        RESEARCH.validate_eastmoney_balance_sheet_resilience_full_snapshot(
+            RESEARCH.DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_MANIFEST,
+            spec,
+        )
+    )
+    assert spec["capacity_contract"]["holding_period_trading_days"] == 3
+    assert spec["capacity_contract"]["minimum_required_cohorts"] == 200
+    assert spec["uniqueness_contract"]["dense_comparison_factor_count"] == 46
+    assert (
+        len(RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_DENSE_COMPARISON_FIELDS) == 46
+    )
+    assert (
+        len(RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_SPARSE_COMPARISON_FIELDS) == 8
+    )
+    assert (
+        state["conservative_state_algorithm"][
+            "carry_from_an_older_report_after_new_partition_activation_allowed"
+        ]
+        is False
+    )
+    assert record["published_snapshot"]["partition_count"] == 28
+    assert len(events) == 113916
+    assert evidence["manifest"]["partitions"] == 28
+    assert evidence["price_fields_loaded"] == []
+    assert evidence["forward_return_fields_read"] is False
+
+
+def test_eastmoney_balance_sheet_state_reset_drops_missing_new_period_names():
+    state = RESEARCH.load_eastmoney_balance_sheet_resilience_state_preregistration()
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(
+            [
+                "2024-01-02",
+                "2024-01-03",
+                "2024-04-01",
+                "2024-04-02",
+                "2024-04-03",
+            ]
+        )
+    )
+    events = pd.DataFrame(
+        [
+            {
+                "instrument": "SH600519",
+                "report_date": "2023-12-31",
+                "announcement_date": "2024-01-02",
+                RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: 0.7,
+            },
+            {
+                "instrument": "SZ000001",
+                "report_date": "2023-12-31",
+                "announcement_date": "2024-01-02",
+                RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: 0.4,
+            },
+            {
+                "instrument": "SH600519",
+                "report_date": "2024-03-31",
+                "announcement_date": "2024-04-01",
+                RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: 0.8,
+            },
+            {
+                "instrument": "SH603338",
+                "report_date": "2023-12-31",
+                "announcement_date": "2024-04-03",
+                RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: 0.5,
+            },
+        ]
+    )
+    materialized, audit = (
+        RESEARCH.materialize_eastmoney_balance_sheet_resilience_states(
+            events,
+            pd.DatetimeIndex([calendar[1], calendar[3], calendar[4]]),
+            calendar,
+            state_spec=state,
+        )
+    )
+    first = materialized.loc[materialized["trade_date"].eq(calendar[1])]
+    reset = materialized.loc[materialized["trade_date"].eq(calendar[3])]
+    assert set(first["instrument"]) == {"SH600519", "SZ000001"}
+    assert reset["instrument"].tolist() == ["SH600519"]
+    assert reset["report_date"].eq(pd.Timestamp("2024-03-31")).all()
+    assert audit["older_report_carry_after_partition_activation"] is False
+    assert audit["late_older_correction_can_supersede_newer_report"] is False
+    assert audit["forward_return_fields_read"] is False
+
+
+def test_eastmoney_balance_sheet_dense_uniqueness_rejects_roe_synonym():
+    dates = pd.bdate_range("2025-01-02", periods=6)
+    symbols = [f"SZ{index:06d}" for index in range(1, 61)]
+    rng = np.random.default_rng(20260718)
+    factor_rows = []
+    comparison_rows = []
+    for date in dates:
+        random_values = {
+            field: rng.normal(size=len(symbols))
+            for field in RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_DENSE_COMPARISON_FIELDS
+        }
+        for position, symbol in enumerate(symbols, start=1):
+            factor_rows.append(
+                {
+                    "trade_date": date,
+                    "instrument": symbol,
+                    RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: (
+                        position / 100.0
+                    ),
+                }
+            )
+            comparison_rows.append(
+                {
+                    "datetime": date,
+                    "instrument": symbol,
+                    "fundamental_quality_eligible": True,
+                    "listing_seasoning_eligible": True,
+                    "quality_eligible": True,
+                    **{
+                        field: random_values[field][position - 1]
+                        for field in RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_DENSE_COMPARISON_FIELDS
+                    },
+                }
+            )
+    contract = {
+        "screen_start": dates[0].date().isoformat(),
+        "screen_end": dates[-1].date().isoformat(),
+        "dense_comparison_factor_count": 46,
+        "required_named_near_neighbors": [
+            "roe",
+            RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME,
+            "free_float_cap_proxy",
+        ],
+        "minimum_pairwise_names_per_session": 50,
+        "minimum_pairwise_sessions_per_dense_comparison": 5,
+        "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    }
+    factor = pd.DataFrame(factor_rows)
+    comparison = pd.DataFrame(comparison_rows)
+    independent = RESEARCH.summarize_eastmoney_balance_sheet_resilience_uniqueness(
+        factor, comparison, contract=contract
+    )
+    assert independent["dense_comparison_field_count"] == 46
+    assert independent["fields_with_minimum_sessions"] == 46
+    assert independent["uniqueness_gate_passed"] is True
+    synonym = comparison.copy()
+    synonym["roe"] = factor[
+        RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME
+    ].to_numpy()
+    rejected = RESEARCH.summarize_eastmoney_balance_sheet_resilience_uniqueness(
+        factor, synonym, contract=contract
+    )
+    assert rejected["required_named_near_neighbors"]["roe"][
+        "median_daily_rank_correlation"
+    ] == pytest.approx(1.0)
+    assert rejected["uniqueness_gate_passed"] is False
+    assert rejected["forward_return_fields_read"] is False
+
+
+def test_eastmoney_balance_sheet_capacity_drops_overlapping_audit_dates(monkeypatch):
+    captured = {}
+
+    def capacity(frame, *args, **kwargs):
+        captured["columns"] = frame.columns.tolist()
+        return {"capacity_gate_passed": False}
+
+    monkeypatch.setattr(RESEARCH, "jqdata_moneyflow_capacity", capacity)
+    frame = pd.DataFrame(
+        {
+            "trade_date": [pd.Timestamp("2025-01-02")],
+            "instrument": ["SH600519"],
+            RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: [0.6],
+            "report_date": [pd.Timestamp("2024-09-30")],
+            "announcement_date": [pd.Timestamp("2024-10-30")],
+        }
+    )
+    contract = {
+        "holding_period_trading_days": 3,
+        "minimum_eligible_names_per_cross_section": 50,
+        "minimum_distinct_factor_values": 2,
+        "minimum_required_cohorts": 200,
+        "minimum_observed_years": 5,
+        "maximum_quality_age_calendar_days": 550,
+        "maximum_factor_age_calendar_days": 550,
+        "minimum_listing_sessions": 20,
+    }
+    RESEARCH.eastmoney_balance_sheet_resilience_capacity(
+        frame,
+        pd.DataFrame(),
+        pd.DatetimeIndex([pd.Timestamp("2025-01-02")]),
+        pd.DatetimeIndex([pd.Timestamp("2025-01-02")]),
+        {},
+        contract=contract,
+    )
+    assert captured["columns"] == [
+        "trade_date",
+        "instrument",
+        RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME,
+    ]
+
+
+def test_eastmoney_balance_sheet_diagnostic_is_frozen_after_no_return_pass():
+    spec = RESEARCH.load_eastmoney_balance_sheet_resilience_diagnostic_preregistration()
+    events, evidence = (
+        RESEARCH.validate_eastmoney_balance_sheet_resilience_diagnostic_sources(spec)
+    )
+    assert spec["combined_no_return_audit"]["potential_complete_cohorts"] == 460
+    assert spec["combined_no_return_audit"]["dense_comparison_field_count"] == 46
+    assert spec["combined_no_return_audit"]["both_no_return_gates_passed"]
+    assert spec["factor"]["raw_direction"] == "higher_is_better"
+    assert spec["run_contract"]["holding_period_trading_days"] == 3
+    assert spec["run_contract"]["topk"] == 3
+    assert spec["run_contract"]["open_cost"] == 0.00012
+    assert spec["run_contract"]["close_cost"] == 0.00062
+    assert (
+        spec["diagnostic_policy"]["factor_returns_observed_before_registration"]
+        is False
+    )
+    assert len(events) == 113916
+    assert evidence["forward_return_fields_read"] is False
+
+
+def test_eastmoney_balance_sheet_terminal_diagnostic_record_is_frozen():
+    assert (
+        RESEARCH.file_sha256(
+            RESEARCH.DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_RECORD
+        )
+        == RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_RECORD_SHA256
+    )
+    record = RESEARCH.load_eastmoney_balance_sheet_resilience_diagnostic_record()
+    assert record["no_return_gate_summary"]["capacity_gate_passed"] is True
+    assert record["no_return_gate_summary"]["uniqueness_gate_passed"] is True
+    assert (
+        record["gate_decisions"]["association_stability_gate_passed"] is False
+    )
+    assert record["gate_decisions"]["topk_viability_gate_passed"] is False
+    assert record["gate_decisions"]["dual_gate_qualified"] is False
+    assert (
+        record["decision"][
+            "aggregation_scoring_selection_sizing_or_orders_allowed"
+        ]
+        is False
+    )
+
+
+def test_eastmoney_balance_sheet_terminal_record_stops_diagnostic_runner(tmp_path):
+    args = SimpleNamespace(
+        provider_uri=str(tmp_path / "provider"),
+        experiment_root=str(tmp_path / "experiments"),
+        batch_size=1,
+    )
+    with pytest.raises(ValueError, match="branch is terminal"):
+        RESEARCH.run_eastmoney_balance_sheet_resilience_diagnostic(args)
+
+
+def test_eastmoney_balance_sheet_terminal_record_stops_generic_gate_reruns(tmp_path):
+    diagnostic = tmp_path / "factor_diagnostic.json"
+    diagnostic.write_text(
+        json.dumps(
+            {
+                "status": "completed",
+                "purpose": (
+                    RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_PURPOSE
+                ),
+            }
+        )
+    )
+    stability_args = SimpleNamespace(
+        diagnostic=str(diagnostic),
+        experiment_root=str(tmp_path),
+        factor=None,
+        minimum_calendar_years=5,
+        minimum_cohorts=200,
+    )
+    topk_args = SimpleNamespace(
+        diagnostic=str(diagnostic),
+        experiment_root=str(tmp_path),
+        factor=None,
+    )
+    with pytest.raises(ValueError, match="audits are already terminal"):
+        RESEARCH.run_factor_stability_audit(stability_args)
+    with pytest.raises(ValueError, match="audits are already terminal"):
+        RESEARCH.run_factor_topk_viability_audit(topk_args)
+
+
+def test_tushare_free_float_scarcity_no_return_preregistration_is_frozen():
+    assert (
+        RESEARCH.file_sha256(
+            RESEARCH.DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC
+        )
+        == RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC_SHA256
+    )
+    spec = RESEARCH.load_tushare_free_float_scarcity_no_return_preregistration()
+    record = RESEARCH.load_tushare_free_float_scarcity_full_source_record()
+    terminal = RESEARCH.load_tushare_free_float_scarcity_research_record()
+    assert spec["source_protocol"]["factor"] == (
+        RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_FACTOR_NAME
+    )
+    assert spec["capacity_contract"]["holding_period_trading_days"] == 3
+    assert spec["capacity_contract"]["minimum_required_cohorts"] == 200
+    assert spec["uniqueness_contract"]["comparison_factor_count"] == 54
+    assert len(RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_COMPARISON_FIELDS) == 54
+    assert record["coverage"]["calendar_sessions"] == 1699
+    assert sum(item["rows"] for item in record["partitions"]) == 7_098_264
+    assert record["forward_return_fields_read"] is False
+    assert terminal["source_and_capacity_result"]["capacity_gate_passed"] is True
+    assert terminal["uniqueness_result"]["uniqueness_gate_passed"] is False
+    assert terminal["decision"]["factor_return_diagnostic_allowed"] is False
+
+
+def test_tushare_free_float_scarcity_partition_recomputes_formula():
+    frame = pd.DataFrame(
+        [
+            {
+                "trade_date": pd.Timestamp("2024-04-30"),
+                "instrument": "SZ000001",
+                "total_share": 100.0,
+                "free_share": 25.0,
+                RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_FACTOR_NAME: 0.75,
+                "provider": "tushare",
+            }
+        ],
+        columns=RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS,
+    )
+    capacity = RESEARCH._validate_tushare_free_float_scarcity_partition(
+        frame,
+        start=pd.Timestamp("2024-01-01"),
+        end=pd.Timestamp("2024-12-31"),
+    )
+    assert capacity.columns.tolist() == [
+        "trade_date",
+        "instrument",
+        RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_FACTOR_NAME,
+    ]
+    changed = frame.copy()
+    changed[RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_FACTOR_NAME] = 0.5
+    with pytest.raises(ValueError, match="violates formula"):
+        RESEARCH._validate_tushare_free_float_scarcity_partition(
+            changed,
+            start=pd.Timestamp("2024-01-01"),
+            end=pd.Timestamp("2024-12-31"),
+        )
+
+
+def test_tushare_free_float_scarcity_terminal_record_stops_runner(tmp_path):
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "never_read.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(tmp_path / "provider"),
+    )
+    with pytest.raises(ValueError, match="branch is terminal"):
+        RESEARCH.run_tushare_free_float_scarcity_no_return_audit(args)
+
+
+def test_tushare_free_float_scarcity_uniqueness_rejects_named_near_neighbor():
+    dates = pd.bdate_range("2025-01-02", periods=6)
+    symbols = [f"SZ{index:06d}" for index in range(1, 61)]
+    rng = np.random.default_rng(20260717)
+    factor_rows = []
+    comparison_rows = []
+    for date in dates:
+        random_values = {
+            field: rng.normal(size=len(symbols))
+            for field in RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_COMPARISON_FIELDS
+        }
+        for position, symbol in enumerate(symbols, start=1):
+            factor_rows.append(
+                {
+                    "trade_date": date,
+                    "instrument": symbol,
+                    RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_FACTOR_NAME: (
+                        position / 100.0
+                    ),
+                }
+            )
+            comparison_rows.append(
+                {
+                    "datetime": date,
+                    "instrument": symbol,
+                    "fundamental_quality_eligible": True,
+                    "listing_seasoning_eligible": True,
+                    "quality_eligible": True,
+                    **{
+                        field: random_values[field][position - 1]
+                        for field in RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_COMPARISON_FIELDS
+                    },
+                }
+            )
+    contract = {
+        "screen_start": dates[0].date().isoformat(),
+        "screen_end": dates[-1].date().isoformat(),
+        "comparison_factors": list(
+            RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_COMPARISON_FIELDS
+        ),
+        "required_named_near_neighbor": "free_float_cap_proxy",
+        "minimum_pairwise_names_per_session": 50,
+        "minimum_pairwise_sessions_per_comparison": 5,
+        "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    }
+    factor_frame = pd.DataFrame(factor_rows)
+    comparison_frame = pd.DataFrame(comparison_rows)
+    independent = RESEARCH.summarize_tushare_free_float_scarcity_uniqueness(
+        factor_frame,
+        comparison_frame,
+        contract=contract,
+    )
+    assert independent["comparison_field_count"] == 54
+    assert independent["fields_with_minimum_sessions"] == 54
+    assert independent["uniqueness_gate_passed"] is True
+
+    synonym = comparison_frame.copy()
+    synonym["free_float_cap_proxy"] = factor_frame[
+        RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_FACTOR_NAME
+    ].to_numpy()
+    rejected = RESEARCH.summarize_tushare_free_float_scarcity_uniqueness(
+        factor_frame,
+        synonym,
+        contract=contract,
+    )
+    neighbor = rejected["named_near_neighbor"]
+    assert neighbor["median_daily_rank_correlation"] == pytest.approx(1.0)
+    assert neighbor["uniqueness_gate_passed"] is False
+    assert rejected["uniqueness_gate_passed"] is False
+    assert rejected["forward_return_fields_read"] is False
+
+
+def test_tushare_free_float_scarcity_capacity_failure_stops_before_comparison_load(
+    tmp_path, monkeypatch
+):
+    provider = tmp_path / "provider"
+    calendar_path = provider / "calendars" / "day.txt"
+    universe_path = provider / "instruments" / "buyable_main_chinext.txt"
+    price_basis_path = provider / RESEARCH.PRICE_BASIS_MANIFEST_NAME
+    calendar_path.parent.mkdir(parents=True)
+    universe_path.parent.mkdir(parents=True)
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    universe_path.write_text("SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8")
+    price_basis_path.write_text("{}\n", encoding="utf-8")
+    capacity_contract = {
+        "development_start": "2019-01-01",
+        "development_end": "2025-12-31",
+        "holding_universe": "buyable_main_chinext",
+    }
+    spec = {
+        "preregistered_at": "2026-07-16T21:37:09Z",
+        "point_in_time_context": {
+            "local_calendar": {"file_sha256": RESEARCH.file_sha256(calendar_path)},
+            "holding_universe": {"file_sha256": RESEARCH.file_sha256(universe_path)},
+            "accepted_price_basis_for_later_comparison_or_return_work": {
+                "sha256": RESEARCH.file_sha256(price_basis_path)
+            },
+            "quarterly_quality": {"path": str(tmp_path / "quality.parquet")},
+        },
+        "full_source_snapshot_contract": {},
+        "capacity_contract": capacity_contract,
+        "uniqueness_contract": {},
+        "run_order": ["capacity-first"],
+    }
+    source_evidence = {
+        "manifest": {
+            "run_id": "full-free-float-history",
+            "sha256": "f" * 64,
+            "path": str(tmp_path / "full.json"),
+        }
+    }
+    full_calendar = pd.DatetimeIndex(
+        [pd.Timestamp("2019-01-02"), pd.Timestamp("2025-12-31")]
+    )
+    capacity = {
+        "factor": RESEARCH.TUSHARE_FREE_FLOAT_SCARCITY_FACTOR_NAME,
+        "potential_complete_cohorts": 199,
+        "minimum_required_cohorts": 200,
+        "observed_calendar_years": 7,
+        "minimum_observed_calendar_years": 5,
+        "capacity_gate_passed": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_free_float_scarcity_no_return_preregistration",
+        lambda: spec,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_RESEARCH_RECORD",
+        tmp_path / "no_terminal_free_float_scarcity_record.json",
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_free_float_scarcity_full_snapshot",
+        lambda manifest, loaded_spec: (pd.DataFrame(), source_evidence),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_market_capacity_context",
+        lambda *args, **kwargs: (
+            full_calendar,
+            full_calendar,
+            {"SZ000001": [(full_calendar[0], full_calendar[-1])]},
+        ),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH,
+        "tushare_free_float_scarcity_capacity",
+        lambda *args, **kwargs: capacity,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_cash_conversion_comparison_frame",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("comparison fields must not load after capacity failure")
+        ),
+    )
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "full.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(provider),
+    )
+    result = RESEARCH.run_tushare_free_float_scarcity_no_return_audit(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["capacity_gate_passed"] is False
+    assert audit["uniqueness"] is None
+    assert audit["data"]["close_known_comparison_fields_loaded"] == []
+    assert audit["run_sequence"][2]["skipped_reason"] == (
+        "capacity_failed_before_comparison_field_load"
+    )
+    assert audit["forward_return_fields_read"] is False
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_free_float_scarcity_no_return_audit(args)
 
 
 def test_tushare_cash_conversion_no_return_preregistration_is_fingerprint_frozen():
@@ -8585,9 +9845,7 @@ def test_tushare_moneyflow_capacity_audit_is_one_shot(tmp_path, monkeypatch):
     calendar_path.parent.mkdir(parents=True)
     universe_path.parent.mkdir(parents=True)
     calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
-    universe_path.write_text(
-        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
-    )
+    universe_path.write_text("SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8")
     contract = {
         "start": "2019-01-01",
         "end": "2025-12-31",
@@ -8664,10 +9922,15 @@ def test_tushare_moneyflow_capacity_audit_is_one_shot(tmp_path, monkeypatch):
     )
     result = RESEARCH.run_tushare_moneyflow_capacity_audit(args)
     audit = json.loads(Path(result["audit_path"]).read_text())
-    assert audit["source_admitted_for_separate_return_diagnostic_preregistration"] is True
-    assert audit["mechanism_identity"][
-        "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors"
-    ] is False
+    assert (
+        audit["source_admitted_for_separate_return_diagnostic_preregistration"] is True
+    )
+    assert (
+        audit["mechanism_identity"][
+            "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors"
+        ]
+        is False
+    )
     assert audit["data"]["price_fields_loaded"] == []
     assert audit["forward_return_fields_read"] is False
     assert audit["selection_or_promotion_allowed"] is False
@@ -8679,9 +9942,10 @@ def test_tushare_moneyflow_diagnostic_preregistration_is_fingerprint_frozen(tmp_
     spec = RESEARCH.load_tushare_moneyflow_diagnostic_preregistration()
     assert spec["capacity_audit"]["potential_complete_cohorts"] == 540
     assert spec["factor"]["name"] == RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME
-    assert spec["factor"][
-        "jqdata_provider_substitute_may_be_added_as_second_factor"
-    ] is False
+    assert (
+        spec["factor"]["jqdata_provider_substitute_may_be_added_as_second_factor"]
+        is False
+    )
     assert spec["run_contract"]["holding_period_trading_days"] == 3
     assert spec["forward_return_fields_read"] is False
 
@@ -8704,9 +9968,7 @@ def test_tushare_daily_pb_diagnostic_preregistration_is_fingerprint_frozen(
     assert spec["run_contract"]["holding_period_trading_days"] == 3
     assert spec["forward_return_fields_read"] is False
 
-    changed = json.loads(
-        RESEARCH.DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC.read_text()
-    )
+    changed = json.loads(RESEARCH.DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC.read_text())
     changed["factor"]["raw_direction"] = "lower_is_better"
     changed_path = tmp_path / "changed_tushare_pb_diagnostic.json"
     write_json_record(changed_path, changed)
@@ -8877,15 +10139,19 @@ def test_tushare_sw_industry_breadth_diagnostic_is_single_factor_and_one_shot(
     )
     result = RESEARCH.run_tushare_sw_industry_breadth_diagnostic(args)
     audit = json.loads(Path(result["audit_path"]).read_text())
-    assert audit["factor_catalog"] == [
-        RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
-    ]
-    assert audit["mechanism_identity"][
-        "alternative_industry_level_window_peer_threshold_or_direction_allowed"
-    ] is False
-    assert audit["tushare_sw_industry_breadth"][
-        "industry_price_moneyflow_heat_valuation_limit_or_concept_fields_used"
-    ] is False
+    assert audit["factor_catalog"] == [RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]
+    assert (
+        audit["mechanism_identity"][
+            "alternative_industry_level_window_peer_threshold_or_direction_allowed"
+        ]
+        is False
+    )
+    assert (
+        audit["tushare_sw_industry_breadth"][
+            "industry_price_moneyflow_heat_valuation_limit_or_concept_fields_used"
+        ]
+        is False
+    )
     assert audit["forward_return_fields_read"] is True
     assert audit["selection_or_promotion_allowed"] is False
     with pytest.raises(ValueError, match="already consumed"):
@@ -8915,9 +10181,7 @@ def test_tushare_daily_pb_diagnostic_is_single_factor_and_one_shot(
     factor_frame[RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME] = [
         (position % 50 + 1) / 50.0 for position in range(len(factor_frame))
     ]
-    spec = json.loads(
-        RESEARCH.DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC.read_text()
-    )
+    spec = json.loads(RESEARCH.DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC.read_text())
     quality_path = tmp_path / "quality.parquet"
     quality_path.write_bytes(b"fixture")
     spec["source_snapshots"]["quarterly_quality"]["path"] = str(quality_path)
@@ -9002,8 +10266,16 @@ def test_tushare_daily_pb_diagnostic_is_single_factor_and_one_shot(
     result = RESEARCH.run_tushare_daily_pb_diagnostic(args)
     audit = json.loads(Path(result["audit_path"]).read_text())
     assert audit["factor_catalog"] == [RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME]
-    assert audit["mechanism_identity"]["alternative_pb_transforms_or_thresholds_allowed"] is False
-    assert audit["tushare_daily_pb"]["pe_market_cap_turnover_dividend_or_limit_fields_requested"] is False
+    assert (
+        audit["mechanism_identity"]["alternative_pb_transforms_or_thresholds_allowed"]
+        is False
+    )
+    assert (
+        audit["tushare_daily_pb"][
+            "pe_market_cap_turnover_dividend_or_limit_fields_requested"
+        ]
+        is False
+    )
     assert audit["forward_return_fields_read"] is True
     assert audit["selection_or_promotion_allowed"] is False
     with pytest.raises(ValueError, match="already consumed"):
@@ -9033,9 +10305,7 @@ def test_tushare_moneyflow_diagnostic_is_single_factor_and_one_shot(
     factor_frame[RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME] = [
         (position % 50) / 50.0 for position in range(len(factor_frame))
     ]
-    spec = json.loads(
-        RESEARCH.DEFAULT_TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC.read_text()
-    )
+    spec = json.loads(RESEARCH.DEFAULT_TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC.read_text())
     source_evidence = {
         "capacity_audit": {"sha256": "a" * 64},
         "forward_return_fields_read": False,
@@ -9117,18 +10387,27 @@ def test_tushare_moneyflow_diagnostic_is_single_factor_and_one_shot(
     result = RESEARCH.run_tushare_moneyflow_diagnostic(args)
     audit = json.loads(Path(result["audit_path"]).read_text())
     assert audit["factor_catalog"] == [RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME]
-    assert audit["mechanism_identity"][
-        "jqdata_may_be_counted_or_combined_as_second_factor"
-    ] is False
-    assert audit["tushare_moneyflow"]["provider_net_mf_amount_requested_or_used"] is False
+    assert (
+        audit["mechanism_identity"][
+            "jqdata_may_be_counted_or_combined_as_second_factor"
+        ]
+        is False
+    )
+    assert (
+        audit["tushare_moneyflow"]["provider_net_mf_amount_requested_or_used"] is False
+    )
     assert audit["forward_return_fields_read"] is True
     assert audit["selection_or_promotion_allowed"] is False
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_tushare_moneyflow_diagnostic(args)
 
 
-def test_quarterly_profit_acceleration_event_audits_are_retained_without_strategy_promotion(tmp_path):
-    (tmp_path / "20260714T000000Z_quarterly_profit_acceleration_event_audit.json").write_text(
+def test_quarterly_profit_acceleration_event_audits_are_retained_without_strategy_promotion(
+    tmp_path,
+):
+    (
+        tmp_path / "20260714T000000Z_quarterly_profit_acceleration_event_audit.json"
+    ).write_text(
         json.dumps(
             {
                 "run_id": "quarterly-acceleration",
@@ -9141,7 +10420,11 @@ def test_quarterly_profit_acceleration_event_audits_are_retained_without_strateg
                 },
                 "result": {
                     "passed": True,
-                    "performance": {"rounds": 205, "net_cumulative_return": 0.12, "max_drawdown": -0.15},
+                    "performance": {
+                        "rounds": 205,
+                        "net_cumulative_return": 0.12,
+                        "max_drawdown": -0.15,
+                    },
                 },
             }
         ),
@@ -9149,7 +10432,9 @@ def test_quarterly_profit_acceleration_event_audits_are_retained_without_strateg
     )
     audits = RESEARCH.load_quarterly_profit_acceleration_event_audits(tmp_path)
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, quarterly_profit_acceleration_event_audits=audits
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        quarterly_profit_acceleration_event_audits=audits,
     )
     assert "季度利润加速公告事件审计" in report
     assert "quarterly-acceleration" in report
@@ -9191,7 +10476,9 @@ def test_quarterly_event_capacity_audits_are_retained_before_any_return_test(tmp
     assert "读取未来收益" in report
 
 
-def test_sparse_announcement_capacity_audits_retain_source_level_decisions_without_returns(tmp_path):
+def test_sparse_announcement_capacity_audits_retain_source_level_decisions_without_returns(
+    tmp_path,
+):
     (tmp_path / "20260714T000001Z_sparse_announcement_capacity_audit.json").write_text(
         json.dumps(
             {
@@ -9287,7 +10574,9 @@ def test_institutional_survey_capacity_audits_are_retained_without_returns(tmp_p
 
 
 def test_institutional_survey_timing_capacity_is_retained_without_returns(tmp_path):
-    (tmp_path / "20260714T000003Z_institutional_survey_timing_capacity_audit.json").write_text(
+    (
+        tmp_path / "20260714T000003Z_institutional_survey_timing_capacity_audit.json"
+    ).write_text(
         json.dumps(
             {
                 "run_id": "survey-timing-capacity",
@@ -9365,7 +10654,9 @@ def test_analyst_rating_capacity_is_retained_without_returns(tmp_path):
 
 
 def test_restricted_share_unlock_capacity_is_retained_without_returns(tmp_path):
-    (tmp_path / "20260714T000005Z_restricted_share_unlock_capacity_audit.json").write_text(
+    (
+        tmp_path / "20260714T000005Z_restricted_share_unlock_capacity_audit.json"
+    ).write_text(
         json.dumps(
             {
                 "run_id": "restricted-share-unlock-capacity",
@@ -9457,7 +10748,9 @@ def test_research_report_marks_non_promotable_historical_diagnostics():
             }
         ]
     }
-    assert "历史诊断，不可晋级" in RESEARCH.render_three_day_research_report(registry, {"signals": [], "settlements": []})
+    assert "历史诊断，不可晋级" in RESEARCH.render_three_day_research_report(
+        registry, {"signals": [], "settlements": []}
+    )
 
 
 def test_regime_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
@@ -9495,11 +10788,17 @@ def test_model_audits_are_retained_in_the_research_report_without_promotion(tmp_
                 "run_id": "20260713T190000Z",
                 "status": "completed",
                 "data": {"calendar_start": "2019-01-02", "calendar_end": "2026-07-13"},
-                "protocol": {"development_start": "2023-01-01", "development_end": "2025-12-31"},
+                "protocol": {
+                    "development_start": "2023-01-01",
+                    "development_end": "2025-12-31",
+                },
                 "winner_configuration_selected_on_development_only": None,
                 "ranking_by_development": [
                     {"configuration": "ridge", "development_selection_score": None},
-                    {"configuration": "lgbm_shallow", "development_selection_score": None},
+                    {
+                        "configuration": "lgbm_shallow",
+                        "development_selection_score": None,
+                    },
                 ],
             }
         ),
@@ -9513,7 +10812,9 @@ def test_model_audits_are_retained_in_the_research_report_without_promotion(tmp_
     assert "无合格模型（0/2）" in report
 
 
-def test_loss_cap_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
+def test_loss_cap_audits_are_retained_in_the_research_report_without_promotion(
+    tmp_path,
+):
     (tmp_path / "20260713T160011Z_loss_cap_audit.json").write_text(
         json.dumps(
             {
@@ -9541,7 +10842,9 @@ def test_loss_cap_audits_are_retained_in_the_research_report_without_promotion(t
     assert "原三日周期内保持现金" in report
 
 
-def test_entry_gap_audits_are_retained_in_the_research_report_without_promotion(tmp_path):
+def test_entry_gap_audits_are_retained_in_the_research_report_without_promotion(
+    tmp_path,
+):
     (tmp_path / "20260713T164955Z_entry_gap_audit.json").write_text(
         json.dumps(
             {
@@ -9569,7 +10872,9 @@ def test_entry_gap_audits_are_retained_in_the_research_report_without_promotion(
     assert "无合格跳空上限（0/2）" in report
 
 
-def test_factor_diagnostics_are_retained_in_the_research_report_without_promotion(tmp_path):
+def test_factor_diagnostics_are_retained_in_the_research_report_without_promotion(
+    tmp_path,
+):
     (tmp_path / "20260714T000000Z_factor_diagnostic.json").write_text(
         json.dumps(
             {
@@ -9580,7 +10885,10 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
                     {
                         "factor": "reversal_1",
                         "mean_rank_ic": 0.03125,
-                        "topk_tail_risk": {"p05_net_return": -0.08, "worst_net_return": -0.15},
+                        "topk_tail_risk": {
+                            "p05_net_return": -0.08,
+                            "worst_net_return": -0.15,
+                        },
                     },
                     {"factor": "momentum_20", "mean_rank_ic": 0.01},
                 ],
@@ -9606,7 +10914,9 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
     )
     diagnostics = RESEARCH.load_factor_diagnostics(tmp_path, invalidations)
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, factor_diagnostics=diagnostics
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        factor_diagnostics=diagnostics,
     )
     assert "开发期单因子三日预测诊断" in report
     assert "reversal_1" in report
@@ -9616,7 +10926,9 @@ def test_factor_diagnostics_are_retained_in_the_research_report_without_promotio
     assert "无效 → factor-diagnostic-fixed" in report
 
 
-def test_pre_complete_window_report_keeps_only_unaffected_factor_rows_as_valid(tmp_path):
+def test_pre_complete_window_report_keeps_only_unaffected_factor_rows_as_valid(
+    tmp_path,
+):
     (tmp_path / "20260713T000000Z_factor_diagnostic.json").write_text(
         json.dumps(
             {
@@ -9635,7 +10947,9 @@ def test_pre_complete_window_report_keeps_only_unaffected_factor_rows_as_valid(t
         ),
         encoding="utf-8",
     )
-    diagnostics = RESEARCH.load_factor_diagnostics(tmp_path, tmp_path / "missing_invalidations.json")
+    diagnostics = RESEARCH.load_factor_diagnostics(
+        tmp_path, tmp_path / "missing_invalidations.json"
+    )
     assert diagnostics[0]["evidence_status"] == "partially_invalidated"
     assert diagnostics[0]["invalidated_factors"] == ["amplitude_low"]
     assert diagnostics[0]["valid_factor_count"] == 1
@@ -9698,14 +11012,18 @@ def test_billboard_holdouts_are_retained_as_non_promotable_event_evidence(tmp_pa
     )
     holdouts = RESEARCH.load_event_factor_holdouts(tmp_path)
     report = RESEARCH.render_three_day_research_report(
-        {"iterations": []}, {"signals": [], "settlements": []}, event_factor_holdouts=holdouts
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        event_factor_holdouts=holdouts,
     )
     assert "事件因子留出期验证" in report
     assert "billboard_low_deal_to_float" in report
     assert "方向一致（仍不可晋级）" in report
 
 
-def test_correlation_audits_record_full_windows_and_unqualified_diversification(tmp_path):
+def test_correlation_audits_record_full_windows_and_unqualified_diversification(
+    tmp_path,
+):
     (tmp_path / "old_basket_correlation_audit.json").write_text(
         json.dumps({"status": "completed", "correlation_summary": {}}), encoding="utf-8"
     )
@@ -9771,7 +11089,10 @@ def test_research_report_labels_development_only_preregistration_for_forward_obs
                 },
                 "selection": {"winner": "candidate", "development": {}},
                 "initial_test": {"rounds": 0},
-                "promotion": {"status": "research_only_not_promoted", "eligible_for_promotion": False},
+                "promotion": {
+                    "status": "research_only_not_promoted",
+                    "eligible_for_promotion": False,
+                },
             }
         ]
     }
@@ -9827,8 +11148,14 @@ def test_shadow_observation_report_breaks_out_each_candidate_instead_of_pooling_
     report = RESEARCH.render_three_day_research_report(
         {
             "iterations": [
-                {"iteration_id": "first", "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS}},
-                {"iteration_id": "second", "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS}},
+                {
+                    "iteration_id": "first",
+                    "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
+                },
+                {
+                    "iteration_id": "second",
+                    "data": {"price_basis": RESEARCH.REQUIRED_PRICE_BASIS},
+                },
             ]
         },
         {"signals": [], "settlements": []},
@@ -9837,14 +11164,22 @@ def test_shadow_observation_report_breaks_out_each_candidate_instead_of_pooling_
     )
     assert "candidate_one" in report
     assert "candidate_two" in report
-    assert "| first | candidate_one | v2_microstructure | 2026-07-14 | 前瞻观察中 | 1 | 1 | 0 | +3.00% |" in report
-    assert "| second | candidate_two | v2_microstructure | 2026-07-14 | 前瞻观察中 | 1 | 0 | 1 | — |" in report
+    assert (
+        "| first | candidate_one | v2_microstructure | 2026-07-14 | 前瞻观察中 | 1 | 1 | 0 | +3.00% |"
+        in report
+    )
+    assert (
+        "| second | candidate_two | v2_microstructure | 2026-07-14 | 前瞻观察中 | 1 | 0 | 1 | — |"
+        in report
+    )
 
 
 def test_current_st_names_are_excluded_from_screen_by_default():
     screen = pd.DataFrame({"instrument": ["SZ000001", "SZ000002"]})
     metadata = {"SZ000001": {"is_st": False}, "SZ000002": {"is_st": True}}
-    assert RESEARCH.filter_st_candidates(screen, metadata, include_st=False)["instrument"].tolist() == ["SZ000001"]
+    assert RESEARCH.filter_st_candidates(screen, metadata, include_st=False)[
+        "instrument"
+    ].tolist() == ["SZ000001"]
     assert len(RESEARCH.filter_st_candidates(screen, metadata, include_st=True)) == 2
 
 
@@ -9878,16 +11213,41 @@ def test_a_share_fee_rules_apply_user_commission_and_sell_stamp_duty():
     rules = RESEARCH.AShareExecutionRules()
     buy = RESEARCH.a_share_trade_fees(10_000.0, "buy", rules)
     sell = RESEARCH.a_share_trade_fees(10_000.0, "sell", rules)
-    assert buy == {"commission": 1.0, "transfer_fee": 0.2, "stamp_duty": 0.0, "total": 1.2}
-    assert sell == {"commission": 1.0, "transfer_fee": 0.2, "stamp_duty": 5.0, "total": 6.2}
+    assert buy == {
+        "commission": 1.0,
+        "transfer_fee": 0.2,
+        "stamp_duty": 0.0,
+        "total": 1.2,
+    }
+    assert sell == {
+        "commission": 1.0,
+        "transfer_fee": 0.2,
+        "stamp_duty": 5.0,
+        "total": 6.2,
+    }
 
 
 def test_board_lot_plan_skips_unaffordable_name_without_reallocating_cash():
     rules = RESEARCH.AShareExecutionRules()
     candidates = [
-        {"rank": 1, "instrument": "SZ300972", "name": "万辰集团", "reference_close": 192.28},
-        {"rank": 2, "instrument": "SZ300043", "name": "星辉娱乐", "reference_close": 4.81},
-        {"rank": 3, "instrument": "SZ300251", "name": "光线传媒", "reference_close": 11.80},
+        {
+            "rank": 1,
+            "instrument": "SZ300972",
+            "name": "万辰集团",
+            "reference_close": 192.28,
+        },
+        {
+            "rank": 2,
+            "instrument": "SZ300043",
+            "name": "星辉娱乐",
+            "reference_close": 4.81,
+        },
+        {
+            "rank": 3,
+            "instrument": "SZ300251",
+            "name": "光线传媒",
+            "reference_close": 11.80,
+        },
     ]
     plan = RESEARCH.plan_lot_orders(candidates, 100_000.0, rules)
     high_price, star, light = plan["orders"]

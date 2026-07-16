@@ -1869,10 +1869,51 @@ python scripts/a_share_rich_data.py \
 
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。
 
-### Tushare 自由流通股稀缺度（合同已冻结，等待一次性单日验收）
+### Tushare 自由流通股稀缺度（无收益唯一性门禁终止）
 
 停复牌恢复候选在供应商请求前被容量上界淘汰。旧的“缺少日线行等于停牌”筛查无效，因为 BaoStock 可能保留 `raw_volume <= 0` 的停牌占位行，不能引用该结果。修正后的无收益乐观上界同时把缺少股票交易日和非有限/非正 `raw_volume` 都算作可能停牌，并保留左截断事件、跳过质量和上市门，仍只形成 **181/200** 个固定三交易日非重叠 cohort，虽覆盖 2019–2025 七年但容量失败。该上界没有读取 OHLC、价格、因子、评分或收益，因此无需为这一精确定义的全日停牌时长候选请求 `suspend_d`。完整记录为 [`a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `62c6affbf4ea77a8d85a162f6a641a92bca17dc2d0a661744ed68b8e49b5c3d7`）。
 
 下一项机制独立候选冻结为 `tushare_free_float_scarcity = 1 - free_share / total_share`，高值代表相对总股本可自由交易供给更稀缺。来源只允许 Tushare `daily_basic` 的 `ts_code,trade_date,total_share,free_share` 四个字段；缺失、非有限、非正或 `free_share > total_share` 的行只排除并计数，不得修复、裁剪或填充。[Tushare 官方 `daily_basic` 文档](https://tushare.pro/document/2?doc_id=32)说明该接口最低 2,000 积分、每日 15:00–17:00 更新、单次最多 6,000 行，并提供 `total_share` 与 `free_share` 字段。数据在更新后才视为已知，最早在下一本地交易日开盘使用。合同 [`a_share_tushare_free_float_scarcity_data_contract.json`](a_share_tushare_free_float_scarcity_data_contract.json)（SHA‑256 `a5897cf4bda28bb55e4a0f5c8db6fc328e916c68494e71931a313357d43bc1eb`）已在任何该接口行、因子值、价格或收益出现前冻结。
 
-当前仅实现一次性 `2026-07-13` 来源验收：要求全市场返回至少 4,000 且严格少于 6,000 行，点时可持有股票有效覆盖至少 95%，至少 50 只股票和两个不同因子值。入口为 `acceptance-tushare-free-float-scarcity`；无论成功或失败都必须先安装跟踪记录，不能换日期、字段或删除记录重跑。现在没有获准的全量同步命令，也不得读取收益、聚合、当前评分、选股或下单。Token 的隐藏输入、无回显检查和旧进程单次透传命令见 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md)。
+唯一的 `2026-07-13` 来源验收已经成功并冻结为 [`a_share_tushare_free_float_scarcity_source_acceptance_record.json`](a_share_tushare_free_float_scarcity_source_acceptance_record.json)（SHA‑256 `7f3a929b08ca4da2a95284bca557e3ff3783bbc747cf31e821c5f48a8e2c125d`）。全市场返回 5,524 行；点时可持有股票保留 4,586/4,592，只排除 938 个区间外名称，没有缺失、非正、`free_share > total_share`、重复键或公式误差。验收覆盖率为 99.8693%，因子有 4,568 个不同值。这个入口已永久消费，所有克隆都必须在合同、Token 和供应商访问前拒绝重跑。
+
+验收后、全历史出现前冻结的联合无收益协议为 [`a_share_tushare_free_float_scarcity_no_return_preregistration.json`](a_share_tushare_free_float_scarcity_no_return_preregistration.json)（SHA‑256 `963e8c7d9f41da9c0ea7287399960ee5ecfdf02a1372cada25c6f7b7184f700f`）。唯一的 2019–2025 原子全量请求随后完成全部 1,699 个本地交易日，七个年度分区共 7,098,264 行；有效持有域覆盖率中位数/P5 为 99.6807%/99.1708%，所有 1,699 个交易日都有至少 50 个值。来源、分区字节与内容摘要、逐日点时成员、公式和覆盖率的独立复核记录为 [`a_share_tushare_free_float_scarcity_full_source_record.json`](a_share_tushare_free_float_scarcity_full_source_record.json)（SHA‑256 `2d9855e286e8fd8233e9bafe38301e2381fc4d2ca221a4a69626d580285adc13`）。验收与全量入口都已永久消费，不得再次调用 `daily_basic`、换日期/字段/供应商或删除记录重建。
+
+唯一联合无收益审计 `20260716T221307Z`（SHA‑256 `062a6ef240caeeaac3a39ed811a22d8042e858c1a83485514af2818a1100b70e`）先在完全不加载比较字段或价格的情况下通过容量门：566 个固定三交易日网格中有 540 个质量、上市和因子完整 cohort，要求为 200；2019–2025 各年分别为 56/81/81/80/81/81/80。容量通过后才加载冻结的 2025 年 54 个收盘已知比较字段。结构稀缺度与命名近邻 `free_float_cap_proxy` 的中位日秩相关为 −0.1372，最大绝对中位相关来自 `liquidity_5`，也只有 0.2559，均远低于 0.8；但是协议要求全部 54 个字段各有至少 100 个可比交易日，只有 46 个满足。龙虎榜五项为 0 个合格交易日，股东户数三项只有 39/39/33 个，因此联合唯一性门按预注册规则失败。
+
+终止记录为 [`a_share_tushare_free_float_scarcity_research_record.json`](a_share_tushare_free_float_scarcity_research_record.json)（SHA‑256 `9804ef63da08be5beec4a13460dc8ac0e36fdff3e203dd3f00dc9d148b88a24a`）。失败原因是八个预注册稀疏比较字段证据不足，不是观察到了近义重复；但不能在结果出现后删除稀疏字段、放宽 100 日门槛或把 46 个通过字段当作整体通过。不得重跑同一快照、修改公式/方向/日期/质量/上市/比较目录或阈值，也不得读取下一日开盘、未来收盘、因子收益、聚合、当前评分、选股、仓位或订单。任何针对稀疏比较字段的框架改进只能为未来独立假设事先冻结，不能重开这一已消费分支。
+
+### Eastmoney 资产负债表韧性（收益稳定性与执行门禁终止）
+
+自由流通股稀缺度因预注册的稀疏比较证据不足而停止后，下一条机制先冻结为 `eastmoney_balance_sheet_resilience = 1 - total_liabilities / total_assets`，高值代表总资产中由负债融资的比例更低。机制核重、来源合同分别为 [`a_share_three_day_balance_sheet_resilience_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_balance_sheet_resilience_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `ea3522891cee10446b01ba79ee875bdb9c16ac9ad63470b5894253a4ee0968ca`）和 [`a_share_eastmoney_balance_sheet_resilience_data_contract.json`](a_share_eastmoney_balance_sheet_resilience_data_contract.json)（SHA‑256 `44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4`）。来源固定为 AKShare 提交 `fcdbf25aa864a218c54864c3f6ab6a2ed19cce28` 中 `stock_zcfz_em` 使用的 Eastmoney `RPT_DMSK_FN_BALANCE` 公共接口，只取代码、公告日、总资产、总负债和供应商资产负债率位置来验式；规范帧只保存代码、报告期、公告日、总资产、总负债、派生因子和供应商。
+
+该来源不需要账号、积分或 `TUSHARE_TOKEN`。唯一的 2025 年报验收清单为 `20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4.json`（SHA‑256 `08badce50927da1083d684c1614e88ba260d3c2d54acf8d74cf59cf58c65ca8c`），11 页广告数与接收数均为 5,218；在当时有效的 4,581 个主板/创业板名称中得到 4,543 个合法值，覆盖率 99.1705%，派生式与供应商比率的最大误差小于 `5e-13`。跟踪验收记录为 [`a_share_eastmoney_balance_sheet_resilience_source_acceptance_record.json`](a_share_eastmoney_balance_sheet_resilience_source_acceptance_record.json)（SHA‑256 `9a014c7bfa25cfe40f1a5deca0168fe28f5c98f10c1da2bc782366cb15c94baf`）。验收入口已经永久消费。
+
+验收后、全量前冻结的无收益协议为 [`a_share_eastmoney_balance_sheet_resilience_no_return_preregistration.json`](a_share_eastmoney_balance_sheet_resilience_no_return_preregistration.json)（SHA‑256 `fac1c2aefb4c263704e7d93ff7affa6d7e1aa085e1f86dac04c18029ac632a6c`）。唯一的 2019Q1–2025Q4 原子全量快照复用验收分区并请求其余 27 个季度，共 28 个分区、113,916 行、277 次网络调用；季度有效持有域覆盖率最低 93.7483%、中位数 96.6102%。复核记录为 [`a_share_eastmoney_balance_sheet_resilience_full_source_record.json`](a_share_eastmoney_balance_sheet_resilience_full_source_record.json)（SHA‑256 `8c523f2e5b2b14cb46b98a9becf114ef5efab582af2b84482524f6676caf6cc6`）。全量入口也已永久消费。
+
+公共接口提供的是当前可见历史快照，可能包含日后更正，不能声称是不可变的历史版本流。为避免更正日期制造过早信号，状态规则在读取容量、比较字段或收益前冻结为 [`a_share_eastmoney_balance_sheet_resilience_state_materialization_preregistration.json`](a_share_eastmoney_balance_sheet_resilience_state_materialization_preregistration.json)（SHA‑256 `80e00a7991ac52627956eb35a04a10755c88cf769c60298ae02c3332789c9d91`）：每个报告期以该分区最早展示公告日后的第一个本地会话统一激活，激活时清除所有股票的旧报告期值；单只股票仍必须等自己的展示公告日后的第一个会话才有新值；迟到的旧期更正不能覆盖已激活的新期，最大年龄 550 天。该规则偏保守，可能减少容量，但不会把值提前到展示公告日之前。
+
+唯一联合无收益审计 `20260716T231333Z`（SHA‑256 `665399d5df3e2513f4b3095fd3a887d1c3f1e3a2aefdb1ad8490fad229c00967`）通过两道预注册门禁：潜在完整三日非重叠 cohort 为 460/200，覆盖 2019–2025 七年；46 个预先认定为稠密的比较字段全部具有至少 205 个合格日且绝对中位日秩相关均低于 0.8。最近的既有字段是 `free_float_cap_proxy`，绝对中位相关也只有 0.2586。龙虎榜和股东人数八个已知稀疏字段没有加载到这次统计中；这是在新候选及其收益出现前固定的框架规则，不能反过来重开已经终止的自由流通股分支。无收益通过记录为 [`a_share_eastmoney_balance_sheet_resilience_research_record.json`](a_share_eastmoney_balance_sheet_resilience_research_record.json)（SHA‑256 `4ae66604ed4c9a2ea2e8cf9cd9dc05883b8163f6848616dc55280609d1af450b`），它只授权一次单因子诊断，不授权选股。
+
+收益诊断在读取该因子回报前冻结为 [`a_share_eastmoney_balance_sheet_resilience_diagnostic_preregistration.json`](a_share_eastmoney_balance_sheet_resilience_diagnostic_preregistration.json)（SHA‑256 `ffa41a5292aafa8aacbc32427442682c661efd30ca246d71cbb55b906cc52951`）。唯一诊断 `20260716T232128Z`（SHA‑256 `ac66873d1b26d43d12a7dc5609b9072db0e089ddf9473a5365e698c4ce13259b`）有 502 个 cohort，平均 Rank IC 仅 +0.00148、中位数 −0.00472、正 IC 比例 48.01%；2022、2024、2025 年平均 IC 为负。固定 Top‑3 的表面累计值为正，但最大回撤 −58.57%；更保守的执行账本最大回撤 −62.33%，2022–2024 年逐年收益均为负。
+
+默认稳定性审计 `20260716T232453Z_factor_stability_audit.json`（SHA‑256 `e52833128d807e6ced1ec35a58e76d0f9b0f5904d38596ac9e14ebb304b0e779`）与同刻 Top‑3 可行性审计（SHA‑256 `4717d1d0b1df5ff10af7897ecf875cc2f06afb96f6e35327ecc95eafced4c188`）均为 **0/1**。20 万元、每个目标席位 5%、100 股整手、双边 0.1% 滑点和 1% 日成交额参与上限的方案只填到 1,180/1,530 个席位，整手可负担率 77.12%；七年累计仅 +6.40%，2021、2022、2024 年为负，因此附加执行门也失败。
+
+跨克隆终止记录为 [`a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json`](a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json)（SHA‑256 `b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf`）。不得重跑验收、全量、无收益审计、收益诊断或两道通用审计；不得反转成高负债偏好、改变状态规则/公式/年份/阈值/持有期/TopK/成本、只选表现好的年份，或与已经拒绝的因子组合。该因子不进入聚合、当前评分、选股、仓位或订单，也不构成采购 Level‑2 的理由。下一步必须回到不读取收益的机制前沿，先冻结另一条经济独立候选。
+
+### Eastmoney 核心利润一致性（来源验收通过，等待唯一全量快照）
+
+资产负债表韧性在收益与执行门禁终止后，机制核重只推进 `eastmoney_core_profit_consistency = min(营业利润, 利润总额) / max(营业利润, 利润总额)`；营业利润和利润总额必须都为有限正数，高值代表主营经营结果与利润总额更一致、非经营性损益相对更小。Tushare 周转率候选因复用已经失败的 `fina_indicator` 来源路线而排除，现金流自给候选与已终止现金转换机制重叠，利润表费用率集合也不允许在同一响应上事后扫字段。核重记录为 [`a_share_three_day_core_profit_consistency_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_core_profit_consistency_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `ca5ac438068dbf8d1911658ec4fcd72e20196d748ba1cfda4d610a105e96ed82`）。
+
+数据合同 [`a_share_eastmoney_core_profit_consistency_data_contract.json`](a_share_eastmoney_core_profit_consistency_data_contract.json)（SHA‑256 `2ae3be4b134e16681e702171157b48e8be5bc6c1f72aa9cecfc9a285518d7a45`）在来源行前固定 AKShare 提交 `fcdbf25aa864a218c54864c3f6ab6a2ed19cce28` 的 `stock_lrb_em` 适配器和 Eastmoney `RPT_DMSK_FN_INCOME` 公共接口。只从固定位置读取股票代码、公告日、营业利润和利润总额；不保存响应中的其他字段，不需要账号、积分、Cookie 或 `TUSHARE_TOKEN`，也不读取价格和收益。
+
+唯一 2025 年报验收已完成：11 页广告数与接收数均为 5,218，固定的 46 列来源顺序哈希一致；当时 4,581 个点时可持有名称中，4,574 个具有完整身份，3,370 个具有合法因子值，覆盖率分别为 99.8472% 和 73.5647%，不同因子值 3,369 个，公式最大误差 `1.11e-16`。验收记录为 [`a_share_eastmoney_core_profit_consistency_source_acceptance_record.json`](a_share_eastmoney_core_profit_consistency_source_acceptance_record.json)（SHA‑256 `1372ee0af59cf45e4f46659ba05730d0cbaac99232f49464b014e578cd89bf34`）；验收入口已经永久消费。
+
+验收后、全量来源前冻结的协议为 [`a_share_eastmoney_core_profit_consistency_no_return_preregistration.json`](a_share_eastmoney_core_profit_consistency_no_return_preregistration.json)（SHA‑256 `47884d88736a19715bb3a615f9941611309322f9d6f1f1f4a0456ce924fb3943`）。它固定复用 2025Q4 验收分区、最多请求另外 27 个季度、所有分区共享隐藏临时根并在任一失败时整体删除；每季度完整身份覆盖至少 85%、中位数至少 95%，合法因子覆盖至少 45%、中位数至少 60%，每个非空分区至少 100 个不同值。当前只批准一次以下公共来源命令：
+
+```bash
+python scripts/a_share_rich_data.py \
+  sync-eastmoney-core-profit-consistency --allow-large
+```
+
+这个入口不读取 Token；`--allow-large` 只确认一次性 27 分区请求，不放宽合同。完整来源成功后仍必须先冻结并运行无收益状态物化、容量和 47 个稠密比较字段的唯一性门；失败则留下终止记录。无论来源结果如何，此阶段都不允许读取价格或远期收益，也不允许聚合、评分、选股、仓位或下单。

@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_balance_sheet_resilience_diagnostic_record",
+  "status": "terminal_rejected_after_return_stability_and_execution_gates",
+  "recorded_at": "2026-07-16T23:26:00Z",
+  "factor": {
+    "name": "eastmoney_balance_sheet_resilience",
+    "source_formula": "1 - total_liabilities / total_assets for frozen valid rows only",
+    "direction_tested": "higher_is_better",
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31"
+  },
+  "evidence_chain": {
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_data_contract.json",
+      "sha256": "44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_source_acceptance_record.json",
+      "sha256": "9a014c7bfa25cfe40f1a5deca0168fe28f5c98f10c1da2bc782366cb15c94baf"
+    },
+    "full_source_record": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_full_source_record.json",
+      "sha256": "8c523f2e5b2b14cb46b98a9becf114ef5efab582af2b84482524f6676caf6cc6"
+    },
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6.json",
+      "sha256": "b69e71c57ecbef956709e853d5da6054fd28f6c44d53ead2b51273641ecba9fe",
+      "partitions": 28,
+      "rows": 113916
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_no_return_preregistration.json",
+      "sha256": "fac1c2aefb4c263704e7d93ff7affa6d7e1aa085e1f86dac04c18029ac632a6c"
+    },
+    "state_materialization_preregistration": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_state_materialization_preregistration.json",
+      "sha256": "80e00a7991ac52627956eb35a04a10755c88cf769c60298ae02c3332789c9d91"
+    },
+    "combined_no_return_audit": {
+      "run_id": "20260716T231333Z",
+      "path": "data/experiments/short_horizon/20260716T231333Z_eastmoney_balance_sheet_resilience_no_return_audit.json",
+      "sha256": "665399d5df3e2513f4b3095fd3a887d1c3f1e3a2aefdb1ad8490fad229c00967",
+      "capacity_gate_passed": true,
+      "uniqueness_gate_passed": true,
+      "forward_return_fields_read": false
+    },
+    "no_return_research_record": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_research_record.json",
+      "sha256": "4ae66604ed4c9a2ea2e8cf9cd9dc05883b8163f6848616dc55280609d1af450b"
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_diagnostic_preregistration.json",
+      "sha256": "ffa41a5292aafa8aacbc32427442682c661efd30ca246d71cbb55b906cc52951",
+      "factor_returns_observed_before_registration": false
+    },
+    "diagnostic": {
+      "run_id": "20260716T232128Z",
+      "path": "data/experiments/short_horizon/20260716T232128Z_factor_diagnostic.json",
+      "sha256": "ac66873d1b26d43d12a7dc5609b9072db0e089ddf9473a5365e698c4ce13259b"
+    },
+    "stability_audit": {
+      "run_id": "20260716T232453Z",
+      "path": "data/experiments/short_horizon/20260716T232453Z_factor_stability_audit.json",
+      "sha256": "e52833128d807e6ced1ec35a58e76d0f9b0f5904d38596ac9e14ebb304b0e779",
+      "qualified_factor_count": 0
+    },
+    "topk_viability_audit": {
+      "run_id": "20260716T232453Z",
+      "path": "data/experiments/short_horizon/20260716T232453Z_factor_topk_viability_audit.json",
+      "sha256": "4717d1d0b1df5ff10af7897ecf875cc2f06afb96f6e35327ecc95eafced4c188",
+      "qualified_factor_count": 0
+    }
+  },
+  "no_return_gate_summary": {
+    "potential_complete_cohorts": 460,
+    "minimum_required_cohorts": 200,
+    "observed_calendar_years": 7,
+    "dense_comparison_field_count": 46,
+    "fields_with_minimum_sessions": 46,
+    "fields_below_absolute_median_correlation_threshold": 46,
+    "nearest_existing_field": "free_float_cap_proxy",
+    "maximum_absolute_median_daily_rank_correlation": 0.25859789492211777,
+    "capacity_gate_passed": true,
+    "uniqueness_gate_passed": true
+  },
+  "diagnostic_summary": {
+    "cohorts": 502,
+    "mean_rank_ic": 0.0014760018858201072,
+    "median_rank_ic": -0.004724804566329405,
+    "positive_rank_ic_rate": 0.4800796812749004,
+    "mean_top_minus_bottom_gross_return": 0.0027004177290185605,
+    "annual_mean_rank_ic": {
+      "2019": 0.01841260930160931,
+      "2020": 0.01586295245054088,
+      "2021": 0.008555417730359411,
+      "2022": -0.018166652042387103,
+      "2023": 0.007207000000774723,
+      "2024": -0.011417013063166687,
+      "2025": -0.006673697827034265
+    },
+    "naive_fixed_horizon_top3": {
+      "rounds": 502,
+      "net_cumulative_return": 1.9459334613161867,
+      "maximum_drawdown": -0.5857249324155318,
+      "win_rate": 0.5039840637450199,
+      "gate_alone_is_sufficient": false
+    },
+    "execution_aware_top3": {
+      "complete_signal_count": 510,
+      "net_cumulative_return": 2.1799821488076683,
+      "maximum_drawdown": -0.6232915930189471,
+      "annual_net_cumulative_return_by_signal_year": {
+        "2019": 0.7541231139541698,
+        "2020": 0.5710195540023817,
+        "2021": 0.5426179242981601,
+        "2022": -0.06893321022111198,
+        "2023": -0.11568703468319985,
+        "2024": -0.21799801869583635,
+        "2025": 0.1617962355310223
+      },
+      "gate_passed": false,
+      "failures": [
+        "execution-aware maximum drawdown worse than -20%",
+        "non-positive execution-aware signal-year return: 2022, 2023, 2024"
+      ]
+    },
+    "cny_200000_board_lot_top3_at_ten_basis_points": {
+      "filled_slot_count": 1180,
+      "registered_slot_count": 1530,
+      "board_lot_affordable_opportunity_rate": 0.7712418300653595,
+      "net_cumulative_return": 0.06401948610452823,
+      "maximum_drawdown": -0.10325411021107345,
+      "maximum_filled_trade_daily_amount_participation": 0.006417676745265991,
+      "annual_net_cumulative_return_by_signal_year": {
+        "2019": 0.05355193311162054,
+        "2020": 0.035049261061680825,
+        "2021": -0.00026740397352054135,
+        "2022": -0.006783340215734013,
+        "2023": 0.014800767416253136,
+        "2024": -0.03805742878900431,
+        "2025": 0.006641506541379183
+      },
+      "gate_passed": false,
+      "failures": [
+        "non-positive pilot signal-year return under ten-basis-point slippage: 2021, 2022, 2024",
+        "board-lot affordability opportunity rate is below 90%"
+      ]
+    }
+  },
+  "gate_decisions": {
+    "association_stability_gate_passed": false,
+    "association_failures": [
+      "positive Rank IC rate is not above 50%",
+      "non-positive annual mean Rank IC: 2022, 2024, 2025"
+    ],
+    "topk_viability_gate_passed": false,
+    "topk_failures": [
+      "association screen failed",
+      "pilot execution gate failed in 2021, 2022, and 2024",
+      "board-lot affordability opportunity rate is below 90%",
+      "execution-aware maximum drawdown worse than -20%",
+      "non-positive annual execution-aware Top3 return: 2022, 2023, 2024"
+    ],
+    "dual_gate_qualified": false
+  },
+  "decision": {
+    "outcome": "stop_eastmoney_balance_sheet_resilience_without_aggregation_scoring_selection_or_orders",
+    "rerun_same_history_allowed": false,
+    "invert_factor_allowed": false,
+    "change_formula_state_rule_or_threshold_allowed": false,
+    "subset_years_allowed": false,
+    "change_holding_period_topk_cost_quality_or_listing_gate_allowed": false,
+    "combine_with_rejected_existing_factors_allowed": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "current_score_selection_position_or_order_allowed": false,
+    "level2_intake_justified_by_this_result": false
+  },
+  "source_uses_tushare_token": false,
+  "forward_return_fields_read": true,
+  "selection_or_promotion_allowed": false
+}

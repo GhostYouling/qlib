@@ -81,30 +81,29 @@ exit "$rc"
 
 只有对应的来源合同、一次性验收和本地上下文指纹都已经通过，而且研究记录没有把该分支标记为终止时，才可以把第 4 节中的 `status` 替换成数据命令。具体允许的命令与阶段必须以 [`a_share_data_pipeline.md`](a_share_data_pipeline.md) 和对应冻结合同为准，不能从旧终端记录、聊天或历史提交复制后直接运行。
 
-经营现金流/归母净利润、业绩预告同比中点、财报披露计划及时性、审计意见、单季度毛利率同比变化、管理层连续性和 ST 确认退出恢复速度分支都已经到达各自的终止门禁。因此，不得再运行这些分支已消费的一次性验收、全量同步或后续审计命令。生产入口会在访问 Token、合同或供应商之前拒绝已终止命令。Token 已配置只代表本机凭据可用，不会恢复已消费的验收，也不会授权重新请求、批量下载、收益诊断、聚合、选股或下单。
+经营现金流/归母净利润、业绩预告同比中点、财报披露计划及时性、审计意见、单季度毛利率同比变化、管理层连续性、ST 确认退出恢复速度和自由流通股稀缺度分支都已经到达各自的终止门禁。因此，不得再运行这些分支已消费的一次性验收、全量同步或后续审计命令。生产入口会在访问 Token、合同或供应商之前拒绝已终止命令。Token 已配置只代表本机凭据可用，不会恢复已消费的验收，也不会授权重新请求、批量下载、收益诊断、聚合、选股或下单。
+
+Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分；不要用本节的 Token 包装器运行它。该分支已经完成唯一验收、全量快照、无收益审计和收益/执行诊断，并在稳定性与 Top‑3 门禁终止。终止记录是 [`a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json`](a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json)（SHA‑256 `b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf`）。无论 Token 是否配置，都不得重跑该分支，也不得继续聚合、评分、选股或下单。
 
 对仍处于活动状态且文档明确批准的命令，继续使用第 4 节的包装方式：只替换其中的 Python 子命令，保留空值检查、`TUSHARE_TOKEN="$token"` 的单进程注入、退出码保存和 `unset token`。`--allow-large`（若某个活动合同明确要求）只表示显式确认长任务，不能放宽合同或后续门禁。运行期间不要启动第二份相同同步；若出现锁，先确认现有进程，不要直接删除锁文件。
 
-#### 当前活动入口：自由流通股稀缺度单日验收
+#### 自由流通股稀缺度分支已终止
 
-当前新冻结的候选只允许执行一次 `2026-07-13` 单日来源验收。它仅请求 `ts_code,trade_date,total_share,free_share`，本地只派生 `1 - free_share / total_share`；不请求价格、估值、成交、评分或收益字段。合同见 [`a_share_tushare_free_float_scarcity_data_contract.json`](a_share_tushare_free_float_scarcity_data_contract.json)，机制与停复牌容量复核见 [`a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json)。
+`2026-07-13` 单日验收和唯一的 2019–2025 全量请求都已成功消费；全量本地快照共 7,098,264 行，来源记录是 [`a_share_tushare_free_float_scarcity_full_source_record.json`](a_share_tushare_free_float_scarcity_full_source_record.json)。随后唯一的联合无收益审计通过 540/200 容量门，但冻结的 54 字段唯一性规则只得到 46 个具备至少 100 个可比交易日的字段：龙虎榜五项和股东户数三项过于稀疏，因此整体门禁失败。终止记录是 [`a_share_tushare_free_float_scarcity_research_record.json`](a_share_tushare_free_float_scarcity_research_record.json)。
 
-先运行第 3 节的无回显状态检查。需要从 `launchctl` 向当前旧进程安全透传时，使用：
+不得再运行 `acceptance-tushare-free-float-scarcity` 或 `sync-tushare-free-float-scarcity --allow-large`。两个入口都会在访问合同、Token 或供应商前拒绝；联合无收益审计入口也会先读取跟踪的终止记录并拒绝。不得复制旧命令、删除本地运行记录后重试、修改日期/字段/公式/方向/阈值、事后删掉稀疏比较字段，或继续收益、聚合、评分、选股、仓位和订单。Token 状态检查仍可运行，但不会恢复任何已消费权限。
 
-```zsh
-token="$(launchctl getenv TUSHARE_TOKEN)"
-if [[ -z "$token" ]]; then
-  echo "TUSHARE_TOKEN 未配置"
-  rc=1
-else
-  TUSHARE_TOKEN="$token" python scripts/a_share_rich_data.py acceptance-tushare-free-float-scarcity
-  rc=$?
-fi
-unset token
-exit "$rc"
-```
+#### Eastmoney 资产负债表韧性分支已终止
 
-这个入口是一次性的：无论成功还是失败，都必须先把结果冻结为跟踪记录，之后才能决定是否实现 2019–2025 全量来源同步。当前没有获准的自由流通股全量命令；不得手工循环日期、修改验收日或字段、删除运行记录后重试，也不得在单日验收后直接读取收益、聚合、评分或选股。提交仓库只提交合同、代码、测试和文档，不提交 Token，也不把本机 `launchctl` 环境复制到任何文件。
+这个来源不使用 Tushare Token。唯一 2019Q1–2025Q4 快照有 28 个季度分区、113,916 行；无收益容量与 46 个稠密字段唯一性门都通过，但唯一收益诊断的正 IC 比例只有 48.01%，2022、2024、2025 年平均 IC 为负，执行账本最大回撤为 −62.33%。20 万元、100 股整手、双边 0.1% 滑点的可负担席位比例仅 77.12%，且 2021、2022、2024 年收益为负。稳定性和 Top‑3 审计均未留下合格因子。
+
+不得运行 `acceptance-eastmoney-balance-sheet-resilience`、`sync-eastmoney-balance-sheet-resilience --allow-large`、`eastmoney-balance-sheet-resilience-no-return-audit` 或 `eastmoney-balance-sheet-resilience-diagnostic`，也不得把已保存诊断重新交给通用稳定性/Top‑3 审计。CLI 的跟踪终止记录会拒绝这些重跑。`TUSHARE_TOKEN` 的配置、更新或轮换与该分支无关，不会恢复运行许可。
+
+#### 当前活动入口：Eastmoney 核心利润一致性全量来源
+
+当前候选 `eastmoney_core_profit_consistency` 使用 Eastmoney 公共利润表接口，不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分。唯一的 2025 年报来源验收已经完成并由 [`a_share_eastmoney_core_profit_consistency_source_acceptance_record.json`](a_share_eastmoney_core_profit_consistency_source_acceptance_record.json) 固定；不得再次运行 `acceptance-eastmoney-core-profit-consistency`。
+
+下一阶段仅允许按 [`a_share_eastmoney_core_profit_consistency_no_return_preregistration.json`](a_share_eastmoney_core_profit_consistency_no_return_preregistration.json) 执行一次 `sync-eastmoney-core-profit-consistency --allow-large`。该命令不需要也不应使用第 4 节的 Token 包装器。它只发布 2019Q1–2025Q4 的季度来源快照，并在完整性通过后停在无收益容量与唯一性门之前；不能据此读取收益、聚合、评分、选股或下单。提交仓库只包含合同、跟踪记录、实现、测试和本文，不包含本机 Token 或 `launchctl` 环境值。
 
 ### 4.2 `stock_st` 分支已终止
 

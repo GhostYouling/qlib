@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_balance_sheet_resilience_source_acceptance_record",
+  "status": "accepted_pending_frozen_full_history_and_no_return_gates",
+  "created_at": "2026-07-16T22:47:58Z",
+  "purpose": "Permanently bind the sole frozen Eastmoney 2025-12-31 balance-sheet-resilience acceptance so every clone stops before another provider request and downstream work remains gated on one atomic full source plus no-return capacity and uniqueness audits.",
+  "data_contract": {
+    "path": "docs/a_share_eastmoney_balance_sheet_resilience_data_contract.json",
+    "sha256": "44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4",
+    "preregistered_at": "2026-07-16T22:33:14Z",
+    "provider_rows_observed_before_freeze": false,
+    "factor_values_observed_before_freeze": false
+  },
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_balance_sheet_resilience_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "ea3522891cee10446b01ba79ee875bdb9c16ac9ad63470b5894253a4ee0968ca",
+    "source_locator_corrected_before_provider_rows": true,
+    "formula_direction_timing_threshold_or_gate_changed_during_correction": false
+  },
+  "acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4.json",
+    "sha256": "08badce50927da1083d684c1614e88ba260d3c2d54acf8d74cf59cf58c65ca8c",
+    "run_id": "20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4",
+    "requested_report_date": "2025-12-31",
+    "retrieved_at": "2026-07-16T22:47:34.544436+00:00",
+    "acceptance_status": "accepted_schema_formula_and_current_coverage_pending_full_history_no_return_gates"
+  },
+  "accepted_frame": {
+    "path": "data/raw/a_share/rich/eastmoney/balance_sheet_resilience/acceptance/20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4/balance_sheet_resilience.parquet",
+    "content_sha256": "a8c1c71071ecff9cf9b4d944b9962c861445c713d4fe2f12c479124e50850b25",
+    "file_sha256": "1328eb3d32cba118281ee94eb3a07d8f4e312a2331f4e1e95c24f988c3b85014",
+    "rows": 4543,
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "total_assets",
+      "total_liabilities",
+      "eastmoney_balance_sheet_resilience",
+      "provider"
+    ]
+  },
+  "source_request": {
+    "provider": "eastmoney",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_DMSK_FN_BALANCE",
+    "advertised_pages": 11,
+    "requested_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "provider_calls": 11,
+    "advertised_rows": 5218,
+    "received_rows": 5218,
+    "ordered_source_column_count": 57,
+    "ordered_source_columns_sha256": "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3",
+    "credentials_required_logged_or_stored": false,
+    "cookies_proxy_or_retail_session_used": false,
+    "unused_transported_fields_persisted": false
+  },
+  "observed_result": {
+    "all_market_source_rows": 5218,
+    "normalized_main_board_and_chinext_rows_before_universe_filter": 4574,
+    "expected_point_in_time_holding_names": 4581,
+    "valid_holding_names": 4543,
+    "valid_holding_coverage": 0.9917048679327658,
+    "distinct_factor_values": 4543,
+    "accepted_formula_max_absolute_error": 4.99933427988708e-13,
+    "formula_inconsistent_rows_excluded": 0,
+    "liability_above_asset_rows_excluded": 32,
+    "unsupported_board_rows_excluded": 613,
+    "outside_point_in_time_holding_universe_rows_excluded": 31,
+    "schema_formula_and_current_coverage_gate_passed": true
+  },
+  "next_gate": {
+    "allowed": "Freeze a post-acceptance, pre-full-source record binding the exact 28 quarterly partitions, this acceptance evidence, atomic publication, completeness thresholds, and the already frozen no-return capacity and uniqueness rules; then run at most one full source snapshot.",
+    "forbidden": "Do not repeat acceptance; do not change provider, source positions, report dates, fields, formula, direction, timing, invalid-row policy, thresholds, or comparison catalogs; do not inspect unused transported fields; do not read prices or returns; do not aggregate, score, select, size, or order."
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -1,0 +1,349 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_balance_sheet_resilience_data_contract",
+  "status": "frozen_before_new_balance_sheet_provider_rows_factor_values_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-16T22:33:14Z",
+  "purpose": "Acquire and no-return screen one full-market quarterly balance-sheet resilience state for the fixed three-session A-share protocol without financial-field sweeping, provider substitution, price access, or return access.",
+  "freeze_evidence": {
+    "akshare_public_adapter_source_observed": true,
+    "akshare_documented_output_names_observed": true,
+    "eastmoney_balance_sheet_provider_rows_observed_under_this_hypothesis": false,
+    "balance_sheet_factor_values_observed": false,
+    "capacity_observed": false,
+    "uniqueness_observed": false,
+    "price_or_factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "mechanism_selection": {
+    "path": "docs/a_share_three_day_balance_sheet_resilience_mechanism_overlap_reaudit_20260717.json",
+    "sha256_at_contract_freeze": "ea3522891cee10446b01ba79ee875bdb9c16ac9ad63470b5894253a4ee0968ca",
+    "decision": "select_eastmoney_balance_sheet_resilience_as_the_only_independent_no_return_candidate"
+  },
+  "source": {
+    "provider": "Eastmoney public datacenter",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_DMSK_FN_BALANCE",
+    "frequency": "quarterly_balance_sheet_snapshot",
+    "request_partition": "one fixed accounting report date per count-complete paginated request",
+    "request_parameters": {
+      "sortColumns": "NOTICE_DATE,SECURITY_CODE",
+      "sortTypes": "-1,-1",
+      "pageSize": 500,
+      "columns": "ALL",
+      "filter_template": "(SECURITY_TYPE_CODE in (\"058001001\",\"058001008\"))(TRADE_MARKET_CODE!=\"069001017\")(REPORT_DATE='YYYY-MM-DD')"
+    },
+    "maximum_pages_per_partition": 20,
+    "maximum_attempts_per_page": 4,
+    "retry_backoff_seconds": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "source_schema_policy": {
+      "reason_for_columns_all": "The pinned public adapter exposes this report through a positional response schema and requests columns=ALL. The contract therefore binds the exact adapter commit and positional semantics before any provider row rather than guessing undocumented raw key names.",
+      "raw_json_data_object_zero_based_positions": {
+        "stock_code": 1,
+        "announcement_date": 12,
+        "total_assets": 14,
+        "total_liabilities": 22,
+        "vendor_asset_liability_ratio_percent_for_formula_audit_only": 32
+      },
+      "minimum_raw_columns": 33,
+      "schema_position_change_allowed": false,
+      "report_date_source": "the exact immutable request partition; every response is filtered to that report date",
+      "transported_but_unused_fields_must_be_discarded_before_normalization": true,
+      "unused_field_values_may_enter_factor_formula_comparison_or_selection": false
+    },
+    "credentials_required": [],
+    "authentication_cookie_proxy_or_retail_session_allowed": false,
+    "price_or_return_endpoint_allowed": false
+  },
+  "pinned_public_adapter": {
+    "project": "AKShare",
+    "repository": "https://github.com/akfamily/akshare",
+    "commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+    "source_path": "akshare/stock_feature/stock_report_em.py",
+    "source_file_sha256": "2012492017222a405d5cd396d3a29a384bc79dd8c1dc4d3e8737f1d2361bd783",
+    "function": "stock_zcfz_em",
+    "function_lines": "20-158",
+    "function_block_sha256": "2b56023d50c0c1f7c9c73e8cc27cc0d7d03b6573a90174f2698a63094b3ba903",
+    "documentation": "https://github.com/akfamily/akshare/blob/fcdbf25aa864a218c54864c3f6ab6a2ed19cce28/akshare/stock_feature/stock_report_em.py#L20-L158",
+    "pre_request_locator_correction": "Before any Eastmoney provider row was requested, source verification corrected the initially recorded earnings-report filename to the actual balance-sheet adapter filename at the same pinned commit. No endpoint, report, request, raw position, factor, timing, threshold, or gate changed.",
+    "adapter_or_dependency_install_required": false,
+    "implementation_policy": "Implement the frozen minimal request, count verification, and five-position normalization locally; do not dynamically follow AKShare main or import a later adapter version."
+  },
+  "factor": {
+    "name": "eastmoney_balance_sheet_resilience",
+    "direction": "higher_is_better",
+    "numerator": "total_liabilities",
+    "denominator": "total_assets",
+    "formula": "1 - total_liabilities / total_assets",
+    "vendor_formula_audit": "abs((1 - vendor_asset_liability_ratio_percent / 100) - factor) <= 1e-8 when the vendor ratio is finite; a missing vendor ratio is invalid rather than ignored",
+    "units": "dimensionless",
+    "valid_row": "stock code and announcement date complete; total assets finite and strictly positive; total liabilities finite, nonnegative, and no greater than total assets; vendor ratio finite and formula-consistent",
+    "invalid_row_policy": "exclude and count without clipping, filling, swapping, sign changes, alternate balance-sheet fields, or inference",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "clipping_winsorization_log_transform_industry_residualization_or_imputation": null,
+    "absent_value_policy": "missing; never zero or one",
+    "score_formula_if_every_gate_passes": "cross_sectional_percentile_rank(eastmoney_balance_sheet_resilience)"
+  },
+  "point_in_time_policy": {
+    "signal_source_date": "announcement_date from the frozen positional source field",
+    "conservative_availability": "first local trading session strictly after announcement_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_age_calendar_days": 550,
+    "carry_across_newer_missing_or_invalid_report_allowed": false,
+    "report_period_order": "later report_date supersedes an earlier report only after its own conservative availability date",
+    "revision_policy": "The public report is a current historical snapshot and has no immutable row-version stream. Duplicate instrument/report-period rows, malformed dates, or changed positions reject the partition; values are never selected by latest notice or repaired.",
+    "residual_limitation": "Waiting until the next local session after the displayed announcement date reduces but cannot eliminate later vendor-revision risk; every downstream record must preserve this limitation."
+  },
+  "normalized_snapshot": {
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "total_assets",
+      "total_liabilities",
+      "eastmoney_balance_sheet_resilience",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "report_date"
+    ],
+    "provider_value": "eastmoney",
+    "duplicate_event_keys_allowed": false,
+    "security_names_or_other_transported_balance_sheet_fields_persisted": false,
+    "price_market_cap_valuation_or_return_fields_persisted": false
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "terminal_free_float_result": {
+      "path": "docs/a_share_tushare_free_float_scarcity_research_record.json",
+      "sha256": "9804ef63da08be5beec4a13460dc8ac0e36fdff3e203dd3f00dc9d148b88a24a"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_report_date": "2025-12-31",
+    "one_count_complete_partition_only": true,
+    "minimum_valid_holding_names": 4000,
+    "minimum_valid_point_in_time_holding_coverage": 0.9,
+    "minimum_distinct_factor_values": 100,
+    "maximum_formula_absolute_error": 1e-8,
+    "required_checks": [
+      "the pinned mechanism audit, contract, local universe, calendar, quarterly-quality, and price-basis fingerprints match before network access",
+      "the response reports positive pages and rows, remains within twenty 500-row pages, and every advertised page is fetched exactly once",
+      "the concatenated received row count equals the provider-advertised total and page numbers are neither omitted nor duplicated",
+      "the response contains at least thirty-three ordered source columns and the five frozen positions parse with unchanged semantics",
+      "every normalized instrument is a mainland main-board or ChiNext code and duplicate instrument/report-period keys are absent",
+      "invalid rows are excluded and counted under the exact frozen policy without inspecting alternate fields",
+      "every retained factor exactly matches both total-liabilities divided by total-assets and the vendor ratio audit",
+      "point-in-time buyable coverage, valid-name count, and distinct-value count meet their frozen thresholds",
+      "the published frame contains only the seven normalized columns and no security name, unused balance-sheet value, price, market cap, valuation, credential, or return"
+    ],
+    "success_status": "accepted_schema_formula_and_current_coverage_pending_full_history_no_return_gates",
+    "failed_acceptance_policy": "write one terminal no-return source rejection and stop without another date, provider, field position, formula, direction, threshold, full sync, capacity, comparison, price, return, score, selection, sizing, or order",
+    "one_shot_policy": "The exact acceptance may publish at most one terminal success or rejection record and every clone must reject a second attempt before loading the contract or issuing a request.",
+    "tracked_record_path": "docs/a_share_eastmoney_balance_sheet_resilience_source_acceptance_record.json"
+  },
+  "full_snapshot_contract": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "report_dates": [
+      "2019-03-31",
+      "2019-06-30",
+      "2019-09-30",
+      "2019-12-31",
+      "2020-03-31",
+      "2020-06-30",
+      "2020-09-30",
+      "2020-12-31",
+      "2021-03-31",
+      "2021-06-30",
+      "2021-09-30",
+      "2021-12-31",
+      "2022-03-31",
+      "2022-06-30",
+      "2022-09-30",
+      "2022-12-31",
+      "2023-03-31",
+      "2023-06-30",
+      "2023-09-30",
+      "2023-12-31",
+      "2024-03-31",
+      "2024-06-30",
+      "2024-09-30",
+      "2024-12-31",
+      "2025-03-31",
+      "2025-06-30",
+      "2025-09-30",
+      "2025-12-31"
+    ],
+    "required_report_date_count": 28,
+    "every_report_partition_required": true,
+    "minimum_valid_active_holding_coverage_per_report_date": 0.85,
+    "minimum_median_valid_active_holding_coverage": 0.95,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "partial_snapshot_accepted": false,
+    "immutable_partition_files_and_manifest": true,
+    "one_full_snapshot_attempt_after_acceptance": true,
+    "failure_policy": "delete the complete temporary snapshot, publish no final partition, write one terminal no-return source record, and stop without a retry, another date, another provider, alternate field, capacity, comparison, price, or return",
+    "tracked_record_path": "docs/a_share_eastmoney_balance_sheet_resilience_full_source_record.json"
+  },
+  "capacity_contract": {
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_factor_age_calendar_days": 550,
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "comparison_fields_or_prices_allowed_before_capacity_passes": false
+  },
+  "uniqueness_contract": {
+    "screen_start": "2025-01-01",
+    "screen_end": "2025-12-31",
+    "method": "Within each eligible session, percentile-rank balance-sheet resilience and one preregistered dense comparison field, compute Spearman correlation on pairwise-complete names, then gate the comparison field's absolute median daily correlation.",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_dense_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "all_dense_comparison_fields_must_have_minimum_sessions_and_pass": true,
+    "required_named_near_neighbors": [
+      "roe",
+      "tushare_positive_book_to_market",
+      "free_float_cap_proxy"
+    ],
+    "dense_comparison_factors": [
+      "momentum_1",
+      "momentum_2",
+      "momentum_3",
+      "momentum_5",
+      "up_day_ratio_5",
+      "momentum_10",
+      "momentum_20",
+      "momentum_60",
+      "trend_ma_5",
+      "trend_ma_20",
+      "trend_ma_60",
+      "volume_surge_1",
+      "volume_surge",
+      "volume_surge_3",
+      "turnover_surge",
+      "turnover_surge_3",
+      "turnover_surge_1",
+      "liquidity_5",
+      "free_float_cap_proxy",
+      "volatility_5",
+      "volatility_10",
+      "volatility_20",
+      "amplitude_1",
+      "amplitude_5",
+      "gap_1",
+      "near_high_10",
+      "near_high_20",
+      "intraday_strength",
+      "intraday_return_sum_5",
+      "directional_serial_dependence_20",
+      "close_to_high",
+      "close_above_vwap_1",
+      "signed_efficiency_ratio_10",
+      "return_turnover_correlation_10",
+      "max_return_20",
+      "signed_volume_pressure_5",
+      "roe",
+      "revenue_yoy",
+      "profit_yoy",
+      "quality_age_days",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration",
+      "tushare_large_order_net_inflow_share",
+      "tushare_positive_book_to_market",
+      "sw1_three_session_leave_one_out_breadth"
+    ],
+    "dense_comparison_factor_count": 46,
+    "sparse_event_factors_excluded_from_statistical_pass_fail": [
+      "billboard_net_flow_to_float",
+      "billboard_net_flow_to_deal",
+      "billboard_deal_to_float",
+      "billboard_reason_count",
+      "billboard_freshness",
+      "holder_count_change_ratio",
+      "holder_count_change_absolute",
+      "holder_count_freshness"
+    ],
+    "sparse_exclusion_evidence": {
+      "record": "docs/a_share_tushare_free_float_scarcity_research_record.json",
+      "sha256": "9804ef63da08be5beec4a13460dc8ac0e36fdff3e203dd3f00dc9d148b88a24a",
+      "observed_pairwise_sessions": {
+        "billboard_net_flow_to_float": 0,
+        "billboard_net_flow_to_deal": 0,
+        "billboard_deal_to_float": 0,
+        "billboard_reason_count": 0,
+        "billboard_freshness": 0,
+        "holder_count_change_ratio": 39,
+        "holder_count_change_absolute": 39,
+        "holder_count_freshness": 33
+      }
+    },
+    "sparse_mechanism_review": "Balance-sheet leverage is an issuer accounting state and uses no event transaction, billboard, holder-count, freshness, flow, ownership-change, or deal-size field. Sparse pairwise statistics may be reported descriptively but cannot pass or fail the factor without 100 sessions.",
+    "catalog_change_after_source_rows_allowed": false,
+    "next_session_open_future_close_forward_return_score_or_selection_fields_allowed": false
+  },
+  "no_return_gate_policy": {
+    "capacity_must_run_before_comparison_fields": true,
+    "both_capacity_and_dense_uniqueness_must_pass": true,
+    "sparse_mechanism_review_must_remain_unchanged": true,
+    "one_completed_combined_audit_per_full_snapshot": true,
+    "failed_gate_must_stop_without_return_diagnostic": true,
+    "selection_or_promotion_allowed": false,
+    "tracked_terminal_record_path": "docs/a_share_eastmoney_balance_sheet_resilience_research_record.json"
+  },
+  "prohibited_actions": [
+    "change the provider, report, pinned adapter version, positional schema, report dates, fields, formula, direction, timing, carry age, coverage thresholds, quality gate, listing age, capacity thresholds, or uniqueness catalogs after source rows",
+    "inspect transported unused balance-sheet fields for a replacement factor",
+    "repair a provider schema change by silently switching to raw key names or a newer AKShare adapter",
+    "use an invalid or missing row as zero liabilities or perfect resilience",
+    "reopen the terminal Tushare free-float result using the new-hypothesis sparse-field policy",
+    "read price outcomes or factor returns before all source and no-return gates pass",
+    "aggregate, score, select, size, order, or justify Level-2 from acceptance, source, capacity, or uniqueness evidence"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_balance_sheet_resilience_state_materialization_preregistration",
+  "status": "frozen_after_full_source_before_state_materialization_capacity_comparison_fields_prices_or_returns",
+  "preregistered_at": "2026-07-16T23:06:00Z",
+  "purpose": "Resolve the frozen no-carry-across-missing-or-invalid-report rule conservatively and deterministically before materializing any daily state or measuring capacity.",
+  "source_evidence": {
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_data_contract.json",
+      "sha256": "44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_no_return_preregistration.json",
+      "sha256": "fac1c2aefb4c263704e7d93ff7affa6d7e1aa085e1f86dac04c18029ac632a6c"
+    },
+    "full_source_record": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_full_source_record.json",
+      "sha256": "8c523f2e5b2b14cb46b98a9becf114ef5efab582af2b84482524f6676caf6cc6"
+    },
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6.json",
+      "sha256": "b69e71c57ecbef956709e853d5da6054fd28f6c44d53ead2b51273641ecba9fe"
+    }
+  },
+  "observed_source_limitation": {
+    "current_historical_snapshot_only": true,
+    "immutable_row_version_stream_available": false,
+    "displayed_announcement_date_can_be_a_late_correction_date": true,
+    "invalid_rows_are_excluded_and_only_counted": true,
+    "invalid_or_absent_instrument_identity_persisted": false,
+    "naive_forward_fill_allowed": false
+  },
+  "conservative_state_algorithm": {
+    "partition_activation_source_date": "minimum displayed announcement_date among valid rows in that report_date partition",
+    "partition_activation_availability": "first local trading session strictly after partition_activation_source_date",
+    "active_report_period_on_target_session": "maximum report_date whose partition_activation_availability is on or before the target session",
+    "global_reset_rule": "At partition activation, every older report-period value is discarded for every instrument before any same-session new-period update. This deliberately resets names that have not yet filed, are absent, or had an invalid row.",
+    "instrument_value_availability": "Within the active report period only, a valid instrument value becomes usable on the first local trading session strictly after its own displayed announcement_date.",
+    "late_older_correction_rule": "A later-displayed row for an older report_date never supersedes an already activated newer report period.",
+    "maximum_factor_age_calendar_days": 550,
+    "age_anchor": "displayed announcement_date of the retained active-period instrument row",
+    "same_announcement_session_allowed": false,
+    "carry_from_an_older_report_after_new_partition_activation_allowed": false,
+    "missing_invalid_fill_clip_or_substitution_allowed": false,
+    "reason": "The earliest market-wide evidence that a new report period exists is observable without future data. Clearing all older values at that point is one-sided conservative: it can reduce coverage but cannot create an earlier factor value or carry an invalid/missing issuer forward."
+  },
+  "materialization_targets": {
+    "capacity": "only the frozen non-overlapping three-session rebalance grid from the 2019-2025 local calendar",
+    "uniqueness_if_capacity_passes": "every local session from 2025-01-01 through 2025-12-31",
+    "full_daily_2019_2025_matrix_required": false
+  },
+  "gate_order": [
+    "revalidate the full source and this state algorithm without comparison fields or prices",
+    "materialize only capacity-grid states and run the frozen capacity gate",
+    "only after capacity passes, materialize 2025 daily states and load the exact 46 dense comparison fields",
+    "report the eight sparse fields only through the already frozen economic-mechanism exclusion; do not use insufficient-session statistics to pass or fail",
+    "stop without prices or returns if either no-return gate fails"
+  ],
+  "prohibited_actions": [
+    "naively carry the latest valid row across a newly activated report partition",
+    "use report_date itself as an availability date",
+    "use same-announcement-session availability",
+    "let a late correction to an older report period overwrite a newer active period",
+    "alter the factor, direction, reset rule, 550-day age, capacity threshold, dense catalog, sparse rule, or quality gate after materialization",
+    "read prices, returns, scores, selections, sizes, or orders before all no-return gates pass"
+  ],
+  "source_factor_values_observed_before_this_clarification": true,
+  "state_materialization_or_capacity_observed_before_freeze": false,
+  "comparison_fields_loaded_before_freeze": [],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
