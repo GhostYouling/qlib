@@ -1506,7 +1506,9 @@ python scripts/a_share_short_horizon_factor_research.py baostock-5m-combination-
 
 第一次全量尝试在完成至少 100 个分区后被 `600027` 的 2024 分区阻断，并按规则删除全部临时文件、未写最终快照或清单。隔离复核证明 11,616 个源 bar 中有 478 根来自 10 个股票日的停牌占位，精确定义为 `open=high=low=close=volume=amount=0`；其中 2024‑07‑22 和 2024‑07‑26 各另有一根 15:00 的零成交参考价 bar。这不是活动交易 bar。处置在 `docs/a_share_baostock_5m_suspension_placeholder_audit.json`（SHA‑256 `5c29bd194ef70ed0d30a1e72aa3adc7e287ec1f513e0d3ee29d7551cf1dff47d`）中冻结：零价零活动占位从可计算 bar 中排除，但其行数和股票日写入质量统计；正价零活动参考 bar 保留；这 10 个股票日整体不合格。修正后该分区写 11,138 行并识别 232 个完整且正活动会话。非占位的零/负价、负量额、OHLC 关系错误和重复时间戳仍是致命错误。该复核没有读取因子值、日线开收盘或远期收益。
 
-第二次尝试使用四进程年度请求，在 40.95 分钟内完成 9,000/29,246 次请求、约 1.03 亿规范化行后，于 `603880/2025` 收到 `黑名单用户，请与管理员联系`；整份临时快照再次删除，没有最终数据或清单。随后的小探针连匿名登录都被拒绝。充分冷却后，2026‑07‑15 按冻结命令只执行了一次 `600519`、2026‑07‑10 的恢复探针；仍在登录阶段被服务端判为黑名单，历史查询未发出、返回 0 行，且日线开收盘、因子和未来收益均未读取。证据固化在 `docs/a_share_baostock_5m_restoration_probe_audit.json`（SHA‑256 `7d97216087a73c05bded07a05c0c3f5eecf936962d38bc7e48712f8d15220eba`），绑定外置卷原始清单 SHA‑256 `50ade9c89c476f55a0f3600c68609a92fca488be73836caa571ca9abea452d84`，结论为 `provider_rejected_stop_before_bulk_retry`。本研究会话不再重复探针，也不启动全量。
+第二次尝试使用四进程年度请求，在 40.95 分钟内完成 9,000/29,246 次请求、约 1.03 亿规范化行后，于 `603880/2025` 收到 `黑名单用户，请与管理员联系`；整份临时快照再次删除，没有最终数据或清单。随后的小探针连匿名登录都被拒绝。充分冷却后，2026‑07‑15 按冻结命令只执行了一次 `600519`、2026‑07‑10 的恢复探针；仍在登录阶段被服务端判为黑名单，历史查询未发出、返回 0 行，且日线开收盘、因子和未来收益均未读取。证据固化在 `docs/a_share_baostock_5m_restoration_probe_audit.json`（SHA‑256 `7d97216087a73c05bded07a05c0c3f5eecf936962d38bc7e48712f8d15220eba`），绑定外置卷原始清单 SHA‑256 `50ade9c89c476f55a0f3600c68609a92fca488be73836caa571ca9abea452d84`，结论为 `provider_rejected_stop_before_bulk_retry`。
+
+在约 42 小时冷却且外置卷仍为历史清单 0、历史 Parquet 0、预检有效、无活动 advisory lock 后，2026‑07‑17 的当前研究会话又只执行了一次相同冻结探针。结果仍在匿名登录阶段返回黑名单，历史查询未成功、行数为 0；没有读取日线开收盘、分钟因子或未来收益。跟进记录为 `docs/a_share_baostock_5m_restoration_probe_followup_20260717.json`（SHA‑256 `932e493752916352db58fb38b0abf6e9940acd81f4aee8d8245d93b2f46a2b7b`），并绑定外置记录 `20260716T180144Z_baostock_5m_restoration_probe_ae7bd679.json`。本研究会话不再重复探针，也不启动全量、部分续传、分钟因子或收益诊断。
 
 官方页面没有可验证的匿名数值频率上限，因此不使用代理、换 IP 或紧密登录规避。`docs/a_share_baostock_5m_request_throttle_audit.json`（SHA‑256 `4a881c707f41dc1a1043015ca004b65ff4607bc96bce21cd65c832cb20dc18aa`）在任何后续请求前把计划冻结为 5,386 次股票有效区间请求，本地仍写 29,246 个年度分区，请求数降低 81.5838% 且少于已观察的 9,000 次封禁点。恢复探针通过以前，继续做不依赖该源的研究，不得启动全量、构造五分钟因子或读取收益。[BaoStock 官方站点](https://www.baostock.com/)列有技术交流与联系渠道；是否需要联系由用户决定，代码不会自动发送消息。
 
@@ -1675,6 +1677,16 @@ unset token
 随后重新核对研究账本发现，这也不是新的独立机制：既有 `performance_forecasts.parquet` 已在公告事件重建协议 `docs/a_share_announcement_event_rebuild_preregistration.json`（SHA‑256 `131c1b0cd44f6b2451991389375e57583b724df1567f5c82d0d8612e0966db7c`）下，用接受价格和 20 日上市门完成一次固定重建。`20260714T162126Z` 诊断及 `20260714T162139Z`/`20260714T162140Z` 两个完整审计对 9 个公告因子合格 **0/9**；表现最好的预告精度平均 Rank IC 也只有约 +0.00745，并在 2021、2022、2025 年和最大回撤门失败。换成 Tushare 百分比区间中点或缩窄类型，不会让同一个管理层业绩预告机制变成独立因子。
 
 终止记录为 `docs/a_share_tushare_earnings_forecast_source_acceptance_record.json`（SHA‑256 `38b966eea1728769ca977c1e26733527fc908846188e4727f2d76b716e97878b`）。生产入口会在合同或供应商访问前拒绝。不得第二次验收、换股票/日期/字段/类型/公式/方向/事件年龄、为同一预告机制另写 v2 合同、运行全历史/容量/唯一性/收益，也不得聚合、评分、选股、定仓、下单或据此采购 Level‑2。下一机制必须先回到已记录研究前沿核重，确认经济独立后才能写合同或请求数据。
+
+### Tushare 财报计划及时性（前沿核重后一次调用终止）
+
+在继续寻找新机制前，`research-frontier-audit` 被重新运行到独立的本地记录 `20260716T174304Z`，仍复现 43 个历史因子、7 个关联稳定性通过、TopK 通过 0、双门交集 0，且没有重读原始价格或新增收益。机制级记录为 `docs/a_share_three_day_mechanism_overlap_reaudit_20260717.json`（SHA‑256 `f21194cf93b5ac126d6cb39d93cab529d77a2e28ab153b90e0cc2326c860370e`）。候选 `hk_hold` 虽然在经济上不同于分类大单和北向 Top‑10，但官方说明交易所从 2024‑08‑20 起停止日度北向持仓披露，因此它不能产生当前同口径信号，在任何行或适配器之前即被排除。
+
+唯一推进的独立候选是财报披露计划及时性。合同 `docs/a_share_tushare_disclosure_promptness_data_contract.json`（SHA‑256 `dece34e99134b1ba0f55f7970833d7b0835e756f99a81f335a9c6af4795fa47c`）在接口行前固定只请求 `ts_code,ann_date,end_date,pre_date,modify_date`，原始值为 `pre_date - ann_date` 的日历日数，越短越好。`actual_date`、财务结果、文本、价格和收益全部禁止；`modify_date` 只允许计数是否存在，不解析、不保存到因子帧，也不参与公式。合法 `.BJ` 行只排除并计数，缺失、畸形或未知后缀仍致命。4 个专项测试、完整 372 个数据采集测试、Python 编译与 diff 检查均在请求前通过。
+
+一次性验收只来得及请求首个固定年报期 `20191231`。接口返回 4,432 行，低于 6,000 行截断上限，但其中 25 行至少有一个股票代码、最新公告日、报告期或计划日缺失/不可解析，因此触发合同中的致命来源门。失败记录为 `data/metadata/rich_data/runs/20260716T175559Z_tushare_disclosure_promptness_acceptance_d4a47b11.json`（SHA‑256 `5929ce2a1520a9b93b170868be89e8dee7ef3842feb9a7de37625f2170ce9ef4`）。只发出 1/3 次调用，没有请求 2024/2025 年报期，没有保存原始帧或 `modify_date` 值，没有构造或发布因子值；临时目录已删除，价格字段为空且 `forward_return_fields_read=false`。
+
+终止记录为 `docs/a_share_tushare_disclosure_promptness_source_acceptance_record.json`（SHA‑256 `2096e48a6126126e7fb4fd612e6f443a57e43df43bcfc45aa384d2574797e3ef`）。由于原始帧按合同未保留，25 行的具体字段分布未知；不得为了补这个细节再请求，也不得删除/填补/推断异常行、换报告期、增加 `actual_date`、删除 `modify_date`、改变日期锚点/方向/事件年龄或另写同机制 v2。生产入口会在合同、Token 或供应商访问前拒绝。不得运行全历史、容量、唯一性、收益、聚合、评分、选股、仓位、订单或据此采购 Level‑2；该拒绝只证明来源不符合冻结合同，不代表因子收益已经失败。
 
 ### 必经验收流程
 

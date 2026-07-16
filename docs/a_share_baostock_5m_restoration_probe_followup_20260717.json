@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "kind": "a_share_baostock_5m_restoration_probe_followup",
+  "status": "provider_still_rejected_stop_current_research_session_before_history_query",
+  "recorded_at": "2026-07-16T18:03:00Z",
+  "purpose": "Bind the one post-cooldown BaoStock restoration probe for the current research session and prevent repeated anonymous login attempts or an unauthorized bulk retry.",
+  "frozen_source_chain": {
+    "data_contract": {
+      "path": "docs/a_share_baostock_5m_data_contract.json",
+      "sha256": "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f"
+    },
+    "factor_spec": {
+      "path": "docs/a_share_baostock_5m_factor_preregistration.json",
+      "sha256": "a6b679c1476cacfc193aba5bf93988c92691025872150d3eaab723576c7164b8"
+    },
+    "suspension_placeholder_audit": {
+      "path": "docs/a_share_baostock_5m_suspension_placeholder_audit.json",
+      "sha256": "5c29bd194ef70ed0d30a1e72aa3adc7e287ec1f513e0d3ee29d7551cf1dff47d"
+    },
+    "request_throttle_audit": {
+      "path": "docs/a_share_baostock_5m_request_throttle_audit.json",
+      "sha256": "4a881c707f41dc1a1043015ca004b65ff4607bc96bce21cd65c832cb20dc18aa"
+    },
+    "prior_restoration_audit": {
+      "path": "docs/a_share_baostock_5m_restoration_probe_audit.json",
+      "sha256": "7d97216087a73c05bded07a05c0c3f5eecf936962d38bc7e48712f8d15220eba"
+    }
+  },
+  "pre_probe_state": {
+    "external_data_root": "/Volumes/DIsk/qlib-rich-data",
+    "history_manifest_count": 0,
+    "raw_history_parquet_file_count": 0,
+    "latest_preflight_status": "passed_before_network",
+    "latest_preflight_free_gib": 1714.290168762207,
+    "advisory_lock_currently_held": false,
+    "inactive_lock_marker_pid": "24906",
+    "previous_probe_created_at": "2026-07-15T00:03:53.363934+00:00",
+    "cooldown_minutes_before_followup": 2517.8539819666667,
+    "network_request_issued_by_status_check": false
+  },
+  "followup_probe": {
+    "run_id": "20260716T180144Z_baostock_5m_restoration_probe_ae7bd679",
+    "path": "/Volumes/DIsk/qlib-rich-data/metadata/rich_data/availability/20260716T180144Z_baostock_5m_restoration_probe_ae7bd679.json",
+    "sha256": "8269b0628b94b1e3b403b736253c0776369b4f3cdf22eeae4b4f0592acebf938",
+    "created_at": "2026-07-16T18:01:44.602852+00:00",
+    "provider": "baostock",
+    "sdk_version": "0.9.3",
+    "code": "600519",
+    "trade_date": "2026-07-10",
+    "frequency": "5m",
+    "anonymous_login_attempted": true,
+    "provider_error": "黑名单用户，请与管理员联系",
+    "history_query_succeeded": false,
+    "rows": 0,
+    "raw_or_derived_factor_values_read": false,
+    "daily_open_close_fields_read": false,
+    "forward_return_fields_read": false
+  },
+  "decision": {
+    "probe_again_in_current_research_session_allowed": false,
+    "bulk_retry_allowed": false,
+    "partial_resume_allowed": false,
+    "proxy_ip_or_identity_evasion_allowed": false,
+    "replace_baostock_with_an_undocumented_public_quote_window_allowed": false,
+    "minute_feature_or_return_diagnostic_allowed": false,
+    "factor_failure_claimed": false,
+    "provider_global_absence_claimed": false,
+    "outcome": "wait_for_verifiable_provider_restoration_or_guidance_and_continue_only_independent_no_return_research"
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

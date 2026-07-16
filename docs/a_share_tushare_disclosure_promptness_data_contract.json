@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_disclosure_promptness_data_contract",
+  "status": "frozen_after_mechanism_overlap_audit_before_entitlement_rows_factor_values_or_returns",
+  "preregistered_at": "2026-07-16T17:48:19Z",
+  "purpose": "Ingest and no-return screen one issuer reporting-promptness mechanism for the fixed three-session A-share protocol without sweeping disclosure fields, formulas, directions, event ages, dates, prices, or returns.",
+  "freeze_evidence": {
+    "official_disclosure_date_documentation_observed": true,
+    "mechanism_overlap_audit_completed": true,
+    "provider_disclosure_date_rows_observed": false,
+    "disclosure_date_entitlement_observed": false,
+    "factor_values_observed": false,
+    "full_history_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "source": "Tushare Pro disclosure_date",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=162",
+    "official_permission_table": "https://tushare.pro/document/1?doc_id=108",
+    "minimum_permission_points": 2000,
+    "current_account_points": 3000,
+    "provider_documented_maximum_rows_per_call": 6000,
+    "provider_documented_total_limit": "unlimited with partitioned calls",
+    "why_this_source": "The latest announced financial-report schedule is currently operable and represents an issuer reporting commitment rather than a realized financial result, historical price transform, valuation field, order flow, ownership, analyst opinion, or transaction event.",
+    "rejected_same_turn_alternative": {
+      "api": "hk_hold",
+      "reason": "Official daily northbound ownership disclosure stopped after 2024-08-20, so the historical signal cannot be reproduced for the current strategy.",
+      "provider_rows_observed": false
+    }
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "Shorter calendar time between the latest disclosure-plan announcement and the promised report date represents more prompt reporting commitment and is frozen as better.",
+    "factor_family": "issuer_reporting_schedule_event",
+    "relationship_to_realized_fundamentals": "No actual report date, report value, forecast value, profit, revenue, cash flow, ROE, or audit opinion enters the candidate.",
+    "relationship_to_existing_timing_factors": "Survey receipt-to-announcement lag and generic event freshness measure already-observed events. This candidate measures a newly announced forward reporting commitment. A mandatory no-return rank-correlation screen must still reject it if empirical scores are a near synonym.",
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "f21194cf93b5ac126d6cb39d93cab529d77a2e28ab153b90e0cc2326c860370e"
+    },
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "disclosure_date",
+    "frequency": "financial_report_disclosure_plan_event",
+    "request_mode": "one frozen report period per call",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "pre_date",
+      "modify_date"
+    ],
+    "explicitly_forbidden_fields": [
+      "actual_date",
+      "name",
+      "report_title",
+      "forecast_type",
+      "p_change_min",
+      "p_change_max",
+      "revenue",
+      "profit",
+      "roe",
+      "income",
+      "cashflow",
+      "audit_opinion",
+      "open",
+      "high",
+      "low",
+      "close",
+      "price",
+      "market_cap",
+      "turnover",
+      "score",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_and_version_policy": {
+    "event_date": "ann_date, documented by the provider as the latest disclosure announcement date",
+    "planned_date": "pre_date, documented by the provider as the expected disclosure date",
+    "actual_date_policy": "actual_date is forbidden because it can be unknown at ann_date and is unnecessary for the frozen mechanism",
+    "modify_date_policy": "modify_date is requested only to count whether provider revision context exists. Its contents are never parsed as an event date, persisted in the factor frame, ranked, imputed, or used in the formula.",
+    "date_order_policy": "ann_date and pre_date must be complete valid calendar dates with ann_date no later than pre_date; any violation aborts the report-period partition",
+    "report_period_policy": "end_date must exactly match the requested standard quarter end",
+    "outside_target_code_policy": "A complete six-digit .BJ code is excluded and counted before factor construction because BSE is outside factor_main_chinext_star and buyable_main_chinext. Missing, malformed, or any other unknown exchange suffix aborts the partition; no BSE row enters coverage, capacity, ranking, or holdings.",
+    "duplicate_policy": "Exact five-field duplicates may be counted and collapsed. Differing rows for one ts_code and end_date abort the partition; never select a convenient version.",
+    "same_instrument_announcement_multi_period_policy": "If full history contains more than one report period for one instrument and ann_date, exclude every colliding event before capacity; never choose the latest, shortest, or largest value.",
+    "conservative_availability": "first local trading session strictly after ann_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "forward_fill_beyond_event_age_allowed": false,
+    "historical_intraday_release_timestamp_available_per_row": false,
+    "residual_risk": "The interface exposes a latest announcement date but no historical intraday release timestamp or complete version stream. Strict next-session availability, conflicting-version rejection, collision exclusion, and immutable retrieval timestamps reduce but cannot eliminate vendor revision-history risk."
+  },
+  "factor": {
+    "name": "tushare_disclosure_plan_promptness",
+    "raw_column": "tushare_disclosure_plan_lead_days",
+    "direction": "lower_is_better",
+    "formula": "calendar_days(pre_date - ann_date)",
+    "units": "calendar days",
+    "economic_direction": "a shorter announced lead time is frozen as better",
+    "zero_policy": "zero is valid when a plan is announced for the same calendar date",
+    "negative_or_nonfinite_policy": "abort the report-period partition",
+    "absent_event_policy": "missing; never treat an absent disclosure-plan row as zero",
+    "clipping_winsorization_log_absolute_value_inversion_offset_or_imputation": null,
+    "score_formula_if_all_gates_pass": "1 - cross_sectional_percentile_rank(tushare_disclosure_plan_lead_days)"
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "quarterly_quality_snapshot": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_report_periods": [
+      "20191231",
+      "20241231",
+      "20251231"
+    ],
+    "provider_calls": 3,
+    "minimum_source_rows_per_period": 2000,
+    "minimum_retained_rows_per_period": 1000,
+    "minimum_distinct_lead_days_per_period": 10,
+    "provider_row_ceiling_is_strict": true,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "exactly one disclosure_date request is issued for each frozen report period with only the frozen five fields",
+      "each response is below 6000 rows and contains at least 2000 source rows",
+      "stock code, latest announcement date, report period, and planned date are complete and valid",
+      "complete .BJ rows are excluded and counted while malformed or unknown exchange codes abort acceptance",
+      "every returned report period exactly matches its request and every report period is a standard quarter end",
+      "latest announcement date is no later than planned disclosure date for every retained row",
+      "exact semantic duplicates alone may collapse and conflicting stock-period rows abort acceptance",
+      "modify_date presence is counted only and no value enters the factor frame or formula",
+      "the local calendar-day difference is an exact nonnegative integer and each period has at least ten distinct values",
+      "each period retains at least 1000 rows after strict validation",
+      "no actual date, credential, narrative, financial value, price, score, or return appears in a published factor frame or manifest"
+    ],
+    "success_status": "accepted_entitlement_schema_point_in_time_policy_and_formula_pending_full_history",
+    "failed_acceptance_policy": "write one no-return rejection record and stop without another period, field relaxation, version selection, full sync, capacity, uniqueness, price access, formula or direction change, score, selection, sizing, orders, or Level-2 justification",
+    "one_shot_policy": "The exact contract may publish at most one terminal success or rejection record."
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_disclosure_plan_promptness",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2025-12-31",
+    "fixed_report_periods": [
+      "20190331",
+      "20190630",
+      "20190930",
+      "20191231",
+      "20200331",
+      "20200630",
+      "20200930",
+      "20201231",
+      "20210331",
+      "20210630",
+      "20210930",
+      "20211231",
+      "20220331",
+      "20220630",
+      "20220930",
+      "20221231",
+      "20230331",
+      "20230630",
+      "20230930",
+      "20231231",
+      "20240331",
+      "20240630",
+      "20240930",
+      "20241231",
+      "20250331",
+      "20250630",
+      "20250930",
+      "20251231"
+    ],
+    "provider_call_partition": "one report period",
+    "provider_calls": 28,
+    "provider_documented_maximum_rows_per_call": 6000,
+    "reaching_row_ceiling_policy": "abort as possible truncation",
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_period": 3,
+    "retry_backoff_seconds": [
+      2,
+      5
+    ],
+    "requests_are_sequential": true,
+    "output_columns": [
+      "announcement_date",
+      "report_period",
+      "planned_disclosure_date",
+      "instrument",
+      "tushare_disclosure_plan_lead_days",
+      "provider"
+    ],
+    "partition_policy": "one report-period calendar year per immutable Parquet partition",
+    "partial_snapshot_accepted": false,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "failure_cleanup": "delete the complete temporary snapshot and publish no final manifest",
+    "raw_provider_frames_persisted": false,
+    "actual_date_requested_or_persisted": false
+  },
+  "source_completeness_policy": {
+    "coverage_denominator": "factor_main_chinext_star instruments active on the last local session on or before each report period",
+    "minimum_median_valid_plan_coverage": 0.9,
+    "minimum_p05_valid_plan_coverage": 0.85,
+    "minimum_report_periods_with_one_thousand_valid_rows": 24,
+    "minimum_observed_source_years": 5,
+    "duplicate_stock_report_period_keys_allowed": false,
+    "failed_gate_policy": "stop before event expansion, capacity, uniqueness, or returns; do not fill missing plans, omit weak periods, mix providers, or add actual-date and report-result fields"
+  },
+  "no_return_capacity_policy": {
+    "separate_immutable_preregistration_required_after_full_snapshot": true,
+    "run_before_any_open_close_or_forward_return_read": true,
+    "holding_universe": "buyable_main_chinext",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_observed_years": 5,
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "failed_gate_policy": "stop without reading returns, changing direction or age, lowering capacity, selecting report periods, or combining a rejected factor",
+    "selection_or_promotion_allowed": false
+  },
+  "no_return_uniqueness_policy": {
+    "required_after_capacity_and_before_factor_return_access": true,
+    "comparison_scope": "every factor in the frozen 43-factor accepted-price frontier plus the terminal Tushare moneyflow, PB, and SW breadth mechanisms where a same-day comparison is defined",
+    "method": "On factor-active sessions, rank lower lead days as the frozen higher directional score and compare it with each existing factor inside the same quality/listing-eligible cross-section; compute Spearman correlation and take each comparison's median daily correlation.",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_sessions": 100,
+    "failed_gate_policy": "stop without returns, inversion, another lead-time anchor, report-period selection, event-age change, field substitution, or threshold relaxation"
+  },
+  "diagnostic_policy_if_source_capacity_and_uniqueness_pass": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_required": "docs/a_share_three_day_prospective_execution_policy.json",
+    "cny_200000_pilot_policy_required": "docs/a_share_three_day_pilot_execution_policy.json",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_window_anchor_age_quality_weight_or_threshold_search_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

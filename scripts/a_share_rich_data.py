@@ -94,6 +94,14 @@ DEFAULT_TUSHARE_EARNINGS_FORECAST_ACCEPTANCE_RECORD = (
     / "docs"
     / "a_share_tushare_earnings_forecast_source_acceptance_record.json"
 )
+DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_disclosure_promptness_data_contract.json"
+)
+DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_disclosure_promptness_source_acceptance_record.json"
+)
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
 )
@@ -211,6 +219,12 @@ TUSHARE_EARNINGS_FORECAST_CONTRACT_SHA256 = (
 )
 TUSHARE_EARNINGS_FORECAST_ACCEPTANCE_RECORD_SHA256 = (
     "38b966eea1728769ca977c1e26733527fc908846188e4727f2d76b716e97878b"
+)
+TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT_SHA256 = (
+    "dece34e99134b1ba0f55f7970833d7b0835e756f99a81f335a9c6af4795fa47c"
+)
+TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_RECORD_SHA256 = (
+    "2096e48a6126126e7fb4fd612e6f443a57e43df43bcfc45aa384d2574797e3ef"
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
@@ -352,6 +366,31 @@ TUSHARE_EARNINGS_FORECAST_COMPARABLE_TYPES = frozenset(
 )
 TUSHARE_EARNINGS_FORECAST_NONCOMPARABLE_TYPES = frozenset(
     {"扭亏", "首亏", "续亏"}
+)
+TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS = (
+    "ts_code",
+    "ann_date",
+    "end_date",
+    "pre_date",
+    "modify_date",
+)
+TUSHARE_DISCLOSURE_PROMPTNESS_COLUMNS = (
+    "announcement_date",
+    "report_period",
+    "planned_disclosure_date",
+    "instrument",
+    "tushare_disclosure_plan_lead_days",
+    "provider",
+)
+TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_PERIODS = (
+    "20191231",
+    "20241231",
+    "20251231",
+)
+TUSHARE_DISCLOSURE_PROMPTNESS_FULL_PERIODS = tuple(
+    f"{year}{month_day}"
+    for year in range(2019, 2026)
+    for month_day in ("0331", "0630", "0930", "1231")
 )
 TUSHARE_TOP10_FLOAT_RAW_FIELDS = (
     "ts_code",
@@ -1365,6 +1404,26 @@ def fetch_tushare_earnings_forecast(
     return result.copy()
 
 
+def fetch_tushare_disclosure_plan(report_period: dt.date) -> pd.DataFrame:
+    """Fetch one frozen report period using only the five-field whitelist."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.disclosure_date(
+            end_date=report_period.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare disclosure_date request failed for "
+            f"{report_period.isoformat()}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
 def fetch_tushare_top10_float_holders(
     ts_code: str,
     report_period_start: dt.date,
@@ -2151,6 +2210,163 @@ def canonicalize_tushare_earnings_forecast(
         "reversed_bound_rows_excluded": int((comparable & reversed_bounds).sum()),
         "rows_written": int(len(result)),
         "forecast_type_counts": type_counts,
+    }
+
+
+def canonicalize_tushare_disclosure_plan(
+    frame: pd.DataFrame,
+    expected_report_period: dt.date,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Apply the frozen disclosure-plan date, code, version, and formula policy."""
+
+    empty_quality: dict[str, Any] = {
+        "input_rows": 0,
+        "outside_target_bj_rows_excluded": 0,
+        "exact_semantic_duplicate_rows_collapsed": 0,
+        "modify_date_context_rows": 0,
+        "rows_written": 0,
+        "distinct_lead_days": 0,
+        "minimum_lead_days": None,
+        "maximum_lead_days": None,
+    }
+    if frame is None or frame.empty:
+        return (
+            pd.DataFrame(columns=TUSHARE_DISCLOSURE_PROMPTNESS_COLUMNS),
+            empty_quality,
+        )
+    raw = frame.copy()
+    missing_columns = [
+        field
+        for field in TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS
+        if field not in raw
+    ]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare disclosure_date response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS)
+    )
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare disclosure_date response contains fields outside the frozen "
+            "whitelist: " + ", ".join(unexpected_columns)
+        )
+    if expected_report_period.strftime("%m-%d") not in {
+        "03-31",
+        "06-30",
+        "09-30",
+        "12-31",
+    }:
+        raise RichDataError(
+            "frozen Tushare disclosure_date request is not a standard quarter end"
+        )
+
+    source_code = (
+        raw["ts_code"].astype("string").str.strip().str.upper().replace("", pd.NA)
+    )
+    code_parts = source_code.str.extract(r"^(\d{6})\.(SH|SZ|BJ)$")
+    announcement_date = pd.to_datetime(
+        raw["ann_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    report_period = pd.to_datetime(
+        raw["end_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    planned_date = pd.to_datetime(
+        raw["pre_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    modify_context = (
+        raw["modify_date"].astype("string").str.strip().replace("", pd.NA)
+    )
+    invalid_key = (
+        source_code.isna()
+        | code_parts[0].isna()
+        | code_parts[1].isna()
+        | announcement_date.isna()
+        | report_period.isna()
+        | planned_date.isna()
+    )
+    if invalid_key.any():
+        raise RichDataError(
+            "Tushare disclosure_date response contains "
+            f"{int(invalid_key.sum())} rows with invalid keys or dates"
+        )
+    expected_ts = pd.Timestamp(expected_report_period)
+    if not report_period.eq(expected_ts).all():
+        raise RichDataError(
+            "Tushare disclosure_date response contains a report period outside its request"
+        )
+    lead_days = (planned_date - announcement_date).dt.days
+    if lead_days.lt(0).any():
+        raise RichDataError(
+            "Tushare disclosure_date response contains an announcement after its planned date"
+        )
+
+    outside_bj = code_parts[1].eq("BJ")
+    normalized = pd.DataFrame(
+        {
+            "source_code": source_code,
+            "announcement_date": announcement_date,
+            "report_period": report_period,
+            "planned_disclosure_date": planned_date,
+            "modify_date_context": modify_context,
+            "lead_days": lead_days,
+            "code": code_parts[0],
+            "exchange": code_parts[1],
+        }
+    ).loc[~outside_bj].copy()
+    before_dedup = len(normalized)
+    normalized = normalized.drop_duplicates(ignore_index=True)
+    duplicate_rows = int(before_dedup - len(normalized))
+    event_key = ["source_code", "report_period"]
+    if normalized.duplicated(event_key, keep=False).any():
+        raise RichDataError(
+            "Tushare disclosure_date response contains conflicting stock-period rows"
+        )
+
+    instruments: list[str] = []
+    for code, exchange in zip(
+        normalized["code"].astype(str), normalized["exchange"].astype(str)
+    ):
+        instrument = qlib_symbol(code)
+        if not instrument.startswith(exchange):
+            raise RichDataError(
+                "Tushare disclosure_date stock code and exchange suffix disagree: "
+                f"{code}.{exchange}"
+            )
+        instruments.append(instrument)
+    result = pd.DataFrame(
+        {
+            "announcement_date": normalized["announcement_date"],
+            "report_period": normalized["report_period"],
+            "planned_disclosure_date": normalized["planned_disclosure_date"],
+            "instrument": instruments,
+            "tushare_disclosure_plan_lead_days": normalized["lead_days"].astype(
+                "int64"
+            ),
+            "provider": "tushare",
+        }
+    )
+    result = (
+        result.loc[:, list(TUSHARE_DISCLOSURE_PROMPTNESS_COLUMNS)]
+        .sort_values(["announcement_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    factor = result["tushare_disclosure_plan_lead_days"]
+    if factor.lt(0).any() or not np.isfinite(factor).all():
+        raise RichDataError(
+            "derived Tushare disclosure-plan lead days are negative or non-finite"
+        )
+    return result, {
+        "input_rows": int(len(raw)),
+        "outside_target_bj_rows_excluded": int(outside_bj.sum()),
+        "exact_semantic_duplicate_rows_collapsed": duplicate_rows,
+        "modify_date_context_rows": int(modify_context.notna().sum()),
+        "rows_written": int(len(result)),
+        "distinct_lead_days": int(factor.nunique()),
+        "minimum_lead_days": int(factor.min()) if len(factor) else None,
+        "maximum_lead_days": int(factor.max()) if len(factor) else None,
     }
 
 
@@ -3948,6 +4164,210 @@ def load_tushare_earnings_forecast_acceptance_record(
                     "Tushare earnings-forecast terminal manifest evidence changed: "
                     f"{manifest_file}"
                 )
+    return record
+
+
+def load_tushare_disclosure_promptness_contract(
+    path: Path = DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT,
+) -> dict[str, Any]:
+    """Load and revalidate the immutable pre-row disclosure-plan contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT_SHA256:
+        raise RichDataError(
+            "Tushare disclosure-promptness contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_tushare_disclosure_promptness_data_contract"
+    )
+    selection = contract.get("source_selection") or {}
+    mechanism = contract.get("mechanism_identity") or {}
+    overlap = mechanism.get("mechanism_overlap_audit") or {}
+    source = contract.get("source") or {}
+    timing = contract.get("point_in_time_and_version_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    completeness = contract.get("source_completeness_policy") or {}
+    capacity = contract.get("no_return_capacity_policy") or {}
+    uniqueness = contract.get("no_return_uniqueness_policy") or {}
+    diagnostic = contract.get(
+        "diagnostic_policy_if_source_capacity_and_uniqueness_pass"
+    ) or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_mechanism_overlap_audit_before_entitlement_rows_factor_values_or_returns"
+        or contract.get("preregistered_at") != "2026-07-16T17:48:19Z"
+        or selection.get("minimum_permission_points") != 2000
+        or selection.get("current_account_points") != 3000
+        or selection.get("provider_documented_maximum_rows_per_call") != 6000
+        or overlap.get("path")
+        != "docs/a_share_three_day_mechanism_overlap_reaudit_20260717.json"
+        or overlap.get("sha256")
+        != "f21194cf93b5ac126d6cb39d93cab529d77a2e28ab153b90e0cc2326c860370e"
+        or source.get("provider") != "tushare"
+        or source.get("api") != "disclosure_date"
+        or source.get("request_mode") != "one frozen report period per call"
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS
+        or timing.get("conservative_availability")
+        != "first local trading session strictly after ann_date"
+        or timing.get("same_announcement_session_trade_allowed") is not False
+        or timing.get("maximum_event_age_calendar_days") != 3
+        or timing.get("forward_fill_beyond_event_age_allowed") is not False
+        or factor.get("name") != "tushare_disclosure_plan_promptness"
+        or factor.get("raw_column") != "tushare_disclosure_plan_lead_days"
+        or factor.get("direction") != "lower_is_better"
+        or factor.get("formula") != "calendar_days(pre_date - ann_date)"
+        or tuple(acceptance.get("fixed_report_periods") or ())
+        != TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_PERIODS
+        or acceptance.get("provider_calls") != 3
+        or acceptance.get("minimum_source_rows_per_period") != 2000
+        or acceptance.get("minimum_retained_rows_per_period") != 1000
+        or acceptance.get("minimum_distinct_lead_days_per_period") != 10
+        or acceptance.get("provider_row_ceiling_is_strict") is not True
+        or acceptance.get("success_status")
+        != "accepted_entitlement_schema_point_in_time_policy_and_formula_pending_full_history"
+        or tuple(snapshot.get("fixed_report_periods") or ())
+        != TUSHARE_DISCLOSURE_PROMPTNESS_FULL_PERIODS
+        or snapshot.get("provider_calls") != 28
+        or snapshot.get("provider_documented_maximum_rows_per_call") != 6000
+        or tuple(snapshot.get("output_columns") or ())
+        != TUSHARE_DISCLOSURE_PROMPTNESS_COLUMNS
+        or snapshot.get("raw_provider_frames_persisted") is not False
+        or snapshot.get("actual_date_requested_or_persisted") is not False
+        or completeness.get("minimum_median_valid_plan_coverage") != 0.9
+        or completeness.get("minimum_p05_valid_plan_coverage") != 0.85
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("holding_period_local_sessions") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("minimum_pairwise_sessions") != 100
+        or uniqueness.get(
+            "maximum_allowed_absolute_median_daily_rank_correlation"
+        )
+        != 0.8
+        or diagnostic.get(
+            "separate_immutable_preregistration_required_before_price_access"
+        )
+        is not True
+        or diagnostic.get("holding_period_local_sessions") != 3
+        or diagnostic.get("topk") != 3
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare disclosure-promptness contract does not match the frozen protocol"
+        )
+    overlap_path = resolve_record_path(str(overlap["path"]))
+    if not overlap_path.exists() or file_digest(overlap_path) != str(
+        overlap["sha256"]
+    ):
+        raise RichDataError(
+            "Tushare disclosure-promptness mechanism-overlap evidence changed"
+        )
+    for label, evidence in (contract.get("local_context") or {}).items():
+        linked_path = resolve_record_path(str(evidence.get("path") or ""))
+        linked_sha = str(evidence.get("sha256") or "")
+        if not linked_path.exists() or file_digest(linked_path) != linked_sha:
+            raise RichDataError(
+                f"Tushare disclosure-promptness local context changed: {label}"
+            )
+        manifest_value = evidence.get("manifest_path")
+        manifest_sha = evidence.get("manifest_sha256")
+        if manifest_value is not None or manifest_sha is not None:
+            manifest_file = resolve_record_path(str(manifest_value or ""))
+            if (
+                not manifest_value
+                or not manifest_sha
+                or not manifest_file.exists()
+                or file_digest(manifest_file) != str(manifest_sha)
+            ):
+                raise RichDataError(
+                    "Tushare disclosure-promptness manifest context changed: "
+                    f"{label}"
+                )
+    return contract
+
+
+def tushare_disclosure_promptness_acceptance_records() -> list[Path]:
+    """Return records that consumed the frozen disclosure-plan acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*tushare_disclosure_promptness_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_disclosure_promptness_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_disclosure_promptness_acceptance_record(
+    path: Path = DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Validate the terminal first-period disclosure-plan rejection record."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError(
+            "Tushare disclosure-promptness acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path, kind="a_share_tushare_disclosure_promptness_source_acceptance_record"
+    )
+    contract = record.get("data_contract") or {}
+    failure = record.get("acceptance_failure") or {}
+    interpretation = record.get("failure_interpretation") or {}
+    decision = record.get("decision") or {}
+    if (
+        record.get("status")
+        != "terminal_rejected_on_first_report_period_before_factor_values_or_returns"
+        or contract.get("sha256") != TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT_SHA256
+        or contract.get("factor") != "tushare_disclosure_plan_promptness"
+        or failure.get("sha256")
+        != "5929ce2a1520a9b93b170868be89e8dee7ef3842feb9a7de37625f2170ce9ef4"
+        or failure.get("failed_report_period") != "20191231"
+        or failure.get("source_rows_returned") != 4432
+        or failure.get("invalid_key_or_date_rows") != 25
+        or failure.get("provider_calls_issued") != 1
+        or failure.get("factor_frame_published") is not False
+        or failure.get("factor_value_constructed") is not False
+        or failure.get("partial_snapshot_deleted") is not True
+        or failure.get("final_snapshot_published") is not False
+        or interpretation.get("factor_failure_claimed") is not False
+        or decision.get("acceptance_retry_allowed") is not False
+        or decision.get("request_remaining_periods_allowed") is not False
+        or decision.get("run_full_history_allowed") is not False
+        or decision.get("run_capacity_or_uniqueness_allowed") is not False
+        or decision.get("run_return_diagnostic_allowed") is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare disclosure-promptness acceptance record changed"
+        )
+    for link in (
+        record.get("mechanism_overlap_audit") or {},
+        contract,
+        failure,
+    ):
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        linked_sha = str(link.get("sha256") or "")
+        if linked_path.exists() and file_digest(linked_path) != linked_sha:
+            raise RichDataError(
+                "Tushare disclosure-promptness terminal evidence changed: "
+                f"{linked_path}"
+            )
     return record
 
 
@@ -8017,6 +8437,228 @@ def sync_tushare_earnings_forecast_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def sync_tushare_disclosure_promptness_acceptance() -> Path:
+    """Run the frozen three-period disclosure-plan acceptance without prices."""
+
+    terminal_path = DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_RECORD
+    if terminal_path.exists():
+        load_tushare_disclosure_promptness_acceptance_record(terminal_path)
+        raise RichDataError(
+            "Tushare disclosure-promptness branch is terminal after the first "
+            "report-period rejection; another acceptance is forbidden"
+        )
+    contract = load_tushare_disclosure_promptness_contract()
+    prior_records = tushare_disclosure_promptness_acceptance_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare disclosure-promptness acceptance is one-shot and was already "
+            "consumed: " + ", ".join(str(path) for path in prior_records)
+        )
+    require_provider("tushare")
+    acceptance = contract["acceptance_protocol"]
+    period_values = tuple(str(value) for value in acceptance["fixed_report_periods"])
+    periods = tuple(
+        dt.datetime.strptime(value, "%Y%m%d").date() for value in period_values
+    )
+    run_id = new_run_id("tushare_disclosure_promptness_acceptance")
+    run_root = (
+        RAW_ROOT / "tushare" / "disclosure_promptness" / "acceptance" / run_id
+    )
+    temporary_root = run_root.parent / f".{run_id}.tmp"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(
+            f"Tushare disclosure-promptness acceptance already exists: {run_id}"
+        )
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    calls_issued = 0
+    current_period: str | None = None
+    source_rows_by_period: dict[str, int] = {}
+    quality_by_period: dict[str, dict[str, Any]] = {}
+    try:
+        frames: list[pd.DataFrame] = []
+        row_ceiling = int(
+            contract["source_selection"]["provider_documented_maximum_rows_per_call"]
+        )
+        for period in periods:
+            current_period = period.strftime("%Y%m%d")
+            calls_issued += 1
+            raw = fetch_tushare_disclosure_plan(period)
+            source_rows_by_period[current_period] = int(len(raw))
+            if len(raw) >= row_ceiling:
+                raise RichDataError(
+                    "Tushare disclosure-promptness acceptance reached the frozen "
+                    f"6000-row truncation ceiling for {current_period}: {len(raw)}"
+                )
+            if len(raw) < int(acceptance["minimum_source_rows_per_period"]):
+                raise RichDataError(
+                    "Tushare disclosure-promptness acceptance returned too few "
+                    f"source rows for {current_period}: {len(raw)}"
+                )
+            normalized, quality = canonicalize_tushare_disclosure_plan(raw, period)
+            quality_by_period[current_period] = quality
+            if len(normalized) < int(acceptance["minimum_retained_rows_per_period"]):
+                raise RichDataError(
+                    "Tushare disclosure-promptness acceptance retained too few "
+                    f"rows for {current_period}: {len(normalized)}"
+                )
+            if quality["distinct_lead_days"] < int(
+                acceptance["minimum_distinct_lead_days_per_period"]
+            ):
+                raise RichDataError(
+                    "Tushare disclosure-promptness acceptance has too few distinct "
+                    f"lead-day values for {current_period}: "
+                    f"{quality['distinct_lead_days']}"
+                )
+            frames.append(normalized)
+        if calls_issued != int(acceptance["provider_calls"]):
+            raise RichDataError(
+                "Tushare disclosure-promptness acceptance omitted a frozen request"
+            )
+        combined = pd.concat(frames, ignore_index=True)
+        event_key = ["instrument", "report_period"]
+        if combined.duplicated(event_key).any():
+            raise RichDataError(
+                "Tushare disclosure-promptness acceptance has duplicate stock-period keys"
+            )
+        combined = combined.sort_values(
+            ["announcement_date", "instrument", "report_period"], kind="stable"
+        ).reset_index(drop=True)
+        temporary_destination = temporary_root / "disclosure_promptness.parquet"
+        final_destination = run_root / "disclosure_promptness.parquet"
+        atomic_write_frame(combined, temporary_destination)
+        factor_name = "tushare_disclosure_plan_lead_days"
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_disclosure_promptness_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT),
+                "sha256": file_digest(
+                    DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT
+                ),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "disclosure_date",
+                "request_mode": "one frozen report period per call",
+                "report_periods": list(period_values),
+                "provider_calls_issued": calls_issued,
+                "fields": list(TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS),
+                "actual_date_requested_or_stored": False,
+                "raw_frames_persisted": False,
+                "modify_date_values_persisted": False,
+                "credentials_logged_or_stored": False,
+            },
+            "files": [
+                {
+                    "path": manifest_path(final_destination),
+                    "rows": int(len(combined)),
+                    "sha256": frame_digest(combined),
+                }
+            ],
+            "source_quality": {
+                "source_rows": int(sum(source_rows_by_period.values())),
+                "source_rows_by_period": source_rows_by_period,
+                "rows_written": int(len(combined)),
+                "quality_by_period": quality_by_period,
+                "outside_target_bj_rows_excluded": int(
+                    sum(
+                        value["outside_target_bj_rows_excluded"]
+                        for value in quality_by_period.values()
+                    )
+                ),
+                "modify_date_context_rows": int(
+                    sum(
+                        value["modify_date_context_rows"]
+                        for value in quality_by_period.values()
+                    )
+                ),
+                "duplicate_stock_report_period_keys": 0,
+                "factor_min": int(combined[factor_name].min()),
+                "factor_max": int(combined[factor_name].max()),
+                "factor_distinct_values": int(combined[factor_name].nunique()),
+            },
+            "factor_policy": {
+                "factor": "tushare_disclosure_plan_promptness",
+                "raw_column": factor_name,
+                "formula": "calendar_days(pre_date - ann_date)",
+                "direction": "lower_is_better",
+                "score_if_all_future_gates_pass": (
+                    "1 - cross_sectional_percentile_rank("
+                    "tushare_disclosure_plan_lead_days)"
+                ),
+            },
+            "availability_policy": {
+                "event_date": "ann_date",
+                "same_session_trade_allowed": False,
+                "eligible_entry": "first local trading session open strictly after ann_date",
+                "maximum_event_age_calendar_days": 3,
+                "forward_fill_beyond_event_age_allowed": False,
+            },
+            "acceptance_status": acceptance["success_status"],
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception as exc:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        error = safe_exception_text(exc)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_disclosure_promptness_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "failed_report_period": current_period,
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT),
+                "sha256": file_digest(
+                    DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT
+                ),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "disclosure_date",
+                "report_periods": list(period_values),
+                "provider_calls_issued": calls_issued,
+                "source_rows_by_period": source_rows_by_period,
+                "fields": list(TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS),
+                "actual_date_requested_or_stored": False,
+                "modify_date_values_persisted": False,
+                "credentials_logged_or_stored": False,
+            },
+            "completed_period_quality": quality_by_period,
+            "files": [],
+            "partial_snapshot_deleted": not temporary_root.exists(),
+            "final_snapshot_published": run_root.exists(),
+            "acceptance_status": (
+                "rejected_stop_before_full_history_capacity_uniqueness_or_returns"
+            ),
+            "error_type": type(exc).__name__,
+            "error": error,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
+
+
 def sync_tushare_cash_conversion_acceptance() -> Path:
     """Run the frozen six-call, no-return accounting acceptance exactly once."""
 
@@ -10919,6 +11561,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the frozen three-symbol earnings-forecast acceptance",
     )
 
+    subparsers.add_parser(
+        "acceptance-tushare-disclosure-promptness",
+        help="run the frozen three-period financial-report plan acceptance",
+    )
+
     ts_cash_conversion = subparsers.add_parser(
         "sync-tushare-cash-conversion",
         help="download the frozen 2019-2025 PIT accounting cash-conversion snapshot",
@@ -11094,6 +11741,8 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_cash_conversion_acceptance()
         elif args.command == "acceptance-tushare-earnings-forecast":
             manifest = sync_tushare_earnings_forecast_acceptance()
+        elif args.command == "acceptance-tushare-disclosure-promptness":
+            manifest = sync_tushare_disclosure_promptness_acceptance()
         elif args.command == "sync-tushare-cash-conversion":
             manifest = sync_tushare_cash_conversion(allow_large=args.allow_large)
         elif args.command == "acceptance-tushare-daily-pb":
@@ -11160,6 +11809,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-tushare-earnings-forecast": (
             "stored_no_return_earnings_forecast_acceptance"
+        ),
+        "acceptance-tushare-disclosure-promptness": (
+            "stored_no_return_disclosure_promptness_acceptance"
         ),
         "sync-tushare-cash-conversion": (
             "stored_pending_no_return_cash_conversion_capacity_and_uniqueness"

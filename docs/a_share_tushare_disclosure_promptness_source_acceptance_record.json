@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_disclosure_promptness_source_acceptance_record",
+  "status": "terminal_rejected_on_first_report_period_before_factor_values_or_returns",
+  "recorded_at": "2026-07-16T17:56:51Z",
+  "purpose": "Preserve the one-shot Tushare disclosure-plan rejection and prevent field, missing-row, period, formula, or direction changes after provider rows were observed.",
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "f21194cf93b5ac126d6cb39d93cab529d77a2e28ab153b90e0cc2326c860370e",
+    "decision": "the reporting-promptness mechanism was economically independent before source rows"
+  },
+  "data_contract": {
+    "path": "docs/a_share_tushare_disclosure_promptness_data_contract.json",
+    "sha256": "dece34e99134b1ba0f55f7970833d7b0835e756f99a81f335a9c6af4795fa47c",
+    "preregistered_at": "2026-07-16T17:48:19Z",
+    "factor": "tushare_disclosure_plan_promptness",
+    "raw_formula": "calendar_days(pre_date - ann_date)",
+    "direction": "lower_is_better",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "pre_date",
+      "modify_date"
+    ]
+  },
+  "pre_request_validation": {
+    "focused_tests_passed": 4,
+    "complete_data_collector_tests_passed": 372,
+    "python_compile_passed": true,
+    "diff_check_passed": true,
+    "provider_rows_observed_before_contract_and_tests": false
+  },
+  "acceptance_failure": {
+    "run_id": "20260716T175559Z_tushare_disclosure_promptness_acceptance_d4a47b11",
+    "path": "data/metadata/rich_data/runs/20260716T175559Z_tushare_disclosure_promptness_acceptance_d4a47b11.json",
+    "sha256": "5929ce2a1520a9b93b170868be89e8dee7ef3842feb9a7de37625f2170ce9ef4",
+    "failed_report_period": "20191231",
+    "source_rows_returned": 4432,
+    "invalid_key_or_date_rows": 25,
+    "provider_calls_issued": 1,
+    "provider_calls_frozen": 3,
+    "remaining_periods_not_requested": [
+      "20241231",
+      "20251231"
+    ],
+    "raw_frames_persisted": false,
+    "modify_date_values_persisted": false,
+    "actual_date_requested_or_stored": false,
+    "factor_frame_published": false,
+    "factor_value_constructed": false,
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false
+  },
+  "failure_interpretation": {
+    "what_is_proven": "The 2019 annual-report-period response is entitled and below the 6000-row ceiling, but it violates the frozen requirement that every stock code, latest announcement date, report period, and planned date be complete and parseable.",
+    "what_is_not_known": "Because raw provider frames were intentionally not retained, the exact field-level missing breakdown and identities of the 25 invalid rows are unavailable.",
+    "why_rows_cannot_be_silently_excluded": "The contract made incomplete keys or dates fatal before source rows. Dropping, filling, inferring, or selecting around the 25 rows after observing them would change the accepted population and point-in-time semantics.",
+    "why_a_second_request_is_not_authorized": "The exact contract permits at most one terminal success or rejection. The first response consumed the gate and the failure is a contracted data-quality rejection, not an infrastructure outage.",
+    "provider_global_absence_claimed": false,
+    "factor_failure_claimed": false
+  },
+  "decision": {
+    "acceptance_retry_allowed": false,
+    "request_remaining_periods_allowed": false,
+    "switch_periods_or_symbols_allowed": false,
+    "drop_fill_or_infer_invalid_rows_allowed": false,
+    "add_actual_date_or_remove_modify_date_allowed": false,
+    "change_formula_direction_event_age_or_availability_allowed": false,
+    "create_same_mechanism_v2_contract_allowed": false,
+    "run_full_history_allowed": false,
+    "run_capacity_or_uniqueness_allowed": false,
+    "run_return_diagnostic_allowed": false,
+    "aggregate_score_select_size_or_order_allowed": false,
+    "level2_purchase_or_scraping_justified": false,
+    "outcome": "stop_tushare_disclosure_promptness_and_return_to_the_no_return_mechanism_frontier"
+  },
+  "official_sources": {
+    "disclosure_date": "https://tushare.pro/document/2?doc_id=162",
+    "permissions": "https://tushare.pro/document/1?doc_id=108"
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -81,7 +81,7 @@ exit "$rc"
 
 只有对应的来源合同、一次性验收和本地上下文指纹都已经通过，而且研究记录没有把该分支标记为终止时，才可以把第 4 节中的 `status` 替换成数据命令。具体允许的命令与阶段必须以 [`a_share_data_pipeline.md`](a_share_data_pipeline.md) 和对应冻结合同为准，不能从旧终端记录、聊天或历史提交复制后直接运行。
 
-经营现金流/归母净利润分支已经在唯一一次全量重跑失败后终止；业绩预告同比中点也已经消费一次性验收并终止。因此，不得再运行 `sync-tushare-cash-conversion --allow-large` 或 `acceptance-tushare-earnings-forecast`。生产入口会在访问 Token、合同或供应商之前拒绝这些命令。Token 已配置只代表本机凭据可用，不会恢复已消费的验收，也不会授权重新请求、批量下载、收益诊断、聚合、选股或下单。
+经营现金流/归母净利润分支已经在唯一一次全量重跑失败后终止；业绩预告同比中点和财报披露计划及时性也都已经消费各自的一次性验收并终止。因此，不得再运行 `sync-tushare-cash-conversion --allow-large`、`acceptance-tushare-earnings-forecast` 或 `acceptance-tushare-disclosure-promptness`。生产入口会在访问 Token、合同或供应商之前拒绝这些命令。Token 已配置只代表本机凭据可用，不会恢复已消费的验收，也不会授权重新请求、批量下载、收益诊断、聚合、选股或下单。
 
 对仍处于活动状态且文档明确批准的命令，继续使用第 4 节的包装方式：只替换其中的 Python 子命令，保留空值检查、`TUSHARE_TOKEN="$token"` 的单进程注入、退出码保存和 `unset token`。`--allow-large`（若某个活动合同明确要求）只表示显式确认长任务，不能放宽合同或后续门禁。运行期间不要启动第二份相同同步；若出现锁，先确认现有进程，不要直接删除锁文件。
 

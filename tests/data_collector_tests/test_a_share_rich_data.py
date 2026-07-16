@@ -1868,6 +1868,188 @@ def test_tushare_earnings_forecast_terminal_record_blocks_before_provider(
         RICH.sync_tushare_earnings_forecast_acceptance()
 
 
+def disclosure_plan_row(
+    ts_code: str,
+    ann_date: str,
+    end_date: str,
+    pre_date: str,
+    modify_date: str | None = None,
+) -> dict:
+    return {
+        "ts_code": ts_code,
+        "ann_date": ann_date,
+        "end_date": end_date,
+        "pre_date": pre_date,
+        "modify_date": modify_date,
+    }
+
+
+def test_tushare_disclosure_promptness_contract_is_frozen_before_rows():
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT)
+        == RICH.TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT_SHA256
+    )
+    contract = RICH.load_tushare_disclosure_promptness_contract()
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS
+    )
+    assert contract["factor"]["formula"] == (
+        "calendar_days(pre_date - ann_date)"
+    )
+    assert contract["factor"]["direction"] == "lower_is_better"
+    assert contract["freeze_evidence"]["provider_disclosure_date_rows_observed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+
+def test_tushare_disclosure_promptness_request_uses_only_frozen_fields(monkeypatch):
+    captured = []
+
+    class Pro:
+        def disclosure_date(self, **kwargs):
+            captured.append(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_disclosure_plan(dt.date(2024, 12, 31))
+    assert captured == [
+        {
+            "end_date": "20241231",
+            "fields": ",".join(RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS),
+        }
+    ]
+
+
+def test_tushare_disclosure_promptness_canonicalization_is_strict():
+    rows = [
+        disclosure_plan_row(
+            "600000.SH", "20241228", "20241231", "20250415", "20250410"
+        ),
+        disclosure_plan_row(
+            "600000.SH", "20241228", "20241231", "20250415", "20250410"
+        ),
+        disclosure_plan_row("000001.SZ", "20241229", "20241231", "20250331"),
+        disclosure_plan_row("430001.BJ", "20241229", "20241231", "20250420"),
+    ]
+    frame = pd.DataFrame(
+        rows, columns=RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS
+    )
+    accepted, quality = RICH.canonicalize_tushare_disclosure_plan(
+        frame, dt.date(2024, 12, 31)
+    )
+    assert accepted.columns.tolist() == list(
+        RICH.TUSHARE_DISCLOSURE_PROMPTNESS_COLUMNS
+    )
+    assert accepted["instrument"].tolist() == ["SH600000", "SZ000001"]
+    assert accepted["tushare_disclosure_plan_lead_days"].tolist() == [108, 92]
+    assert quality["outside_target_bj_rows_excluded"] == 1
+    assert quality["exact_semantic_duplicate_rows_collapsed"] == 1
+    assert quality["modify_date_context_rows"] == 2
+    assert quality["rows_written"] == 2
+
+    conflict = frame.iloc[[0, 0]].copy().reset_index(drop=True)
+    conflict.loc[1, "pre_date"] = "20250416"
+    with pytest.raises(RICH.RichDataError, match="conflicting stock-period"):
+        RICH.canonicalize_tushare_disclosure_plan(
+            conflict, dt.date(2024, 12, 31)
+        )
+
+    negative = frame.iloc[[0]].copy()
+    negative.loc[:, "pre_date"] = "20241227"
+    with pytest.raises(RICH.RichDataError, match="announcement after its planned"):
+        RICH.canonicalize_tushare_disclosure_plan(
+            negative, dt.date(2024, 12, 31)
+        )
+
+    unknown_exchange = frame.iloc[[0]].copy()
+    unknown_exchange.loc[:, "ts_code"] = "600000.HK"
+    with pytest.raises(RICH.RichDataError, match="invalid keys or dates"):
+        RICH.canonicalize_tushare_disclosure_plan(
+            unknown_exchange, dt.date(2024, 12, 31)
+        )
+
+
+def test_tushare_disclosure_promptness_acceptance_is_atomic_and_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_disclosure_promptness_contract())
+    monkeypatch.setattr(
+        RICH, "load_tushare_disclosure_promptness_contract", lambda: contract
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_RECORD",
+        tmp_path / "no_terminal_disclosure_record.json",
+    )
+    calls = []
+
+    def fake_fetch(report_period):
+        calls.append(report_period)
+        ann_date = report_period - dt.timedelta(days=3)
+        rows = []
+        for index in range(2500):
+            code = f"{600000 + index:06d}.SH"
+            planned = ann_date + dt.timedelta(days=index % 20)
+            rows.append(
+                disclosure_plan_row(
+                    code,
+                    ann_date.strftime("%Y%m%d"),
+                    report_period.strftime("%Y%m%d"),
+                    planned.strftime("%Y%m%d"),
+                )
+            )
+        return pd.DataFrame(
+            rows, columns=RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_disclosure_plan", fake_fetch)
+    manifest_path = RICH.sync_tushare_disclosure_promptness_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_point_in_time_policy_and_formula_pending_full_history"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 3
+    assert manifest["source_request"]["actual_date_requested_or_stored"] is False
+    assert manifest["source_request"]["modify_date_values_persisted"] is False
+    assert manifest["source_quality"]["source_rows"] == 7500
+    assert manifest["source_quality"]["rows_written"] == 7500
+    assert manifest["source_quality"]["factor_distinct_values"] == 20
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert len(calls) == 3
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_disclosure_promptness_acceptance()
+    assert len(calls) == 3
+
+
+def test_tushare_disclosure_promptness_terminal_record_blocks_before_provider(
+    tmp_path, monkeypatch
+):
+    record = RICH.load_tushare_disclosure_promptness_acceptance_record()
+    assert record["status"] == (
+        "terminal_rejected_on_first_report_period_before_factor_values_or_returns"
+    )
+    assert record["acceptance_failure"]["provider_calls_issued"] == 1
+    assert record["acceptance_failure"]["invalid_key_or_date_rows"] == 25
+    assert record["decision"]["acceptance_retry_allowed"] is False
+    assert record["forward_return_fields_read"] is False
+
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_disclosure_promptness_contract",
+        lambda: pytest.fail("terminal gate must run before contract/provider work"),
+    )
+    with pytest.raises(RICH.RichDataError, match="branch is terminal.*forbidden"):
+        RICH.sync_tushare_disclosure_promptness_acceptance()
+
+
 def test_tushare_cash_conversion_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_tushare_cash_conversion_contract()
     assert contract["factor"]["name"] == "tushare_operating_cash_conversion"

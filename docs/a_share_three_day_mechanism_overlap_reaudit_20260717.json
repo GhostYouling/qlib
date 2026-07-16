@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_mechanism_overlap_reaudit",
+  "status": "one_currently_operable_independent_candidate_selected_before_provider_rows_or_returns",
+  "audited_at": "2026-07-16T17:46:22Z",
+  "purpose": "Revalidate the exhausted three-session factor frontier and select at most one economically independent, currently operable no-return data mechanism before writing a provider contract or issuing a request.",
+  "accepted_price_frontier": {
+    "path": "docs/a_share_three_day_research_frontier_audit.json",
+    "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "local_revalidation": {
+    "command": "python scripts/a_share_short_horizon_factor_research.py research-frontier-audit --output data/metadata/research_frontier_revalidation_20260717.json",
+    "run_id": "20260716T174304Z",
+    "path": "data/metadata/research_frontier_revalidation_20260717.json",
+    "sha256": "447297f96aa6baca0c811d8cb284ea67ee6cf765981dcbe1fb4931a81c37b689",
+    "status": "no_eligible_historical_factor_combination",
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "raw_price_fields_read": false,
+    "additional_forward_return_fields_read": false
+  },
+  "post_frontier_terminal_mechanisms_rechecked": [
+    {
+      "mechanism": "tushare_classified_large_order_moneyflow",
+      "record": "docs/a_share_tushare_moneyflow_research_record.json",
+      "sha256": "3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a",
+      "decision": "terminal_do_not_reuse_or_substitute_jqdata_as_a_second_factor"
+    },
+    {
+      "mechanism": "tushare_positive_book_to_market",
+      "record": "docs/a_share_tushare_daily_pb_research_record.json",
+      "sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3",
+      "decision": "terminal_do_not_retransform_or_combine"
+    },
+    {
+      "mechanism": "sw2021_three_session_industry_breadth",
+      "record": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+      "sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3",
+      "decision": "terminal_do_not_change_peer_level_or_window"
+    },
+    {
+      "mechanism": "operating_cash_conversion",
+      "record": "docs/a_share_tushare_cash_conversion_research_record.json",
+      "sha256": "c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819",
+      "decision": "terminal_at_full_source_gate"
+    },
+    {
+      "mechanism": "management_earnings_forecast_midpoint",
+      "record": "docs/a_share_tushare_earnings_forecast_source_acceptance_record.json",
+      "sha256": "38b966eea1728769ca977c1e26733527fc908846188e4727f2d76b716e97878b",
+      "decision": "terminal_and_overlaps_the_existing_forecast_branch"
+    }
+  ],
+  "candidate_review": [
+    {
+      "candidate": "tushare_hk_hold_daily_northbound_ownership_change",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=188",
+      "official_permission_table": "https://tushare.pro/document/1?doc_id=108",
+      "minimum_permission_points": 2000,
+      "economic_mechanism": "daily change in northbound ownership stock rather than same-day classified order flow or a Top-10 turnover list",
+      "economic_overlap_decision": "independent_from_the_rejected_moneyflow_and_top10_mechanisms",
+      "current_operability_decision": "rejected_before_rows",
+      "reason": "The official interface states that exchanges stopped publishing daily northbound ownership from 2024-08-20 and changed to quarterly disclosure. A historical factor that cannot produce the same signal today cannot satisfy the shared current-strategy objective.",
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false,
+      "adapter_or_contract_authorized": false
+    },
+    {
+      "candidate": "tushare_disclosure_plan_promptness",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=162",
+      "official_permission_table": "https://tushare.pro/document/1?doc_id=108",
+      "minimum_permission_points": 2000,
+      "economic_mechanism": "The number of calendar days a company gives itself between its latest disclosure-plan announcement and its planned report date, representing reporting promptness and commitment rather than realized fundamentals.",
+      "frozen_raw_formula": "pre_date - ann_date in calendar days",
+      "frozen_direction": "lower_is_better",
+      "closest_existing_mechanisms": [
+        "institutional_survey_prompt_disclosure",
+        "forecast_freshness",
+        "major_holder_freshness",
+        "quarterly_quality_announcement_timing"
+      ],
+      "independence_reason": "The candidate measures an issuer's forward reporting schedule announced before the planned report date. It does not use a survey receipt lag, event freshness, forecast value, realized report value, price, valuation, order flow, ownership, or transaction data.",
+      "decision": "selected_for_one_frozen_no_return_source_acceptance",
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false,
+      "required_before_returns": [
+        "freeze an exact five-field Tushare request and point-in-time contract",
+        "pass one three-period all-market acceptance with strict key, date, revision-context, uniqueness, truncation, and formula checks",
+        "complete one atomic 2019-2025 quarterly snapshot",
+        "pass a separate no-price 200-cohort capacity gate",
+        "pass a no-return near-synonym screen against every frozen accepted-price mechanism",
+        "freeze a one-factor diagnostic protocol before any open, close, or forward return is read"
+      ]
+    }
+  ],
+  "selection_policy": {
+    "maximum_new_candidates_advanced": 1,
+    "current_operability_required": true,
+    "economic_independence_required": true,
+    "provider_row_or_entitlement_observation_allowed_before_contract": false,
+    "return_access_allowed_during_overlap_audit": false,
+    "historical_factor_aggregation_allowed": false,
+    "selection_scoring_sizing_or_ordering_allowed": false
+  },
+  "price_fields_loaded": [],
+  "provider_rows_observed": false,
+  "factor_values_observed": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
