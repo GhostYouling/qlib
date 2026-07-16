@@ -1114,6 +1114,211 @@ def test_tushare_daily_pb_acceptance_writes_current_coverage_snapshot(
     assert stored["instrument"].tolist() == ["SH600519", "SZ000001"]
 
 
+def test_tushare_sw_industry_breadth_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_tushare_sw_industry_breadth_contract()
+    assert contract["factor"]["name"] == "sw1_three_session_leave_one_out_breadth"
+    assert contract["factor"]["stock_self_direction_included"] is False
+    assert contract["factor"]["minimum_other_valid_peers_each_session"] == 10
+    assert contract["source"]["membership_requested_fields"] == list(
+        RICH.TUSHARE_SW_MEMBERSHIP_RAW_FIELDS
+    )
+    assert contract["freeze_evidence"]["index_member_all_rows_observed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT.read_text()
+    )
+    changed["factor"]["three_session_formula"] = "mean of five sessions"
+    changed_path = tmp_path / "changed_sw_industry_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_tushare_sw_industry_breadth_contract(changed_path)
+
+
+def test_tushare_sw_requests_use_only_frozen_fields(monkeypatch):
+    captured = []
+
+    class Pro:
+        def index_classify(self, **kwargs):
+            captured.append(("classification", kwargs))
+            return pd.DataFrame()
+
+        def index_member_all(self, **kwargs):
+            captured.append(("membership", kwargs))
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_sw_classification()
+    RICH.fetch_tushare_sw_members("801010.SI", "N")
+    assert captured[0][1] == {
+        "level": "L1",
+        "src": "SW2021",
+        "fields": ",".join(RICH.TUSHARE_SW_CLASSIFICATION_RAW_FIELDS),
+    }
+    assert captured[1][1] == {
+        "l1_code": "801010.SI",
+        "is_new": "N",
+        "fields": ",".join(RICH.TUSHARE_SW_MEMBERSHIP_RAW_FIELDS),
+    }
+    forbidden = set(
+        RICH.load_tushare_sw_industry_breadth_contract()["source"][
+            "explicitly_forbidden_fields"
+        ]
+    )
+    assert set(captured[0][1]["fields"].split(",")).isdisjoint(forbidden)
+    assert set(captured[1][1]["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_sw_normalization_preserves_point_in_time_intervals():
+    classification = RICH.canonicalize_tushare_sw_classification(
+        pd.DataFrame(
+            [
+                {
+                    "index_code": "801010.SI",
+                    "industry_name": "农林牧渔",
+                    "level": "L1",
+                    "src": "SW2021",
+                },
+                {
+                    "index_code": "801030.SI",
+                    "industry_name": "基础化工",
+                    "level": "L1",
+                    "src": "SW2021",
+                },
+            ],
+            columns=RICH.TUSHARE_SW_CLASSIFICATION_RAW_FIELDS,
+        )
+    )
+    assert classification["index_code"].tolist() == ["801010.SI", "801030.SI"]
+
+    raw = pd.DataFrame(
+        [
+            {
+                "l1_code": "801010.SI",
+                "l1_name": "农林牧渔",
+                "l2_code": "801011.SI",
+                "l2_name": "林业",
+                "l3_code": "850111.SI",
+                "l3_name": "种植业",
+                "ts_code": "600519.SH",
+                "in_date": "20190102",
+                "out_date": "20200102",
+                "is_new": "N",
+            }
+        ],
+        columns=RICH.TUSHARE_SW_MEMBERSHIP_RAW_FIELDS,
+    )
+    normalized, quality = RICH.canonicalize_tushare_sw_members(
+        raw, expected_l1_code="801010.SI", expected_is_new="N"
+    )
+    assert normalized.columns.tolist() == list(RICH.TUSHARE_SW_MEMBERSHIP_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600519"]
+    assert normalized["in_date"].dt.strftime("%Y-%m-%d").tolist() == ["2019-01-02"]
+    assert normalized["out_date"].dt.strftime("%Y-%m-%d").tolist() == ["2020-01-02"]
+    assert quality == {
+        "input_rows": 1,
+        "rows_written": 1,
+        "missing_out_date_rows": 0,
+    }
+    assert not ({"name", "close", "amount", "pb"} & set(normalized.columns))
+
+    bad = raw.copy()
+    bad.loc[0, "out_date"] = None
+    with pytest.raises(RICH.RichDataError, match="lacks out_date"):
+        RICH.canonicalize_tushare_sw_members(
+            bad, expected_l1_code="801010.SI", expected_is_new="N"
+        )
+
+
+def test_tushare_sw_acceptance_writes_no_price_membership_snapshot(
+    tmp_path, monkeypatch
+):
+    contract = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT.read_text()
+    )
+    context_file = tmp_path / "context.txt"
+    context_file.write_text("frozen\n", encoding="utf-8")
+    context_sha = RICH.file_digest(context_file)
+    for link in contract["local_context"].values():
+        link["path"] = str(context_file)
+        link["sha256"] = context_sha
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(
+        RICH, "load_tushare_sw_industry_breadth_contract", lambda: contract
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    classification_rows = [
+        {
+            "index_code": "801010.SI" if index == 0 else f"{801010 + index:06d}.SI",
+            "industry_name": f"行业{index}",
+            "level": "L1",
+            "src": "SW2021",
+        }
+        for index in range(25)
+    ]
+    monkeypatch.setattr(
+        RICH,
+        "fetch_tushare_sw_classification",
+        lambda: pd.DataFrame(
+            classification_rows, columns=RICH.TUSHARE_SW_CLASSIFICATION_RAW_FIELDS
+        ),
+    )
+
+    def member_row(code, *, is_new, position):
+        return {
+            "l1_code": "801010.SI",
+            "l1_name": "农林牧渔",
+            "l2_code": "801011.SI",
+            "l2_name": "林业",
+            "l3_code": "850111.SI",
+            "l3_name": "种植业",
+            "ts_code": code,
+            "in_date": "20190102",
+            "out_date": None if is_new == "Y" else "20200102",
+            "is_new": is_new,
+        }
+
+    def fake_members(l1_code, is_new):
+        if is_new == "Y":
+            rows = [
+                member_row(f"{600000 + index:06d}.SH", is_new="Y", position=index)
+                for index in range(20)
+            ]
+        else:
+            rows = [member_row("600999.SH", is_new="N", position=0)]
+        return pd.DataFrame(rows, columns=RICH.TUSHARE_SW_MEMBERSHIP_RAW_FIELDS)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_sw_members", fake_members)
+    manifest_path = RICH.sync_tushare_sw_industry_breadth_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_sw2021_l1_acceptance"
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_and_point_in_time_intervals_"
+        "pending_full_membership_snapshot"
+    )
+    assert manifest["source_quality"]["classification_rows"] == 25
+    assert manifest["source_quality"]["membership_rows"] == 21
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["factor_values_constructed"] is False
+    assert manifest["forward_return_fields_read"] is False
+    stored = {
+        item["dataset"]: pd.read_parquet(RICH.resolve_record_path(item["path"]))
+        for item in manifest["files"]
+    }
+    assert stored["classification"].columns.tolist() == list(
+        RICH.TUSHARE_SW_CLASSIFICATION_RAW_FIELDS
+    )
+    assert stored["membership"].columns.tolist() == list(
+        RICH.TUSHARE_SW_MEMBERSHIP_COLUMNS
+    )
+    assert not ({"name", "close", "amount", "return"} & set(stored["membership"]))
+
+
 def test_tushare_daily_pb_sync_writes_immutable_no_return_snapshot(
     tmp_path, monkeypatch
 ):

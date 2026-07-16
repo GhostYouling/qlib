@@ -60,13 +60,18 @@ python scripts/a_share_rich_data.py status
 token="$(launchctl getenv TUSHARE_TOKEN)"
 if [[ -z "$token" ]]; then
   echo "TUSHARE_TOKEN 未配置"
+  rc=1
 else
   TUSHARE_TOKEN="$token" python scripts/a_share_rich_data.py status
+  rc=$?
 fi
 unset token
+exit "$rc"
 ```
 
 这不会把 Token 作为命令参数传给 Python，也不会输出它。用于实际数据命令时，只替换最后一行中的 Python 子命令；仍须遵守对应数据合同与验收门禁，不能因为凭据可用就跳过单日验收或直接批量下载。
+
+这里用 `rc` 保存命令退出码。不要在 zsh 中写 `status=$?`：`status` 是只读的特殊参数，会让包装脚本在 Python 命令成功后仍额外报错。退出当前交互式终端并非必要时，可以省略最后一行 `exit "$rc"`，改为查看或返回 `rc`。
 
 ## 5. 清除配置
 

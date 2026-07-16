@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_sw_industry_breadth_data_contract",
+  "status": "frozen_before_index_member_rows_factor_values_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T11:22:05Z",
+  "purpose": "Test one point-in-time SW2021 level-one industry breadth mechanism for a three-session A-share holding protocol without sweeping industry definitions, windows, directions, or provider fields.",
+  "freeze_evidence": {
+    "official_documentation_observed": true,
+    "index_classify_rows_observed": false,
+    "index_member_all_rows_observed": false,
+    "entitlement_observed": false,
+    "full_membership_snapshot_observed": false,
+    "factor_values_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "chosen_source": "Tushare Pro SW2021 classified index_member_all membership intervals",
+    "official_member_documentation": "https://tushare.pro/document/2?doc_id=335",
+    "official_permission_documentation": "https://tushare.pro/document/1?doc_id=108",
+    "documented_permission_points": 2000,
+    "provider_documented_maximum_rows_per_call": 2000,
+    "historical_minute_permission_documentation": "https://tushare.pro/document/1?doc_id=290",
+    "historical_minute_permission_decision": "Do not purchase the separate CNY 2000 per year historical-minute entitlement for this branch; first test a lower-cost independent industry cross-section available under the existing account.",
+    "why_this_source": "The provider exposes membership admission and removal dates, permitting point-in-time industry assignment rather than a current-classification backfill. The mechanism aggregates peer directions and is distinct from another stock-level OHLC window, Tushare classified moneyflow, and PB."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "Broad participation across other seasoned members of the same level-one industry may persist for the next three sessions more reliably than one stock's own return.",
+    "factor_family": "point_in_time_industry_peer_breadth",
+    "relationship_to_existing_stock_momentum": "The stock's own sign is removed from every daily industry numerator and denominator. A mandatory no-return rank-correlation screen must still reject the factor if its resulting ranks are a near synonym of any prior factor.",
+    "relationship_to_existing_tushare_mechanisms": "This membership-only source requests no moneyflow, PB, price, market-cap, turnover, limit, concept, heat, or return field.",
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "classification_api": "index_classify",
+    "classification_parameters": {
+      "level": "L1",
+      "src": "SW2021"
+    },
+    "classification_requested_fields": [
+      "index_code",
+      "industry_name",
+      "level",
+      "src"
+    ],
+    "membership_api": "index_member_all",
+    "membership_requested_fields": [
+      "l1_code",
+      "l1_name",
+      "l2_code",
+      "l2_name",
+      "l3_code",
+      "l3_name",
+      "ts_code",
+      "in_date",
+      "out_date",
+      "is_new"
+    ],
+    "membership_request_mode": "one SW2021 level-one code and one is_new value per call",
+    "membership_is_new_values": [
+      "Y",
+      "N"
+    ],
+    "explicitly_forbidden_fields": [
+      "name",
+      "open",
+      "high",
+      "low",
+      "close",
+      "change",
+      "pct_change",
+      "vol",
+      "amount",
+      "pe",
+      "pb",
+      "float_mv",
+      "total_mv",
+      "weight",
+      "moneyflow",
+      "concept",
+      "heat",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_membership_policy": {
+    "classification_version": "SW2021",
+    "industry_level": "L1 only",
+    "active_interval": "in_date <= local_session and (out_date is missing or local_session <= out_date)",
+    "in_date_inclusive": true,
+    "out_date_inclusive": true,
+    "is_new_semantics": "Y and N are fetched separately and retained as source audit context; interval dates, not is_new alone, determine historical membership.",
+    "maximum_active_level_one_memberships_per_stock_session": 1,
+    "missing_in_date_policy": "reject the source row",
+    "missing_out_date_policy": "allowed only for is_new=Y and interpreted as still active",
+    "overlapping_conflicting_interval_policy": "abort before factor construction",
+    "current_classification_backfill_allowed": false
+  },
+  "factor": {
+    "name": "sw1_three_session_leave_one_out_breadth",
+    "direction": "higher_is_better",
+    "source_price_basis": "close_known_raw_pct_chg_chain_v1 adjusted close",
+    "one_session_peer_direction": "peer_return = close_t / close_t_minus_1 - 1; peer_up = 1 when peer_return > 0 else 0",
+    "daily_formula": "For stock i and its active SW2021 L1 industry g on session t: (sum(peer_up for valid seasoned members of g) - peer_up_i) / (count(valid seasoned members of g) - 1).",
+    "three_session_formula": "Arithmetic mean of the exact daily leave-one-out breadth on t, t-1, and t-2; all three values are required.",
+    "minimum_other_valid_peers_each_session": 10,
+    "peer_source_universe": "factor_main_chinext_star point-in-time members",
+    "peer_minimum_listing_sessions": 20,
+    "peer_quality_filter_applied": false,
+    "candidate_holding_universe": "buyable_main_chinext point-in-time members",
+    "candidate_quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement and no older than 550 days",
+    "candidate_minimum_listing_sessions": 20,
+    "zero_peer_return_is_up": false,
+    "stock_self_direction_included": false,
+    "winsorization_clipping_imputation_or_absolute_value": null,
+    "same_session_trade_allowed": false,
+    "signal_assignment": "signal-session close for following-local-session-open entry",
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(sw1_three_session_leave_one_out_breadth)"
+  },
+  "local_context": {
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "base_research_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "prior_frontier_extension": {
+      "path": "docs/a_share_three_day_research_frontier_extension.json",
+      "sha256": "94a5ac622cb35724933ed451ab7e1beb7f37653f2c4a043961bb73798639d66e"
+    }
+  },
+  "acceptance_protocol": {
+    "classification_request": "one index_classify(level=L1, src=SW2021) call",
+    "representative_l1_code": "801010.SI",
+    "representative_membership_requests": [
+      {
+        "l1_code": "801010.SI",
+        "is_new": "Y"
+      },
+      {
+        "l1_code": "801010.SI",
+        "is_new": "N"
+      }
+    ],
+    "minimum_classification_rows": 25,
+    "maximum_classification_rows": 40,
+    "minimum_current_representative_members": 20,
+    "minimum_historical_representative_members": 1,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "classification response contains only the frozen fields and only unique SW2021 L1 codes",
+      "both representative membership responses stay below the documented 2000-row ceiling",
+      "membership response contains only the frozen fields and the requested L1 code and is_new value",
+      "stock codes, industry codes, in_date, out_date, and current/historical flags satisfy the frozen point-in-time rules",
+      "current and historical representative rows are both present",
+      "no credential, name, price, amount, valuation, concept, heat, factor value, or return field is requested or stored"
+    ],
+    "failed_acceptance_policy": "write a no-return rejection record and stop without a full membership sync, factor construction, price access, parameter change, another classification vendor, or purchase recommendation"
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_sw2021_l1_membership",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "enumeration": "use every unique code returned by the accepted SW2021 L1 classification response and fetch both Y and N membership rows",
+    "provider_calls_are_sequential": true,
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_call": 3,
+    "partial_snapshot_accepted": false,
+    "immutable_partition_files_and_manifest": true,
+    "canonical_columns": [
+      "l1_code",
+      "l1_name",
+      "l2_code",
+      "l2_name",
+      "l3_code",
+      "l3_name",
+      "instrument",
+      "in_date",
+      "out_date",
+      "is_new",
+      "provider"
+    ],
+    "duplicate_event_key": [
+      "l1_code",
+      "l2_code",
+      "l3_code",
+      "instrument",
+      "in_date",
+      "out_date",
+      "is_new"
+    ]
+  },
+  "no_return_gates": {
+    "order": [
+      "source_fingerprint_and_interval_integrity",
+      "point_in_time_membership_coverage",
+      "factor_capacity",
+      "factor_uniqueness"
+    ],
+    "membership_coverage": {
+      "minimum_median_active_buyable_name_coverage": 0.95,
+      "minimum_p05_active_buyable_name_coverage": 0.9,
+      "minimum_sessions_with_fifty_factor_values": 200
+    },
+    "capacity": {
+      "development_start": "2019-01-01",
+      "development_end": "2025-12-31",
+      "minimum_eligible_names_per_cross_section": 50,
+      "minimum_distinct_factor_values": 2,
+      "minimum_observed_years": 5,
+      "holding_period_trading_days": 3,
+      "non_overlapping_cohorts": true,
+      "topk": 3,
+      "minimum_required_cohorts": 200
+    },
+    "uniqueness": {
+      "screen_start": "2025-01-01",
+      "screen_end": "2025-12-31",
+      "comparison_factor_count": 45,
+      "comparison_scope": "the accepted 43 close-known technical/quality fields plus the terminal Tushare classified-moneyflow and positive-book-to-market raw factors",
+      "minimum_pairwise_sessions": 100,
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+    },
+    "failed_gate_policy": "stop without forward returns, inversion, another breadth window, L2/L3 substitution, peer threshold change, current-membership backfill, industry price momentum, concept data, moneyflow, heat, a year subset, or combination with rejected factors"
+  },
+  "diagnostic_policy_if_all_no_return_gates_pass": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "cny_200000_pilot_policy": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    },
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

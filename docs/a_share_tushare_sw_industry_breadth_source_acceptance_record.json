@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_sw_industry_breadth_source_acceptance_record",
+  "status": "accepted_entitlement_schema_and_point_in_time_intervals_pending_full_membership_snapshot",
+  "recorded_at": "2026-07-16T11:29:22Z",
+  "purpose": "Bind the one no-price Tushare SW2021 L1 acceptance result before any full membership snapshot, breadth value, price-based factor construction, or forward return is observed.",
+  "data_contract": {
+    "path": "docs/a_share_tushare_sw_industry_breadth_data_contract.json",
+    "sha256": "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66",
+    "preregistered_at": "2026-07-16T11:22:05Z"
+  },
+  "acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T112845Z_tushare_sw2021_l1_acceptance_844039e2.json",
+    "sha256": "86788041f510fa78962e4206ef08dea6ea755d6b4483d2c39d7ac03b284682da",
+    "run_id": "20260716T112845Z_tushare_sw2021_l1_acceptance_844039e2",
+    "retrieved_at": "2026-07-16T11:28:45.119080+00:00"
+  },
+  "stored_frames": {
+    "classification": {
+      "path": "data/raw/a_share/rich/tushare/sw2021_l1/acceptance/20260716T112845Z_tushare_sw2021_l1_acceptance_844039e2/classification.parquet",
+      "rows": 31,
+      "sha256": "086d1047b2428427387ede554669da6b136ee6a3480e693cb86898fe16a70393"
+    },
+    "membership": {
+      "path": "data/raw/a_share/rich/tushare/sw2021_l1/acceptance/20260716T112845Z_tushare_sw2021_l1_acceptance_844039e2/membership.parquet",
+      "rows": 182,
+      "sha256": "10e96de5408953a74e21c65a7835f08b7558d1f56cc8677da42320be9a2a2185"
+    }
+  },
+  "observed_source_quality": {
+    "classification_rows": 31,
+    "classification_duplicate_codes": 0,
+    "representative_l1_code": "801010.SI",
+    "current_membership_rows": 126,
+    "historical_membership_rows": 56,
+    "membership_rows": 182,
+    "membership_unique_instruments": 164,
+    "membership_duplicate_interval_rows": 0,
+    "minimum_in_date": "1992-09-21",
+    "maximum_dated_out_date": "2026-01-29",
+    "classification_codes": [
+      "801010.SI",
+      "801030.SI",
+      "801040.SI",
+      "801050.SI",
+      "801080.SI",
+      "801110.SI",
+      "801120.SI",
+      "801130.SI",
+      "801140.SI",
+      "801150.SI",
+      "801160.SI",
+      "801170.SI",
+      "801180.SI",
+      "801200.SI",
+      "801210.SI",
+      "801230.SI",
+      "801710.SI",
+      "801720.SI",
+      "801730.SI",
+      "801740.SI",
+      "801750.SI",
+      "801760.SI",
+      "801770.SI",
+      "801780.SI",
+      "801790.SI",
+      "801880.SI",
+      "801890.SI",
+      "801950.SI",
+      "801960.SI",
+      "801970.SI",
+      "801980.SI"
+    ]
+  },
+  "request_audit": {
+    "classification_api": "index_classify",
+    "membership_api": "index_member_all",
+    "membership_requests": 2,
+    "requested_only_frozen_fields": true,
+    "credentials_logged_or_stored": false,
+    "price_fields_loaded": [],
+    "factor_values_constructed": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false
+  },
+  "operational_note": {
+    "provider_requests_retried_after_success": false,
+    "detail": "The Python acceptance command completed and wrote the manifest. Its surrounding zsh wrapper then rejected assignment to the read-only variable named status. The manifest and both Parquet schemas, counts, and recorded fingerprints were independently reread; no provider retry occurred."
+  },
+  "decision": {
+    "source_accepted_for_frozen_full_membership_snapshot": true,
+    "source_accepted_for_factor_construction_or_returns": false,
+    "next_required_step": "freeze and execute the exact 31-code by two-state full membership snapshot, then run the combined no-return interval, coverage, capacity, and uniqueness gates",
+    "historical_minute_purchase_recommended_now": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

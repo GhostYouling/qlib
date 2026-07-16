@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_sw_industry_breadth_capacity_preregistration",
+  "status": "frozen_after_source_acceptance_before_full_membership_factor_values_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T11:29:22Z",
+  "purpose": "Bind the accepted SW2021 L1 source to one atomic full-membership snapshot and one combined no-forward-return interval, coverage, capacity, and uniqueness audit.",
+  "freeze_evidence": {
+    "source_acceptance_observed": true,
+    "full_membership_snapshot_observed": false,
+    "factor_values_observed": false,
+    "close_known_comparison_values_observed_for_this_factor": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "data_contract": {
+    "path": "docs/a_share_tushare_sw_industry_breadth_data_contract.json",
+    "sha256": "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66",
+    "preregistered_at": "2026-07-16T11:22:05Z"
+  },
+  "source_acceptance": {
+    "record_path": "docs/a_share_tushare_sw_industry_breadth_source_acceptance_record.json",
+    "record_sha256": "bac35e9feacd62d0db7cd15fe15be444c308e1b8152f08dbdf3292a550d5da6f",
+    "manifest_path": "data/metadata/rich_data/runs/20260716T112845Z_tushare_sw2021_l1_acceptance_844039e2.json",
+    "manifest_sha256": "86788041f510fa78962e4206ef08dea6ea755d6b4483d2c39d7ac03b284682da",
+    "run_id": "20260716T112845Z_tushare_sw2021_l1_acceptance_844039e2",
+    "classification_rows": 31,
+    "membership_rows": 182,
+    "current_membership_rows": 126,
+    "historical_membership_rows": 56,
+    "forward_return_fields_read": false
+  },
+  "full_membership_snapshot": {
+    "dataset": "tushare_sw2021_l1_membership",
+    "provider": "tushare",
+    "membership_api": "index_member_all",
+    "requested_fields": [
+      "l1_code",
+      "l1_name",
+      "l2_code",
+      "l2_name",
+      "l3_code",
+      "l3_name",
+      "ts_code",
+      "in_date",
+      "out_date",
+      "is_new"
+    ],
+    "classification_codes": [
+      "801010.SI",
+      "801030.SI",
+      "801040.SI",
+      "801050.SI",
+      "801080.SI",
+      "801110.SI",
+      "801120.SI",
+      "801130.SI",
+      "801140.SI",
+      "801150.SI",
+      "801160.SI",
+      "801170.SI",
+      "801180.SI",
+      "801200.SI",
+      "801210.SI",
+      "801230.SI",
+      "801710.SI",
+      "801720.SI",
+      "801730.SI",
+      "801740.SI",
+      "801750.SI",
+      "801760.SI",
+      "801770.SI",
+      "801780.SI",
+      "801790.SI",
+      "801880.SI",
+      "801890.SI",
+      "801950.SI",
+      "801960.SI",
+      "801970.SI",
+      "801980.SI"
+    ],
+    "is_new_values": [
+      "Y",
+      "N"
+    ],
+    "expected_provider_calls": 62,
+    "provider_documented_maximum_rows_per_call": 2000,
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_call": 3,
+    "retry_backoff_seconds": [
+      2,
+      5
+    ],
+    "requests_are_sequential": true,
+    "partial_snapshot_accepted": false,
+    "hidden_temporary_root_required": true,
+    "canonical_columns": [
+      "l1_code",
+      "l1_name",
+      "l2_code",
+      "l2_name",
+      "l3_code",
+      "l3_name",
+      "instrument",
+      "in_date",
+      "out_date",
+      "is_new",
+      "provider"
+    ],
+    "required_success_status": "full_membership_snapshot_passed_pending_no_return_factor_capacity_and_uniqueness"
+  },
+  "point_in_time_context": {
+    "fingerprint_range_start": "2019-01-01",
+    "fingerprint_range_end": "2025-12-31",
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "file_sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762",
+      "range_clipped_sha256": "3569ef3aebf5db0b81a60701aa2a28445f12bced1ae86d0cad81dfec235e3869",
+      "range_clipped_intervals": 5396
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "file_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+      "range_clipped_sha256": "2b3a2fba2ebb6938853fe9c6e1f6649517bef844e0ee6347a032e2b74945394c",
+      "range_clipped_intervals": 4794
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "file_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "range_clipped_sha256": "c408af553ff2aa780f302eda8bc860d06d875a1a34c6bf37cd1341c6f890623c",
+      "range_clipped_sessions": 1699
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_sources": [
+        "baostock"
+      ],
+      "future_corporate_actions_used": false,
+      "status": "passed"
+    }
+  },
+  "factor_contract": {
+    "factor_catalog": [
+      "sw1_three_session_leave_one_out_breadth"
+    ],
+    "direction": "higher_is_better",
+    "daily_formula": "(industry positive-return count - own positive-return indicator) / (industry valid-return count - 1)",
+    "lookback": "arithmetic mean of exact daily leave-one-out breadth over signal session and prior two local sessions; all three required",
+    "minimum_other_valid_peers_each_session": 10,
+    "peer_source_universe": "factor_main_chinext_star",
+    "peer_minimum_listing_sessions": 20,
+    "stock_self_direction_included": false,
+    "holding_universe": "buyable_main_chinext",
+    "maximum_quality_age_days": 550,
+    "candidate_minimum_listing_sessions": 20,
+    "availability": "signal close for following-session open entry",
+    "same_session_trade_allowed": false
+  },
+  "combined_no_return_audit": {
+    "run_order": [
+      "revalidate contract, acceptance record, acceptance manifest, full snapshot, partitions, and point-in-time context fingerprints",
+      "validate membership intervals and prove at most one active L1 code per stock-session without loading market prices",
+      "measure point-in-time source and holding membership coverage without market prices",
+      "load only accepted close-known current/past inputs and frozen comparison fields; never load a future open, future close, or forward return",
+      "construct the one preregistered breadth factor",
+      "count fixed non-overlapping three-session capacity",
+      "screen exact daily ranks against all 45 frozen comparison factors"
+    ],
+    "membership_coverage": {
+      "minimum_median_active_buyable_name_coverage": 0.95,
+      "minimum_p05_active_buyable_name_coverage": 0.9,
+      "minimum_sessions_with_fifty_factor_values": 200
+    },
+    "capacity": {
+      "development_start": "2019-01-01",
+      "development_end": "2025-12-31",
+      "holding_period_trading_days": 3,
+      "non_overlapping_cohorts": true,
+      "topk": 3,
+      "minimum_eligible_names_per_cross_section": 50,
+      "minimum_distinct_factor_values": 2,
+      "minimum_required_cohorts": 200,
+      "minimum_observed_years": 5
+    },
+    "uniqueness": {
+      "screen_start": "2025-01-01",
+      "screen_end": "2025-12-31",
+      "method": "median of daily Spearman rank correlations inside the same quality/listing-eligible cross-section",
+      "minimum_pairwise_sessions": 100,
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "comparison_factors": [
+        "momentum_1",
+        "momentum_2",
+        "momentum_3",
+        "momentum_5",
+        "up_day_ratio_5",
+        "momentum_10",
+        "momentum_20",
+        "momentum_60",
+        "trend_ma_5",
+        "trend_ma_20",
+        "trend_ma_60",
+        "volume_surge_1",
+        "volume_surge",
+        "volume_surge_3",
+        "turnover_surge",
+        "turnover_surge_3",
+        "turnover_surge_1",
+        "liquidity_5",
+        "free_float_cap_proxy",
+        "volatility_5",
+        "volatility_10",
+        "volatility_20",
+        "amplitude_1",
+        "amplitude_5",
+        "gap_1",
+        "near_high_10",
+        "near_high_20",
+        "intraday_strength",
+        "intraday_return_sum_5",
+        "directional_serial_dependence_20",
+        "close_to_high",
+        "close_above_vwap_1",
+        "signed_efficiency_ratio_10",
+        "return_turnover_correlation_10",
+        "max_return_20",
+        "signed_volume_pressure_5",
+        "roe",
+        "revenue_yoy",
+        "profit_yoy",
+        "quality_age_days",
+        "roe_change",
+        "revenue_yoy_acceleration",
+        "profit_yoy_acceleration",
+        "tushare_large_order_net_inflow_share",
+        "tushare_positive_book_to_market"
+      ]
+    },
+    "price_fields_allowed": [
+      "accepted close-known current and prior adjusted closes required by the factor",
+      "the frozen close-known comparison fields"
+    ],
+    "price_fields_forbidden": [
+      "next-session open",
+      "future close",
+      "forward return",
+      "selection outcome"
+    ],
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false
+  },
+  "diagnostic_policy_if_all_no_return_gates_pass": {
+    "separate_immutable_preregistration_required_before_forward_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc",
+    "pilot_execution_policy_sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "selection_or_promotion_allowed": false
+  },
+  "stop_rules": [
+    "Any full-snapshot, interval, coverage, capacity, or uniqueness failure terminates this exact factor without forward returns.",
+    "Do not invert the breadth direction, change three sessions, change ten peers, include the stock itself, use L2/L3 or concepts, backfill current membership, select years, or add industry price, moneyflow, heat, valuation, or limit fields.",
+    "Do not combine this factor with a rejected factor unless it independently passes both full default return gates and a separately frozen aggregation protocol allows it.",
+    "Do not use a failure to justify Level-2 or the separate historical-minute purchase."
+  ],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

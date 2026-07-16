@@ -69,6 +69,9 @@ DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
 DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_capacity_preregistration.json"
 )
+DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_sw_industry_breadth_data_contract.json"
+)
 DEFAULT_BAOSTOCK_5M_CONTRACT = REPO_ROOT / "docs" / "a_share_baostock_5m_data_contract.json"
 DEFAULT_BAOSTOCK_5M_FACTOR_SPEC = (
     REPO_ROOT / "docs" / "a_share_baostock_5m_factor_preregistration.json"
@@ -143,6 +146,9 @@ TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
 )
 TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256 = (
     "14668ad3f97cef68cd2fae882507280ef835c0f5e7b4ddecb763c1907590c0a0"
+)
+TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256 = (
+    "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
 )
 BAOSTOCK_5M_CONTRACT_SHA256 = (
     "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f"
@@ -233,6 +239,37 @@ TUSHARE_DAILY_PB_COLUMNS = (
     "instrument",
     "pb",
     "tushare_positive_book_to_market",
+    "provider",
+)
+TUSHARE_SW_CLASSIFICATION_RAW_FIELDS = (
+    "index_code",
+    "industry_name",
+    "level",
+    "src",
+)
+TUSHARE_SW_MEMBERSHIP_RAW_FIELDS = (
+    "l1_code",
+    "l1_name",
+    "l2_code",
+    "l2_name",
+    "l3_code",
+    "l3_name",
+    "ts_code",
+    "in_date",
+    "out_date",
+    "is_new",
+)
+TUSHARE_SW_MEMBERSHIP_COLUMNS = (
+    "l1_code",
+    "l1_name",
+    "l2_code",
+    "l2_name",
+    "l3_code",
+    "l3_name",
+    "instrument",
+    "in_date",
+    "out_date",
+    "is_new",
     "provider",
 )
 
@@ -990,6 +1027,47 @@ def fetch_tushare_daily_pb(trade_date: dt.date) -> pd.DataFrame:
     return result.copy()
 
 
+def fetch_tushare_sw_classification() -> pd.DataFrame:
+    """Fetch only the frozen SW2021 level-one classification fields."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.index_classify(
+            level="L1",
+            src="SW2021",
+            fields=",".join(TUSHARE_SW_CLASSIFICATION_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(f"Tushare index_classify request failed: {exc}") from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
+def fetch_tushare_sw_members(l1_code: str, is_new: str) -> pd.DataFrame:
+    """Fetch one frozen SW2021 L1/current-state membership partition."""
+
+    if is_new not in {"Y", "N"}:
+        raise RichDataError(f"unsupported Tushare SW membership is_new: {is_new}")
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.index_member_all(
+            l1_code=l1_code,
+            is_new=is_new,
+            fields=",".join(TUSHARE_SW_MEMBERSHIP_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare index_member_all request failed for "
+            f"l1_code={l1_code} is_new={is_new}: {exc}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
 def fetch_rqdata_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
     """Fetch raw minute bars from RQData's licensed API."""
 
@@ -1410,6 +1488,161 @@ def canonicalize_tushare_daily_pb(
     }
 
 
+def canonicalize_tushare_sw_classification(frame: pd.DataFrame) -> pd.DataFrame:
+    """Validate the frozen SW2021 level-one classification response."""
+
+    if frame is None or frame.empty:
+        return pd.DataFrame(columns=TUSHARE_SW_CLASSIFICATION_RAW_FIELDS)
+    raw = frame.copy()
+    missing = [field for field in TUSHARE_SW_CLASSIFICATION_RAW_FIELDS if field not in raw]
+    if missing:
+        raise RichDataError(
+            "Tushare SW classification response lacks requested fields: "
+            + ", ".join(missing)
+        )
+    unexpected = sorted(set(raw.columns) - set(TUSHARE_SW_CLASSIFICATION_RAW_FIELDS))
+    if unexpected:
+        raise RichDataError(
+            "Tushare SW classification response contains fields outside the frozen whitelist: "
+            + ", ".join(unexpected)
+        )
+    result = raw.loc[:, list(TUSHARE_SW_CLASSIFICATION_RAW_FIELDS)].copy()
+    for column in TUSHARE_SW_CLASSIFICATION_RAW_FIELDS:
+        result[column] = result[column].astype("string").str.strip()
+    if result[list(TUSHARE_SW_CLASSIFICATION_RAW_FIELDS)].isna().any(axis=None):
+        raise RichDataError("Tushare SW classification response contains a missing value")
+    if not result["level"].eq("L1").all() or not result["src"].eq("SW2021").all():
+        raise RichDataError("Tushare SW classification response is not SW2021 L1")
+    if not result["index_code"].str.fullmatch(r"\d{6}\.SI").all():
+        raise RichDataError("Tushare SW classification contains an invalid index code")
+    if result["index_code"].duplicated().any():
+        raise RichDataError("Tushare SW classification contains duplicate L1 codes")
+    return result.sort_values("index_code", kind="stable").reset_index(drop=True)
+
+
+def canonicalize_tushare_sw_members(
+    frame: pd.DataFrame,
+    *,
+    expected_l1_code: str,
+    expected_is_new: str,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Validate one frozen SW2021 membership partition without price data."""
+
+    if expected_is_new not in {"Y", "N"}:
+        raise RichDataError(f"unsupported expected SW membership is_new: {expected_is_new}")
+    if frame is None or frame.empty:
+        return pd.DataFrame(columns=TUSHARE_SW_MEMBERSHIP_COLUMNS), {
+            "input_rows": 0,
+            "rows_written": 0,
+            "missing_out_date_rows": 0,
+        }
+    raw = frame.copy()
+    missing = [field for field in TUSHARE_SW_MEMBERSHIP_RAW_FIELDS if field not in raw]
+    if missing:
+        raise RichDataError(
+            "Tushare SW membership response lacks requested fields: "
+            + ", ".join(missing)
+        )
+    unexpected = sorted(set(raw.columns) - set(TUSHARE_SW_MEMBERSHIP_RAW_FIELDS))
+    if unexpected:
+        raise RichDataError(
+            "Tushare SW membership response contains fields outside the frozen whitelist: "
+            + ", ".join(unexpected)
+        )
+
+    def instrument(value: Any) -> str | None:
+        if pd.isna(value):
+            return None
+        source_code = str(value).strip()
+        parts = source_code.split(".", 1)
+        code = parts[0].strip()
+        suffix = parts[1].upper() if len(parts) == 2 else ""
+        if len(code) != 6 or not code.isdigit():
+            return None
+        if suffix == "BJ":
+            return f"BJ{code}"
+        try:
+            symbol = qlib_symbol(code)
+        except RichDataError:
+            return None
+        if suffix not in {"SH", "SZ"} or not symbol.startswith(suffix):
+            return None
+        return symbol
+
+    normalized = pd.DataFrame(
+        {
+            "l1_code": raw["l1_code"].astype("string").str.strip(),
+            "l1_name": raw["l1_name"].astype("string").str.strip(),
+            "l2_code": raw["l2_code"].astype("string").str.strip(),
+            "l2_name": raw["l2_name"].astype("string").str.strip(),
+            "l3_code": raw["l3_code"].astype("string").str.strip(),
+            "l3_name": raw["l3_name"].astype("string").str.strip(),
+            "instrument": raw["ts_code"].map(instrument),
+            "in_date": pd.to_datetime(
+                raw["in_date"].astype("string"), format="%Y%m%d", errors="coerce"
+            ).dt.normalize(),
+            "out_date": pd.to_datetime(
+                raw["out_date"].astype("string"), format="%Y%m%d", errors="coerce"
+            ).dt.normalize(),
+            "is_new": raw["is_new"].astype("string").str.strip().str.upper(),
+        }
+    )
+    required = [
+        "l1_code",
+        "l1_name",
+        "l2_code",
+        "l2_name",
+        "l3_code",
+        "l3_name",
+        "instrument",
+        "in_date",
+        "is_new",
+    ]
+    if normalized[required].isna().any(axis=None):
+        raise RichDataError("Tushare SW membership response contains a missing key")
+    if not normalized["l1_code"].eq(expected_l1_code).all():
+        raise RichDataError("Tushare SW membership response contains another L1 code")
+    if not normalized["is_new"].eq(expected_is_new).all():
+        raise RichDataError("Tushare SW membership response contains another is_new value")
+    if not normalized["l2_code"].str.fullmatch(r"\d{6}\.SI").all() or not normalized[
+        "l3_code"
+    ].str.fullmatch(r"\d{6}\.SI").all():
+        raise RichDataError("Tushare SW membership response contains an invalid industry code")
+    missing_out = normalized["out_date"].isna()
+    if expected_is_new == "Y" and not missing_out.all():
+        raise RichDataError("current Tushare SW membership row unexpectedly has out_date")
+    if expected_is_new == "N" and missing_out.any():
+        raise RichDataError("historical Tushare SW membership row lacks out_date")
+    dated = normalized["out_date"].notna()
+    if (normalized.loc[dated, "in_date"] > normalized.loc[dated, "out_date"]).any():
+        raise RichDataError("Tushare SW membership interval starts after it ends")
+    duplicate_key = [
+        "l1_code",
+        "l2_code",
+        "l3_code",
+        "instrument",
+        "in_date",
+        "out_date",
+        "is_new",
+    ]
+    if normalized.duplicated(duplicate_key).any():
+        raise RichDataError("Tushare SW membership response contains duplicate intervals")
+    normalized["provider"] = "tushare"
+    result = (
+        normalized.loc[:, list(TUSHARE_SW_MEMBERSHIP_COLUMNS)]
+        .sort_values(
+            ["l1_code", "l2_code", "l3_code", "instrument", "in_date", "is_new"],
+            kind="stable",
+        )
+        .reset_index(drop=True)
+    )
+    return result, {
+        "input_rows": int(len(raw)),
+        "rows_written": int(len(result)),
+        "missing_out_date_rows": int(missing_out.sum()),
+    }
+
+
 def canonicalize_jqdata_moneyflow(
     frame: pd.DataFrame,
     codes: list[str],
@@ -1754,6 +1987,73 @@ def load_tushare_daily_pb_contract(
         or contract.get("selection_or_promotion_allowed") is not False
     ):
         raise RichDataError("Tushare daily PB contract does not match the frozen protocol")
+    return contract
+
+
+def load_tushare_sw_industry_breadth_contract(
+    path: Path = DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-row SW2021 industry-breadth contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256:
+        raise RichDataError("Tushare SW industry-breadth contract fingerprint mismatch")
+    contract = load_json_record(
+        path, kind="a_share_tushare_sw_industry_breadth_data_contract"
+    )
+    source = contract.get("source") or {}
+    membership = contract.get("point_in_time_membership_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    gates = contract.get("no_return_gates") or {}
+    diagnostic = contract.get("diagnostic_policy_if_all_no_return_gates_pass") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_index_member_rows_factor_values_or_factor_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-16T11:22:05Z"
+        or source.get("provider") != "tushare"
+        or source.get("classification_api") != "index_classify"
+        or source.get("classification_parameters")
+        != {"level": "L1", "src": "SW2021"}
+        or tuple(source.get("classification_requested_fields") or ())
+        != TUSHARE_SW_CLASSIFICATION_RAW_FIELDS
+        or source.get("membership_api") != "index_member_all"
+        or tuple(source.get("membership_requested_fields") or ())
+        != TUSHARE_SW_MEMBERSHIP_RAW_FIELDS
+        or tuple(source.get("membership_is_new_values") or ()) != ("Y", "N")
+        or membership.get("classification_version") != "SW2021"
+        or membership.get("industry_level") != "L1 only"
+        or membership.get("maximum_active_level_one_memberships_per_stock_session")
+        != 1
+        or factor.get("name") != "sw1_three_session_leave_one_out_breadth"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("minimum_other_valid_peers_each_session") != 10
+        or factor.get("peer_minimum_listing_sessions") != 20
+        or factor.get("stock_self_direction_included") is not False
+        or acceptance.get("representative_l1_code") != "801010.SI"
+        or acceptance.get("minimum_classification_rows") != 25
+        or acceptance.get("maximum_classification_rows") != 40
+        or acceptance.get("minimum_current_representative_members") != 20
+        or acceptance.get("minimum_historical_representative_members") != 1
+        or tuple(snapshot.get("canonical_columns") or ())
+        != TUSHARE_SW_MEMBERSHIP_COLUMNS
+        or ((gates.get("capacity") or {}).get("minimum_required_cohorts")) != 200
+        or ((gates.get("capacity") or {}).get("holding_period_trading_days")) != 3
+        or ((gates.get("uniqueness") or {}).get("comparison_factor_count")) != 45
+        or ((gates.get("uniqueness") or {}).get(
+            "maximum_allowed_absolute_median_daily_rank_correlation"
+        ))
+        != 0.8
+        or diagnostic.get("holding_period_trading_days") != 3
+        or diagnostic.get("topk") != 3
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare SW industry-breadth contract does not match the frozen protocol"
+        )
     return contract
 
 
@@ -4131,6 +4431,205 @@ def sync_tushare_daily_pb_acceptance(
         raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
 
 
+def sync_tushare_sw_industry_breadth_acceptance() -> Path:
+    """Run the frozen no-price SW2021 classification and membership probe."""
+
+    require_provider("tushare")
+    contract = load_tushare_sw_industry_breadth_contract()
+    for link in (contract.get("local_context") or {}).values():
+        source_path = resolve_record_path(str(link["path"]))
+        if not source_path.exists() or file_digest(source_path) != link["sha256"]:
+            raise RichDataError(
+                f"Tushare SW industry-breadth local context changed: {link['path']}"
+            )
+    acceptance = contract["acceptance_protocol"]
+    representative_l1 = str(acceptance["representative_l1_code"])
+    run_id = new_run_id("tushare_sw2021_l1_acceptance")
+    run_root = RAW_ROOT / "tushare" / "sw2021_l1" / "acceptance" / run_id
+    temporary_root = run_root.parent / f".{run_id}.tmp"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(f"Tushare SW2021 L1 acceptance already exists: {run_id}")
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    try:
+        raw_classification = fetch_tushare_sw_classification()
+        classification = canonicalize_tushare_sw_classification(raw_classification)
+        minimum_classification = int(acceptance["minimum_classification_rows"])
+        maximum_classification = int(acceptance["maximum_classification_rows"])
+        if not minimum_classification <= len(classification) <= maximum_classification:
+            raise RichDataError(
+                "Tushare SW2021 L1 classification row count is outside the frozen range: "
+                f"{len(classification)} not in [{minimum_classification}, "
+                f"{maximum_classification}]"
+            )
+        if representative_l1 not in set(classification["index_code"].astype(str)):
+            raise RichDataError(
+                f"Tushare SW2021 classification lacks representative {representative_l1}"
+            )
+
+        provider_ceiling = int(
+            contract["source_selection"]["provider_documented_maximum_rows_per_call"]
+        )
+        member_frames: list[pd.DataFrame] = []
+        member_quality: list[dict[str, Any]] = []
+        for is_new in contract["source"]["membership_is_new_values"]:
+            raw_members = fetch_tushare_sw_members(representative_l1, str(is_new))
+            if len(raw_members) >= provider_ceiling:
+                raise RichDataError(
+                    "Tushare SW membership acceptance reached the provider row ceiling: "
+                    f"l1_code={representative_l1} is_new={is_new} rows={len(raw_members)}"
+                )
+            members, quality = canonicalize_tushare_sw_members(
+                raw_members,
+                expected_l1_code=representative_l1,
+                expected_is_new=str(is_new),
+            )
+            minimum_key = (
+                "minimum_current_representative_members"
+                if is_new == "Y"
+                else "minimum_historical_representative_members"
+            )
+            minimum_rows = int(acceptance[minimum_key])
+            if len(members) < minimum_rows:
+                raise RichDataError(
+                    "Tushare SW membership acceptance returned too few rows: "
+                    f"is_new={is_new} {len(members)} < {minimum_rows}"
+                )
+            member_frames.append(members)
+            member_quality.append({"is_new": is_new, **quality})
+        membership = (
+            pd.concat(member_frames, ignore_index=True)
+            .sort_values(
+                ["l1_code", "l2_code", "l3_code", "instrument", "in_date", "is_new"],
+                kind="stable",
+            )
+            .reset_index(drop=True)
+        )
+        duplicate_key = list(contract["full_snapshot_contract"]["duplicate_event_key"])
+        if membership.duplicated(duplicate_key).any():
+            raise RichDataError(
+                "Tushare SW membership acceptance contains duplicate canonical intervals"
+            )
+
+        temporary_classification = temporary_root / "classification.parquet"
+        temporary_membership = temporary_root / "membership.parquet"
+        final_classification = run_root / "classification.parquet"
+        final_membership = run_root / "membership.parquet"
+        atomic_write_frame(classification, temporary_classification)
+        atomic_write_frame(membership, temporary_membership)
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_sw2021_l1_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "classification_api": "index_classify",
+                "classification_parameters": contract["source"][
+                    "classification_parameters"
+                ],
+                "classification_fields": list(TUSHARE_SW_CLASSIFICATION_RAW_FIELDS),
+                "membership_api": "index_member_all",
+                "representative_l1_code": representative_l1,
+                "membership_is_new_values": list(
+                    contract["source"]["membership_is_new_values"]
+                ),
+                "membership_fields": list(TUSHARE_SW_MEMBERSHIP_RAW_FIELDS),
+                "forbidden_fields_requested_or_stored": [],
+                "credentials_logged_or_stored": False,
+            },
+            "files": [
+                {
+                    "dataset": "classification",
+                    "path": manifest_path(final_classification),
+                    "rows": int(len(classification)),
+                    "sha256": frame_digest(classification),
+                },
+                {
+                    "dataset": "membership",
+                    "path": manifest_path(final_membership),
+                    "rows": int(len(membership)),
+                    "sha256": frame_digest(membership),
+                },
+            ],
+            "source_quality": {
+                "classification_rows": int(len(classification)),
+                "classification_codes": classification["index_code"].astype(str).tolist(),
+                "classification_duplicate_codes": int(
+                    classification["index_code"].duplicated().sum()
+                ),
+                "membership_requests": member_quality,
+                "membership_rows": int(len(membership)),
+                "membership_unique_instruments": int(
+                    membership["instrument"].nunique()
+                ),
+                "membership_duplicate_interval_rows": int(
+                    membership.duplicated(duplicate_key).sum()
+                ),
+                "minimum_in_date": membership["in_date"].min().date().isoformat(),
+                "maximum_dated_out_date": membership["out_date"].max().date().isoformat(),
+            },
+            "acceptance_status": (
+                "accepted_entitlement_schema_and_point_in_time_intervals_"
+                "pending_full_membership_snapshot"
+            ),
+            "price_fields_loaded": [],
+            "factor_values_constructed": False,
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception as exc:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_sw2021_l1_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT),
+            },
+            "source_request": {
+                "classification_api": "index_classify",
+                "membership_api": "index_member_all",
+                "representative_l1_code": representative_l1,
+                "classification_fields": list(TUSHARE_SW_CLASSIFICATION_RAW_FIELDS),
+                "membership_fields": list(TUSHARE_SW_MEMBERSHIP_RAW_FIELDS),
+                "credentials_logged_or_stored": False,
+            },
+            "files": [],
+            "acceptance_status": (
+                "entitlement_schema_or_interval_rejected_stop_before_full_membership"
+            ),
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+            "price_fields_loaded": [],
+            "factor_values_constructed": False,
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def load_tushare_moneyflow_acceptance() -> tuple[Path, dict[str, Any]]:
     """Verify the bound completed-session Tushare entitlement/schema probe."""
 
@@ -5393,6 +5892,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
     )
 
+    subparsers.add_parser(
+        "acceptance-tushare-sw-industry-breadth",
+        help="run the frozen no-price SW2021 L1 classification and interval probe",
+    )
+
     ts_daily_pb = subparsers.add_parser(
         "sync-tushare-daily-pb",
         help="download the frozen 2019-2025 Tushare positive book-to-market snapshot",
@@ -5508,6 +6012,8 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_daily_pb_acceptance(
                 universe_path=args.universe_file
             )
+        elif args.command == "acceptance-tushare-sw-industry-breadth":
+            manifest = sync_tushare_sw_industry_breadth_acceptance()
         elif args.command == "sync-tushare-daily-pb":
             manifest = sync_tushare_daily_pb(
                 allow_large=args.allow_large,
@@ -5553,6 +6059,9 @@ def main(argv: list[str] | None = None) -> int:
         "sync-jqdata-moneyflow": "stored_pending_no_return_capacity",
         "sync-tushare-moneyflow": "stored_pending_no_return_capacity",
         "sync-tushare-daily-pb": "stored_pending_no_return_uniqueness_and_capacity",
+        "acceptance-tushare-sw-industry-breadth": (
+            "stored_no_price_membership_acceptance"
+        ),
     }.get(args.command, "stored_pending_acceptance")
     print(json.dumps({"manifest": str(manifest), "status": command_status}, ensure_ascii=False))
     return 0
