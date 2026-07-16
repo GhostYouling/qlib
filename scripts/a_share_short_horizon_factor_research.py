@@ -304,6 +304,14 @@ DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR = (
 TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR_SHA256 = (
     "5001ae0b278d086f26ca35bf8a1fc43c8009aa99c13b03258e7b2fb7bc99b18f"
 )
+DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_sw_industry_breadth_diagnostic_preregistration.json"
+)
+TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_SPEC_SHA256 = (
+    "54940682e5325beafd086e80883fc2a02c2fc9f24eede08a11b53ce89c6628e1"
+)
 DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST = (
     DATA_ROOT
     / "metadata"
@@ -850,6 +858,9 @@ TUSHARE_DAILY_PB_NO_RETURN_AUDIT_PURPOSE = (
 )
 TUSHARE_SW_INDUSTRY_BREADTH_NO_RETURN_AUDIT_PURPOSE = (
     "tushare_sw_industry_breadth_interval_coverage_capacity_then_uniqueness_gate_without_forward_returns"
+)
+TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_PURPOSE = (
+    "development_only_preregistered_tushare_sw_industry_breadth_research_not_investment_advice"
 )
 TUSHARE_DAILY_PB_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_tushare_positive_book_to_market_research_not_investment_advice"
@@ -3408,6 +3419,396 @@ def load_tushare_sw_industry_breadth_capacity_preregistration(
         raise ValueError("Tushare SW accepted price basis is inconsistent")
     load_tushare_sw_industry_breadth_symbol_repair()
     return spec
+
+
+def load_tushare_sw_industry_breadth_diagnostic_preregistration(
+    path: Path = DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_SPEC,
+) -> dict[str, Any]:
+    """Enforce the one-time no-return-qualified SW breadth diagnostic."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_SPEC_SHA256:
+        raise ValueError("Tushare SW diagnostic preregistration fingerprint mismatch")
+    spec = load_json_record(
+        path,
+        kind="a_share_tushare_sw_industry_breadth_diagnostic_preregistration",
+    )
+    no_return = spec.get("combined_no_return_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    factor = spec.get("factor") or {}
+    contract = spec.get("run_contract") or {}
+    execution = spec.get("execution_policies") or {}
+    policy = spec.get("diagnostic_policy") or {}
+    expected_contract = {
+        "start": "2019-01-01",
+        "end": "2025-12-31",
+        "development_end": "2025-12-31",
+        "holding_universe": "buyable_main_chinext",
+        "source_universe": "factor_main_chinext_star",
+        "holding_period_trading_days": 3,
+        "non_overlapping_cohorts": True,
+        "topk": 3,
+        "open_cost": 0.00012,
+        "close_cost": 0.00062,
+        "maximum_quality_age_days": 550,
+        "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+        "minimum_other_valid_peers_each_session": 10,
+        "minimum_valid_names_per_factor_cohort": 50,
+        "price_basis": REQUIRED_PRICE_BASIS,
+        "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+        "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+    }
+    expected_execution = {
+        "prospective_execution_policy_path": (
+            "docs/a_share_three_day_prospective_execution_policy.json"
+        ),
+        "prospective_execution_policy_sha256": (
+            PROSPECTIVE_EXECUTION_POLICY_SHA256
+        ),
+        "pilot_execution_policy_path": (
+            "docs/a_share_three_day_pilot_execution_policy.json"
+        ),
+        "pilot_execution_policy_sha256": PILOT_EXECUTION_POLICY_SHA256,
+        "pilot_initial_capital_cny": 200000.0,
+        "buy_lot_size_shares": 100,
+        "primary_slippage_rate_each_side": 0.001,
+        "maximum_daily_amount_participation": 0.01,
+    }
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_all_no_return_membership_factor_coverage_capacity_and_uniqueness_gates_pass_before_breadth_factor_returns_observed"
+        or spec.get("preregistered_at") != "2026-07-16T12:19:57Z"
+        or no_return.get("run_id") != "20260716T121912Z"
+        or no_return.get("sha256")
+        != "083a6941aba00fd9caac954a404bf7e06bac4213b5e3668f161f3a47fc4680e3"
+        or no_return.get("factor")
+        != TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+        or no_return.get("membership_interval_count") != 7043
+        or no_return.get("active_holding_factor_rows") != 7048922
+        or no_return.get("sessions_with_at_least_fifty_factor_values") != 1697
+        or no_return.get("potential_complete_cohorts") != 540
+        or no_return.get("observed_calendar_years") != 7
+        or no_return.get("comparison_field_count") != 45
+        or no_return.get("fields_with_minimum_sessions") != 45
+        or no_return.get("fields_below_correlation_threshold") != 45
+        or no_return.get("nearest_existing_field") != "momentum_3"
+        or not math.isclose(
+            float(
+                no_return.get(
+                    "maximum_observed_absolute_median_daily_rank_correlation"
+                )
+            ),
+            0.26384671643824736,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or any(
+            no_return.get(name) is not True
+            for name in (
+                "membership_coverage_gate_passed",
+                "factor_coverage_gate_passed",
+                "capacity_gate_passed",
+                "uniqueness_gate_passed",
+                "all_no_return_gates_passed",
+                "source_admitted_for_return_diagnostic",
+            )
+        )
+        or no_return.get("forward_return_fields_read") is not False
+        or set(snapshots)
+        != {
+            "tushare_sw2021_l1_membership",
+            "source_acceptance",
+            "data_contract",
+            "capacity_and_uniqueness_preregistration",
+            "symbol_normalization_repair",
+            "quarterly_quality",
+            "accepted_price_basis",
+            "source_universe",
+            "holding_universe",
+            "local_calendar",
+        }
+        or snapshots["tushare_sw2021_l1_membership"].get(
+            "manifest_sha256"
+        )
+        != "8582eb25f91ddcbe01130057ecb118431168545fa0a182cdb428c3a8d2a0228e"
+        or snapshots["tushare_sw2021_l1_membership"].get("rows") != 7803
+        or snapshots["tushare_sw2021_l1_membership"].get(
+            "membership_frame_sha256"
+        )
+        != "474bbfcd7da4bb4d1a7c1f6b30e7c26e19230782ddee2769af4539cc3eab5c88"
+        or snapshots["data_contract"].get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_DATA_CONTRACT_SHA256
+        or snapshots["capacity_and_uniqueness_preregistration"].get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC_SHA256
+        or snapshots["symbol_normalization_repair"].get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR_SHA256
+        or factor.get("name") != TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+        or factor.get("raw_column")
+        != TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+        or factor.get("raw_direction") != "higher_is_better"
+        or factor.get("score_formula")
+        != "cross_sectional_percentile_rank(sw1_three_session_leave_one_out_breadth)"
+        or factor.get("minimum_other_valid_peers_each_session") != 10
+        or factor.get("peer_minimum_listing_sessions")
+        != MIN_LISTING_SESSIONS
+        or factor.get("stock_self_direction_included") is not False
+        or factor.get("peer_source_universe") != "factor_main_chinext_star"
+        or factor.get("holding_universe") != "buyable_main_chinext"
+        or factor.get("same_session_trade_allowed") is not False
+        or factor.get(
+            "alternative_direction_window_peer_threshold_industry_level_or_self_inclusion_allowed"
+        )
+        is not False
+        or factor.get(
+            "industry_price_moneyflow_heat_valuation_limit_or_concept_fields_allowed"
+        )
+        is not False
+        or contract != expected_contract
+        or execution != expected_execution
+        or policy.get("all_no_return_gates_passed_before_return_read")
+        is not True
+        or policy.get("single_factor_only") is not True
+        or policy.get("breadth_factor_returns_observed_before_registration")
+        is not False
+        or policy.get("prior_breadth_price_diagnostic_exists") is not False
+        or policy.get("one_completed_diagnostic_only") is not True
+        or policy.get(
+            "no_direction_formula_window_peer_threshold_industry_level_date_cost_quality_source_factor_or_threshold_override"
+        )
+        is not True
+        or policy.get(
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic"
+        )
+        is not True
+        or policy.get("selection_or_promotion_allowed") is not False
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Tushare SW diagnostic preregistration does not match the frozen protocol"
+        )
+    return spec
+
+
+def validate_tushare_sw_industry_breadth_diagnostic_sources(
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any], dict[str, Any]]:
+    """Revalidate the complete no-return authorization chain before outcomes."""
+
+    snapshots = spec["source_snapshots"]
+    for name in (
+        "data_contract",
+        "capacity_and_uniqueness_preregistration",
+        "symbol_normalization_repair",
+    ):
+        link = snapshots[name]
+        path = resolve_repository_record_path(str(link["path"]))
+        if not path.exists() or file_sha256(path) != link["sha256"]:
+            raise ValueError(f"Tushare SW diagnostic {name} fingerprint mismatch")
+    acceptance = snapshots["source_acceptance"]
+    for key, digest_key in (
+        ("record_path", "record_sha256"),
+        ("manifest_path", "manifest_sha256"),
+    ):
+        path = resolve_repository_record_path(str(acceptance[key]))
+        if not path.exists() or file_sha256(path) != acceptance[digest_key]:
+            raise ValueError("Tushare SW diagnostic acceptance fingerprint mismatch")
+    quality = snapshots["quarterly_quality"]
+    for key, digest_key in (
+        ("path", "sha256"),
+        ("manifest_path", "manifest_sha256"),
+    ):
+        path = resolve_repository_record_path(str(quality[key]))
+        if not path.exists() or file_sha256(path) != quality[digest_key]:
+            raise ValueError("Tushare SW diagnostic quality fingerprint mismatch")
+    for name in (
+        "accepted_price_basis",
+        "source_universe",
+        "holding_universe",
+        "local_calendar",
+    ):
+        link = snapshots[name]
+        path = resolve_repository_record_path(str(link["path"]))
+        if not path.exists() or file_sha256(path) != link["sha256"]:
+            raise ValueError(f"Tushare SW diagnostic {name} fingerprint mismatch")
+    price_basis = load_json_record(
+        resolve_repository_record_path(
+            snapshots["accepted_price_basis"]["path"]
+        )
+    )
+    if (
+        price_basis.get("status") != "passed"
+        or price_basis.get("price_basis") != REQUIRED_PRICE_BASIS
+        or price_basis.get("daily_sources") != ["baostock"]
+        or price_basis.get("future_corporate_actions_used") is not False
+    ):
+        raise ValueError("Tushare SW diagnostic accepted price basis is invalid")
+
+    start = spec["run_contract"]["start"]
+    end = spec["run_contract"]["end"]
+    for name in ("source_universe", "holding_universe"):
+        link = snapshots[name]
+        if point_in_time_interval_fingerprint(
+            resolve_repository_record_path(link["path"]),
+            start=start,
+            end=end,
+        ) != {
+            "sha256": link["range_clipped_sha256"],
+            "intervals": link["range_clipped_intervals"],
+        }:
+            raise ValueError(f"Tushare SW diagnostic {name} context changed")
+    calendar = snapshots["local_calendar"]
+    if local_calendar_range_fingerprint(
+        resolve_repository_record_path(calendar["path"]),
+        start=start,
+        end=end,
+    ) != {
+        "sha256": calendar["range_clipped_sha256"],
+        "sessions": calendar["range_clipped_sessions"],
+    }:
+        raise ValueError("Tushare SW diagnostic calendar context changed")
+
+    no_return_link = spec["combined_no_return_audit"]
+    no_return_path = resolve_repository_record_path(no_return_link["path"])
+    if (
+        not no_return_path.exists()
+        or file_sha256(no_return_path) != no_return_link["sha256"]
+    ):
+        raise ValueError("Tushare SW no-return audit fingerprint mismatch")
+    no_return = load_json_record(
+        no_return_path,
+        kind="a_share_tushare_sw_industry_breadth_no_return_audit",
+    )
+    capacity = no_return.get("source_capacity") or {}
+    factor_coverage = no_return.get("factor_coverage") or {}
+    uniqueness = no_return.get("uniqueness") or {}
+    sequence = list(no_return.get("run_sequence") or [])
+    source_manifest = (
+        ((no_return.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "manifest"
+        )
+        or {}
+    )
+    snapshot = snapshots["tushare_sw2021_l1_membership"]
+    if (
+        no_return.get("run_id") != no_return_link["run_id"]
+        or no_return.get("status") != "completed"
+        or no_return.get("purpose")
+        != TUSHARE_SW_INDUSTRY_BREADTH_NO_RETURN_AUDIT_PURPOSE
+        or no_return.get("factor_catalog")
+        != [TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]
+        or no_return.get("forward_return_fields_read") is not False
+        or no_return.get("selection_or_promotion_allowed") is not False
+        or any(
+            no_return.get(name) is not True
+            for name in (
+                "membership_coverage_gate_passed",
+                "factor_coverage_gate_passed",
+                "capacity_gate_passed",
+                "uniqueness_gate_passed",
+                "all_no_return_gates_passed",
+                "source_admitted_for_separate_return_diagnostic_preregistration",
+            )
+        )
+        or factor_coverage.get("active_holding_factor_rows")
+        != no_return_link["active_holding_factor_rows"]
+        or factor_coverage.get("sessions_with_at_least_fifty_factor_values")
+        != no_return_link["sessions_with_at_least_fifty_factor_values"]
+        or capacity.get("factor")
+        != TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+        or capacity.get("potential_complete_cohorts")
+        != no_return_link["potential_complete_cohorts"]
+        or capacity.get("observed_calendar_years")
+        != no_return_link["observed_calendar_years"]
+        or uniqueness.get("comparison_field_count")
+        != no_return_link["comparison_field_count"]
+        or uniqueness.get("fields_with_minimum_sessions")
+        != no_return_link["fields_with_minimum_sessions"]
+        or uniqueness.get("fields_below_correlation_threshold")
+        != no_return_link["fields_below_correlation_threshold"]
+        or uniqueness.get("nearest_existing_field")
+        != no_return_link["nearest_existing_field"]
+        or not math.isclose(
+            float(
+                uniqueness.get(
+                    "maximum_observed_absolute_median_daily_rank_correlation"
+                )
+            ),
+            float(
+                no_return_link[
+                    "maximum_observed_absolute_median_daily_rank_correlation"
+                ]
+            ),
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or len(sequence) != 6
+        or sequence[4].get("step") != "three_session_capacity"
+        or sequence[4].get("close_known_comparison_fields_loaded") != []
+        or sequence[5].get("step")
+        != "close_known_2025_45_factor_uniqueness"
+        or tuple(sequence[5].get("close_known_comparison_fields_loaded") or ())
+        != TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS
+        or source_manifest.get("sha256") != snapshot["manifest_sha256"]
+        or source_manifest.get("run_id") != snapshot["run_id"]
+    ):
+        raise ValueError(
+            "Tushare SW no-return audit does not authorize the frozen diagnostic"
+        )
+
+    manifest_path = resolve_repository_record_path(snapshot["manifest_path"])
+    if (
+        not manifest_path.exists()
+        or file_sha256(manifest_path) != snapshot["manifest_sha256"]
+    ):
+        raise ValueError("Tushare SW diagnostic membership manifest changed")
+    capacity_spec = load_tushare_sw_industry_breadth_capacity_preregistration()
+    intervals, context_frames, validation = (
+        validate_tushare_sw_industry_membership_snapshot(
+            manifest_path,
+            capacity_spec,
+        )
+    )
+    membership_file = validation["source_evidence"]["membership_file"]
+    if (
+        membership_file["rows"] != snapshot["rows"]
+        or membership_file["sha256"] != snapshot["membership_frame_sha256"]
+        or validation["source_evidence"]["manifest"]["run_id"]
+        != snapshot["run_id"]
+    ):
+        raise ValueError("Tushare SW membership snapshot changed after registration")
+    return intervals, context_frames, {
+        "combined_no_return_audit": {
+            "path": str(no_return_path),
+            "sha256": file_sha256(no_return_path),
+            "run_id": no_return["run_id"],
+            "factor_coverage": factor_coverage,
+            "source_capacity": capacity,
+            "uniqueness": uniqueness,
+            "forward_return_fields_read": False,
+        },
+        "source_snapshot": validation["source_evidence"],
+        "quarterly_quality": quality,
+        "accepted_price_basis": snapshots["accepted_price_basis"],
+        "source_universe": snapshots["source_universe"],
+        "holding_universe": snapshots["holding_universe"],
+        "local_calendar": snapshots["local_calendar"],
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_tushare_sw_industry_breadth_diagnostic(
+    experiment_root: Path,
+) -> None:
+    """Prevent a second accepted-price read for the SW breadth mechanism."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_PURPOSE:
+            raise ValueError(
+                f"Tushare SW industry-breadth diagnostic is already consumed: {path}"
+            )
 
 
 def load_tushare_daily_pb_diagnostic_preregistration(
@@ -16678,6 +17079,118 @@ def load_tushare_sw_industry_breadth_factor(
     return factor, construction
 
 
+def summarize_tushare_sw_industry_breadth_factor_coverage(
+    factor_frame: pd.DataFrame,
+    holding_universe: pd.DataFrame,
+    research_calendar: pd.DatetimeIndex,
+    *,
+    minimum_sessions_with_fifty_values: int,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Filter the constructed factor to active holdings and audit daily coverage."""
+
+    factor_columns = {
+        "trade_date",
+        "instrument",
+        TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+    }
+    if missing := sorted(factor_columns - set(factor_frame.columns)):
+        raise ValueError(
+            "Tushare SW factor coverage frame is missing columns: "
+            + ", ".join(missing)
+        )
+    holding_columns = {"instrument", "active_start", "active_end"}
+    if missing := sorted(holding_columns - set(holding_universe.columns)):
+        raise ValueError(
+            "Tushare SW holding-universe frame is missing columns: "
+            + ", ".join(missing)
+        )
+    sessions = (
+        pd.DatetimeIndex(research_calendar).normalize().unique().sort_values()
+    )
+    if sessions.empty or minimum_sessions_with_fifty_values < 1:
+        raise ValueError("Tushare SW factor coverage contract is invalid")
+
+    factor = factor_frame.loc[:, list(factor_columns)].copy()
+    factor["trade_date"] = pd.to_datetime(
+        factor["trade_date"], errors="coerce"
+    ).dt.normalize()
+    factor["instrument"] = factor["instrument"].astype("string")
+    factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME] = pd.to_numeric(
+        factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME], errors="coerce"
+    )
+    if (
+        factor[["trade_date", "instrument"]].isna().any().any()
+        or factor.duplicated(["instrument", "trade_date"]).any()
+        or not np.isfinite(
+            factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]
+        ).all()
+        or not factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]
+        .between(0.0, 1.0)
+        .all()
+    ):
+        raise ValueError("Tushare SW factor coverage values are invalid")
+    factor = factor.loc[factor["trade_date"].isin(sessions)].copy()
+
+    holdings = holding_universe.loc[:, list(holding_columns)].copy()
+    holdings["instrument"] = holdings["instrument"].astype("string")
+    holdings["active_start"] = pd.to_datetime(
+        holdings["active_start"], errors="coerce"
+    ).dt.normalize()
+    holdings["active_end"] = pd.to_datetime(
+        holdings["active_end"], errors="coerce"
+    ).dt.normalize()
+    if (
+        holdings.isna().any().any()
+        or holdings["instrument"].duplicated().any()
+        or holdings["active_start"].gt(holdings["active_end"]).any()
+    ):
+        raise ValueError("Tushare SW holding-universe intervals are invalid")
+    active = factor.merge(
+        holdings,
+        on="instrument",
+        how="inner",
+        validate="many_to_one",
+    )
+    active = active.loc[
+        active["trade_date"].ge(active["active_start"])
+        & active["trade_date"].le(active["active_end"])
+    ].copy()
+    active = active.loc[
+        :,
+        ["trade_date", "instrument", TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME],
+    ].sort_values(["trade_date", "instrument"], kind="stable")
+    if active.duplicated(["instrument", "trade_date"]).any():
+        raise ValueError("Tushare SW active factor keys are duplicated")
+
+    counts = (
+        active.groupby("trade_date")["instrument"]
+        .nunique()
+        .reindex(sessions, fill_value=0)
+        .astype(int)
+    )
+    sessions_with_fifty = int(counts.ge(50).sum())
+    passed = sessions_with_fifty >= minimum_sessions_with_fifty_values
+    return active.reset_index(drop=True), {
+        "constructed_factor_rows": int(len(factor_frame)),
+        "development_range_factor_rows": int(len(factor)),
+        "active_holding_factor_rows": int(len(active)),
+        "active_holding_factor_instruments": int(active["instrument"].nunique()),
+        "calendar_sessions": int(len(sessions)),
+        "sessions_with_any_factor_value": int(counts.gt(0).sum()),
+        "sessions_with_at_least_fifty_factor_values": sessions_with_fifty,
+        "minimum_sessions_with_fifty_factor_values": int(
+            minimum_sessions_with_fifty_values
+        ),
+        "median_active_holding_factor_names": float(counts.median()),
+        "p05_active_holding_factor_names": float(counts.quantile(0.05)),
+        "minimum_active_holding_factor_names": int(counts.min()),
+        "factor_coverage_gate_passed": passed,
+        "close_known_inputs_loaded": ["$close/Ref($close, 1) - 1"],
+        "future_open_close_or_return_fields_read": False,
+        "forward_return_fields_read": False,
+    }
+
+
 def jqdata_moneyflow_capacity(
     factor_frame: pd.DataFrame,
     fundamentals: pd.DataFrame,
@@ -16818,6 +17331,79 @@ def tushare_daily_pb_capacity(
         contract=contract,
         factor_name=TUSHARE_DAILY_PB_FACTOR_NAME,
     )
+
+
+def tushare_sw_industry_breadth_capacity(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    research_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[
+        str, list[tuple[pd.Timestamp, pd.Timestamp]]
+    ],
+    *,
+    capacity_contract: dict[str, Any],
+    factor_contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Count factor-ready SW breadth cohorts without loading future outcomes."""
+
+    generic_contract = {
+        "holding_period_trading_days": int(
+            capacity_contract["holding_period_trading_days"]
+        ),
+        "minimum_valid_names_per_factor_cohort": int(
+            capacity_contract["minimum_eligible_names_per_cross_section"]
+        ),
+        "minimum_distinct_factor_values_per_cohort": int(
+            capacity_contract["minimum_distinct_factor_values"]
+        ),
+        "minimum_required_cohorts": int(
+            capacity_contract["minimum_required_cohorts"]
+        ),
+        "minimum_observed_calendar_years": int(
+            capacity_contract["minimum_observed_years"]
+        ),
+        "maximum_quality_age_days": int(
+            factor_contract["maximum_quality_age_days"]
+        ),
+    }
+    result = jqdata_moneyflow_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        instrument_intervals,
+        contract=generic_contract,
+        factor_name=TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+    )
+    result.update(
+        {
+            "minimum_eligible_names_per_cross_section": int(
+                capacity_contract["minimum_eligible_names_per_cross_section"]
+            ),
+            "minimum_distinct_factor_values": int(
+                capacity_contract["minimum_distinct_factor_values"]
+            ),
+            "minimum_observed_years": int(
+                capacity_contract["minimum_observed_years"]
+            ),
+            "candidate_minimum_listing_sessions": int(
+                factor_contract["candidate_minimum_listing_sessions"]
+            ),
+            "maximum_quality_age_days": int(
+                factor_contract["maximum_quality_age_days"]
+            ),
+            "holding_period_trading_days": int(
+                capacity_contract["holding_period_trading_days"]
+            ),
+            "non_overlapping_cohorts": bool(
+                capacity_contract["non_overlapping_cohorts"]
+            ),
+            "price_fields_loaded": [],
+            "forward_return_fields_read": False,
+        }
+    )
+    return result
 
 
 def summarize_tushare_daily_pb_uniqueness(
@@ -17010,6 +17596,343 @@ def summarize_tushare_daily_pb_uniqueness(
         "uniqueness_gate_passed": passed,
         "same_quality_listing_and_pb_complete_cross_section_applied": True,
         "forward_open_close_or_return_fields_derived": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def summarize_tushare_sw_industry_breadth_uniqueness(
+    factor_frame: pd.DataFrame,
+    comparison_frame: pd.DataFrame,
+    *,
+    contract: dict[str, Any],
+    minimum_pairwise_names_per_session: int,
+) -> dict[str, Any]:
+    """Compare SW breadth with all 45 frozen close-known factor fields."""
+
+    factor_columns = [
+        "trade_date",
+        "instrument",
+        TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+    ]
+    if missing := sorted(set(factor_columns) - set(factor_frame.columns)):
+        raise ValueError(
+            "Tushare SW uniqueness factor frame is missing columns: "
+            + ", ".join(missing)
+        )
+    comparison_columns = [
+        "datetime",
+        "instrument",
+        "fundamental_quality_eligible",
+        "listing_seasoning_eligible",
+        "quality_eligible",
+        *TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS,
+    ]
+    if missing := sorted(set(comparison_columns) - set(comparison_frame.columns)):
+        raise ValueError(
+            "Tushare SW uniqueness comparison frame is missing columns: "
+            + ", ".join(missing)
+        )
+    if (
+        tuple(contract.get("comparison_factors") or ())
+        != TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS
+    ):
+        raise ValueError("Tushare SW uniqueness comparison-field order changed")
+
+    start = pd.Timestamp(str(contract["screen_start"])).normalize()
+    end = pd.Timestamp(str(contract["screen_end"])).normalize()
+    minimum_names = int(minimum_pairwise_names_per_session)
+    minimum_sessions = int(contract["minimum_pairwise_sessions"])
+    maximum_correlation = float(
+        contract["maximum_allowed_absolute_median_daily_rank_correlation"]
+    )
+    if minimum_names < 2 or minimum_sessions < 1:
+        raise ValueError("Tushare SW uniqueness pairwise thresholds are invalid")
+
+    factor = factor_frame.loc[:, factor_columns].copy()
+    factor["trade_date"] = pd.to_datetime(
+        factor["trade_date"], errors="coerce"
+    ).dt.normalize()
+    factor["instrument"] = factor["instrument"].astype("string")
+    factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME] = pd.to_numeric(
+        factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME], errors="coerce"
+    )
+    factor = factor.loc[factor["trade_date"].between(start, end)].copy()
+    if (
+        factor[["trade_date", "instrument"]].isna().any().any()
+        or factor.duplicated(["instrument", "trade_date"]).any()
+        or not np.isfinite(
+            factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]
+        ).all()
+        or not factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]
+        .between(0.0, 1.0)
+        .all()
+    ):
+        raise ValueError("Tushare SW uniqueness factor input is invalid")
+
+    comparison = comparison_frame.loc[:, comparison_columns].copy()
+    comparison["datetime"] = pd.to_datetime(
+        comparison["datetime"], errors="coerce"
+    ).dt.normalize()
+    comparison["instrument"] = comparison["instrument"].astype("string")
+    comparison = comparison.loc[
+        comparison["datetime"].between(start, end)
+    ].copy()
+    if (
+        comparison[["datetime", "instrument"]].isna().any().any()
+        or comparison.duplicated(["instrument", "datetime"]).any()
+    ):
+        raise ValueError("Tushare SW uniqueness comparison keys are invalid")
+    quality_consistent = (
+        comparison["quality_eligible"].fillna(False)
+        == (
+            comparison["fundamental_quality_eligible"].fillna(False)
+            & comparison["listing_seasoning_eligible"].fillna(False)
+        )
+    )
+    if not quality_consistent.all():
+        raise ValueError(
+            "Tushare SW uniqueness quality/listing gate is inconsistent"
+        )
+    comparison = comparison.loc[
+        comparison["quality_eligible"].fillna(False)
+    ].copy()
+    merged = comparison.merge(
+        factor.rename(columns={"trade_date": "datetime"}),
+        on=["datetime", "instrument"],
+        how="inner",
+        validate="one_to_one",
+    )
+    if merged.empty:
+        raise ValueError("Tushare SW uniqueness has no common eligible rows")
+
+    field_results: list[dict[str, Any]] = []
+    for field in TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS:
+        values = merged.loc[
+            :,
+            [
+                "datetime",
+                "instrument",
+                TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+                field,
+            ],
+        ].copy()
+        values[field] = pd.to_numeric(values[field], errors="coerce")
+        finite = np.isfinite(
+            values[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]
+        ) & np.isfinite(values[field])
+        values = values.loc[finite]
+        correlations: list[float] = []
+        pairwise_name_counts: list[int] = []
+        sessions_with_minimum_names = 0
+        sessions_with_two_values = 0
+        for _, daily in values.groupby("datetime", sort=True):
+            pairwise_names = int(daily["instrument"].nunique())
+            if pairwise_names < minimum_names:
+                continue
+            sessions_with_minimum_names += 1
+            pairwise_name_counts.append(pairwise_names)
+            if (
+                daily[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME].nunique(
+                    dropna=True
+                )
+                < 2
+                or daily[field].nunique(dropna=True) < 2
+            ):
+                continue
+            sessions_with_two_values += 1
+            breadth_rank = daily[
+                TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+            ].rank(method="average", pct=True)
+            comparison_rank = daily[field].rank(method="average", pct=True)
+            correlation = float(
+                breadth_rank.corr(comparison_rank, method="pearson")
+            )
+            if math.isfinite(correlation):
+                correlations.append(correlation)
+        correlation_series = pd.Series(correlations, dtype="float64")
+        median_correlation = (
+            float(correlation_series.median())
+            if len(correlation_series)
+            else None
+        )
+        enough_sessions = len(correlations) >= minimum_sessions
+        below_threshold = bool(
+            median_correlation is not None
+            and abs(median_correlation) < maximum_correlation
+        )
+        field_results.append(
+            {
+                "comparison_field": field,
+                "pairwise_rows": int(len(values)),
+                "sessions_with_minimum_pairwise_names": (
+                    sessions_with_minimum_names
+                ),
+                "sessions_with_minimum_names_and_two_values": (
+                    sessions_with_two_values
+                ),
+                "valid_daily_rank_correlation_sessions": int(
+                    len(correlations)
+                ),
+                "minimum_pairwise_names_observed": (
+                    int(min(pairwise_name_counts))
+                    if pairwise_name_counts
+                    else 0
+                ),
+                "median_daily_rank_correlation": median_correlation,
+                "absolute_median_daily_rank_correlation": (
+                    abs(median_correlation)
+                    if median_correlation is not None
+                    else None
+                ),
+                "p05_daily_rank_correlation": (
+                    float(correlation_series.quantile(0.05))
+                    if len(correlation_series)
+                    else None
+                ),
+                "p95_daily_rank_correlation": (
+                    float(correlation_series.quantile(0.95))
+                    if len(correlation_series)
+                    else None
+                ),
+                "minimum_sessions_gate_passed": enough_sessions,
+                "absolute_median_correlation_gate_passed": below_threshold,
+                "uniqueness_gate_passed": bool(
+                    enough_sessions and below_threshold
+                ),
+            }
+        )
+    nearest = max(
+        field_results,
+        key=lambda item: float(
+            item["absolute_median_daily_rank_correlation"]
+            if item["absolute_median_daily_rank_correlation"] is not None
+            else -1.0
+        ),
+    )
+    passed = all(item["uniqueness_gate_passed"] for item in field_results)
+    return {
+        "factor": TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+        "comparison_field_count": len(field_results),
+        "eligible_factor_comparison_rows": int(len(merged)),
+        "eligible_factor_comparison_sessions": int(
+            merged["datetime"].nunique()
+        ),
+        "minimum_pairwise_names_per_session": minimum_names,
+        "minimum_pairwise_names_source": (
+            "derived_from_capacity_minimum_eligible_names_per_cross_section"
+        ),
+        "minimum_pairwise_sessions_per_comparison": minimum_sessions,
+        "maximum_allowed_absolute_median_daily_rank_correlation": (
+            maximum_correlation
+        ),
+        "fields_with_minimum_sessions": int(
+            sum(item["minimum_sessions_gate_passed"] for item in field_results)
+        ),
+        "fields_below_correlation_threshold": int(
+            sum(
+                item["absolute_median_correlation_gate_passed"]
+                for item in field_results
+            )
+        ),
+        "nearest_existing_field": nearest["comparison_field"],
+        "maximum_observed_absolute_median_daily_rank_correlation": nearest[
+            "absolute_median_daily_rank_correlation"
+        ],
+        "field_results": field_results,
+        "uniqueness_gate_passed": passed,
+        "same_quality_listing_and_factor_complete_cross_section_applied": True,
+        "forward_open_close_or_return_fields_derived": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def load_tushare_sw_terminal_comparison_factors(
+    *,
+    start: str,
+    end: str,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+    """Revalidate and load only the frozen 2025 moneyflow and PB comparisons."""
+
+    if start != "2025-01-01" or end != "2025-12-31":
+        raise ValueError("Tushare SW rich-factor comparison window changed")
+    for label, path, digest in (
+        (
+            "Tushare moneyflow",
+            DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST,
+            TUSHARE_MONEYFLOW_FULL_MANIFEST_SHA256,
+        ),
+        (
+            "Tushare daily PB",
+            DEFAULT_TUSHARE_DAILY_PB_FULL_MANIFEST,
+            TUSHARE_DAILY_PB_FULL_MANIFEST_SHA256,
+        ),
+    ):
+        resolved = path.expanduser().resolve()
+        if not resolved.exists() or file_sha256(resolved) != digest:
+            raise ValueError(f"{label} terminal comparison manifest changed")
+
+    screen_start = pd.Timestamp(start)
+    screen_end = pd.Timestamp(end)
+    moneyflow_spec = load_tushare_moneyflow_capacity_preregistration()
+    moneyflow_full, moneyflow_evidence = validate_tushare_moneyflow_full_snapshot(
+        DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST,
+        moneyflow_spec,
+    )
+    moneyflow = moneyflow_full.loc[
+        pd.to_datetime(moneyflow_full["trade_date"])
+        .dt.normalize()
+        .between(screen_start, screen_end),
+        ["trade_date", "instrument", TUSHARE_MONEYFLOW_FACTOR_NAME],
+    ].copy()
+    del moneyflow_full
+    gc.collect()
+    if (
+        moneyflow.empty
+        or moneyflow.duplicated(["instrument", "trade_date"]).any()
+        or not np.isfinite(moneyflow[TUSHARE_MONEYFLOW_FACTOR_NAME]).all()
+        or not moneyflow[TUSHARE_MONEYFLOW_FACTOR_NAME].between(-1.0, 1.0).all()
+    ):
+        raise ValueError("Tushare SW moneyflow comparison values are invalid")
+
+    pb_spec = load_tushare_daily_pb_capacity_preregistration()
+    pb_full, pb_evidence = validate_tushare_daily_pb_full_snapshot(
+        DEFAULT_TUSHARE_DAILY_PB_FULL_MANIFEST,
+        pb_spec,
+    )
+    pb = pb_full.loc[
+        pd.to_datetime(pb_full["trade_date"])
+        .dt.normalize()
+        .between(screen_start, screen_end),
+        ["trade_date", "instrument", TUSHARE_DAILY_PB_FACTOR_NAME],
+    ].copy()
+    del pb_full
+    gc.collect()
+    if (
+        pb.empty
+        or pb.duplicated(["instrument", "trade_date"]).any()
+        or not np.isfinite(pb[TUSHARE_DAILY_PB_FACTOR_NAME]).all()
+        or not pb[TUSHARE_DAILY_PB_FACTOR_NAME].gt(0.0).all()
+    ):
+        raise ValueError("Tushare SW PB comparison values are invalid")
+
+    return moneyflow, pb, {
+        "comparison_window_start": start,
+        "comparison_window_end": end,
+        "tushare_moneyflow": {
+            "manifest": moneyflow_evidence["manifest"],
+            "factor": TUSHARE_MONEYFLOW_FACTOR_NAME,
+            "screen_rows": int(len(moneyflow)),
+            "screen_sessions": int(moneyflow["trade_date"].nunique()),
+            "full_snapshot_revalidated": True,
+        },
+        "tushare_daily_pb": {
+            "manifest": pb_evidence["manifest"],
+            "factor": TUSHARE_DAILY_PB_FACTOR_NAME,
+            "screen_rows": int(len(pb)),
+            "screen_sessions": int(pb["trade_date"].nunique()),
+            "full_snapshot_revalidated": True,
+        },
+        "price_fields_loaded": [],
         "forward_return_fields_read": False,
     }
 
@@ -17583,6 +18506,477 @@ def run_tushare_daily_pb_no_return_audit(
         "uniqueness": uniqueness,
         "both_no_return_gates_passed": both_passed,
         "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_tushare_sw_industry_breadth_no_return_audit(
+    experiment_root: Path,
+    *,
+    source_manifest_sha256: str,
+) -> None:
+    """Allow one completed SW breadth no-return audit per full snapshot."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob(
+            "*_tushare_sw_industry_breadth_no_return_audit.json"
+        )
+    ):
+        record = load_json_record(path)
+        source = (
+            ((record.get("preregistration") or {}).get("source_evidence") or {}).get(
+                "manifest"
+            )
+            or {}
+        )
+        if (
+            record.get("status") == "completed"
+            and record.get("purpose")
+            == TUSHARE_SW_INDUSTRY_BREADTH_NO_RETURN_AUDIT_PURPOSE
+            and source.get("sha256") == source_manifest_sha256
+        ):
+            raise ValueError(
+                "Tushare SW industry-breadth no-return snapshot is already "
+                f"consumed: {path}"
+            )
+
+
+def run_tushare_sw_industry_breadth_no_return_audit(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """Run interval, factor coverage, capacity, and 45-field uniqueness gates."""
+
+    spec = load_tushare_sw_industry_breadth_capacity_preregistration()
+    membership_intervals, context_frames, validation = (
+        validate_tushare_sw_industry_membership_snapshot(
+            Path(args.manifest), spec
+        )
+    )
+    source_evidence = validation["source_evidence"]
+    membership_coverage = validation["coverage"]
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_tushare_sw_industry_breadth_no_return_audit(
+        experiment_root,
+        source_manifest_sha256=source_evidence["manifest"]["sha256"],
+    )
+
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    point_in_time = spec["point_in_time_context"]
+    factor_contract = spec["factor_contract"]
+    combined_contract = spec["combined_no_return_audit"]
+    coverage_contract = combined_contract["membership_coverage"]
+    capacity_contract = combined_contract["capacity"]
+    uniqueness_contract = combined_contract["uniqueness"]
+    provider_calendar_path = provider_uri / "calendars" / "day.txt"
+    provider_source_universe_path = (
+        provider_uri / "instruments" / "factor_main_chinext_star.txt"
+    )
+    provider_holding_universe_path = (
+        provider_uri / "instruments" / "buyable_main_chinext.txt"
+    )
+    provider_price_basis_path = provider_uri / PRICE_BASIS_MANIFEST_NAME
+    for label, path, expected in (
+        (
+            "calendar",
+            provider_calendar_path,
+            point_in_time["local_calendar"]["file_sha256"],
+        ),
+        (
+            "source universe",
+            provider_source_universe_path,
+            point_in_time["source_universe"]["file_sha256"],
+        ),
+        (
+            "holding universe",
+            provider_holding_universe_path,
+            point_in_time["holding_universe"]["file_sha256"],
+        ),
+        (
+            "price basis",
+            provider_price_basis_path,
+            point_in_time["accepted_price_basis"]["sha256"],
+        ),
+    ):
+        if not path.exists() or file_sha256(path) != expected:
+            raise ValueError(
+                f"Tushare SW provider {label} differs from preregistration"
+            )
+    require_research_price_basis(provider_uri)
+
+    membership_passed = bool(
+        membership_coverage[
+            "membership_coverage_gate_passed_before_close_known_inputs"
+        ]
+    )
+    factor_construction: dict[str, Any] | None = None
+    factor_coverage: dict[str, Any] | None = None
+    capacity: dict[str, Any] | None = None
+    uniqueness: dict[str, Any] | None = None
+    comparison_source_evidence: dict[str, Any] | None = None
+    comparison_fields_loaded: list[str] = []
+    transient_market_inputs: list[str] = []
+    factor_values_constructed = False
+    factor_coverage_passed = False
+    capacity_passed = False
+    uniqueness_passed = False
+
+    if membership_passed:
+        factor_frame, factor_construction = (
+            load_tushare_sw_industry_breadth_factor(
+                provider_uri,
+                membership_intervals,
+                context_frames,
+                spec,
+            )
+        )
+        factor_values_constructed = True
+        factor_frame, factor_coverage = (
+            summarize_tushare_sw_industry_breadth_factor_coverage(
+                factor_frame,
+                context_frames["holding_universe"],
+                context_frames["research_calendar"],
+                minimum_sessions_with_fifty_values=int(
+                    coverage_contract["minimum_sessions_with_fifty_factor_values"]
+                ),
+            )
+        )
+        factor_coverage_passed = bool(
+            factor_coverage["factor_coverage_gate_passed"]
+        )
+        if factor_coverage_passed:
+            quality = point_in_time["quarterly_quality"]
+            fundamentals = load_fundamentals(
+                resolve_repository_record_path(quality["path"])
+            )
+            holding_intervals = {
+                str(row.instrument): [
+                    (
+                        pd.Timestamp(row.active_start).normalize(),
+                        pd.Timestamp(row.active_end).normalize(),
+                    )
+                ]
+                for row in context_frames["holding_universe"].itertuples(
+                    index=False
+                )
+            }
+            capacity = tushare_sw_industry_breadth_capacity(
+                factor_frame,
+                fundamentals,
+                pd.DatetimeIndex(context_frames["full_calendar"]),
+                pd.DatetimeIndex(context_frames["research_calendar"]),
+                holding_intervals,
+                capacity_contract=capacity_contract,
+                factor_contract=factor_contract,
+            )
+            capacity_passed = bool(capacity["capacity_gate_passed"])
+            if capacity_passed:
+                screen_start = str(uniqueness_contract["screen_start"])
+                screen_end = str(uniqueness_contract["screen_end"])
+                factor_for_uniqueness = factor_frame.loc[
+                    pd.to_datetime(factor_frame["trade_date"])
+                    .dt.normalize()
+                    .between(screen_start, screen_end),
+                    [
+                        "trade_date",
+                        "instrument",
+                        TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+                    ],
+                ].copy()
+                del factor_frame
+                gc.collect()
+                moneyflow, pb, comparison_source_evidence = (
+                    load_tushare_sw_terminal_comparison_factors(
+                        start=screen_start,
+                        end=screen_end,
+                    )
+                )
+                market = load_market_data(
+                    provider_uri,
+                    start=screen_start,
+                    end=screen_end,
+                    batch_size=128,
+                )
+                market = attach_quality_asof(
+                    market,
+                    fundamentals,
+                    max_age_days=int(
+                        factor_contract["maximum_quality_age_days"]
+                    ),
+                    availability_calendar=context_frames["full_calendar"],
+                )
+                local_comparison_columns = [
+                    "datetime",
+                    "instrument",
+                    "fundamental_quality_eligible",
+                    "listing_seasoning_eligible",
+                    "quality_eligible",
+                    *TUSHARE_DAILY_PB_COMPARISON_FIELDS,
+                ]
+                comparison_frame = market.loc[
+                    :, local_comparison_columns
+                ].copy()
+                del market
+                gc.collect()
+                for rich_frame, factor_name in (
+                    (moneyflow, TUSHARE_MONEYFLOW_FACTOR_NAME),
+                    (pb, TUSHARE_DAILY_PB_FACTOR_NAME),
+                ):
+                    rich = rich_frame.rename(
+                        columns={"trade_date": "datetime"}
+                    ).copy()
+                    rich["datetime"] = pd.to_datetime(
+                        rich["datetime"], errors="coerce"
+                    ).dt.normalize()
+                    rich["instrument"] = rich["instrument"].astype(str)
+                    comparison_frame = comparison_frame.merge(
+                        rich.loc[:, ["datetime", "instrument", factor_name]],
+                        on=["datetime", "instrument"],
+                        how="left",
+                        validate="one_to_one",
+                    )
+                del moneyflow, pb
+                gc.collect()
+                comparison_fields_loaded = list(
+                    TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS
+                )
+                transient_market_inputs = [
+                    "$close",
+                    "$open",
+                    "$high",
+                    "$low",
+                    "$volume",
+                    "$amount",
+                    "$factor",
+                    "$turnover",
+                    "$vwap",
+                ]
+                uniqueness = summarize_tushare_sw_industry_breadth_uniqueness(
+                    factor_for_uniqueness,
+                    comparison_frame,
+                    contract=uniqueness_contract,
+                    minimum_pairwise_names_per_session=int(
+                        capacity_contract[
+                            "minimum_eligible_names_per_cross_section"
+                        ]
+                    ),
+                )
+                uniqueness_passed = bool(
+                    uniqueness["uniqueness_gate_passed"]
+                )
+                del factor_for_uniqueness, comparison_frame
+                gc.collect()
+            else:
+                del factor_frame
+                gc.collect()
+        else:
+            del factor_frame
+            gc.collect()
+
+    all_passed = bool(
+        membership_passed
+        and factor_coverage_passed
+        and capacity_passed
+        and uniqueness_passed
+    )
+    if not membership_passed:
+        decision = (
+            "rejected_before_close_known_factor_construction_insufficient_"
+            "point_in_time_membership_coverage"
+        )
+    elif not factor_coverage_passed:
+        decision = (
+            "rejected_before_capacity_insufficient_sessions_with_fifty_"
+            "active_holding_factor_values"
+        )
+    elif not capacity_passed:
+        decision = (
+            "rejected_before_comparison_field_load_and_return_diagnostic_"
+            "insufficient_quality_listing_seasoned_capacity"
+        )
+    elif not uniqueness_passed:
+        decision = (
+            "rejected_before_return_diagnostic_near_synonym_or_insufficient_"
+            "pairwise_uniqueness_evidence"
+        )
+    else:
+        decision = (
+            "eligible_only_for_separate_fingerprint_bound_return_diagnostic_"
+            "preregistration"
+        )
+
+    run_id = _timestamp()
+    audit = {
+        "kind": "a_share_tushare_sw_industry_breadth_no_return_audit",
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": TUSHARE_SW_INDUSTRY_BREADTH_NO_RETURN_AUDIT_PURPOSE,
+        "preregistration": {
+            "path": str(
+                DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC.resolve()
+            ),
+            "sha256": file_sha256(
+                DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC
+            ),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME],
+        "factor_direction": factor_contract["direction"],
+        "factor_contract": factor_contract,
+        "membership_coverage_contract": coverage_contract,
+        "capacity_contract": capacity_contract,
+        "uniqueness_contract": uniqueness_contract,
+        "run_sequence": [
+            {
+                "step": "full_snapshot_and_context_revalidation",
+                "completed": True,
+                "close_known_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "membership_interval_and_coverage",
+                "completed": True,
+                "passed": membership_passed,
+                "close_known_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "close_known_factor_construction",
+                "completed": factor_values_constructed,
+                "skipped_reason": (
+                    None
+                    if membership_passed
+                    else "membership_coverage_gate_failed_before_close_load"
+                ),
+                "close_known_fields_loaded": (
+                    ["$close/Ref($close, 1) - 1"]
+                    if factor_values_constructed
+                    else []
+                ),
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "active_holding_factor_coverage",
+                "completed": factor_coverage is not None,
+                "passed": factor_coverage_passed,
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "three_session_capacity",
+                "completed": capacity is not None,
+                "skipped_reason": (
+                    None
+                    if factor_coverage_passed
+                    else "factor_coverage_gate_failed_before_capacity"
+                ),
+                "passed": capacity_passed,
+                "close_known_comparison_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "close_known_2025_45_factor_uniqueness",
+                "completed": uniqueness is not None,
+                "skipped_reason": (
+                    None
+                    if capacity_passed
+                    else "capacity_gate_failed_before_comparison_field_load"
+                ),
+                "passed": uniqueness_passed,
+                "close_known_comparison_fields_loaded": comparison_fields_loaded,
+                "forward_return_fields_read": False,
+            },
+        ],
+        "membership_coverage": membership_coverage,
+        "factor_construction": factor_construction,
+        "factor_coverage": factor_coverage,
+        "source_capacity": capacity,
+        "comparison_source_evidence": comparison_source_evidence,
+        "uniqueness": uniqueness,
+        "membership_coverage_gate_passed": membership_passed,
+        "factor_coverage_gate_passed": factor_coverage_passed,
+        "capacity_gate_passed": capacity_passed,
+        "uniqueness_gate_passed": uniqueness_passed,
+        "both_no_return_gates_passed": all_passed,
+        "all_no_return_gates_passed": all_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": (
+            all_passed
+        ),
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri),
+            "full_calendar_start": pd.DatetimeIndex(
+                context_frames["full_calendar"]
+            ).min().date().isoformat(),
+            "full_calendar_end": pd.DatetimeIndex(
+                context_frames["full_calendar"]
+            ).max().date().isoformat(),
+            "research_calendar_start": pd.DatetimeIndex(
+                context_frames["research_calendar"]
+            ).min().date().isoformat(),
+            "research_calendar_end": pd.DatetimeIndex(
+                context_frames["research_calendar"]
+            ).max().date().isoformat(),
+            "calendar_path": str(provider_calendar_path),
+            "calendar_sha256": file_sha256(provider_calendar_path),
+            "source_universe_path": str(provider_source_universe_path),
+            "source_universe_sha256": file_sha256(
+                provider_source_universe_path
+            ),
+            "holding_universe_path": str(provider_holding_universe_path),
+            "holding_universe_sha256": file_sha256(
+                provider_holding_universe_path
+            ),
+            "price_basis_path": str(provider_price_basis_path),
+            "price_basis_sha256": file_sha256(provider_price_basis_path),
+            "membership_interval_count": int(len(membership_intervals)),
+            "factor_values_constructed": factor_values_constructed,
+            "factor_close_known_input_fields_loaded": (
+                ["$close/Ref($close, 1) - 1"]
+                if factor_values_constructed
+                else []
+            ),
+            "capacity_completed_before_close_known_comparison_fields": True,
+            "close_known_comparison_fields_loaded": comparison_fields_loaded,
+            "same_session_close_known_market_inputs_transiently_loaded": (
+                transient_market_inputs
+            ),
+            "raw_market_columns_retained_in_audit": [],
+            "future_open_close_or_return_fields_read": False,
+            "future_open_close_or_return_field_names": [],
+            "forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Membership, factor coverage, capacity, and uniqueness are no-outcome gates; passing does not imply association, tradability, or a usable strategy.",
+            "The factor uses only current and prior accepted closes; all 45 comparison factors are same-session close-known and load only after capacity passes.",
+            "No future open, future close, forward return, score, current selection, position sizing, or order field is read or derived.",
+            "A complete pass authorizes only a new immutable single-factor return-diagnostic preregistration bound to this audit fingerprint.",
+            "The licensed Tushare snapshots are user-provided evidence and are not bundled in Git.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = (
+        experiment_root
+        / f"{run_id}_tushare_sw_industry_breadth_no_return_audit.json"
+    )
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default)
+        + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "membership_coverage": membership_coverage,
+        "factor_coverage": factor_coverage,
+        "factor_capacity": capacity,
+        "uniqueness": uniqueness,
+        "all_no_return_gates_passed": all_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": (
+            all_passed
+        ),
         "decision": decision,
         "forward_return_fields_read": False,
     }
@@ -26032,6 +27426,328 @@ def run_tushare_daily_pb_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def run_tushare_sw_industry_breadth_diagnostic(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """Run the fully no-return-qualified SW industry-breadth factor once."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_tushare_sw_industry_breadth_diagnostic_preregistration()
+    membership_intervals, context_frames, source_evidence = (
+        validate_tushare_sw_industry_breadth_diagnostic_sources(spec)
+    )
+    require_unconsumed_tushare_sw_industry_breadth_diagnostic(experiment_root)
+    contract = spec["run_contract"]
+    snapshots = spec["source_snapshots"]
+    factor_name = spec["factor"]["name"]
+
+    execution_policy = load_prospective_execution_policy()
+    require_prospective_execution_policy_compatibility(
+        execution_policy,
+        hold_days=int(contract["holding_period_trading_days"]),
+        topk=int(contract["topk"]),
+        open_cost=float(contract["open_cost"]),
+        close_cost=float(contract["close_cost"]),
+    )
+    pilot_policy = load_pilot_execution_policy()
+    if int(contract["minimum_listing_sessions"]) != MIN_LISTING_SESSIONS:
+        raise ValueError("Tushare SW diagnostic conflicts with listing seasoning")
+    price_basis_metadata = research_price_basis_metadata(provider_uri)
+
+    capacity_spec = load_tushare_sw_industry_breadth_capacity_preregistration()
+    factor_frame, factor_construction = load_tushare_sw_industry_breadth_factor(
+        provider_uri,
+        membership_intervals,
+        context_frames,
+        capacity_spec,
+        batch_size=256,
+    )
+    factor_frame, factor_coverage = (
+        summarize_tushare_sw_industry_breadth_factor_coverage(
+            factor_frame,
+            context_frames["holding_universe"],
+            context_frames["research_calendar"],
+            minimum_sessions_with_fifty_values=FACTOR_STABILITY_MIN_COHORTS,
+        )
+    )
+    registered_no_return = source_evidence["combined_no_return_audit"]
+    registered_factor_coverage = registered_no_return["factor_coverage"]
+    if (
+        factor_coverage["factor_coverage_gate_passed"] is not True
+        or factor_coverage["active_holding_factor_rows"]
+        != registered_factor_coverage["active_holding_factor_rows"]
+        or factor_coverage["sessions_with_at_least_fifty_factor_values"]
+        != registered_factor_coverage[
+            "sessions_with_at_least_fifty_factor_values"
+        ]
+    ):
+        raise ValueError(
+            "Tushare SW factor construction changed after diagnostic registration"
+        )
+    del membership_intervals
+    gc.collect()
+
+    fundamental_path = resolve_repository_record_path(
+        snapshots["quarterly_quality"]["path"]
+    )
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(
+        provider_uri,
+        contract["start"],
+        contract["end"],
+        args.batch_size,
+    )
+    if pd.Timestamp(market["datetime"].max()) > pd.Timestamp(
+        contract["development_end"]
+    ):
+        raise ValueError("Tushare SW diagnostic loaded rows after development end")
+    market = attach_quality_asof(
+        market,
+        fundamentals,
+        max_age_days=int(contract["maximum_quality_age_days"]),
+        availability_calendar=context_frames["full_calendar"],
+    )
+    raw_column = f"_raw_{factor_name}"
+    factor_values = factor_frame.rename(
+        columns={"trade_date": "datetime", factor_name: raw_column}
+    ).copy()
+    factor_values["datetime"] = pd.to_datetime(
+        factor_values["datetime"]
+    ).dt.normalize()
+    factor_values["instrument"] = factor_values["instrument"].astype(str)
+    ranked = market.merge(
+        factor_values[["datetime", "instrument", raw_column]],
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    ranked[raw_column] = pd.to_numeric(ranked[raw_column], errors="coerce")
+    ranked[raw_column] = ranked[raw_column].where(
+        np.isfinite(ranked[raw_column])
+    )
+    quality_eligible = ranked["quality_eligible"].fillna(False)
+    quality_counts = {
+        "fundamental_eligible_rows_before_listing_gate": int(
+            market["fundamental_quality_eligible"].fillna(False).sum()
+        ),
+        "eligible_rows_after_listing_gate": int(
+            market["quality_eligible"].fillna(False).sum()
+        ),
+        "fundamental_rows_excluded_by_listing_gate": int(
+            (
+                market["fundamental_quality_eligible"].fillna(False)
+                & ~market["listing_seasoning_eligible"].fillna(False)
+            ).sum()
+        ),
+    }
+    market_rows = int(len(market))
+    eligible_rows = int(market["quality_eligible"].fillna(False).sum())
+    calendar_start = market["datetime"].min().date().isoformat()
+    calendar_end = market["datetime"].max().date().isoformat()
+    source_factor_rows = int(len(factor_frame))
+    del market, factor_values, factor_frame, fundamentals, context_frames
+    gc.collect()
+
+    ranked = ranked.join(
+        market_state_frame(ranked, quality_eligible), on="datetime"
+    )
+    for context_column in FACTOR_TAIL_ATTRIBUTION_COLUMNS:
+        if context_column not in ranked.columns:
+            continue
+        ranked[context_column] = pd.to_numeric(
+            ranked[context_column], errors="coerce"
+        ).astype("float64")
+        context_rank = (
+            ranked.loc[quality_eligible]
+            .groupby("datetime", sort=False)[context_column]
+            .rank(pct=True)
+        )
+        ranked.loc[quality_eligible, context_column] = context_rank
+    factor_eligible = quality_eligible & ranked[raw_column].notna()
+    ranked[factor_name] = np.nan
+    ranked.loc[factor_eligible, factor_name] = (
+        ranked.loc[factor_eligible]
+        .groupby("datetime", sort=False)[raw_column]
+        .rank(pct=True)
+    )
+    ranked.drop(columns=[raw_column], inplace=True)
+    valid_names_by_date = ranked.loc[factor_eligible].groupby("datetime")[
+        "instrument"
+    ].nunique()
+    dates_with_minimum_names = int(
+        valid_names_by_date.ge(
+            int(contract["minimum_valid_names_per_factor_cohort"])
+        ).sum()
+    )
+    if dates_with_minimum_names < FACTOR_STABILITY_MIN_COHORTS:
+        raise RuntimeError(
+            "Tushare SW diagnostic coverage fell below the passed capacity gate"
+        )
+
+    forward_returns = forward_factor_return_frame(
+        ranked, int(contract["holding_period_trading_days"])
+    )
+    summaries = summarize_factor_diagnostics(
+        forward_returns,
+        [factor_name],
+        hold_days=int(contract["holding_period_trading_days"]),
+        topk=int(contract["topk"]),
+        open_cost=float(contract["open_cost"]),
+        close_cost=float(contract["close_cost"]),
+    )
+    if len(summaries) != 1 or summaries[0].get("factor") != factor_name:
+        raise RuntimeError("Tushare SW diagnostic did not produce one factor")
+    summary = summaries[0]
+    summary["execution_aware_topk"] = simulate_prospective_execution_topk(
+        ranked,
+        factor_name,
+        policy=execution_policy,
+    )
+    summary["pilot_execution_topk"] = simulate_pilot_execution_topk(
+        ranked,
+        factor_name,
+        execution_policy=execution_policy,
+        pilot_policy=pilot_policy,
+    )
+
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_PURPOSE,
+        "factor_catalog": [factor_name],
+        "factor_direction": "higher SW2021 L1 leave-one-out breadth is better",
+        "mechanism_identity": {
+            "provider": "tushare",
+            "classification": "SW2021 level one",
+            "membership_api": "index_member_all",
+            "independent_from_rejected_moneyflow_and_pb": True,
+            "alternative_industry_level_window_peer_threshold_or_direction_allowed": False,
+        },
+        "strategy_timing": {
+            "universe": contract["holding_universe"],
+            "peer_source_universe": contract["source_universe"],
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "peer_minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "minimum_other_valid_peers_each_session": int(
+                contract["minimum_other_valid_peers_each_session"]
+            ),
+            "listing_gate_applied_before_cross_sectional_ranking": True,
+            "holding_period_trading_days": int(
+                contract["holding_period_trading_days"]
+            ),
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": "signal-session close after all constituent closes are known",
+            "same_session_trade_allowed": False,
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "diagnostic_topk": int(contract["topk"]),
+            "open_cost": float(contract["open_cost"]),
+            "close_cost": float(contract["close_cost"]),
+            "parameters_read_from_preregistration": True,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": int(contract["maximum_quality_age_days"]),
+            **quality_counts,
+        },
+        "tushare_sw_industry_breadth": {
+            "source_manifest": snapshots["tushare_sw2021_l1_membership"][
+                "manifest_path"
+            ],
+            "source_manifest_sha256": snapshots[
+                "tushare_sw2021_l1_membership"
+            ]["manifest_sha256"],
+            "membership_rows": snapshots["tushare_sw2021_l1_membership"][
+                "rows"
+            ],
+            "factor_rows": source_factor_rows,
+            "quality_and_factor_eligible_rows": int(factor_eligible.sum()),
+            "dates_with_at_least_fifty_factor_names": dates_with_minimum_names,
+            "score_formula": spec["factor"]["score_formula"],
+            "daily_formula": spec["factor"]["daily_formula"],
+            "lookback": spec["factor"]["lookback"],
+            "stock_self_direction_included": False,
+            "industry_price_moneyflow_heat_valuation_limit_or_concept_fields_used": False,
+            "price_or_return_fields_stored_in_membership_source": False,
+            "factor_construction": factor_construction,
+            "factor_coverage": factor_coverage,
+            "selection_or_promotion_allowed": False,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            **price_basis_metadata,
+            "calendar_start": calendar_start,
+            "calendar_end": calendar_end,
+            "development_start": contract["start"],
+            "development_end": contract["development_end"],
+            "market_rows": market_rows,
+            "eligible_rows": eligible_rows,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "complete_forward_name_observations": int(len(forward_returns)),
+            "test_period_used_for_factor_design": False,
+        },
+        "prospective_execution_policy": {
+            "path": str(
+                DEFAULT_PROSPECTIVE_EXECUTION_POLICY.relative_to(REPO_ROOT)
+            ),
+            "sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": execution_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "existing_45_comparison_factor_frontier_retroactively_rerun": False,
+        },
+        "pilot_execution_policy": {
+            "path": str(DEFAULT_PILOT_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+            "existing_45_comparison_factor_frontier_retroactively_rerun": False,
+        },
+        "preregistration": {
+            "path": str(
+                DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_SPEC.resolve()
+            ),
+            "sha256": file_sha256(
+                DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_SPEC
+            ),
+            "preregistered_at": spec["preregistered_at"],
+            "breadth_factor_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+        "ranking_by_development_rank_ic": [summary],
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "This is the single SW breadth direction frozen before returns; it does not create a current stock list or order.",
+            "The no-return gates prove only that a distinct and adequately powered test was possible.",
+            "No direction inversion, window or peer-threshold change, self inclusion, L2/L3/concept substitution, or post-hoc year subset is authorized.",
+            "Passing both default return gates would require a separately dated prospective protocol before current scoring; failure stops this historical version.",
+            "Daily bars and limit prices cannot reconstruct exact queue priority, partial fills, or realized market impact.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_factor_diagnostic.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default)
+        + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_count": 1,
+        "top_factors_by_development_rank_ic": [summary],
+    }
+
+
 def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the frozen five-factor minute diagnostic on development data only."""
 
@@ -30564,6 +32280,23 @@ def parse_args() -> argparse.Namespace:
     )
     tushare_daily_pb_diagnostic.add_argument("--batch-size", type=int, default=500)
 
+    tushare_sw_industry_breadth_diagnostic = subparsers.add_parser(
+        "tushare-sw-industry-breadth-diagnostic",
+        help=(
+            "diagnose the membership-, capacity-, and uniqueness-qualified "
+            "SW breadth factor exactly once"
+        ),
+    )
+    tushare_sw_industry_breadth_diagnostic.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    tushare_sw_industry_breadth_diagnostic.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    tushare_sw_industry_breadth_diagnostic.add_argument(
+        "--batch-size", type=int, default=500
+    )
+
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
         help="diagnose all five factors from one frozen minute protocol under the fixed three-day horizon",
@@ -30809,6 +32542,28 @@ def parse_args() -> argparse.Namespace:
         "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
     )
     tushare_daily_pb_no_return_parser.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
+    tushare_sw_industry_breadth_no_return_parser = subparsers.add_parser(
+        "tushare-sw-industry-breadth-no-return-audit",
+        help=(
+            "run frozen SW membership, factor coverage, capacity, and "
+            "45-factor uniqueness gates"
+        ),
+    )
+    tushare_sw_industry_breadth_no_return_parser.add_argument(
+        "--manifest",
+        required=True,
+        help=(
+            "full_membership_snapshot_passed_pending_no_return_factor_"
+            "capacity_and_uniqueness manifest"
+        ),
+    )
+    tushare_sw_industry_breadth_no_return_parser.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    tushare_sw_industry_breadth_no_return_parser.add_argument(
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
@@ -31360,6 +33115,8 @@ def main() -> int:
         report = run_tushare_moneyflow_diagnostic(args)
     elif args.command == "tushare-daily-pb-diagnostic":
         report = run_tushare_daily_pb_diagnostic(args)
+    elif args.command == "tushare-sw-industry-breadth-diagnostic":
+        report = run_tushare_sw_industry_breadth_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":
@@ -31390,6 +33147,8 @@ def main() -> int:
         report = run_tushare_moneyflow_capacity_audit(args)
     elif args.command == "tushare-daily-pb-no-return-audit":
         report = run_tushare_daily_pb_no_return_audit(args)
+    elif args.command == "tushare-sw-industry-breadth-no-return-audit":
+        report = run_tushare_sw_industry_breadth_no_return_audit(args)
     elif args.command == "sparse-announcement-capacity-audit":
         report = run_sparse_announcement_capacity_audit(args)
     elif args.command == "institutional-survey-capacity-audit":

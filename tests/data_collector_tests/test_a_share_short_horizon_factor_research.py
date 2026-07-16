@@ -124,6 +124,358 @@ def test_tushare_sw_breadth_excludes_self_and_requires_three_exact_sessions():
     assert audit["forward_return_fields_read"] is False
 
 
+def test_tushare_sw_factor_coverage_filters_to_active_holding_intervals():
+    calendar = pd.bdate_range("2025-01-02", periods=4)
+    instruments = [f"SZ{index:06d}" for index in range(1, 51)]
+    holding_universe = pd.DataFrame(
+        {
+            "instrument": instruments,
+            "active_start": calendar[0],
+            "active_end": calendar[-1],
+        }
+    )
+    factor_frame = pd.DataFrame(
+        [
+            {
+                "trade_date": date,
+                "instrument": instrument,
+                RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME: (
+                    position % 2
+                ),
+            }
+            for date in calendar
+            for position, instrument in enumerate(instruments)
+        ]
+    )
+    active, audit = (
+        RESEARCH.summarize_tushare_sw_industry_breadth_factor_coverage(
+            factor_frame,
+            holding_universe,
+            calendar,
+            minimum_sessions_with_fifty_values=4,
+        )
+    )
+    assert len(active) == 200
+    assert audit["sessions_with_at_least_fifty_factor_values"] == 4
+    assert audit["factor_coverage_gate_passed"] is True
+    assert audit["forward_return_fields_read"] is False
+
+
+def test_tushare_sw_capacity_counts_quality_seasoned_three_session_cohorts():
+    full_calendar = pd.bdate_range("2024-09-02", periods=80)
+    research_calendar = full_calendar[-10:]
+    instruments = [f"SZ{index:06d}" for index in range(1, 51)]
+    intervals = {
+        instrument: [(full_calendar[0], research_calendar[-1])]
+        for instrument in instruments
+    }
+    factor_frame = pd.DataFrame(
+        [
+            {
+                "trade_date": date,
+                "instrument": instrument,
+                RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME: (
+                    position % 2
+                ),
+            }
+            for date in research_calendar
+            for position, instrument in enumerate(instruments)
+        ]
+    )
+    fundamentals = pd.DataFrame(
+        [
+            {
+                "instrument": instrument,
+                "report_date": pd.Timestamp("2024-06-30"),
+                "announcement_date": full_calendar[0],
+                "roe": 10.0,
+                "net_profit": 1.0,
+                "revenue_yoy": 10.0,
+                "profit_yoy": 10.0,
+            }
+            for instrument in instruments
+        ]
+    )
+    result = RESEARCH.tushare_sw_industry_breadth_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        capacity_contract={
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "minimum_eligible_names_per_cross_section": 50,
+            "minimum_distinct_factor_values": 2,
+            "minimum_required_cohorts": 3,
+            "minimum_observed_years": 1,
+        },
+        factor_contract={
+            "maximum_quality_age_days": 550,
+            "candidate_minimum_listing_sessions": 20,
+        },
+    )
+    assert result["potential_complete_cohorts"] == 3
+    assert result["capacity_gate_passed"] is True
+    assert result["price_fields_loaded"] == []
+    assert result["forward_return_fields_read"] is False
+
+
+def test_tushare_sw_uniqueness_checks_all_45_fields_and_rejects_synonym():
+    dates = pd.bdate_range("2025-01-02", periods=6)
+    instruments = [f"SZ{index:06d}" for index in range(1, 61)]
+    rng = np.random.default_rng(20260717)
+    factor_rows = []
+    comparison_rows = []
+    for date in dates:
+        random_values = {
+            field: rng.normal(size=len(instruments))
+            for field in RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS
+        }
+        for position, instrument in enumerate(instruments, start=1):
+            factor_rows.append(
+                {
+                    "trade_date": date,
+                    "instrument": instrument,
+                    RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME: (
+                        position / 100.0
+                    ),
+                }
+            )
+            comparison_rows.append(
+                {
+                    "datetime": date,
+                    "instrument": instrument,
+                    "fundamental_quality_eligible": True,
+                    "listing_seasoning_eligible": True,
+                    "quality_eligible": True,
+                    **{
+                        field: random_values[field][position - 1]
+                        for field in RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS
+                    },
+                }
+            )
+    contract = {
+        "screen_start": dates[0].date().isoformat(),
+        "screen_end": dates[-1].date().isoformat(),
+        "comparison_factors": list(
+            RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS
+        ),
+        "minimum_pairwise_sessions": 5,
+        "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    }
+    factor_frame = pd.DataFrame(factor_rows)
+    comparison_frame = pd.DataFrame(comparison_rows)
+    independent = RESEARCH.summarize_tushare_sw_industry_breadth_uniqueness(
+        factor_frame,
+        comparison_frame,
+        contract=contract,
+        minimum_pairwise_names_per_session=50,
+    )
+    assert independent["comparison_field_count"] == 45
+    assert independent["fields_with_minimum_sessions"] == 45
+    assert independent["fields_below_correlation_threshold"] == 45
+    assert independent["uniqueness_gate_passed"] is True
+
+    synonym = comparison_frame.copy()
+    synonym["momentum_1"] = [
+        (position % len(instruments) + 1) / 100.0
+        for position in range(len(synonym))
+    ]
+    rejected = RESEARCH.summarize_tushare_sw_industry_breadth_uniqueness(
+        factor_frame,
+        synonym,
+        contract=contract,
+        minimum_pairwise_names_per_session=50,
+    )
+    momentum = next(
+        item
+        for item in rejected["field_results"]
+        if item["comparison_field"] == "momentum_1"
+    )
+    assert momentum["median_daily_rank_correlation"] == pytest.approx(1.0)
+    assert momentum["uniqueness_gate_passed"] is False
+    assert rejected["uniqueness_gate_passed"] is False
+    assert rejected["forward_return_fields_read"] is False
+
+
+def test_tushare_sw_capacity_failure_stops_before_comparison_load(
+    tmp_path, monkeypatch
+):
+    provider = tmp_path / "provider"
+    calendar_path = provider / "calendars" / "day.txt"
+    source_path = provider / "instruments" / "factor_main_chinext_star.txt"
+    holding_path = provider / "instruments" / "buyable_main_chinext.txt"
+    price_basis_path = provider / RESEARCH.PRICE_BASIS_MANIFEST_NAME
+    calendar_path.parent.mkdir(parents=True)
+    source_path.parent.mkdir(parents=True)
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    source_path.write_text(
+        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
+    )
+    holding_path.write_text(
+        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
+    )
+    write_json_record(
+        price_basis_path,
+        {
+            "status": "passed",
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "daily_sources": ["baostock"],
+            "future_corporate_actions_used": False,
+            "failures": [],
+        },
+    )
+    full_calendar = pd.DatetimeIndex(
+        [pd.Timestamp("2019-01-02"), pd.Timestamp("2025-12-31")]
+    )
+    holding_universe = pd.DataFrame(
+        {
+            "instrument": ["SZ000001"],
+            "active_start": [pd.Timestamp("2010-01-01")],
+            "active_end": [pd.Timestamp("2025-12-31")],
+        }
+    )
+    spec = {
+        "preregistered_at": "2026-07-16T11:29:22Z",
+        "point_in_time_context": {
+            "local_calendar": {"file_sha256": RESEARCH.file_sha256(calendar_path)},
+            "source_universe": {"file_sha256": RESEARCH.file_sha256(source_path)},
+            "holding_universe": {"file_sha256": RESEARCH.file_sha256(holding_path)},
+            "accepted_price_basis": {"sha256": RESEARCH.file_sha256(price_basis_path)},
+            "quarterly_quality": {"path": str(tmp_path / "quality.parquet")},
+        },
+        "factor_contract": {
+            "direction": "higher_is_better",
+            "maximum_quality_age_days": 550,
+            "candidate_minimum_listing_sessions": 20,
+        },
+        "combined_no_return_audit": {
+            "membership_coverage": {
+                "minimum_sessions_with_fifty_factor_values": 200
+            },
+            "capacity": {
+                "minimum_eligible_names_per_cross_section": 50
+            },
+            "uniqueness": {
+                "screen_start": "2025-01-01",
+                "screen_end": "2025-12-31",
+            },
+        },
+    }
+    source_evidence = {
+        "manifest": {
+            "run_id": "full-sw-history",
+            "sha256": "d" * 64,
+            "path": str(tmp_path / "full.json"),
+        }
+    }
+    membership_coverage = {
+        "membership_coverage_gate_passed_before_close_known_inputs": True,
+        "forward_return_fields_read": False,
+    }
+    factor_frame = pd.DataFrame(
+        {
+            "trade_date": [pd.Timestamp("2025-12-31")],
+            "instrument": ["SZ000001"],
+            RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME: [0.5],
+        }
+    )
+    capacity = {
+        "factor": RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+        "potential_complete_cohorts": 199,
+        "minimum_required_cohorts": 200,
+        "observed_calendar_years": 7,
+        "minimum_observed_calendar_years": 5,
+        "capacity_gate_passed": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_sw_industry_breadth_capacity_preregistration",
+        lambda: spec,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_sw_industry_membership_snapshot",
+        lambda manifest, loaded_spec: (
+            pd.DataFrame(
+                {
+                    "instrument": ["SZ000001"],
+                    "l1_code": ["801010.SI"],
+                    "active_start": [pd.Timestamp("2019-01-01")],
+                    "active_end": [pd.Timestamp("2025-12-31")],
+                }
+            ),
+            {
+                "holding_universe": holding_universe,
+                "full_calendar": full_calendar,
+                "research_calendar": full_calendar,
+            },
+            {
+                "source_evidence": source_evidence,
+                "coverage": membership_coverage,
+            },
+        ),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_sw_industry_breadth_factor",
+        lambda *args, **kwargs: (
+            factor_frame,
+            {"forward_return_fields_read": False},
+        ),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "summarize_tushare_sw_industry_breadth_factor_coverage",
+        lambda *args, **kwargs: (
+            factor_frame,
+            {
+                "factor_coverage_gate_passed": True,
+                "forward_return_fields_read": False,
+            },
+        ),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH,
+        "tushare_sw_industry_breadth_capacity",
+        lambda *args, **kwargs: capacity,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_sw_terminal_comparison_factors",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("rich comparison factors must not load after capacity failure")
+        ),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_market_data",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("market data must not load after capacity failure")
+        ),
+    )
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "full.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(provider),
+    )
+    result = RESEARCH.run_tushare_sw_industry_breadth_no_return_audit(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["membership_coverage_gate_passed"] is True
+    assert audit["factor_coverage_gate_passed"] is True
+    assert audit["capacity_gate_passed"] is False
+    assert audit["uniqueness"] is None
+    assert audit["data"]["close_known_comparison_fields_loaded"] == []
+    assert audit["forward_return_fields_read"] is False
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_sw_industry_breadth_no_return_audit(args)
+
+
 def make_research_frontier_evidence(
     tmp_path: Path,
     *,
@@ -7763,6 +8115,184 @@ def test_tushare_daily_pb_diagnostic_preregistration_is_fingerprint_frozen(
     write_json_record(changed_path, changed)
     with pytest.raises(ValueError, match="fingerprint mismatch"):
         RESEARCH.load_tushare_daily_pb_diagnostic_preregistration(changed_path)
+
+
+def test_tushare_sw_industry_breadth_diagnostic_preregistration_is_fingerprint_frozen(
+    tmp_path,
+):
+    spec = RESEARCH.load_tushare_sw_industry_breadth_diagnostic_preregistration()
+    no_return = spec["combined_no_return_audit"]
+    assert no_return["potential_complete_cohorts"] == 540
+    assert no_return["fields_below_correlation_threshold"] == 45
+    assert spec["factor"]["name"] == RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+    assert spec["factor"]["stock_self_direction_included"] is False
+    assert spec["run_contract"]["holding_period_trading_days"] == 3
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_SPEC.read_text()
+    )
+    changed["factor"]["raw_direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_tushare_sw_diagnostic.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_tushare_sw_industry_breadth_diagnostic_preregistration(
+            changed_path
+        )
+
+
+def test_tushare_sw_industry_breadth_diagnostic_is_single_factor_and_one_shot(
+    tmp_path, monkeypatch
+):
+    dates = pd.bdate_range("2023-01-02", periods=200)
+    symbols = [f"SZ{index:06d}" for index in range(1, 51)]
+    rows = [
+        {
+            "datetime": date,
+            "instrument": symbol,
+            "quality_eligible": True,
+            "fundamental_quality_eligible": True,
+            "listing_seasoning_eligible": True,
+        }
+        for date in dates
+        for symbol in symbols
+    ]
+    market = pd.DataFrame(rows)
+    factor_frame = market[["datetime", "instrument"]].rename(
+        columns={"datetime": "trade_date"}
+    )
+    factor_frame[RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME] = [
+        (position % 50 + 1) / 50.0 for position in range(len(factor_frame))
+    ]
+    spec = json.loads(
+        RESEARCH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_SPEC.read_text()
+    )
+    quality_path = tmp_path / "quality.parquet"
+    quality_path.write_bytes(b"fixture")
+    spec["source_snapshots"]["quarterly_quality"]["path"] = str(quality_path)
+    factor_coverage = {
+        "factor_coverage_gate_passed": True,
+        "active_holding_factor_rows": 10000,
+        "sessions_with_at_least_fifty_factor_values": 200,
+    }
+    source_evidence = {
+        "combined_no_return_audit": {
+            "sha256": "a" * 64,
+            "factor_coverage": dict(factor_coverage),
+        },
+        "forward_return_fields_read": False,
+    }
+    context_frames = {
+        "holding_universe": pd.DataFrame(),
+        "research_calendar": pd.DatetimeIndex(dates),
+        "full_calendar": pd.DatetimeIndex(dates),
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_sw_industry_breadth_diagnostic_preregistration",
+        lambda: spec,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_sw_industry_breadth_diagnostic_sources",
+        lambda loaded: (pd.DataFrame(), context_frames, source_evidence),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_prospective_execution_policy",
+        lambda: {"frozen_at": "2026-07-14T00:00:00Z"},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "require_prospective_execution_policy_compatibility",
+        lambda *args, **kwargs: None,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_pilot_execution_policy",
+        lambda: {"frozen_at": "2026-07-14T00:00:00Z"},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "research_price_basis_metadata",
+        lambda provider: {
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "future_corporate_actions_used": False,
+        },
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_sw_industry_breadth_capacity_preregistration",
+        lambda: {},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_sw_industry_breadth_factor",
+        lambda *args, **kwargs: (factor_frame.copy(), {"close_known": True}),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "summarize_tushare_sw_industry_breadth_factor_coverage",
+        lambda *args, **kwargs: (args[0], dict(factor_coverage)),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "load_market_data", lambda *args, **kwargs: market.copy()
+    )
+    monkeypatch.setattr(
+        RESEARCH, "attach_quality_asof", lambda frame, *args, **kwargs: frame
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "market_state_frame",
+        lambda frame, eligible: pd.DataFrame(
+            index=pd.DatetimeIndex(frame["datetime"].unique())
+        ),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "forward_factor_return_frame",
+        lambda ranked, hold_days: pd.DataFrame({"placeholder": [1]}),
+    )
+    summary = {
+        "factor": RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+        "cohorts": 200,
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "summarize_factor_diagnostics",
+        lambda *args, **kwargs: [dict(summary)],
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "simulate_prospective_execution_topk",
+        lambda *args, **kwargs: {"policy_applied": True},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "simulate_pilot_execution_topk",
+        lambda *args, **kwargs: {"policy_applied": True},
+    )
+    args = SimpleNamespace(
+        provider_uri=str(tmp_path / "provider"),
+        experiment_root=str(tmp_path / "experiments"),
+        batch_size=500,
+    )
+    result = RESEARCH.run_tushare_sw_industry_breadth_diagnostic(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["factor_catalog"] == [
+        RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+    ]
+    assert audit["mechanism_identity"][
+        "alternative_industry_level_window_peer_threshold_or_direction_allowed"
+    ] is False
+    assert audit["tushare_sw_industry_breadth"][
+        "industry_price_moneyflow_heat_valuation_limit_or_concept_fields_used"
+    ] is False
+    assert audit["forward_return_fields_read"] is True
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_sw_industry_breadth_diagnostic(args)
 
 
 def test_tushare_daily_pb_diagnostic_is_single_factor_and_one_shot(
