@@ -2526,6 +2526,276 @@ def test_tushare_gross_margin_acceptance_failure_is_terminal_before_prices(
     assert calls == ["600519.SH"]
 
 
+def management_continuity_row(
+    ts_code: str,
+    ann_date: str,
+    name,
+    end_date=None,
+) -> dict:
+    return {
+        "ts_code": ts_code,
+        "ann_date": ann_date,
+        "name": name,
+        "end_date": end_date,
+    }
+
+
+def complete_management_continuity_frame(ts_code: str) -> pd.DataFrame:
+    rows = []
+    for year in range(2019, 2026):
+        rows.extend(
+            [
+                management_continuity_row(
+                    ts_code, f"{year}0102", f"Manager {year} A"
+                ),
+                management_continuity_row(
+                    ts_code,
+                    f"{year}0601",
+                    f"Manager {year} B",
+                    f"{year}0601",
+                ),
+                management_continuity_row(
+                    ts_code, f"{year}0901", f"Manager {year} C"
+                ),
+                management_continuity_row(
+                    ts_code,
+                    f"{year}0901",
+                    f"Manager {year} D",
+                    f"{year}0901",
+                ),
+            ]
+        )
+    return pd.DataFrame(
+        rows, columns=RICH.TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS
+    )
+
+
+def test_tushare_management_continuity_contract_and_request_are_frozen(monkeypatch):
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT)
+        == RICH.TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT_SHA256
+    )
+    contract = RICH.load_tushare_management_continuity_contract()
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS
+    )
+    assert contract["factor"]["formula"] == (
+        "1 - departing_manager_count / manager_count"
+    )
+    assert contract["factor"]["direction"] == "higher_is_better"
+    assert contract["identity_privacy_and_date_policy"]["plaintext_name_persisted"] is False
+    assert contract["identity_privacy_and_date_policy"]["hashed_identity_persisted"] is False
+    assert contract["forward_return_fields_read"] is False
+
+    captured = []
+
+    class Pro:
+        def stk_managers(self, **kwargs):
+            captured.append(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_management_continuity_rows(
+        "000001.SZ", dt.date(2019, 1, 1), dt.date(2025, 12, 31)
+    )
+    assert captured == [
+        {
+            "ts_code": "000001.SZ",
+            "start_date": "20190101",
+            "end_date": "20251231",
+            "fields": ",".join(RICH.TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS),
+        }
+    ]
+    forbidden = set(contract["source"]["explicitly_forbidden_fields"])
+    assert set(captured[0]["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_management_continuity_terminal_record_is_frozen():
+    assert (
+        RICH.file_digest(
+            RICH.DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD
+        )
+        == RICH.TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD_SHA256
+    )
+    record = RICH.load_tushare_management_continuity_acceptance_record()
+    assert record["acceptance"]["provider_calls_issued"] == 1
+    assert record["acceptance"]["source_rows_observed"] == 184
+    assert (
+        record["acceptance"]["departure_dates_unequal_to_announcement_date"]
+        == 53
+    )
+    assert record["privacy_and_scope"]["identity_aggregation_completed"] is False
+    assert record["privacy_and_scope"]["price_fields_loaded"] == []
+    assert record["privacy_and_scope"]["forward_return_fields_read"] is False
+
+
+def test_tushare_management_continuity_terminal_record_blocks_before_contract_or_provider(
+    monkeypatch,
+):
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_management_continuity_contract",
+        lambda: pytest.fail("contract must not be loaded"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "require_provider",
+        lambda provider: pytest.fail("provider must not be checked"),
+    )
+    with pytest.raises(RICH.RichDataError, match="already consumed"):
+        RICH.sync_tushare_management_continuity_acceptance()
+
+
+def test_tushare_management_continuity_deduplicates_roles_without_persisting_identity():
+    rows = [
+        management_continuity_row("000001.SZ", "20240102", " Ａ  经理 "),
+        management_continuity_row(
+            "000001.SZ", "20240102", "A 经理", "20240102"
+        ),
+        management_continuity_row(
+            "000001.SZ", "20240102", "A 经理", "20240102"
+        ),
+        management_continuity_row("000001.SZ", "20240102", "B 经理"),
+        management_continuity_row("000001.SZ", "20240202", "C 经理"),
+    ]
+    frame = pd.DataFrame(
+        rows, columns=RICH.TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS
+    )
+    accepted, quality = RICH.canonicalize_tushare_management_continuity(
+        frame,
+        expected_ts_code="000001.SZ",
+        announcement_start=dt.date(2019, 1, 1),
+        announcement_end=dt.date(2025, 12, 31),
+    )
+    assert accepted.columns.tolist() == list(
+        RICH.TUSHARE_MANAGEMENT_CONTINUITY_COLUMNS
+    )
+    assert accepted["manager_count"].tolist() == [2, 1]
+    assert accepted["departing_manager_count"].tolist() == [1, 0]
+    assert accepted["tushare_management_continuity_share"].tolist() == [0.5, 1.0]
+    assert not any(
+        "name" in column.casefold() or "identity" in column.casefold()
+        for column in accepted.columns
+    )
+    assert quality["exact_semantic_duplicate_rows_collapsed"] == 1
+    assert quality["multiple_role_rows_collapsed"] == 1
+    assert quality["unique_identity_rows_in_memory"] == 3
+    assert quality["departing_identity_rows"] == 1
+    assert quality["nondeparting_identity_rows"] == 2
+
+    invalid = frame.iloc[[0]].copy()
+    invalid.loc[:, "end_date"] = "20240101"
+    with pytest.raises(RICH.RichDataError, match="departure dates unequal"):
+        RICH.canonicalize_tushare_management_continuity(
+            invalid,
+            expected_ts_code="000001.SZ",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+
+
+def test_tushare_management_continuity_acceptance_is_private_atomic_and_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_management_continuity_contract())
+    monkeypatch.setattr(
+        RICH, "load_tushare_management_continuity_contract", lambda: contract
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append((ts_code, announcement_start, announcement_end))
+        return complete_management_continuity_frame(ts_code)
+
+    monkeypatch.setattr(
+        RICH, "fetch_tushare_management_continuity_rows", fake_fetch
+    )
+    manifest_path = RICH.sync_tushare_management_continuity_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_identity_privacy_date_policy_and_formula_pending_full_history"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 3
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS
+    )
+    assert manifest["source_request"]["raw_frames_persisted"] is False
+    assert manifest["source_request"]["plaintext_names_persisted"] is False
+    assert manifest["source_request"]["identity_hashes_persisted"] is False
+    assert manifest["source_quality"]["stock_announcement_events_written"] == 63
+    assert manifest["source_quality"]["factor_distinct_values"] == 3
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    factor_frame = pd.read_parquet(
+        RICH.resolve_record_path(manifest["files"][0]["path"])
+    )
+    assert factor_frame.columns.tolist() == list(
+        RICH.TUSHARE_MANAGEMENT_CONTINUITY_COLUMNS
+    )
+    assert not any(
+        "name" in column.casefold() or "identity" in column.casefold()
+        for column in factor_frame.columns
+    )
+    assert len(calls) == 3
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_management_continuity_acceptance()
+    assert len(calls) == 3
+
+
+def test_tushare_management_continuity_acceptance_failure_is_terminal_before_prices(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_management_continuity_contract())
+    monkeypatch.setattr(
+        RICH, "load_tushare_management_continuity_contract", lambda: contract
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append(ts_code)
+        frame = complete_management_continuity_frame(ts_code)
+        frame.loc[0, "end_date"] = "20190101"
+        return frame
+
+    monkeypatch.setattr(
+        RICH, "fetch_tushare_management_continuity_rows", fake_fetch
+    )
+    with pytest.raises(RICH.RichDataError, match="departure dates unequal"):
+        RICH.sync_tushare_management_continuity_acceptance()
+    assert calls == ["000001.SZ"]
+    records = RICH.tushare_management_continuity_acceptance_records()
+    assert len(records) == 1
+    failure = RICH.json.loads(records[0].read_text())
+    assert failure["source_request"]["provider_calls_issued"] == 1
+    assert failure["files"] == []
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_management_continuity_acceptance()
+    assert calls == ["000001.SZ"]
+
+
 def test_tushare_gross_margin_tracked_acceptance_blocks_before_provider(monkeypatch):
     monkeypatch.setattr(
         RICH,

@@ -115,6 +115,14 @@ DEFAULT_TUSHARE_GROSS_MARGIN_ACCEPTANCE_RECORD = (
 DEFAULT_TUSHARE_GROSS_MARGIN_RESEARCH_RECORD = (
     REPO_ROOT / "docs" / "a_share_tushare_gross_margin_research_record.json"
 )
+DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_management_continuity_data_contract.json"
+)
+DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_management_continuity_source_acceptance_record.json"
+)
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
 )
@@ -253,6 +261,12 @@ TUSHARE_GROSS_MARGIN_ACCEPTANCE_RECORD_SHA256 = (
 )
 TUSHARE_GROSS_MARGIN_RESEARCH_RECORD_SHA256 = (
     "83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18"
+)
+TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT_SHA256 = (
+    "86d7abc96da30c3e4825f1fcefa6722941b18f86ae3798ad6ad1db676c9323ec"
+)
+TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD_SHA256 = (
+    "e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8"
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
@@ -464,6 +478,27 @@ TUSHARE_GROSS_MARGIN_FULL_SLICES = (
     ("20180101", "20211231"),
     ("20220101", "20251231"),
 )
+TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS = (
+    "ts_code",
+    "ann_date",
+    "name",
+    "end_date",
+)
+TUSHARE_MANAGEMENT_CONTINUITY_COLUMNS = (
+    "announcement_date",
+    "instrument",
+    "manager_count",
+    "departing_manager_count",
+    "tushare_management_continuity_share",
+    "provider",
+)
+TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_TS_CODES = (
+    "000001.SZ",
+    "600000.SH",
+    "300750.SZ",
+)
+TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_START = "20190101"
+TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_END = "20251231"
 TUSHARE_TOP10_FLOAT_RAW_FIELDS = (
     "ts_code",
     "ann_date",
@@ -1541,6 +1576,32 @@ def fetch_tushare_gross_margin_indicators(
     except Exception as exc:
         raise RichDataError(
             "Tushare fina_indicator request failed for "
+            f"{ts_code}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
+def fetch_tushare_management_continuity_rows(
+    ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> pd.DataFrame:
+    """Fetch one stock's management rows with the frozen privacy whitelist."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.stk_managers(
+            ts_code=ts_code,
+            start_date=announcement_start.strftime("%Y%m%d"),
+            end_date=announcement_end.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare stk_managers request failed for "
             f"{ts_code}: {safe_exception_text(exc)}"
         ) from exc
     if result is None:
@@ -2884,6 +2945,213 @@ def canonicalize_tushare_gross_margin_indicators(
         "distinct_derived_values": int(factor.nunique()),
         "minimum_derived_value": float(factor.min()) if len(factor) else None,
         "maximum_derived_value": float(factor.max()) if len(factor) else None,
+    }
+
+
+def canonicalize_tushare_management_continuity(
+    frame: pd.DataFrame,
+    expected_ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Aggregate manager identities without persisting identity material."""
+
+    empty_quality: dict[str, Any] = {
+        "input_rows": 0,
+        "exact_semantic_duplicate_rows_collapsed": 0,
+        "multiple_role_rows_collapsed": 0,
+        "unique_identity_rows_in_memory": 0,
+        "departing_identity_rows": 0,
+        "nondeparting_identity_rows": 0,
+        "stock_announcement_events_written": 0,
+        "distinct_factor_values": 0,
+    }
+    if frame is None or frame.empty:
+        return (
+            pd.DataFrame(columns=TUSHARE_MANAGEMENT_CONTINUITY_COLUMNS),
+            empty_quality,
+        )
+    raw = frame.copy()
+    missing_columns = [
+        field
+        for field in TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS
+        if field not in raw
+    ]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare stk_managers response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS)
+    )
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare stk_managers response contains fields outside the frozen "
+            "whitelist: "
+            + ", ".join(unexpected_columns)
+        )
+    expected_code = str(expected_ts_code).strip().upper()
+    expected_parts = pd.Series([expected_code], dtype="string").str.extract(
+        r"^(\d{6})\.(SH|SZ)$"
+    )
+    if expected_parts.isna().any(axis=None):
+        raise RichDataError(
+            f"invalid frozen Tushare stk_managers stock: {expected_code}"
+        )
+    if announcement_start > announcement_end:
+        raise RichDataError("Tushare stk_managers announcement range is reversed")
+
+    def normalized_manager_name(value: Any) -> str | None:
+        if pd.isna(value):
+            return None
+        normalized = unicodedata.normalize("NFKC", str(value))
+        normalized = " ".join(normalized.strip().split())
+        return normalized or None
+
+    source_code = (
+        raw["ts_code"].astype("string").str.strip().str.upper().replace("", pd.NA)
+    )
+    code_parts = source_code.str.extract(r"^(\d{6})\.(SH|SZ|BJ)$")
+    announcement_date = pd.to_datetime(
+        raw["ann_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    manager_name = raw["name"].map(normalized_manager_name).astype("string")
+    end_date_text = raw["end_date"].astype("string").str.strip().replace("", pd.NA)
+    end_date = pd.to_datetime(
+        end_date_text, format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    invalid_required = (
+        source_code.isna()
+        | code_parts[0].isna()
+        | code_parts[1].isna()
+        | announcement_date.isna()
+        | manager_name.isna()
+    )
+    invalid_end_date = end_date_text.notna() & end_date.isna()
+    if invalid_required.any() or invalid_end_date.any():
+        invalid_rows = int((invalid_required | invalid_end_date).sum())
+        raise RichDataError(
+            "Tushare stk_managers response contains "
+            f"{invalid_rows} rows with invalid stock, announcement date, "
+            "identity, or departure date"
+        )
+    if not source_code.eq(expected_code).all():
+        raise RichDataError(
+            "Tushare stk_managers response contains a stock outside its frozen request"
+        )
+    if code_parts[1].eq("BJ").any():
+        raise RichDataError(
+            "Tushare stk_managers response unexpectedly contains a BSE stock"
+        )
+    request_start = pd.Timestamp(announcement_start)
+    request_end = pd.Timestamp(announcement_end)
+    if not announcement_date.between(request_start, request_end).all():
+        raise RichDataError(
+            "Tushare stk_managers response contains an announcement outside its request"
+        )
+    mismatched_departure = end_date.notna() & ~end_date.eq(announcement_date)
+    if mismatched_departure.any():
+        raise RichDataError(
+            "Tushare stk_managers response contains "
+            f"{int(mismatched_departure.sum())} departure dates unequal to ann_date"
+        )
+
+    identity_hash = manager_name.map(
+        lambda value: hashlib.sha256(str(value).encode("utf-8")).hexdigest()
+    )
+    normalized = pd.DataFrame(
+        {
+            "source_code": source_code,
+            "announcement_date": announcement_date,
+            "identity_hash_in_memory": identity_hash,
+            "departing": end_date.notna(),
+        }
+    )
+    exact_key = [
+        "source_code",
+        "announcement_date",
+        "identity_hash_in_memory",
+        "departing",
+    ]
+    before_exact = len(normalized)
+    normalized = normalized.drop_duplicates(exact_key, ignore_index=True)
+    exact_duplicates = int(before_exact - len(normalized))
+    identity_key = [
+        "source_code",
+        "announcement_date",
+        "identity_hash_in_memory",
+    ]
+    identity_state = (
+        normalized.groupby(identity_key, as_index=False, observed=True)
+        .agg(departing=("departing", "max"))
+        .sort_values(identity_key, kind="stable")
+        .reset_index(drop=True)
+    )
+    multiple_role_rows = int(len(normalized) - len(identity_state))
+    event_key = ["source_code", "announcement_date"]
+    events = (
+        identity_state.groupby(event_key, as_index=False, observed=True)
+        .agg(
+            manager_count=("identity_hash_in_memory", "nunique"),
+            departing_manager_count=("departing", "sum"),
+        )
+        .sort_values(event_key, kind="stable")
+        .reset_index(drop=True)
+    )
+    manager_count = pd.to_numeric(events["manager_count"], errors="coerce")
+    departing_count = pd.to_numeric(
+        events["departing_manager_count"], errors="coerce"
+    )
+    if (
+        manager_count.isna().any()
+        or manager_count.le(0).any()
+        or departing_count.isna().any()
+        or departing_count.lt(0).any()
+        or departing_count.gt(manager_count).any()
+    ):
+        raise RichDataError("invalid Tushare management identity aggregation")
+    continuity = 1.0 - departing_count.astype(float) / manager_count.astype(float)
+    if (
+        not np.isfinite(continuity.to_numpy(dtype=float, copy=False)).all()
+        or not continuity.between(0.0, 1.0).all()
+    ):
+        raise RichDataError("derived Tushare management continuity is outside [0, 1]")
+    code, exchange = expected_parts.iloc[0].astype(str).tolist()
+    instrument = qlib_symbol(code)
+    if not instrument.startswith(exchange):
+        raise RichDataError(
+            "Tushare stk_managers stock code and exchange suffix disagree: "
+            f"{expected_code}"
+        )
+    result = pd.DataFrame(
+        {
+            "announcement_date": events["announcement_date"],
+            "instrument": instrument,
+            "manager_count": manager_count.astype("int64"),
+            "departing_manager_count": departing_count.astype("int64"),
+            "tushare_management_continuity_share": continuity.astype("float64"),
+            "provider": "tushare",
+        }
+    )
+    result = (
+        result.loc[:, list(TUSHARE_MANAGEMENT_CONTINUITY_COLUMNS)]
+        .sort_values(["announcement_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if result.duplicated(["instrument", "announcement_date"]).any():
+        raise RichDataError(
+            "Tushare management continuity contains duplicate stock-announcement keys"
+        )
+    return result, {
+        "input_rows": int(len(raw)),
+        "exact_semantic_duplicate_rows_collapsed": exact_duplicates,
+        "multiple_role_rows_collapsed": multiple_role_rows,
+        "unique_identity_rows_in_memory": int(len(identity_state)),
+        "departing_identity_rows": int(identity_state["departing"].sum()),
+        "nondeparting_identity_rows": int((~identity_state["departing"]).sum()),
+        "stock_announcement_events_written": int(len(result)),
+        "distinct_factor_values": int(continuity.nunique()),
     }
 
 
@@ -5084,6 +5352,236 @@ def load_tushare_gross_margin_contract(
                     "Tushare gross-margin manifest context changed: " f"{label}"
                 )
     return contract
+
+
+def load_tushare_management_continuity_contract(
+    path: Path = DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-row management-continuity contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT_SHA256:
+        raise RichDataError(
+            "Tushare management-continuity contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_tushare_management_continuity_data_contract"
+    )
+    selection = contract.get("source_selection") or {}
+    mechanism = contract.get("mechanism_identity") or {}
+    overlap = mechanism.get("mechanism_overlap_audit") or {}
+    source = contract.get("source") or {}
+    identity = contract.get("identity_privacy_and_date_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    completeness = contract.get("source_completeness_policy") or {}
+    capacity = contract.get("no_return_capacity_policy") or {}
+    uniqueness = contract.get("no_return_uniqueness_policy") or {}
+    return_policy = contract.get("return_research_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_mechanism_overlap_audit_before_entitlement_rows_factor_values_or_returns"
+        or contract.get("preregistered_at") != "2026-07-16T20:11:36Z"
+        or selection.get("minimum_permission_points") != 2000
+        or selection.get("current_account_points") != 3000
+        or selection.get("provider_documented_maximum_rows_per_call") is not None
+        or selection.get("defensive_response_row_ceiling") != 6000
+        or overlap.get("path")
+        != "docs/a_share_three_day_management_continuity_mechanism_overlap_reaudit_20260717.json"
+        or overlap.get("sha256")
+        != "e6b64475b17839cac9e2c8f2177c60509d1d58950127eddb625b9bf128d11946"
+        or source.get("provider") != "tushare"
+        or source.get("api") != "stk_managers"
+        or source.get("request_mode")
+        != "one frozen stock and announcement-date range per call"
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS
+        or identity.get("plaintext_name_persisted") is not False
+        or identity.get("hashed_identity_persisted") is not False
+        or identity.get("hash_or_plaintext_identity_logged") is not False
+        or identity.get("end_date_departure_policy")
+        != "A complete end_date exactly equal to ann_date means that identity is departing in this announcement."
+        or identity.get("conservative_availability")
+        != "first local trading session strictly after ann_date"
+        or identity.get("same_announcement_session_trade_allowed") is not False
+        or identity.get("maximum_event_age_calendar_days") != 3
+        or identity.get("forward_fill_beyond_event_age_allowed") is not False
+        or factor.get("name") != "tushare_management_continuity"
+        or factor.get("raw_column")
+        != "tushare_management_continuity_share"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("formula")
+        != "1 - departing_manager_count / manager_count"
+        or tuple(acceptance.get("fixed_ts_codes") or ())
+        != TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_TS_CODES
+        or acceptance.get("announcement_start")
+        != TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_START
+        or acceptance.get("announcement_end")
+        != TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_END
+        or acceptance.get("provider_calls") != 3
+        or acceptance.get("minimum_source_rows_per_stock") != 5
+        or acceptance.get("minimum_events_per_stock") != 3
+        or acceptance.get("minimum_events_across_acceptance") != 15
+        or acceptance.get("minimum_distinct_factor_values_across_acceptance") != 2
+        or acceptance.get("must_observe_at_least_one_departing_identity") is not True
+        or acceptance.get("must_observe_at_least_one_nondeparting_identity")
+        is not True
+        or acceptance.get("defensive_response_row_ceiling_is_strict") is not True
+        or acceptance.get("success_status")
+        != "accepted_entitlement_schema_identity_privacy_date_policy_and_formula_pending_full_history"
+        or snapshot.get("provider_calls") != 5451
+        or snapshot.get("source_universe_instrument_count") != 5451
+        or snapshot.get("provider_call_partition")
+        != "one complete 20190101-20251231 announcement range per source-universe stock"
+        or tuple(snapshot.get("output_columns") or ())
+        != TUSHARE_MANAGEMENT_CONTINUITY_COLUMNS
+        or snapshot.get("raw_provider_frames_persisted") is not False
+        or snapshot.get("plaintext_names_or_hashes_persisted") is not False
+        or completeness.get("provider_call_coverage_required") != 1.0
+        or completeness.get("minimum_complete_factor_events") != 10000
+        or completeness.get("minimum_instruments_with_any_event") != 1500
+        or completeness.get("minimum_distinct_factor_values") != 5
+        or completeness.get("minimum_observed_signal_years") != 7
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("holding_period_local_sessions") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("minimum_comparison_sessions_per_field") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or return_policy.get("separate_immutable_return_preregistration_required")
+        is not True
+        or return_policy.get(
+            "allowed_only_after_source_acceptance_full_source_capacity_and_uniqueness_gates_pass"
+        )
+        is not True
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare management-continuity contract does not match the frozen protocol"
+        )
+    overlap_path = resolve_record_path(str(overlap["path"]))
+    if not overlap_path.exists() or file_digest(overlap_path) != str(overlap["sha256"]):
+        raise RichDataError(
+            "Tushare management-continuity mechanism-overlap evidence changed"
+        )
+    for label, evidence in (contract.get("local_context") or {}).items():
+        linked_path = resolve_record_path(str(evidence.get("path") or ""))
+        linked_sha = str(evidence.get("sha256") or "")
+        if not linked_path.exists() or file_digest(linked_path) != linked_sha:
+            raise RichDataError(
+                f"Tushare management-continuity local context changed: {label}"
+            )
+        manifest_value = evidence.get("manifest_path")
+        manifest_sha = evidence.get("manifest_sha256")
+        if manifest_value is not None or manifest_sha is not None:
+            manifest_file = resolve_record_path(str(manifest_value or ""))
+            if (
+                not manifest_value
+                or not manifest_sha
+                or not manifest_file.exists()
+                or file_digest(manifest_file) != str(manifest_sha)
+            ):
+                raise RichDataError(
+                    "Tushare management-continuity manifest context changed: "
+                    f"{label}"
+                )
+    return contract
+
+
+def load_tushare_management_continuity_acceptance_record(
+    path: Path = DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Validate the terminal one-shot management source rejection."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError(
+            "Tushare management-continuity acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path, kind="a_share_tushare_management_continuity_source_acceptance_record"
+    )
+    contract = record.get("data_contract") or {}
+    acceptance = record.get("acceptance") or {}
+    privacy = record.get("privacy_and_scope") or {}
+    decision = record.get("terminal_decision") or {}
+    if (
+        record.get("status")
+        != "terminal_source_rejected_before_identity_aggregation_factor_values_full_history_or_returns"
+        or contract.get("sha256")
+        != TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT_SHA256
+        or acceptance.get("manifest_sha256")
+        != "1de603f276d14e77fafc993ed552f709d9c2d35456607c336875e3a70a06d45b"
+        or acceptance.get("acceptance_status")
+        != "rejected_stop_before_full_history_capacity_uniqueness_or_returns"
+        or acceptance.get("provider_calls_planned") != 3
+        or acceptance.get("provider_calls_issued") != 1
+        or acceptance.get("first_and_only_requested_stock") != "000001.SZ"
+        or acceptance.get("source_rows_observed") != 184
+        or acceptance.get("departure_dates_unequal_to_announcement_date") != 53
+        or acceptance.get("failure_code")
+        != "source_departure_date_point_in_time_incompatibility"
+        or acceptance.get("field_level_values_persisted") is not False
+        or acceptance.get("factor_frame_published") is not False
+        or acceptance.get("published_file_count") != 0
+        or acceptance.get("partial_snapshot_deleted") is not True
+        or acceptance.get("final_snapshot_published") is not False
+        or privacy.get("raw_provider_frame_persisted") is not False
+        or privacy.get("plaintext_manager_name_persisted_or_logged") is not False
+        or privacy.get("manager_identity_hash_persisted_or_logged") is not False
+        or privacy.get("identity_aggregation_completed") is not False
+        or privacy.get("factor_value_observed_or_persisted") is not False
+        or privacy.get("price_fields_loaded") != []
+        or privacy.get("forward_return_fields_read") is not False
+        or decision.get("acceptance_consumed") is not True
+        or decision.get("acceptance_retry_allowed") is not False
+        or decision.get("remaining_acceptance_stocks_may_be_requested") is not False
+        or decision.get("full_source_sync_allowed") is not False
+        or decision.get("capacity_uniqueness_or_return_work_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare management-continuity acceptance record changed"
+        )
+    for link in (
+        record.get("mechanism_overlap_audit") or {},
+        contract,
+        {
+            "path": acceptance.get("manifest_path"),
+            "sha256": acceptance.get("manifest_sha256"),
+        },
+    ):
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        linked_sha = str(link.get("sha256") or "")
+        if not linked_path.exists() or file_digest(linked_path) != linked_sha:
+            raise RichDataError(
+                "Tushare management-continuity terminal evidence changed: "
+                f"{linked_path}"
+            )
+    return record
+
+
+def tushare_management_continuity_acceptance_records() -> list[Path]:
+    """Return records that consumed the management-continuity acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*tushare_management_continuity_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_management_continuity_acceptance":
+            records.append(path)
+    return records
 
 
 def tushare_gross_margin_acceptance_records() -> list[Path]:
@@ -10279,6 +10777,264 @@ def sync_tushare_gross_margin_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def sync_tushare_management_continuity_acceptance() -> Path:
+    """Run the frozen three-stock management-continuity acceptance without prices."""
+
+    if DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD.exists():
+        load_tushare_management_continuity_acceptance_record(
+            DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD
+        )
+        raise RichDataError(
+            "Tushare management-continuity source acceptance is already consumed; "
+            "another acceptance is forbidden"
+        )
+    contract = load_tushare_management_continuity_contract()
+    prior_records = tushare_management_continuity_acceptance_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare management-continuity acceptance is one-shot and was already "
+            "consumed: "
+            + ", ".join(str(path) for path in prior_records)
+        )
+    require_provider("tushare")
+    acceptance = contract["acceptance_protocol"]
+    ts_codes = tuple(str(value) for value in acceptance["fixed_ts_codes"])
+    announcement_start = dt.datetime.strptime(
+        str(acceptance["announcement_start"]), "%Y%m%d"
+    ).date()
+    announcement_end = dt.datetime.strptime(
+        str(acceptance["announcement_end"]), "%Y%m%d"
+    ).date()
+    run_id = new_run_id("tushare_management_continuity_acceptance")
+    run_root = (
+        RAW_ROOT / "tushare" / "management_continuity" / "acceptance" / run_id
+    )
+    temporary_root = run_root.parent / f".{run_id}.tmp"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(
+            f"Tushare management-continuity acceptance already exists: {run_id}"
+        )
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    calls_issued = 0
+    current_ts_code: str | None = None
+    source_rows_by_stock: dict[str, int] = {}
+    quality_by_stock: dict[str, dict[str, Any]] = {}
+    try:
+        frames: list[pd.DataFrame] = []
+        row_ceiling = int(
+            contract["source_selection"]["defensive_response_row_ceiling"]
+        )
+        for ts_code in ts_codes:
+            current_ts_code = ts_code
+            calls_issued += 1
+            raw = fetch_tushare_management_continuity_rows(
+                ts_code, announcement_start, announcement_end
+            )
+            source_rows_by_stock[ts_code] = int(len(raw))
+            if len(raw) >= row_ceiling:
+                raise RichDataError(
+                    "Tushare management-continuity acceptance reached the frozen "
+                    f"defensive row ceiling for {ts_code}: {len(raw)}"
+                )
+            if len(raw) < int(acceptance["minimum_source_rows_per_stock"]):
+                raise RichDataError(
+                    "Tushare management-continuity acceptance returned too few "
+                    f"source rows for {ts_code}: {len(raw)}"
+                )
+            normalized, quality = canonicalize_tushare_management_continuity(
+                raw, ts_code, announcement_start, announcement_end
+            )
+            quality_by_stock[ts_code] = quality
+            if quality["stock_announcement_events_written"] < int(
+                acceptance["minimum_events_per_stock"]
+            ):
+                raise RichDataError(
+                    "Tushare management-continuity acceptance produced too few "
+                    f"events for {ts_code}: "
+                    f"{quality['stock_announcement_events_written']}"
+                )
+            frames.append(normalized)
+        if calls_issued != int(acceptance["provider_calls"]):
+            raise RichDataError(
+                "Tushare management-continuity acceptance omitted a frozen request"
+            )
+        combined = pd.concat(frames, ignore_index=True)
+        event_key = ["instrument", "announcement_date"]
+        if combined.duplicated(event_key).any():
+            raise RichDataError(
+                "Tushare management-continuity acceptance has duplicate stock-event keys"
+            )
+        combined = combined.sort_values(event_key, kind="stable").reset_index(drop=True)
+        if len(combined) < int(acceptance["minimum_events_across_acceptance"]):
+            raise RichDataError(
+                "Tushare management-continuity acceptance produced too few combined "
+                f"events: {len(combined)}"
+            )
+        factor_name = "tushare_management_continuity_share"
+        distinct_values = int(combined[factor_name].nunique())
+        if distinct_values < int(
+            acceptance["minimum_distinct_factor_values_across_acceptance"]
+        ):
+            raise RichDataError(
+                "Tushare management-continuity acceptance has too few distinct factor "
+                f"values: {distinct_values}"
+            )
+        total_identities = int(combined["manager_count"].sum())
+        departing_identities = int(combined["departing_manager_count"].sum())
+        nondeparting_identities = total_identities - departing_identities
+        if departing_identities < 1:
+            raise RichDataError(
+                "Tushare management-continuity acceptance observed no departing identity"
+            )
+        if nondeparting_identities < 1:
+            raise RichDataError(
+                "Tushare management-continuity acceptance observed no nondeparting identity"
+            )
+        temporary_destination = temporary_root / "management_continuity.parquet"
+        final_destination = run_root / "management_continuity.parquet"
+        atomic_write_frame(combined, temporary_destination)
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_management_continuity_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "data_contract": {
+                "path": manifest_path(
+                    DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT
+                ),
+                "sha256": file_digest(
+                    DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT
+                ),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "stk_managers",
+                "request_mode": (
+                    "one frozen stock and announcement-date range per call"
+                ),
+                "ts_codes": list(ts_codes),
+                "announcement_start": acceptance["announcement_start"],
+                "announcement_end": acceptance["announcement_end"],
+                "provider_calls_issued": calls_issued,
+                "fields": list(TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS),
+                "raw_frames_persisted": False,
+                "plaintext_names_persisted": False,
+                "identity_hashes_persisted": False,
+                "forbidden_personal_or_role_fields_requested": False,
+                "credentials_logged_or_stored": False,
+            },
+            "files": [
+                {
+                    "path": manifest_path(final_destination),
+                    "rows": int(len(combined)),
+                    "sha256": frame_digest(combined),
+                }
+            ],
+            "source_quality": {
+                "source_rows": int(sum(source_rows_by_stock.values())),
+                "source_rows_by_stock": source_rows_by_stock,
+                "quality_by_stock": quality_by_stock,
+                "stock_announcement_events_written": int(len(combined)),
+                "duplicate_stock_announcement_keys": 0,
+                "manager_identity_rows": total_identities,
+                "departing_identity_rows": departing_identities,
+                "nondeparting_identity_rows": nondeparting_identities,
+                "factor_distinct_values": distinct_values,
+                "minimum_factor_value": float(combined[factor_name].min()),
+                "maximum_factor_value": float(combined[factor_name].max()),
+            },
+            "factor_policy": {
+                "factor": "tushare_management_continuity",
+                "raw_column": factor_name,
+                "formula": "1 - departing_manager_count / manager_count",
+                "direction": "higher_is_better",
+                "end_date_must_equal_ann_date_when_present": True,
+                "title_or_role_weighting_allowed": False,
+            },
+            "privacy_policy": {
+                "name_used_only_for_in_memory_identity_deduplication": True,
+                "plaintext_name_persisted": False,
+                "identity_hash_persisted": False,
+                "provider_raw_frame_persisted": False,
+            },
+            "availability_policy": {
+                "event_date": "ann_date",
+                "same_session_trade_allowed": False,
+                "eligible_entry": (
+                    "first local trading session open strictly after ann_date"
+                ),
+                "maximum_event_age_calendar_days": 3,
+                "forward_fill_beyond_event_age_allowed": False,
+            },
+            "acceptance_status": acceptance["success_status"],
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception as exc:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        error = safe_exception_text(exc)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_management_continuity_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "failed_ts_code": current_ts_code,
+            "data_contract": {
+                "path": manifest_path(
+                    DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT
+                ),
+                "sha256": file_digest(
+                    DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT
+                ),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "stk_managers",
+                "ts_codes": list(ts_codes),
+                "announcement_start": acceptance["announcement_start"],
+                "announcement_end": acceptance["announcement_end"],
+                "provider_calls_issued": calls_issued,
+                "source_rows_by_stock": source_rows_by_stock,
+                "fields": list(TUSHARE_MANAGEMENT_CONTINUITY_RAW_FIELDS),
+                "raw_frames_persisted": False,
+                "plaintext_names_persisted": False,
+                "identity_hashes_persisted": False,
+                "forbidden_personal_or_role_fields_requested": False,
+                "credentials_logged_or_stored": False,
+            },
+            "completed_stock_quality": quality_by_stock,
+            "files": [],
+            "partial_snapshot_deleted": not temporary_root.exists(),
+            "final_snapshot_published": run_root.exists(),
+            "acceptance_status": (
+                "rejected_stop_before_full_history_capacity_uniqueness_or_returns"
+            ),
+            "error_type": type(exc).__name__,
+            "error": error,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
+
+
 def _fetch_tushare_gross_margin_with_policy(
     ts_code: str,
     report_period_start: dt.date,
@@ -14370,6 +15126,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the frozen three-stock initial gross-margin-change acceptance",
     )
 
+    subparsers.add_parser(
+        "acceptance-tushare-management-continuity",
+        help="run the frozen privacy-minimized management-continuity acceptance",
+    )
+
     ts_audit_opinion = subparsers.add_parser(
         "sync-tushare-audit-opinions",
         help="download the frozen 2019-2025 full-market audit-opinion snapshot",
@@ -14583,6 +15344,8 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_audit_opinion_acceptance()
         elif args.command == "acceptance-tushare-gross-margin":
             manifest = sync_tushare_gross_margin_acceptance()
+        elif args.command == "acceptance-tushare-management-continuity":
+            manifest = sync_tushare_management_continuity_acceptance()
         elif args.command == "sync-tushare-audit-opinions":
             manifest = sync_tushare_audit_opinions(
                 allow_large=args.allow_large,
@@ -14670,6 +15433,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-tushare-gross-margin": (
             "stored_no_return_initial_gross_margin_acceptance"
+        ),
+        "acceptance-tushare-management-continuity": (
+            "stored_no_return_management_continuity_acceptance"
         ),
         "sync-tushare-audit-opinions": (
             "stored_pending_no_return_audit_opinion_capacity_and_uniqueness"

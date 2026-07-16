@@ -1824,4 +1824,20 @@ python scripts/a_share_short_horizon_factor_research.py minute-combination-holdo
 
 原始响应和源毛利率从未持久化，因此无法确定四个必填键/版本字段中究竟哪一个无效；一次性合同也不授权重新请求该股票来恢复字段级细节。终止记录为 [`a_share_tushare_gross_margin_research_record.json`](a_share_tushare_gross_margin_research_record.json)（SHA‑256 `83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18`）。验收和全量同步均已消费，CLI 会在来源链或供应商访问前拒绝再次全量运行；终止防护加入后，9 项专项测试以及完整数据测试 **397 passed, 9 warnings**。不得删除/填充/推断该行、改字段/日期/切片/公式/方向/修订政策/事件年龄、降低门槛、运行容量/唯一性/收益、聚合/评分/选股/仓位/下单或据此采购 Level‑2。这条机制不进入因子池；后续只能重新审计无收益机制前沿并为新的经济独立候选先冻结合同。
 
+### Tushare 管理层连续性（来源点时门禁终止）
+
+毛利率来源分支终止后，新的无收益机制审计 [`a_share_three_day_management_continuity_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_management_continuity_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `e6b64475b17839cac9e2c8f2177c60509d1d58950127eddb625b9bf128d11946`）先排除了两个近邻：`stk_rewards` 的薪酬偏年度披露、持股与既有所有权机制重叠；`stk_holdertrade` 则直接重叠已经完成的高管公开市场交易分支。唯一冻结的独立候选是管理层公告内的连续性比例。
+
+[Tushare 官方 `stk_managers` 文档](https://tushare.pro/document/2?doc_id=193)给出代码、公告日、姓名、上任日和离任日等字段，并要求至少 2,000 积分；当前 3,000 积分满足权限门槛。[`stk_rewards` 官方文档](https://tushare.pro/document/2?doc_id=194)只作为拒绝候选的来源说明，没有发出请求。数据合同 [`a_share_tushare_management_continuity_data_contract.json`](a_share_tushare_management_continuity_data_contract.json)（SHA‑256 `86d7abc96da30c3e4825f1fcefa6722941b18f86ae3798ad6ad1db676c9323ec`）在账户行出现前固定：
+
+- 只请求 `ts_code,ann_date,name,end_date`，不请求或存储职务、类别、性别、学历、国籍、生日、上任日、简历、薪酬或持股。
+- 姓名只在内存中做 NFKC/空白规范化和 SHA‑256 去重；明文与哈希都不写入 Parquet、清单、日志或 Git。
+- 同一股票/公告日的唯一身份进入一次分母；只有非空 `end_date == ann_date` 才算当次离任，缺失离任日算未离任。任何非空但不等于公告日的离任日使完整请求失败，不能删除、移动或重新解释。
+- 因子固定为 `1 - 离任身份数 / 管理层身份数`，高值更好；只在公告日后的第一个本地交易日可用，最多 3 个日历日。
+- 验收、全量来源、无收益容量和唯一性全部通过前，不读取任何价格或收益。
+
+离线实现、隐私聚合、原子发布与一次性保护先通过 6 项专项测试。唯一真实验收原计划对 `000001.SZ`、`600000.SH`、`300750.SZ` 各请求一次 2019–2025 公告记录；第一个且唯一请求 `000001.SZ` 返回 184 行，其中 53 行的完整离任日不等于公告日，因此在身份聚合和因子值之前触发预先冻结的点时门禁。其余两只股票没有请求，临时快照已删除，`files=[]`、正式文件数为 0，姓名、身份哈希、原始响应、价格和收益均未持久化。
+
+失败清单是 `20260716T202120Z_tushare_management_continuity_acceptance_3e1824f5.json`（SHA‑256 `1de603f276d14e77fafc993ed552f709d9c2d35456607c336875e3a70a06d45b`），跟踪终止记录是 [`a_share_tushare_management_continuity_source_acceptance_record.json`](a_share_tushare_management_continuity_source_acceptance_record.json)（SHA‑256 `e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8`）。CLI 现在会在合同、凭据和供应商访问前拒绝重跑。不得请求剩余股票或失败股票来恢复细节、丢弃/填充/移动 53 行、改变字段/身份/日期/公式/方向/事件年龄、创建同机制 v2、运行全量/容量/唯一性/收益、聚合/评分/选股/仓位/订单或据此采购 Level‑2。该结果只说明当前快照不满足冻结的历史点时合同，不说明管理层连续性的收益好坏。
+
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。

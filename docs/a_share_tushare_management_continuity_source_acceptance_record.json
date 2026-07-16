@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_management_continuity_source_acceptance_record",
+  "status": "terminal_source_rejected_before_identity_aggregation_factor_values_full_history_or_returns",
+  "recorded_at": "2026-07-16T20:21:20Z",
+  "purpose": "Preserve the sole contract-fixed Tushare stk_managers acceptance result and prevent a retry, field change, end-date reinterpretation, full sync, factor research, or price access.",
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_management_continuity_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "e6b64475b17839cac9e2c8f2177c60509d1d58950127eddb625b9bf128d11946"
+  },
+  "data_contract": {
+    "path": "docs/a_share_tushare_management_continuity_data_contract.json",
+    "sha256": "86d7abc96da30c3e4825f1fcefa6722941b18f86ae3798ad6ad1db676c9323ec",
+    "preregistered_at": "2026-07-16T20:11:36Z"
+  },
+  "acceptance": {
+    "manifest_path": "data/metadata/rich_data/runs/20260716T202120Z_tushare_management_continuity_acceptance_3e1824f5.json",
+    "manifest_sha256": "1de603f276d14e77fafc993ed552f709d9c2d35456607c336875e3a70a06d45b",
+    "acceptance_status": "rejected_stop_before_full_history_capacity_uniqueness_or_returns",
+    "provider_calls_planned": 3,
+    "provider_calls_issued": 1,
+    "first_and_only_requested_stock": "000001.SZ",
+    "unrequested_stocks": [
+      "600000.SH",
+      "300750.SZ"
+    ],
+    "announcement_start": "20190101",
+    "announcement_end": "20251231",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "name",
+      "end_date"
+    ],
+    "source_rows_observed": 184,
+    "departure_dates_unequal_to_announcement_date": 53,
+    "failure_code": "source_departure_date_point_in_time_incompatibility",
+    "failure_reason": "Fifty-three complete end_date values were unequal to ann_date. The contract allowed a departure only when both dates were identical, because the current vendor snapshot has no historical row-version stream proving when a different departure date became known.",
+    "field_level_values_persisted": false,
+    "factor_frame_published": false,
+    "published_file_count": 0,
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false
+  },
+  "privacy_and_scope": {
+    "raw_provider_frame_persisted": false,
+    "plaintext_manager_name_persisted_or_logged": false,
+    "manager_identity_hash_persisted_or_logged": false,
+    "title_role_gender_education_nationality_birthday_begin_date_or_resume_requested": false,
+    "credential_logged_or_stored": false,
+    "identity_aggregation_completed": false,
+    "factor_value_observed_or_persisted": false,
+    "full_history_requested": false,
+    "capacity_run": false,
+    "uniqueness_run": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "aggregation_scoring_selection_sizing_or_ordering_performed": false
+  },
+  "terminal_decision": {
+    "acceptance_consumed": true,
+    "acceptance_retry_allowed": false,
+    "remaining_acceptance_stocks_may_be_requested": false,
+    "failed_stock_may_be_rerequested_for_detail": false,
+    "drop_fill_shift_or_reinterpret_mismatched_end_dates_allowed": false,
+    "field_date_identity_formula_direction_or_age_change_allowed": false,
+    "same_mechanism_v2_allowed": false,
+    "full_source_sync_allowed": false,
+    "capacity_uniqueness_or_return_work_allowed": false,
+    "aggregation_scoring_selection_sizing_orders_or_level2_allowed": false,
+    "next_action": "Run a fresh no-return mechanism-frontier audit and select only a newly economically independent candidate before any provider row or factor value."
+  },
+  "interpretation": "This is a source point-in-time compatibility rejection, not evidence that management continuity has positive or negative returns. The factor was never produced or tested."
+}

@@ -1,0 +1,288 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_management_continuity_data_contract",
+  "status": "frozen_after_mechanism_overlap_audit_before_entitlement_rows_factor_values_or_returns",
+  "preregistered_at": "2026-07-16T20:11:36Z",
+  "purpose": "Ingest and no-return screen exactly one management-continuity event mechanism for the fixed three-session A-share protocol without sweeping management fields, identity definitions, formulas, directions, event ages, dates, prices, or returns.",
+  "freeze_evidence": {
+    "official_stk_managers_documentation_observed": true,
+    "official_stk_rewards_documentation_observed": true,
+    "mechanism_overlap_audit_completed": true,
+    "provider_stk_managers_rows_observed": false,
+    "stk_managers_entitlement_observed": false,
+    "factor_values_observed": false,
+    "full_history_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "source": "Tushare Pro stk_managers",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=193",
+    "official_rewards_documentation": "https://tushare.pro/document/2?doc_id=194",
+    "official_permission_table": "https://tushare.pro/document/1?doc_id=290",
+    "minimum_permission_points": 2000,
+    "current_account_points": 3000,
+    "provider_documented_maximum_rows_per_call": null,
+    "defensive_response_row_ceiling": 6000,
+    "documented_request_scope": "one or more stocks with optional announcement date range",
+    "frozen_request_scope": "one stock and the fixed announcement date range per call",
+    "why_this_source": "The interface supplies an announcement date, management identity, and departure date. It can represent a governance-continuity event without title interpretation or any price, accounting, compensation, holdings, trading, or return field."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "A management announcement with fewer same-day departing identities is hypothesized to create less near-term governance disruption during the following three sessions.",
+    "factor_family": "management_governance_continuity_event",
+    "relationship_to_existing_insider_open_market_factor": "The existing factor measures direct market buy-versus-sell activity after a conservative synthetic filing delay. This candidate uses no transaction direction, quantity, price, amount, holding, or reason; it measures only role continuity disclosed on ann_date.",
+    "relationship_to_existing_fundamental_and_audit_factors": "The factor does not use financial statements, forecast magnitude, report timing, audit opinion, valuation, ownership concentration, holder count, pledge, repurchase, dividend, analyst, industry, lending, moneyflow, or OHLC path fields.",
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_management_continuity_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "e6b64475b17839cac9e2c8f2177c60509d1d58950127eddb625b9bf128d11946"
+    },
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "stk_managers",
+    "frequency": "management_announcement_event",
+    "request_mode": "one frozen stock and announcement-date range per call",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "name",
+      "end_date"
+    ],
+    "explicitly_forbidden_fields": [
+      "gender",
+      "lev",
+      "title",
+      "edu",
+      "national",
+      "birthday",
+      "begin_date",
+      "resume",
+      "reward",
+      "hold_vol",
+      "trade_type",
+      "holder_type",
+      "in_de",
+      "change_vol",
+      "change_ratio",
+      "after_share",
+      "after_ratio",
+      "avg_price",
+      "total_share",
+      "close",
+      "open",
+      "high",
+      "low",
+      "price",
+      "market_cap",
+      "turnover_rate",
+      "score",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "identity_privacy_and_date_policy": {
+    "name_normalization": "Apply Unicode NFKC, strip surrounding whitespace, collapse every internal whitespace run to one ASCII space, and reject an empty result.",
+    "identity_grouping": "SHA-256 the normalized name in memory and use that value only to collapse multiple-role rows within the same stock and ann_date.",
+    "plaintext_name_persisted": false,
+    "hashed_identity_persisted": false,
+    "hash_or_plaintext_identity_logged": false,
+    "same_name_collision_policy": "The same normalized name inside one stock-announcement is one identity. No requested non-factor personal field may be used to disambiguate it; the residual collision risk is recorded rather than repaired.",
+    "announcement_date_policy": "ann_date must be a complete valid date inside the exact request range and not later than the local contract-freeze date.",
+    "end_date_missing_policy": "A missing or blank end_date means that identity is not departing in this announcement.",
+    "end_date_departure_policy": "A complete end_date exactly equal to ann_date means that identity is departing in this announcement.",
+    "end_date_mismatch_policy": "Any nonempty end_date earlier or later than ann_date aborts the complete stock request; never exclude, shift, reinterpret, or fill it.",
+    "semantic_duplicate_policy": "Exact ts_code, ann_date, in-memory identity hash, and normalized end_date duplicates may collapse and are counted.",
+    "multiple_role_policy": "After exact duplicate collapse, all rows for one in-memory identity in one stock-announcement collapse to one denominator identity; any same-day departure row makes it departing.",
+    "conservative_availability": "first local trading session strictly after ann_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "forward_fill_beyond_event_age_allowed": false,
+    "historical_intraday_release_timestamp_available_per_row": false,
+    "residual_risk": "Tushare documents ann_date and end_date but not a historical row-version stream. Requiring exact ann_date=end_date for every observed departure avoids backdating an earlier or future departure, but cannot prove that the current vendor snapshot never revised a historical row."
+  },
+  "factor": {
+    "name": "tushare_management_continuity",
+    "raw_column": "tushare_management_continuity_share",
+    "direction": "higher_is_better",
+    "formula": "1 - departing_manager_count / manager_count",
+    "manager_count": "unique normalized in-memory identities in the same ts_code and ann_date",
+    "departing_manager_count": "unique identities with at least one end_date exactly equal to ann_date in the same event",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "finite_value_policy": "manager_count must be positive, departing_manager_count must be between zero and manager_count, and the derived share must be finite",
+    "clipping_winsorization_log_absolute_value_inversion_offset_imputation_or_title_weighting": null,
+    "absent_event_policy": "missing; never zero or one",
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(tushare_management_continuity_share)"
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "quarterly_quality_snapshot": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "terminal_gross_margin": {
+      "path": "docs/a_share_tushare_gross_margin_research_record.json",
+      "sha256": "83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18"
+    },
+    "insider_open_market_contract": {
+      "path": "docs/a_share_insider_open_market_data_contract.json",
+      "sha256": "2c46dbc6ffbc04b50758d84ec52b60c80f097f3d0825c9532ce164090e40eced"
+    },
+    "prospective_execution_policy": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "cny_200000_pilot_policy": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_ts_codes": [
+      "000001.SZ",
+      "600000.SH",
+      "300750.SZ"
+    ],
+    "announcement_start": "20190101",
+    "announcement_end": "20251231",
+    "provider_calls": 3,
+    "minimum_source_rows_per_stock": 5,
+    "minimum_events_per_stock": 3,
+    "minimum_events_across_acceptance": 15,
+    "minimum_distinct_factor_values_across_acceptance": 2,
+    "must_observe_at_least_one_departing_identity": true,
+    "must_observe_at_least_one_nondeparting_identity": true,
+    "defensive_response_row_ceiling_is_strict": true,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "exactly one stk_managers request is issued for each frozen stock and announcement range with only the four frozen fields",
+      "each response has at least five rows and strictly fewer than the defensive six-thousand-row ceiling",
+      "the response contains exactly the requested fields; stock codes and announcement dates are complete, valid, and inside the request",
+      "every normalized name is complete, but neither plaintext names nor hashes appear in the published frame or manifest",
+      "missing end_date is non-departing; every complete end_date equals ann_date, otherwise the acceptance fails atomically",
+      "exact semantic duplicates may collapse, and multiple-role rows collapse by in-memory identity before event aggregation",
+      "each stock produces at least three events, the combined sample produces at least fifteen events and two factor values, and both departing and non-departing identities are observed",
+      "published columns are only announcement_date, instrument, manager_count, departing_manager_count, tushare_management_continuity_share, and provider",
+      "no credential, identity, title, personal attribute, compensation, holding, trade, price, score, or return appears in a published factor frame or manifest"
+    ],
+    "success_status": "accepted_entitlement_schema_identity_privacy_date_policy_and_formula_pending_full_history",
+    "failed_acceptance_policy": "write one no-return rejection record, delete partial output, and stop without another stock, date, field, identity rule, end-date interpretation, full sync, capacity, uniqueness, price access, formula or direction change, score, selection, sizing, orders, or Level-2 justification",
+    "one_shot_policy": "The exact contract may publish at most one terminal success or rejection record."
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_management_continuity_events",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2025-12-31",
+    "source_announcement_start": "2019-01-01",
+    "source_announcement_end": "2025-12-31",
+    "fixed_source_universe": "factor_main_chinext_star fingerprinted above",
+    "source_universe_instrument_count": 5451,
+    "provider_call_partition": "one complete 20190101-20251231 announcement range per source-universe stock",
+    "provider_calls": 5451,
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_stock": 3,
+    "retry_backoff_seconds": [
+      2,
+      5
+    ],
+    "requests_are_sequential": true,
+    "output_columns": [
+      "announcement_date",
+      "instrument",
+      "manager_count",
+      "departing_manager_count",
+      "tushare_management_continuity_share",
+      "provider"
+    ],
+    "partition_policy": "one announcement calendar year per immutable Parquet partition",
+    "partial_snapshot_accepted": false,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "failure_cleanup": "delete the complete temporary snapshot and publish no final manifest",
+    "raw_provider_frames_persisted": false,
+    "plaintext_names_or_hashes_persisted": false
+  },
+  "source_completeness_policy": {
+    "provider_call_coverage_required": 1.0,
+    "minimum_complete_factor_events": 10000,
+    "minimum_instruments_with_any_event": 1500,
+    "minimum_distinct_factor_values": 5,
+    "minimum_observed_signal_years": 7,
+    "duplicate_stock_announcement_keys_allowed": false,
+    "failed_gate_policy": "stop before event expansion, capacity, comparison fields, or returns; do not persist identities, lower thresholds, omit years, mix providers, add management fields, or alter the formula"
+  },
+  "no_return_capacity_policy": {
+    "separate_immutable_preregistration_required_after_full_snapshot": true,
+    "run_before_any_comparison_open_close_or_forward_return_read": true,
+    "holding_universe": "buyable_main_chinext",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_observed_years": 5,
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "failed_gate_policy": "stop without comparison fields or returns; do not reinterpret end dates, add titles or roles, invert, widen age, lower capacity, combine sparse events, or substitute another management field",
+    "selection_or_promotion_allowed": false
+  },
+  "no_return_uniqueness_policy": {
+    "required_after_capacity_and_before_factor_return_access": true,
+    "comparison_scope": "every factor in the frozen 43-factor accepted-price frontier plus every later mechanism with a defined same-session value",
+    "explicit_semantic_checks": [
+      "insider_open_market_buy_share",
+      "major_holder_decrease_ratio",
+      "holder_count_change",
+      "tushare_is_standard_unqualified_audit_opinion",
+      "tushare_disclosure_plan_lead_days",
+      "tushare_q_gross_margin_yoy_change_pp"
+    ],
+    "method": "On factor-active sessions, rank management continuity as higher-is-better inside the same quality/listing-eligible cross-section; compare Spearman ranks with every eligible comparison field and take each comparison's median daily correlation.",
+    "minimum_comparison_sessions_per_field": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "failed_gate_policy": "terminally classify the candidate as a near synonym before any return access; do not residualize, neutralize, title-weight, invert, reweight, combine, or choose another management field"
+  },
+  "return_research_policy": {
+    "separate_immutable_return_preregistration_required": true,
+    "allowed_only_after_source_acceptance_full_source_capacity_and_uniqueness_gates_pass": true,
+    "formula_direction_dates_universe_holding_period_topk_cost_execution_and_pilot_policies_must_remain_frozen": true,
+    "factor_or_return_sweep_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

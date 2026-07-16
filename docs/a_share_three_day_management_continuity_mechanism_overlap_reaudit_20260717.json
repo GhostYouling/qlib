@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_management_continuity_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_provider_rows",
+  "recorded_at": "2026-07-16T20:11:36Z",
+  "purpose": "Re-audit the exhausted three-session research frontier after the terminal gross-margin source failure and select at most one economically independent mechanism available to the existing 3000-point Tushare account, without requesting provider rows, observing factor values, or reading a new price or return.",
+  "frontier_state": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "stability_qualified_factor_count": 7,
+      "topk_qualified_factor_count": 0,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "latest_terminal_mechanism": {
+      "mechanism": "initial_single_quarter_gross_margin_yoy_change",
+      "record": "docs/a_share_tushare_gross_margin_research_record.json",
+      "sha256": "83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18",
+      "decision": "terminal_at_full_source_identity_date_or_version_gate"
+    },
+    "new_price_or_return_read": false
+  },
+  "official_source_context": {
+    "management_roster_documentation": "https://tushare.pro/document/2?doc_id=193",
+    "management_rewards_documentation": "https://tushare.pro/document/2?doc_id=194",
+    "holder_trade_documentation": "https://tushare.pro/document/2?doc_id=175",
+    "permission_table": "https://tushare.pro/document/1?doc_id=290",
+    "current_account_points": 3000,
+    "management_roster_minimum_points": 2000,
+    "documented_management_roster_inputs": [
+      "ts_code",
+      "ann_date",
+      "start_date",
+      "end_date"
+    ],
+    "documented_management_roster_outputs_include": [
+      "ts_code",
+      "ann_date",
+      "name",
+      "begin_date",
+      "end_date"
+    ],
+    "provider_rows_observed": false,
+    "entitlement_request_issued": false,
+    "factor_values_observed": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "management_compensation_or_holdings",
+      "source": "Tushare stk_rewards",
+      "decision": "rejected_before_rows_as_mechanism_overlap_and_sparse_annual_disclosure",
+      "reason": "Compensation is an annual-report disclosure rather than a timely management-change event, while management holdings overlap the already terminal ownership and insider-transaction branches. The official sample also shows missing reward values, so no field substitution or missing-value policy is explored."
+    },
+    {
+      "candidate": "management_or_holder_buy_sell_direction",
+      "source": "Tushare stk_holdertrade",
+      "decision": "rejected_before_rows_as_direct_mechanism_overlap",
+      "reason": "The frontier already contains a count-verified direct open-market transaction mechanism for directors, supervisors, executives, and related persons. A Tushare copy is a provider variant, not an independent factor."
+    },
+    {
+      "candidate": "management_continuity_share",
+      "source": "Tushare stk_managers",
+      "decision": "selected_as_the_only_independent_no_return_candidate",
+      "reason": "A management appointment or departure announcement measures governance continuity rather than price, valuation, accounting performance, audit opinion, ownership concentration, insider trading, analyst activity, transaction events, industry breadth, or order flow. The official example contains repeated names for multiple roles, so identity-level deduplication is frozen before any account row is requested."
+    }
+  ],
+  "selected_candidate": {
+    "economic_mechanism": "A larger share of management identities continuing rather than departing in the same announcement is hypothesized to reduce near-term governance disruption over the next three sessions.",
+    "factor_name": "tushare_management_continuity_share",
+    "formula": "1 - unique_identifiers_with_end_date_equal_to_ann_date / unique_identifiers_in_the_same_ts_code_and_ann_date",
+    "direction": "higher_is_better",
+    "availability": "first local trading session strictly after ann_date",
+    "maximum_event_age_calendar_days": 3,
+    "identity_policy": "Request name only because it is required to collapse multiple-role rows. Normalize with Unicode NFKC plus trimmed/collapsed whitespace, hash in memory for grouping, and persist neither plaintext names nor identity hashes.",
+    "departure_policy": "Only a complete end_date exactly equal to ann_date is compatible with the factor. Missing end_date means non-departing in that announcement. A nonempty end_date before or after ann_date makes the stock request source-incompatible and terminally fails the frozen attempt.",
+    "event_denominator_policy": "Every unique in-memory identity in the stock-announcement group enters the denominator exactly once; one or more same-day departure rows make that identity departing.",
+    "absent_event_policy": "missing; never zero or one",
+    "selection_or_promotion_allowed": false
+  },
+  "privacy_and_scope": {
+    "allowed_provider_fields": [
+      "ts_code",
+      "ann_date",
+      "name",
+      "end_date"
+    ],
+    "forbidden_personal_fields": [
+      "gender",
+      "lev",
+      "title",
+      "edu",
+      "national",
+      "birthday",
+      "begin_date",
+      "resume"
+    ],
+    "plaintext_name_persistence_allowed": false,
+    "hashed_identity_persistence_allowed": false,
+    "provider_raw_frame_persistence_allowed": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "required_gate_order": [
+    "freeze an exact source and factor contract before provider rows",
+    "implement and locally test field whitelisting, identity privacy, date semantics, aggregation, atomic publication, and one-shot rejection",
+    "run one fixed three-stock source acceptance without prices or returns",
+    "only after accepted source evidence, implement one atomic all-source-universe 2019-2025 snapshot",
+    "freeze and run a separate no-return capacity audit before comparison fields",
+    "only after capacity passes, run no-return synonym checks against the complete frontier including insider transactions and later Tushare mechanisms",
+    "freeze a separate return protocol only if every preceding gate passes"
+  ],
+  "prohibited_actions": [
+    "request stk_rewards or stk_holdertrade as substitute candidates",
+    "request title, role category, gender, education, nationality, birthday, begin_date, resume, compensation, holdings, transaction size, price, or amount",
+    "persist a plaintext name or identity hash",
+    "map titles or infer seniority, CEO status, board status, gender, age, nationality, education, or sentiment",
+    "treat an end_date unequal to ann_date as a same-announcement departure",
+    "retry a consumed acceptance with different symbols, dates, fields, identity rules, or thresholds",
+    "read returns, aggregate, score, select, size, order, or justify Level-2 before all no-return gates pass"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
