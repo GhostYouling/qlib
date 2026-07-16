@@ -1599,7 +1599,20 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 随后选择 `daily_basic.pb` 作为独立的点时估值机制，合同 `docs/a_share_tushare_daily_pb_data_contract.json`（SHA‑256 `cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2`）在任何接口行前冻结。请求字段严格为 `ts_code,trade_date,pb`，唯一因子为正 PB 的倒数 `tushare_positive_book_to_market = 1 / pb`，高值方向固定为更好；不请求价格、PE、市值、换手率、股息、涨跌停或收益。2026‑07‑13 单日验收返回 5,524 条全市场源行，在 4,592 只点时可持有股票中保留 4,546 只正 PB，覆盖率 **98.9983%**，高于冻结的 90% 门槛；排除 42 条缺失 PB、0 条非正 PB 和 936 条股票池外记录，重复股票日为 0。可提交的验收记录为 `docs/a_share_tushare_daily_pb_source_acceptance_record.json`（SHA‑256 `0f4dcf910bfd7fca29a1ea97781ce8d65094fe54b53e98c54fd81f3817028574`）；本地原始清单 SHA‑256 为 `29951a3581e427f2ce0be875fadb50567dd4a8b1c55159601a3cb68040d2e4b7`。
 
-PB 验收通过只说明账户权限、三字段口径、倒数公式和当前覆盖率成立，不说明因子有效。下一步必须先冻结并绑定该验收的 2019–2025 全历史、无收益唯一性和容量协议，再允许固定历史同步；之后还须在不读取远期收益的阶段同时通过完整覆盖、与既有因子的日截面秩相关唯一性（绝对中位数小于 0.8）和至少 200 个非重叠三日 cohort。任一门失败即停止，不得反向、换 PB 变换、加入 PE/市值/换手率、放宽门槛或与旧失败因子组合。上述门都没有完成，因此当前不得用 PB 做聚合、最新评分、选股、仓位或订单。
+PB 验收通过只说明账户权限、三字段口径、倒数公式和当前覆盖率成立，不说明因子有效。绑定该验收的全历史、唯一性和容量协议已经在完整历史与任何因子收益观察前冻结为 `docs/a_share_tushare_daily_pb_capacity_preregistration.json`（SHA‑256 `14668ad3f97cef68cd2fae882507280ef835c0f5e7b4ddecb763c1907590c0a0`）。它固定 2019–2025、三日非重叠网格、至少 200 个 50 名/2 值 cohort、至少 5 年、550 日季度质量、上市满 20 会话，以及 2025 年对 43 个既有收盘已知字段逐一做至少 100 日/50 名的日截面 Spearman 唯一性检查；PB 与任一字段的绝对中位相关达到 0.8 即停止。容量必须先于既有收盘字段加载，容量和唯一性都通过后才允许另行冻结收益诊断。
+
+全历史命令只读取本地 `launchctl` 中的 Token，并按本地交易日逐日请求 `ts_code,trade_date,pb`：
+
+```zsh
+token="$(launchctl getenv TUSHARE_TOKEN)"
+TUSHARE_TOKEN="$token" python scripts/a_share_rich_data.py \
+  sync-tushare-daily-pb --allow-large
+unset token
+```
+
+第一次尝试在历史 `.BJ` 源代码进入持有股票池排除门之前被误判为缺键，程序删除了完整临时目录且没有发布清单；修复仅让合法北交所源代码进入既有的“股票池外排除并计数”路径，没有把它们加入可持有股票池。原参数重试成功发布 `20260716T102519Z_tushare_daily_pb_2e5c38bf.json`（SHA‑256 `280bc68239cc70a5e7d6e44dbb0a15a0b331be8215ddfb8d9ebd27a408e1e366`）：7 个年度、1,699 个交易日、**7,042,084** 条正 PB 可持有行；覆盖率中位数 **98.847%**、P5 **98.354%**，全部 1,699 日都至少有 50 个值。共排除 57,287 条缺失 PB、0 条非正 PB 和 832,455 条点时持有股票池外记录。独立重读全部分片后，行数、内容指纹、`1 / pb` 公式、点时成员和逐日覆盖率均一致，且 `price_fields_loaded=[]`、`forward_return_fields_read=false`。
+
+当前状态只是“完整来源覆盖通过，等待无收益容量与唯一性联合审计”。不得把 PB 送入通用收益诊断、聚合、最新评分、选股、仓位或订单；联合门任一项失败即终止，不得反向、换 PB 变换、加入 PE/市值/换手率、放宽门槛或与旧失败因子组合。
 
 ### 必经验收流程
 

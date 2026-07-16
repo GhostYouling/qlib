@@ -12,7 +12,17 @@ python -m pip install -r scripts/data_collector/a_share_rich/requirements.txt
 
 ## 2. macOS 隐藏输入并注入环境
 
-下面的 `read` 不回显输入；变量名必须是 `token`，这样后两行才能引用同一个临时变量：
+下面的 `read` 不回显输入；变量名必须是 `token`，这样后两行才能引用同一个临时变量。
+
+如果只需要让**之后启动的 Codex 等图形程序**继承 Token，使用最短配置：
+
+```zsh
+read -s "token?请粘贴 Tushare Token，随后按回车："; echo
+launchctl setenv TUSHARE_TOKEN "$token"
+unset token
+```
+
+如果当前终端也要立即运行数据命令，在清除临时变量前多执行一次 `export`：
 
 ```zsh
 read -s "token?请粘贴 Tushare Token，随后按回车："; echo
@@ -21,7 +31,7 @@ launchctl setenv TUSHARE_TOKEN "$token"
 unset token
 ```
 
-- `export` 让当前终端及其后启动的子进程可用。
+- `export` 只让当前终端及其后启动的子进程可用；只使用最短配置时可以省略。
 - `launchctl setenv` 让此后启动的 macOS 图形程序可继承。已经打开的 Codex 不会自动获得新值，需要彻底退出后重新打开。
 - `unset token` 只清除临时 shell 变量，不会清除已经导出的 `TUSHARE_TOKEN`。
 - `launchctl` 设置通常不跨注销或重启持久化；重启后需要重新执行隐藏输入。
@@ -39,6 +49,8 @@ python scripts/a_share_rich_data.py status
 ```
 
 `a_share_rich_data.py status` 只报告环境变量和 SDK 是否就绪，不打印 Token，也不登录供应商。
+
+如果 `launchctl` 显示“已配置”，但当前终端或 `a_share_rich_data.py status` 仍显示未配置，说明该进程是在配置之前启动的，不代表 Token 丢失。重新启动程序，或按下一节只向单次子命令透传即可。
 
 ## 4. 当前程序尚未继承时运行一次命令
 

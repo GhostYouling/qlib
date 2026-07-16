@@ -1002,6 +1002,21 @@ def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):
     with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
         RICH.load_tushare_daily_pb_contract(changed_path)
 
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC)
+        == RICH.TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256
+    )
+    capacity_spec = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC.read_text()
+    )
+    assert capacity_spec["run_order"][1] == (
+        "run_three_session_capacity_without_open_close_or_forward_returns"
+    )
+    assert capacity_spec["uniqueness_contract"]["comparison_field_count"] == 43
+    assert capacity_spec["no_return_gate_policy"][
+        "capacity_must_run_before_close_known_comparison_fields"
+    ] is True
+
 
 def test_tushare_daily_pb_request_uses_only_frozen_fields(monkeypatch):
     captured = {}
@@ -1029,6 +1044,7 @@ def test_tushare_daily_pb_normalization_derives_positive_book_to_market():
     raw = pd.DataFrame(
         [
             {"ts_code": "600519.SH", "trade_date": "20260713", "pb": 2.5},
+            {"ts_code": "832317.BJ", "trade_date": "20260713", "pb": 5.0},
             {"ts_code": "000001.SZ", "trade_date": "20260713", "pb": None},
             {"ts_code": "300750.SZ", "trade_date": "20260713", "pb": -1.0},
         ],
@@ -1038,13 +1054,15 @@ def test_tushare_daily_pb_normalization_derives_positive_book_to_market():
         raw, dt.date(2026, 7, 13), dt.date(2026, 7, 13)
     )
     assert normalized.columns.tolist() == list(RICH.TUSHARE_DAILY_PB_COLUMNS)
-    assert normalized["instrument"].tolist() == ["SH600519"]
-    assert normalized["tushare_positive_book_to_market"].item() == pytest.approx(0.4)
+    assert normalized["instrument"].tolist() == ["BJ832317", "SH600519"]
+    assert normalized["tushare_positive_book_to_market"].tolist() == pytest.approx(
+        [0.2, 0.4]
+    )
     assert quality == {
-        "input_rows": 3,
+        "input_rows": 4,
         "missing_pb_rows_excluded": 1,
         "nonpositive_pb_rows_excluded": 1,
-        "rows_written": 1,
+        "rows_written": 2,
     }
     assert not ({"close", "pe", "total_mv", "turnover_rate"} & set(normalized))
 
@@ -1094,6 +1112,98 @@ def test_tushare_daily_pb_acceptance_writes_current_coverage_snapshot(
     stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
     assert stored.columns.tolist() == list(RICH.TUSHARE_DAILY_PB_COLUMNS)
     assert stored["instrument"].tolist() == ["SH600519", "SZ000001"]
+
+
+def test_tushare_daily_pb_sync_writes_immutable_no_return_snapshot(
+    tmp_path, monkeypatch
+):
+    contract = RICH.json.loads(RICH.DEFAULT_TUSHARE_DAILY_PB_CONTRACT.read_text())
+    contract["snapshot_contract"]["development_start"] = "2024-04-29"
+    contract["snapshot_contract"]["development_end"] = "2024-04-30"
+    contract["snapshot_contract"]["partition_policy"][
+        "minimum_seconds_between_calls"
+    ] = 0
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2020-01-01\t2025-12-31\n"
+        "SZ000001\t2020-01-01\t2025-12-31\n",
+        encoding="utf-8",
+    )
+    calendar = tmp_path / "day.txt"
+    calendar.write_text("2024-04-29\n2024-04-30\n", encoding="utf-8")
+    monkeypatch.setattr(RICH, "load_tushare_daily_pb_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "validate_range", lambda *args, **kwargs: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    spec_path = tmp_path / "capacity_spec.json"
+    record_path = tmp_path / "acceptance_record.json"
+    acceptance_manifest_path = tmp_path / "acceptance_manifest.json"
+    frame_path = tmp_path / "acceptance.parquet"
+    spec_path.write_text("{}\n", encoding="utf-8")
+    record_path.write_text("{}\n", encoding="utf-8")
+    acceptance_manifest_path.write_text("{}\n", encoding="utf-8")
+    frame_path.write_bytes(b"test-only")
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_daily_pb_source_chain",
+        lambda: {
+            "spec_path": spec_path,
+            "spec": {"preregistered_at": "2026-07-16T10:05:41Z"},
+            "record_path": record_path,
+            "record": {},
+            "manifest_path": acceptance_manifest_path,
+            "manifest": {
+                "run_id": "accepted-pb",
+                "files": [{"sha256": "acceptance-frame-content"}],
+            },
+            "frame_path": frame_path,
+        },
+    )
+
+    def fake_fetch(trade_date):
+        return pd.DataFrame(
+            [
+                {
+                    "ts_code": "600519.SH",
+                    "trade_date": trade_date.strftime("%Y%m%d"),
+                    "pb": 2.0,
+                },
+                {
+                    "ts_code": "000001.SZ",
+                    "trade_date": trade_date.strftime("%Y%m%d"),
+                    "pb": 1.0,
+                },
+            ],
+            columns=RICH.TUSHARE_DAILY_PB_RAW_FIELDS,
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_daily_pb", fake_fetch)
+    manifest_path = RICH.sync_tushare_daily_pb(
+        allow_large=True,
+        universe_path=universe,
+        calendar_path=calendar,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_daily_pb"
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_DAILY_PB_RAW_FIELDS
+    )
+    assert manifest["source_request"]["credentials_logged_or_stored"] is False
+    assert manifest["source_acceptance"]["run_id"] == "accepted-pb"
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert manifest["acceptance_status"] == (
+        "full_source_coverage_failed_stop_before_uniqueness_capacity_or_prices"
+    )
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(RICH.TUSHARE_DAILY_PB_COLUMNS)
+    assert len(stored) == 4
+    assert stored["tushare_positive_book_to_market"].tolist() == pytest.approx(
+        [0.5, 1.0, 0.5, 1.0]
+    )
+    assert not list((tmp_path / "raw").rglob("*.partial"))
 
 
 def test_canonicalize_minutes_handles_provider_column_names_and_sorts_rows():

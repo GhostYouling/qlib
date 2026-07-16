@@ -7239,6 +7239,52 @@ def test_tushare_moneyflow_partition_recomputes_frozen_formula():
         )
 
 
+def test_tushare_daily_pb_capacity_preregistration_is_fingerprint_frozen():
+    assert (
+        RESEARCH.file_sha256(RESEARCH.DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC)
+        == RESEARCH.TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256
+    )
+    spec = json.loads(RESEARCH.DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC.read_text())
+    assert spec["factor_catalog"] == [RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME]
+    assert spec["capacity_contract"]["holding_period_trading_days"] == 3
+    assert spec["capacity_contract"]["minimum_required_cohorts"] == 200
+    assert spec["uniqueness_contract"]["comparison_field_count"] == 43
+    assert spec["forward_return_fields_read"] is False
+
+
+def test_tushare_daily_pb_partition_recomputes_frozen_formula():
+    frame = pd.DataFrame(
+        [
+            {
+                "trade_date": pd.Timestamp("2024-04-30"),
+                "instrument": "SZ000001",
+                "pb": 2.5,
+                RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME: 0.4,
+                "provider": "tushare",
+            }
+        ],
+        columns=RESEARCH.TUSHARE_DAILY_PB_COLUMNS,
+    )
+    capacity = RESEARCH._validate_tushare_daily_pb_partition(
+        frame,
+        start=pd.Timestamp("2024-01-01"),
+        end=pd.Timestamp("2024-12-31"),
+    )
+    assert capacity.columns.tolist() == [
+        "trade_date",
+        "instrument",
+        RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME,
+    ]
+    changed = frame.copy()
+    changed[RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME] = 0.5
+    with pytest.raises(ValueError, match="does not match 1 / pb"):
+        RESEARCH._validate_tushare_daily_pb_partition(
+            changed,
+            start=pd.Timestamp("2024-01-01"),
+            end=pd.Timestamp("2024-12-31"),
+        )
+
+
 def test_tushare_moneyflow_capacity_counts_quality_seasoned_cross_sections():
     full_calendar = pd.bdate_range("2023-10-02", periods=80)
     research_calendar = full_calendar[-10:]

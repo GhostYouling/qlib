@@ -66,6 +66,9 @@ DEFAULT_TUSHARE_NORTHBOUND_TOP10_CONTRACT = (
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
 )
+DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC = (
+    REPO_ROOT / "docs" / "a_share_tushare_daily_pb_capacity_preregistration.json"
+)
 DEFAULT_BAOSTOCK_5M_CONTRACT = REPO_ROOT / "docs" / "a_share_baostock_5m_data_contract.json"
 DEFAULT_BAOSTOCK_5M_FACTOR_SPEC = (
     REPO_ROOT / "docs" / "a_share_baostock_5m_factor_preregistration.json"
@@ -137,6 +140,9 @@ TUSHARE_NORTHBOUND_TOP10_CONTRACT_SHA256 = (
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
+)
+TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256 = (
+    "14668ad3f97cef68cd2fae882507280ef835c0f5e7b4ddecb763c1907590c0a0"
 )
 BAOSTOCK_5M_CONTRACT_SHA256 = (
     "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f"
@@ -1334,13 +1340,26 @@ def canonicalize_tushare_daily_pb(
     def instrument(value: Any) -> str | None:
         if pd.isna(value):
             return None
-        code = str(value).split(".", 1)[0].strip()
+        source_code = str(value).strip()
+        parts = source_code.split(".", 1)
+        code = parts[0].strip()
         if len(code) != 6 or not code.isdigit():
             return None
+        suffix = parts[1].upper() if len(parts) == 2 else ""
+        # Tushare back-labels some historical NEEQ rows with a ``.BJ``
+        # suffix.  The frozen PB contract explicitly excludes and counts BSE
+        # names at the point-in-time holding-universe gate.  Preserve their
+        # source identity long enough to reach that gate instead of
+        # misclassifying a valid six-digit source key as missing.
+        if suffix == "BJ" and code.startswith(("4", "8")):
+            return f"BJ{code}"
         try:
-            return qlib_symbol(code)
+            symbol = qlib_symbol(code)
         except RichDataError:
             return None
+        if suffix in {"SH", "SZ"} and not symbol.startswith(suffix):
+            return None
+        return symbol
 
     normalized = pd.DataFrame(
         {
@@ -1736,6 +1755,137 @@ def load_tushare_daily_pb_contract(
     ):
         raise RichDataError("Tushare daily PB contract does not match the frozen protocol")
     return contract
+
+
+def load_tushare_daily_pb_source_chain(
+    path: Path = DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC,
+) -> dict[str, Any]:
+    """Verify the post-acceptance, pre-history PB evidence chain."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256:
+        raise RichDataError("Tushare daily PB capacity preregistration fingerprint mismatch")
+    spec = load_json_record(
+        path, kind="a_share_tushare_daily_pb_capacity_preregistration"
+    )
+    contract_link = spec.get("data_contract") or {}
+    acceptance = spec.get("source_acceptance") or {}
+    required = spec.get("required_full_snapshot") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    policy = spec.get("no_return_gate_policy") or {}
+    contract = load_tushare_daily_pb_contract(
+        resolve_record_path(str(contract_link.get("path") or ""))
+    )
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_single_session_acceptance_before_full_history_uniqueness_capacity_or_factor_returns_observed"
+        or spec.get("preregistered_at") != "2026-07-16T10:05:41Z"
+        or contract_link.get("sha256") != TUSHARE_DAILY_PB_CONTRACT_SHA256
+        or contract_link.get("preregistered_at") != contract.get("preregistered_at")
+        or tuple(spec.get("factor_catalog") or ())
+        != ("tushare_positive_book_to_market",)
+        or spec.get("factor_raw_columns")
+        != {"tushare_positive_book_to_market": "tushare_positive_book_to_market"}
+        or required.get("dataset") != "tushare_daily_pb"
+        or required.get("provider") != "tushare"
+        or required.get("acceptance_status")
+        != "full_source_coverage_passed_pending_no_return_uniqueness_and_capacity"
+        or tuple(required.get("required_partition_years") or ())
+        != tuple(range(2019, 2026))
+        or tuple(required.get("required_columns") or ()) != TUSHARE_DAILY_PB_COLUMNS
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_valid_names_per_factor_cohort") != 50
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("start") != "2025-01-01"
+        or uniqueness.get("end") != "2025-12-31"
+        or uniqueness.get("comparison_field_count") != 43
+        or len(uniqueness.get("comparison_fields") or []) != 43
+        or uniqueness.get("minimum_pairwise_names_per_session") != 50
+        or uniqueness.get("minimum_pairwise_sessions_per_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or policy.get("capacity_must_run_before_close_known_comparison_fields")
+        is not True
+        or policy.get("both_capacity_and_uniqueness_must_pass") is not True
+        or policy.get("one_completed_combined_audit_per_full_snapshot") is not True
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("Tushare daily PB capacity preregistration is inconsistent")
+
+    record_path = resolve_record_path(str(acceptance.get("record_path") or ""))
+    manifest_path = resolve_record_path(str(acceptance.get("manifest_path") or ""))
+    frame_path = resolve_record_path(str(acceptance.get("frame_path") or ""))
+    if (
+        not record_path.exists()
+        or file_digest(record_path) != acceptance.get("record_sha256")
+        or not manifest_path.exists()
+        or file_digest(manifest_path) != acceptance.get("manifest_sha256")
+        or not frame_path.exists()
+        or file_digest(frame_path) != acceptance.get("frame_file_sha256")
+    ):
+        raise RichDataError("Tushare daily PB acceptance evidence fingerprint mismatch")
+    record = load_json_record(
+        record_path, kind="a_share_tushare_daily_pb_source_acceptance_record"
+    )
+    manifest = load_json_record(manifest_path, kind="a_share_rich_data_snapshot")
+    files = list(manifest.get("files") or [])
+    if (
+        record.get("status") != "accepted_pending_full_history_uniqueness_and_capacity"
+        or (record.get("acceptance_manifest") or {}).get("sha256")
+        != acceptance.get("manifest_sha256")
+        or manifest.get("dataset") != "tushare_daily_pb_acceptance"
+        or manifest.get("provider") != "tushare"
+        or manifest.get("requested_start") != acceptance.get("trade_date")
+        or manifest.get("requested_end") != acceptance.get("trade_date")
+        or manifest.get("acceptance_status")
+        != "accepted_entitlement_formula_and_current_coverage_pending_full_history"
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or len(files) != 1
+        or files[0].get("path") != str(acceptance.get("frame_path"))
+        or files[0].get("sha256") != acceptance.get("frame_content_sha256")
+        or int(files[0].get("rows") or -1) != int(acceptance.get("rows") or -2)
+    ):
+        raise RichDataError("Tushare daily PB acceptance evidence identity mismatch")
+    frame = load_snapshot_frame(files[0])
+    trade_date = pd.Timestamp(str(acceptance["trade_date"]))
+    stored_dates = pd.to_datetime(frame["trade_date"], errors="coerce").dt.normalize()
+    stored_pb = pd.to_numeric(frame["pb"], errors="coerce")
+    stored_factor = pd.to_numeric(
+        frame["tushare_positive_book_to_market"], errors="coerce"
+    )
+    if (
+        tuple(frame.columns) != TUSHARE_DAILY_PB_COLUMNS
+        or len(frame) != int(acceptance["rows"])
+        or stored_dates.isna().any()
+        or not stored_dates.eq(trade_date).all()
+        or frame["instrument"].astype("string").isna().any()
+        or frame["instrument"].nunique() != len(frame)
+        or not stored_pb.gt(0.0).all()
+        or not np.isfinite(stored_factor).all()
+        or not np.allclose(
+            stored_factor.to_numpy(dtype="float64"),
+            1.0 / stored_pb.to_numpy(dtype="float64"),
+            rtol=0.0,
+            atol=1e-12,
+        )
+        or not frame["provider"].eq("tushare").all()
+    ):
+        raise RichDataError("Tushare daily PB acceptance formula audit failed")
+    return {
+        "spec_path": path,
+        "spec": spec,
+        "record_path": record_path,
+        "record": record,
+        "manifest_path": manifest_path,
+        "manifest": manifest,
+        "frame_path": frame_path,
+    }
 
 
 def load_baostock_5m_contract(
@@ -4287,6 +4437,386 @@ def sync_tushare_moneyflow(
             raise
 
 
+def _fetch_tushare_daily_pb_with_policy(
+    trade_date: dt.date,
+    *,
+    minimum_interval: float,
+    maximum_attempts: int,
+    retry_backoffs: list[float],
+    last_request_started: list[float | None],
+) -> pd.DataFrame:
+    """Apply the frozen sequential throttle and bounded retry policy to PB."""
+
+    for attempt in range(maximum_attempts):
+        previous = last_request_started[0]
+        if previous is not None:
+            remaining = minimum_interval - (time.monotonic() - previous)
+            if remaining > 0.0:
+                time.sleep(remaining)
+        last_request_started[0] = time.monotonic()
+        try:
+            return fetch_tushare_daily_pb(trade_date)
+        except RichDataError:
+            if attempt + 1 >= maximum_attempts:
+                raise
+            time.sleep(retry_backoffs[attempt])
+    raise AssertionError("unreachable Tushare daily PB retry state")
+
+
+def sync_tushare_daily_pb(
+    *,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Store the frozen 2019-2025 positive book-to-market history without prices."""
+
+    with RichDataProcessLock(METADATA_ROOT / ".tushare_daily_pb.lock"):
+        contract = load_tushare_daily_pb_contract()
+        source_chain = load_tushare_daily_pb_source_chain()
+        require_provider("tushare")
+        snapshot_contract = contract["snapshot_contract"]
+        partition_policy = snapshot_contract["partition_policy"]
+        start = dt.date.fromisoformat(snapshot_contract["development_start"])
+        end = dt.date.fromisoformat(snapshot_contract["development_end"])
+        validate_range(start, end, allow_large=allow_large, unit_count=1)
+        all_intervals = load_factor_universe_intervals(universe_path)
+        calendar = local_calendar_dates(start, end, calendar_path)
+        if calendar.empty:
+            raise RichDataError("local calendar has no sessions in the Tushare daily PB range")
+        overlap = all_intervals["start_date"].le(pd.Timestamp(end)) & all_intervals[
+            "end_date"
+        ].ge(pd.Timestamp(start))
+        intervals = all_intervals.loc[overlap].copy()
+        if intervals.empty:
+            raise RichDataError("holding universe has no instruments in the frozen PB range")
+
+        run_id = new_run_id("tushare_daily_pb")
+        parent = RAW_ROOT / "tushare" / "daily_pb" / "snapshots"
+        run_root = parent / run_id
+        temporary_root = parent / f".{run_id}.partial"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(f"Tushare daily PB snapshot already exists: {run_id}")
+        temporary_root.mkdir(parents=True)
+        files: list[dict[str, Any]] = []
+        all_daily_coverage: list[dict[str, Any]] = []
+        quality_totals = {
+            "input_rows": 0,
+            "missing_pb_rows_excluded": 0,
+            "nonpositive_pb_rows_excluded": 0,
+            "outside_point_in_time_holding_universe_rows_excluded": 0,
+            "rows_written": 0,
+        }
+        minimum_interval = float(partition_policy["minimum_seconds_between_calls"])
+        maximum_attempts = int(partition_policy["maximum_attempts_per_session"])
+        retry_backoffs = [
+            float(value) for value in partition_policy["retry_backoff_seconds"]
+        ]
+        last_request_started: list[float | None] = [None]
+        completed_calls = 0
+        total_calls = int(len(calendar))
+        current_session_date: dt.date | None = None
+        try:
+            for year in range(start.year, end.year + 1):
+                partition_start = max(start, dt.date(year, 1, 1))
+                partition_end = min(end, dt.date(year, 12, 31))
+                partition_calendar = calendar[
+                    (calendar >= pd.Timestamp(partition_start))
+                    & (calendar <= pd.Timestamp(partition_end))
+                ]
+                if partition_calendar.empty:
+                    continue
+                year_frames: list[pd.DataFrame] = []
+                year_quality = {
+                    "input_rows": 0,
+                    "missing_pb_rows_excluded": 0,
+                    "nonpositive_pb_rows_excluded": 0,
+                    "outside_point_in_time_holding_universe_rows_excluded": 0,
+                    "rows_written": 0,
+                }
+                for session in partition_calendar:
+                    session_date = pd.Timestamp(session).date()
+                    current_session_date = session_date
+                    raw = _fetch_tushare_daily_pb_with_policy(
+                        session_date,
+                        minimum_interval=minimum_interval,
+                        maximum_attempts=maximum_attempts,
+                        retry_backoffs=retry_backoffs,
+                        last_request_started=last_request_started,
+                    )
+                    if len(raw) >= int(
+                        partition_policy["provider_documented_maximum_rows_per_call"]
+                    ):
+                        raise RichDataError(
+                            f"Tushare daily PB {session_date.isoformat()} reached the "
+                            "provider row ceiling; the all-market response may be truncated"
+                        )
+                    normalized, quality = canonicalize_tushare_daily_pb(
+                        raw, session_date, session_date
+                    )
+                    session_ts = pd.Timestamp(session)
+                    active_rows = intervals[
+                        intervals["start_date"].le(session_ts)
+                        & intervals["end_date"].ge(session_ts)
+                    ]
+                    active_instruments = set(active_rows["instrument"].astype(str))
+                    in_universe = normalized["instrument"].isin(active_instruments)
+                    outside_universe = int((~in_universe).sum())
+                    normalized = normalized.loc[in_universe].reset_index(drop=True)
+                    quality[
+                        "outside_point_in_time_holding_universe_rows_excluded"
+                    ] = outside_universe
+                    quality["rows_written"] = int(len(normalized))
+                    for key in year_quality:
+                        year_quality[key] += int(quality.get(key, 0))
+                    observed_names = int(normalized["instrument"].nunique())
+                    expected_names = int(len(active_instruments))
+                    all_daily_coverage.append(
+                        {
+                            "trade_date": session_date.isoformat(),
+                            "expected_active_holding_names": expected_names,
+                            "positive_pb_holding_names": observed_names,
+                            "coverage": (
+                                observed_names / expected_names if expected_names else None
+                            ),
+                        }
+                    )
+                    if not normalized.empty:
+                        year_frames.append(normalized)
+                    completed_calls += 1
+                    if completed_calls % 50 == 0 or completed_calls == total_calls:
+                        print(
+                            json.dumps(
+                                {
+                                    "dataset": "tushare_daily_pb",
+                                    "progress_calls": completed_calls,
+                                    "total_calls": total_calls,
+                                    "latest_session": session_date.isoformat(),
+                                },
+                                ensure_ascii=False,
+                            ),
+                            flush=True,
+                        )
+                if not year_frames:
+                    raise RichDataError(
+                        f"Tushare daily PB {year} partition has no eligible positive-PB rows"
+                    )
+                partition_frame = (
+                    pd.concat(year_frames, ignore_index=True)
+                    .sort_values(["trade_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                if tuple(partition_frame.columns) != TUSHARE_DAILY_PB_COLUMNS:
+                    raise RichDataError(
+                        f"Tushare daily PB {year} partition columns changed"
+                    )
+                if partition_frame.duplicated(["instrument", "trade_date"]).any():
+                    raise RichDataError(
+                        f"Tushare daily PB {year} partition has duplicate stock-date keys"
+                    )
+                destination = temporary_root / f"{year}.parquet"
+                atomic_write_frame(partition_frame, destination)
+                for key in quality_totals:
+                    quality_totals[key] += year_quality[key]
+                files.append(
+                    {
+                        "year": year,
+                        "requested_start": partition_start.isoformat(),
+                        "requested_end": partition_end.isoformat(),
+                        "provider_calls": int(len(partition_calendar)),
+                        "path": manifest_path(run_root / destination.name),
+                        "rows": int(len(partition_frame)),
+                        "sha256": frame_digest(partition_frame),
+                        "quality": year_quality,
+                    }
+                )
+                print(
+                    json.dumps(
+                        {
+                            "dataset": "tushare_daily_pb",
+                            "completed_year": year,
+                            "rows": int(len(partition_frame)),
+                        },
+                        ensure_ascii=False,
+                    ),
+                    flush=True,
+                )
+            if not files:
+                raise RichDataError("Tushare daily PB sync produced no completed partitions")
+            coverages = pd.Series(
+                [row["coverage"] for row in all_daily_coverage if row["coverage"] is not None],
+                dtype="float64",
+            )
+            median_coverage = float(coverages.median()) if len(coverages) else 0.0
+            p05_coverage = float(coverages.quantile(0.05)) if len(coverages) else 0.0
+            coverage_policy = contract["source_completeness_policy"]
+            dates_with_minimum_names = int(
+                sum(
+                    row["positive_pb_holding_names"] >= 50
+                    for row in all_daily_coverage
+                )
+            )
+            observed_years = len({int(item["year"]) for item in files})
+            coverage_gate_passed = bool(
+                len(coverages)
+                and median_coverage
+                >= float(
+                    coverage_policy[
+                        "minimum_median_positive_pb_holding_universe_coverage"
+                    ]
+                )
+                and p05_coverage
+                >= float(
+                    coverage_policy[
+                        "minimum_p05_positive_pb_holding_universe_coverage"
+                    ]
+                )
+                and dates_with_minimum_names
+                >= int(coverage_policy["minimum_sessions_with_fifty_positive_pb_names"])
+                and observed_years
+                >= int(coverage_policy["minimum_observed_source_years"])
+            )
+            spec = source_chain["spec"]
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "tushare_daily_pb",
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "requested_start": start.isoformat(),
+                "requested_end": end.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_DAILY_PB_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_DAILY_PB_CONTRACT),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "no_return_preregistration": {
+                    "path": manifest_path(source_chain["spec_path"]),
+                    "sha256": file_digest(source_chain["spec_path"]),
+                    "preregistered_at": spec["preregistered_at"],
+                },
+                "source_acceptance": {
+                    "record_path": manifest_path(source_chain["record_path"]),
+                    "record_sha256": file_digest(source_chain["record_path"]),
+                    "manifest_path": manifest_path(source_chain["manifest_path"]),
+                    "manifest_sha256": file_digest(source_chain["manifest_path"]),
+                    "run_id": source_chain["manifest"].get("run_id"),
+                    "frame_path": manifest_path(source_chain["frame_path"]),
+                    "frame_content_sha256": (
+                        source_chain["manifest"]["files"][0]["sha256"]
+                    ),
+                },
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(universe_path.expanduser().resolve()),
+                    "sha256": file_digest(universe_path.expanduser().resolve()),
+                    "intervals": int(len(all_intervals)),
+                },
+                "local_calendar": {
+                    "path": manifest_path(calendar_path.expanduser().resolve()),
+                    "sha256": file_digest(calendar_path.expanduser().resolve()),
+                    "sessions_in_requested_range": int(len(calendar)),
+                },
+                "source_request": {
+                    "api": "daily_basic",
+                    "frequency": "daily_after_close",
+                    "request_mode": "one completed local trading session per call",
+                    "fields": list(TUSHARE_DAILY_PB_RAW_FIELDS),
+                    "forbidden_fields_requested_or_stored": [],
+                    "credentials_logged_or_stored": False,
+                    "minimum_seconds_between_calls": minimum_interval,
+                    "maximum_attempts_per_session": maximum_attempts,
+                },
+                "files": files,
+                "normalization_quality": quality_totals,
+                "coverage": {
+                    "calendar_sessions": int(len(calendar)),
+                    "observed_source_years": observed_years,
+                    "median_positive_pb_holding_universe_coverage": median_coverage,
+                    "p05_positive_pb_holding_universe_coverage": p05_coverage,
+                    "sessions_with_at_least_fifty_positive_pb_names": (
+                        dates_with_minimum_names
+                    ),
+                    "gate_passed_before_prices": coverage_gate_passed,
+                    "daily": all_daily_coverage,
+                },
+                "acceptance_status": (
+                    "full_source_coverage_passed_pending_no_return_uniqueness_and_capacity"
+                    if coverage_gate_passed
+                    else "full_source_coverage_failed_stop_before_uniqueness_capacity_or_prices"
+                ),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            message = str(exc)
+            if "missing keys" in message:
+                failure_code = "source_missing_instrument_or_trade_date_key"
+            elif "row ceiling" in message:
+                failure_code = "provider_row_ceiling_possible_truncation"
+            elif "duplicate" in message:
+                failure_code = "source_duplicate_key"
+            elif "outside the request" in message:
+                failure_code = "source_date_outside_request"
+            elif "fields outside" in message or "lacks requested fields" in message:
+                failure_code = "source_schema_mismatch"
+            elif "negative" in message or "infinite" in message:
+                failure_code = "source_value_domain_failure"
+            else:
+                failure_code = "provider_or_local_snapshot_failure"
+            failure_path = RUNS_ROOT / f"{run_id}_source_failure.json"
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_source_failure",
+                "dataset": "tushare_daily_pb",
+                "provider": "tushare",
+                "run_id": run_id,
+                "failed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "requested_start": start.isoformat(),
+                "requested_end": end.isoformat(),
+                "failed_session": (
+                    current_session_date.isoformat()
+                    if current_session_date is not None
+                    else None
+                ),
+                "completed_provider_calls_before_failure": completed_calls,
+                "total_planned_provider_calls": total_calls,
+                "failure_code": failure_code,
+                "partial_snapshot_deleted": not temporary_root.exists(),
+                "final_snapshot_published": run_root.exists(),
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_DAILY_PB_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_DAILY_PB_CONTRACT),
+                },
+                "no_return_preregistration": {
+                    "path": manifest_path(source_chain["spec_path"]),
+                    "sha256": file_digest(source_chain["spec_path"]),
+                },
+                "credentials_logged_or_stored": False,
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            atomic_write_json(failure, failure_path)
+            if isinstance(exc, RichDataError):
+                raise RichDataError(
+                    f"{message}; rejection_record={failure_path}"
+                ) from exc
+            raise
+
+
 def load_jqdata_moneyflow_acceptance(
     runs_root: Path | None = None,
 ) -> tuple[Path, dict[str, Any]]:
@@ -4863,6 +5393,22 @@ def build_parser() -> argparse.ArgumentParser:
         "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
     )
 
+    ts_daily_pb = subparsers.add_parser(
+        "sync-tushare-daily-pb",
+        help="download the frozen 2019-2025 Tushare positive book-to-market snapshot",
+    )
+    ts_daily_pb.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    ts_daily_pb.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+    ts_daily_pb.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the licensed full-universe multi-year request after acceptance and preregistration",
+    )
+
     jq_moneyflow_acceptance = subparsers.add_parser(
         "acceptance-jqdata-moneyflow",
         help="verify JQData professional daily moneyflow entitlement on four frozen symbols",
@@ -4962,6 +5508,12 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_daily_pb_acceptance(
                 universe_path=args.universe_file
             )
+        elif args.command == "sync-tushare-daily-pb":
+            manifest = sync_tushare_daily_pb(
+                allow_large=args.allow_large,
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+            )
         elif args.command == "acceptance-jqdata-moneyflow":
             manifest = sync_jqdata_moneyflow(acceptance_date=args.date)
         elif args.command == "sync-jqdata-moneyflow":
@@ -5000,6 +5552,7 @@ def main(argv: list[str] | None = None) -> int:
         "sync-baostock-5m": "stored_pending_no_return_feature_materialization",
         "sync-jqdata-moneyflow": "stored_pending_no_return_capacity",
         "sync-tushare-moneyflow": "stored_pending_no_return_capacity",
+        "sync-tushare-daily-pb": "stored_pending_no_return_uniqueness_and_capacity",
     }.get(args.command, "stored_pending_acceptance")
     print(json.dumps({"manifest": str(manifest), "status": command_status}, ensure_ascii=False))
     return 0
