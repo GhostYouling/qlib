@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_st_recovery_research_record",
+  "status": "terminal_source_continuity_failed_on_empty_historical_session_before_transitions_factor_values_capacity_uniqueness_or_returns",
+  "recorded_at": "2026-07-16T20:55:52Z",
+  "purpose": "Preserve the terminal result of the sole contract-fixed 2019-2025 Tushare stock_st membership attempt and prevent a retry, empty-as-zero reinterpretation, partial-history use, factor construction, or return access.",
+  "mechanism": {
+    "name": "tushare_st_recovery_speed",
+    "formula": "1 / prior_consecutive_st_sessions",
+    "direction": "higher_is_better",
+    "exit_definition": "present at t-1 and absent on both consecutive local sessions t and t+1",
+    "availability": "confirmed at t+1 close and first tradable at the following local session open",
+    "maximum_event_age_calendar_days": 3,
+    "left_censor_policy": "Exclude every ST spell touching the first requested 2019 local session."
+  },
+  "frozen_evidence": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
+    },
+    "data_contract": {
+      "path": "docs/a_share_tushare_st_recovery_data_contract.json",
+      "sha256": "cae22e7c7f8bf8c6e14587d5e7f260664c8080c579c52561ef0253d7c8a7ca9e",
+      "preregistered_at": "2026-07-16T20:35:22Z"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_stock_st_source_acceptance_record.json",
+      "sha256": "e1798221e8758bd2d39ee0f7f611d9c3299b8fcbf824fa9df6e7627c61bd8d0f"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_st_recovery_no_return_preregistration.json",
+      "sha256": "50c885bebe89c3e5e8b674afc86b3320639619431c17cad27f9fc4d00474a795"
+    },
+    "terminal_full_source_failure": {
+      "path": "data/metadata/rich_data/runs/20260716T205448Z_tushare_stock_st_membership_4fa3ee9c_source_failure.json",
+      "sha256": "58e12ab4b03dafd8f99725c03a8b8988d5df797f98163164cb3e221075640a75",
+      "repository_portability": "The local data manifest is Git-ignored and may be absent in another clone. This tracked fingerprinted terminal record remains authoritative and must still block a retry."
+    }
+  },
+  "full_source_attempt": {
+    "run_id": "20260716T205448Z_tushare_stock_st_membership_4fa3ee9c",
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31",
+    "planned_local_sessions": 1699,
+    "logical_sessions_issued": 59,
+    "logical_sessions_completed": 58,
+    "first_completed_session": "2019-01-02",
+    "last_completed_session": "2019-03-29",
+    "failed_session": "2019-04-01",
+    "provider_request_attempts": 59,
+    "source_rows_observed_before_failure": 5066,
+    "requested_fields": [
+      "ts_code",
+      "trade_date",
+      "type"
+    ],
+    "failure_code": "empty_historical_membership_response_cannot_prove_complete_daily_list",
+    "failure": "Tushare stock_st returned an empty frame for 2019-04-01. Under the frozen continuity contract, an empty response cannot distinguish a genuinely empty complete list from an unavailable or incomplete source partition.",
+    "empty_response_treated_as_zero_membership": false,
+    "failed_session_retried_or_rerequested": false,
+    "later_sessions_requested": false,
+    "partial_completed_history_usable": false,
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false,
+    "published_partition_count": 0,
+    "published_files": []
+  },
+  "scope_and_safety": {
+    "raw_provider_frames_persisted": false,
+    "name_or_type_name_requested_or_persisted": false,
+    "credentials_logged_or_stored": false,
+    "membership_transitions_derived": false,
+    "prior_consecutive_st_sessions_derived": false,
+    "factor_values_derived_or_persisted": false,
+    "capacity_run": false,
+    "comparison_fields_loaded": false,
+    "uniqueness_run": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "aggregation_scoring_selection_sizing_or_ordering_performed": false
+  },
+  "interpretation": {
+    "proven": [
+      "The one-shot implementation requested only the frozen three-field whitelist and stopped at the first empty required local session.",
+      "The hidden partial snapshot was deleted and no annual Parquet partition or successful full-source manifest was published.",
+      "No transition, duration, factor value, comparison field, price, forward return, score, selection, sizing, or order was constructed or read."
+    ],
+    "not_proven": [
+      "whether the empty 2019-04-01 response represented a genuinely empty complete list or a provider-side historical availability gap",
+      "complete 2019-2025 daily ST membership continuity",
+      "confirmed ST-exit events or prior consecutive ST durations",
+      "three-session cross-sectional cohort capacity",
+      "near-synonym independence from the frozen comparison catalog",
+      "historical association, execution-aware returns, aggregation, current scoring, selection, sizing, or trading performance"
+    ],
+    "economic_classification": "The recovery-speed idea remains economically distinct from static ST exclusion, but this exact Tushare historical route failed its predeclared reproducibility gate and contributes no admitted factor."
+  },
+  "terminal_decision": {
+    "full_source_contract_consumed": true,
+    "full_source_retry_allowed": false,
+    "failed_session_detail_or_probe_request_allowed": false,
+    "empty_response_as_zero_or_complete_absence_allowed": false,
+    "skip_fill_interpolate_or_mix_provider_allowed": false,
+    "partial_58_session_history_use_allowed": false,
+    "change_dates_fields_transition_formula_direction_or_event_age_allowed": false,
+    "lower_source_capacity_or_uniqueness_thresholds_allowed": false,
+    "capacity_comparison_uniqueness_or_return_work_allowed": false,
+    "combine_aggregate_score_select_size_order_or_level2_justification_allowed": false,
+    "next_authorized_action": "Return to a no-return mechanism-frontier audit and select only a newly economically independent candidate whose complete point-in-time source can be frozen before provider rows or factor values."
+  }
+}

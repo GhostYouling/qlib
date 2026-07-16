@@ -1840,7 +1840,7 @@ python scripts/a_share_short_horizon_factor_research.py minute-combination-holdo
 
 失败清单是 `20260716T202120Z_tushare_management_continuity_acceptance_3e1824f5.json`（SHA‑256 `1de603f276d14e77fafc993ed552f709d9c2d35456607c336875e3a70a06d45b`），跟踪终止记录是 [`a_share_tushare_management_continuity_source_acceptance_record.json`](a_share_tushare_management_continuity_source_acceptance_record.json)（SHA‑256 `e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8`）。CLI 现在会在合同、凭据和供应商访问前拒绝重跑。不得请求剩余股票或失败股票来恢复细节、丢弃/填充/移动 53 行、改变字段/身份/日期/公式/方向/事件年龄、创建同机制 v2、运行全量/容量/唯一性/收益、聚合/评分/选股/仓位/订单或据此采购 Level‑2。该结果只说明当前快照不满足冻结的历史点时合同，不说明管理层连续性的收益好坏。
 
-### Tushare ST 确认退出恢复速度（全量来源待执行）
+### Tushare ST 确认退出恢复速度（来源连续性终止）
 
 管理层连续性终止后，机制核重记录 [`a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55`）保留静态 ST 成员作为不可排名的持仓资格过滤，并只推进不同的状态转换候选：股票在 `t-1` 属于 ST、在连续 `t` 和 `t+1` 两个本地会话都不属于 ST 后，才在 `t+1` 收盘确认退出；下一会话开盘最早可交易。候选固定为：
 
@@ -1854,15 +1854,17 @@ tushare_st_recovery_speed = 1 / prior_consecutive_st_sessions
 
 全量来源合同 [`a_share_tushare_st_recovery_data_contract.json`](a_share_tushare_st_recovery_data_contract.json)（SHA‑256 `cae22e7c7f8bf8c6e14587d5e7f260664c8080c579c52561ef0253d7c8a7ca9e`）固定遍历 2019–2025 的 1,699 个本地交易日，每日只请求 `ts_code,trade_date,type`，调用间隔至少 0.32 秒，每日最多三次尝试，空响应或达到 1,000 行都按来源不完整终止。合法 `.BJ` 行明确排除并计数；年度 Parquet 只保存 `trade_date,instrument,provider`。七年共享隐藏临时根，全部成功才原子发布；开始访问供应商后的任何失败也会删除半成品并留下终止清单。该全量合同只能消费一次。
 
-Token 必须按 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md) 隐藏输入、只验证有无并向单个子进程透传。唯一获准命令为：
+Token 必须按 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md) 隐藏输入、只验证有无并向单个子进程透传。历史上唯一获准的全量命令曾为：
 
 ```bash
 python scripts/a_share_rich_data.py \
   sync-tushare-stock-st-membership --allow-large
 ```
 
-不要把 Token 明文加到命令中；完整的 `launchctl` 安全包装见上述 Token 文档。同步步骤本身不构造退出转换、持续时长或因子值，也不读取价格或收益。只有清单状态达到 `full_source_continuity_passed_pending_no_return_capacity_and_uniqueness`，才允许按 [`a_share_tushare_st_recovery_no_return_preregistration.json`](a_share_tushare_st_recovery_no_return_preregistration.json)（SHA‑256 `50c885bebe89c3e5e8b674afc86b3320639619431c17cad27f9fc4d00474a795`）实现并运行一次固定容量/唯一性审计：先要求至少 200 个六名称、两不同值、覆盖五年的非重叠三日 cohort；容量通过后才可临时比较预注册的 54 个既有字段，并要求至少 100 个可比会话且绝对中位日度 Spearman 小于 0.8。两门通过前不得读取收益；即使通过也只允许另行冻结一次收益诊断，不能直接聚合、评分或选股。
+该命令已经永久消费，不能再次运行。唯一尝试按顺序完成 2019‑01‑02 至 2019‑03‑29 的 58 个会话；第 59 次调用对应 2019‑04‑01，Tushare 返回空表。空响应既可能表示完整的零成员列表，也可能表示来源不可用或分区不完整；冻结合同不能区分二者，因此程序没有当成零、没有重试、没有跳过、没有继续请求后续日期。此前共观察 5,066 行，但全部只存在于内存和隐藏临时目录，失败后临时快照被删除；没有年度 Parquet、正式全量清单或可用的 58 会话局部历史。
 
-当前实现与 11 项专项测试已通过，完整数据采集套件为 **413 passed, 9 warnings**。这个结果只证明来源合同、字段最小化、年度原子发布、失败清理和一次性保护按预注册实现；真实 2019–2025 全量来源尚未执行，因此目前仍没有 ST 恢复因子值、容量结论、收益结论或可用于选股的新增分数。
+本地失败清单为 `20260716T205448Z_tushare_stock_st_membership_4fa3ee9c_source_failure.json`（SHA‑256 `58e12ab4b03dafd8f99725c03a8b8988d5df797f98163164cb3e221075640a75`）；跨克隆的终止记录是 [`a_share_tushare_st_recovery_research_record.json`](a_share_tushare_st_recovery_research_record.json)（SHA‑256 `bbed853556c603a154501d59196ab353299b1ce4199a6bbd978197b01d37e067`）。CLI 现在会先验证该记录，再在来源链、Token、供应商或本地运行清单扫描之前拒绝重跑。冻结的 [`a_share_tushare_st_recovery_no_return_preregistration.json`](a_share_tushare_st_recovery_no_return_preregistration.json)（SHA‑256 `50c885bebe89c3e5e8b674afc86b3320639619431c17cad27f9fc4d00474a795`）没有运行：转换、此前连续 ST 会话数、因子值、54 个比较字段、容量、唯一性、价格和收益均未构造或读取。
+
+终止记录、跨克隆保护和原子失败路径通过 12 项 `stock_st` 专项测试；完整数据采集套件为 **414 passed, 9 warnings**。因此这条精确的 Tushare 历史路线正式终止且不向因子池贡献值。不得重请求 2019‑04‑01、把空表解释为无 ST、跳过/填充/插值该日、使用前 58 个会话、混入名称解析或其他供应商、修改日期/字段/确认规则/公式/方向/事件年龄、降低容量/唯一性门槛，或继续收益、聚合、评分、选股、仓位、订单和 Level‑2 采购。它证明的是历史来源连续性失败，不证明该经济机制的收益为正或为负；下一步只能回到不读收益的独立机制发现。
 
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。

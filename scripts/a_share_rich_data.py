@@ -132,6 +132,9 @@ DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD = (
 DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC = (
     REPO_ROOT / "docs" / "a_share_tushare_st_recovery_no_return_preregistration.json"
 )
+DEFAULT_TUSHARE_ST_RECOVERY_RESEARCH_RECORD = (
+    REPO_ROOT / "docs" / "a_share_tushare_st_recovery_research_record.json"
+)
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
 )
@@ -285,6 +288,9 @@ TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256 = (
 )
 TUSHARE_ST_RECOVERY_NO_RETURN_SPEC_SHA256 = (
     "50c885bebe89c3e5e8b674afc86b3320639619431c17cad27f9fc4d00474a795"
+)
+TUSHARE_ST_RECOVERY_RESEARCH_RECORD_SHA256 = (
+    "bbed853556c603a154501d59196ab353299b1ce4199a6bbd978197b01d37e067"
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
@@ -6048,6 +6054,146 @@ def load_tushare_st_recovery_no_return_spec(
     return spec
 
 
+def load_tushare_st_recovery_research_record(
+    path: Path = DEFAULT_TUSHARE_ST_RECOVERY_RESEARCH_RECORD,
+) -> dict[str, Any]:
+    """Validate the tracked terminal stock_st source-continuity record."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_ST_RECOVERY_RESEARCH_RECORD_SHA256:
+        raise RichDataError("Tushare ST-recovery terminal-record fingerprint mismatch")
+    record = load_json_record(
+        path, kind="a_share_tushare_st_recovery_research_record"
+    )
+    mechanism = record.get("mechanism") or {}
+    evidence = record.get("frozen_evidence") or {}
+    attempt = record.get("full_source_attempt") or {}
+    scope = record.get("scope_and_safety") or {}
+    interpretation = record.get("interpretation") or {}
+    decision = record.get("terminal_decision") or {}
+    overlap = evidence.get("mechanism_overlap_audit") or {}
+    contract = evidence.get("data_contract") or {}
+    acceptance = evidence.get("source_acceptance_record") or {}
+    no_return = evidence.get("no_return_preregistration") or {}
+    failure = evidence.get("terminal_full_source_failure") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "terminal_source_continuity_failed_on_empty_historical_session_before_transitions_factor_values_capacity_uniqueness_or_returns"
+        or record.get("recorded_at") != "2026-07-16T20:55:52Z"
+        or mechanism.get("name") != "tushare_st_recovery_speed"
+        or mechanism.get("formula") != "1 / prior_consecutive_st_sessions"
+        or mechanism.get("direction") != "higher_is_better"
+        or mechanism.get("exit_definition")
+        != "present at t-1 and absent on both consecutive local sessions t and t+1"
+        or mechanism.get("availability")
+        != "confirmed at t+1 close and first tradable at the following local session open"
+        or mechanism.get("maximum_event_age_calendar_days") != 3
+        or overlap.get("sha256")
+        != "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
+        or contract.get("sha256") != TUSHARE_ST_RECOVERY_CONTRACT_SHA256
+        or acceptance.get("sha256")
+        != TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256
+        or no_return.get("sha256") != TUSHARE_ST_RECOVERY_NO_RETURN_SPEC_SHA256
+        or failure.get("sha256")
+        != "58e12ab4b03dafd8f99725c03a8b8988d5df797f98163164cb3e221075640a75"
+        or attempt.get("run_id")
+        != "20260716T205448Z_tushare_stock_st_membership_4fa3ee9c"
+        or attempt.get("requested_start") != "2019-01-01"
+        or attempt.get("requested_end") != "2025-12-31"
+        or attempt.get("planned_local_sessions") != 1699
+        or attempt.get("logical_sessions_issued") != 59
+        or attempt.get("logical_sessions_completed") != 58
+        or attempt.get("first_completed_session") != "2019-01-02"
+        or attempt.get("last_completed_session") != "2019-03-29"
+        or attempt.get("failed_session") != "2019-04-01"
+        or attempt.get("provider_request_attempts") != 59
+        or attempt.get("source_rows_observed_before_failure") != 5066
+        or tuple(attempt.get("requested_fields") or ())
+        != TUSHARE_ST_MEMBERSHIP_RAW_FIELDS
+        or attempt.get("failure_code")
+        != "empty_historical_membership_response_cannot_prove_complete_daily_list"
+        or attempt.get("empty_response_treated_as_zero_membership") is not False
+        or attempt.get("failed_session_retried_or_rerequested") is not False
+        or attempt.get("later_sessions_requested") is not False
+        or attempt.get("partial_completed_history_usable") is not False
+        or attempt.get("partial_snapshot_deleted") is not True
+        or attempt.get("final_snapshot_published") is not False
+        or attempt.get("published_partition_count") != 0
+        or attempt.get("published_files") != []
+        or scope.get("raw_provider_frames_persisted") is not False
+        or scope.get("name_or_type_name_requested_or_persisted") is not False
+        or scope.get("credentials_logged_or_stored") is not False
+        or scope.get("membership_transitions_derived") is not False
+        or scope.get("prior_consecutive_st_sessions_derived") is not False
+        or scope.get("factor_values_derived_or_persisted") is not False
+        or scope.get("capacity_run") is not False
+        or scope.get("comparison_fields_loaded") is not False
+        or scope.get("uniqueness_run") is not False
+        or scope.get("price_fields_loaded") != []
+        or scope.get("open_close_or_forward_return_fields_read") is not False
+        or scope.get("forward_return_fields_read") is not False
+        or scope.get("aggregation_scoring_selection_sizing_or_ordering_performed")
+        is not False
+        or interpretation.get("economic_classification")
+        != "The recovery-speed idea remains economically distinct from static ST exclusion, but this exact Tushare historical route failed its predeclared reproducibility gate and contributes no admitted factor."
+        or decision.get("full_source_contract_consumed") is not True
+        or decision.get("full_source_retry_allowed") is not False
+        or decision.get("failed_session_detail_or_probe_request_allowed") is not False
+        or decision.get("empty_response_as_zero_or_complete_absence_allowed")
+        is not False
+        or decision.get("skip_fill_interpolate_or_mix_provider_allowed") is not False
+        or decision.get("partial_58_session_history_use_allowed") is not False
+        or decision.get("capacity_comparison_uniqueness_or_return_work_allowed")
+        is not False
+        or decision.get("combine_aggregate_score_select_size_order_or_level2_justification_allowed")
+        is not False
+    ):
+        raise RichDataError("Tushare ST-recovery terminal record changed")
+
+    for label, link in (
+        ("mechanism overlap audit", overlap),
+        ("data contract", contract),
+        ("source acceptance record", acceptance),
+        ("no-return preregistration", no_return),
+    ):
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(f"Tushare ST-recovery terminal {label} changed")
+
+    failure_path = resolve_record_path(str(failure.get("path") or ""))
+    if failure_path.exists():
+        if file_digest(failure_path) != failure.get("sha256"):
+            raise RichDataError("Tushare ST-recovery terminal failure changed")
+        failure_record = load_json_record(
+            failure_path, kind="a_share_rich_data_snapshot"
+        )
+        source_request = failure_record.get("source_request") or {}
+        if (
+            failure_record.get("dataset") != "tushare_stock_st_membership"
+            or failure_record.get("run_id") != attempt.get("run_id")
+            or failure_record.get("failed_trade_date") != attempt.get("failed_session")
+            or source_request.get("logical_sessions_planned") != 1699
+            or source_request.get("logical_sessions_issued") != 59
+            or source_request.get("logical_sessions_completed") != 58
+            or source_request.get("provider_request_attempts") != 59
+            or source_request.get("source_rows_observed") != 5066
+            or tuple(source_request.get("fields") or ())
+            != TUSHARE_ST_MEMBERSHIP_RAW_FIELDS
+            or failure_record.get("files") != []
+            or failure_record.get("partial_snapshot_deleted") is not True
+            or failure_record.get("final_snapshot_published") is not False
+            or failure_record.get("membership_transitions_derived") is not False
+            or failure_record.get("prior_spell_durations_derived") is not False
+            or failure_record.get("factor_values_derived_or_persisted") is not False
+            or failure_record.get("price_fields_loaded") != []
+            or failure_record.get("forward_return_fields_read") is not False
+            or failure_record.get("selection_or_promotion_allowed") is not False
+        ):
+            raise RichDataError("Tushare ST-recovery terminal failure changed")
+    return record
+
+
 def load_tushare_st_recovery_source_chain() -> dict[str, Any]:
     """Validate contract, offline acceptance, and no-return protocol before Token use."""
 
@@ -11558,6 +11704,12 @@ def sync_tushare_stock_st_membership(
 
     dataset = "tushare_stock_st_membership"
     with RichDataProcessLock(METADATA_ROOT / ".tushare_stock_st_membership.lock"):
+        if DEFAULT_TUSHARE_ST_RECOVERY_RESEARCH_RECORD.exists():
+            load_tushare_st_recovery_research_record()
+            raise RichDataError(
+                "Tushare ST-recovery branch is terminal after its sole full-source "
+                "continuity failure; another full sync is forbidden"
+            )
         prior_records = tushare_stock_st_full_snapshot_records()
         if prior_records:
             raise RichDataError(

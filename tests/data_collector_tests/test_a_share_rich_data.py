@@ -2854,6 +2854,44 @@ def test_tushare_stock_st_protocol_documents_and_request_fields_are_frozen(monke
     }
 
 
+def test_tushare_stock_st_terminal_record_is_frozen_and_blocks_before_source_chain(
+    tmp_path, monkeypatch
+):
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_ST_RECOVERY_RESEARCH_RECORD)
+        == RICH.TUSHARE_ST_RECOVERY_RESEARCH_RECORD_SHA256
+    )
+    record = RICH.load_tushare_st_recovery_research_record()
+    attempt = record["full_source_attempt"]
+    assert attempt["logical_sessions_completed"] == 58
+    assert attempt["failed_session"] == "2019-04-01"
+    assert attempt["source_rows_observed_before_failure"] == 5066
+    assert attempt["empty_response_treated_as_zero_membership"] is False
+    assert attempt["partial_snapshot_deleted"] is True
+    assert record["scope_and_safety"]["factor_values_derived_or_persisted"] is False
+    assert record["scope_and_safety"]["price_fields_loaded"] == []
+    assert record["scope_and_safety"]["forward_return_fields_read"] is False
+
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "tushare_stock_st_full_snapshot_records",
+        lambda: pytest.fail("terminal guard must run before local run scanning"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_st_recovery_source_chain",
+        lambda: pytest.fail("terminal guard must run before source-chain access"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "require_provider",
+        lambda provider: pytest.fail("terminal guard must run before provider access"),
+    )
+    with pytest.raises(RICH.RichDataError, match="branch is terminal.*forbidden"):
+        RICH.sync_tushare_stock_st_membership(allow_large=True)
+
+
 def test_tushare_stock_st_canonicalization_is_membership_only_and_excludes_bj():
     trade_date = dt.date(2024, 4, 30)
     raw = pd.DataFrame(
@@ -2958,6 +2996,11 @@ def configure_stock_st_full_test(tmp_path, monkeypatch):
     monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
     monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
     monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_ST_RECOVERY_RESEARCH_RECORD",
+        tmp_path / "missing_research_record.json",
+    )
     monkeypatch.setattr(
         RICH,
         "new_run_id",
