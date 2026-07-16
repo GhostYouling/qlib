@@ -7178,6 +7178,356 @@ def test_jqdata_moneyflow_capacity_audit_is_one_shot_and_reported(tmp_path, monk
     assert "| 否 |" in report
 
 
+def test_tushare_moneyflow_capacity_preregistration_is_fingerprint_frozen(tmp_path):
+    spec = RESEARCH.load_tushare_moneyflow_capacity_preregistration()
+    assert spec["run_contract"]["holding_universe"] == "buyable_main_chinext"
+    assert spec["run_contract"]["holding_period_trading_days"] == 3
+    assert spec["run_contract"]["minimum_required_cohorts"] == 200
+    assert spec["mechanism_identity"][
+        "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors"
+    ] is False
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(RESEARCH.DEFAULT_TUSHARE_MONEYFLOW_CAPACITY_SPEC.read_text())
+    changed["run_contract"]["minimum_required_cohorts"] = 199
+    changed_path = tmp_path / "changed_tushare_capacity.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_tushare_moneyflow_capacity_preregistration(changed_path)
+
+
+def test_tushare_moneyflow_partition_recomputes_frozen_formula():
+    amounts = {
+        "buy_sm_amount": 10.0,
+        "sell_sm_amount": 30.0,
+        "buy_md_amount": 10.0,
+        "sell_md_amount": 30.0,
+        "buy_lg_amount": 40.0,
+        "sell_lg_amount": 10.0,
+        "buy_elg_amount": 60.0,
+        "sell_elg_amount": 10.0,
+    }
+    frame = pd.DataFrame(
+        [
+            {
+                "trade_date": pd.Timestamp("2024-04-30"),
+                "instrument": "SZ000001",
+                **amounts,
+                RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME: 0.4,
+                "provider": "tushare",
+            }
+        ],
+        columns=RESEARCH.TUSHARE_MONEYFLOW_COLUMNS,
+    )
+    capacity = RESEARCH._validate_tushare_moneyflow_partition(
+        frame,
+        start=pd.Timestamp("2024-01-01"),
+        end=pd.Timestamp("2024-12-31"),
+    )
+    assert capacity.columns.tolist() == [
+        "trade_date",
+        "instrument",
+        RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME,
+    ]
+    changed = frame.copy()
+    changed[RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME] = -0.4
+    with pytest.raises(ValueError, match="frozen formula"):
+        RESEARCH._validate_tushare_moneyflow_partition(
+            changed,
+            start=pd.Timestamp("2024-01-01"),
+            end=pd.Timestamp("2024-12-31"),
+        )
+
+
+def test_tushare_moneyflow_capacity_counts_quality_seasoned_cross_sections():
+    full_calendar = pd.bdate_range("2023-10-02", periods=80)
+    research_calendar = full_calendar[-10:]
+    symbols = [f"SZ{index:06d}" for index in range(1, 51)]
+    intervals = {
+        symbol: [(full_calendar[0], research_calendar[-1])] for symbol in symbols
+    }
+    rebalances = research_calendar[:-3:3]
+    factor_frame = pd.DataFrame(
+        [
+            {
+                "trade_date": date,
+                "instrument": symbol,
+                RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME: position / 100.0,
+            }
+            for date in rebalances
+            for position, symbol in enumerate(symbols, start=1)
+        ]
+    )
+    fundamentals = pd.DataFrame(
+        [
+            {
+                "instrument": symbol,
+                "report_date": pd.Timestamp("2023-09-30"),
+                "announcement_date": full_calendar[1],
+                "roe": 10.0,
+                "net_profit": 1.0,
+                "revenue_yoy": 10.0,
+                "profit_yoy": 10.0,
+            }
+            for symbol in symbols
+        ]
+    )
+    contract = {
+        "holding_period_trading_days": 3,
+        "minimum_valid_names_per_factor_cohort": 50,
+        "minimum_distinct_factor_values_per_cohort": 2,
+        "minimum_required_cohorts": 3,
+        "minimum_observed_calendar_years": 1,
+        "maximum_quality_age_days": 550,
+        "minimum_listing_sessions": 20,
+    }
+    capacity = RESEARCH.tushare_moneyflow_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        contract=contract,
+    )
+    assert capacity["factor"] == RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME
+    assert capacity["potential_complete_cohorts"] == 3
+    assert capacity["capacity_gate_passed"] is True
+    assert capacity["price_fields_loaded"] == []
+    assert capacity["forward_return_fields_read"] is False
+
+
+def test_tushare_moneyflow_capacity_audit_is_one_shot(tmp_path, monkeypatch):
+    provider = tmp_path / "provider"
+    calendar_path = provider / "calendars" / "day.txt"
+    universe_path = provider / "instruments" / "buyable_main_chinext.txt"
+    calendar_path.parent.mkdir(parents=True)
+    universe_path.parent.mkdir(parents=True)
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    universe_path.write_text(
+        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
+    )
+    contract = {
+        "start": "2019-01-01",
+        "end": "2025-12-31",
+        "holding_universe": "buyable_main_chinext",
+    }
+    spec = {
+        "preregistered_at": "2026-07-16T08:40:21Z",
+        "run_contract": contract,
+        "quarterly_quality_snapshot": {"path": str(tmp_path / "quality.parquet")},
+        "point_in_time_context": {
+            "fingerprint_range_start": "2019-01-01",
+            "fingerprint_range_end": "2025-12-31",
+            "holding_universe": {
+                "name": "buyable_main_chinext",
+                **RESEARCH.point_in_time_interval_fingerprint(
+                    universe_path, start="2019-01-01", end="2025-12-31"
+                ),
+            },
+        },
+        "mechanism_identity": {
+            "provider_substitute_for_unobserved_jqdata_contract": True,
+            "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors": False,
+        },
+        "later_diagnostic_direction_if_capacity_passes": (
+            "higher_large_order_net_inflow_share_is_better"
+        ),
+    }
+    source_evidence = {
+        "manifest": {
+            "run_id": "full-history",
+            "sha256": "b" * 64,
+            "path": str(tmp_path / "full.json"),
+        },
+        "local_calendar": {"sha256": RESEARCH.file_sha256(calendar_path)},
+    }
+    full_calendar = pd.DatetimeIndex(
+        [pd.Timestamp("2019-01-02"), pd.Timestamp("2025-12-31")]
+    )
+    capacity = {
+        "factor": RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME,
+        "potential_complete_cohorts": 220,
+        "minimum_required_cohorts": 200,
+        "observed_calendar_years": 7,
+        "minimum_observed_calendar_years": 5,
+        "capacity_gate_passed": True,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH, "load_tushare_moneyflow_capacity_preregistration", lambda: spec
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_moneyflow_full_snapshot",
+        lambda manifest, loaded_spec: (pd.DataFrame(), source_evidence),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_market_capacity_context",
+        lambda *args, **kwargs: (
+            full_calendar,
+            full_calendar,
+            {"SZ000001": [(full_calendar[0], full_calendar[-1])]},
+        ),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "tushare_moneyflow_capacity", lambda *args, **kwargs: capacity
+    )
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "full.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(provider),
+    )
+    result = RESEARCH.run_tushare_moneyflow_capacity_audit(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["source_admitted_for_separate_return_diagnostic_preregistration"] is True
+    assert audit["mechanism_identity"][
+        "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors"
+    ] is False
+    assert audit["data"]["price_fields_loaded"] == []
+    assert audit["forward_return_fields_read"] is False
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_moneyflow_capacity_audit(args)
+
+
+def test_tushare_moneyflow_diagnostic_preregistration_is_fingerprint_frozen(tmp_path):
+    spec = RESEARCH.load_tushare_moneyflow_diagnostic_preregistration()
+    assert spec["capacity_audit"]["potential_complete_cohorts"] == 540
+    assert spec["factor"]["name"] == RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME
+    assert spec["factor"][
+        "jqdata_provider_substitute_may_be_added_as_second_factor"
+    ] is False
+    assert spec["run_contract"]["holding_period_trading_days"] == 3
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(RESEARCH.DEFAULT_TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC.read_text())
+    changed["factor"]["raw_direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_tushare_diagnostic.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_tushare_moneyflow_diagnostic_preregistration(changed_path)
+
+
+def test_tushare_moneyflow_diagnostic_is_single_factor_and_one_shot(
+    tmp_path, monkeypatch
+):
+    dates = pd.bdate_range("2023-01-02", periods=200)
+    symbols = [f"SZ{index:06d}" for index in range(1, 51)]
+    rows = [
+        {
+            "datetime": date,
+            "instrument": symbol,
+            "quality_eligible": True,
+            "fundamental_quality_eligible": True,
+            "listing_seasoning_eligible": True,
+        }
+        for date in dates
+        for symbol in symbols
+    ]
+    market = pd.DataFrame(rows)
+    factor_frame = market[["datetime", "instrument"]].rename(
+        columns={"datetime": "trade_date"}
+    )
+    factor_frame[RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME] = [
+        (position % 50) / 50.0 for position in range(len(factor_frame))
+    ]
+    spec = json.loads(
+        RESEARCH.DEFAULT_TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC.read_text()
+    )
+    source_evidence = {
+        "capacity_audit": {"sha256": "a" * 64},
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH, "load_tushare_moneyflow_diagnostic_preregistration", lambda: spec
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_moneyflow_diagnostic_sources",
+        lambda loaded: (factor_frame, source_evidence),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_prospective_execution_policy",
+        lambda: {"frozen_at": "2026-07-14T00:00:00Z"},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "require_prospective_execution_policy_compatibility",
+        lambda *args, **kwargs: None,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_pilot_execution_policy",
+        lambda: {"frozen_at": "2026-07-14T00:00:00Z"},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "research_price_basis_metadata",
+        lambda provider: {
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "future_corporate_actions_used": False,
+        },
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "load_market_data", lambda *args, **kwargs: market.copy()
+    )
+    monkeypatch.setattr(
+        RESEARCH, "attach_quality_asof", lambda frame, *args, **kwargs: frame
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "market_state_frame",
+        lambda frame, eligible: pd.DataFrame(
+            index=pd.DatetimeIndex(frame["datetime"].unique())
+        ),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "forward_factor_return_frame",
+        lambda ranked, hold_days: pd.DataFrame({"placeholder": [1]}),
+    )
+    summary = {
+        "factor": RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME,
+        "cohorts": 200,
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "summarize_factor_diagnostics",
+        lambda *args, **kwargs: [dict(summary)],
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "simulate_prospective_execution_topk",
+        lambda *args, **kwargs: {"policy_applied": True},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "simulate_pilot_execution_topk",
+        lambda *args, **kwargs: {"policy_applied": True},
+    )
+    args = SimpleNamespace(
+        provider_uri=str(tmp_path / "provider"),
+        experiment_root=str(tmp_path / "experiments"),
+        batch_size=500,
+    )
+    result = RESEARCH.run_tushare_moneyflow_diagnostic(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["factor_catalog"] == [RESEARCH.TUSHARE_MONEYFLOW_FACTOR_NAME]
+    assert audit["mechanism_identity"][
+        "jqdata_may_be_counted_or_combined_as_second_factor"
+    ] is False
+    assert audit["tushare_moneyflow"]["provider_net_mf_amount_requested_or_used"] is False
+    assert audit["forward_return_fields_read"] is True
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_moneyflow_diagnostic(args)
+
+
 def test_quarterly_profit_acceleration_event_audits_are_retained_without_strategy_promotion(tmp_path):
     (tmp_path / "20260714T000000Z_quarterly_profit_acceleration_event_audit.json").write_text(
         json.dumps(

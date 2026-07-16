@@ -658,6 +658,170 @@ def test_jqdata_moneyflow_full_sync_requires_fingerprinted_acceptance(tmp_path):
     assert loaded["run_id"] == "accepted"
 
 
+def test_tushare_moneyflow_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_tushare_moneyflow_contract()
+    assert contract["factor"]["name"] == "tushare_large_order_net_inflow_share"
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_MONEYFLOW_RAW_FIELDS
+    )
+    assert contract["mechanism_identity"][
+        "jqdata_and_tushare_may_be_combined_as_independent_factors"
+    ] is False
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(RICH.DEFAULT_TUSHARE_MONEYFLOW_CONTRACT.read_text())
+    changed["factor"]["direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_tushare_moneyflow_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_tushare_moneyflow_contract(changed_path)
+
+
+def test_tushare_moneyflow_request_uses_only_frozen_fields(monkeypatch):
+    captured = {}
+
+    class Pro:
+        def moneyflow(self, **kwargs):
+            captured.update(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_moneyflow(dt.date(2024, 4, 30))
+    assert captured["trade_date"] == "20240430"
+    assert captured["fields"].split(",") == list(RICH.TUSHARE_MONEYFLOW_RAW_FIELDS)
+    forbidden = set(
+        RICH.load_tushare_moneyflow_contract()["source"]["explicitly_forbidden_fields"]
+    )
+    assert set(captured["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_moneyflow_normalization_derives_ratio_and_excludes_missing_zero():
+    rows = [
+        {
+            "ts_code": "000001.SZ",
+            "trade_date": "20240430",
+            "buy_sm_amount": 10,
+            "sell_sm_amount": 30,
+            "buy_md_amount": 10,
+            "sell_md_amount": 30,
+            "buy_lg_amount": 40,
+            "sell_lg_amount": 10,
+            "buy_elg_amount": 60,
+            "sell_elg_amount": 10,
+        },
+        {
+            "ts_code": "600519.SH",
+            "trade_date": "20240430",
+            **{field: 0 for field in RICH.TUSHARE_MONEYFLOW_AMOUNT_FIELDS},
+        },
+        {
+            "ts_code": "300750.SZ",
+            "trade_date": "20240430",
+            **{
+                field: (None if field == "buy_elg_amount" else 1)
+                for field in RICH.TUSHARE_MONEYFLOW_AMOUNT_FIELDS
+            },
+        },
+    ]
+    normalized, quality = RICH.canonicalize_tushare_moneyflow(
+        pd.DataFrame(rows), dt.date(2024, 4, 30), dt.date(2024, 4, 30)
+    )
+    assert normalized.columns.tolist() == list(RICH.TUSHARE_MONEYFLOW_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SZ000001"]
+    assert normalized["tushare_large_order_net_inflow_share"].item() == pytest.approx(0.4)
+    assert quality == {
+        "input_rows": 3,
+        "missing_rows_excluded": 1,
+        "zero_denominator_rows_excluded": 1,
+        "rows_written": 1,
+    }
+    assert normalized["provider"].tolist() == ["tushare"]
+    assert not ({"net_mf_amount", "close", "buy_lg_vol"} & set(normalized.columns))
+
+
+def test_tushare_moneyflow_normalization_rejects_negative_raw_amount():
+    row = {
+        "ts_code": "000001.SZ",
+        "trade_date": "20240430",
+        **{field: 1 for field in RICH.TUSHARE_MONEYFLOW_AMOUNT_FIELDS},
+    }
+    row["sell_lg_amount"] = -1
+    with pytest.raises(RICH.RichDataError, match="negative raw flow"):
+        RICH.canonicalize_tushare_moneyflow(
+            pd.DataFrame([row]), dt.date(2024, 4, 30), dt.date(2024, 4, 30)
+        )
+
+
+def test_tushare_moneyflow_sync_writes_immutable_no_price_snapshot(
+    tmp_path, monkeypatch
+):
+    contract = RICH.json.loads(RICH.DEFAULT_TUSHARE_MONEYFLOW_CONTRACT.read_text())
+    contract["snapshot_contract"]["development_start"] = "2024-04-29"
+    contract["snapshot_contract"]["development_end"] = "2024-04-30"
+    contract["snapshot_contract"]["partition_policy"]["minimum_seconds_between_calls"] = 0
+    universe = tmp_path / "universe.txt"
+    universe.write_text(
+        "SH600519\t2020-01-01\t2025-12-31\n"
+        "SZ000001\t2020-01-01\t2025-12-31\n",
+        encoding="utf-8",
+    )
+    calendar = tmp_path / "day.txt"
+    calendar.write_text("2024-04-29\n2024-04-30\n", encoding="utf-8")
+    monkeypatch.setattr(RICH, "load_tushare_moneyflow_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "validate_range", lambda *args, **kwargs: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    acceptance_path = tmp_path / "accepted.json"
+    RICH.atomic_write_json({"run_id": "accepted"}, acceptance_path)
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_moneyflow_acceptance",
+        lambda: (acceptance_path, {"run_id": "accepted"}),
+    )
+
+    def fake_fetch(trade_date):
+        return pd.DataFrame(
+            [
+                {
+                    "ts_code": code,
+                    "trade_date": trade_date.strftime("%Y%m%d"),
+                    **{
+                        field: float(position + index + 1)
+                        for index, field in enumerate(RICH.TUSHARE_MONEYFLOW_AMOUNT_FIELDS)
+                    },
+                }
+                for position, code in enumerate(("600519.SH", "000001.SZ"))
+            ]
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_moneyflow", fake_fetch)
+    manifest_path = RICH.sync_tushare_moneyflow(
+        allow_large=True,
+        universe_path=universe,
+        calendar_path=calendar,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_moneyflow_daily"
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_MONEYFLOW_RAW_FIELDS
+    )
+    assert manifest["source_request"]["credentials_logged_or_stored"] is False
+    assert manifest["source_acceptance"]["run_id"] == "accepted"
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert manifest["acceptance_status"] == "full_source_coverage_failed_stop_before_prices"
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(RICH.TUSHARE_MONEYFLOW_COLUMNS)
+    assert len(stored) == 4
+    assert not list((tmp_path / "raw").rglob("*.partial"))
+
+
 def test_canonicalize_minutes_handles_provider_column_names_and_sorts_rows():
     raw = pd.DataFrame(
         {

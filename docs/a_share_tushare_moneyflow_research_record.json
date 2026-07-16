@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_moneyflow_research_record",
+  "status": "rejected_after_full_default_stability_and_topk_gates",
+  "recorded_at": "2026-07-16T09:25:40Z",
+  "purpose": "Preserve the complete pre-data contract, licensed source gate, no-return capacity gate, one accepted-price diagnostic, and terminal decision for the Tushare classified large-order mechanism.",
+  "contracts": {
+    "data_contract": {
+      "path": "docs/a_share_tushare_moneyflow_data_contract.json",
+      "sha256": "a38f8113d948a179e6cc38eb388f13fcd691fe793209703009762db6cfa81b12"
+    },
+    "capacity_preregistration": {
+      "path": "docs/a_share_tushare_moneyflow_capacity_preregistration.json",
+      "sha256": "2912fbc70d7b1b9168bddb353f6b5fd5070dc8dab15d2f78b47867c9e12ea2ab"
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_moneyflow_diagnostic_preregistration.json",
+      "sha256": "978c86aaad0909cf327993f5ffb71a5cbc8351b01f88557c10434a8f7e84c5d8"
+    }
+  },
+  "source_gate": {
+    "manifest_path": "data/metadata/rich_data/runs/20260716T085610Z_tushare_moneyflow_daily_6c78e93d.json",
+    "manifest_sha256": "eee76f4b3b3d3001f9c73e84fda6336a9732d648424828d7a000e045480e2fcb",
+    "status": "full_source_coverage_passed_pending_no_return_capacity",
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31",
+    "calendar_sessions": 1699,
+    "canonical_rows": 7723857,
+    "input_rows": 7725966,
+    "missing_rows_excluded": 0,
+    "zero_denominator_rows_excluded": 0,
+    "outside_point_in_time_universe_rows_excluded": 2109,
+    "median_positive_activity_factor_coverage": 0.9968354430379747,
+    "p05_positive_activity_factor_coverage": 0.9917832828984494,
+    "dates_with_at_least_fifty_factor_names": 1699,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "capacity_gate": {
+    "path": "data/experiments/short_horizon/20260716T091028Z_tushare_moneyflow_capacity_audit.json",
+    "sha256": "ee00d08e583f66efa7ad5ee53112c8bd0e8b112b8f922a4b7ce1fb853e8960e3",
+    "status": "completed",
+    "potential_complete_cohorts": 540,
+    "minimum_required_cohorts": 200,
+    "observed_calendar_years": 7,
+    "minimum_observed_calendar_years": 5,
+    "capacity_gate_passed": true,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "interpretation": "Capacity passed only proved that the frozen mechanism had enough quality/listing-seasoned non-overlapping samples for one valid return diagnostic."
+  },
+  "infrastructure_retry": {
+    "first_attempt_completed_diagnostic_written": false,
+    "first_attempt_forward_return_summary_observed": false,
+    "failure": "The dedicated runner loaded execution-only quotes, while the frozen market-state execution policy also required five close-known technical context fields.",
+    "repair": "Replace only the quote loader with the existing accepted-price load_market_data path; keep the factor, direction, source, dates, holding period, costs, quality, listing, TopK, and all gates unchanged.",
+    "exact_parameter_retry_count": 1
+  },
+  "diagnostic": {
+    "path": "data/experiments/short_horizon/20260716T092511Z_factor_diagnostic.json",
+    "sha256": "499ac94ffb900dc4aa8776869698e8eb592e8320d754515ee7f3f0f44fc3db3a",
+    "factor": "tushare_large_order_net_inflow_share",
+    "direction": "higher_is_better",
+    "cohorts": 542,
+    "mean_rank_ic": -0.007632071429789287,
+    "median_rank_ic": -0.010424027842341501,
+    "positive_rank_ic_rate": 0.44649446494464945,
+    "mean_top_minus_bottom_gross_return": 0.002568953723828841,
+    "positive_annual_mean_rank_ic_years": [
+      2019
+    ],
+    "nonpositive_annual_mean_rank_ic_years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "naive_fixed_horizon_top3": {
+      "rounds": 542,
+      "net_cumulative_return": 0.23392912642988883,
+      "maximum_drawdown": -0.8640741115079354,
+      "gate_sufficient_by_itself": false
+    },
+    "prospective_execution_top3": {
+      "complete_signal_count": 536,
+      "filled_slot_count": 1518,
+      "blocked_slot_count": 90,
+      "net_cumulative_return": -0.892344954138447,
+      "maximum_drawdown": -0.9698963955665303,
+      "positive_signal_years": [
+        2020,
+        2021
+      ],
+      "nonpositive_signal_years": [
+        2019,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "gate_passed": false
+    },
+    "cny_200000_pilot_top3": {
+      "primary_slippage_rate_each_side": 0.001,
+      "filled_slot_count": 1439,
+      "board_lot_affordable_opportunity_rate": 0.9479578392621871,
+      "net_cumulative_return": -0.29160485393055624,
+      "maximum_drawdown": -0.3890174248013253,
+      "maximum_filled_trade_daily_amount_participation": 0.010619426102599729,
+      "terminal_unresolved_position_count": 0,
+      "gate_passed": false
+    },
+    "tail_attribution_note": "The completed diagnostic's close_known_feature_ranks objects contain raw close-known context values because the dedicated runner did not overwrite those reporting-only columns with percentile ranks. These values are not the Tushare factor, are not used by Rank IC, TopK selection, market-state construction, either execution ledger, or either gate, and must not be interpreted as ranks. No diagnostic rerun is authorized for this reporting-only label issue."
+  },
+  "stability_gate": {
+    "path": "data/experiments/short_horizon/20260716T092540Z_factor_stability_audit.json",
+    "sha256": "bb2b0eb4f17a4e2c4e6eebed60692d11a70a87deaaca32737c45fa35f82b2ed1",
+    "passed": false,
+    "qualified_factors": [],
+    "failures": [
+      "non-positive pooled mean Rank IC",
+      "positive Rank IC rate is not above 50%",
+      "non-positive annual mean Rank IC: 2020, 2021, 2022, 2023, 2024, 2025"
+    ]
+  },
+  "topk_gate": {
+    "path": "data/experiments/short_horizon/20260716T092540Z_factor_topk_viability_audit.json",
+    "sha256": "361bec4f83d4cca224e1eb23447bbeb1da12b1ea9aa3820a5ea484aa9da44343",
+    "passed": false,
+    "association_screen_passed": false,
+    "qualified_factors": [],
+    "prospective_execution_policy_applied": true,
+    "pilot_execution_policy_applied": true
+  },
+  "mechanism_identity": {
+    "independent_factor_count": 1,
+    "jqdata_is_unobserved_provider_substitute_for_same_mechanism": true,
+    "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors": false
+  },
+  "decision": {
+    "factor_admitted_to_historical_aggregation": false,
+    "factor_admitted_to_current_scoring_selection_sizing_or_orders": false,
+    "prospective_paper_protocol_allowed": false,
+    "stop_actions": [
+      "do not invert the factor",
+      "do not change transaction-size categories or denominator",
+      "do not change the three-session horizon, direction, years, TopK, costs, quality age, or listing gate",
+      "do not select the positive 2019, 2020, or 2021 subsets",
+      "do not combine with existing rejected factors or the JQData vendor substitute",
+      "do not rerun the completed diagnostic or either gate",
+      "do not use this result to justify Level-2 purchase or retail-client scraping"
+    ],
+    "next_research_direction": "Return to a genuinely independent no-return mechanism; the current classified large-order category-share branch is exhausted."
+  },
+  "selection_or_promotion_allowed": false
+}

@@ -53,3 +53,53 @@ never requested implicitly.  Event downloads publish atomically only after
 every requested table succeeds.  Raw duplicates are preserved and counted in
 the manifest; downstream code must freeze a canonicalization rule before
 using those rows as factors.
+
+The accepted 2026-07-13 event probe is also the bound entitlement/schema
+evidence for one classified-flow research mechanism.  Its immutable contracts
+are `docs/a_share_tushare_moneyflow_data_contract.json` and
+`docs/a_share_tushare_moneyflow_capacity_preregistration.json`.  Tushare is the
+authorized provider substitute for the still-unobserved JQData version of the
+same large-order mechanism; never count or combine the two as independent
+factors.  The canonical snapshot requests only the stock/date keys and eight
+buy/sell amount fields.  It deliberately excludes Tushare's `net_mf_amount`,
+all volume, price, market-cap, and return fields.
+
+Run the fixed full-history request only after reviewing the contracts and the
+accepted event manifest.  It makes one sequential call per local trading
+session, enforces the frozen throttle/retry policy, writes 2019–2025 annual
+partitions below one hidden temporary root, and publishes only after every
+partition succeeds:
+
+```bash
+TUSHARE_TOKEN="$(launchctl getenv TUSHARE_TOKEN)" \
+  python scripts/a_share_rich_data.py sync-tushare-moneyflow --allow-large
+```
+
+Do not put the token literal in this command.  The full manifest is usable by
+the next gate only when its status is
+`full_source_coverage_passed_pending_no_return_capacity`.  Then run exactly:
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py \
+  tushare-moneyflow-capacity-audit \
+  --manifest data/metadata/rich_data/runs/<full-run>.json
+```
+
+The capacity audit reads no open, close, price, score, or forward-return
+field.  A pass only permits a new fingerprint-bound diagnostic
+preregistration; it does not permit aggregation, current scoring, selection,
+position sizing, or orders.
+
+Current local research status: the immutable full snapshot
+`20260716T085610Z_tushare_moneyflow_daily_6c78e93d` contains 7,723,857
+canonical 2019–2025 rows and passed the source gate.  Its one no-return
+capacity audit passed with 540/200 cohorts across seven years.  The separately
+frozen one-time return diagnostic and both default audits then qualified 0/1
+factors: mean Rank IC was negative, six of seven annual mean ICs were
+negative, the execution-aware ledger lost 89.23%, and the CNY 200,000 pilot
+ledger lost 29.16%.  The terminal record is
+`docs/a_share_tushare_moneyflow_research_record.json`.  Do not rerun, invert,
+re-window, subset years, combine with the JQData substitute, score, select, or
+size this historical factor.  The commands above document the accepted
+pipeline and recovery order; they are not authorization to create another
+historical trial from the same mechanism.

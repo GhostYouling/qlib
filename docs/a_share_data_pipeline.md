@@ -816,7 +816,7 @@ python scripts/a_share_short_horizon_factor_research.py factor-topk-viability-au
 
 唯一正式诊断为 `20260714T205038Z_factor_diagnostic.json`（SHA‑256 `d726965cb83fe445c0888655d6a36f7a7e41a26e2b54a33d0e88f59b3d465285`）。560 个非重叠 cohort 的平均/中位 Rank IC 为 **+0.00034/−0.00269**，正 IC 比例 **48.21%**，Top‑3 相对 Bottom‑3 的平均毛差 **−0.249%**；2019、2020 年平均 IC 为负，其余年份虽略正但接近零。Top‑3 扣费累计收益 **−96.31%**、最大回撤 **−98.08%**、胜率 46.79%，仅 2019 年年度篮子收益为正。`20260714T205053Z_factor_stability_audit.json` 与 `20260714T205054Z_factor_topk_viability_audit.json`（SHA‑256 `90ad9db60fa240d4a8ecf892b01abc455f75949ac7c6415bc0ab4e32170c4cd4` / `e6ddab496128006d00e497ca3da3b4a1538bcb0e18aa9649a0933d06e5999fb8`）均为 **0/1**。
 
-因此该高值方向正式淘汰，不进入聚合、当前评分或选股。不得在相同历史上反向、改窗口、把当日收益符号换成幅度、增加动量/低波动/换手/质量过滤，或只选表现较好的年份。日线摘要中暂不继续枚举相近路径公式；下一项仍优先等待已冻结的 JQData 专业日级大单分类验收，其后才是有合法授权的全市场一分钟特征。
+因此该高值方向正式淘汰，不进入聚合、当前评分或选股。不得在相同历史上反向、改窗口、把当日收益符号换成幅度、增加动量/低波动/换手/质量过滤，或只选表现较好的年份。日线摘要中暂不继续枚举相近路径公式。之后实际取得的 Tushare 日级大单分类已按独立合同完成全量、容量和一次收益诊断，也通过 0/1 双门禁而停止；JQData 是同机制供应商替代，不再作为下一独立因子。
 
 ### 当前三日研究前沿审计
 
@@ -828,7 +828,7 @@ python scripts/a_share_short_horizon_factor_research.py research-frontier-audit
 
 命令只读取已有诊断与两道审计 JSON，不重新加载原始开收盘或未来收益；它会逐项验证诊断哈希链、`close_known_raw_pct_chg_chain_v1`、2019–2025 开发期、20 会话上市门、完整因子全集、无 `--factor` 子集的默认门禁和失效登记。任一证据缺失或参数漂移都会失败。
 
-正式结果 `docs/a_share_three_day_research_frontier_audit.json`（SHA‑256 `0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846`）核对了 **43** 个因子：稳定性门通过 **7** 个，TopK 可执行性门通过 **0** 个，双门禁交集为 **0**。因此当前历史证据没有可聚合因子；这 7 个关联通过项也不能用于评分、选股或仓位。`docs/a_share_three_day_research_frontier_extension.json` 曾把纯交易所融券源列为新的第一优先路径，但其两市接入门已在读取收益前失败并停止。剩余前沿仍是两个尚未读取收益的独立机制：优先等待 BaoStock 5 分钟源恢复并完成原子全量门禁，其次在用户本地取得 JQData 专业资金流授权后执行大单分类验收。Eastmoney/Sina 公开五分钟网页路线也已通过无收益可用性审计排除为历史源，不能作为第三条回填路径。Level‑2 仍不提前采购或接入。
+正式结果 `docs/a_share_three_day_research_frontier_audit.json`（SHA‑256 `0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846`）核对了基础前沿 **43** 个因子：稳定性门通过 **7** 个，TopK 可执行性门通过 **0** 个，双门禁交集为 **0**。因此这些历史证据没有可聚合因子；这 7 个关联通过项也不能用于评分、选股或仓位。其后新增的 Tushare 分类资金流是第 44 个独立历史机制实例，也通过 0/1 双门禁而淘汰；JQData 只是同机制供应商替代，不增加因子数。`docs/a_share_three_day_research_frontier_extension.json` 曾把纯交易所融券源列为新的第一优先路径，但其两市接入门已在读取收益前失败并停止。当前仍未读取收益的独立路径只剩未来可验证恢复的 BaoStock 5 分钟原子历史，或另行取得合法授权、先冻结合同的全市场分钟机制；Eastmoney/Sina 公开五分钟网页路线已通过无收益可用性审计排除为历史源。Level‑2 仍不提前采购或接入。
 
 ### 尾部样本成交真实性审计
 
@@ -1261,7 +1261,7 @@ python scripts/a_share_short_horizon_factor_research.py transaction-event-rebuil
 
 因此龙虎榜、块交易、融资流这 13 个原始“高值延续”方向在有效价格口径下全部停止：不反向、不修改事件年龄、不筛年份、不与日线压缩因子组合，也不生成当前选股。该结果已进入 `three_day_research_report.md`，专用重建入口会拒绝再次读取同一协议的收益。
 
-此后更有信息增量的方向是分钟成交路径、尾盘量价和有明确发布时间的资金流/事件字段。`a_share_rich_data.py status` 在本检查点显示三个授权源均未就绪、SDK 未安装、快照清单为 0：Tushare 缺 `TUSHARE_TOKEN`，JQData 缺本地用户名/密码，RQData 缺本地用户名/密码。下一步必须由数据授权决定；不要把凭据粘贴到聊天或写进仓库。取得任一合法授权后，先按“受凭据保护的分钟与事件数据”章节做单日验收，未通过时间戳和量纲校验前不得形成分钟因子。
+此后更有信息增量的方向是分钟成交路径、尾盘量价和有明确发布时间的资金流/事件字段。在这个历史检查点，`a_share_rich_data.py status` 曾显示三个授权源均未就绪、SDK 未安装、快照清单为 0；这只是当时状态，不是当前操作指引。2026‑07‑16 随后取得的 Tushare 授权已完成日级分类资金流的单日验收、全历史同步、无收益容量门和唯一一次正式诊断，最终因双门禁失败而停止。当前若已有合法分钟授权，仍须先按“受凭据保护的分钟与事件数据”章节冻结合同并做小样本验收；不要把凭据粘贴到聊天或写进仓库，未通过时间戳和量纲校验前不得形成分钟因子。
 
 质量过滤的规则是：上一份已公告年报的加权 ROE 不低于 5%、归母净利润为正、营收同比和利润同比均为正。为避免未来函数，财报从**公告日后的下一个本地交易日**才生效。公共财报接口可能显示日后更正的历史数值，因此该处理比直接使用报告期安全，但仍不能替代商业级或交易所级的点时财务数据库。
 
@@ -1357,7 +1357,7 @@ python scripts/install_a_share_launchd.py uninstall
 | BaoStock | 匿名原始 5 分钟 OHLCV/成交额；实测历史从 2020 年开始 | 低成本五分钟候选，独立于 1 分钟合同 |
 | Eastmoney / Sina 网页行情 | 仅做固定小样本历史可用性审计；没有历史适配器 | 当前访问失败或仅有近期窗口，不作为 2020–2025 历史源 |
 | RQData | 原始分钟 OHLCV/成交额 | 首选的全市场分钟研究数据 |
-| JQData | 原始分钟 OHLCV/成交额；另购专业版日/分钟资金流 | 当前下一项大单分类研究与分钟替代源 |
+| JQData | 原始分钟 OHLCV/成交额；另购专业版日/分钟资金流 | 分钟替代源；同类日级大单分类已由 Tushare 实测，不再作为独立候选 |
 | Tushare | 原始分钟线；默认盘后表为 `moneyflow`、`stk_limit`、`stock_st`、`top_list`；`limit_list_d` 为更高权限的可选表 | 资金流、交易约束和盘后事件补充 |
 
 供应商账户、分钟权限和历史深度必须由实际授权确认。不要购买、猜测权限或把凭据交给仓库。
@@ -1366,7 +1366,7 @@ python scripts/install_a_share_launchd.py uninstall
 
 原始 `top_list` 样本包含 2 条完全重复记录。接入层保留供应商原始行，在清单中记录精确重复和事件键重复数量，并把状态停在 `pending_event_time_alignment_and_canonicalization`；后续必须先冻结规范化与去重规则，不能让重复行增加因子权重。首次按旧默认集合请求时，`limit_list_d` 权限失败并留下了一份无清单的单表目录；该目录只作为失败证据保留，任何下游都不得按文件存在推断验收通过。修正后的事件同步先写隐藏临时目录，只有全部表成功才原子发布；任一权限、字段、日期或写入失败都会删除本次临时快照。
 
-对平均持有 3 个交易日的当前研究，下一项凭证数据优先级固定为：先验收 **JQData 专业版日级资金流**的明确大单分类，随后才选已有合法授权的 RQData 或 JQData 做 1 分钟 OHLCV/成交额验收，再用 Tushare 补充盘后事件。分钟数据只构造尾盘收益、尾盘成交占比、日内 VWAP 路径、开盘跳空消化和日内实现波动等少量预声明字段。Level‑2 的十档盘口、逐笔委托/成交、撤单和队列字段暂不作为前置依赖：只有日级分类与分钟候选先通过时间对齐、跨年度与 Top‑3 门禁，且失败原因明确指向队列或成交优先级时，才评估合规的 Level‑2 历史授权。交易所 Level‑2 是增值行情，不应把客户端可见盘口抓取当作可回测历史数据库。
+对平均持有 3 个交易日的当前研究，Tushare 日级大单分类已完成并因双门禁失败而停止；JQData 同类产品不再计作独立候选。下一项凭证数据只有在已有合法授权时才选择 RQData/JQData 或券商导出的 1 分钟 OHLCV/成交额，且必须先冻结时间、字段与覆盖合同。分钟数据只构造尾盘收益、尾盘成交占比、日内 VWAP 路径、开盘跳空消化和日内实现波动等少量预声明字段。Level‑2 的十档盘口、逐笔委托/成交、撤单和队列字段暂不作为前置依赖：只有独立分钟候选先通过时间对齐、跨年度与 Top‑3 门禁，且剩余失败原因明确指向队列或成交优先级时，才评估合规的 Level‑2 历史授权。交易所 Level‑2 是增值行情，不应把客户端可见盘口抓取当作可回测历史数据库。
 
 官方能力参考：[JQData 数据说明](https://www.joinquant.com/help/api/doc?id=10674&name=JQDatadoc)、[Tushare 股票数据目录](https://tushare.pro/document/2?doc_id=17)、[上证所 Level‑2 产品说明](https://www.sseinfo.com/services/assortment/level2/)。实际采购前仍须核对账户页显示的历史深度、频率、调用配额和再分发条款。
 
@@ -1416,7 +1416,7 @@ Eastmoney 的公开 K 线网页显示支持 5 分钟图，但当前环境对 `pu
 
 Sina 的公开 JSONP 路线能返回 `day/open/high/low/close/volume/amount`。四只股票分别请求 1023/1024 根时均完整返回，但共同最早时间只有 2026‑06‑12；贵州茅台请求 1500 根时窗口为 2026‑05‑29 14:05 至 2026‑07‑14 15:00，请求 2000、2500、3000、4000、4999、5000 或 100000 根均返回空集，且没有观察到可验证的历史日期游标。因此它只是近期深度窗口，不能回填 2020–2025，也不能和 Eastmoney 混成一份历史源。
 
-两条路线均在适配器、全量快照、因子和收益之前停止。Sina 若用于登记日之后的未来观察，仍须另行冻结一个 future-only 合同并验收时间标签、复权、成交量单位和持续可用性；本次近期窗口不能直接进入纸面监控。当前历史研究仍只等待 BaoStock 在新的研究会话中通过一次恢复探针，或由用户在本地提供已授权的 JQData/RQData 数据产品。Level‑2 继续延期。
+两条路线均在适配器、全量快照、因子和收益之前停止。Sina 若用于登记日之后的未来观察，仍须另行冻结一个 future-only 合同并验收时间标签、复权、成交量单位和持续可用性；本次近期窗口不能直接进入纸面监控。Tushare 日级分类资金流后来已完成正式研究并失败停止；当前历史研究只等待 BaoStock 在未来新的研究会话中出现可验证恢复，或用户本地已有合法授权的全市场分钟产品。不要为复制已失败的大单分类机制单独购买 JQData。Level‑2 继续延期。
 
 ### BaoStock 匿名五分钟候选
 
@@ -1508,9 +1508,9 @@ python scripts/a_share_short_horizon_factor_research.py baostock-5m-combination-
 
 官方页面没有可验证的匿名数值频率上限，因此不使用代理、换 IP 或紧密登录规避。`docs/a_share_baostock_5m_request_throttle_audit.json`（SHA‑256 `4a881c707f41dc1a1043015ca004b65ff4607bc96bce21cd65c832cb20dc18aa`）在任何后续请求前把计划冻结为 5,386 次股票有效区间请求，本地仍写 29,246 个年度分区，请求数降低 81.5838% 且少于已观察的 9,000 次封禁点。恢复探针通过以前，继续做不依赖该源的研究，不得启动全量、构造五分钟因子或读取收益。[BaoStock 官方站点](https://www.baostock.com/)列有技术交流与联系渠道；是否需要联系由用户决定，代码不会自动发送消息。
 
-### JQData 专业版日级资金流
+### JQData 专业版日级资金流（先前冻结、现归档）
 
-下一项独立机制在任何 JQData 权限或数据行被观察前冻结为 `docs/a_share_jqdata_moneyflow_data_contract.json`（SHA‑256 `1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004`）。[JQData 官方文档](https://www.joinquant.com/help/api/doc?id=10674&name=JQDatadoc)说明 `get_money_flow_pro` 从 2015 年起提供日/分钟分类资金流，日级约 19:00 更新，且需单独购买；正式 JQData 账号本身不等于拥有该产品权限。无账号的东方财富个股资金流替代接口在 2026‑07‑15 对浦发银行、平安银行、宁德时代、中芯国际均只返回最近 120 个交易日，不能覆盖 2019–2025，故不作为历史源。
+这条供应商路线曾在任何 JQData 权限或数据行被观察前冻结为 `docs/a_share_jqdata_moneyflow_data_contract.json`（SHA‑256 `1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004`）。[JQData 官方文档](https://www.joinquant.com/help/api/doc?id=10674&name=JQDatadoc)说明 `get_money_flow_pro` 从 2015 年起提供日/分钟分类资金流，日级约 19:00 更新，且需单独购买；正式 JQData 账号本身不等于拥有该产品权限。无账号的东方财富个股资金流替代接口在 2026‑07‑15 对浦发银行、平安银行、宁德时代、中芯国际均只返回最近 120 个交易日，不能覆盖 2019–2025，故不作为历史源。其后 Tushare 已对等实现并完成同一“大单净流入占比”经济机制的全历史诊断，因此本节保留为可复现的历史合同和适配器说明，不再代表待执行的独立研究。
 
 合同只请求 `inflow_xl/inflow_l/inflow_m/inflow_s/outflow_xl/outflow_l/outflow_m/outflow_s` 八个非负成交额字段，不请求供应商净额、涨跌幅、价格、市值或收益。本地唯一推导：
 
@@ -1522,7 +1522,7 @@ jqdata_large_order_net_inflow_share =
 
 高值方向固定为更好；分母为零保持缺失，缺字段排除并计数，任何负原始金额直接中止分片，绝不裁剪、取绝对值或填充。日数据约 19:00 才可用，因此只形成当日收盘后、供下一本地交易日开盘使用的信号，事件年龄为 0。
 
-取得正式账号且确认单独购买专业资金流后，先只验收四只冻结股票和一个已收盘交易日：
+以下命令是归档合同的原始验收入口；不要为了复制已经失败的 Tushare 机制而购买或执行。只有将来出于供应商数据一致性审计、且先另行冻结不读取收益的比较协议时，才可验收四只冻结股票和一个已收盘交易日：
 
 ```bash
 python scripts/a_share_rich_data.py acceptance-jqdata-moneyflow --date 2026-07-13
@@ -1546,7 +1546,50 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 该命令逐年度核对 Parquet 内容指纹、精确列、非负八项金额、唯一股票日、供应商标识和本地推导公式，然后只在 `buyable_main_chinext`、季度质量年龄不超过 550 天、上市满 20 个会话的股票中计算 2019–2025 非重叠三日截面。每个截面至少 50 只股票、至少 2 个不同值，总计至少 200 个 cohort 且覆盖至少 5 个自然年才通过。命令不提供日期、方向、TopK、质量、上市年龄或样本门槛覆盖，并明确记录 `price_fields_loaded=[]`、`forward_return_fields_read=false`；同一全量清单只能完成一次容量审计。
 
-容量通过不代表因子有效，也不能直接调用通用 `factor-diagnostic`、聚合、评分或选股。下一步必须先另写不可变的收益诊断预注册，并绑定容量审计 JSON 的 SHA‑256，之后才允许读取固定的次日开盘至第 3 个交易日收盘收益；容量不通过则在读取收益前永久停止这一版本。当前本机 `status` 显示 JQData SDK、用户名和密码均未配置，因此这里只完成合同、接入器和下游审计器，不声称已验收、已有数据或已得到因子结论。
+容量通过本来也不代表因子有效，不能直接调用通用 `factor-diagnostic`、聚合、评分或选股。现在 Tushare 对等机制已经完成并失败，JQData 路线保持未验收、无数据、无因子结论的归档状态；不得继续进入容量或收益阶段，也不得把不同供应商包装成第二个因子。若未来仅做供应商一致性审计，必须另写不可变的无收益比较协议，并绑定双方合同与原始清单指纹。
+
+### Tushare 日级分类资金流（当前授权实现）
+
+2026‑07‑16 已用 3000 积分账户完成 2026‑07‑13 收盘日的原子事件验收。绑定清单为 `data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json`（SHA‑256 `83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849`）；其中 `moneyflow` 有 5,197 行，缺键、越界日期和重复股票日均为 0。该单日样本已经被观察，所以新合同准确标记为“验收后、完整历史与因子收益观察前冻结”，不冒充事前未见数据。
+
+[Tushare 官方 `moneyflow` 文档](https://tushare.pro/document/2?doc_id=170)说明数据始于 2010 年，单次最多 6,000 行，最低 2,000 积分，按主动买卖单和 L2 订单分成小/中/大/特大单；[官方更新表](https://tushare.pro/document/1?doc_id=108)标注交易日 19:00 更新。供应商特别说明 `net_mf_amount` 不能由大小单简单相减，因此合同 `docs/a_share_tushare_moneyflow_data_contract.json`（SHA‑256 `a38f8113d948a179e6cc38eb388f13fcd691fe793209703009762db6cfa81b12`）只请求股票/日期键和八个非负分档金额，不请求 `net_mf_amount`、成交量、价格、市值或收益。本地唯一因子为：
+
+```text
+tushare_large_order_net_inflow_share =
+  ((buy_elg_amount + buy_lg_amount) - (sell_elg_amount + sell_lg_amount)) /
+  sum(小/中/大/特大单的全部买入与卖出金额)
+```
+
+高值方向固定为更好；分母为零或字段缺失的股票日保持缺失，任何负金额中止分片，不裁剪、填充、取绝对值或改方向。该经济机制替代尚未取得数据的 JQData 合同，不是第二个独立因子；日后即使购买 JQData，也只能先冻结供应商一致性审计，不能把两家字段分别加入聚合或按收益选供应商。`top_list` 已属于失败并停止的龙虎榜机制，只保留原始对账用途；`stock_st` 用作点时股票池排除，`stk_limit` 用作成交可实现性，不作为新因子。
+
+完整历史下载固定为 2019–2025，只遍历本地真实交易日。每次请求一个完整交易日，字段白名单精确固定，连续调用间隔至少 0.32 秒，单日最多三次尝试；每个年度写入同一个隐藏临时快照，七年全部通过后才原子发布。达到 6,000 行上限会按可能截断处理并停止。运行：
+
+```bash
+TUSHARE_TOKEN="$(launchctl getenv TUSHARE_TOKEN)" \
+  python scripts/a_share_rich_data.py sync-tushare-moneyflow --allow-large
+```
+
+命令中的 Token 只从本地 `launchctl` 注入，不能替换成明文。快照按当日 `factor_main_chinext_star` 点时区间过滤，要求来源覆盖率中位数至少 95%、P5 至少 90%，并至少有 200 个日期含 50 只正活动因子值；失败会删除临时快照或写 `full_source_coverage_failed_stop_before_prices`，不得进入价格研究。
+
+无收益容量协议已经在完整历史、价格和因子收益观察前冻结为 `docs/a_share_tushare_moneyflow_capacity_preregistration.json`（SHA‑256 `2912fbc70d7b1b9168bddb353f6b5fd5070dc8dab15d2f78b47867c9e12ea2ab`）。只有全量清单状态为 `full_source_coverage_passed_pending_no_return_capacity` 时，才可运行一次：
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py \
+  tushare-moneyflow-capacity-audit \
+  --manifest data/metadata/rich_data/runs/<full-run>.json
+```
+
+审计重新计算七个年度分片指纹、八项金额、因子公式、点时股票池成员和逐日覆盖率，然后只使用 `buyable_main_chinext`、550 日内季度质量、上市满 20 会话、非重叠三日网格、每截面至少 50 名且 2 个不同值。至少 200 个完整 cohort 并覆盖 5 个自然年才通过。命令不读取开盘、收盘或未来收益，同一全量清单只允许完成一次。通过只允许下一步先冻结一份绑定容量审计 SHA‑256 的单因子收益诊断；未冻结前不能调用通用诊断、聚合、当前评分、选股、仓位或订单。失败则停止这一版本，不反向、不降门槛、不改窗口、不加入 JQData 复制品或 Level‑2 补救。
+
+完整历史已成功发布为 `20260716T085610Z_tushare_moneyflow_daily_6c78e93d.json`（SHA‑256 `eee76f4b3b3d3001f9c73e84fda6336a9732d648424828d7a000e045480e2fcb`）：七个年度共 **7,723,857** 条规范行，1,699 个本地交易日；来源覆盖率中位数 **99.684%**、P5 **99.178%**，全部 1,699 日都有至少 50 只正活动值。缺字段与零分母均为 0，点时来源股票池外排除 2,109 行。重新读取七份 Parquet 后，内容指纹、公式、点时成员和逐日覆盖率全部复算一致，过程中仍保持 `price_fields_loaded=[]` 与 `forward_return_fields_read=false`。
+
+唯一容量审计 `20260716T091028Z_tushare_moneyflow_capacity_audit.json`（SHA‑256 `ee00d08e583f66efa7ad5ee53112c8bd0e8b112b8f922a4b7ce1fb853e8960e3`）形成 **540/200** 个完整 cohort，2019–2025 分别为 56、81、81、80、81、81、80，覆盖 7/5 年，因此只授权先冻结一次收益诊断。收益协议随后冻结为 `docs/a_share_tushare_moneyflow_diagnostic_preregistration.json`（SHA‑256 `978c86aaad0909cf327993f5ffb71a5cbc8351b01f88557c10434a8f7e84c5d8`），绑定全量清单、容量审计、季度质量、价格口径、股票池、日历、成本、20 万元整手/滑点/成交额政策，且没有语义参数覆盖。
+
+诊断首次启动因精简行情入口缺少市场状态执行政策所需的五个收盘已知上下文字段，在形成收益摘要和写出诊断前中止。只把加载器换成既有验收的 `load_market_data`，其余参数完全不变，并按基础设施失败规则原参数重试一次。完成诊断为 `20260716T092511Z_factor_diagnostic.json`（SHA‑256 `499ac94ffb900dc4aa8776869698e8eb592e8320d754515ee7f3f0f44fc3db3a`）：542 个 cohort 的平均/中位 Rank IC 为 **−0.00763/−0.01042**，正 IC 比例 **44.65%**；只有 2019 年平均 IC 为正，2020–2025 全部为负。朴素固定三日 Top‑3 虽累计 +23.39%，但最大回撤已达 −86.41%，且它不能绕过关联与成交门禁。
+
+成交感知 Top‑3 账本的 536 个完整信号最终为 **−89.23%**、最大回撤 **−96.99%**，2019、2022–2025 年均为负；20 万元、100 股整手、双边 10bp 滑点的试运行账本为 **−29.16%**、最大回撤 **−38.90%**，并有一笔成交额参与率 1.0619% 略超 1% 上限。正式稳定性审计 `20260716T092540Z_factor_stability_audit.json`（SHA‑256 `bb2b0eb4f17a4e2c4e6eebed60692d11a70a87deaaca32737c45fa35f82b2ed1`）与 TopK 审计 `20260716T092540Z_factor_topk_viability_audit.json`（SHA‑256 `361bec4f83d4cca224e1eb23447bbeb1da12b1ea9aa3820a5ea484aa9da44343`）均通过 **0/1**。
+
+因此 `tushare_large_order_net_inflow_share` 高值方向正式淘汰。完整终止记录为 `docs/a_share_tushare_moneyflow_research_record.json`（SHA‑256 `3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a`）。不得反向、修改大小单阈值或分母、改变三日窗口/年份/TopK/成本、挑选 2019–2021、与旧因子或 JQData 同机制复制品组合、重新运行诊断、生成当前评分/选股/仓位或据此采购 Level‑2。完成诊断的最差 cohort 明细中 `close_known_feature_ranks` 名称下保存的是原始收盘已知上下文值；这些字段只用于尾部说明，不参与 Tushare 排名、Rank IC、TopK 选择、市场状态构造、两套成交账本或门禁，不能按“分位排名”解释，也不授权为修复展示标签而重跑结果。
 
 ### 必经验收流程
 

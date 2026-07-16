@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_moneyflow_data_contract",
+  "status": "frozen_after_entitlement_acceptance_before_full_history_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T08:38:42Z",
+  "purpose": "Ingest and capacity-screen one defined large-order net-inflow mechanism from Tushare daily classified trades before observing historical factor returns.",
+  "freeze_evidence": {
+    "single_completed_session_entitlement_observed": true,
+    "single_completed_session": "2026-07-13",
+    "acceptance_manifest_path": "data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json",
+    "acceptance_manifest_sha256": "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849",
+    "acceptance_moneyflow_rows": 5197,
+    "acceptance_moneyflow_missing_key_rows": 0,
+    "acceptance_moneyflow_duplicate_key_rows": 0,
+    "full_history_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "chosen_source": "Tushare Pro moneyflow",
+    "official_field_documentation": "https://tushare.pro/document/2?doc_id=170",
+    "official_update_schedule": "https://tushare.pro/document/1?doc_id=108",
+    "documented_history_start": "2010-01-01",
+    "documented_daily_update_time": "19:00 Asia/Shanghai on trading days",
+    "minimum_permission_points": 2000,
+    "provider_documented_maximum_rows_per_call": 6000,
+    "raw_exchange_level2_deferred": "Raw ten-level books, order queues, tick orders, trades, and cancellations are not required until this lower-cost daily classification passes every frozen gate."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "large and extra-large active-buy amount minus active-sell amount, normalized by all classified active-buy and active-sell amounts",
+    "relationship_to_jqdata_contract": "This is the authorized provider substitute for the unobserved JQData large-order moneyflow mechanism frozen in docs/a_share_jqdata_moneyflow_data_contract.json.",
+    "independent_factor_count": 1,
+    "jqdata_and_tushare_may_be_combined_as_independent_factors": false,
+    "jqdata_reactivation_policy": "If JQData is later purchased, use it only for a separately frozen vendor-concordance audit. Do not add it as a second factor or search for the better vendor on returns."
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "moneyflow",
+    "frequency": "daily",
+    "request_mode": "one completed local trading session per call",
+    "requested_fields": [
+      "ts_code",
+      "trade_date",
+      "buy_sm_amount",
+      "sell_sm_amount",
+      "buy_md_amount",
+      "sell_md_amount",
+      "buy_lg_amount",
+      "sell_lg_amount",
+      "buy_elg_amount",
+      "sell_elg_amount"
+    ],
+    "explicitly_forbidden_fields": [
+      "buy_sm_vol",
+      "sell_sm_vol",
+      "buy_md_vol",
+      "sell_md_vol",
+      "buy_lg_vol",
+      "sell_lg_vol",
+      "buy_elg_vol",
+      "sell_elg_vol",
+      "net_mf_vol",
+      "net_mf_amount",
+      "open",
+      "high",
+      "low",
+      "close",
+      "price",
+      "market_cap",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "provider_definitions": {
+    "amount_unit": "CNY 10000",
+    "classification_basis": "active buy and active sell transactions derived from Level-2 orders",
+    "sm": "transaction amount below CNY 50000",
+    "md": "transaction amount from CNY 50000 through CNY 200000",
+    "lg": "transaction amount from CNY 200000 through CNY 1000000",
+    "elg": "transaction amount at least CNY 1000000",
+    "provider_net_field_policy": "Do not request or use net_mf_amount. Tushare documents that it cannot be reconstructed by simply subtracting the category totals. The frozen factor is a different, explicitly local category-based mechanism."
+  },
+  "point_in_time_policy": {
+    "source_time_field": "trade_date normalized to the local trading session",
+    "documented_availability": "19:00 Asia/Shanghai after the signal session",
+    "signal_assignment": "signal-session close for a following-local-session-open entry",
+    "same_session_trade_allowed": false,
+    "maximum_event_age_days": 0,
+    "historical_release_timestamp_available_per_row": false,
+    "residual_risk": "A provider delay beyond the documented schedule can make a row unavailable for the next open; every immutable snapshot retains its retrieval timestamp."
+  },
+  "factor": {
+    "name": "tushare_large_order_net_inflow_share",
+    "raw_column": "tushare_large_order_net_inflow_share",
+    "direction": "higher_is_better",
+    "numerator": "(buy_elg_amount + buy_lg_amount) - (sell_elg_amount + sell_lg_amount)",
+    "denominator": "buy_sm_amount + sell_sm_amount + buy_md_amount + sell_md_amount + buy_lg_amount + sell_lg_amount + buy_elg_amount + sell_elg_amount",
+    "formula": "numerator / denominator",
+    "zero_denominator_policy": "exclude the observed stock-day and keep the factor missing",
+    "negative_or_missing_raw_policy": "exclude and count incomplete rows; any negative raw amount aborts the partition because raw classified amounts must be nonnegative",
+    "clipping_winsorization_imputation_or_absolute_value": null,
+    "score_formula_if_capacity_passes": "cross_sectional_percentile_rank(tushare_large_order_net_inflow_share)"
+  },
+  "snapshot_contract": {
+    "dataset": "tushare_moneyflow_daily",
+    "columns": [
+      "trade_date",
+      "instrument",
+      "buy_sm_amount",
+      "sell_sm_amount",
+      "buy_md_amount",
+      "sell_md_amount",
+      "buy_lg_amount",
+      "sell_lg_amount",
+      "buy_elg_amount",
+      "sell_elg_amount",
+      "tushare_large_order_net_inflow_share",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "trade_date"
+    ],
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "universe_source": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+    "universe_membership": "use only instrument intervals overlapping each requested date; do not infer membership from present-day names",
+    "partition_policy": {
+      "partition": "one calendar year",
+      "provider_call_partition": "one local trading session",
+      "provider_documented_maximum_rows_per_call": 6000,
+      "minimum_seconds_between_calls": 0.32,
+      "maximum_attempts_per_session": 3,
+      "retry_backoff_seconds": [
+        2,
+        5
+      ],
+      "requests_are_sequential": true,
+      "partial_snapshot_accepted": false,
+      "immutable_partition_files_and_manifest": true
+    }
+  },
+  "acceptance_protocol": {
+    "status": "completed_schema_and_entitlement_probe",
+    "bound_manifest_path": "data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json",
+    "bound_manifest_sha256": "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849",
+    "sessions": 1,
+    "completed_session_only": true,
+    "limitations": "The generic event probe retained the provider response verbatim, including fields forbidden from the canonical factor snapshot. It proves entitlement, keys, date containment, and required-field presence only. Full-history calls must enforce the exact requested-field whitelist and canonical schema.",
+    "required_checks_before_large_sync": [
+      "the bound manifest and moneyflow frame digests match",
+      "the moneyflow response contains every requested key and amount field",
+      "returned keys are unique and inside the requested completed session",
+      "all required raw amount fields are numeric and nonnegative",
+      "the locally recomputed positive-denominator factor lies in [-1, 1]",
+      "no credential value appears in the manifest or frame"
+    ],
+    "failed_acceptance_policy": "stop without a large sync, capacity audit, price access, or substitute endpoint"
+  },
+  "coverage_and_capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_median_source_row_coverage": 0.95,
+    "minimum_p05_source_row_coverage": 0.9,
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_observed_years": 5,
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "failed_gate_policy": "stop without reading returns, changing thresholds, switching direction, adding the JQData substitute as a second factor, or adding raw Level-2 fields",
+    "selection_or_promotion_allowed": false
+  },
+  "diagnostic_policy_if_capacity_passes": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_window_or_threshold_search_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

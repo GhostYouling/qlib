@@ -248,6 +248,24 @@ DEFAULT_JQDATA_MONEYFLOW_CAPACITY_SPEC = (
 JQDATA_MONEYFLOW_CAPACITY_SPEC_SHA256 = (
     "d379157a1fd21909f8edf33897efd7b77d1f45dc9f6e6e470da62c7f548fc159"
 )
+DEFAULT_TUSHARE_MONEYFLOW_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_moneyflow_data_contract.json"
+)
+TUSHARE_MONEYFLOW_DATA_CONTRACT_SHA256 = (
+    "a38f8113d948a179e6cc38eb388f13fcd691fe793209703009762db6cfa81b12"
+)
+DEFAULT_TUSHARE_MONEYFLOW_CAPACITY_SPEC = (
+    REPO_ROOT / "docs" / "a_share_tushare_moneyflow_capacity_preregistration.json"
+)
+TUSHARE_MONEYFLOW_CAPACITY_SPEC_SHA256 = (
+    "2912fbc70d7b1b9168bddb353f6b5fd5070dc8dab15d2f78b47867c9e12ea2ab"
+)
+DEFAULT_TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC = (
+    REPO_ROOT / "docs" / "a_share_tushare_moneyflow_diagnostic_preregistration.json"
+)
+TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC_SHA256 = (
+    "978c86aaad0909cf327993f5ffb71a5cbc8351b01f88557c10434a8f7e84c5d8"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -298,6 +316,27 @@ JQDATA_MONEYFLOW_COLUMNS = (
     "instrument",
     *JQDATA_MONEYFLOW_AMOUNT_COLUMNS,
     JQDATA_MONEYFLOW_FACTOR_NAME,
+    "provider",
+)
+TUSHARE_MONEYFLOW_FACTOR_NAME = "tushare_large_order_net_inflow_share"
+TUSHARE_MONEYFLOW_RAW_FIELDS = (
+    "ts_code",
+    "trade_date",
+    "buy_sm_amount",
+    "sell_sm_amount",
+    "buy_md_amount",
+    "sell_md_amount",
+    "buy_lg_amount",
+    "sell_lg_amount",
+    "buy_elg_amount",
+    "sell_elg_amount",
+)
+TUSHARE_MONEYFLOW_AMOUNT_COLUMNS = TUSHARE_MONEYFLOW_RAW_FIELDS[2:]
+TUSHARE_MONEYFLOW_COLUMNS = (
+    "trade_date",
+    "instrument",
+    *TUSHARE_MONEYFLOW_AMOUNT_COLUMNS,
+    TUSHARE_MONEYFLOW_FACTOR_NAME,
     "provider",
 )
 MINUTE_FEATURE_BASE_COLUMNS = (
@@ -637,6 +676,12 @@ INSIDER_OPEN_MARKET_CAPACITY_PURPOSE = (
 )
 JQDATA_MONEYFLOW_CAPACITY_PURPOSE = (
     "jqdata_moneyflow_capacity_gate_without_price_or_forward_returns"
+)
+TUSHARE_MONEYFLOW_CAPACITY_PURPOSE = (
+    "tushare_moneyflow_capacity_gate_without_price_or_forward_returns"
+)
+TUSHARE_MONEYFLOW_DIAGNOSTIC_PURPOSE = (
+    "development_only_preregistered_tushare_moneyflow_research_not_investment_advice"
 )
 INSIDER_OPEN_MARKET_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_insider_open_market_research_not_investment_advice"
@@ -2551,6 +2596,412 @@ def load_jqdata_moneyflow_capacity_preregistration(
     ):
         raise ValueError("JQData moneyflow capacity point-in-time context fingerprint mismatch")
     return spec
+
+
+def load_tushare_moneyflow_data_contract(
+    path: Path = DEFAULT_TUSHARE_MONEYFLOW_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen post-acceptance, pre-history Tushare flow contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_MONEYFLOW_DATA_CONTRACT_SHA256:
+        raise ValueError("Tushare moneyflow data contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_tushare_moneyflow_data_contract")
+    source = contract.get("source") or {}
+    factor = contract.get("factor") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    coverage = contract.get("coverage_and_capacity_policy") or {}
+    mechanism = contract.get("mechanism_identity") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_entitlement_acceptance_before_full_history_or_factor_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-16T08:38:42Z"
+        or source.get("provider") != "tushare"
+        or source.get("api") != "moneyflow"
+        or source.get("frequency") != "daily"
+        or tuple(source.get("requested_fields") or ()) != TUSHARE_MONEYFLOW_RAW_FIELDS
+        or tuple(snapshot.get("columns") or ()) != TUSHARE_MONEYFLOW_COLUMNS
+        or factor.get("name") != TUSHARE_MONEYFLOW_FACTOR_NAME
+        or factor.get("direction") != "higher_is_better"
+        or mechanism.get("independent_factor_count") != 1
+        or mechanism.get("jqdata_and_tushare_may_be_combined_as_independent_factors")
+        is not False
+        or coverage.get("holding_period_trading_days") != 3
+        or coverage.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or coverage.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Tushare moneyflow data contract does not match the frozen protocol")
+    return contract
+
+
+def load_tushare_moneyflow_capacity_preregistration(
+    path: Path = DEFAULT_TUSHARE_MONEYFLOW_CAPACITY_SPEC,
+) -> dict[str, Any]:
+    """Enforce the no-return Tushare moneyflow capacity protocol."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_MONEYFLOW_CAPACITY_SPEC_SHA256:
+        raise ValueError("Tushare moneyflow capacity preregistration fingerprint mismatch")
+    spec = load_json_record(path, kind="a_share_tushare_moneyflow_capacity_preregistration")
+    data_contract = spec.get("data_contract") or {}
+    quality = spec.get("quarterly_quality_snapshot") or {}
+    point_in_time = spec.get("point_in_time_context") or {}
+    required_snapshot = spec.get("required_full_snapshot") or {}
+    run_contract = spec.get("run_contract") or {}
+    policy = spec.get("capacity_policy") or {}
+    next_step = spec.get("next_step_if_capacity_passes") or {}
+    mechanism = spec.get("mechanism_identity") or {}
+    contract_path = resolve_repository_record_path(str(data_contract.get("path") or ""))
+    contract = load_tushare_moneyflow_data_contract(contract_path)
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_single_session_acceptance_before_full_history_or_factor_returns_observed"
+        or spec.get("preregistered_at") != "2026-07-16T08:40:21Z"
+        or data_contract.get("sha256") != TUSHARE_MONEYFLOW_DATA_CONTRACT_SHA256
+        or data_contract.get("preregistered_at") != contract.get("preregistered_at")
+        or tuple(spec.get("factor_catalog") or ()) != (TUSHARE_MONEYFLOW_FACTOR_NAME,)
+        or spec.get("factor_raw_columns")
+        != {TUSHARE_MONEYFLOW_FACTOR_NAME: TUSHARE_MONEYFLOW_FACTOR_NAME}
+        or mechanism.get("provider_substitute_for_unobserved_jqdata_contract") is not True
+        or mechanism.get(
+            "jqdata_and_tushare_may_be_counted_or_combined_as_independent_factors"
+        )
+        is not False
+        or spec.get("later_diagnostic_direction_if_capacity_passes")
+        != "higher_large_order_net_inflow_share_is_better"
+        or required_snapshot.get("dataset") != "tushare_moneyflow_daily"
+        or required_snapshot.get("provider") != "tushare"
+        or required_snapshot.get("acceptance_status")
+        != "full_source_coverage_passed_pending_no_return_capacity"
+        or tuple(required_snapshot.get("required_partition_years") or ())
+        != tuple(range(2019, 2026))
+        or tuple(required_snapshot.get("required_columns") or ())
+        != TUSHARE_MONEYFLOW_COLUMNS
+        or run_contract
+        != {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_universe": "buyable_main_chinext",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+            "topk": 3,
+            "minimum_valid_names_per_factor_cohort": 50,
+            "minimum_distinct_factor_values_per_cohort": 2,
+            "minimum_required_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+            "minimum_observed_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "signal_availability": "trade-date data documented at 19:00 Asia/Shanghai; assign to that local close only for next-local-session-open entry",
+            "maximum_event_age_days": 0,
+            "price_basis_required_for_later_return_diagnostic": REQUIRED_PRICE_BASIS,
+        }
+        or policy.get("open_close_or_forward_return_fields_allowed") is not False
+        or policy.get("one_completed_capacity_audit_per_full_snapshot") is not True
+        or policy.get("selection_or_promotion_allowed") is not False
+        or next_step.get("separate_immutable_diagnostic_preregistration_required") is not True
+        or next_step.get("capacity_audit_fingerprint_must_be_bound_before_price_access")
+        is not True
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Tushare moneyflow capacity preregistration is inconsistent")
+    quality_path = resolve_repository_record_path(str(quality.get("path") or ""))
+    quality_manifest_path = resolve_repository_record_path(
+        str(quality.get("manifest_path") or "")
+    )
+    if (
+        not quality_path.exists()
+        or not quality_manifest_path.exists()
+        or file_sha256(quality_path) != quality.get("sha256")
+        or file_sha256(quality_manifest_path) != quality.get("manifest_sha256")
+    ):
+        raise ValueError("Tushare moneyflow capacity quarterly-quality fingerprint mismatch")
+    context_start = str(point_in_time.get("fingerprint_range_start") or "")
+    context_end = str(point_in_time.get("fingerprint_range_end") or "")
+    source_universe = point_in_time.get("source_universe") or {}
+    holding_universe = point_in_time.get("holding_universe") or {}
+    local_calendar = point_in_time.get("local_calendar") or {}
+    source_path = resolve_repository_record_path(str(source_universe.get("path") or ""))
+    holding_path = resolve_repository_record_path(str(holding_universe.get("path") or ""))
+    calendar_path = resolve_repository_record_path(str(local_calendar.get("path") or ""))
+    if (
+        context_start != run_contract["start"]
+        or context_end != run_contract["end"]
+        or point_in_time.get("fingerprint_algorithm")
+        != "sha256_of_compact_sorted_json_after_normalization_and_range_clipping"
+        or holding_universe.get("name") != run_contract["holding_universe"]
+        or not source_path.exists()
+        or not holding_path.exists()
+        or not calendar_path.exists()
+        or point_in_time_interval_fingerprint(
+            source_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": source_universe.get("sha256"),
+            "intervals": source_universe.get("intervals"),
+        }
+        or point_in_time_interval_fingerprint(
+            holding_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": holding_universe.get("sha256"),
+            "intervals": holding_universe.get("intervals"),
+        }
+        or local_calendar_range_fingerprint(
+            calendar_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": local_calendar.get("sha256"),
+            "sessions": local_calendar.get("sessions"),
+        }
+    ):
+        raise ValueError("Tushare moneyflow capacity point-in-time context fingerprint mismatch")
+    return spec
+
+
+def load_tushare_moneyflow_diagnostic_preregistration(
+    path: Path = DEFAULT_TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC,
+) -> dict[str, Any]:
+    """Enforce the one-time capacity-qualified Tushare return diagnostic."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC_SHA256:
+        raise ValueError("Tushare moneyflow diagnostic preregistration fingerprint mismatch")
+    spec = load_json_record(path, kind="a_share_tushare_moneyflow_diagnostic_preregistration")
+    capacity = spec.get("capacity_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    factor = spec.get("factor") or {}
+    contract = spec.get("run_contract") or {}
+    execution = spec.get("execution_policies") or {}
+    policy = spec.get("diagnostic_policy") or {}
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_no_return_capacity_pass_before_tushare_factor_returns_observed"
+        or spec.get("preregistered_at") != "2026-07-16T09:12:07Z"
+        or capacity
+        != {
+            "run_id": "20260716T091028Z",
+            "path": (
+                "data/experiments/short_horizon/"
+                "20260716T091028Z_tushare_moneyflow_capacity_audit.json"
+            ),
+            "sha256": "ee00d08e583f66efa7ad5ee53112c8bd0e8b112b8f922a4b7ce1fb853e8960e3",
+            "factor": TUSHARE_MONEYFLOW_FACTOR_NAME,
+            "potential_complete_cohorts": 540,
+            "observed_calendar_years": 7,
+            "forward_return_fields_read": False,
+            "source_admitted_for_return_diagnostic": True,
+        }
+        or set(snapshots)
+        != {
+            "tushare_moneyflow",
+            "quarterly_quality",
+            "accepted_price_basis",
+            "holding_universe",
+            "local_calendar",
+        }
+        or snapshots["tushare_moneyflow"].get("manifest_sha256")
+        != "eee76f4b3b3d3001f9c73e84fda6336a9732d648424828d7a000e045480e2fcb"
+        or snapshots["tushare_moneyflow"].get("rows") != 7723857
+        or factor
+        != {
+            "name": TUSHARE_MONEYFLOW_FACTOR_NAME,
+            "raw_column": TUSHARE_MONEYFLOW_FACTOR_NAME,
+            "raw_direction": "higher_is_better",
+            "score_formula": (
+                "cross_sectional_percentile_rank("
+                "tushare_large_order_net_inflow_share)"
+            ),
+            "maximum_event_age_days": 0,
+            "same_session_trade_allowed": False,
+            "signal_availability": (
+                "19:00 Asia/Shanghai after the trade-date close; "
+                "next-local-session-open entry only"
+            ),
+            "jqdata_provider_substitute_may_be_added_as_second_factor": False,
+        }
+        or contract
+        != {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "minimum_valid_names_per_factor_cohort": 50,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        or execution
+        != {
+            "prospective_execution_policy_path": (
+                "docs/a_share_three_day_prospective_execution_policy.json"
+            ),
+            "prospective_execution_policy_sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "pilot_execution_policy_path": "docs/a_share_three_day_pilot_execution_policy.json",
+            "pilot_execution_policy_sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "pilot_initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+        }
+        or policy
+        != {
+            "capacity_gate_passed_before_return_read": True,
+            "single_factor_only": True,
+            "tushare_factor_returns_observed_before_registration": False,
+            "prior_tushare_moneyflow_price_diagnostic_exists": False,
+            "one_completed_diagnostic_only": True,
+            "preserve_source_and_quarterly_quality_snapshots": True,
+            "no_direction_formula_date_cost_quality_source_factor_or_provider_override": True,
+            "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": True,
+            "passing_both_gates_only_allows_a_new_prospective_combination_registration": True,
+            "selection_or_promotion_allowed": False,
+        }
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Tushare moneyflow diagnostic preregistration does not match the frozen protocol"
+        )
+    return spec
+
+
+def validate_tushare_moneyflow_diagnostic_sources(
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Validate all no-return authorization evidence before market prices load."""
+
+    snapshots = spec["source_snapshots"]
+    quality = snapshots["quarterly_quality"]
+    for key, digest_key in (("path", "sha256"), ("manifest_path", "manifest_sha256")):
+        source_path = resolve_repository_record_path(str(quality[key]))
+        if not source_path.exists() or file_sha256(source_path) != quality[digest_key]:
+            raise ValueError("Tushare diagnostic quarterly-quality fingerprint mismatch")
+
+    for name in ("accepted_price_basis", "holding_universe", "local_calendar"):
+        link = snapshots[name]
+        source_path = resolve_repository_record_path(str(link["path"]))
+        if not source_path.exists() or file_sha256(source_path) != link["sha256"]:
+            raise ValueError(f"Tushare diagnostic {name} fingerprint mismatch")
+    price_basis = load_json_record(
+        resolve_repository_record_path(snapshots["accepted_price_basis"]["path"])
+    )
+    if (
+        price_basis.get("status") != "passed"
+        or price_basis.get("price_basis") != REQUIRED_PRICE_BASIS
+        or price_basis.get("future_corporate_actions_used") is not False
+    ):
+        raise ValueError("Tushare diagnostic accepted price basis is invalid")
+
+    point_start = spec["run_contract"]["start"]
+    point_end = spec["run_contract"]["end"]
+    holding_link = snapshots["holding_universe"]
+    holding_path = resolve_repository_record_path(holding_link["path"])
+    if point_in_time_interval_fingerprint(
+        holding_path, start=point_start, end=point_end
+    ) != {
+        "sha256": holding_link["range_clipped_sha256"],
+        "intervals": holding_link["range_clipped_intervals"],
+    }:
+        raise ValueError("Tushare diagnostic holding-universe context changed")
+    calendar_link = snapshots["local_calendar"]
+    calendar_path = resolve_repository_record_path(calendar_link["path"])
+    if local_calendar_range_fingerprint(
+        calendar_path, start=point_start, end=point_end
+    ) != {
+        "sha256": calendar_link["range_clipped_sha256"],
+        "sessions": calendar_link["range_clipped_sessions"],
+    }:
+        raise ValueError("Tushare diagnostic calendar context changed")
+
+    capacity_link = spec["capacity_audit"]
+    capacity_path = resolve_repository_record_path(capacity_link["path"])
+    if not capacity_path.exists() or file_sha256(capacity_path) != capacity_link["sha256"]:
+        raise ValueError("Tushare diagnostic capacity-audit fingerprint mismatch")
+    capacity = load_json_record(capacity_path, kind="a_share_tushare_moneyflow_capacity_audit")
+    source_capacity = capacity.get("source_capacity") or {}
+    source_manifest_evidence = (
+        ((capacity.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "manifest"
+        )
+        or {}
+    )
+    snapshot_link = snapshots["tushare_moneyflow"]
+    if (
+        capacity.get("run_id") != capacity_link["run_id"]
+        or capacity.get("status") != "completed"
+        or capacity.get("purpose") != TUSHARE_MONEYFLOW_CAPACITY_PURPOSE
+        or capacity.get("factor_catalog") != [TUSHARE_MONEYFLOW_FACTOR_NAME]
+        or capacity.get("forward_return_fields_read") is not False
+        or capacity.get("selection_or_promotion_allowed") is not False
+        or (capacity.get("data") or {}).get("price_fields_loaded") != []
+        or capacity.get(
+            "source_admitted_for_separate_return_diagnostic_preregistration"
+        )
+        is not True
+        or source_capacity.get("factor") != TUSHARE_MONEYFLOW_FACTOR_NAME
+        or source_capacity.get("capacity_gate_passed") is not True
+        or source_capacity.get("potential_complete_cohorts")
+        != capacity_link["potential_complete_cohorts"]
+        or source_capacity.get("observed_calendar_years")
+        != capacity_link["observed_calendar_years"]
+        or source_manifest_evidence.get("sha256") != snapshot_link["manifest_sha256"]
+        or source_manifest_evidence.get("run_id") != snapshot_link["run_id"]
+    ):
+        raise ValueError("Tushare capacity audit does not authorize the frozen diagnostic")
+
+    manifest_path = resolve_repository_record_path(snapshot_link["manifest_path"])
+    if not manifest_path.exists() or file_sha256(manifest_path) != snapshot_link[
+        "manifest_sha256"
+    ]:
+        raise ValueError("Tushare diagnostic source-manifest fingerprint mismatch")
+    capacity_spec = load_tushare_moneyflow_capacity_preregistration()
+    factor_frame, source_evidence = validate_tushare_moneyflow_full_snapshot(
+        manifest_path, capacity_spec
+    )
+    if (
+        len(factor_frame) != snapshot_link["rows"]
+        or source_evidence["manifest"]["run_id"] != snapshot_link["run_id"]
+        or source_evidence["manifest"]["status"] != snapshot_link["status"]
+    ):
+        raise ValueError("Tushare diagnostic source snapshot no longer matches registration")
+    return factor_frame, {
+        "capacity_audit": {
+            "path": str(capacity_path),
+            "sha256": file_sha256(capacity_path),
+            "run_id": capacity.get("run_id"),
+            "factor_capacity": source_capacity,
+            "forward_return_fields_read": False,
+        },
+        "source_snapshot": source_evidence,
+        "quarterly_quality": quality,
+        "accepted_price_basis": snapshots["accepted_price_basis"],
+        "holding_universe": holding_link,
+        "local_calendar": calendar_link,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_tushare_moneyflow_diagnostic(experiment_root: Path) -> None:
+    """Prevent a second accepted-price read for this Tushare mechanism."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == TUSHARE_MONEYFLOW_DIAGNOSTIC_PURPOSE:
+            raise ValueError(f"Tushare moneyflow diagnostic is already consumed: {path}")
 
 
 def load_minute_factor_preregistration(
@@ -13752,6 +14203,352 @@ def validate_jqdata_moneyflow_full_snapshot(
     }
 
 
+def _validate_tushare_moneyflow_partition(
+    frame: pd.DataFrame,
+    *,
+    start: pd.Timestamp,
+    end: pd.Timestamp,
+) -> pd.DataFrame:
+    """Validate one stored Tushare flow partition and return capacity fields."""
+
+    if tuple(frame.columns) != TUSHARE_MONEYFLOW_COLUMNS:
+        raise ValueError("Tushare moneyflow partition column contract mismatch")
+    work = frame.copy()
+    work["trade_date"] = pd.to_datetime(work["trade_date"], errors="coerce").dt.normalize()
+    required = ["trade_date", "instrument", *TUSHARE_MONEYFLOW_AMOUNT_COLUMNS]
+    if work[required].isna().any().any():
+        raise ValueError("Tushare moneyflow partition contains a missing contracted value")
+    amount_columns = list(TUSHARE_MONEYFLOW_AMOUNT_COLUMNS)
+    work.loc[:, amount_columns] = work.loc[:, amount_columns].apply(
+        pd.to_numeric, errors="coerce"
+    )
+    if work.loc[:, amount_columns].isna().any().any():
+        raise ValueError("Tushare moneyflow partition contains a nonnumeric raw amount")
+    if work.loc[:, amount_columns].lt(0.0).any().any():
+        raise ValueError("Tushare moneyflow partition contains a negative raw amount")
+    denominator = work.loc[:, amount_columns].sum(axis=1)
+    if not denominator.gt(0.0).all():
+        raise ValueError("Tushare moneyflow partition contains a nonpositive denominator")
+    derived = (
+        work["buy_elg_amount"]
+        + work["buy_lg_amount"]
+        - work["sell_elg_amount"]
+        - work["sell_lg_amount"]
+    ) / denominator
+    stored = pd.to_numeric(work[TUSHARE_MONEYFLOW_FACTOR_NAME], errors="coerce")
+    if (
+        stored.isna().any()
+        or not stored.between(-1.0, 1.0).all()
+        or not np.allclose(stored.to_numpy(), derived.to_numpy(), rtol=0.0, atol=1e-12)
+    ):
+        raise ValueError("Tushare moneyflow stored factor does not match the frozen formula")
+    if not work["trade_date"].between(start, end).all():
+        raise ValueError("Tushare moneyflow partition contains an out-of-contract date")
+    if set(work["provider"].astype(str)) != {"tushare"}:
+        raise ValueError("Tushare moneyflow partition provider identity mismatch")
+    if work.duplicated(["instrument", "trade_date"]).any():
+        raise ValueError("Tushare moneyflow partition contains duplicate stock-date keys")
+    return work.loc[:, ["trade_date", "instrument", TUSHARE_MONEYFLOW_FACTOR_NAME]].copy()
+
+
+def validate_tushare_moneyflow_full_snapshot(
+    manifest_path: Path,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Fingerprint-validate a full Tushare source snapshot without price access."""
+
+    manifest_path = manifest_path.expanduser().resolve()
+    manifest = load_json_record(manifest_path, kind="a_share_rich_data_snapshot")
+    required = spec["required_full_snapshot"]
+    data_contract = manifest.get("data_contract") or {}
+    request = manifest.get("source_request") or {}
+    coverage = manifest.get("coverage") or {}
+    universe = manifest.get("point_in_time_universe") or {}
+    calendar = manifest.get("local_calendar") or {}
+    acceptance_link = manifest.get("source_acceptance") or {}
+    if (
+        manifest.get("schema_version") != 1
+        or manifest.get("dataset") != required["dataset"]
+        or manifest.get("provider") != required["provider"]
+        or manifest.get("acceptance_status") != required["acceptance_status"]
+        or manifest.get("requested_start") != required["requested_start"]
+        or manifest.get("requested_end") != required["requested_end"]
+        or data_contract.get("sha256") != TUSHARE_MONEYFLOW_DATA_CONTRACT_SHA256
+        or request.get("api") != "moneyflow"
+        or request.get("frequency") != "daily"
+        or request.get("request_mode") != "one completed local trading session per call"
+        or tuple(request.get("fields") or ()) != TUSHARE_MONEYFLOW_RAW_FIELDS
+        or request.get("forbidden_fields_requested_or_stored") != []
+        or request.get("credentials_logged_or_stored") is not False
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("open_close_or_forward_return_fields_read") is not False
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or coverage.get("gate_passed_before_prices") is not True
+        or float(coverage.get("median_positive_activity_factor_coverage") or 0.0)
+        < float(required["minimum_median_positive_activity_factor_coverage"])
+        or float(coverage.get("p05_positive_activity_factor_coverage") or 0.0)
+        < float(required["minimum_p05_positive_activity_factor_coverage"])
+        or int(coverage.get("dates_with_at_least_fifty_factor_names") or 0)
+        < int(required["minimum_dates_with_at_least_fifty_factor_names"])
+    ):
+        raise ValueError("Tushare moneyflow full snapshot did not pass the frozen source gate")
+    universe_path = resolve_repository_record_path(str(universe.get("path") or ""))
+    calendar_path = resolve_repository_record_path(str(calendar.get("path") or ""))
+    for label, source_path, link in (
+        ("point-in-time universe", universe_path, universe),
+        ("local calendar", calendar_path, calendar),
+    ):
+        if not source_path.exists() or file_sha256(source_path) != link.get("sha256"):
+            raise ValueError(f"Tushare moneyflow {label} fingerprint mismatch")
+    point_in_time = spec["point_in_time_context"]
+    source_contract = point_in_time["source_universe"]
+    calendar_contract = point_in_time["local_calendar"]
+    context_start = point_in_time["fingerprint_range_start"]
+    context_end = point_in_time["fingerprint_range_end"]
+    if (
+        point_in_time_interval_fingerprint(
+            universe_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": source_contract["sha256"],
+            "intervals": source_contract["intervals"],
+        }
+        or local_calendar_range_fingerprint(
+            calendar_path, start=context_start, end=context_end
+        )
+        != {
+            "sha256": calendar_contract["sha256"],
+            "sessions": calendar_contract["sessions"],
+        }
+    ):
+        raise ValueError("Tushare moneyflow source context differs from preregistration")
+    if int(universe.get("intervals") or 0) < 1:
+        raise ValueError("Tushare moneyflow point-in-time universe is empty")
+    if int(calendar.get("sessions_in_requested_range") or 0) != int(
+        coverage.get("calendar_sessions") or 0
+    ):
+        raise ValueError("Tushare moneyflow calendar session count mismatch")
+
+    acceptance_contract = spec["source_acceptance"]
+    acceptance_path = resolve_repository_record_path(str(acceptance_link.get("path") or ""))
+    if (
+        not acceptance_path.exists()
+        or file_sha256(acceptance_path) != acceptance_link.get("sha256")
+        or file_sha256(acceptance_path) != acceptance_contract["manifest_sha256"]
+    ):
+        raise ValueError("Tushare moneyflow acceptance manifest fingerprint mismatch")
+    acceptance = load_json_record(acceptance_path, kind="a_share_rich_data_snapshot")
+    acceptance_files = [
+        item for item in acceptance.get("files") or [] if item.get("dataset") == "moneyflow"
+    ]
+    if (
+        acceptance.get("dataset") != "tushare_events"
+        or acceptance.get("provider") != "tushare"
+        or acceptance.get("requested_start") != acceptance_contract["trade_date"]
+        or acceptance.get("requested_end") != acceptance_contract["trade_date"]
+        or acceptance.get("forward_return_fields_read") is not False
+        or acceptance.get("selection_or_promotion_allowed") is not False
+        or len(acceptance_files) != 1
+    ):
+        raise ValueError("Tushare moneyflow acceptance evidence is inconsistent")
+    acceptance_item = acceptance_files[0]
+    acceptance_frame_path = resolve_repository_record_path(
+        str(acceptance_item.get("path") or "")
+    )
+    if (
+        not acceptance_frame_path.exists()
+        or str(acceptance_item.get("path")) != acceptance_contract["moneyflow_frame_path"]
+        or acceptance_item.get("sha256") != acceptance_contract["moneyflow_frame_sha256"]
+        or int(acceptance_item.get("rows") or -1) != acceptance_contract["moneyflow_rows"]
+    ):
+        raise ValueError("Tushare moneyflow acceptance frame link mismatch")
+    acceptance_frame = pd.read_parquet(acceptance_frame_path)
+    if dataframe_content_sha256(acceptance_frame) != acceptance_item.get("sha256"):
+        raise ValueError("Tushare moneyflow acceptance frame fingerprint mismatch")
+    if not set(TUSHARE_MONEYFLOW_RAW_FIELDS).issubset(acceptance_frame.columns):
+        raise ValueError("Tushare moneyflow acceptance lacks the required raw fields")
+    acceptance_amounts = acceptance_frame.loc[
+        :, list(TUSHARE_MONEYFLOW_AMOUNT_COLUMNS)
+    ].apply(pd.to_numeric, errors="coerce")
+    acceptance_dates = pd.to_datetime(
+        acceptance_frame["trade_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    if (
+        acceptance_frame[["ts_code", "trade_date"]].isna().any().any()
+        or acceptance_frame.duplicated(["ts_code", "trade_date"]).any()
+        or acceptance_amounts.isna().any().any()
+        or acceptance_amounts.lt(0.0).any().any()
+        or acceptance_dates.isna().any()
+        or set(acceptance_dates.dt.date)
+        != {dt.date.fromisoformat(acceptance_contract["trade_date"])}
+    ):
+        raise ValueError("Tushare moneyflow acceptance raw-value audit failed")
+
+    expected_years = list(required["required_partition_years"])
+    files = list(manifest.get("files") or [])
+    if [int(item.get("year") or 0) for item in files] != expected_years:
+        raise ValueError("Tushare moneyflow full snapshot partition-year coverage mismatch")
+    capacity_frames: list[pd.DataFrame] = []
+    file_evidence: list[dict[str, Any]] = []
+    start = pd.Timestamp(required["requested_start"])
+    end = pd.Timestamp(required["requested_end"])
+    for item in files:
+        path = resolve_repository_record_path(str(item.get("path") or ""))
+        if not path.exists():
+            raise FileNotFoundError(f"Tushare moneyflow partition is missing: {path}")
+        frame = pd.read_parquet(path)
+        if (
+            dataframe_content_sha256(frame) != item.get("sha256")
+            or int(len(frame)) != int(item.get("rows") or -1)
+        ):
+            raise ValueError("Tushare moneyflow partition fingerprint or row count mismatch")
+        year = int(item["year"])
+        partition = _validate_tushare_moneyflow_partition(
+            frame,
+            start=max(start, pd.Timestamp(year=year, month=1, day=1)),
+            end=min(end, pd.Timestamp(year=year, month=12, day=31)),
+        )
+        capacity_frames.append(partition)
+        file_evidence.append(
+            {
+                "year": year,
+                "path": str(path),
+                "rows": int(len(frame)),
+                "sha256": str(item["sha256"]),
+            }
+        )
+    factor_frame = pd.concat(capacity_frames, ignore_index=True)
+    if factor_frame.duplicated(["instrument", "trade_date"]).any():
+        raise ValueError("Tushare moneyflow full snapshot has cross-partition duplicate keys")
+
+    universe_frame = pd.read_csv(
+        universe_path,
+        sep="\t",
+        header=None,
+        names=["instrument", "active_start", "active_end"],
+        dtype={"instrument": "string"},
+    )
+    universe_frame["active_start"] = pd.to_datetime(
+        universe_frame["active_start"], errors="coerce"
+    ).dt.normalize()
+    universe_frame["active_end"] = pd.to_datetime(
+        universe_frame["active_end"], errors="coerce"
+    ).dt.normalize()
+    if (
+        len(universe_frame) != int(universe.get("intervals") or 0)
+        or universe_frame[["instrument", "active_start", "active_end"]].isna().any().any()
+        or universe_frame["instrument"].duplicated().any()
+        or not universe_frame["instrument"].str.fullmatch(
+            r"(?:SH6|SZ[03])\d{5}", na=False
+        ).all()
+        or universe_frame["active_start"].gt(universe_frame["active_end"]).any()
+    ):
+        raise ValueError("Tushare moneyflow point-in-time universe contents are invalid")
+    membership = factor_frame.merge(universe_frame, on="instrument", how="left")
+    if (
+        membership[["active_start", "active_end"]].isna().any().any()
+        or membership["trade_date"].lt(membership["active_start"]).any()
+        or membership["trade_date"].gt(membership["active_end"]).any()
+    ):
+        raise ValueError("Tushare moneyflow row falls outside the bound point-in-time universe")
+
+    raw_calendar = pd.to_datetime(
+        calendar_path.read_text(encoding="utf-8").splitlines(), errors="coerce"
+    )
+    if pd.isna(raw_calendar).any():
+        raise ValueError("Tushare moneyflow bound local calendar contains an invalid date")
+    calendar_dates = pd.DatetimeIndex(raw_calendar).normalize().unique().sort_values()
+    calendar_dates = calendar_dates[(calendar_dates >= start) & (calendar_dates <= end)]
+    if len(calendar_dates) != int(calendar.get("sessions_in_requested_range") or 0):
+        raise ValueError("Tushare moneyflow bound local calendar session count mismatch")
+    observed_by_date = factor_frame.groupby("trade_date")["instrument"].nunique()
+    expected_by_date = pd.Series(
+        [
+            int(
+                (
+                    universe_frame["active_start"].le(date)
+                    & universe_frame["active_end"].ge(date)
+                ).sum()
+            )
+            for date in calendar_dates
+        ],
+        index=calendar_dates,
+        dtype="int64",
+    )
+    observed_by_date = observed_by_date.reindex(calendar_dates, fill_value=0).astype(int)
+    if expected_by_date.le(0).any():
+        raise ValueError("Tushare moneyflow source calendar has a session with no active names")
+    recomputed_coverages = observed_by_date.div(expected_by_date)
+    recomputed_median = float(recomputed_coverages.median())
+    recomputed_p05 = float(recomputed_coverages.quantile(0.05))
+    recomputed_dates_with_fifty = int(observed_by_date.ge(50).sum())
+    if (
+        not math.isclose(
+            float(coverage.get("median_positive_activity_factor_coverage")),
+            recomputed_median,
+            rel_tol=0.0,
+            abs_tol=1e-12,
+        )
+        or not math.isclose(
+            float(coverage.get("p05_positive_activity_factor_coverage")),
+            recomputed_p05,
+            rel_tol=0.0,
+            abs_tol=1e-12,
+        )
+        or int(coverage.get("dates_with_at_least_fifty_factor_names") or 0)
+        != recomputed_dates_with_fifty
+    ):
+        raise ValueError("Tushare moneyflow source coverage does not recompute from stored rows")
+    daily = list(coverage.get("daily") or [])
+    if len(daily) != len(calendar_dates):
+        raise ValueError("Tushare moneyflow daily source-coverage record is incomplete")
+    for position, date in enumerate(calendar_dates):
+        item = daily[position]
+        if (
+            item.get("trade_date") != date.date().isoformat()
+            or int(item.get("expected_active_names") or 0) != int(expected_by_date.loc[date])
+            or int(item.get("positive_activity_factor_names") or 0)
+            != int(observed_by_date.loc[date])
+            or not math.isclose(
+                float(item.get("coverage")),
+                float(recomputed_coverages.loc[date]),
+                rel_tol=0.0,
+                abs_tol=1e-12,
+            )
+        ):
+            raise ValueError("Tushare moneyflow daily source-coverage record changed")
+    return factor_frame, {
+        "manifest": {
+            "path": str(manifest_path),
+            "sha256": file_sha256(manifest_path),
+            "run_id": manifest.get("run_id"),
+            "status": manifest.get("acceptance_status"),
+        },
+        "source_acceptance": {
+            "path": str(acceptance_path),
+            "sha256": file_sha256(acceptance_path),
+            "run_id": acceptance.get("run_id"),
+            "status": acceptance_link.get("status"),
+        },
+        "point_in_time_universe": universe,
+        "local_calendar": calendar,
+        "coverage": {
+            key: coverage.get(key)
+            for key in (
+                "calendar_sessions",
+                "median_positive_activity_factor_coverage",
+                "p05_positive_activity_factor_coverage",
+                "dates_with_at_least_fifty_factor_names",
+                "gate_passed_before_prices",
+            )
+        },
+        "files": file_evidence,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
 def jqdata_moneyflow_capacity(
     factor_frame: pd.DataFrame,
     fundamentals: pd.DataFrame,
@@ -13760,13 +14557,14 @@ def jqdata_moneyflow_capacity(
     instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
     *,
     contract: dict[str, Any],
+    factor_name: str = JQDATA_MONEYFLOW_FACTOR_NAME,
 ) -> dict[str, Any]:
-    """Count factor-ready non-overlapping cohorts without loading price outcomes."""
+    """Count classified-flow cohorts without loading price outcomes."""
 
     sessions = pd.DatetimeIndex(research_calendar).normalize().unique().sort_values()
     hold_days = int(contract["holding_period_trading_days"])
     if len(sessions) <= hold_days:
-        raise ValueError("JQData moneyflow capacity calendar is too short")
+        raise ValueError("classified moneyflow capacity calendar is too short")
     rebalances = sessions[:-hold_days:hold_days]
     candidates = factor_frame.rename(columns={"trade_date": "datetime"}).copy()
     candidates["datetime"] = pd.to_datetime(candidates["datetime"]).dt.normalize()
@@ -13797,7 +14595,7 @@ def jqdata_moneyflow_capacity(
     )
     eligible = candidates.loc[candidates["quality_eligible"].fillna(False)].copy()
     eligible["_factor_value"] = pd.to_numeric(
-        eligible[JQDATA_MONEYFLOW_FACTOR_NAME], errors="coerce"
+        eligible[factor_name], errors="coerce"
     )
     valid = eligible.loc[np.isfinite(eligible["_factor_value"])].copy()
     cross_sections = valid.groupby("datetime", sort=True).agg(
@@ -13823,7 +14621,7 @@ def jqdata_moneyflow_capacity(
         and observed_years >= int(contract["minimum_observed_calendar_years"])
     )
     return {
-        "factor": JQDATA_MONEYFLOW_FACTOR_NAME,
+        "factor": factor_name,
         "source_rows": int(len(factor_frame)),
         "non_overlapping_rebalance_capacity": int(len(rebalances)),
         "buyable_rebalance_rows": int(len(candidates)),
@@ -13847,6 +14645,28 @@ def jqdata_moneyflow_capacity(
         "price_fields_loaded": [],
         "forward_return_fields_read": False,
     }
+
+
+def tushare_moneyflow_capacity(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    research_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Count Tushare factor-ready cohorts without loading price outcomes."""
+
+    return jqdata_moneyflow_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        instrument_intervals,
+        contract=contract,
+        factor_name=TUSHARE_MONEYFLOW_FACTOR_NAME,
+    )
 
 
 def require_unconsumed_jqdata_moneyflow_capacity(
@@ -13985,6 +14805,158 @@ def run_jqdata_moneyflow_capacity_audit(args: argparse.Namespace) -> dict[str, A
     }
     experiment_root.mkdir(parents=True, exist_ok=True)
     destination = experiment_root / f"{run_id}_jqdata_moneyflow_capacity_audit.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity,
+        "source_admitted_for_separate_return_diagnostic_preregistration": admitted,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_tushare_moneyflow_capacity(
+    experiment_root: Path,
+    *,
+    source_manifest_sha256: str,
+) -> None:
+    """Allow one completed no-return Tushare capacity audit per full snapshot."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob("*_tushare_moneyflow_capacity_audit.json")
+    ):
+        record = load_json_record(path)
+        source = ((record.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "manifest"
+        ) or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("purpose") == TUSHARE_MONEYFLOW_CAPACITY_PURPOSE
+            and source.get("sha256") == source_manifest_sha256
+        ):
+            raise ValueError(
+                f"Tushare moneyflow capacity snapshot is already consumed: {path}"
+            )
+
+
+def run_tushare_moneyflow_capacity_audit(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the frozen Tushare classified-flow capacity gate without prices."""
+
+    spec = load_tushare_moneyflow_capacity_preregistration()
+    factor_frame, source_evidence = validate_tushare_moneyflow_full_snapshot(
+        Path(args.manifest), spec
+    )
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_tushare_moneyflow_capacity(
+        experiment_root,
+        source_manifest_sha256=source_evidence["manifest"]["sha256"],
+    )
+    contract = spec["run_contract"]
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    source_calendar_sha256 = source_evidence["local_calendar"]["sha256"]
+    if not calendar_path.exists() or file_sha256(calendar_path) != source_calendar_sha256:
+        raise ValueError(
+            "Tushare moneyflow capacity provider calendar does not match the source snapshot"
+        )
+    holding_universe_path = (
+        provider_uri / "instruments" / f"{contract['holding_universe']}.txt"
+    )
+    if not holding_universe_path.exists():
+        raise FileNotFoundError(
+            f"Tushare moneyflow holding-universe file is missing: {holding_universe_path}"
+        )
+    point_in_time = spec["point_in_time_context"]
+    holding_contract = point_in_time["holding_universe"]
+    holding_fingerprint = point_in_time_interval_fingerprint(
+        holding_universe_path,
+        start=point_in_time["fingerprint_range_start"],
+        end=point_in_time["fingerprint_range_end"],
+    )
+    if holding_fingerprint != {
+        "sha256": holding_contract["sha256"],
+        "intervals": holding_contract["intervals"],
+    }:
+        raise ValueError(
+            "Tushare moneyflow holding universe differs from its preregistration"
+        )
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market=contract["holding_universe"],
+        start=contract["start"],
+        end=contract["end"],
+    )
+    quality = spec["quarterly_quality_snapshot"]
+    fundamentals = load_fundamentals(
+        resolve_repository_record_path(quality["path"])
+    )
+    capacity = tushare_moneyflow_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        contract=contract,
+    )
+    admitted = bool(capacity["capacity_gate_passed"])
+    decision = (
+        "eligible_only_for_separate_fingerprint_bound_return_diagnostic_preregistration"
+        if admitted
+        else "rejected_before_return_diagnostic_insufficient_quality_listing_seasoned_cohorts"
+    )
+    run_id = _timestamp()
+    audit = {
+        "kind": "a_share_tushare_moneyflow_capacity_audit",
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": TUSHARE_MONEYFLOW_CAPACITY_PURPOSE,
+        "preregistration": {
+            "path": str(DEFAULT_TUSHARE_MONEYFLOW_CAPACITY_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_TUSHARE_MONEYFLOW_CAPACITY_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [TUSHARE_MONEYFLOW_FACTOR_NAME],
+        "mechanism_identity": spec["mechanism_identity"],
+        "later_diagnostic_direction_if_capacity_passes": spec[
+            "later_diagnostic_direction_if_capacity_passes"
+        ],
+        "run_contract": contract,
+        "source_capacity": capacity,
+        "source_admitted_for_separate_return_diagnostic_preregistration": admitted,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri),
+            "full_calendar_start": full_calendar.min().date().isoformat(),
+            "full_calendar_end": full_calendar.max().date().isoformat(),
+            "research_calendar_start": research_calendar.min().date().isoformat(),
+            "research_calendar_end": research_calendar.max().date().isoformat(),
+            "calendar_path": str(calendar_path),
+            "calendar_sha256": file_sha256(calendar_path),
+            "holding_universe": contract["holding_universe"],
+            "holding_universe_path": str(holding_universe_path),
+            "holding_universe_sha256": file_sha256(holding_universe_path),
+            "holding_universe_clipped_fingerprint": holding_fingerprint,
+            "instrument_span_count": int(len(intervals)),
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Capacity is only a no-outcome upper bound; passing does not imply association, tradability, or a usable strategy.",
+            "No open, close, forward return, score, current selection, or order field is loaded by this audit.",
+            "A pass authorizes only a new immutable return-diagnostic preregistration bound to this audit fingerprint.",
+            "Tushare is the authorized substitute for the unobserved JQData mechanism; the two may not be counted or combined as independent factors.",
+            "The licensed Tushare snapshot is user-provided evidence and is not bundled in Git.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_tushare_moneyflow_capacity_audit.json"
     _atomic_write_text(
         destination,
         json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
@@ -21817,6 +22789,247 @@ def run_directional_serial_dependence_diagnostic(args: argparse.Namespace) -> di
     return result
 
 
+def run_tushare_moneyflow_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the capacity-qualified Tushare large-order factor exactly once."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_tushare_moneyflow_diagnostic_preregistration()
+    factor_frame, source_evidence = validate_tushare_moneyflow_diagnostic_sources(spec)
+    require_unconsumed_tushare_moneyflow_diagnostic(experiment_root)
+    contract = spec["run_contract"]
+    snapshots = spec["source_snapshots"]
+    factor_name = spec["factor"]["name"]
+
+    execution_policy = load_prospective_execution_policy()
+    require_prospective_execution_policy_compatibility(
+        execution_policy,
+        hold_days=int(contract["holding_period_trading_days"]),
+        topk=int(contract["topk"]),
+        open_cost=float(contract["open_cost"]),
+        close_cost=float(contract["close_cost"]),
+    )
+    pilot_policy = load_pilot_execution_policy()
+    if int(contract["minimum_listing_sessions"]) != MIN_LISTING_SESSIONS:
+        raise ValueError("Tushare diagnostic conflicts with the listing-seasoning gate")
+    price_basis_metadata = research_price_basis_metadata(provider_uri)
+    fundamental_path = resolve_repository_record_path(
+        snapshots["quarterly_quality"]["path"]
+    )
+    fundamentals = load_fundamentals(fundamental_path)
+    # The frozen prospective execution policy's market-state gate needs the
+    # same close-known technical context used by the generic accepted-price
+    # diagnostic.  These fields are execution context only; this command still
+    # reports and return-tests exactly one Tushare factor.
+    market = load_market_data(
+        provider_uri,
+        contract["start"],
+        contract["end"],
+        args.batch_size,
+    )
+    if pd.Timestamp(market["datetime"].max()) > pd.Timestamp(contract["development_end"]):
+        raise ValueError("Tushare diagnostic loaded market rows after development end")
+    market = attach_quality_asof(
+        market,
+        fundamentals,
+        max_age_days=int(contract["maximum_quality_age_days"]),
+    )
+    raw_column = f"_raw_{factor_name}"
+    factor_values = factor_frame.rename(
+        columns={"trade_date": "datetime", factor_name: raw_column}
+    ).copy()
+    factor_values["datetime"] = pd.to_datetime(factor_values["datetime"]).dt.normalize()
+    ranked = market.merge(
+        factor_values[["datetime", "instrument", raw_column]],
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    ranked[raw_column] = pd.to_numeric(ranked[raw_column], errors="coerce")
+    ranked[raw_column] = ranked[raw_column].where(np.isfinite(ranked[raw_column]))
+    quality_eligible = ranked["quality_eligible"].fillna(False)
+    ranked = ranked.join(market_state_frame(ranked, quality_eligible), on="datetime")
+    # The state frame above intentionally consumes raw close-known measures.
+    # Convert only the reporting context columns afterward so future tail
+    # records labelled as ranks contain actual cross-sectional percentiles.
+    for context_column in FACTOR_TAIL_ATTRIBUTION_COLUMNS:
+        if context_column not in ranked.columns:
+            continue
+        context_rank = (
+            ranked.loc[quality_eligible]
+            .groupby("datetime", sort=False)[context_column]
+            .rank(pct=True)
+        )
+        ranked.loc[quality_eligible, context_column] = context_rank
+    factor_eligible = quality_eligible & ranked[raw_column].notna()
+    ranked[factor_name] = np.nan
+    ranked.loc[factor_eligible, factor_name] = (
+        ranked.loc[factor_eligible]
+        .groupby("datetime", sort=False)[raw_column]
+        .rank(pct=True)
+    )
+    ranked.drop(columns=[raw_column], inplace=True)
+    valid_names_by_date = ranked.loc[
+        factor_eligible
+    ].groupby("datetime")["instrument"].nunique()
+    dates_with_minimum_names = int(
+        valid_names_by_date.ge(
+            int(contract["minimum_valid_names_per_factor_cohort"])
+        ).sum()
+    )
+    if dates_with_minimum_names < FACTOR_STABILITY_MIN_COHORTS:
+        raise RuntimeError(
+            "Tushare diagnostic factor coverage fell below its already-passed capacity gate"
+        )
+
+    forward_returns = forward_factor_return_frame(
+        ranked, int(contract["holding_period_trading_days"])
+    )
+    summaries = summarize_factor_diagnostics(
+        forward_returns,
+        [factor_name],
+        hold_days=int(contract["holding_period_trading_days"]),
+        topk=int(contract["topk"]),
+        open_cost=float(contract["open_cost"]),
+        close_cost=float(contract["close_cost"]),
+    )
+    if len(summaries) != 1 or summaries[0].get("factor") != factor_name:
+        raise RuntimeError("Tushare diagnostic did not produce the frozen single factor")
+    summary = summaries[0]
+    summary["execution_aware_topk"] = simulate_prospective_execution_topk(
+        ranked,
+        factor_name,
+        policy=execution_policy,
+    )
+    summary["pilot_execution_topk"] = simulate_pilot_execution_topk(
+        ranked,
+        factor_name,
+        execution_policy=execution_policy,
+        pilot_policy=pilot_policy,
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": TUSHARE_MONEYFLOW_DIAGNOSTIC_PURPOSE,
+        "factor_catalog": [factor_name],
+        "factor_direction": "higher raw large-order net-inflow share is better",
+        "mechanism_identity": {
+            "provider": "tushare",
+            "provider_substitute_for_unobserved_jqdata_contract": True,
+            "jqdata_may_be_counted_or_combined_as_second_factor": False,
+        },
+        "strategy_timing": {
+            "universe": "buyable_main_chinext",
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
+            "holding_period_trading_days": int(contract["holding_period_trading_days"]),
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": "Tushare moneyflow documented at 19:00 after close",
+            "same_session_trade_allowed": False,
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "diagnostic_topk": int(contract["topk"]),
+            "open_cost": float(contract["open_cost"]),
+            "close_cost": float(contract["close_cost"]),
+            "parameters_read_from_preregistration": True,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": int(contract["maximum_quality_age_days"]),
+            "fundamental_eligible_rows_before_listing_gate": int(
+                market["fundamental_quality_eligible"].fillna(False).sum()
+            ),
+            "eligible_rows_after_listing_gate": int(
+                market["quality_eligible"].fillna(False).sum()
+            ),
+            "fundamental_rows_excluded_by_listing_gate": int(
+                (
+                    market["fundamental_quality_eligible"].fillna(False)
+                    & ~market["listing_seasoning_eligible"].fillna(False)
+                ).sum()
+            ),
+        },
+        "tushare_moneyflow": {
+            "source_manifest": snapshots["tushare_moneyflow"]["manifest_path"],
+            "source_manifest_sha256": snapshots["tushare_moneyflow"][
+                "manifest_sha256"
+            ],
+            "source_rows": int(len(factor_frame)),
+            "quality_and_factor_eligible_rows": int(factor_eligible.sum()),
+            "dates_with_at_least_fifty_factor_names": dates_with_minimum_names,
+            "score_formula": spec["factor"]["score_formula"],
+            "maximum_event_age_days": 0,
+            "provider_net_mf_amount_requested_or_used": False,
+            "price_market_cap_or_return_fields_stored_in_source": False,
+            "selection_or_promotion_allowed": False,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            **price_basis_metadata,
+            "calendar_start": market["datetime"].min().date().isoformat(),
+            "calendar_end": market["datetime"].max().date().isoformat(),
+            "development_start": contract["start"],
+            "development_end": contract["development_end"],
+            "market_rows": int(len(market)),
+            "eligible_rows": int(market["quality_eligible"].sum()),
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "complete_forward_name_observations": int(len(forward_returns)),
+            "test_period_used_for_factor_design": False,
+        },
+        "prospective_execution_policy": {
+            "path": str(DEFAULT_PROSPECTIVE_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": execution_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
+        "pilot_execution_policy": {
+            "path": str(DEFAULT_PILOT_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
+        "preregistration": {
+            "path": str(DEFAULT_TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_TUSHARE_MONEYFLOW_DIAGNOSTIC_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "tushare_factor_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+        "ranking_by_development_rank_ic": [summary],
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "This is the single Tushare direction frozen before its returns were observed; it does not create a stock list or trading strategy.",
+            "The no-return capacity pass proves only that a valid test was possible, not that this factor is associated with returns.",
+            "Tushare and the unobserved JQData substitute are one economic mechanism and may not be combined as independent factors.",
+            "Passing both default gates would only permit a separately registered genuinely future paper protocol; failure stops this historical version.",
+            "Daily bars and limit prices cannot reconstruct exact queue priority, partial fills, or realized market impact.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_factor_diagnostic.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_count": 1,
+        "top_factors_by_development_rank_ic": [summary],
+    }
+
+
 def run_minute_factor_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the frozen five-factor minute diagnostic on development data only."""
 
@@ -26325,6 +27538,18 @@ def parse_args() -> argparse.Namespace:
     )
     directional_serial_dependence.add_argument("--batch-size", type=int, default=500)
 
+    tushare_moneyflow_diagnostic = subparsers.add_parser(
+        "tushare-moneyflow-diagnostic",
+        help="diagnose the capacity-qualified Tushare large-order factor exactly once",
+    )
+    tushare_moneyflow_diagnostic.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    tushare_moneyflow_diagnostic.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    tushare_moneyflow_diagnostic.add_argument("--batch-size", type=int, default=500)
+
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
         help="diagnose all five factors from one frozen minute protocol under the fixed three-day horizon",
@@ -26535,6 +27760,22 @@ def parse_args() -> argparse.Namespace:
         "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
     )
     jqdata_moneyflow_capacity.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
+    tushare_moneyflow_capacity_parser = subparsers.add_parser(
+        "tushare-moneyflow-capacity-audit",
+        help="audit one passed Tushare classified-flow snapshot without loading price outcomes",
+    )
+    tushare_moneyflow_capacity_parser.add_argument(
+        "--manifest",
+        required=True,
+        help="full_source_coverage_passed_pending_no_return_capacity snapshot manifest",
+    )
+    tushare_moneyflow_capacity_parser.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    tushare_moneyflow_capacity_parser.add_argument(
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
@@ -27082,6 +28323,8 @@ def main() -> int:
         report = run_intraday_demand_persistence_diagnostic(args)
     elif args.command == "directional-serial-dependence-diagnostic":
         report = run_directional_serial_dependence_diagnostic(args)
+    elif args.command == "tushare-moneyflow-diagnostic":
+        report = run_tushare_moneyflow_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":
@@ -27108,6 +28351,8 @@ def main() -> int:
         report = run_quarterly_event_capacity_audit(args)
     elif args.command == "jqdata-moneyflow-capacity-audit":
         report = run_jqdata_moneyflow_capacity_audit(args)
+    elif args.command == "tushare-moneyflow-capacity-audit":
+        report = run_tushare_moneyflow_capacity_audit(args)
     elif args.command == "sparse-announcement-capacity-audit":
         report = run_sparse_announcement_capacity_audit(args)
     elif args.command == "institutional-survey-capacity-audit":

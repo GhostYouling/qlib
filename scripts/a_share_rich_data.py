@@ -57,6 +57,9 @@ DEFAULT_MINUTE_FACTOR_SPEC = REPO_ROOT / "docs" / "a_share_minute_factor_preregi
 DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
+DEFAULT_TUSHARE_MONEYFLOW_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_moneyflow_data_contract.json"
+)
 DEFAULT_BAOSTOCK_5M_CONTRACT = REPO_ROOT / "docs" / "a_share_baostock_5m_data_contract.json"
 DEFAULT_BAOSTOCK_5M_FACTOR_SPEC = (
     REPO_ROOT / "docs" / "a_share_baostock_5m_factor_preregistration.json"
@@ -117,6 +120,9 @@ REQUIRED_DAILY_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 JQDATA_MONEYFLOW_CONTRACT_SHA256 = (
     "1a3c451ecc2d1b4f8c2ef38a8de1acf4aa474bbce4f98b99dc0369bb8d9d6004"
 )
+TUSHARE_MONEYFLOW_CONTRACT_SHA256 = (
+    "a38f8113d948a179e6cc38eb388f13fcd691fe793209703009762db6cfa81b12"
+)
 BAOSTOCK_5M_CONTRACT_SHA256 = (
     "3352497aa911f69ced631fac57db1369eaa12acabad8ca7857f6254205354a8f"
 )
@@ -155,6 +161,28 @@ JQDATA_MONEYFLOW_COLUMNS = (
     "outflow_m_amount",
     "outflow_s_amount",
     "jqdata_large_order_net_inflow_share",
+    "provider",
+)
+TUSHARE_MONEYFLOW_AMOUNT_FIELDS = (
+    "buy_sm_amount",
+    "sell_sm_amount",
+    "buy_md_amount",
+    "sell_md_amount",
+    "buy_lg_amount",
+    "sell_lg_amount",
+    "buy_elg_amount",
+    "sell_elg_amount",
+)
+TUSHARE_MONEYFLOW_RAW_FIELDS = (
+    "ts_code",
+    "trade_date",
+    *TUSHARE_MONEYFLOW_AMOUNT_FIELDS,
+)
+TUSHARE_MONEYFLOW_COLUMNS = (
+    "trade_date",
+    "instrument",
+    *TUSHARE_MONEYFLOW_AMOUNT_FIELDS,
+    "tushare_large_order_net_inflow_share",
     "provider",
 )
 
@@ -849,6 +877,25 @@ def fetch_jqdata_moneyflow_pro(
     return result.copy()
 
 
+def fetch_tushare_moneyflow(trade_date: dt.date) -> pd.DataFrame:
+    """Fetch one complete session using only the frozen Tushare field whitelist."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.moneyflow(
+            trade_date=trade_date.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_MONEYFLOW_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            f"Tushare moneyflow request failed for {trade_date.isoformat()}: {exc}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
 def fetch_rqdata_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
     """Fetch raw minute bars from RQData's licensed API."""
 
@@ -951,6 +998,89 @@ def tushare_event_quality(
         "exact_duplicate_rows": exact_duplicate_rows,
         "duplicate_event_key_rows": duplicate_event_key_rows,
         "raw_rows_preserved_without_deduplication": True,
+    }
+
+
+def canonicalize_tushare_moneyflow(
+    frame: pd.DataFrame,
+    start: dt.date,
+    end: dt.date,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Normalize Tushare classified amounts and derive the frozen local ratio."""
+
+    empty_stats = {
+        "input_rows": 0,
+        "missing_rows_excluded": 0,
+        "zero_denominator_rows_excluded": 0,
+        "rows_written": 0,
+    }
+    if frame is None or frame.empty:
+        return pd.DataFrame(columns=TUSHARE_MONEYFLOW_COLUMNS), empty_stats
+    raw = frame.copy()
+    missing_columns = [field for field in TUSHARE_MONEYFLOW_RAW_FIELDS if field not in raw]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare moneyflow response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+
+    def instrument(value: Any) -> str | None:
+        code = str(value).split(".", 1)[0].strip()
+        try:
+            return qlib_symbol(code)
+        except RichDataError:
+            return None
+
+    normalized = pd.DataFrame(
+        {
+            "trade_date": pd.to_datetime(
+                raw["trade_date"].astype("string"), format="%Y%m%d", errors="coerce"
+            ).dt.normalize(),
+            "instrument": raw["ts_code"].map(instrument),
+            **{
+                field: pd.to_numeric(raw[field], errors="coerce")
+                for field in TUSHARE_MONEYFLOW_AMOUNT_FIELDS
+            },
+        }
+    )
+    required = ["trade_date", "instrument", *TUSHARE_MONEYFLOW_AMOUNT_FIELDS]
+    complete = normalized[required].notna().all(axis=1)
+    missing_rows = int((~complete).sum())
+    valid = normalized.loc[complete].copy()
+    amount_columns = list(TUSHARE_MONEYFLOW_AMOUNT_FIELDS)
+    if valid[amount_columns].lt(0.0).any().any():
+        raise RichDataError("Tushare moneyflow response contains a negative raw flow amount")
+    start_ts = pd.Timestamp(start)
+    end_ts = pd.Timestamp(end)
+    if not valid["trade_date"].between(start_ts, end_ts).all():
+        raise RichDataError("Tushare moneyflow response contains a date outside the request")
+    if valid.duplicated(["instrument", "trade_date"]).any():
+        raise RichDataError("Tushare moneyflow response contains duplicate instrument/date keys")
+    valid[amount_columns] = valid[amount_columns].astype("float64")
+    denominator = valid[amount_columns].sum(axis=1)
+    positive = denominator.gt(0.0)
+    zero_denominator_rows = int((~positive).sum())
+    valid = valid.loc[positive].copy()
+    denominator = denominator.loc[positive]
+    valid["tushare_large_order_net_inflow_share"] = (
+        valid["buy_elg_amount"]
+        + valid["buy_lg_amount"]
+        - valid["sell_elg_amount"]
+        - valid["sell_lg_amount"]
+    ) / denominator
+    valid["provider"] = "tushare"
+    result = (
+        valid.loc[:, list(TUSHARE_MONEYFLOW_COLUMNS)]
+        .sort_values(["trade_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if not result["tushare_large_order_net_inflow_share"].between(-1.0, 1.0).all():
+        raise RichDataError("derived Tushare large-order ratio falls outside [-1, 1]")
+    return result, {
+        "input_rows": int(len(raw)),
+        "missing_rows_excluded": missing_rows,
+        "zero_denominator_rows_excluded": zero_denominator_rows,
+        "rows_written": int(len(result)),
     }
 
 
@@ -1142,6 +1272,55 @@ def load_jqdata_moneyflow_contract(
         or contract.get("selection_or_promotion_allowed") is not False
     ):
         raise RichDataError("JQData moneyflow contract does not match the frozen protocol")
+    return contract
+
+
+def load_tushare_moneyflow_contract(
+    path: Path = DEFAULT_TUSHARE_MONEYFLOW_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable post-acceptance, pre-history Tushare contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_MONEYFLOW_CONTRACT_SHA256:
+        raise RichDataError("Tushare moneyflow contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_tushare_moneyflow_data_contract")
+    source = contract.get("source") or {}
+    factor = contract.get("factor") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    partition = snapshot.get("partition_policy") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    coverage = contract.get("coverage_and_capacity_policy") or {}
+    mechanism = contract.get("mechanism_identity") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_entitlement_acceptance_before_full_history_or_factor_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-16T08:38:42Z"
+        or source.get("provider") != "tushare"
+        or source.get("api") != "moneyflow"
+        or source.get("frequency") != "daily"
+        or tuple(source.get("requested_fields") or ()) != TUSHARE_MONEYFLOW_RAW_FIELDS
+        or tuple(snapshot.get("columns") or ()) != TUSHARE_MONEYFLOW_COLUMNS
+        or partition.get("partition") != "one calendar year"
+        or partition.get("provider_call_partition") != "one local trading session"
+        or partition.get("provider_documented_maximum_rows_per_call") != 6000
+        or partition.get("minimum_seconds_between_calls") != 0.32
+        or partition.get("maximum_attempts_per_session") != 3
+        or factor.get("name") != "tushare_large_order_net_inflow_share"
+        or factor.get("direction") != "higher_is_better"
+        or acceptance.get("status") != "completed_schema_and_entitlement_probe"
+        or acceptance.get("bound_manifest_sha256")
+        != "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849"
+        or mechanism.get("independent_factor_count") != 1
+        or mechanism.get("jqdata_and_tushare_may_be_combined_as_independent_factors")
+        is not False
+        or coverage.get("minimum_required_cohorts") != 200
+        or coverage.get("minimum_observed_years") != 5
+        or coverage.get("holding_period_trading_days") != 3
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("Tushare moneyflow contract does not match the frozen protocol")
     return contract
 
 
@@ -3089,6 +3268,312 @@ def sync_tushare_events(
         raise
 
 
+def load_tushare_moneyflow_acceptance() -> tuple[Path, dict[str, Any]]:
+    """Verify the bound completed-session Tushare entitlement/schema probe."""
+
+    contract = load_tushare_moneyflow_contract()
+    acceptance = contract["acceptance_protocol"]
+    path = resolve_record_path(acceptance["bound_manifest_path"])
+    if file_digest(path) != acceptance["bound_manifest_sha256"]:
+        raise RichDataError("Tushare moneyflow acceptance manifest fingerprint mismatch")
+    manifest = load_json_record(path, kind="a_share_rich_data_snapshot")
+    if (
+        manifest.get("dataset") != "tushare_events"
+        or manifest.get("provider") != "tushare"
+        or manifest.get("requested_start") != "2026-07-13"
+        or manifest.get("requested_end") != "2026-07-13"
+        or "moneyflow" not in set(manifest.get("requested_datasets") or [])
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("Tushare moneyflow acceptance manifest identity mismatch")
+    records = [
+        item for item in manifest.get("files") or [] if item.get("dataset") == "moneyflow"
+    ]
+    if len(records) != 1:
+        raise RichDataError("Tushare acceptance must contain one moneyflow frame")
+    record = records[0]
+    quality = record.get("quality") or {}
+    if (
+        int(record.get("rows") or -1) != 5197
+        or int(quality.get("missing_key_rows") or 0) != 0
+        or int(quality.get("outside_requested_date_rows") or 0) != 0
+        or int(quality.get("duplicate_event_key_rows") or 0) != 0
+    ):
+        raise RichDataError("Tushare moneyflow acceptance key audit failed")
+    frame = load_snapshot_frame(record)
+    normalized, _ = canonicalize_tushare_moneyflow(
+        frame, dt.date(2026, 7, 13), dt.date(2026, 7, 13)
+    )
+    if normalized.empty or normalized["trade_date"].nunique() != 1:
+        raise RichDataError("Tushare moneyflow acceptance formula audit failed")
+    return path, manifest
+
+
+def _fetch_tushare_moneyflow_with_policy(
+    trade_date: dt.date,
+    *,
+    minimum_interval: float,
+    maximum_attempts: int,
+    retry_backoffs: list[float],
+    last_request_started: list[float | None],
+) -> pd.DataFrame:
+    """Apply the frozen sequential throttle and bounded retry policy."""
+
+    for attempt in range(maximum_attempts):
+        previous = last_request_started[0]
+        if previous is not None:
+            remaining = minimum_interval - (time.monotonic() - previous)
+            if remaining > 0.0:
+                time.sleep(remaining)
+        last_request_started[0] = time.monotonic()
+        try:
+            return fetch_tushare_moneyflow(trade_date)
+        except RichDataError:
+            if attempt + 1 >= maximum_attempts:
+                raise
+            time.sleep(retry_backoffs[attempt])
+    raise AssertionError("unreachable Tushare retry state")
+
+
+def sync_tushare_moneyflow(
+    *,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_FACTOR_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Store the frozen 2019-2025 Tushare classified-flow history without prices."""
+
+    with RichDataProcessLock(METADATA_ROOT / ".tushare_moneyflow.lock"):
+        contract = load_tushare_moneyflow_contract()
+        require_provider("tushare")
+        acceptance_record = load_tushare_moneyflow_acceptance()
+        snapshot_contract = contract["snapshot_contract"]
+        partition_policy = snapshot_contract["partition_policy"]
+        start = dt.date.fromisoformat(snapshot_contract["development_start"])
+        end = dt.date.fromisoformat(snapshot_contract["development_end"])
+        validate_range(start, end, allow_large=allow_large, unit_count=1)
+        intervals = load_factor_universe_intervals(universe_path)
+        calendar = local_calendar_dates(start, end, calendar_path)
+        if calendar.empty:
+            raise RichDataError("local calendar has no sessions in the Tushare moneyflow range")
+        overlap = intervals["start_date"].le(pd.Timestamp(end)) & intervals[
+            "end_date"
+        ].ge(pd.Timestamp(start))
+        intervals = intervals.loc[overlap].copy()
+        if intervals.empty:
+            raise RichDataError("factor universe has no instruments in the frozen range")
+
+        run_id = new_run_id("tushare_moneyflow_daily")
+        parent = RAW_ROOT / "tushare" / "moneyflow" / "daily" / "snapshots"
+        run_root = parent / run_id
+        temporary_root = parent / f".{run_id}.partial"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(f"Tushare moneyflow snapshot already exists: {run_id}")
+        temporary_root.mkdir(parents=True)
+        files: list[dict[str, Any]] = []
+        all_daily_coverage: list[dict[str, Any]] = []
+        quality_totals = {
+            "input_rows": 0,
+            "missing_rows_excluded": 0,
+            "zero_denominator_rows_excluded": 0,
+            "outside_point_in_time_universe_rows_excluded": 0,
+            "rows_written": 0,
+        }
+        minimum_interval = float(partition_policy["minimum_seconds_between_calls"])
+        maximum_attempts = int(partition_policy["maximum_attempts_per_session"])
+        retry_backoffs = [float(value) for value in partition_policy["retry_backoff_seconds"]]
+        last_request_started: list[float | None] = [None]
+        try:
+            for year in range(start.year, end.year + 1):
+                partition_start = max(start, dt.date(year, 1, 1))
+                partition_end = min(end, dt.date(year, 12, 31))
+                partition_calendar = calendar[
+                    (calendar >= pd.Timestamp(partition_start))
+                    & (calendar <= pd.Timestamp(partition_end))
+                ]
+                if partition_calendar.empty:
+                    continue
+                year_frames: list[pd.DataFrame] = []
+                year_quality = {
+                    "input_rows": 0,
+                    "missing_rows_excluded": 0,
+                    "zero_denominator_rows_excluded": 0,
+                    "outside_point_in_time_universe_rows_excluded": 0,
+                    "rows_written": 0,
+                }
+                for session in partition_calendar:
+                    session_date = pd.Timestamp(session).date()
+                    raw = _fetch_tushare_moneyflow_with_policy(
+                        session_date,
+                        minimum_interval=minimum_interval,
+                        maximum_attempts=maximum_attempts,
+                        retry_backoffs=retry_backoffs,
+                        last_request_started=last_request_started,
+                    )
+                    if len(raw) >= int(
+                        partition_policy["provider_documented_maximum_rows_per_call"]
+                    ):
+                        raise RichDataError(
+                            f"Tushare moneyflow {session_date.isoformat()} reached the "
+                            "provider row ceiling; the all-market response may be truncated"
+                        )
+                    normalized, quality = canonicalize_tushare_moneyflow(
+                        raw, session_date, session_date
+                    )
+                    session_ts = pd.Timestamp(session)
+                    active_rows = intervals[
+                        intervals["start_date"].le(session_ts)
+                        & intervals["end_date"].ge(session_ts)
+                    ]
+                    active_instruments = set(active_rows["instrument"].astype(str))
+                    in_universe = normalized["instrument"].isin(active_instruments)
+                    outside_universe = int((~in_universe).sum())
+                    normalized = normalized.loc[in_universe].reset_index(drop=True)
+                    quality["outside_point_in_time_universe_rows_excluded"] = outside_universe
+                    quality["rows_written"] = int(len(normalized))
+                    for key in year_quality:
+                        year_quality[key] += int(quality.get(key, 0))
+                    observed_names = int(normalized["instrument"].nunique())
+                    expected_names = int(len(active_instruments))
+                    all_daily_coverage.append(
+                        {
+                            "trade_date": session_date.isoformat(),
+                            "expected_active_names": expected_names,
+                            "positive_activity_factor_names": observed_names,
+                            "coverage": (
+                                observed_names / expected_names if expected_names else None
+                            ),
+                        }
+                    )
+                    if not normalized.empty:
+                        year_frames.append(normalized)
+                if not year_frames:
+                    raise RichDataError(
+                        f"Tushare moneyflow {year} partition has no eligible positive-activity rows"
+                    )
+                partition_frame = (
+                    pd.concat(year_frames, ignore_index=True)
+                    .sort_values(["trade_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                if partition_frame.duplicated(["instrument", "trade_date"]).any():
+                    raise RichDataError(
+                        f"Tushare moneyflow {year} partition has duplicate stock-date keys"
+                    )
+                destination = temporary_root / f"{year}.parquet"
+                atomic_write_frame(partition_frame, destination)
+                for key in quality_totals:
+                    quality_totals[key] += year_quality[key]
+                files.append(
+                    {
+                        "year": year,
+                        "requested_start": partition_start.isoformat(),
+                        "requested_end": partition_end.isoformat(),
+                        "provider_calls": int(len(partition_calendar)),
+                        "path": manifest_path(run_root / destination.name),
+                        "rows": int(len(partition_frame)),
+                        "sha256": frame_digest(partition_frame),
+                        "quality": year_quality,
+                    }
+                )
+            if not files:
+                raise RichDataError("Tushare moneyflow sync produced no completed partitions")
+            coverages = pd.Series(
+                [row["coverage"] for row in all_daily_coverage if row["coverage"] is not None],
+                dtype="float64",
+            )
+            median_coverage = float(coverages.median()) if len(coverages) else 0.0
+            p05_coverage = float(coverages.quantile(0.05)) if len(coverages) else 0.0
+            coverage_policy = contract["coverage_and_capacity_policy"]
+            minimum_names = int(coverage_policy["minimum_eligible_names_per_cross_section"])
+            dates_with_minimum_names = int(
+                sum(
+                    row["positive_activity_factor_names"] >= minimum_names
+                    for row in all_daily_coverage
+                )
+            )
+            coverage_gate_passed = bool(
+                len(coverages)
+                and median_coverage
+                >= float(coverage_policy["minimum_median_source_row_coverage"])
+                and p05_coverage
+                >= float(coverage_policy["minimum_p05_source_row_coverage"])
+                and dates_with_minimum_names >= 200
+            )
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "tushare_moneyflow_daily",
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "requested_start": start.isoformat(),
+                "requested_end": end.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_MONEYFLOW_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_MONEYFLOW_CONTRACT),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "source_acceptance": {
+                    "path": manifest_path(acceptance_record[0]),
+                    "sha256": file_digest(acceptance_record[0]),
+                    "run_id": acceptance_record[1].get("run_id"),
+                    "status": contract["acceptance_protocol"]["status"],
+                },
+                "point_in_time_universe": {
+                    "path": manifest_path(universe_path.expanduser().resolve()),
+                    "sha256": file_digest(universe_path.expanduser().resolve()),
+                    "intervals": int(len(load_factor_universe_intervals(universe_path))),
+                },
+                "local_calendar": {
+                    "path": manifest_path(calendar_path.expanduser().resolve()),
+                    "sha256": file_digest(calendar_path.expanduser().resolve()),
+                    "sessions_in_requested_range": int(len(calendar)),
+                },
+                "source_request": {
+                    "api": "moneyflow",
+                    "frequency": "daily",
+                    "request_mode": "one completed local trading session per call",
+                    "fields": list(TUSHARE_MONEYFLOW_RAW_FIELDS),
+                    "forbidden_fields_requested_or_stored": [],
+                    "credentials_logged_or_stored": False,
+                    "minimum_seconds_between_calls": minimum_interval,
+                    "maximum_attempts_per_session": maximum_attempts,
+                },
+                "files": files,
+                "normalization_quality": quality_totals,
+                "coverage": {
+                    "calendar_sessions": int(len(calendar)),
+                    "median_positive_activity_factor_coverage": median_coverage,
+                    "p05_positive_activity_factor_coverage": p05_coverage,
+                    "dates_with_at_least_fifty_factor_names": dates_with_minimum_names,
+                    "gate_passed_before_prices": coverage_gate_passed,
+                    "daily": all_daily_coverage,
+                },
+                "acceptance_status": (
+                    "full_source_coverage_passed_pending_no_return_capacity"
+                    if coverage_gate_passed
+                    else "full_source_coverage_failed_stop_before_prices"
+                ),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            raise
+
+
 def load_jqdata_moneyflow_acceptance(
     runs_root: Path | None = None,
 ) -> tuple[Path, dict[str, Any]]:
@@ -3640,6 +4125,18 @@ def build_parser() -> argparse.ArgumentParser:
     events.add_argument("--end", type=parse_date, required=True)
     events.add_argument("--allow-large", action="store_true", help="confirm a request above 100 table-sessions")
 
+    ts_moneyflow = subparsers.add_parser(
+        "sync-tushare-moneyflow",
+        help="download the frozen 2019-2025 Tushare daily classified-moneyflow snapshot",
+    )
+    ts_moneyflow.add_argument("--universe-file", type=Path, default=DEFAULT_FACTOR_UNIVERSE)
+    ts_moneyflow.add_argument("--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR)
+    ts_moneyflow.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the licensed full-universe multi-year request after acceptance passes",
+    )
+
     jq_moneyflow_acceptance = subparsers.add_parser(
         "acceptance-jqdata-moneyflow",
         help="verify JQData professional daily moneyflow entitlement on four frozen symbols",
@@ -3727,6 +4224,12 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "sync-tushare-events":
             datasets = [item.strip() for item in args.datasets.split(",") if item.strip()]
             manifest = sync_tushare_events(datasets, args.start, args.end, args.allow_large)
+        elif args.command == "sync-tushare-moneyflow":
+            manifest = sync_tushare_moneyflow(
+                allow_large=args.allow_large,
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+            )
         elif args.command == "acceptance-jqdata-moneyflow":
             manifest = sync_jqdata_moneyflow(acceptance_date=args.date)
         elif args.command == "sync-jqdata-moneyflow":
@@ -3764,6 +4267,7 @@ def main(argv: list[str] | None = None) -> int:
         "probe-baostock-5m-restoration": "stored_provider_restoration_probe",
         "sync-baostock-5m": "stored_pending_no_return_feature_materialization",
         "sync-jqdata-moneyflow": "stored_pending_no_return_capacity",
+        "sync-tushare-moneyflow": "stored_pending_no_return_capacity",
     }.get(args.command, "stored_pending_acceptance")
     print(json.dumps({"manifest": str(manifest), "status": command_status}, ensure_ascii=False))
     return 0
