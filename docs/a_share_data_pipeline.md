@@ -1358,9 +1358,13 @@ python scripts/install_a_share_launchd.py uninstall
 | Eastmoney / Sina 网页行情 | 仅做固定小样本历史可用性审计；没有历史适配器 | 当前访问失败或仅有近期窗口，不作为 2020–2025 历史源 |
 | RQData | 原始分钟 OHLCV/成交额 | 首选的全市场分钟研究数据 |
 | JQData | 原始分钟 OHLCV/成交额；另购专业版日/分钟资金流 | 当前下一项大单分类研究与分钟替代源 |
-| Tushare | 原始分钟线、`moneyflow`、涨跌停、龙虎榜 | 资金流和盘后事件补充 |
+| Tushare | 原始分钟线；默认盘后表为 `moneyflow`、`stk_limit`、`stock_st`、`top_list`；`limit_list_d` 为更高权限的可选表 | 资金流、交易约束和盘后事件补充 |
 
 供应商账户、分钟权限和历史深度必须由实际授权确认。不要购买、猜测权限或把凭据交给仓库。
+
+2026-07-16 的 2026-07-13 单日权限验收确认：3000 积分账户可以读取 `moneyflow`（5197 行）、`stk_limit`（7695 行）、`stock_st`（211 行）和 `top_list`（91 行），但不能读取要求 5000 积分的 `limit_list_d`。修正后四表原子验收清单为 `data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json`（SHA-256 `83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849`），共 13,194 个原始行，四个 Parquet 内容指纹复核一致，未读取未来收益且不允许选股或推广。因此 `sync-tushare-events` 的默认集合固定为前四项；只有用户已经拥有 5000 积分且确实需要首次/末次封板、炸板次数或封单金额时，才显式传 `--datasets limit-list`。不要仅为了让默认命令成功而追加购买权限。
+
+原始 `top_list` 样本包含 2 条完全重复记录。接入层保留供应商原始行，在清单中记录精确重复和事件键重复数量，并把状态停在 `pending_event_time_alignment_and_canonicalization`；后续必须先冻结规范化与去重规则，不能让重复行增加因子权重。首次按旧默认集合请求时，`limit_list_d` 权限失败并留下了一份无清单的单表目录；该目录只作为失败证据保留，任何下游都不得按文件存在推断验收通过。修正后的事件同步先写隐藏临时目录，只有全部表成功才原子发布；任一权限、字段、日期或写入失败都会删除本次临时快照。
 
 对平均持有 3 个交易日的当前研究，下一项凭证数据优先级固定为：先验收 **JQData 专业版日级资金流**的明确大单分类，随后才选已有合法授权的 RQData 或 JQData 做 1 分钟 OHLCV/成交额验收，再用 Tushare 补充盘后事件。分钟数据只构造尾盘收益、尾盘成交占比、日内 VWAP 路径、开盘跳空消化和日内实现波动等少量预声明字段。Level‑2 的十档盘口、逐笔委托/成交、撤单和队列字段暂不作为前置依赖：只有日级分类与分钟候选先通过时间对齐、跨年度与 Top‑3 门禁，且失败原因明确指向队列或成交优先级时，才评估合规的 Level‑2 历史授权。交易所 Level‑2 是增值行情，不应把客户端可见盘口抓取当作可回测历史数据库。
 
@@ -1382,17 +1386,25 @@ python scripts/a_share_rich_data.py status --data-root /Volumes/DIsk/qlib-rich-d
 
 `baostock_five_minute_storage.history_manifest_count` 是是否已有完整历史清单的权威计数，`raw_parquet_file_count` 只说明磁盘上有多少 Parquet，不能单独证明来源门禁通过。`latest_restoration_probe` 和 `latest_preflight` 只返回安全状态字段，不显示凭据或供应商错误正文。锁文件可能在进程退出后保留 PID 文本；只有 `process_lock.advisory_lock_currently_held=true` 才表示活动任务，不能因为文件存在就删除它。当前外置根检查为历史清单 **0**、历史 Parquet **0**、最新探针 `provider_rejected_stop_before_bulk_retry`，锁文件记录 PID 24906 但 advisory lock 未持有。
 
-BaoStock SDK 无需凭据；其余来源只有在已取得对应授权后才配置环境变量：
+BaoStock SDK 无需凭据；其余来源只有在已取得对应授权后才配置环境变量。macOS 的 Tushare Token 使用隐藏输入，不能把真实值直接写在命令中：
 
-```bash
+```zsh
 python -m pip install -r scripts/data_collector/a_share_rich/requirements.txt
 
-export TUSHARE_TOKEN='...'
-export JQDATA_USERNAME='...'
-export JQDATA_PASSWORD='...'
-export RQDATA_USERNAME='...'
-export RQDATA_PASSWORD='...'
+read -s "token?请粘贴 Tushare Token，随后按回车："; echo
+export TUSHARE_TOKEN="$token"
+launchctl setenv TUSHARE_TOKEN "$token"
+unset token
 ```
+
+`export` 供当前终端使用，`launchctl setenv` 供之后启动的 macOS 图形程序继承。设置后必须彻底退出并重新打开 Codex。用下面的命令只检查“有/无”，不要直接运行会打印 Token 的 `launchctl getenv TUSHARE_TOKEN`：
+
+```zsh
+test -n "$(launchctl getenv TUSHARE_TOKEN)" && echo "已配置" || echo "未配置"
+python scripts/a_share_rich_data.py status
+```
+
+`launchctl` 的该值不会跨注销或重启持久化，需要时重新执行隐藏输入。取消配置时，在当前终端运行 `unset TUSHARE_TOKEN`，并运行 `launchctl unsetenv TUSHARE_TOKEN` 清除后续程序的继承值。JQData/RQData 也只能在取得相应授权后采用同样的隐藏输入与本地环境变量方式，不能把凭据写进仓库文件。
 
 令牌和密码绝不能出现在 Git、命令历史、笔记本输出、研究清单或聊天中。未安装 SDK 或缺少变量时，程序会在发出网络请求前失败；不要用抓取公开网页的方式替代已授权数据源。`status` 中 BaoStock 只检查固定 `baostock==0.9.3` 包，不要求环境变量。
 
@@ -1546,6 +1558,8 @@ python scripts/a_share_rich_data.py acceptance --provider jqdata --date 2026-07-
 python scripts/a_share_rich_data.py acceptance --provider tushare --date 2026-07-13
 python scripts/a_share_rich_data.py sync-tushare-events --start 2026-07-13 --end 2026-07-13
 ```
+
+Tushare 单日事件命令默认请求 3000 积分可覆盖的 `moneyflow,limit-price,stock-st,top-list`，分别对应供应商的 `moneyflow,stk_limit,stock_st,top_list`。`limit-list` 对应 `limit_list_d`，要求 5000 积分，只能显式请求。事件快照保存原始行与逐文件 SHA-256，并记录缺键、越界日期、精确重复和事件键重复；它不会静默去重，也不读取未来收益。只有完整清单存在才表示本次原子下载完成，孤立 Parquet 或无清单目录不是可消费快照。
 
 分钟线保存原始未复权价格；日线同时保留 raw OHLCV 与 `$factor`，所以验收应先用 `adjusted / factor` 还原日线原始价，再比较同日 OHLC、成交额和成交量。供应商的成交量单位可能是“股”或“手”，程序会记录比值；在确认并显式标准化之前，不得把不同供应商的量能字段混用。
 

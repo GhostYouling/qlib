@@ -743,13 +743,103 @@ def test_tushare_minute_request_uses_explicit_session_timestamps(monkeypatch):
     assert captured["end_date"] == "2026-07-13 17:00:00"
 
 
+def test_tushare_event_defaults_fit_3000_points_and_record_raw_duplicates(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "metadata" / "runs")
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(
+        RICH, "new_run_id", lambda prefix: "20260716T000000Z_tushare_events_test"
+    )
+
+    def fake_fetch(dataset, trade_date):
+        row = {"trade_date": "20260713", "ts_code": "600519.SH"}
+        if dataset == "top-list":
+            row["reason"] = "test reason"
+            return pd.DataFrame([row, row])
+        return pd.DataFrame([row])
+
+    monkeypatch.setattr(RICH, "fetch_tushare_event", fake_fetch)
+    parser = RICH.build_parser()
+    args = parser.parse_args(
+        ["sync-tushare-events", "--start", "2026-07-13", "--end", "2026-07-13"]
+    )
+    assert args.datasets == ",".join(RICH.DEFAULT_EVENT_DATASETS)
+    assert (
+        max(
+            RICH.TUSHARE_EVENT_PERMISSION_POINTS[name]
+            for name in RICH.DEFAULT_EVENT_DATASETS
+        )
+        == 3_000
+    )
+
+    manifest_path = RICH.sync_tushare_events(
+        list(RICH.DEFAULT_EVENT_DATASETS),
+        dt.date(2026, 7, 13),
+        dt.date(2026, 7, 13),
+        False,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["requested_datasets"] == list(RICH.DEFAULT_EVENT_DATASETS)
+    assert manifest["source_quality"]["source_rows"] == 5
+    assert manifest["source_quality"]["exact_duplicate_rows"] == 1
+    assert manifest["source_quality"]["duplicate_event_key_rows"] == 1
+    assert (
+        manifest["source_quality"]["raw_rows_preserved_without_deduplication"] is True
+    )
+    assert (
+        manifest["acceptance_status"]
+        == "pending_event_time_alignment_and_canonicalization"
+    )
+    assert manifest["forward_return_fields_read"] is False
+    assert manifest["selection_or_promotion_allowed"] is False
+    top_list_file = next(
+        item for item in manifest["files"] if item["dataset"] == "top-list"
+    )
+    assert (
+        top_list_file["quality"]["status"]
+        == "raw_duplicates_present_pending_canonicalization"
+    )
+    assert len(pd.read_parquet(top_list_file["path"])) == 2
+    assert not list((tmp_path / "raw").rglob("*.tmp"))
+
+
+def test_tushare_event_failure_removes_temporary_snapshot(tmp_path, monkeypatch):
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "metadata" / "runs")
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    run_id = "20260716T000001Z_tushare_events_failure"
+    monkeypatch.setattr(RICH, "new_run_id", lambda prefix: run_id)
+
+    def fake_fetch(dataset, trade_date):
+        if dataset == "limit-price":
+            raise RICH.RichDataError("provider permission denied")
+        return pd.DataFrame([{"trade_date": "20260713", "ts_code": "600519.SH"}])
+
+    monkeypatch.setattr(RICH, "fetch_tushare_event", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="permission denied"):
+        RICH.sync_tushare_events(
+            ["moneyflow", "limit-price"],
+            dt.date(2026, 7, 13),
+            dt.date(2026, 7, 13),
+            False,
+        )
+    snapshot_parent = tmp_path / "raw" / "tushare" / "events" / "snapshots"
+    assert not (snapshot_parent / run_id).exists()
+    assert not (snapshot_parent / f".{run_id}.tmp").exists()
+    assert not (tmp_path / "metadata" / "runs" / f"{run_id}.json").exists()
+
+
 def test_validate_range_requires_completed_session_and_large_request_confirmation():
     completed = RICH.latest_completed_session_date()
     with pytest.raises(RICH.RichDataError, match="not a completed"):
         future = completed + dt.timedelta(days=1)
         RICH.validate_range(future, future, False)
     with pytest.raises(RICH.RichDataError, match="allow-large"):
-        RICH.validate_range(dt.date(2026, 1, 1), dt.date(2026, 7, 13), False, unit_count=4)
+        RICH.validate_range(
+            dt.date(2026, 1, 1), dt.date(2026, 7, 13), False, unit_count=4
+        )
 
 
 def test_snapshot_write_records_checksum_and_minute_summary(tmp_path, monkeypatch):

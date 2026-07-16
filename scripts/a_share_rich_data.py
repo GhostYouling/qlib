@@ -10,7 +10,9 @@ can always identify its provider, retrieval time, and raw input files.
 Supported providers
 -------------------
 * ``baostock``: anonymous raw five-minute OHLCV/amount candidate history.
-* ``tushare``: minute OHLCV plus end-of-day moneyflow/limit-list/top-list.
+* ``tushare``: minute OHLCV plus end-of-day moneyflow, limit prices,
+  historical ST status, and top-list events.  The richer limit-list table is
+  optional because it requires a higher entitlement.
 * ``jqdata``: minute OHLCV plus separately licensed professional daily moneyflow.
 * ``rqdata``: minute OHLCV.
 
@@ -77,7 +79,22 @@ PROVIDER_REQUIREMENTS = {
     "jqdata": {"package": "jqdatasdk", "environment": ("JQDATA_USERNAME", "JQDATA_PASSWORD")},
     "rqdata": {"package": "rqdatac", "environment": ("RQDATA_USERNAME", "RQDATA_PASSWORD")},
 }
-EVENT_DATASETS = ("moneyflow", "limit-list", "top-list")
+DEFAULT_EVENT_DATASETS = ("moneyflow", "limit-price", "stock-st", "top-list")
+EVENT_DATASETS = DEFAULT_EVENT_DATASETS + ("limit-list",)
+TUSHARE_EVENT_PERMISSION_POINTS = {
+    "moneyflow": 2_000,
+    "limit-price": 2_000,
+    "stock-st": 3_000,
+    "top-list": 2_000,
+    "limit-list": 5_000,
+}
+TUSHARE_EVENT_KEY_FIELDS = {
+    "moneyflow": ("trade_date", "ts_code"),
+    "limit-price": ("trade_date", "ts_code"),
+    "stock-st": ("trade_date", "ts_code"),
+    "top-list": ("trade_date", "ts_code", "reason"),
+    "limit-list": ("trade_date", "ts_code"),
+}
 MINUTE_FEATURE_EXPECTED_BARS = 240
 MINUTE_EXPECTED_BARS_BY_FREQUENCY = {"1m": 240, "5m": 48}
 MINUTE_FEATURE_NAMES = (
@@ -867,13 +884,74 @@ def fetch_tushare_event(dataset: str, trade_date: dt.date) -> pd.DataFrame:
     pro = ts.pro_api()
     method = {
         "moneyflow": pro.moneyflow,
+        "limit-price": pro.stk_limit,
+        "stock-st": pro.stock_st,
         "limit-list": pro.limit_list_d,
         "top-list": pro.top_list,
     }[dataset]
-    result = method(trade_date=trade_date.strftime("%Y%m%d"))
+    try:
+        result = method(trade_date=trade_date.strftime("%Y%m%d"))
+    except Exception as exc:
+        raise RichDataError(f"Tushare {dataset} request failed: {exc}") from exc
     if result is None:
         return pd.DataFrame()
     return result.copy()
+
+
+def tushare_event_quality(
+    frame: pd.DataFrame,
+    dataset: str,
+    trade_date: dt.date,
+) -> dict[str, Any]:
+    """Audit one raw Tushare event response without changing source rows."""
+
+    keys = TUSHARE_EVENT_KEY_FIELDS[dataset]
+    if frame.empty:
+        return {
+            "status": "empty_source_response",
+            "source_rows": 0,
+            "missing_key_rows": 0,
+            "outside_requested_date_rows": 0,
+            "exact_duplicate_rows": 0,
+            "duplicate_event_key_rows": 0,
+            "raw_rows_preserved_without_deduplication": True,
+        }
+    missing_columns = [column for column in keys if column not in frame.columns]
+    if missing_columns:
+        raise RichDataError(
+            f"Tushare {dataset} response lacks required columns: "
+            + ", ".join(missing_columns)
+        )
+    missing_key_rows = int(frame[list(keys)].isna().any(axis=1).sum())
+    if missing_key_rows:
+        raise RichDataError(
+            f"Tushare {dataset} response contains {missing_key_rows} rows with missing keys"
+        )
+    requested = trade_date.strftime("%Y%m%d")
+    observed_dates = (
+        frame["trade_date"].astype("string").str.replace("-", "", regex=False)
+    )
+    outside_requested_date_rows = int(observed_dates.ne(requested).sum())
+    if outside_requested_date_rows:
+        raise RichDataError(
+            f"Tushare {dataset} response contains {outside_requested_date_rows} rows "
+            "outside the requested date"
+        )
+    exact_duplicate_rows = int(frame.duplicated().sum())
+    duplicate_event_key_rows = int(frame.duplicated(list(keys)).sum())
+    return {
+        "status": (
+            "raw_duplicates_present_pending_canonicalization"
+            if exact_duplicate_rows or duplicate_event_key_rows
+            else "raw_keys_passed"
+        ),
+        "source_rows": int(len(frame)),
+        "missing_key_rows": missing_key_rows,
+        "outside_requested_date_rows": outside_requested_date_rows,
+        "exact_duplicate_rows": exact_duplicate_rows,
+        "duplicate_event_key_rows": duplicate_event_key_rows,
+        "raw_rows_preserved_without_deduplication": True,
+    }
 
 
 def canonicalize_jqdata_moneyflow(
@@ -2941,40 +3019,74 @@ def sync_tushare_events(
     validate_range(start, end, allow_large=allow_large, unit_count=len(datasets))
     run_id = new_run_id("tushare_events")
     run_root = RAW_ROOT / "tushare" / "events" / "snapshots" / run_id
+    temporary_root = run_root.parent / f".{run_id}.tmp"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(f"Tushare event snapshot already exists: {run_id}")
     files: list[dict[str, Any]] = []
-    for trade_date in pd.bdate_range(start, end):
-        date = trade_date.date()
-        for dataset in datasets:
-            frame = fetch_tushare_event(dataset, date)
-            frame = frame.copy()
-            frame["provider"] = "tushare"
-            frame["dataset"] = dataset
-            frame["retrieved_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
-            destination = run_root / dataset / f"{date.isoformat()}.parquet"
-            atomic_write_frame(frame, destination)
-            files.append(
-                {
-                    "dataset": dataset,
-                    "trade_date": date.isoformat(),
-                    "path": manifest_path(destination),
-                    "rows": int(len(frame)),
-                    "sha256": frame_digest(frame),
-                }
-            )
-    manifest = {
-        "kind": "a_share_rich_data_snapshot",
-        "dataset": "tushare_events",
-        "provider": "tushare",
-        "requested_start": start.isoformat(),
-        "requested_end": end.isoformat(),
-        "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "run_id": run_id,
-        "files": files,
-        "acceptance_status": "pending_factor_time_alignment",
+    quality_totals = {
+        "source_rows": 0,
+        "exact_duplicate_rows": 0,
+        "duplicate_event_key_rows": 0,
     }
-    run_manifest_path = RUNS_ROOT / f"{run_id}.json"
-    atomic_write_json(manifest, run_manifest_path)
-    return run_manifest_path
+    try:
+        for trade_date in pd.bdate_range(start, end):
+            date = trade_date.date()
+            for dataset in datasets:
+                source_frame = fetch_tushare_event(dataset, date)
+                quality = tushare_event_quality(source_frame, dataset, date)
+                for field in quality_totals:
+                    quality_totals[field] += int(quality[field])
+                frame = source_frame.copy()
+                frame["provider"] = "tushare"
+                frame["dataset"] = dataset
+                frame["retrieved_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+                temporary_destination = (
+                    temporary_root / dataset / f"{date.isoformat()}.parquet"
+                )
+                final_destination = run_root / dataset / f"{date.isoformat()}.parquet"
+                atomic_write_frame(frame, temporary_destination)
+                files.append(
+                    {
+                        "dataset": dataset,
+                        "trade_date": date.isoformat(),
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(frame)),
+                        "sha256": frame_digest(frame),
+                        "minimum_permission_points": TUSHARE_EVENT_PERMISSION_POINTS[
+                            dataset
+                        ],
+                        "quality": quality,
+                    }
+                )
+        manifest = {
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_events",
+            "provider": "tushare",
+            "requested_start": start.isoformat(),
+            "requested_end": end.isoformat(),
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "run_id": run_id,
+            "requested_datasets": datasets,
+            "files": files,
+            "source_quality": {
+                **quality_totals,
+                "raw_rows_preserved_without_deduplication": True,
+            },
+            "acceptance_status": "pending_event_time_alignment_and_canonicalization",
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        run_manifest_path = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, run_manifest_path)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return run_manifest_path
+    except Exception:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        raise
 
 
 def load_jqdata_moneyflow_acceptance(
@@ -3520,8 +3632,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="confirm the accepted full-universe, multi-year anonymous request",
     )
 
-    events = subparsers.add_parser("sync-tushare-events", help="download Tushare event tables after the close")
-    events.add_argument("--datasets", default="moneyflow,limit-list,top-list")
+    events = subparsers.add_parser(
+        "sync-tushare-events", help="download Tushare event tables after the close"
+    )
+    events.add_argument("--datasets", default=",".join(DEFAULT_EVENT_DATASETS))
     events.add_argument("--start", type=parse_date, required=True)
     events.add_argument("--end", type=parse_date, required=True)
     events.add_argument("--allow-large", action="store_true", help="confirm a request above 100 table-sessions")
