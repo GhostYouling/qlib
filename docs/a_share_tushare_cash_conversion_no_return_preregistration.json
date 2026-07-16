@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_cash_conversion_no_return_preregistration",
+  "status": "frozen_after_source_acceptance_before_full_snapshot_completion_or_full_history_values_observed",
+  "preregistered_at": "2026-07-16T14:25:16Z",
+  "purpose": "Operationalize the already-frozen source-completeness, three-session capacity, and 54-field near-synonym gates for the sole higher Tushare operating-cash-conversion factor without future prices, forward returns, parameter search, scoring, or selection.",
+  "source_protocol": {
+    "data_contract": {
+      "path": "docs/a_share_tushare_cash_conversion_data_contract.json",
+      "sha256": "54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_cash_conversion_source_acceptance_record.json",
+      "sha256": "615f0b794c165569b3d89444c594ee16fc60c628b36f0f834c759e09167fe962"
+    },
+    "required_full_snapshot_dataset": "tushare_operating_cash_conversion",
+    "required_full_snapshot_status": "full_source_completeness_passed_pending_no_return_capacity_and_uniqueness",
+    "required_partition_signal_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "canonical_columns": [
+      "announcement_date",
+      "income_actual_announcement_date",
+      "cashflow_actual_announcement_date",
+      "report_period",
+      "instrument",
+      "n_income_attr_p",
+      "n_cashflow_act",
+      "tushare_operating_cash_conversion",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date",
+      "report_period"
+    ],
+    "factor": "tushare_operating_cash_conversion",
+    "formula": "n_cashflow_act / n_income_attr_p",
+    "direction": "higher_is_better",
+    "full_history_price_fields_allowed": [],
+    "full_history_forward_return_fields_allowed": []
+  },
+  "point_in_time_context": {
+    "fingerprint_range_start": "2019-01-01",
+    "fingerprint_range_end": "2025-12-31",
+    "holding_universe": {
+      "name": "buyable_main_chinext",
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "file_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+      "range_clipped_sha256": "2b3a2fba2ebb6938853fe9c6e1f6649517bef844e0ee6347a032e2b74945394c",
+      "range_clipped_intervals": 4794
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "file_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "range_clipped_sha256": "c408af553ff2aa780f302eda8bc860d06d875a1a34c6bf37cd1341c6f890623c",
+      "range_clipped_sessions": 1699
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false,
+      "status": "passed"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    }
+  },
+  "source_completeness_contract": {
+    "minimum_complete_joined_factor_events": 5000,
+    "minimum_observed_signal_years": 5,
+    "duplicate_raw_semantic_or_factor_event_keys_allowed": false,
+    "every_partition_content_hash_row_count_formula_date_membership_and_provider_must_recompute": true,
+    "source_completeness_must_pass_before_capacity": true
+  },
+  "event_canonicalization": {
+    "availability": "first local trading session strictly after announcement_date",
+    "maximum_event_age_calendar_days": 3,
+    "same_instrument_same_announcement_date_multiple_report_period_policy": "exclude every colliding event and count both collision groups and rows; never choose a report period",
+    "overlapping_different_announcement_dates_policy": "on a target session keep the latest already-effective announcement; never use a future announcement or a return outcome",
+    "missing_event_policy": "missing; never zero-fill or forward-fill after age expiry",
+    "factor_clipping_winsorization_log_absolute_value_or_imputation": null
+  },
+  "capacity_contract": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement"
+  },
+  "comparison_sources": {
+    "terminal_tushare_moneyflow": {
+      "research_record_path": "docs/a_share_tushare_moneyflow_research_record.json",
+      "research_record_sha256": "3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a",
+      "full_manifest_path": "data/metadata/rich_data/runs/20260716T085610Z_tushare_moneyflow_daily_6c78e93d.json",
+      "full_manifest_sha256": "eee76f4b3b3d3001f9c73e84fda6336a9732d648424828d7a000e045480e2fcb"
+    },
+    "terminal_tushare_positive_book_to_market": {
+      "research_record_path": "docs/a_share_tushare_daily_pb_research_record.json",
+      "research_record_sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3",
+      "full_manifest_path": "data/metadata/rich_data/runs/20260716T102519Z_tushare_daily_pb_2e5c38bf.json",
+      "full_manifest_sha256": "280bc68239cc70a5e7d6e44dbb0a15a0b331be8215ddfb8d9ebd27a408e1e366"
+    },
+    "terminal_tushare_sw_breadth": {
+      "research_record_path": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+      "research_record_sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3",
+      "capacity_preregistration_path": "docs/a_share_tushare_sw_industry_breadth_capacity_preregistration.json",
+      "capacity_preregistration_sha256": "dc5e0525df07e21d628ab09d46843511ddbeacb09ecbc3afb41d14b43bcfae59",
+      "full_manifest_path": "data/metadata/rich_data/runs/20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe.json",
+      "full_manifest_sha256": "8582eb25f91ddcbe01130057ecb118431168545fa0a182cdb428c3a8d2a0228e"
+    },
+    "daily_billboard": {
+      "path": "data/raw/a_share/events/daily_billboard.parquet",
+      "sha256": "0fee2fff3de2a8422203b9cf0dfbbe2a190129f0f746d9982542d53937b0cbe7",
+      "manifest_path": "data/metadata/daily_billboard_manifest.json",
+      "manifest_sha256": "aacefb639390fce6f5303812ec6f016aa34023edd84c6062a6cf83fe09ba2ce4",
+      "maximum_age_days": 3
+    },
+    "holder_count_changes": {
+      "path": "data/raw/a_share/events/holder_count_changes.parquet",
+      "sha256": "e14a0beb393bc713f6b6e5820da395430308eb117460541b3769116c8a265414",
+      "manifest_path": "data/metadata/holder_count_changes_manifest.json",
+      "manifest_sha256": "1d38b782968786f274ab57429f19bc967054a0e9f0a97459f21e9ac07ee2a988",
+      "maximum_age_days": 3
+    }
+  },
+  "uniqueness_contract": {
+    "screen_start": "2025-01-01",
+    "screen_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_pairwise_names_per_session": 6,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "method": "For each comparison field and eligible session, compute the Spearman correlation of pairwise-complete daily ranks, then gate the absolute median daily correlation.",
+    "comparison_factors": [
+      "momentum_1",
+      "momentum_2",
+      "momentum_3",
+      "momentum_5",
+      "up_day_ratio_5",
+      "momentum_10",
+      "momentum_20",
+      "momentum_60",
+      "trend_ma_5",
+      "trend_ma_20",
+      "trend_ma_60",
+      "volume_surge_1",
+      "volume_surge",
+      "volume_surge_3",
+      "turnover_surge",
+      "turnover_surge_3",
+      "turnover_surge_1",
+      "liquidity_5",
+      "free_float_cap_proxy",
+      "volatility_5",
+      "volatility_10",
+      "volatility_20",
+      "amplitude_1",
+      "amplitude_5",
+      "gap_1",
+      "near_high_10",
+      "near_high_20",
+      "intraday_strength",
+      "intraday_return_sum_5",
+      "directional_serial_dependence_20",
+      "close_to_high",
+      "close_above_vwap_1",
+      "signed_efficiency_ratio_10",
+      "return_turnover_correlation_10",
+      "max_return_20",
+      "signed_volume_pressure_5",
+      "roe",
+      "revenue_yoy",
+      "profit_yoy",
+      "quality_age_days",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration",
+      "tushare_large_order_net_inflow_share",
+      "tushare_positive_book_to_market",
+      "sw1_three_session_leave_one_out_breadth",
+      "billboard_net_flow_to_float",
+      "billboard_net_flow_to_deal",
+      "billboard_deal_to_float",
+      "billboard_reason_count",
+      "billboard_freshness",
+      "holder_count_change_ratio",
+      "holder_count_change_absolute",
+      "holder_count_freshness"
+    ],
+    "comparison_factor_count": 54,
+    "explicit_quarterly_quality_semantic_checks": {
+      "quality_roe": "daily-rank alias of roe",
+      "quality_profit": "daily-rank alias of profit_yoy",
+      "quality_revenue": "daily-rank alias of revenue_yoy",
+      "quality_growth": "mean of daily revenue_yoy and profit_yoy percentile ranks",
+      "quality_score": "mean of daily roe, revenue_yoy, and profit_yoy percentile ranks",
+      "roe_change": "direct comparison factor",
+      "revenue_yoy_acceleration": "direct comparison factor",
+      "profit_yoy_acceleration": "direct comparison factor"
+    },
+    "additional_composite_semantic_checks_not_counted_twice": [
+      "quality_growth",
+      "quality_score"
+    ],
+    "all_54_comparisons_and_both_additional_composites_must_pass": true,
+    "close_known_current_or_prior_price_volume_inputs_may_be_loaded_only_after_capacity_passes": true,
+    "next_session_open_future_close_forward_return_score_or_selection_fields_allowed": false
+  },
+  "run_order": [
+    "revalidate the frozen data contract, source acceptance, full manifest, all annual partitions, formula, report dates, provider identity, point-in-time membership, and local fingerprints",
+    "apply the full source-completeness gate without any comparison or price input",
+    "exclude and count same-instrument same-announcement-date multi-report-period collisions",
+    "map strict-next-session availability and count the fixed quality/listing/non-overlapping three-session capacity without price inputs",
+    "only if capacity passes, load the exact close-known 2025 comparison factors and run all 54 comparisons plus the two non-duplicated quarterly composites",
+    "write one terminal no-return audit record"
+  ],
+  "failure_policy": "Any failed source, capacity, pairwise-session, or correlation gate stops before future prices or returns and forbids another ratio, denominator, report-period selection, age widening, threshold reduction, direction inversion, year or industry subset, combination, score, selection, sizing, order, or Level-2 intake.",
+  "success_policy": "A complete pass permits only a separate immutable single-factor diagnostic preregistration bound to the no-return audit hash before any future price or return access.",
+  "future_open_close_or_forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

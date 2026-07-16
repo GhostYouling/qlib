@@ -204,6 +204,24 @@ Preserve `docs/a_share_tushare_cash_conversion_source_acceptance_record.json`
 Do not invoke `acceptance-tushare-cash-conversion` again or change its symbols,
 dates, fields, version policy, formula, direction, or age.  This success only
 permits the contract-fixed sequential 2019--2025 source snapshot followed by
-source-completeness, capacity, and 54-field uniqueness gates without prices or
-returns.  It does not permit aggregation, scoring, selection, sizing, orders,
-or Level-2 intake.
+the frozen no-return protocol in
+`docs/a_share_tushare_cash_conversion_no_return_preregistration.json`
+(SHA-256 `6966e50e734d6d7ff9e706c280f7c371b3eec626445677d07006a2e02c44ec8e`).
+After the full manifest succeeds, run only:
+
+```bash
+python scripts/a_share_short_horizon_factor_research.py \
+  tushare-cash-conversion-no-return-audit \
+  --manifest data/metadata/rich_data/runs/<full-run>.json
+```
+
+The command first revalidates source completeness, partitions, formula, PIT
+membership, event collisions, three-session capacity, quality age, and listing
+age without loading prices.  Only a passed capacity gate may transiently load
+the exact 54 same-session or historical close-known comparison fields for the
+uniqueness gate.  It never reads a future open, close, or return and allows one
+completed audit per full-manifest SHA-256.  A failure stops this factor version;
+a pass permits only a separately fingerprint-bound return-diagnostic
+preregistration.  Neither outcome permits aggregation, scoring, selection,
+sizing, orders, or Level-2 intake.  Five focused no-return tests and all 359
+data-collector tests pass for this command.

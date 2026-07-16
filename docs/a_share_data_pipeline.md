@@ -1660,6 +1660,8 @@ unset token
 
 完整 Token 配置、无回显验证和旧进程的单次透传方式见 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md)。通过既有来源链验证后，唯一全量来源命令为 `sync-tushare-cash-conversion --allow-large`；Token 只能用该文档中的本地临时变量包装注入。该命令固定为 2019–2025 点时范围并原子发布年度分区，执行期间不得启动第二份同步，也不得用 `--allow-large` 绕过来源合同或后续无收益门禁。
 
+无收益门禁已经在全量结果出现前冻结为 `docs/a_share_tushare_cash_conversion_no_return_preregistration.json`（SHA‑256 `6966e50e734d6d7ff9e706c280f7c371b3eec626445677d07006a2e02c44ec8e`）。全量清单成功后只能运行 `python scripts/a_share_short_horizon_factor_research.py tushare-cash-conversion-no-return-audit --manifest data/metadata/rich_data/runs/<full-run>.json`。命令先重新验证来源、七个年度分区、公式、点时股票集合和事件冲突，再在完全不读价格的情况下检查固定三交易日、至少 6 只股票、至少 2 个因子值、至少 200 个 cohort、覆盖至少 5 年、质量信息不超过 550 天和上市至少 20 个会话。只有容量通过，才可为 2025 年唯一性门临时计算预注册的 54 个当日或历史收盘已知比较字段，并额外检查两个质量复合字段；不得读取未来开盘、收盘或收益。相同股票、相同公告日披露多个报告期时全部排除，不得挑选其中一期；不同公告重叠时只能使用已经生效的最新事件。每个全量清单 SHA‑256 只允许完成一次。容量或唯一性失败即停止该版本；全部通过也只允许另写绑定指纹的单因子收益诊断预注册，不得直接调用通用诊断、聚合、评分或选股。该实现的 5 个聚焦无收益测试和整套 359 个数据采集测试均已通过。
+
 ### 必经验收流程
 
 只对一个已收盘交易日和四只代表性股票运行验收。`acceptance` 会保存原始快照，并自动检查字段、非负成交量/成交额、常规交易时段、同日 OHLC/收盘比值，以及与本地日线的成交额和成交量比值：
