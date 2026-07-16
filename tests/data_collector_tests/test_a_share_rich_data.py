@@ -1685,6 +1685,189 @@ def clean_cash_statement_frame(
     return pd.DataFrame(rows, columns=fields)
 
 
+def forecast_row(
+    ts_code: str,
+    ann_date: str,
+    end_date: str,
+    forecast_type: str,
+    lower,
+    upper,
+    *,
+    first_ann_date: str | None = None,
+) -> dict:
+    return {
+        "ts_code": ts_code,
+        "ann_date": ann_date,
+        "end_date": end_date,
+        "type": forecast_type,
+        "p_change_min": lower,
+        "p_change_max": upper,
+        "first_ann_date": first_ann_date or ann_date,
+    }
+
+
+def test_tushare_earnings_forecast_contract_is_frozen_before_rows():
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_EARNINGS_FORECAST_CONTRACT)
+        == RICH.TUSHARE_EARNINGS_FORECAST_CONTRACT_SHA256
+    )
+    contract = RICH.load_tushare_earnings_forecast_contract()
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_EARNINGS_FORECAST_RAW_FIELDS
+    )
+    assert contract["factor"]["formula"] == (
+        "(p_change_min + p_change_max) / 2"
+    )
+    assert contract["freeze_evidence"]["provider_forecast_rows_observed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+
+def test_tushare_earnings_forecast_request_uses_only_frozen_fields(monkeypatch):
+    captured = []
+
+    class Pro:
+        def forecast(self, **kwargs):
+            captured.append(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_earnings_forecast(
+        "002594.SZ", dt.date(2019, 1, 1), dt.date(2025, 12, 31)
+    )
+    assert captured == [
+        {
+            "ts_code": "002594.SZ",
+            "start_date": "20190101",
+            "end_date": "20251231",
+            "fields": ",".join(RICH.TUSHARE_EARNINGS_FORECAST_RAW_FIELDS),
+        }
+    ]
+
+
+def test_tushare_earnings_forecast_canonicalization_is_type_and_bound_strict():
+    rows = [
+        forecast_row("002594.SZ", "20241220", "20241231", "预增", 10.0, 20.0),
+        forecast_row("002594.SZ", "20241220", "20241231", "预增", 10.0, 20.0),
+        forecast_row(
+            "002594.SZ",
+            "20250420",
+            "20250331",
+            "扭亏",
+            None,
+            None,
+            first_ann_date=None,
+        ),
+        forecast_row("002594.SZ", "20250820", "20250630", "略减", None, -5.0),
+        forecast_row("002594.SZ", "20251020", "20250930", "预减", -20.0, -30.0),
+    ]
+    frame = pd.DataFrame(rows, columns=RICH.TUSHARE_EARNINGS_FORECAST_RAW_FIELDS)
+    accepted, quality = RICH.canonicalize_tushare_earnings_forecast(
+        frame,
+        expected_ts_code="002594.SZ",
+        announcement_start=dt.date(2019, 1, 1),
+        announcement_end=dt.date(2025, 12, 31),
+    )
+    assert accepted.columns.tolist() == list(RICH.TUSHARE_EARNINGS_FORECAST_COLUMNS)
+    assert accepted["tushare_earnings_forecast_growth_midpoint"].tolist() == [15.0]
+    assert quality["exact_semantic_duplicate_rows_collapsed"] == 1
+    assert quality["noncomparable_type_counts"] == {"扭亏": 1}
+    assert quality["missing_or_nonfinite_bound_rows_excluded"] == 1
+    assert quality["reversed_bound_rows_excluded"] == 1
+    assert quality["rows_written"] == 1
+
+    unknown = frame.iloc[[0]].copy()
+    unknown.loc[:, "type"] = "不确定"
+    with pytest.raises(RICH.RichDataError, match="unknown types"):
+        RICH.canonicalize_tushare_earnings_forecast(
+            unknown,
+            expected_ts_code="002594.SZ",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+
+    conflict = frame.iloc[[0, 0]].copy().reset_index(drop=True)
+    conflict.loc[1, "p_change_max"] = 21.0
+    with pytest.raises(RICH.RichDataError, match="conflicting duplicate"):
+        RICH.canonicalize_tushare_earnings_forecast(
+            conflict,
+            expected_ts_code="002594.SZ",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+
+
+def test_tushare_earnings_forecast_acceptance_is_atomic_and_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_earnings_forecast_contract())
+    monkeypatch.setattr(
+        RICH, "load_tushare_earnings_forecast_contract", lambda: contract
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_EARNINGS_FORECAST_ACCEPTANCE_RECORD",
+        tmp_path / "no_terminal_forecast_record.json",
+    )
+    calls = []
+
+    def fake_fetch(symbol, announcement_start, announcement_end):
+        calls.append((symbol, announcement_start, announcement_end))
+        rows = [
+            forecast_row(symbol, "20250120", "20241231", "预增", 10.0, 20.0),
+            forecast_row(symbol, "20250420", "20250331", "续亏", None, None),
+        ]
+        return pd.DataFrame(rows, columns=RICH.TUSHARE_EARNINGS_FORECAST_RAW_FIELDS)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_earnings_forecast", fake_fetch)
+    manifest_path = RICH.sync_tushare_earnings_forecast_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_type_policy_and_formula_pending_full_history"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 3
+    assert manifest["source_request"]["forecast_vip_requested"] is False
+    assert manifest["source_quality"]["source_rows"] == 6
+    assert manifest["source_quality"]["rows_written"] == 3
+    assert manifest["source_quality"]["symbols_with_comparable_events"] == 3
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert len(calls) == 3
+    with pytest.raises(RICH.RichDataError, match="already consumed"):
+        RICH.sync_tushare_earnings_forecast_acceptance()
+    assert len(calls) == 3
+
+
+def test_tushare_earnings_forecast_terminal_record_blocks_before_provider(
+    tmp_path, monkeypatch
+):
+    record = RICH.load_tushare_earnings_forecast_acceptance_record()
+    assert record["status"] == (
+        "terminal_rejected_after_one_call_before_factor_values_with_prior_mechanism_overlap"
+    )
+    assert record["acceptance_failure"]["provider_calls_issued"] == 1
+    assert record["implementation_audit"]["retry_authorized"] is False
+    assert record["prior_mechanism_overlap"]["accepted_price_rebuild"][
+        "qualified_factor_count"
+    ] == 0
+    assert record["forward_return_fields_read"] is False
+
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_earnings_forecast_contract",
+        lambda: pytest.fail("terminal gate must run before contract/provider work"),
+    )
+    with pytest.raises(RICH.RichDataError, match="branch is terminal.*forbidden"):
+        RICH.sync_tushare_earnings_forecast_acceptance()
+
+
 def test_tushare_cash_conversion_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_tushare_cash_conversion_contract()
     assert contract["factor"]["name"] == "tushare_operating_cash_conversion"
@@ -1836,6 +2019,7 @@ def test_tushare_cash_conversion_endpoint_enforces_frozen_version_policy():
     assert quality == {
         "input_rows": 10,
         "non_target_company_rows_excluded": 1,
+        "non_target_company_type_counts": {"2": 1},
         "target_company_periods_observed": 6,
         "adjustment_periods_excluded": 1,
         "no_type_one_periods_excluded": 1,
@@ -1856,6 +2040,48 @@ def test_tushare_cash_conversion_endpoint_enforces_frozen_version_policy():
             announcement_start=dt.date(2024, 1, 1),
             announcement_end=dt.date(2026, 6, 30),
             latest_actual_announcement_date=dt.date(2026, 7, 16),
+        )
+
+
+def test_tushare_cash_conversion_company_type_repair_only_excludes_complete_non_target_integers():
+    frame = clean_cash_statement_frame("002961.SZ", "income")
+    frame.loc[:, "comp_type"] = "7"
+
+    with pytest.raises(RICH.RichDataError, match="unknown company types: \\[7\\]"):
+        RICH.canonicalize_tushare_cash_conversion_endpoint(
+            frame,
+            endpoint="income",
+            expected_ts_code="002961.SZ",
+            announcement_start=dt.date(2024, 1, 1),
+            announcement_end=dt.date(2026, 6, 30),
+            latest_actual_announcement_date=dt.date(2026, 7, 16),
+        )
+
+    accepted, quality = RICH.canonicalize_tushare_cash_conversion_endpoint(
+        frame,
+        endpoint="income",
+        expected_ts_code="002961.SZ",
+        announcement_start=dt.date(2024, 1, 1),
+        announcement_end=dt.date(2026, 6, 30),
+        latest_actual_announcement_date=dt.date(2026, 7, 16),
+        allow_complete_integer_non_target_company_type_codes=True,
+    )
+    assert accepted.empty
+    assert quality["non_target_company_rows_excluded"] == len(frame)
+    assert quality["non_target_company_type_counts"] == {"7": len(frame)}
+    assert quality["accepted_periods"] == 0
+
+    invalid = frame.copy()
+    invalid.loc[0, "comp_type"] = "7.5"
+    with pytest.raises(RICH.RichDataError, match="invalid statement keys"):
+        RICH.canonicalize_tushare_cash_conversion_endpoint(
+            invalid,
+            endpoint="income",
+            expected_ts_code="002961.SZ",
+            announcement_start=dt.date(2024, 1, 1),
+            announcement_end=dt.date(2026, 6, 30),
+            latest_actual_announcement_date=dt.date(2026, 7, 16),
+            allow_complete_integer_non_target_company_type_codes=True,
         )
 
 
@@ -2048,6 +2274,11 @@ def configure_cash_conversion_full_sync_fixture(tmp_path, monkeypatch):
     monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
     monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
     monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_CASH_CONVERSION_RESEARCH_RECORD",
+        tmp_path / "no_terminal_cash_conversion_record.json",
+    )
     return contract, universe_path, calendar_path
 
 
@@ -2137,6 +2368,107 @@ def test_tushare_cash_conversion_full_sync_deletes_partial_on_failure(
     assert failure["forward_return_fields_read"] is False
     snapshot_parent = tmp_path / "raw" / "tushare" / "cash_conversion" / "snapshots"
     assert not list(snapshot_parent.glob(".*.partial"))
+
+
+def test_tushare_cash_conversion_company_type_repair_is_one_full_retry(
+    tmp_path, monkeypatch
+):
+    _, universe_path, calendar_path = configure_cash_conversion_full_sync_fixture(
+        tmp_path, monkeypatch
+    )
+    prior_failure_path = (
+        tmp_path
+        / "runs"
+        / "20260716T141556Z_tushare_cash_conversion_full_b2e31205_source_failure.json"
+    )
+    prior_failure_path.parent.mkdir(parents=True)
+    prior_failure_path.write_text(
+        RICH.json.dumps(
+            {
+                "kind": "a_share_rich_data_source_failure",
+                "dataset": "tushare_operating_cash_conversion",
+                "run_id": "20260716T141556Z_tushare_cash_conversion_full_b2e31205",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    repair_path = RICH.DEFAULT_TUSHARE_CASH_CONVERSION_COMPANY_TYPE_REPAIR
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_cash_conversion_company_type_repair",
+        lambda: {
+            "repair_path": repair_path,
+            "repair": {
+                "unchanged_source_protocol": {
+                    "point_in_time_instrument_count": 2,
+                    "provider_calls": 4,
+                }
+            },
+            "failure_path": prior_failure_path,
+            "failure": RICH.json.loads(prior_failure_path.read_text()),
+        },
+    )
+    calls = []
+
+    def fake_fetch(endpoint, symbol, announcement_start, announcement_end):
+        calls.append((endpoint, symbol, announcement_start, announcement_end))
+        frame = clean_cash_statement_frame(symbol, endpoint)
+        if endpoint == "income" and symbol == "000333.SZ":
+            frame.loc[0, "comp_type"] = "7"
+        return frame
+
+    monkeypatch.setattr(RICH, "fetch_tushare_cash_conversion_statement", fake_fetch)
+    manifest_path = RICH.sync_tushare_cash_conversion(
+        allow_large=True,
+        universe_path=universe_path,
+        calendar_path=calendar_path,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    repair = manifest["company_type_source_repair"]
+    assert repair["full_from_scratch_restart"] is True
+    assert repair["partial_snapshot_resumed"] is False
+    assert repair["candidate_company_type"] == 1
+    assert repair["complete_integer_non_target_company_types_excluded"] is True
+    assert repair["bound_first_failure_path"] == RICH.manifest_path(
+        prior_failure_path
+    )
+    assert manifest["source_request"]["completed_provider_calls"] == 4
+    assert manifest["normalization_quality"][
+        "non_target_company_type_counts_by_endpoint"
+    ] == {"income": {"7": 1}, "cashflow": {}}
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert len(calls) == 4
+
+    with pytest.raises(RICH.RichDataError, match="repair retry already exists"):
+        RICH.sync_tushare_cash_conversion(
+            allow_large=True,
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    assert len(calls) == 4
+
+
+def test_tushare_cash_conversion_terminal_record_forbids_another_full_sync(
+    tmp_path, monkeypatch
+):
+    record = RICH.load_tushare_cash_conversion_research_record()
+    assert record["status"] == (
+        "terminal_rejected_at_full_source_after_single_repair_retry"
+    )
+    assert record["source_gate"]["complete_full_snapshot_published"] is False
+    assert record["downstream_gates"]["capacity_audit_run"] is False
+    assert record["forward_return_fields_read"] is False
+
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_cash_conversion_source_chain",
+        lambda: pytest.fail("terminal gate must run before source-chain loading"),
+    )
+    with pytest.raises(RICH.RichDataError, match="terminal.*forbidden"):
+        RICH.sync_tushare_cash_conversion(allow_large=True)
 
 
 def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):

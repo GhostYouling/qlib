@@ -1650,17 +1650,31 @@ unset token
 
 这一方向现已正式终止。完整记录为 `docs/a_share_tushare_top10_float_concentration_source_acceptance_record.json`（SHA‑256 `9396a687aeae176097006395406ab79d74a015b1d9392f89023658b438bd2cdf`）。不得换股票或报告期、删除/填补两条异常、改用总股本比例/持股数/持股变化/股东类型、放松恰好十名和紧邻季度规则，也不得运行全历史、容量、唯一性、收益、聚合、当前评分、选股、仓位、订单或据此采购 Level‑2。该分支不向任何组合贡献字段。
 
-### Tushare 经营现金流/归母净利润（来源验收通过，仅允许继续无收益门禁）
+### Tushare 经营现金流/归母净利润（全量来源二次原子失败，方向终止）
 
 新的独立会计质量候选在任何 `income`、`cashflow` 行、权限结果、因子值或收益出现前冻结于 `docs/a_share_tushare_cash_conversion_data_contract.json`（SHA‑256 `54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01`）。唯一因子是累计合并口径 `n_cashflow_act / n_income_attr_p`，高值固定为更好；只接受一般企业 `comp_type=1` 和 `report_type=1`。任一调整报表类型会剔除该接口整期，不同的一号报表版本会剔除该期，只有公告日、实际公告日和指标完全相同的语义重复行可以显式折叠。`update_flag` 只计数，不选值；归母净利润必须严格为正，经营现金流可为负。信号日期取两张表 `f_ann_date` 的较晚者，只能在下一本地交易日开盘使用，最长保留三个自然日。
 
 实现先通过 8 个聚焦测试、完整 **354** 个数据采集测试、Python 编译、CLI 和 diff 检查。无网络预检重新验证了合同和 10 个本地上下文指纹，确认既有验收记录为零且未读取价格或收益。唯一允许的验收随后按 `600519.SH`、`000333.SZ`、`300750.SZ` 各调用一次 `income` 和 `cashflow`，正好 6 次；各接口分别返回 11/15、12/14、11/13 行，共 76 行，全部低于单次 100 行上限。版本规则为每只股票保留 10 个可连接报告期，共发布 30 行因子；16 条完全相同的语义重复行被显式折叠，没有调整期、版本歧义、缺失指标、非正利润分母、非有限现金流或重复因子键。因子范围为 0.2889472485 至 2.6982034084。原始财务报表帧没有落盘，价格字段为空且 `forward_return_fields_read=false`。
 
-接受清单为 `data/metadata/rich_data/runs/20260716T135952Z_tushare_cash_conversion_acceptance_c829bf52.json`（SHA‑256 `8307b86d53a41a3fb2d5c827c9a2c1f356022ae8dd16d2f781b63ba2875af5b1`），已发布因子帧 SHA‑256 为 `0bd8b2b807ce4bbbd56285367267efa0b190ac31c93382a11c039fbda1093dcb`。跟踪记录为 `docs/a_share_tushare_cash_conversion_source_acceptance_record.json`（SHA‑256 `615f0b794c165569b3d89444c594ee16fc60c628b36f0f834c759e09167fe962`）。来源验收已永久消费，不得换股票、日期、字段或版本再次验收。它现在只允许按冻结合同顺序实现和运行 2019–2025 全量来源、无收益容量与 54 字段近同义门；尚未证明历史收益，也不得聚合、评分、选股、定仓、下单或据此采购 Level‑2。
+接受清单为 `data/metadata/rich_data/runs/20260716T135952Z_tushare_cash_conversion_acceptance_c829bf52.json`（SHA‑256 `8307b86d53a41a3fb2d5c827c9a2c1f356022ae8dd16d2f781b63ba2875af5b1`），已发布因子帧 SHA‑256 为 `0bd8b2b807ce4bbbd56285367267efa0b190ac31c93382a11c039fbda1093dcb`。跟踪记录为 `docs/a_share_tushare_cash_conversion_source_acceptance_record.json`（SHA‑256 `615f0b794c165569b3d89444c594ee16fc60c628b36f0f834c759e09167fe962`）。来源验收已永久消费，不得换股票、日期、字段或版本再次验收。在全量结果出现前，它当时只允许按冻结合同顺序运行 2019–2025 全量来源、无收益容量与 54 字段近同义门；验收通过本身从未证明历史收益，也从未允许聚合、评分、选股、定仓、下单或据此采购 Level‑2。
 
-完整 Token 配置、无回显验证和旧进程的单次透传方式见 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md)。通过既有来源链验证后，唯一全量来源命令为 `sync-tushare-cash-conversion --allow-large`；Token 只能用该文档中的本地临时变量包装注入。该命令固定为 2019–2025 点时范围并原子发布年度分区，执行期间不得启动第二份同步，也不得用 `--allow-large` 绕过来源合同或后续无收益门禁。
+完整 Token 配置、无回显验证和旧进程的单次透传方式见 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md)。全量来源仍处于活动状态时，唯一命令曾是 `sync-tushare-cash-conversion --allow-large`；它固定为 2019–2025 点时范围并原子发布年度分区。现在终止记录已冻结，命令会在任何来源链或供应商调用前拒绝，不能再运行。
 
-无收益门禁已经在全量结果出现前冻结为 `docs/a_share_tushare_cash_conversion_no_return_preregistration.json`（SHA‑256 `6966e50e734d6d7ff9e706c280f7c371b3eec626445677d07006a2e02c44ec8e`）。全量清单成功后只能运行 `python scripts/a_share_short_horizon_factor_research.py tushare-cash-conversion-no-return-audit --manifest data/metadata/rich_data/runs/<full-run>.json`。命令先重新验证来源、七个年度分区、公式、点时股票集合和事件冲突，再在完全不读价格的情况下检查固定三交易日、至少 6 只股票、至少 2 个因子值、至少 200 个 cohort、覆盖至少 5 年、质量信息不超过 550 天和上市至少 20 个会话。只有容量通过，才可为 2025 年唯一性门临时计算预注册的 54 个当日或历史收盘已知比较字段，并额外检查两个质量复合字段；不得读取未来开盘、收盘或收益。相同股票、相同公告日披露多个报告期时全部排除，不得挑选其中一期；不同公告重叠时只能使用已经生效的最新事件。每个全量清单 SHA‑256 只允许完成一次。容量或唯一性失败即停止该版本；全部通过也只允许另写绑定指纹的单因子收益诊断预注册，不得直接调用通用诊断、聚合、评分或选股。该实现的 5 个聚焦无收益测试和整套 359 个数据采集测试均已通过。
+无收益门禁已经在全量结果出现前冻结为 `docs/a_share_tushare_cash_conversion_no_return_preregistration.json`（SHA‑256 `6966e50e734d6d7ff9e706c280f7c371b3eec626445677d07006a2e02c44ec8e`）。它原本要求先重验来源、七个年度分区、公式、点时股票集合和事件冲突，再在完全不读价格的情况下检查固定三交易日容量；只有容量通过才可临时计算预注册的 54 个收盘已知比较字段与两个质量复合字段。由于从未产生成功全量清单，这份门禁没有运行，比较价格字段也没有加载。
+
+首次全量同步按 4,794 只股票和 9,588 次固定调用推进，在 `SZ002961 / income`、第 6,579 次调用发现完整整数 `comp_type=7`。临时快照被删除，最终快照未发布，价格与收益均未读取；失败记录 SHA‑256 为 `59693d4e34f63425670eaf6bf41adf9aacca888379c36ba315535c82b4ab3f3a`。官方文档仍只定义公司类型 1–4，因此没有推断 7 的业务含义。修复规则在重跑前冻结为 `docs/a_share_tushare_cash_conversion_company_type_repair.json`（SHA‑256 `0ac8c8caecafc92fd7af4626588b9f9830c1828ed40dd45b18bbc7522aa8bc80`）：候选仍严格为整数 1，其他完整整数只能排除并计数，缺失、非有限或非整数仍致命；只授权一次从头重跑，成功或失败都会消费授权。
+
+唯一重跑通过了原失败边界，但在 `SZ301200 / income`、第 9,037/9,588 次调用发现非标准季度末并再次原子终止。它完成了 4,518 只股票，没有发布年度分区或最终清单，临时目录已删除；失败记录 SHA‑256 为 `0f4d6d40081eda418a7a94c999ec83f1a5be33a29f6af5af0470390de10c7344`，仍为 `price_fields_loaded=[]`、`forward_return_fields_read=false`。完整终止记录是 `docs/a_share_tushare_cash_conversion_research_record.json`（SHA‑256 `c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819`）。不得第三次同步、重取异常股票来补明细、放宽季度末或报表键、映射未知公司类型、复用删除的半成品，亦不得运行容量、唯一性、收益、聚合、评分、选股、仓位、订单或据此采购 Level‑2。该分支不向任何组合贡献因子。
+
+### Tushare 业绩预告同比中点（一次调用后终止，且与既有失败机制重叠）
+
+在现金转换终止后，曾基于官方 `forecast` 文档冻结 `docs/a_share_tushare_earnings_forecast_data_contract.json`（SHA‑256 `4d2503381f3f7afcd02fcb80ed2a3a6ea06bddb0d1bb2831523ef0a7796c781b`）。合同只请求股票、公告日、报告期、预告类型、同比上下限和首次公告日七个字段，候选固定为预增/略增/续盈/预减/略减的 `(p_change_min + p_change_max) / 2`，扭亏/首亏/续亏保持缺失；不请求净利润金额、摘要、原因、报表字段、价格或收益。合同、4 个专项测试和当时完整 367 个数据采集测试均在任何接口行之前完成。
+
+一次性验收的首个请求 `002466.SZ` 在标准化阶段被实现中额外加入的“报告期不得晚于公告日”检查拒绝。该检查不在冻结合同中，而且对可提前发布的业绩预告并不成立；但拒绝记录已经发布并消费一次性验收，不能修改实现后再请求。失败记录是 `data/metadata/rich_data/runs/20260716T173315Z_tushare_earnings_forecast_acceptance_2dd6da1a.json`（SHA‑256 `56125255b582c05c4e3889b75aefa4e29f77bb0b372fbc2c1456df5ff3883fe7`），仅发出 1/3 次调用，没有保存原始帧、构造或发布因子值，临时目录已删除，`price_fields_loaded=[]` 且 `forward_return_fields_read=false`。
+
+随后重新核对研究账本发现，这也不是新的独立机制：既有 `performance_forecasts.parquet` 已在公告事件重建协议 `docs/a_share_announcement_event_rebuild_preregistration.json`（SHA‑256 `131c1b0cd44f6b2451991389375e57583b724df1567f5c82d0d8612e0966db7c`）下，用接受价格和 20 日上市门完成一次固定重建。`20260714T162126Z` 诊断及 `20260714T162139Z`/`20260714T162140Z` 两个完整审计对 9 个公告因子合格 **0/9**；表现最好的预告精度平均 Rank IC 也只有约 +0.00745，并在 2021、2022、2025 年和最大回撤门失败。换成 Tushare 百分比区间中点或缩窄类型，不会让同一个管理层业绩预告机制变成独立因子。
+
+终止记录为 `docs/a_share_tushare_earnings_forecast_source_acceptance_record.json`（SHA‑256 `38b966eea1728769ca977c1e26733527fc908846188e4727f2d76b716e97878b`）。生产入口会在合同或供应商访问前拒绝。不得第二次验收、换股票/日期/字段/类型/公式/方向/事件年龄、为同一预告机制另写 v2 合同、运行全历史/容量/唯一性/收益，也不得聚合、评分、选股、定仓、下单或据此采购 Level‑2。下一机制必须先回到已记录研究前沿核重，确认经济独立后才能写合同或请求数据。
 
 ### 必经验收流程
 

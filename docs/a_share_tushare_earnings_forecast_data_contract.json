@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_earnings_forecast_data_contract",
+  "status": "frozen_before_forecast_entitlement_rows_full_history_factor_values_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T17:26:26Z",
+  "purpose": "Ingest and no-return screen one management earnings-forecast disclosure mechanism for the fixed three-session A-share protocol without sweeping forecast fields, types, formulas, directions, event ages, symbols, dates, prices, or returns.",
+  "freeze_evidence": {
+    "official_forecast_documentation_observed": true,
+    "provider_forecast_rows_observed": false,
+    "forecast_entitlement_observed": false,
+    "full_history_observed": false,
+    "factor_values_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "source": "Tushare Pro forecast",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=45",
+    "official_permission_table": "https://tushare.pro/document/1?doc_id=108",
+    "minimum_permission_points": 2000,
+    "current_account_points": 3000,
+    "standard_interface_scope": "The standard forecast endpoint can retrieve one stock's history; the forecast_vip all-market quarterly route requires 5000 points and is forbidden.",
+    "why_this_source": "A dated management earnings forecast is an issuer expectation event, not a realized income/cashflow statement version, historical price transform, analyst report, ownership event, or order-flow field."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "Among forecasts whose percentage-growth scale is economically comparable, a higher announced midpoint of attributable-net-profit year-on-year change may be incorporated over the next three sessions.",
+    "factor_family": "management_earnings_expectation_disclosure_event",
+    "relationship_to_quarterly_quality": "Realized ROE, revenue growth, profit growth, and their accelerations remain quality eligibility or uniqueness context only. The candidate uses a dated management forecast and must pass a no-return near-synonym screen before any return access.",
+    "relationship_to_terminal_cash_conversion": "This candidate uses forecast percentage bounds and announcement dates only; it requests no income/cashflow statement metric, comp_type, report_type, f_ann_date, or statement-version field.",
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "forecast",
+    "frequency": "earnings_forecast_disclosure_event",
+    "request_mode": "one stock and one frozen announcement-date range per call",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "type",
+      "p_change_min",
+      "p_change_max",
+      "first_ann_date"
+    ],
+    "explicitly_forbidden_fields": [
+      "net_profit_min",
+      "net_profit_max",
+      "last_parent_net",
+      "summary",
+      "change_reason",
+      "revenue",
+      "n_income_attr_p",
+      "n_cashflow_act",
+      "comp_type",
+      "report_type",
+      "f_ann_date",
+      "close",
+      "open",
+      "high",
+      "low",
+      "price",
+      "market_cap",
+      "turnover_rate",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_and_version_policy": {
+    "event_date": "ann_date",
+    "first_announcement_date_role": "first_ann_date is audit context only. A missing first_ann_date is counted but does not move availability; a complete value must be no later than ann_date.",
+    "comparable_forecast_types": [
+      "预增",
+      "略增",
+      "续盈",
+      "预减",
+      "略减"
+    ],
+    "non_comparable_types_excluded_and_counted": [
+      "扭亏",
+      "首亏",
+      "续亏"
+    ],
+    "unknown_type_policy": "Any non-missing type outside the frozen eight-type catalog aborts the stock partition; missing type is a fatal key error.",
+    "range_policy": "Both p_change_min and p_change_max must be finite for a comparable type and p_change_min must be no greater than p_change_max. Otherwise exclude and count the event; never swap, fill, clip, or infer bounds from type.",
+    "duplicate_policy": "For one instrument, ann_date, and report period, exact seven-field semantic duplicates may be counted and collapsed. Any differing tuple for the same event key aborts the partition.",
+    "same_instrument_announcement_multi_period_policy": "If one instrument has more than one retained report period on the same ann_date, exclude every such event before capacity; never select the latest or largest change.",
+    "conservative_availability": "first local trading session strictly after ann_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "forward_fill_beyond_event_age_allowed": false,
+    "historical_intraday_release_timestamp_available_per_row": false,
+    "residual_risk": "Tushare exposes ann_date and first_ann_date but no exchange release timestamp or explicit revision sequence. Next-session availability and collision exclusion reduce, but cannot eliminate, vendor revision-history risk."
+  },
+  "factor": {
+    "name": "tushare_earnings_forecast_growth_midpoint",
+    "direction": "higher_is_better",
+    "formula": "(p_change_min + p_change_max) / 2",
+    "units": "percentage points of forecast attributable-net-profit year-on-year change",
+    "applicable_types": [
+      "预增",
+      "略增",
+      "续盈",
+      "预减",
+      "略减"
+    ],
+    "excluded_type_policy": "扭亏, 首亏, and 续亏 do not share a monotonic percentage-growth scale with profitable comparable states and remain missing rather than receiving an ordinal score.",
+    "nonfinite_derived_value_policy": "exclude and count; never offset or impute",
+    "clipping_winsorization_log_absolute_value_type_ordinal_or_imputation": null,
+    "absent_event_policy": "missing; never treat a missing or non-comparable forecast as zero",
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(tushare_earnings_forecast_growth_midpoint)"
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "quarterly_quality_snapshot": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "base_research_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "terminal_cash_conversion": {
+      "path": "docs/a_share_tushare_cash_conversion_research_record.json",
+      "sha256": "c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_symbols": [
+      "002466.SZ",
+      "002594.SZ",
+      "300750.SZ"
+    ],
+    "fixed_announcement_start": "20190101",
+    "fixed_announcement_end": "20251231",
+    "provider_calls": 3,
+    "minimum_total_source_rows": 6,
+    "minimum_symbols_with_one_comparable_event": 2,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "exactly one forecast request is issued for each frozen symbol and no other symbol or date range",
+      "each response contains exactly the frozen seven-field whitelist and remains below the local 100-row truncation-suspicion ceiling",
+      "stock, announcement date, report period, and type keys are complete and every returned stock matches its request",
+      "report periods are standard quarter ends and announcement dates fall within the frozen request range",
+      "only the five comparable types may produce a midpoint; the three loss-state transition types are excluded and counted",
+      "unknown types and conflicting duplicate event keys abort acceptance; exact semantic duplicates alone may collapse",
+      "finite ordered percentage bounds reproduce the local midpoint exactly",
+      "at least two frozen symbols retain a comparable event and the total source response contains at least six rows",
+      "no credential, forbidden forecast narrative or amount field, statement field, price, score, or return appears in a published frame or manifest"
+    ],
+    "success_status": "accepted_entitlement_schema_type_policy_and_formula_pending_full_history",
+    "failed_acceptance_policy": "write one no-return rejection record and stop without another symbol or date range, field/type relaxation, full sync, capacity, uniqueness, price access, formula or direction change, score, selection, sizing, orders, or Level-2 justification",
+    "one_shot_policy": "The exact contract may publish at most one terminal success or rejection record."
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_earnings_forecast_growth_midpoint",
+    "announcement_start": "20190101",
+    "announcement_end": "20251231",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2025-12-31",
+    "request_each_point_in_time_buyable_instrument_once": true,
+    "provider_call_partition": "one ts_code over the full frozen announcement-date range",
+    "local_truncation_suspicion_row_ceiling_per_stock": 100,
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_stock": 3,
+    "requests_are_sequential": true,
+    "partial_snapshot_accepted": false,
+    "immutable_signal_year_partitions_and_manifest": true,
+    "canonical_columns": [
+      "announcement_date",
+      "first_announcement_date",
+      "report_period",
+      "instrument",
+      "forecast_type",
+      "p_change_min",
+      "p_change_max",
+      "tushare_earnings_forecast_growth_midpoint",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date",
+      "report_period"
+    ]
+  },
+  "no_return_gates": {
+    "order": [
+      "source_fingerprint_schema_type_formula_and_completeness",
+      "same_announcement_multi_period_collision_exclusion",
+      "quality_listing_and_non_overlapping_three_session_capacity",
+      "factor_uniqueness_against_close_known_and_quarterly_quality_synonyms"
+    ],
+    "source_completeness": {
+      "minimum_comparable_forecast_events": 3000,
+      "minimum_observed_signal_years": 5,
+      "duplicate_semantic_or_factor_event_keys_allowed": false
+    },
+    "capacity": {
+      "development_start": "2019-01-01",
+      "development_end": "2025-12-31",
+      "minimum_eligible_names_per_cross_section": 6,
+      "minimum_distinct_factor_values": 2,
+      "minimum_observed_years": 5,
+      "holding_period_trading_days": 3,
+      "non_overlapping_cohorts": true,
+      "topk": 3,
+      "minimum_required_cohorts": 200,
+      "maximum_quality_age_days": 550,
+      "minimum_listing_sessions": 20
+    },
+    "uniqueness": {
+      "comparison_scope": "all 54 frozen close-known or historical mechanism fields used by the terminal cash-conversion preregistration plus explicit quarterly quality growth level and acceleration composites",
+      "minimum_pairwise_event_sessions": 20,
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+    },
+    "failed_gate_policy": "stop without returns, loss-state ordinal mapping, another forecast field or formula, direction inversion, event-age widening, lower capacity or synonym threshold, year/type/industry subset, rejected-factor combination, current scoring, selection, sizing, orders, or Level-2 intake"
+  },
+  "diagnostic_policy_if_all_no_return_gates_pass": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_required": "docs/a_share_three_day_prospective_execution_policy.json",
+    "cny_200000_pilot_policy_required": "docs/a_share_three_day_pilot_execution_policy.json",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_type_formula_bound_weight_or_threshold_search_allowed": false,
+    "selection_or_promotion_allowed": false
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

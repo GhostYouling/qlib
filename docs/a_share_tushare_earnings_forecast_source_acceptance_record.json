@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_earnings_forecast_source_acceptance_record",
+  "status": "terminal_rejected_after_one_call_before_factor_values_with_prior_mechanism_overlap",
+  "recorded_at": "2026-07-16T17:34:20Z",
+  "purpose": "Preserve the one-shot Tushare forecast acceptance failure, the uncontracted implementation check that caused it, and the discovery that the same performance-forecast economic mechanism was already terminal in the accepted-price research frontier.",
+  "data_contract": {
+    "path": "docs/a_share_tushare_earnings_forecast_data_contract.json",
+    "sha256": "4d2503381f3f7afcd02fcb80ed2a3a6ea06bddb0d1bb2831523ef0a7796c781b",
+    "preregistered_at": "2026-07-16T17:26:26Z",
+    "provider_rows_observed_before_registration": false,
+    "factor_values_observed_before_registration": false,
+    "factor_returns_observed_before_registration": false
+  },
+  "official_source": {
+    "forecast_documentation": "https://tushare.pro/document/2?doc_id=45",
+    "permission_table": "https://tushare.pro/document/1?doc_id=108",
+    "minimum_points": 2000,
+    "account_points": 3000,
+    "standard_endpoint_used": "forecast",
+    "forecast_vip_used": false
+  },
+  "acceptance_failure": {
+    "run_id": "20260716T173315Z_tushare_earnings_forecast_acceptance_2dd6da1a",
+    "path": "data/metadata/rich_data/runs/20260716T173315Z_tushare_earnings_forecast_acceptance_2dd6da1a.json",
+    "sha256": "56125255b582c05c4e3889b75aefa4e29f77bb0b372fbc2c1456df5ff3883fe7",
+    "failed_symbol": "002466.SZ",
+    "provider_calls_issued": 1,
+    "provider_calls_planned": 3,
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "type",
+      "p_change_min",
+      "p_change_max",
+      "first_ann_date"
+    ],
+    "error": "Tushare forecast response contains a report period after ann_date",
+    "raw_frame_persisted": false,
+    "factor_frame_published": false,
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false,
+    "credentials_logged_or_stored": false
+  },
+  "implementation_audit": {
+    "failure_was_provider_schema_rejection": false,
+    "failure_was_contract_factor_or_gate_result": false,
+    "failure_was_uncontracted_implementation_check": true,
+    "uncontracted_check": "report_period must be no later than ann_date",
+    "why_check_is_invalid_for_this_source": "A management forecast may be announced before the forecast reporting period ends; the frozen contract required only a standard quarter-end report period and did not require report_period <= ann_date.",
+    "factor_value_constructed_before_failure": false,
+    "retry_authorized": false,
+    "reason_retry_is_not_authorized": "The exact contract declared one terminal success or rejection record, and the same performance-forecast economic branch was already tested and stopped in the accepted-price frontier."
+  },
+  "prior_mechanism_overlap": {
+    "overlap_discovered_after_acceptance_failure": true,
+    "new_contract_incorrectly_described_as_independent": true,
+    "existing_rebuild_preregistration": {
+      "path": "docs/a_share_announcement_event_rebuild_preregistration.json",
+      "sha256": "131c1b0cd44f6b2451991389375e57583b724df1567f5c82d0d8612e0966db7c"
+    },
+    "existing_performance_forecast_snapshot": {
+      "path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+      "sha256": "48bc11ea6749a590fcc260f6a5728e853f59f228f6cef7c5b0183f206895d734",
+      "manifest_path": "data/metadata/performance_forecasts_manifest.json",
+      "manifest_sha256": "d824bf8194b871fc21ce66cab80f1f9158814fff0e9a5d77a2cfbaec967e562c"
+    },
+    "accepted_price_rebuild": {
+      "diagnostic_path": "data/experiments/short_horizon/20260714T162126Z_factor_diagnostic.json",
+      "diagnostic_sha256": "c3fbab2bb0760e2df65f0b4a39fa30b4d5aa4429d1579e771625d0dfbe90b265",
+      "stability_audit_path": "data/experiments/short_horizon/20260714T162139Z_factor_stability_audit.json",
+      "stability_audit_sha256": "349fd8efee5fdf6fcd9297007c2dde08975480ffd77dacdcd57a8bfbbea92a5d",
+      "topk_audit_path": "data/experiments/short_horizon/20260714T162140Z_factor_topk_viability_audit.json",
+      "topk_audit_sha256": "52b30c85522c1cc91e1c6a75816cb2a304ce88a4710223fb563deac7d1b2c6b0",
+      "all_factor_count": 9,
+      "qualified_factor_count": 0,
+      "forecast_factors": [
+        "forecast_profit_yoy",
+        "forecast_profit_yoy_precision",
+        "forecast_freshness",
+        "forecast_turnaround"
+      ],
+      "best_forecast_mean_rank_ic": 0.00745,
+      "nonpositive_association_and_basket_years": [
+        2021,
+        2022,
+        2025
+      ],
+      "best_forecast_top3_maximum_drawdown": -0.2925
+    },
+    "interpretation": "A Tushare percentage-bound midpoint is another representation of the already exhausted management performance-forecast announcement mechanism, not an additional independent factor. A provider change or narrower type map does not create economic independence."
+  },
+  "decision": {
+    "outcome": "stop_tushare_earnings_forecast_without_second_request_full_history_capacity_uniqueness_or_returns",
+    "acceptance_retry_allowed": false,
+    "change_symbol_date_field_type_formula_direction_or_event_age_allowed": false,
+    "new_contract_version_for_same_forecast_mechanism_allowed": false,
+    "run_full_history_capacity_uniqueness_or_return_diagnostic_allowed": false,
+    "factor_admitted_to_aggregation_scoring_selection_sizing_or_orders": false,
+    "level2_intake_justified_by_this_result": false,
+    "next_research_direction": "Return to the recorded research frontier and choose a genuinely independent mechanism before creating another data contract or issuing any provider request."
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

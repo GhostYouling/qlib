@@ -332,6 +332,12 @@ DEFAULT_TUSHARE_CASH_CONVERSION_NO_RETURN_SPEC = (
 TUSHARE_CASH_CONVERSION_NO_RETURN_SPEC_SHA256 = (
     "6966e50e734d6d7ff9e706c280f7c371b3eec626445677d07006a2e02c44ec8e"
 )
+DEFAULT_TUSHARE_CASH_CONVERSION_RESEARCH_RECORD = (
+    REPO_ROOT / "docs" / "a_share_tushare_cash_conversion_research_record.json"
+)
+TUSHARE_CASH_CONVERSION_RESEARCH_RECORD_SHA256 = (
+    "c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819"
+)
 DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST = (
     DATA_ROOT
     / "metadata"
@@ -3855,6 +3861,41 @@ def load_tushare_cash_conversion_no_return_preregistration(
                     f"Tushare cash-conversion comparison source changed: {source_name}"
                 )
     return spec
+
+
+def load_tushare_cash_conversion_research_record(
+    path: Path = DEFAULT_TUSHARE_CASH_CONVERSION_RESEARCH_RECORD,
+) -> dict[str, Any]:
+    """Enforce the terminal source failure before any downstream audit work."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_CASH_CONVERSION_RESEARCH_RECORD_SHA256:
+        raise ValueError(
+            "Tushare cash-conversion terminal research-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path, kind="a_share_tushare_cash_conversion_research_record"
+    )
+    evidence = record.get("evidence_chain") or {}
+    second = evidence.get("second_full_source_failure") or {}
+    decision = record.get("decision") or {}
+    if (
+        record.get("status")
+        != "terminal_rejected_at_full_source_after_single_repair_retry"
+        or second.get("sha256")
+        != "0f4d6d40081eda418a7a94c999ec83f1a5be33a29f6af5af0470390de10c7344"
+        or second.get("completed_provider_calls_before_failure") != 9037
+        or second.get("partial_snapshot_deleted") is not True
+        or second.get("final_snapshot_published") is not False
+        or decision.get("same_source_version_rerun_allowed") is not False
+        or decision.get("run_capacity_uniqueness_or_return_diagnostic_allowed")
+        is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Tushare cash-conversion terminal research record changed")
+    return record
 
 
 def validate_tushare_sw_industry_breadth_diagnostic_sources(
@@ -19898,6 +19939,13 @@ def run_tushare_cash_conversion_no_return_audit(
 ) -> dict[str, Any]:
     """Run source, capacity, then conditional 54-field uniqueness gates."""
 
+    terminal_path = DEFAULT_TUSHARE_CASH_CONVERSION_RESEARCH_RECORD
+    if terminal_path.exists():
+        load_tushare_cash_conversion_research_record(terminal_path)
+        raise ValueError(
+            "Tushare cash-conversion source is terminal; capacity, uniqueness, "
+            "and return work are forbidden"
+        )
     spec = load_tushare_cash_conversion_no_return_preregistration()
     factor_frame, source_evidence = validate_tushare_cash_conversion_full_snapshot(
         Path(args.manifest), spec
@@ -20001,6 +20049,7 @@ def run_tushare_cash_conversion_no_return_audit(
         uniqueness is not None and uniqueness["uniqueness_gate_passed"]
     )
     all_passed = bool(capacity_passed and uniqueness_passed)
+    event_canonicalization = capacity.get("event_canonicalization") or {}
     if not capacity_passed:
         decision = (
             "rejected_before_close_known_comparison_load_and_return_diagnostic_"
@@ -20034,6 +20083,7 @@ def run_tushare_cash_conversion_no_return_audit(
         "event_canonicalization_contract": event_contract,
         "capacity_contract": capacity_contract,
         "uniqueness_contract": uniqueness_contract,
+        "preregistered_run_order": list(spec.get("run_order") or []),
         "run_sequence": [
             {
                 "step": "full_snapshot_partition_formula_and_context_revalidation",
@@ -20047,6 +20097,30 @@ def run_tushare_cash_conversion_no_return_audit(
                 "step": "source_completeness",
                 "completed": True,
                 "passed": True,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "same_instrument_same_announcement_multi_report_period_collision_exclusion",
+                "completed": True,
+                "passed": not bool(
+                    event_canonicalization.get(
+                        "collision_period_selection_performed", False
+                    )
+                ),
+                "collision_groups_excluded": int(
+                    event_canonicalization.get(
+                        "same_instrument_same_announcement_multi_period_collision_groups_excluded",
+                        0,
+                    )
+                ),
+                "collision_rows_excluded": int(
+                    event_canonicalization.get(
+                        "same_instrument_same_announcement_multi_period_collision_rows_excluded",
+                        0,
+                    )
+                ),
                 "comparison_fields_loaded": [],
                 "price_fields_loaded": [],
                 "forward_return_fields_read": False,
@@ -20082,6 +20156,16 @@ def run_tushare_cash_conversion_no_return_audit(
                     additional_semantic_fields_loaded
                 ),
                 "forward_return_fields_read": False,
+            },
+            {
+                "step": "atomic_terminal_no_return_audit_record",
+                "completed": True,
+                "passed": True,
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "additional_semantic_fields_loaded": (
+                    additional_semantic_fields_loaded
+                ),
+                "future_open_close_or_return_fields_read": False,
             },
         ],
         "source_capacity": capacity,

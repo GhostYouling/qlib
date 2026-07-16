@@ -7938,6 +7938,22 @@ def test_tushare_cash_conversion_no_return_preregistration_is_fingerprint_frozen
     assert spec["uniqueness_contract"]["comparison_factor_count"] == 54
     assert len(RESEARCH.TUSHARE_CASH_CONVERSION_COMPARISON_FIELDS) == 54
     assert spec["future_open_close_or_forward_return_fields_read"] is False
+    terminal = RESEARCH.load_tushare_cash_conversion_research_record()
+    assert terminal["status"] == (
+        "terminal_rejected_at_full_source_after_single_repair_retry"
+    )
+    assert terminal["downstream_gates"]["capacity_audit_run"] is False
+    assert terminal["forward_return_fields_read"] is False
+
+
+def test_tushare_cash_conversion_terminal_record_stops_no_return_runner(tmp_path):
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "never_read.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(tmp_path / "provider"),
+    )
+    with pytest.raises(ValueError, match="source is terminal"):
+        RESEARCH.run_tushare_cash_conversion_no_return_audit(args)
 
 
 def test_tushare_cash_conversion_partition_recomputes_formula_and_signal_year():
@@ -8202,6 +8218,11 @@ def test_tushare_cash_conversion_capacity_failure_stops_before_comparison_load(
     )
     monkeypatch.setattr(
         RESEARCH,
+        "DEFAULT_TUSHARE_CASH_CONVERSION_RESEARCH_RECORD",
+        tmp_path / "no_terminal_cash_conversion_record.json",
+    )
+    monkeypatch.setattr(
+        RESEARCH,
         "validate_tushare_cash_conversion_full_snapshot",
         lambda manifest, loaded_spec: (pd.DataFrame(), source_evidence),
     )
@@ -8239,6 +8260,18 @@ def test_tushare_cash_conversion_capacity_failure_stops_before_comparison_load(
     assert audit["data"]["close_known_comparison_fields_loaded"] == []
     assert audit["forward_return_fields_read"] is False
     assert audit["selection_or_promotion_allowed"] is False
+    sequence = [step["step"] for step in audit["run_sequence"]]
+    assert sequence == [
+        "full_snapshot_partition_formula_and_context_revalidation",
+        "source_completeness",
+        "same_instrument_same_announcement_multi_report_period_collision_exclusion",
+        "quality_listing_and_non_overlapping_three_session_capacity",
+        "close_known_2025_comparison_materialization",
+        "54_field_and_two_composite_uniqueness",
+        "atomic_terminal_no_return_audit_record",
+    ]
+    assert audit["run_sequence"][2]["comparison_fields_loaded"] == []
+    assert audit["run_sequence"][-1]["future_open_close_or_return_fields_read"] is False
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_tushare_cash_conversion_no_return_audit(args)
 

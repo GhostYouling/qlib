@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_cash_conversion_company_type_source_repair",
+  "status": "frozen_after_first_full_source_schema_failure_before_any_complete_full_snapshot_factor_values_prices_or_returns",
+  "frozen_at": "2026-07-16T15:31:33Z",
+  "purpose": "Authorize one conservative from-scratch source retry after Tushare returned a complete integer comp_type outside its documented 1-4 catalog, without admitting that code to the factor or changing any economic, point-in-time, capacity, uniqueness, or return protocol.",
+  "unchanged_source_protocol": {
+    "data_contract_path": "docs/a_share_tushare_cash_conversion_data_contract.json",
+    "data_contract_sha256": "54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01",
+    "source_acceptance_record_path": "docs/a_share_tushare_cash_conversion_source_acceptance_record.json",
+    "source_acceptance_record_sha256": "615f0b794c165569b3d89444c594ee16fc60c628b36f0f834c759e09167fe962",
+    "candidate_company_type": 1,
+    "candidate_report_type": 1,
+    "factor": "tushare_operating_cash_conversion",
+    "formula": "n_cashflow_act / n_income_attr_p",
+    "direction": "higher_is_better",
+    "announcement_start": "2019-01-01",
+    "announcement_end": "2025-12-31",
+    "point_in_time_instrument_count": 4794,
+    "provider_calls": 9588,
+    "request_order": "sequential_one_income_then_one_cashflow_call_per_instrument",
+    "minimum_seconds_between_calls": 0.65,
+    "maximum_attempts_per_symbol_endpoint": 3
+  },
+  "first_failed_full_source_run": {
+    "run_id": "20260716T141556Z_tushare_cash_conversion_full_b2e31205",
+    "failure_record_path": "data/metadata/rich_data/runs/20260716T141556Z_tushare_cash_conversion_full_b2e31205_source_failure.json",
+    "failure_record_sha256": "59693d4e34f63425670eaf6bf41adf9aacca888379c36ba315535c82b4ab3f3a",
+    "failure_code": "source_statement_type_failure",
+    "failed_instrument": "SZ002961",
+    "failed_endpoint": "income",
+    "observed_complete_integer_non_candidate_company_type_codes": [
+      7
+    ],
+    "completed_instruments_before_failure": 3289,
+    "completed_provider_calls_before_failure": 6579,
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false,
+    "credentials_logged_or_stored": false
+  },
+  "official_documentation_recheck": {
+    "checked_at": "2026-07-16T15:29:00Z",
+    "income_url": "https://tushare.pro/document/2?doc_id=33",
+    "cashflow_url": "https://tushare.pro/document/2?doc_id=44",
+    "documented_company_type_codes": {
+      "1": "general_industry",
+      "2": "bank",
+      "3": "insurance",
+      "4": "securities"
+    },
+    "code_7_documented": false,
+    "inference_about_code_7_business_meaning_allowed": false
+  },
+  "repair_policy": {
+    "target_row_rule": "company_type must be a complete finite integer exactly equal to 1",
+    "non_target_row_rule": "Every complete finite integer company_type not equal to 1 is excluded before report-period version logic and counted by endpoint and raw integer code.",
+    "undocumented_non_target_code_rule": "An undocumented complete integer code remains excluded and counted; it is never mapped to 1, 2, 3, or 4 and never contributes a metric, report period, join, factor value, capacity row, uniqueness row, score, or selection.",
+    "invalid_company_type_rule": "A missing, non-finite, or non-integer company_type remains a fatal source key error.",
+    "report_type_rule": "The frozen known report-type catalog, adjustment-period exclusion, type-one ambiguity policy, semantic duplicate collapse, and update_flag audit-only rule remain unchanged; an unknown report_type remains fatal.",
+    "cross_endpoint_rule": "Income and cashflow still join only when each endpoint independently retains candidate company_type 1 and report_type 1 for the same instrument and report period.",
+    "source_completeness_thresholds_changed": false,
+    "capacity_thresholds_changed": false,
+    "uniqueness_thresholds_changed": false,
+    "factor_values_from_failed_partial_run_observed_or_reused": false,
+    "prices_or_returns_observed": false
+  },
+  "single_retry_authorization": {
+    "authorized_command": "python scripts/a_share_rich_data.py sync-tushare-cash-conversion --allow-large",
+    "requires_exact_prior_failure_record_sha256": "59693d4e34f63425670eaf6bf41adf9aacca888379c36ba315535c82b4ab3f3a",
+    "maximum_repair_retries": 1,
+    "resume_partial_snapshot_allowed": false,
+    "full_from_scratch_restart_required": true,
+    "symbol_date_field_or_endpoint_subset_allowed": false,
+    "request_count_change_allowed": false,
+    "retry_is_consumed_by_success_or_failure": true,
+    "second_failure_policy": "Stop this source version without another retry, code mapping, parameter change, factor substitution, capacity, uniqueness, prices, returns, aggregation, scoring, selection, sizing, orders, or Level-2 justification."
+  },
+  "downstream_policy": {
+    "successful_retry_must_bind_this_repair_path_and_sha256": true,
+    "successful_retry_still_requires_original_source_completeness_gate": true,
+    "successful_retry_still_requires_frozen_no_return_capacity_and_uniqueness_audit": true,
+    "generic_factor_diagnostic_allowed": false,
+    "selection_or_promotion_allowed": false
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

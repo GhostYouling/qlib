@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_cash_conversion_research_record",
+  "status": "terminal_rejected_at_full_source_after_single_repair_retry",
+  "recorded_at": "2026-07-16T17:19:06Z",
+  "purpose": "Preserve the accepted small source probe, both atomic full-source failures, the single frozen infrastructure repair, and the terminal no-price/no-return decision for the Tushare operating-cash-conversion mechanism.",
+  "factor": {
+    "name": "tushare_operating_cash_conversion",
+    "formula": "n_cashflow_act / n_income_attr_p",
+    "direction": "higher_is_better",
+    "candidate_company_type": 1,
+    "candidate_report_type": 1,
+    "holding_period_trading_days": 3,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31"
+  },
+  "evidence_chain": {
+    "data_contract": {
+      "path": "docs/a_share_tushare_cash_conversion_data_contract.json",
+      "sha256": "54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_cash_conversion_source_acceptance_record.json",
+      "sha256": "615f0b794c165569b3d89444c594ee16fc60c628b36f0f834c759e09167fe962",
+      "accepted_factor_rows": 30,
+      "price_fields_loaded": [],
+      "forward_return_fields_read": false
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_cash_conversion_no_return_preregistration.json",
+      "sha256": "6966e50e734d6d7ff9e706c280f7c371b3eec626445677d07006a2e02c44ec8e",
+      "used_for_capacity_or_uniqueness": false
+    },
+    "first_full_source_failure": {
+      "run_id": "20260716T141556Z_tushare_cash_conversion_full_b2e31205",
+      "path": "data/metadata/rich_data/runs/20260716T141556Z_tushare_cash_conversion_full_b2e31205_source_failure.json",
+      "sha256": "59693d4e34f63425670eaf6bf41adf9aacca888379c36ba315535c82b4ab3f3a",
+      "failed_instrument": "SZ002961",
+      "failed_endpoint": "income",
+      "completed_instruments_before_failure": 3289,
+      "completed_provider_calls_before_failure": 6579,
+      "total_planned_provider_calls": 9588,
+      "failure": "Tushare income response contains unknown company types: [7]",
+      "partial_snapshot_deleted": true,
+      "final_snapshot_published": false,
+      "price_fields_loaded": [],
+      "forward_return_fields_read": false
+    },
+    "company_type_source_repair": {
+      "path": "docs/a_share_tushare_cash_conversion_company_type_repair.json",
+      "sha256": "0ac8c8caecafc92fd7af4626588b9f9830c1828ed40dd45b18bbc7522aa8bc80",
+      "authorized_full_from_scratch_retries": 1,
+      "retry_consumed": true,
+      "first_failure_boundary_crossed": true,
+      "candidate_definition_changed": false,
+      "source_capacity_or_uniqueness_threshold_changed": false,
+      "prices_or_returns_observed_before_repair": false
+    },
+    "second_full_source_failure": {
+      "run_id": "20260716T153816Z_tushare_cash_conversion_full_6174dd3a",
+      "path": "data/metadata/rich_data/runs/20260716T153816Z_tushare_cash_conversion_full_6174dd3a_source_failure.json",
+      "sha256": "0f4d6d40081eda418a7a94c999ec83f1a5be33a29f6af5af0470390de10c7344",
+      "failed_instrument": "SZ301200",
+      "failed_endpoint": "income",
+      "completed_instruments_before_failure": 4518,
+      "completed_provider_calls_before_failure": 9037,
+      "total_planned_provider_calls": 9588,
+      "failure": "Tushare income response contains a non-standard quarter end",
+      "partial_snapshot_deleted": true,
+      "final_snapshot_published": false,
+      "repair_retry_consumed_by_this_failure": true,
+      "price_fields_loaded": [],
+      "open_close_or_forward_return_fields_read": false,
+      "forward_return_fields_read": false,
+      "selection_or_promotion_allowed": false
+    }
+  },
+  "source_gate": {
+    "planned_point_in_time_instruments": 4794,
+    "planned_provider_calls": 9588,
+    "complete_full_snapshot_published": false,
+    "annual_partition_count": 0,
+    "source_completeness_gate_passed": false,
+    "observed_non_candidate_company_type_count_from_the_deleted_retry": null,
+    "interpretation": "The retry crossed the first comp_type=7 boundary, but no complete snapshot or manifest was published. The exact aggregate excluded-code count from the deleted retry is therefore unavailable and must not be reconstructed with another request."
+  },
+  "downstream_gates": {
+    "capacity_audit_run": false,
+    "uniqueness_audit_run": false,
+    "comparison_price_fields_loaded": [],
+    "forward_return_diagnostic_preregistered": false,
+    "forward_return_diagnostic_run": false,
+    "historical_factor_return_observed": false
+  },
+  "decision": {
+    "outcome": "stop_tushare_operating_cash_conversion_at_full_source_without_capacity_uniqueness_prices_returns_or_selection",
+    "same_source_version_rerun_allowed": false,
+    "map_or_infer_undocumented_company_type_allowed": false,
+    "relax_quarter_end_or_statement_key_rules_allowed": false,
+    "change_symbols_dates_fields_formula_direction_report_type_company_type_or_event_age_allowed": false,
+    "resume_or_reuse_deleted_partial_snapshot_allowed": false,
+    "run_capacity_uniqueness_or_return_diagnostic_allowed": false,
+    "factor_admitted_to_aggregation_scoring_selection_sizing_or_orders": false,
+    "level2_intake_justified_by_this_result": false,
+    "next_research_direction": "Start only from a newly preregistered economically independent mechanism that does not depend on this income/cashflow statement-version interpretation."
+  },
+  "credentials_logged_or_stored": false,
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
