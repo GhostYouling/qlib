@@ -91,3 +91,11 @@ launchctl unsetenv TUSHARE_TOKEN
 完成第 2 节的 `launchctl setenv` 后，彻底退出并重新打开 Codex，再让它在本仓库运行 `python scripts/a_share_rich_data.py status`。你只需确认输出中 Tushare 环境变量和 SDK 已就绪，不需要把 Token 发给 Codex，也不要粘贴任何 `launchctl getenv` 的明文输出。
 
 本项目的后续数据命令必须从进程环境读取 `TUSHARE_TOKEN`，并且仍要遵守对应数据合同的单日验收、不读取收益门禁和原子发布要求。“状态已就绪”只证明本机凭据可用，不代表已授权跳过验收、批量下载、因子诊断或选股。
+
+## 7. 更新或轮换 Token
+
+先在 Tushare 账户侧生成或确认新 Token，再重新执行第 2 节的隐藏输入命令。`launchctl setenv` 会覆盖供**之后启动的程序**继承的旧值，但已经运行的终端、Codex、Notebook 或其他 Python 进程仍可能保留旧环境，需要关闭后重新启动。
+
+如果当前终端也必须立即切换到新 Token，请使用第 2 节包含 `export` 的版本；不要只更新 `launchctl` 后继续从旧终端运行数据命令。更新完成后只执行第 3 节的“已配置/未配置”检查，不要打印新旧 Token 做对比。
+
+一旦怀疑 Token 曾进入命令历史、日志、截图、聊天或 Git，必须立即在 Tushare 账户侧轮换，并检查 Git 历史和相关输出；仅执行 `unset` 或删除工作区文件不能撤销已经发生的泄露。

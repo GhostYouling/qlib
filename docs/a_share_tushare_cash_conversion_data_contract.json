@@ -1,0 +1,301 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_cash_conversion_data_contract",
+  "status": "frozen_before_income_or_cashflow_entitlement_rows_full_history_factor_values_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T13:43:50Z",
+  "purpose": "Ingest and no-return screen one operating-cash-flow to attributable-net-income mechanism from point-in-time-compatible Tushare income and cashflow rows for the fixed three-session A-share protocol without sweeping financial fields, versions, formulas, directions, ages, symbols, or dates.",
+  "freeze_evidence": {
+    "official_income_documentation_observed": true,
+    "official_cashflow_documentation_observed": true,
+    "provider_income_rows_observed": false,
+    "provider_cashflow_rows_observed": false,
+    "income_or_cashflow_entitlement_observed": false,
+    "full_history_observed": false,
+    "factor_values_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "income_source": "Tushare Pro income",
+    "cashflow_source": "Tushare Pro cashflow",
+    "official_income_documentation": "https://tushare.pro/document/2?doc_id=33",
+    "official_cashflow_documentation": "https://tushare.pro/document/2?doc_id=44",
+    "minimum_permission_points_each": 2000,
+    "current_account_points": 3000,
+    "provider_documented_maximum_rows_per_call": 100,
+    "documented_request_scope": "Each standard endpoint retrieves one stock's history; the all-market VIP variants require 5000 points and are not requested.",
+    "why_this_source": "The accepted quarterly source has ROE, profit, revenue growth, and their acceleration but no operating-cash conversion measure. Joining two primary financial statements adds an earnings-cash-quality mechanism rather than another price, ownership, analyst, event-count, or order-flow transform."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "For a profitable non-financial issuer, a larger cumulative operating cash inflow relative to cumulative attributable net income indicates better cash backing of reported earnings and may be incorporated over the next three sessions after the complete report becomes available.",
+    "factor_family": "quarterly_cash_earnings_quality_disclosure_event",
+    "relationship_to_existing_quarterly_quality": "ROE, positive net profit, revenue YoY, and profit YoY remain fixed eligibility gates. Cash conversion must pass a no-return near-synonym screen against all existing quarterly level and acceleration fields before any price access.",
+    "relationship_to_existing_flow_factors": "This is issuer accounting cash generation, not exchange order flow, shareholder transactions, financing flow, or securities lending.",
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "apis": [
+      "income",
+      "cashflow"
+    ],
+    "frequency": "quarterly_financial_report_disclosure_event",
+    "request_mode": "one stock and one frozen announcement-date range per endpoint call",
+    "income_requested_fields": [
+      "ts_code",
+      "ann_date",
+      "f_ann_date",
+      "end_date",
+      "report_type",
+      "comp_type",
+      "n_income_attr_p",
+      "update_flag"
+    ],
+    "cashflow_requested_fields": [
+      "ts_code",
+      "ann_date",
+      "f_ann_date",
+      "end_date",
+      "report_type",
+      "comp_type",
+      "n_cashflow_act",
+      "update_flag"
+    ],
+    "explicitly_forbidden_fields": [
+      "revenue",
+      "total_revenue",
+      "operate_profit",
+      "n_income",
+      "basic_eps",
+      "diluted_eps",
+      "ebit",
+      "ebitda",
+      "free_cashflow",
+      "c_fr_sale_sg",
+      "n_cashflow_inv_act",
+      "n_cash_flows_fnc_act",
+      "im_net_cashflow_oper_act",
+      "close",
+      "open",
+      "high",
+      "low",
+      "price",
+      "market_cap",
+      "turnover_rate",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_and_version_policy": {
+    "documented_actual_announcement_field": "f_ann_date",
+    "documented_company_type": "comp_type 1 general industry, 2 bank, 3 insurance, 4 securities",
+    "candidate_company_type": "1",
+    "candidate_report_type": "1 consolidated cumulative report",
+    "non_candidate_context_report_types": [
+      "2",
+      "6",
+      "7"
+    ],
+    "adjustment_report_types_that_exclude_the_whole_endpoint_period": [
+      "3",
+      "4",
+      "5",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12"
+    ],
+    "update_flag_policy": "Persist and count update_flag only for audit. Never select, rank, or repair a value from update_flag.",
+    "type_one_version_policy": "For each endpoint, instrument, and report period, accept report_type 1 only when all complete type-one rows have one identical ann_date, f_ann_date, and metric tuple. Explicitly collapse and count only exact semantic duplicates; differing tuples make that endpoint-period version-ambiguous and excluded.",
+    "missing_metric_policy": "A row with complete keys but a missing metric makes that endpoint-period unavailable and counted; never fill it. Missing or invalid keys abort the stock partition.",
+    "cross_endpoint_join": "Join income and cashflow only on the same instrument and report period after both endpoint-periods independently pass the frozen version policy.",
+    "signal_source_date": "the later of the accepted income and cashflow f_ann_date values",
+    "conservative_availability": "first local trading session strictly after the later actual announcement date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "forward_fill_beyond_event_age_allowed": false,
+    "historical_intraday_release_timestamp_available_per_row": false,
+    "residual_risk": "Tushare documents actual announcement dates and adjustment report types but not an exchange release timestamp. Excluding every observed adjustment/ambiguous period and waiting until the next local session reduces, but cannot eliminate, vendor revision-history risk."
+  },
+  "factor": {
+    "name": "tushare_operating_cash_conversion",
+    "direction": "higher_is_better",
+    "numerator": "n_cashflow_act from the accepted cumulative consolidated cashflow row",
+    "denominator": "n_income_attr_p from the accepted cumulative consolidated income row",
+    "formula": "n_cashflow_act / n_income_attr_p",
+    "units": "dimensionless cumulative operating-cash conversion",
+    "positive_denominator_policy": "n_income_attr_p must be finite and strictly positive; zero, negative, or missing denominator periods are excluded and counted",
+    "numerator_policy": "n_cashflow_act must be finite; negative operating cash flow is valid and remains negative",
+    "nonfinite_derived_value_policy": "exclude and count the joined period; never offset or impute",
+    "clipping_winsorization_log_absolute_value_or_imputation": null,
+    "absent_event_policy": "missing; never treat a missing financial statement or excluded revision period as zero",
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(tushare_operating_cash_conversion)"
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "base_research_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "quarterly_quality_snapshot": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "terminal_tushare_moneyflow": {
+      "path": "docs/a_share_tushare_moneyflow_research_record.json",
+      "sha256": "3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a"
+    },
+    "terminal_tushare_pb": {
+      "path": "docs/a_share_tushare_daily_pb_research_record.json",
+      "sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3"
+    },
+    "terminal_tushare_sw_breadth": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+      "sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3"
+    },
+    "terminal_tushare_top10_float_concentration": {
+      "path": "docs/a_share_tushare_top10_float_concentration_source_acceptance_record.json",
+      "sha256": "9396a687aeae176097006395406ab79d74a015b1d9392f89023658b438bd2cdf"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_symbols": [
+      "600519.SH",
+      "000333.SZ",
+      "300750.SZ"
+    ],
+    "fixed_announcement_start": "20240101",
+    "fixed_announcement_end": "20260630",
+    "latest_allowed_actual_announcement_date": "20260716",
+    "endpoints_per_symbol": [
+      "income",
+      "cashflow"
+    ],
+    "provider_calls": 6,
+    "minimum_usable_joined_periods_per_symbol": 4,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "exactly one income and one cashflow request is issued for each frozen symbol and no other symbol or date range",
+      "each response contains exactly its frozen eight-field whitelist and remains below the documented 100-row ceiling",
+      "stock, announcement, actual announcement, report period, report type, company type, and update keys are complete and every returned stock matches its request",
+      "only comp_type 1 and report_type 1 metrics can enter the join; update_flag is audit context only",
+      "any adjustment report type excludes that endpoint-period, differing type-one versions exclude the endpoint-period, and exact semantic duplicates are counted before explicit collapse",
+      "metric-missing periods are excluded and counted without imputation; positive attributable net income and finite operating cash flow are required",
+      "the later actual announcement date is no later than 2026-07-16 and the locally derived ratio is finite",
+      "each frozen symbol retains at least four joined usable periods",
+      "no credential, forbidden financial field, price, market-cap, turnover, score, or return appears in a published frame or manifest"
+    ],
+    "success_status": "accepted_entitlement_schema_version_policy_and_formula_pending_full_history",
+    "failed_acceptance_policy": "write one no-return rejection record and stop without another symbol or date range, field or version relaxation, full sync, capacity, uniqueness, price access, formula or direction change, score, selection, sizing, order, or Level-2 justification",
+    "one_shot_policy": "The exact contract may publish at most one terminal success or rejection record."
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_operating_cash_conversion",
+    "announcement_start": "20190101",
+    "announcement_end": "20251231",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2025-12-31",
+    "request_each_point_in_time_buyable_instrument_once_per_endpoint": true,
+    "provider_call_partition": "one ts_code over the full frozen announcement-date range for each endpoint",
+    "provider_documented_maximum_rows_per_call": 100,
+    "minimum_seconds_between_calls": 0.65,
+    "maximum_attempts_per_symbol_endpoint": 3,
+    "requests_are_sequential": true,
+    "partial_snapshot_accepted": false,
+    "immutable_signal_year_partitions_and_manifest": true,
+    "canonical_columns": [
+      "announcement_date",
+      "income_actual_announcement_date",
+      "cashflow_actual_announcement_date",
+      "report_period",
+      "instrument",
+      "n_income_attr_p",
+      "n_cashflow_act",
+      "tushare_operating_cash_conversion",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date",
+      "report_period"
+    ],
+    "holding_universe": "buyable_main_chinext point-in-time members only on the effective signal session; STAR, BSE, financial comp types, adjusted/ambiguous periods, and outside names are excluded and counted"
+  },
+  "no_return_gates": {
+    "order": [
+      "source_fingerprint_schema_version_and_join_completeness",
+      "quality_listing_and_non_overlapping_three_session_capacity",
+      "factor_uniqueness_with_explicit_quarterly_quality_synonyms"
+    ],
+    "source_completeness": {
+      "minimum_complete_joined_factor_events": 5000,
+      "minimum_observed_signal_years": 5,
+      "duplicate_raw_semantic_or_factor_event_keys_allowed": false
+    },
+    "capacity": {
+      "development_start": "2019-01-01",
+      "development_end": "2025-12-31",
+      "minimum_eligible_names_per_cross_section": 6,
+      "minimum_distinct_factor_values": 2,
+      "minimum_observed_years": 5,
+      "holding_period_trading_days": 3,
+      "non_overlapping_cohorts": true,
+      "topk": 3,
+      "minimum_required_cohorts": 200,
+      "maximum_quality_age_days": 550,
+      "minimum_listing_sessions": 20
+    },
+    "uniqueness": {
+      "comparison_factor_count": 54,
+      "comparison_scope": "the accepted 43-factor frontier, terminal Tushare classified-moneyflow, positive-book-to-market and SW-breadth fields, five billboard fields, and all three holder-count fields",
+      "explicit_semantic_risk_fields": [
+        "quality_roe",
+        "quality_profit",
+        "quality_revenue",
+        "quality_growth",
+        "quality_score",
+        "roe_change",
+        "revenue_yoy_acceleration",
+        "profit_yoy_acceleration"
+      ],
+      "minimum_pairwise_sessions": 100,
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+    },
+    "failed_gate_policy": "stop without returns, another accounting ratio, denominator substitution, report-version rescue, direction inversion, event-age widening, lower cohort or synonym threshold, year or industry subset, rejected-factor combination, current scoring, selection, sizing, orders, or Level-2 intake"
+  },
+  "diagnostic_policy_if_all_no_return_gates_pass": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_required": "docs/a_share_three_day_prospective_execution_policy.json",
+    "cny_200000_pilot_policy_required": "docs/a_share_three_day_pilot_execution_policy.json",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_statement_field_formula_version_weight_or_threshold_search_allowed": false,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

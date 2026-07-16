@@ -35,6 +35,7 @@ import os
 import shutil
 import tempfile
 import time
+import unicodedata
 import uuid
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -65,6 +66,14 @@ DEFAULT_TUSHARE_NORTHBOUND_TOP10_CONTRACT = (
 )
 DEFAULT_TUSHARE_TOP_INST_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_top_inst_data_contract.json"
+)
+DEFAULT_TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_top10_float_concentration_data_contract.json"
+)
+DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_cash_conversion_data_contract.json"
 )
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
@@ -156,6 +165,12 @@ TUSHARE_NORTHBOUND_TOP10_CONTRACT_SHA256 = (
 )
 TUSHARE_TOP_INST_CONTRACT_SHA256 = (
     "0520cd8bac454f14c2434cf7b8092aaaf3ff94cdc09b5404a6b55323bf0e7461"
+)
+TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT_SHA256 = (
+    "cec766613b49292e724cfd78090bdbec9d7c52ae8b337bceaf0ebe208c729897"
+)
+TUSHARE_CASH_CONVERSION_CONTRACT_SHA256 = (
+    "54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01"
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
@@ -271,6 +286,72 @@ TUSHARE_TOP_INST_COLUMNS = (
     "sell",
     "tushare_top_inst_net_buy_share",
     "provider",
+)
+TUSHARE_TOP10_FLOAT_RAW_FIELDS = (
+    "ts_code",
+    "ann_date",
+    "end_date",
+    "holder_name",
+    "hold_float_ratio",
+)
+TUSHARE_TOP10_FLOAT_SOURCE_COLUMNS = (
+    "announcement_date",
+    "report_period",
+    "instrument",
+    "holder_name_sha256",
+    "hold_float_ratio",
+    "provider",
+)
+TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS = (
+    "announcement_date",
+    "report_period",
+    "previous_report_period",
+    "instrument",
+    "top10_float_holder_count",
+    "top10_float_concentration_pct",
+    "top10_float_concentration_change_pp",
+    "provider",
+)
+TUSHARE_TOP10_FLOAT_ACCEPTANCE_SYMBOLS = (
+    "600519.SH",
+    "000001.SZ",
+    "300750.SZ",
+)
+TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS = (
+    "ts_code",
+    "ann_date",
+    "f_ann_date",
+    "end_date",
+    "report_type",
+    "comp_type",
+    "n_income_attr_p",
+    "update_flag",
+)
+TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS = (
+    "ts_code",
+    "ann_date",
+    "f_ann_date",
+    "end_date",
+    "report_type",
+    "comp_type",
+    "n_cashflow_act",
+    "update_flag",
+)
+TUSHARE_CASH_CONVERSION_COLUMNS = (
+    "announcement_date",
+    "income_actual_announcement_date",
+    "cashflow_actual_announcement_date",
+    "report_period",
+    "instrument",
+    "n_income_attr_p",
+    "n_cashflow_act",
+    "tushare_operating_cash_conversion",
+    "provider",
+)
+TUSHARE_CASH_CONVERSION_ACCEPTANCE_SYMBOLS = (
+    "600519.SH",
+    "000333.SZ",
+    "300750.SZ",
 )
 TUSHARE_DAILY_PB_RAW_FIELDS = ("ts_code", "trade_date", "pb")
 TUSHARE_DAILY_PB_COLUMNS = (
@@ -1079,6 +1160,32 @@ def fetch_tushare_top_inst(trade_date: dt.date) -> pd.DataFrame:
     return result.copy()
 
 
+def fetch_tushare_top10_float_holders(
+    ts_code: str,
+    report_period_start: dt.date,
+    report_period_end: dt.date,
+) -> pd.DataFrame:
+    """Fetch one stock's frozen report-period range with the exact whitelist."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.top10_floatholders(
+            ts_code=ts_code,
+            start_date=report_period_start.strftime("%Y%m%d"),
+            end_date=report_period_end.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_TOP10_FLOAT_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare top10_floatholders request failed for "
+            f"{ts_code}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
 def fetch_tushare_daily_pb(trade_date: dt.date) -> pd.DataFrame:
     """Fetch one daily_basic session using only the frozen PB whitelist."""
 
@@ -1571,6 +1678,276 @@ def canonicalize_tushare_top_inst(
         "institution_seat_rows_reconciled": int(len(normalized)),
         "zero_denominator_stock_days_excluded": zero_denominator_stock_days,
         "rows_written": int(len(result)),
+    }
+
+
+def canonicalize_tushare_top10_float_holders(
+    frame: pd.DataFrame,
+    expected_ts_code: str,
+    report_period_start: dt.date,
+    report_period_end: dt.date,
+    latest_announcement_date: dt.date,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, int]]:
+    """Hash identities, select first complete reports, and derive quarter changes."""
+
+    empty_quality = {
+        "input_rows": 0,
+        "source_rows_written": 0,
+        "report_groups_observed": 0,
+        "complete_report_groups": 0,
+        "incomplete_report_groups_excluded": 0,
+        "first_complete_report_periods": 0,
+        "later_complete_revision_groups_not_used": 0,
+        "factor_ready_consecutive_pairs": 0,
+    }
+    if frame is None or frame.empty:
+        return (
+            pd.DataFrame(columns=TUSHARE_TOP10_FLOAT_SOURCE_COLUMNS),
+            pd.DataFrame(columns=TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS),
+            empty_quality,
+        )
+    raw = frame.copy()
+    missing_columns = [
+        field for field in TUSHARE_TOP10_FLOAT_RAW_FIELDS if field not in raw
+    ]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare top10_floatholders response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_TOP10_FLOAT_RAW_FIELDS)
+    )
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare top10_floatholders response contains fields outside the "
+            "frozen whitelist: "
+            + ", ".join(unexpected_columns)
+        )
+
+    expected_parts = expected_ts_code.strip().upper().split(".", 1)
+    if (
+        len(expected_parts) != 2
+        or len(expected_parts[0]) != 6
+        or not expected_parts[0].isdigit()
+        or expected_parts[1] not in {"SH", "SZ"}
+    ):
+        raise RichDataError(
+            f"invalid frozen top10_floatholders stock code: {expected_ts_code}"
+        )
+    expected_instrument = qlib_symbol(expected_parts[0])
+    if not expected_instrument.startswith(expected_parts[1]):
+        raise RichDataError(
+            f"stock code and exchange suffix disagree: {expected_ts_code}"
+        )
+
+    def normalized_holder_name(value: Any) -> str | None:
+        if pd.isna(value):
+            return None
+        normalized = unicodedata.normalize("NFKC", str(value))
+        normalized = " ".join(normalized.strip().split())
+        return normalized or None
+
+    holder_names = raw["holder_name"].map(normalized_holder_name)
+    normalized = pd.DataFrame(
+        {
+            "announcement_date": pd.to_datetime(
+                raw["ann_date"].astype("string"),
+                format="%Y%m%d",
+                errors="coerce",
+            ).dt.normalize(),
+            "report_period": pd.to_datetime(
+                raw["end_date"].astype("string"),
+                format="%Y%m%d",
+                errors="coerce",
+            ).dt.normalize(),
+            "instrument": expected_instrument,
+            "holder_name": holder_names,
+            "hold_float_ratio": pd.to_numeric(
+                raw["hold_float_ratio"], errors="coerce"
+            ),
+            "source_ts_code": raw["ts_code"].astype("string").str.strip().str.upper(),
+        }
+    )
+    required = [
+        "announcement_date",
+        "report_period",
+        "holder_name",
+        "hold_float_ratio",
+        "source_ts_code",
+    ]
+    missing = normalized[required].isna().any(axis=1)
+    finite_ratio = np.isfinite(normalized["hold_float_ratio"])
+    if missing.any() or (~finite_ratio).any():
+        invalid_rows = int((missing | ~finite_ratio).sum())
+        raise RichDataError(
+            "Tushare top10_floatholders response contains "
+            f"{invalid_rows} incomplete or non-finite rows"
+        )
+    if not normalized["source_ts_code"].eq(expected_ts_code.upper()).all():
+        observed = sorted(set(normalized["source_ts_code"].astype(str)))
+        raise RichDataError(
+            "Tushare top10_floatholders response contains a stock outside its "
+            f"request: expected {expected_ts_code.upper()}, observed {observed}"
+        )
+    ratio = normalized["hold_float_ratio"]
+    if not ratio.between(0.0, 100.0).all():
+        raise RichDataError(
+            "Tushare top10_floatholders response contains a ratio outside [0, 100]"
+        )
+    report_start = pd.Timestamp(report_period_start)
+    report_end = pd.Timestamp(report_period_end)
+    if not normalized["report_period"].between(report_start, report_end).all():
+        raise RichDataError(
+            "Tushare top10_floatholders response contains a report period outside "
+            "the request"
+        )
+    standard_quarter_end = normalized["report_period"].dt.strftime("%m%d").isin(
+        {"0331", "0630", "0930", "1231"}
+    )
+    if not standard_quarter_end.all():
+        raise RichDataError(
+            "Tushare top10_floatholders response contains a non-quarter-end period"
+        )
+    if normalized["announcement_date"].gt(pd.Timestamp(latest_announcement_date)).any():
+        raise RichDataError(
+            "Tushare top10_floatholders response contains a future announcement"
+        )
+    if normalized["announcement_date"].lt(normalized["report_period"]).any():
+        raise RichDataError(
+            "Tushare top10_floatholders response contains an announcement before "
+            "its report period"
+        )
+
+    normalized["holder_name_sha256"] = normalized["holder_name"].map(
+        lambda value: hashlib.sha256(str(value).encode("utf-8")).hexdigest()
+    )
+    raw_event_key = [
+        "announcement_date",
+        "report_period",
+        "instrument",
+        "holder_name_sha256",
+    ]
+    if normalized.duplicated(raw_event_key).any():
+        raise RichDataError(
+            "Tushare top10_floatholders response contains duplicate holder event keys"
+        )
+
+    persisted = normalized.assign(provider="tushare").loc[
+        :, list(TUSHARE_TOP10_FLOAT_SOURCE_COLUMNS)
+    ]
+    persisted = persisted.sort_values(
+        ["instrument", "report_period", "announcement_date", "holder_name_sha256"],
+        kind="stable",
+    ).reset_index(drop=True)
+
+    group_key = ["instrument", "report_period", "announcement_date"]
+    groups = (
+        persisted.groupby(group_key, as_index=False, observed=True)
+        .agg(
+            top10_float_holder_count=("holder_name_sha256", "nunique"),
+            top10_float_concentration_pct=("hold_float_ratio", "sum"),
+        )
+        .sort_values(group_key, kind="stable")
+        .reset_index(drop=True)
+    )
+    if groups["top10_float_holder_count"].gt(10).any():
+        raise RichDataError(
+            "Tushare top10_floatholders response contains more than ten unique "
+            "holders in one report group"
+        )
+    complete = groups["top10_float_holder_count"].eq(10)
+    complete_groups = groups.loc[complete].copy()
+    concentration = complete_groups["top10_float_concentration_pct"]
+    if (
+        not np.isfinite(concentration).all()
+        or concentration.lt(0.0).any()
+        or concentration.gt(100.000001).any()
+    ):
+        raise RichDataError(
+            "Tushare top10_floatholders complete-group concentration falls "
+            "outside [0, 100.000001]"
+        )
+    first_complete = (
+        complete_groups.sort_values(
+            ["instrument", "report_period", "announcement_date"], kind="stable"
+        )
+        .drop_duplicates(["instrument", "report_period"], keep="first")
+        .reset_index(drop=True)
+    )
+
+    def previous_quarter(period: pd.Timestamp) -> pd.Timestamp:
+        if period.month == 3:
+            return pd.Timestamp(year=period.year - 1, month=12, day=31)
+        if period.month == 6:
+            return pd.Timestamp(year=period.year, month=3, day=31)
+        if period.month == 9:
+            return pd.Timestamp(year=period.year, month=6, day=30)
+        return pd.Timestamp(year=period.year, month=9, day=30)
+
+    lookup = {
+        (str(row.instrument), pd.Timestamp(row.report_period)): row
+        for row in first_complete.itertuples(index=False)
+    }
+    factor_rows: list[dict[str, Any]] = []
+    for row in first_complete.itertuples(index=False):
+        report_period = pd.Timestamp(row.report_period)
+        prior_period = previous_quarter(report_period)
+        prior = lookup.get((str(row.instrument), prior_period))
+        if prior is None or pd.Timestamp(prior.announcement_date) > pd.Timestamp(
+            row.announcement_date
+        ):
+            continue
+        change = float(row.top10_float_concentration_pct) - float(
+            prior.top10_float_concentration_pct
+        )
+        factor_rows.append(
+            {
+                "announcement_date": pd.Timestamp(row.announcement_date),
+                "report_period": report_period,
+                "previous_report_period": prior_period,
+                "instrument": str(row.instrument),
+                "top10_float_holder_count": int(row.top10_float_holder_count),
+                "top10_float_concentration_pct": float(
+                    row.top10_float_concentration_pct
+                ),
+                "top10_float_concentration_change_pp": change,
+                "provider": "tushare",
+            }
+        )
+    factors = pd.DataFrame(
+        factor_rows, columns=TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS
+    ).sort_values(
+        ["instrument", "report_period", "announcement_date"], kind="stable"
+    ).reset_index(drop=True)
+    if not factors.empty:
+        changes = factors["top10_float_concentration_change_pp"]
+        if (
+            not np.isfinite(changes).all()
+            or changes.lt(-100.000001).any()
+            or changes.gt(100.000001).any()
+        ):
+            raise RichDataError(
+                "derived top-ten float concentration change falls outside its "
+                "frozen bounds"
+            )
+        if factors.duplicated(
+            ["instrument", "announcement_date", "report_period"]
+        ).any():
+            raise RichDataError(
+                "derived top-ten float concentration contains duplicate factor keys"
+            )
+    return persisted, factors, {
+        "input_rows": int(len(raw)),
+        "source_rows_written": int(len(persisted)),
+        "report_groups_observed": int(len(groups)),
+        "complete_report_groups": int(complete.sum()),
+        "incomplete_report_groups_excluded": int((~complete).sum()),
+        "first_complete_report_periods": int(len(first_complete)),
+        "later_complete_revision_groups_not_used": int(
+            len(complete_groups) - len(first_complete)
+        ),
+        "factor_ready_consecutive_pairs": int(len(factors)),
     }
 
 
@@ -2314,6 +2691,173 @@ def tushare_top_inst_acceptance_records() -> list[Path]:
     for path in sorted(RUNS_ROOT.glob("*tushare_top_inst_acceptance*.json")):
         payload = load_json_record(path)
         if payload.get("dataset") == "tushare_top_inst_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_top10_float_concentration_contract(
+    path: Path = DEFAULT_TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-row top-ten float concentration contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT_SHA256:
+        raise RichDataError(
+            "Tushare top-ten float concentration contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_tushare_top10_float_concentration_data_contract"
+    )
+    source_selection = contract.get("source_selection") or {}
+    source = contract.get("source") or {}
+    timing = contract.get("point_in_time_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    gates = contract.get("no_return_gates") or {}
+    completeness = gates.get("source_completeness") or {}
+    capacity = gates.get("capacity") or {}
+    uniqueness = gates.get("uniqueness") or {}
+    diagnostic = contract.get("diagnostic_policy_if_all_no_return_gates_pass") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_top10_floatholders_entitlement_rows_full_history_factor_values_or_factor_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-16T13:26:35Z"
+        or source_selection.get("minimum_permission_points") != 2000
+        or source_selection.get("current_account_points") != 3000
+        or source.get("provider") != "tushare"
+        or source.get("api") != "top10_floatholders"
+        or source.get("request_mode")
+        != "one stock and one frozen report-period range per call"
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_TOP10_FLOAT_RAW_FIELDS
+        or source.get("plaintext_holder_name_may_be_logged_stored_or_committed")
+        is not False
+        or timing.get("conservative_availability")
+        != "first local trading session strictly after ann_date"
+        or timing.get("same_announcement_session_trade_allowed") is not False
+        or timing.get("maximum_event_age_calendar_days") != 3
+        or timing.get("forward_fill_beyond_event_age_allowed") is not False
+        or factor.get("name") != "top10_float_concentration_change_pp"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("concentration_formula")
+        != "sum(hold_float_ratio) across the exact ten-holder group"
+        or factor.get("factor_formula")
+        != "current first-complete top10_float_concentration_pct minus the immediately previous quarter's first-complete top10_float_concentration_pct"
+        or tuple(acceptance.get("fixed_symbols") or ())
+        != TUSHARE_TOP10_FLOAT_ACCEPTANCE_SYMBOLS
+        or acceptance.get("fixed_report_period_start") != "20241231"
+        or acceptance.get("fixed_report_period_end") != "20251231"
+        or acceptance.get("latest_allowed_announcement_date") != "20260716"
+        or acceptance.get("provider_calls") != 3
+        or acceptance.get("minimum_complete_report_groups_per_symbol") != 2
+        or acceptance.get("minimum_factor_ready_consecutive_pairs_per_symbol")
+        != 1
+        or acceptance.get("success_status")
+        != "accepted_entitlement_schema_and_concentration_formula_pending_full_history"
+        or snapshot.get("source_report_period_start") != "20181231"
+        or snapshot.get("source_report_period_end") != "20251231"
+        or snapshot.get("development_signal_start") != "2019-01-01"
+        or snapshot.get("development_signal_end") != "2025-12-31"
+        or snapshot.get("request_each_point_in_time_buyable_instrument_once")
+        is not True
+        or snapshot.get("provider_call_partition")
+        != "one ts_code over the full frozen report-period range"
+        or snapshot.get("minimum_seconds_between_calls") != 0.65
+        or snapshot.get("maximum_attempts_per_symbol") != 3
+        or tuple(snapshot.get("persisted_normalized_source_columns") or ())
+        != TUSHARE_TOP10_FLOAT_SOURCE_COLUMNS
+        or tuple(snapshot.get("canonical_factor_columns") or ())
+        != TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS
+        or completeness.get("minimum_complete_factor_events") != 2000
+        or completeness.get("minimum_observed_announcement_years") != 5
+        or completeness.get("plaintext_holder_identity_persisted") is not False
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("comparison_factor_count") != 54
+        or uniqueness.get("minimum_pairwise_sessions") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or diagnostic.get("separate_immutable_preregistration_required_before_price_access")
+        is not True
+        or diagnostic.get("holding_period_trading_days") != 3
+        or diagnostic.get("topk") != 3
+        or diagnostic.get("selection_or_promotion_allowed") is not False
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare top-ten float concentration contract does not match the "
+            "frozen protocol"
+        )
+    return contract
+
+
+def validate_tushare_top10_float_local_context(
+    contract: dict[str, Any],
+) -> dict[str, dict[str, str]]:
+    """Fingerprint-bind every local no-return prerequisite before a provider call."""
+
+    context = contract.get("local_context") or {}
+    validated: dict[str, dict[str, str]] = {}
+    for label, evidence in context.items():
+        if not isinstance(evidence, dict) or not evidence.get("path") or not evidence.get(
+            "sha256"
+        ):
+            raise RichDataError(
+                f"top-ten float concentration context is incomplete: {label}"
+            )
+        path = resolve_record_path(str(evidence["path"]))
+        expected = str(evidence["sha256"])
+        if not path.exists() or file_digest(path) != expected:
+            raise RichDataError(
+                f"top-ten float concentration context fingerprint mismatch: {label}"
+            )
+        validated[label] = {
+            "path": manifest_path(path),
+            "sha256": expected,
+        }
+        manifest_value = evidence.get("manifest_path")
+        manifest_sha = evidence.get("manifest_sha256")
+        if manifest_value is not None or manifest_sha is not None:
+            if not manifest_value or not manifest_sha:
+                raise RichDataError(
+                    f"top-ten float concentration manifest context is incomplete: {label}"
+                )
+            manifest_file = resolve_record_path(str(manifest_value))
+            if (
+                not manifest_file.exists()
+                or file_digest(manifest_file) != str(manifest_sha)
+            ):
+                raise RichDataError(
+                    "top-ten float concentration manifest fingerprint mismatch: "
+                    f"{label}"
+                )
+            validated[f"{label}_manifest"] = {
+                "path": manifest_path(manifest_file),
+                "sha256": str(manifest_sha),
+            }
+    return validated
+
+
+def tushare_top10_float_concentration_acceptance_records() -> list[Path]:
+    """Return terminal records that have consumed this exact one-shot gate."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*tushare_top10_float_concentration_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_top10_float_concentration_acceptance":
             records.append(path)
     return records
 
@@ -5168,6 +5712,271 @@ def sync_tushare_top_inst_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def sync_tushare_top10_float_concentration_acceptance() -> Path:
+    """Run the frozen three-call, no-return ownership acceptance exactly once."""
+
+    contract = load_tushare_top10_float_concentration_contract()
+    prior_records = tushare_top10_float_concentration_acceptance_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare top-ten float concentration acceptance is one-shot and was "
+            "already consumed: "
+            + ", ".join(str(path) for path in prior_records)
+        )
+    context = validate_tushare_top10_float_local_context(contract)
+    require_provider("tushare")
+    acceptance = contract["acceptance_protocol"]
+    symbols = tuple(str(value) for value in acceptance["fixed_symbols"])
+    report_start = dt.datetime.strptime(
+        str(acceptance["fixed_report_period_start"]), "%Y%m%d"
+    ).date()
+    report_end = dt.datetime.strptime(
+        str(acceptance["fixed_report_period_end"]), "%Y%m%d"
+    ).date()
+    latest_announcement = dt.datetime.strptime(
+        str(acceptance["latest_allowed_announcement_date"]), "%Y%m%d"
+    ).date()
+    run_id = new_run_id("tushare_top10_float_concentration_acceptance")
+    run_root = (
+        RAW_ROOT
+        / "tushare"
+        / "top10_float_concentration"
+        / "acceptance"
+        / run_id
+    )
+    temporary_root = run_root.parent / f".{run_id}.tmp"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(
+            f"Tushare top-ten float concentration acceptance already exists: {run_id}"
+        )
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    provider_calls_issued = 0
+    source_rows_by_symbol: dict[str, int] = {}
+    try:
+        raw_by_symbol: dict[str, pd.DataFrame] = {}
+        for symbol in symbols:
+            provider_calls_issued += 1
+            raw = fetch_tushare_top10_float_holders(
+                symbol,
+                report_period_start=report_start,
+                report_period_end=report_end,
+            )
+            raw_by_symbol[symbol] = raw
+            source_rows_by_symbol[symbol] = int(len(raw))
+        if provider_calls_issued != int(acceptance["provider_calls"]):
+            raise RichDataError(
+                "Tushare top10_floatholders acceptance did not issue exactly the "
+                "frozen three requests"
+            )
+
+        source_frames: list[pd.DataFrame] = []
+        factor_frames: list[pd.DataFrame] = []
+        quality_by_symbol: dict[str, dict[str, int]] = {}
+        minimum_groups = int(acceptance["minimum_complete_report_groups_per_symbol"])
+        minimum_pairs = int(
+            acceptance["minimum_factor_ready_consecutive_pairs_per_symbol"]
+        )
+        for symbol in symbols:
+            raw = raw_by_symbol[symbol]
+            if raw.empty:
+                raise RichDataError(
+                    f"Tushare top10_floatholders acceptance returned no rows for {symbol}"
+                )
+            normalized_source, factors, quality = (
+                canonicalize_tushare_top10_float_holders(
+                    raw,
+                    expected_ts_code=symbol,
+                    report_period_start=report_start,
+                    report_period_end=report_end,
+                    latest_announcement_date=latest_announcement,
+                )
+            )
+            if quality["complete_report_groups"] < minimum_groups:
+                raise RichDataError(
+                    "Tushare top10_floatholders acceptance has too few complete "
+                    f"report groups for {symbol}: "
+                    f"{quality['complete_report_groups']} < {minimum_groups}"
+                )
+            if quality["factor_ready_consecutive_pairs"] < minimum_pairs:
+                raise RichDataError(
+                    "Tushare top10_floatholders acceptance has no frozen "
+                    f"consecutive-quarter factor pair for {symbol}"
+                )
+            source_frames.append(normalized_source)
+            factor_frames.append(factors)
+            quality_by_symbol[symbol] = quality
+
+        normalized_source = pd.concat(source_frames, ignore_index=True).sort_values(
+            ["instrument", "report_period", "announcement_date", "holder_name_sha256"],
+            kind="stable",
+        ).reset_index(drop=True)
+        factors = pd.concat(factor_frames, ignore_index=True).sort_values(
+            ["instrument", "report_period", "announcement_date"], kind="stable"
+        ).reset_index(drop=True)
+        if normalized_source.columns.tolist() != list(
+            TUSHARE_TOP10_FLOAT_SOURCE_COLUMNS
+        ):
+            raise RichDataError(
+                "top-ten float acceptance source columns do not match the frozen schema"
+            )
+        if factors.columns.tolist() != list(TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS):
+            raise RichDataError(
+                "top-ten float acceptance factor columns do not match the frozen schema"
+            )
+        if normalized_source.duplicated(
+            [
+                "announcement_date",
+                "report_period",
+                "instrument",
+                "holder_name_sha256",
+            ]
+        ).any():
+            raise RichDataError(
+                "top-ten float acceptance contains a duplicate persisted holder key"
+            )
+        if factors.duplicated(
+            ["instrument", "announcement_date", "report_period"]
+        ).any():
+            raise RichDataError(
+                "top-ten float acceptance contains a duplicate factor key"
+            )
+
+        temporary_source = temporary_root / "holders_hashed.parquet"
+        temporary_factors = temporary_root / "concentration_changes.parquet"
+        final_source = run_root / "holders_hashed.parquet"
+        final_factors = run_root / "concentration_changes.parquet"
+        atomic_write_frame(normalized_source, temporary_source)
+        atomic_write_frame(factors, temporary_factors)
+        changes = factors["top10_float_concentration_change_pp"]
+        concentrations = factors["top10_float_concentration_pct"]
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_top10_float_concentration_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "requested_start": report_start.isoformat(),
+            "requested_end": report_end.isoformat(),
+            "data_contract": {
+                "path": manifest_path(
+                    DEFAULT_TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT
+                ),
+                "sha256": file_digest(
+                    DEFAULT_TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT
+                ),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "top10_floatholders",
+                "request_mode": "one stock and one frozen report-period range per call",
+                "symbols": list(symbols),
+                "provider_calls_issued": provider_calls_issued,
+                "fields": list(TUSHARE_TOP10_FLOAT_RAW_FIELDS),
+                "source_rows_returned_by_symbol": source_rows_by_symbol,
+                "forbidden_fields_requested_or_stored": [],
+                "plaintext_holder_names_logged_or_stored": False,
+                "credentials_logged_or_stored": False,
+            },
+            "local_no_return_context": context,
+            "files": [
+                {
+                    "role": "normalized_source_with_hashed_holder_identity",
+                    "path": manifest_path(final_source),
+                    "rows": int(len(normalized_source)),
+                    "sha256": frame_digest(normalized_source),
+                },
+                {
+                    "role": "first_disclosed_consecutive_quarter_factor",
+                    "path": manifest_path(final_factors),
+                    "rows": int(len(factors)),
+                    "sha256": frame_digest(factors),
+                },
+            ],
+            "source_quality": {
+                "by_symbol": quality_by_symbol,
+                "input_rows": int(sum(source_rows_by_symbol.values())),
+                "source_rows_written": int(len(normalized_source)),
+                "unique_instruments": int(normalized_source["instrument"].nunique()),
+                "factor_ready_consecutive_pairs": int(len(factors)),
+                "factor_min": float(changes.min()),
+                "factor_max": float(changes.max()),
+                "concentration_min": float(concentrations.min()),
+                "concentration_max": float(concentrations.max()),
+                "duplicate_persisted_holder_keys": 0,
+                "duplicate_factor_keys": 0,
+                "plaintext_holder_names_persisted": False,
+                "holder_identity_hash": "sha256_nfkc_trimmed_whitespace_collapsed_utf8",
+            },
+            "availability_policy": {
+                "source_time_field": "ann_date",
+                "eligible_entry": "first local session open strictly after ann_date",
+                "same_announcement_session_trade_allowed": False,
+                "maximum_event_age_calendar_days": 3,
+                "forward_fill_beyond_event_age_allowed": False,
+            },
+            "acceptance_status": acceptance["success_status"],
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception as exc:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        error = safe_exception_text(exc)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_top10_float_concentration_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "requested_start": report_start.isoformat(),
+            "requested_end": report_end.isoformat(),
+            "data_contract": {
+                "path": manifest_path(
+                    DEFAULT_TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT
+                ),
+                "sha256": file_digest(
+                    DEFAULT_TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT
+                ),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "top10_floatholders",
+                "request_mode": "one stock and one frozen report-period range per call",
+                "symbols": list(symbols),
+                "provider_calls_issued": provider_calls_issued,
+                "fields": list(TUSHARE_TOP10_FLOAT_RAW_FIELDS),
+                "source_rows_returned_by_symbol": source_rows_by_symbol,
+                "plaintext_holder_names_logged_or_stored": False,
+                "credentials_logged_or_stored": False,
+            },
+            "local_no_return_context": context,
+            "files": [],
+            "acceptance_status": (
+                "rejected_stop_before_full_history_capacity_uniqueness_or_returns"
+            ),
+            "error_type": type(exc).__name__,
+            "error": error,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
+
+
 def sync_tushare_daily_pb_acceptance(
     universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
 ) -> Path:
@@ -7104,6 +7913,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the one-shot completed-session institution-seat acceptance",
     )
 
+    subparsers.add_parser(
+        "acceptance-tushare-top10-float-concentration",
+        help="run the frozen three-symbol top-ten float concentration acceptance",
+    )
+
     ts_daily_pb_acceptance = subparsers.add_parser(
         "acceptance-tushare-daily-pb",
         help="run the frozen completed-session positive book-to-market acceptance",
@@ -7240,6 +8054,8 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_northbound_top10_acceptance()
         elif args.command == "acceptance-tushare-top-inst":
             manifest = sync_tushare_top_inst_acceptance()
+        elif args.command == "acceptance-tushare-top10-float-concentration":
+            manifest = sync_tushare_top10_float_concentration_acceptance()
         elif args.command == "acceptance-tushare-daily-pb":
             manifest = sync_tushare_daily_pb_acceptance(
                 universe_path=args.universe_file
@@ -7297,6 +8113,9 @@ def main(argv: list[str] | None = None) -> int:
         "sync-tushare-daily-pb": "stored_pending_no_return_uniqueness_and_capacity",
         "acceptance-tushare-top-inst": (
             "stored_no_return_entitlement_and_top_list_acceptance"
+        ),
+        "acceptance-tushare-top10-float-concentration": (
+            "stored_no_return_ownership_concentration_acceptance"
         ),
         "acceptance-tushare-sw-industry-breadth": (
             "stored_no_price_membership_acceptance"

@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_top10_float_concentration_source_acceptance_record",
+  "status": "terminal_source_acceptance_rejected_before_snapshot_full_history_factor_values_or_returns",
+  "recorded_at": "2026-07-16T13:37:00Z",
+  "purpose": "Permanently record the one allowed no-return Tushare top10_floatholders entitlement, schema, identity, and concentration-formula acceptance outcome for the fixed three-session A-share research protocol.",
+  "data_contract": {
+    "path": "docs/a_share_tushare_top10_float_concentration_data_contract.json",
+    "sha256": "cec766613b49292e724cfd78090bdbec9d7c52ae8b337bceaf0ebe208c729897",
+    "preregistered_at": "2026-07-16T13:26:35Z",
+    "provider_rows_observed_before_contract_freeze": false
+  },
+  "source_selection_evidence": {
+    "official_interface_documentation": "https://tushare.pro/document/2?doc_id=62",
+    "documented_minimum_points": 2000,
+    "current_account_points": 3000,
+    "higher_granularity_alternatives_outside_current_entitlement": {
+      "limit_list_d": 5000,
+      "limit_list_ths": 8000,
+      "ths_hot": 6000,
+      "cyq_perf": 5000
+    },
+    "semantic_overlap_risk_frozen_before_rows": "The candidate could be a near synonym of holder-count or major-holder concentration fields, so the contract required a no-return uniqueness rejection gate before any possible price access."
+  },
+  "implementation_evidence": {
+    "adapter_path": "scripts/a_share_rich_data.py",
+    "adapter_sha256_at_acceptance": "3f2701ab484dc2888b925c966489092bc5a8f84c33b56441487422721aa4d4fc",
+    "test_path": "tests/data_collector_tests/test_a_share_rich_data.py",
+    "test_sha256_at_acceptance": "7c72bc405b70ff2548f0842849cb48e727d529518630a6f7555506506ec9e231",
+    "focused_tests_before_acceptance": {
+      "passed": 5,
+      "failed": 0
+    },
+    "full_data_collector_tests_before_acceptance": {
+      "passed": 346,
+      "failed": 0,
+      "warnings": 9
+    }
+  },
+  "no_network_preflight": {
+    "contract_fingerprint_passed": true,
+    "validated_local_context_artifacts": 11,
+    "prior_acceptance_records": 0,
+    "provider_rows_read": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "network_request_issued": false
+  },
+  "only_acceptance_attempt": {
+    "run_id": "20260716T133620Z_tushare_top10_float_concentration_acceptance_cc52e8ff",
+    "manifest_path": "data/metadata/rich_data/runs/20260716T133620Z_tushare_top10_float_concentration_acceptance_cc52e8ff.json",
+    "manifest_sha256": "88cd59c2ddd30af1a9531a7f1b9453a319763224ec229ff4e509539ed9f9600f",
+    "fixed_symbols": [
+      "600519.SH",
+      "000001.SZ",
+      "300750.SZ"
+    ],
+    "fixed_report_period_start": "2024-12-31",
+    "fixed_report_period_end": "2025-12-31",
+    "provider": "tushare",
+    "api": "top10_floatholders",
+    "provider_calls_issued": 3,
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "holder_name",
+      "hold_float_ratio"
+    ],
+    "source_rows_returned_by_symbol": {
+      "600519.SH": 42,
+      "000001.SZ": 40,
+      "300750.SZ": 48
+    },
+    "total_source_rows_returned": 130,
+    "first_canonicalized_response_passed_exact_field_set_checks": true,
+    "incomplete_or_nonfinite_required_rows_detected_before_abort": 2,
+    "invalid_field_scope": "At least one of ts_code, ann_date, end_date, normalized holder_name, or hold_float_ratio failed completeness or finite-value validation in each counted invalid row.",
+    "per_field_or_per_symbol_invalid_breakdown": null,
+    "invalid_breakdown_note": "All three response row counts were retained, but rejected raw frames and plaintext identities were deliberately not persisted. The strict canonicalizer aborted on the first response containing invalid rows, so a field-level or complete per-symbol validity breakdown is unavailable without a forbidden retry.",
+    "failure_stage": "after all three fixed requests and the first response's exact field-set check, but before holder-name hashing was published, holder-key uniqueness, ten-holder group completeness, first-version selection, consecutive-quarter concentration changes, full history, capacity, uniqueness, prices, or returns",
+    "error": "Tushare top10_floatholders response contains 2 incomplete or non-finite rows",
+    "acceptance_status": "rejected_stop_before_full_history_capacity_uniqueness_or_returns",
+    "raw_or_canonical_snapshot_published": false,
+    "files": [],
+    "plaintext_holder_names_logged_or_stored": false,
+    "credentials_logged_or_stored": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false
+  },
+  "interpretation": {
+    "entitlement_and_endpoint_rows_observed": true,
+    "usable_top_ten_float_holder_history_proven": false,
+    "concentration_factor_values_published": false,
+    "semantic_uniqueness_capacity_or_returns_tested": false,
+    "reason_for_terminal_stop": "The frozen contract requires every requested key, holder identity, and circulating-share ratio to be complete and finite before a ten-holder concentration can be trusted. Two rows failed that rule, and the one-shot protocol forbids deleting them, filling them, changing the field set, or switching symbols or report dates after observing the response.",
+    "not_global_provider_absence_claim": true,
+    "level2_purchase_justified": false
+  },
+  "terminal_decision": {
+    "mechanism": "top10_float_concentration_change_pp",
+    "decision": "stop_source_before_full_history_and_returns",
+    "full_history_authorized": false,
+    "capacity_or_uniqueness_audit_authorized": false,
+    "return_diagnostic_authorized": false,
+    "aggregation_scoring_selection_sizing_or_orders_authorized": false,
+    "retry_allowed": false
+  },
+  "prohibited_actions": [
+    "repeat top10_floatholders for any of the fixed symbols, another symbol, or another report-period range under this hypothesis",
+    "drop, fill, infer, or silently exclude either invalid row and accept the remaining response",
+    "replace hold_float_ratio with hold_ratio, hold_amount, hold_change, holder_type, or an identity-selected subset",
+    "persist or log plaintext holder identities to recover the rejected field breakdown",
+    "relax exact ten-holder completeness, use a later revision instead of the earliest complete disclosure, or bridge a missing quarter",
+    "change the factor formula, direction, event age, report window, minimum groups, capacity threshold, uniqueness threshold, holding period, TopK, costs, quality age, or listing gate",
+    "run full history, capacity, semantic uniqueness, return diagnostics, aggregation, current scoring, selection, sizing, orders, or Level-2 intake from this branch"
+  ],
+  "next_allowed_work": "Start only from a genuinely independent economic mechanism under a new immutable no-return contract frozen before observing that source's rows; this rejected branch contributes no factor to any combination.",
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

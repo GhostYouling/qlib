@@ -1258,6 +1258,291 @@ def test_tushare_top_inst_acceptance_rejects_stock_absent_from_top_list(
         RICH.sync_tushare_top_inst_acceptance()
 
 
+def top10_float_rows(
+    ts_code: str,
+    ann_date: str,
+    end_date: str,
+    *,
+    count: int = 10,
+    ratio_start: float = 0.5,
+    holder_prefix: str = "holder",
+) -> list[dict]:
+    return [
+        {
+            "ts_code": ts_code,
+            "ann_date": ann_date,
+            "end_date": end_date,
+            "holder_name": f"{holder_prefix}-{index}",
+            "hold_float_ratio": ratio_start + index * 0.01,
+        }
+        for index in range(count)
+    ]
+
+
+def test_tushare_top10_float_concentration_contract_is_fingerprint_frozen(
+    tmp_path,
+):
+    contract = RICH.load_tushare_top10_float_concentration_contract()
+    assert contract["factor"]["name"] == "top10_float_concentration_change_pp"
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS
+    )
+    assert contract["acceptance_protocol"]["fixed_symbols"] == list(
+        RICH.TUSHARE_TOP10_FLOAT_ACCEPTANCE_SYMBOLS
+    )
+    assert contract["freeze_evidence"][
+        "provider_top10_floatholders_rows_observed"
+    ] is False
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT.read_text()
+    )
+    changed["factor"]["direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_top10_float_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_tushare_top10_float_concentration_contract(changed_path)
+
+
+def test_tushare_top10_float_request_uses_only_frozen_fields(monkeypatch):
+    captured = {}
+
+    class Pro:
+        def top10_floatholders(self, **kwargs):
+            captured.update(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_top10_float_holders(
+        "600519.SH",
+        dt.date(2024, 12, 31),
+        dt.date(2025, 12, 31),
+    )
+    assert captured == {
+        "ts_code": "600519.SH",
+        "start_date": "20241231",
+        "end_date": "20251231",
+        "fields": ",".join(RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS),
+    }
+    forbidden = set(
+        RICH.load_tushare_top10_float_concentration_contract()["source"][
+            "explicitly_forbidden_fields"
+        ]
+    )
+    assert set(captured["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_top10_float_normalization_hashes_names_and_uses_first_complete_version():
+    rows = [
+        *top10_float_rows(
+            "600519.SH", "20250401", "20241231", ratio_start=0.5
+        ),
+        *top10_float_rows(
+            "600519.SH", "20250430", "20250331", ratio_start=0.6
+        ),
+        *top10_float_rows(
+            "600519.SH",
+            "20250510",
+            "20250331",
+            ratio_start=0.8,
+            holder_prefix="revision-holder",
+        ),
+        *top10_float_rows(
+            "600519.SH", "20250830", "20250630", count=9, ratio_start=0.7
+        ),
+    ]
+    source, factors, quality = RICH.canonicalize_tushare_top10_float_holders(
+        pd.DataFrame(rows, columns=RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS),
+        expected_ts_code="600519.SH",
+        report_period_start=dt.date(2024, 12, 31),
+        report_period_end=dt.date(2025, 12, 31),
+        latest_announcement_date=dt.date(2026, 7, 16),
+    )
+    assert source.columns.tolist() == list(RICH.TUSHARE_TOP10_FLOAT_SOURCE_COLUMNS)
+    assert factors.columns.tolist() == list(RICH.TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS)
+    assert "holder_name" not in source.columns
+    assert source["holder_name_sha256"].str.fullmatch(r"[0-9a-f]{64}").all()
+    assert len(factors) == 1
+    factor = factors.iloc[0]
+    assert factor["report_period"] == pd.Timestamp("2025-03-31")
+    assert factor["previous_report_period"] == pd.Timestamp("2024-12-31")
+    assert factor["top10_float_concentration_pct"] == pytest.approx(6.45)
+    assert factor["top10_float_concentration_change_pp"] == pytest.approx(1.0)
+    assert quality == {
+        "input_rows": 39,
+        "source_rows_written": 39,
+        "report_groups_observed": 4,
+        "complete_report_groups": 3,
+        "incomplete_report_groups_excluded": 1,
+        "first_complete_report_periods": 2,
+        "later_complete_revision_groups_not_used": 1,
+        "factor_ready_consecutive_pairs": 1,
+    }
+
+    duplicate = pd.DataFrame(
+        [rows[0], rows[0]], columns=RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS
+    )
+    with pytest.raises(RICH.RichDataError, match="duplicate holder event keys"):
+        RICH.canonicalize_tushare_top10_float_holders(
+            duplicate,
+            expected_ts_code="600519.SH",
+            report_period_start=dt.date(2024, 12, 31),
+            report_period_end=dt.date(2025, 12, 31),
+            latest_announcement_date=dt.date(2026, 7, 16),
+        )
+
+    invalid_ratio = pd.DataFrame(
+        [dict(rows[0], hold_float_ratio=101.0)],
+        columns=RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS,
+    )
+    with pytest.raises(RICH.RichDataError, match=r"outside \[0, 100\]"):
+        RICH.canonicalize_tushare_top10_float_holders(
+            invalid_ratio,
+            expected_ts_code="600519.SH",
+            report_period_start=dt.date(2024, 12, 31),
+            report_period_end=dt.date(2025, 12, 31),
+            latest_announcement_date=dt.date(2026, 7, 16),
+        )
+
+
+def test_tushare_top10_float_acceptance_persists_hashes_without_prices_and_is_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_top10_float_concentration_contract())
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_top10_float_concentration_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_tushare_top10_float_local_context",
+        lambda value: {"fixture": {"path": "fixture", "sha256": "0" * 64}},
+    )
+    calls = []
+
+    def fake_fetch(symbol, report_period_start, report_period_end):
+        calls.append((symbol, report_period_start, report_period_end))
+        rows = [
+            *top10_float_rows(
+                symbol,
+                "20250401",
+                "20241231",
+                ratio_start=0.5,
+                holder_prefix=f"{symbol}-previous",
+            ),
+            *top10_float_rows(
+                symbol,
+                "20250430",
+                "20250331",
+                ratio_start=0.6,
+                holder_prefix=f"{symbol}-current",
+            ),
+        ]
+        return pd.DataFrame(rows, columns=RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_top10_float_holders", fake_fetch)
+    manifest_path = RICH.sync_tushare_top10_float_concentration_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_top10_float_concentration_acceptance"
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_and_concentration_formula_pending_full_history"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 3
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS
+    )
+    assert manifest["source_request"]["plaintext_holder_names_logged_or_stored"] is False
+    assert manifest["source_quality"]["input_rows"] == 60
+    assert manifest["source_quality"]["factor_ready_consecutive_pairs"] == 3
+    assert manifest["source_quality"]["plaintext_holder_names_persisted"] is False
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert len(calls) == 3
+    source_file = next(
+        item for item in manifest["files"] if item["role"].startswith("normalized")
+    )
+    factor_file = next(
+        item for item in manifest["files"] if item["role"].startswith("first")
+    )
+    stored_source = pd.read_parquet(RICH.resolve_record_path(source_file["path"]))
+    stored_factors = pd.read_parquet(RICH.resolve_record_path(factor_file["path"]))
+    assert stored_source.columns.tolist() == list(
+        RICH.TUSHARE_TOP10_FLOAT_SOURCE_COLUMNS
+    )
+    assert stored_factors.columns.tolist() == list(
+        RICH.TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS
+    )
+    assert len(stored_source) == 60
+    assert len(stored_factors) == 3
+
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_top10_float_concentration_acceptance()
+    assert len(calls) == 3
+
+
+def test_tushare_top10_float_acceptance_rejects_insufficient_consecutive_history_once(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_top10_float_concentration_contract())
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_top10_float_concentration_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_tushare_top10_float_local_context",
+        lambda value: {"fixture": {"path": "fixture", "sha256": "0" * 64}},
+    )
+    calls = []
+
+    def fake_fetch(symbol, report_period_start, report_period_end):
+        calls.append(symbol)
+        periods = [("20250401", "20241231", 0.5)]
+        if symbol != "300750.SZ":
+            periods.append(("20250430", "20250331", 0.6))
+        rows = []
+        for announcement, period, ratio in periods:
+            rows.extend(
+                top10_float_rows(
+                    symbol,
+                    announcement,
+                    period,
+                    ratio_start=ratio,
+                    holder_prefix=f"{symbol}-{period}",
+                )
+            )
+        return pd.DataFrame(rows, columns=RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_top10_float_holders", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="too few complete report groups"):
+        RICH.sync_tushare_top10_float_concentration_acceptance()
+    assert len(calls) == 3
+    records = RICH.tushare_top10_float_concentration_acceptance_records()
+    assert len(records) == 1
+    rejection = RICH.json.loads(records[0].read_text())
+    assert rejection["source_request"]["provider_calls_issued"] == 3
+    assert rejection["files"] == []
+    assert rejection["price_fields_loaded"] == []
+    assert rejection["forward_return_fields_read"] is False
+
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_top10_float_concentration_acceptance()
+    assert len(calls) == 3
+
+
 def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_tushare_daily_pb_contract()
     assert contract["factor"]["name"] == "tushare_positive_book_to_market"

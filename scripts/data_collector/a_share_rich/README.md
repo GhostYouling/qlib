@@ -148,3 +148,25 @@ run full history/capacity/uniqueness/returns, combine, score, select, size,
 order, or justify Level-2 from this rejection.  The rejected raw response was
 not persisted, so its total row count and per-field missing breakdown are
 unknown and do not authorize a second request.
+
+The subsequent Tushare `top10_floatholders` concentration-change branch is
+also terminal at its one-shot source acceptance.  Its contract was frozen
+before entitlement or rows as
+`docs/a_share_tushare_top10_float_concentration_data_contract.json`
+(SHA-256 `cec766613b49292e724cfd78090bdbec9d7c52ae8b337bceaf0ebe208c729897`).
+Five focused tests, all 346 data-collector tests, and 11 local no-network
+fingerprints passed first.  The exact three requests for `600519.SH`,
+`000001.SZ`, and `300750.SZ` returned 42, 40, and 48 rows, but strict
+canonicalization found two rows with at least one incomplete or non-finite
+required stock, announcement date, report period, normalized holder identity,
+or floating-share ratio.  It stopped before publishing hashed identities,
+ten-holder groups, factor values, prices, or returns and wrote no data file.
+Preserve
+`docs/a_share_tushare_top10_float_concentration_source_acceptance_record.json`
+(SHA-256 `9396a687aeae176097006395406ab79d74a015b1d9392f89023658b438bd2cdf`).
+Do not invoke `acceptance-tushare-top10-float-concentration` again, switch
+symbols or dates, discard or fill the two rows, substitute another holder
+field, relax the exact-ten or consecutive-quarter rules, run history,
+capacity, uniqueness, returns, scoring, selection, sizing, orders, or justify
+Level-2.  Plaintext holder names and the rejected raw frames were not stored;
+the unavailable per-field breakdown does not authorize a retry.

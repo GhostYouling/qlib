@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_top10_float_concentration_data_contract",
+  "status": "frozen_before_top10_floatholders_entitlement_rows_full_history_factor_values_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T13:26:35Z",
+  "purpose": "Ingest and no-return screen one first-disclosed top-ten float-holder concentration-change mechanism for the fixed three-session A-share protocol without sweeping holder fields, ownership definitions, directions, event ages, report periods, or dates.",
+  "freeze_evidence": {
+    "official_documentation_observed": true,
+    "provider_top10_floatholders_rows_observed": false,
+    "top10_floatholders_entitlement_observed": false,
+    "full_history_observed": false,
+    "factor_values_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "chosen_source": "Tushare Pro top10_floatholders",
+    "official_interface_documentation": "https://tushare.pro/document/2?doc_id=62",
+    "minimum_permission_points": 2000,
+    "current_account_points": 3000,
+    "documented_required_input": "ts_code",
+    "documented_date_inputs": [
+      "period",
+      "ann_date",
+      "start_date",
+      "end_date"
+    ],
+    "documented_output_ratio": "hold_float_ratio, percentage of circulating shares",
+    "why_this_source": "It directly measures the disclosed concentration of tradable shares rather than another OHLC transform, classified order-flow field, analyst action, or corporate transaction. Its economic overlap with shareholder-count and major-holder factors is material and is therefore a frozen rejection gate, not an assumption of independence.",
+    "accessible_alternatives_rejected_before_rows": [
+      {
+        "api": "limit_list_d",
+        "minimum_points": 5000,
+        "reason": "outside the current 3000-point entitlement"
+      },
+      {
+        "api": "limit_list_ths",
+        "minimum_points": 8000,
+        "reason": "outside the current entitlement and documented only from 2023-11-01"
+      },
+      {
+        "api": "ths_hot",
+        "minimum_points": 6000,
+        "reason": "outside the current entitlement"
+      },
+      {
+        "api": "cyq_perf",
+        "minimum_points": 5000,
+        "reason": "outside the current entitlement"
+      }
+    ]
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "A newly disclosed increase in the share of circulating equity held by the ten largest tradable shareholders may reveal persistent large-holder accumulation that is incorporated over the next three sessions.",
+    "factor_family": "quarterly_ownership_concentration_disclosure_event",
+    "relationship_to_holder_count": "Holder-count change measures broad account dispersion; this factor measures the directly disclosed top-ten share of circulating equity. Both proxy concentration, so a no-return near-synonym gate against all three holder-count fields is mandatory before price access.",
+    "relationship_to_major_holder_changes": "Major-holder events are transaction notices by large holders; this source is a periodic ownership snapshot. A no-return gate against every existing major-holder field remains mandatory.",
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "top10_floatholders",
+    "frequency": "quarterly_report_disclosure_event",
+    "request_mode": "one stock and one frozen report-period range per call",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "holder_name",
+      "hold_float_ratio"
+    ],
+    "plaintext_holder_name_use": "in-memory row identity validation only",
+    "persisted_holder_identity": "SHA-256 of the NFKC-normalized, trimmed, whitespace-collapsed holder name",
+    "plaintext_holder_name_may_be_logged_stored_or_committed": false,
+    "explicitly_forbidden_fields": [
+      "hold_amount",
+      "hold_ratio",
+      "hold_change",
+      "holder_type",
+      "name",
+      "close",
+      "open",
+      "high",
+      "low",
+      "price",
+      "pct_change",
+      "market_cap",
+      "turnover_rate",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_policy": {
+    "source_time_field": "ann_date",
+    "conservative_availability": "first local trading session strictly after ann_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "forward_fill_beyond_event_age_allowed": false,
+    "report_version_policy": "For each instrument and report period, use only the earliest announcement group that independently contains exactly ten unique valid holders; count but never substitute a later revision.",
+    "previous_period_policy": "Compute a change only against the immediately preceding standard quarter end when that period also has an earlier-or-equal first complete disclosure date. Never bridge a missing quarter.",
+    "historical_intraday_release_timestamp_available_per_row": false,
+    "residual_risk": "ann_date has no per-row release time, so the strict-next-session rule is required; provider history can still omit an earlier superseded disclosure version. Every immutable snapshot retains its retrieval time."
+  },
+  "factor": {
+    "name": "top10_float_concentration_change_pp",
+    "raw_concentration_name": "top10_float_concentration_pct",
+    "direction": "higher_is_better",
+    "group_key": [
+      "instrument",
+      "ann_date",
+      "end_date"
+    ],
+    "group_completeness": "exactly ten unique nonmissing holder identities with ten finite hold_float_ratio values",
+    "concentration_formula": "sum(hold_float_ratio) across the exact ten-holder group",
+    "factor_formula": "current first-complete top10_float_concentration_pct minus the immediately previous quarter's first-complete top10_float_concentration_pct",
+    "units": "percentage points of circulating shares",
+    "raw_ratio_bounds": "each hold_float_ratio must lie in [0, 100]",
+    "aggregated_concentration_bounds": "the sum must lie in [0, 100.000001]",
+    "duplicate_holder_event_key_policy": "abort the acceptance or full stock partition; never silently deduplicate or double count",
+    "missing_or_nonfinite_policy": "abort the acceptance or full stock partition; never fill or discard an incomplete raw row",
+    "absent_or_incomplete_report_group_policy": "missing; never treat it as zero, and never bridge it when computing the quarter change",
+    "later_revision_policy": "count and retain its audit metadata but do not replace the earliest complete disclosure used by the factor",
+    "clipping_winsorization_imputation_or_absolute_value": null,
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(top10_float_concentration_change_pp)"
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "base_research_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "holder_count_snapshot": {
+      "path": "data/raw/a_share/events/holder_count_changes.parquet",
+      "sha256": "e14a0beb393bc713f6b6e5820da395430308eb117460541b3769116c8a265414",
+      "manifest_path": "data/metadata/holder_count_changes_manifest.json",
+      "manifest_sha256": "1d38b782968786f274ab57429f19bc967054a0e9f0a97459f21e9ac07ee2a988"
+    },
+    "holder_count_no_return_capacity_audit": {
+      "path": "data/experiments/short_horizon/20260714T163309Z_sparse_announcement_capacity_audit.json",
+      "sha256": "a0c435b53015e0b4ccfa0f406aa0e63b58533d3ea95b1ef236840b010cce7888",
+      "maximum_original_factor_cohorts": 194,
+      "minimum_required_cohorts": 200
+    },
+    "major_holder_snapshot": {
+      "path": "data/raw/a_share/events/major_holder_changes.parquet",
+      "sha256": "f04b5a756a2a4c57fece9235224c3878a3778ad1261a525a9617683c7345116f",
+      "manifest_path": "data/metadata/major_holder_changes_manifest.json",
+      "manifest_sha256": "b3909ffeb9bda0170b300eea8475bb0fd1b76e5b2142986284616bf65be68bd5"
+    },
+    "quarterly_quality_snapshot": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_symbols": [
+      "600519.SH",
+      "000001.SZ",
+      "300750.SZ"
+    ],
+    "fixed_report_period_start": "20241231",
+    "fixed_report_period_end": "20251231",
+    "latest_allowed_announcement_date": "20260716",
+    "provider_calls": 3,
+    "minimum_complete_report_groups_per_symbol": 2,
+    "minimum_factor_ready_consecutive_pairs_per_symbol": 1,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "exactly one request is made for each frozen symbol and no other symbol or date range",
+      "every response contains exactly the frozen five-field whitelist",
+      "all keys and ratios are complete and finite and every returned stock code matches its request",
+      "all report periods are standard quarter ends inside the frozen range and every announcement is no later than 2026-07-16",
+      "plaintext holder names are normalized only in memory, are unique within each event group, and are replaced by SHA-256 before persistence",
+      "every complete group has exactly ten holders, each ratio is in [0, 100], and its sum is no greater than 100.000001",
+      "each frozen symbol has at least two complete groups and at least one immediately consecutive factor-ready pair",
+      "the derived concentration and change values are finite and inside their frozen bounds",
+      "no plaintext identity, credential, holder amount, total-share ratio, holder change, holder type, price, market-cap, turnover, score, or return field appears in a published frame or manifest"
+    ],
+    "success_status": "accepted_entitlement_schema_and_concentration_formula_pending_full_history",
+    "failed_acceptance_policy": "write one no-return rejection record and stop without another symbol or date range, field relaxation, plaintext identity persistence, full sync, capacity, uniqueness, price access, factor reformulation, direction change, score, selection, sizing, order, or Level-2 justification",
+    "one_shot_policy": "The exact contract may publish at most one terminal success or rejection record."
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_top10_float_concentration",
+    "source_report_period_start": "20181231",
+    "source_report_period_end": "20251231",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2025-12-31",
+    "request_each_point_in_time_buyable_instrument_once": true,
+    "provider_call_partition": "one ts_code over the full frozen report-period range",
+    "minimum_seconds_between_calls": 0.65,
+    "maximum_attempts_per_symbol": 3,
+    "requests_are_sequential": true,
+    "partial_snapshot_accepted": false,
+    "immutable_announcement_year_partitions_and_manifest": true,
+    "persisted_normalized_source_columns": [
+      "announcement_date",
+      "report_period",
+      "instrument",
+      "holder_name_sha256",
+      "hold_float_ratio",
+      "provider"
+    ],
+    "canonical_factor_columns": [
+      "announcement_date",
+      "report_period",
+      "previous_report_period",
+      "instrument",
+      "top10_float_holder_count",
+      "top10_float_concentration_pct",
+      "top10_float_concentration_change_pp",
+      "provider"
+    ],
+    "factor_event_key": [
+      "instrument",
+      "announcement_date",
+      "report_period"
+    ],
+    "holding_universe": "buyable_main_chinext point-in-time members only on the effective signal session; outside names are excluded and counted"
+  },
+  "no_return_gates": {
+    "order": [
+      "source_fingerprint_schema_identity_and_continuity",
+      "quality_listing_and_non_overlapping_three_session_capacity",
+      "factor_uniqueness_with_explicit_concentration_synonyms"
+    ],
+    "source_completeness": {
+      "minimum_complete_factor_events": 2000,
+      "minimum_observed_announcement_years": 5,
+      "duplicate_raw_holder_or_factor_event_keys_allowed": false,
+      "plaintext_holder_identity_persisted": false
+    },
+    "capacity": {
+      "development_start": "2019-01-01",
+      "development_end": "2025-12-31",
+      "minimum_eligible_names_per_cross_section": 6,
+      "minimum_distinct_factor_values": 2,
+      "minimum_observed_years": 5,
+      "holding_period_trading_days": 3,
+      "non_overlapping_cohorts": true,
+      "topk": 3,
+      "minimum_required_cohorts": 200,
+      "maximum_quality_age_days": 550,
+      "minimum_listing_sessions": 20
+    },
+    "uniqueness": {
+      "comparison_factor_count": 54,
+      "comparison_scope": "the accepted 43-factor frontier, terminal Tushare classified-moneyflow, positive-book-to-market and SW-breadth fields, five billboard fields, and all three holder-count fields; existing major-holder fields are included in the 43-factor frontier",
+      "explicit_semantic_risk_fields": [
+        "holder_count_change_ratio",
+        "holder_count_change_absolute",
+        "holder_count_freshness",
+        "major_holder_net_change_free_ratio",
+        "major_holder_increase_free_ratio",
+        "major_holder_decrease_free_ratio",
+        "major_holder_event_count",
+        "major_holder_freshness"
+      ],
+      "minimum_pairwise_sessions": 100,
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+    },
+    "failed_gate_policy": "stop without returns, another top-holder metric, holder-type or identity filter, report-period bridging, later-version substitution, direction inversion, event-age widening, lower cohort or synonym threshold, year subset, rejected-factor combination, current scoring, selection, sizing, orders, or Level-2 intake"
+  },
+  "diagnostic_policy_if_all_no_return_gates_pass": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_required": "docs/a_share_three_day_prospective_execution_policy.json",
+    "cny_200000_pilot_policy_required": "docs/a_share_three_day_pilot_execution_policy.json",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_report_window_holder_subset_formula_weight_or_threshold_search_allowed": false,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
