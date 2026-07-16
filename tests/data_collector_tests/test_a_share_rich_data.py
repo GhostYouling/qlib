@@ -2050,6 +2050,243 @@ def test_tushare_disclosure_promptness_terminal_record_blocks_before_provider(
         RICH.sync_tushare_disclosure_promptness_acceptance()
 
 
+def audit_opinion_row(
+    ts_code: str,
+    ann_date: str,
+    end_date: str,
+    audit_result: str,
+) -> dict:
+    return {
+        "ts_code": ts_code,
+        "ann_date": ann_date,
+        "end_date": end_date,
+        "audit_result": audit_result,
+    }
+
+
+def test_tushare_audit_opinion_contract_is_frozen_before_rows():
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_AUDIT_OPINION_CONTRACT)
+        == RICH.TUSHARE_AUDIT_OPINION_CONTRACT_SHA256
+    )
+    contract = RICH.load_tushare_audit_opinion_contract()
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_AUDIT_OPINION_RAW_FIELDS
+    )
+    assert contract["factor"]["formula"] == (
+        "1 if NFKC_trim(audit_result) == '标准无保留意见' else 0 for any "
+        "other complete nonempty opinion"
+    )
+    assert contract["factor"]["direction"] == "higher_is_better"
+    assert contract["factor"]["text_synonym_mapping_allowed"] is False
+    assert contract["freeze_evidence"]["provider_fina_audit_api_rows_observed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+
+def test_tushare_audit_opinion_source_acceptance_record_is_frozen():
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD)
+        == RICH.TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD_SHA256
+    )
+    record = RICH.load_tushare_audit_opinion_acceptance_record()
+    assert record["acceptance"]["provider_calls_issued"] == 3
+    assert record["acceptance"]["source_rows"] == 21
+    assert record["acceptance"]["quality"]["factor_value_counts"] == {
+        "0": 4,
+        "1": 17,
+    }
+    assert record["privacy_and_scope"]["forward_return_fields_read"] is False
+
+
+def test_tushare_audit_opinion_request_uses_only_frozen_fields(monkeypatch):
+    captured = []
+
+    class Pro:
+        def fina_audit(self, **kwargs):
+            captured.append(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_audit_opinions(
+        "600519.SH", dt.date(2019, 1, 1), dt.date(2025, 12, 31)
+    )
+    assert captured == [
+        {
+            "ts_code": "600519.SH",
+            "start_date": "20190101",
+            "end_date": "20251231",
+            "fields": ",".join(RICH.TUSHARE_AUDIT_OPINION_RAW_FIELDS),
+        }
+    ]
+
+
+def test_tushare_audit_opinion_canonicalization_is_strict():
+    rows = [
+        audit_opinion_row("600518.SH", "20240430", "20231231", " 标准无保留意见 "),
+        audit_opinion_row("600518.SH", "20240430", "20231231", " 标准无保留意见 "),
+        audit_opinion_row("600518.SH", "20240430", "20240331", "保留意见"),
+        audit_opinion_row("600518.SH", "20250430", "20241231", "标准无保留意见"),
+    ]
+    frame = pd.DataFrame(rows, columns=RICH.TUSHARE_AUDIT_OPINION_RAW_FIELDS)
+    accepted, quality = RICH.canonicalize_tushare_audit_opinions(
+        frame,
+        expected_ts_code="600518.SH",
+        announcement_start=dt.date(2019, 1, 1),
+        announcement_end=dt.date(2025, 12, 31),
+    )
+    assert accepted.columns.tolist() == list(RICH.TUSHARE_AUDIT_OPINION_COLUMNS)
+    assert accepted["instrument"].tolist() == ["SH600518", "SH600518"]
+    assert accepted["tushare_is_standard_unqualified_audit_opinion"].tolist() == [
+        0,
+        1,
+    ]
+    assert accepted["audit_report_count"].tolist() == [2, 1]
+    assert quality["exact_four_field_duplicate_rows_collapsed"] == 1
+    assert quality["source_report_rows_retained"] == 3
+    assert quality["stock_announcement_events_written"] == 2
+    assert quality["distinct_factor_values"] == 2
+    assert len(quality["hashed_opinion_category_counts"]) == 2
+
+    conflict = frame.iloc[[0, 0]].copy().reset_index(drop=True)
+    conflict.loc[1, "audit_result"] = "保留意见"
+    with pytest.raises(RICH.RichDataError, match="conflicting stock-announcement-report"):
+        RICH.canonicalize_tushare_audit_opinions(
+            conflict,
+            expected_ts_code="600518.SH",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+
+    future_period = frame.iloc[[0]].copy()
+    future_period.loc[:, "end_date"] = "20251231"
+    with pytest.raises(RICH.RichDataError, match="report period after"):
+        RICH.canonicalize_tushare_audit_opinions(
+            future_period,
+            expected_ts_code="600518.SH",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+
+    wrong_stock = frame.iloc[[0]].copy()
+    wrong_stock.loc[:, "ts_code"] = "000001.SZ"
+    with pytest.raises(RICH.RichDataError, match="stock outside its frozen request"):
+        RICH.canonicalize_tushare_audit_opinions(
+            wrong_stock,
+            expected_ts_code="600518.SH",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+
+
+def test_tushare_audit_opinion_acceptance_is_atomic_and_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_audit_opinion_contract())
+    monkeypatch.setattr(RICH, "load_tushare_audit_opinion_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append((ts_code, announcement_start, announcement_end))
+        rows = []
+        for year in range(2019, 2025):
+            opinion = (
+                "保留意见"
+                if ts_code == "600518.SH" and year == 2020
+                else "标准无保留意见"
+            )
+            rows.append(
+                audit_opinion_row(
+                    ts_code,
+                    f"{year}0430",
+                    f"{year - 1}1231",
+                    opinion,
+                )
+            )
+        return pd.DataFrame(rows, columns=RICH.TUSHARE_AUDIT_OPINION_RAW_FIELDS)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_audit_opinions", fake_fetch)
+    manifest_path = RICH.sync_tushare_audit_opinion_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_point_in_time_policy_and_binary_formula_pending_full_history"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 3
+    assert manifest["source_request"]["raw_frames_persisted"] is False
+    assert (
+        manifest["source_request"]["raw_or_normalized_audit_result_text_persisted"]
+        is False
+    )
+    assert manifest["source_request"]["audit_fee_agency_or_signer_requested"] is False
+    assert manifest["source_quality"]["source_rows"] == 18
+    assert manifest["source_quality"]["stock_announcement_events_written"] == 18
+    assert manifest["source_quality"]["distinct_hashed_opinion_categories"] == 2
+    assert manifest["source_quality"]["factor_distinct_values"] == 2
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert len(calls) == 3
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_audit_opinion_acceptance()
+    assert len(calls) == 3
+
+
+def test_tushare_audit_opinion_acceptance_stops_after_first_failed_stock(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_audit_opinion_contract())
+    monkeypatch.setattr(RICH, "load_tushare_audit_opinion_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append(ts_code)
+        rows = [
+            audit_opinion_row(ts_code, f"{year}0430", f"{year - 1}1231", "标准无保留意见")
+            for year in range(2019, 2023)
+        ]
+        return pd.DataFrame(rows, columns=RICH.TUSHARE_AUDIT_OPINION_RAW_FIELDS)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_audit_opinions", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="too few source rows"):
+        RICH.sync_tushare_audit_opinion_acceptance()
+    assert calls == ["600519.SH"]
+    records = list((tmp_path / "runs").glob("*.json"))
+    assert len(records) == 1
+    failure = RICH.json.loads(records[0].read_text())
+    assert failure["source_request"]["provider_calls_issued"] == 1
+    assert failure["files"] == []
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["forward_return_fields_read"] is False
+
+
+def test_tushare_audit_opinion_tracked_acceptance_blocks_before_provider(monkeypatch):
+    monkeypatch.setattr(
+        RICH,
+        "require_provider",
+        lambda provider: pytest.fail("provider must not be checked"),
+    )
+    with pytest.raises(RICH.RichDataError, match="already consumed"):
+        RICH.sync_tushare_audit_opinion_acceptance()
+
+
 def test_tushare_cash_conversion_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_tushare_cash_conversion_contract()
     assert contract["factor"]["name"] == "tushare_operating_cash_conversion"

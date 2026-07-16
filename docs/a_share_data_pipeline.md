@@ -1688,6 +1688,16 @@ unset token
 
 终止记录为 `docs/a_share_tushare_disclosure_promptness_source_acceptance_record.json`（SHA‑256 `2096e48a6126126e7fb4fd612e6f443a57e43df43bcfc45aa384d2574797e3ef`）。由于原始帧按合同未保留，25 行的具体字段分布未知；不得为了补这个细节再请求，也不得删除/填补/推断异常行、换报告期、增加 `actual_date`、删除 `modify_date`、改变日期锚点/方向/事件年龄或另写同机制 v2。生产入口会在合同、Token 或供应商访问前拒绝。不得运行全历史、容量、唯一性、收益、聚合、评分、选股、仓位、订单或据此采购 Level‑2；该拒绝只证明来源不符合冻结合同，不代表因子收益已经失败。
 
+### Tushare 审计意见（来源验收通过，等待全量实现）
+
+在重新复现 43 个历史因子、7 个关联稳定性通过、TopK 通过 0、双门交集 0 后，机制核重记录 `docs/a_share_three_day_audit_opinion_mechanism_overlap_reaudit_20260717.json`（SHA‑256 `a13470c5dafa4c278035e7b17e56f896ae03932b4131b6d90830a2168282acdb`）排除了权限不足或机制重叠的集合竞价、异常波动和基金持仓路线。唯一推进的独立无收益候选是 [Tushare `fina_audit`](https://tushare.pro/document/2?doc_id=80) 审计意见；官方接口最低 2,000 积分。`stock_basic` 只保留为上市/退市与幸存者偏差基础设施，不作为因子。
+
+合同 `docs/a_share_tushare_audit_opinion_data_contract.json`（SHA‑256 `701240585505558cf34a3e9bc51ba17fb2c50ed1617fc13b332973b331c76d97`）在任何接口行之前冻结。它只请求 `ts_code,ann_date,end_date,audit_result`，对完整非空文本只做 Unicode NFKC 和首尾空白清理；文本精确等于“标准无保留意见”时因子为 1，其他完整意见一律为 0，不允许同义词映射。信号只能从公告日后的首个本地交易日开盘使用，最长保留 3 个日历日；原始或标准化意见文本、审计费用、机构、签字人、价格与收益均不得保存或读取。
+
+唯一一次三股票验收已成功：固定请求贵州茅台 `600519.SH`、平安银行 `000001.SZ`、康美药业 `600518.SH` 的 2019–2025 公告范围，共发出 3 次调用并取得 21 条来源记录，每只 7 条。四种意见类别只以摘要计数，严格公式产生 17 个值 1 和 4 个值 0；发布 21 个股票公告事件，重复键为 0。验收清单为 `data/metadata/rich_data/runs/20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a.json`（SHA‑256 `f23e7cc7571dc08f72d8ca1cbf465e2556934f22043a34aff50a87af8aab9b51`），跟踪记录为 `docs/a_share_tushare_audit_opinion_source_acceptance_record.json`（SHA‑256 `f5909c8114eb8505de1f86eab75ccf246938d9c537d7bbaf0f308d09e3dfce92`）。一次性验收已永久消费，不能再次运行 `acceptance-tushare-audit-opinion`；入口会在 Token 或供应商访问前拒绝。
+
+该结果只证明权限、字段、时间语义和二值公式，没有证明全市场历史覆盖、三日横截面容量、与既有因子值的独立性或收益。当前只允许实现并测试合同固定的 2019–2025、5,451 只来源股票、逐股票顺序请求和年度原子分区；完整来源门通过后仍必须先做无价格容量与唯一性门。收益诊断、聚合、评分、当前选股、仓位和下单尚未获准。
+
 ### 必经验收流程
 
 只对一个已收盘交易日和四只代表性股票运行验收。`acceptance` 会保存原始快照，并自动检查字段、非负成交量/成交额、常规交易时段、同日 OHLC/收盘比值，以及与本地日线的成交额和成交量比值：

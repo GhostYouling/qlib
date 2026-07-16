@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_audit_opinion_data_contract",
+  "status": "frozen_after_mechanism_overlap_audit_before_entitlement_rows_factor_values_or_returns",
+  "preregistered_at": "2026-07-16T18:13:26Z",
+  "purpose": "Ingest and no-return screen one financial-report reliability event for the fixed three-session A-share protocol without sweeping audit fields, text mappings, formulas, directions, event ages, dates, prices, or returns.",
+  "freeze_evidence": {
+    "official_fina_audit_documentation_observed": true,
+    "official_documentation_example_observed": true,
+    "mechanism_overlap_audit_completed": true,
+    "provider_fina_audit_api_rows_observed": false,
+    "fina_audit_entitlement_observed": false,
+    "factor_values_observed": false,
+    "full_history_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "source": "Tushare Pro fina_audit",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=80",
+    "official_permission_table": "https://tushare.pro/document/1?doc_id=290",
+    "minimum_permission_points": 2000,
+    "current_account_points": 3000,
+    "provider_documented_rows_per_call": null,
+    "defensive_maximum_rows_per_single_stock_call": 1000,
+    "why_this_source": "The interface supplies a documented announcement date and the auditor's result. The result measures reporting reliability rather than the magnitude of earnings, revenue, cash flow, valuation, ownership, order flow, analyst activity, or historical price movement."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "A standard unqualified audit opinion represents lower reporting-reliability risk when announced and is frozen as better for the following three-session research protocol.",
+    "factor_family": "audited_reporting_reliability_event",
+    "relationship_to_existing_fundamental_factors": "Existing quarterly factors rank reported accounting magnitudes and growth. This candidate ranks only whether the independent audit result exactly states a standard unqualified opinion; no financial amount or ratio enters it.",
+    "relationship_to_existing_event_factors": "It is not forecast accuracy, report timing, analyst rating, ownership change, survey activity, insider trading, unlock supply, pledge, repurchase, dividend, billboard, block trade, or margin activity.",
+    "mandatory_no_return_near_synonym_gate": "After capacity, compare the directional binary event with every eligible existing factor; reject before returns if the fixed rank-correlation threshold is breached.",
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_audit_opinion_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a13470c5dafa4c278035e7b17e56f896ae03932b4131b6d90830a2168282acdb"
+    },
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "fina_audit",
+    "frequency": "financial_audit_opinion_announcement_event",
+    "request_mode": "one frozen stock and announcement-date range per call",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "audit_result"
+    ],
+    "explicitly_forbidden_fields": [
+      "audit_fees",
+      "audit_agency",
+      "audit_sign",
+      "name",
+      "title",
+      "income",
+      "revenue",
+      "profit",
+      "cashflow",
+      "roe",
+      "forecast",
+      "open",
+      "high",
+      "low",
+      "close",
+      "price",
+      "market_cap",
+      "turnover",
+      "score",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_and_version_policy": {
+    "event_date": "ann_date",
+    "report_period": "end_date",
+    "date_order_policy": "ann_date and end_date must be complete valid dates, end_date must be a standard quarter end, and end_date must not be later than ann_date",
+    "request_identity_policy": "Every returned ts_code must exactly match the requested stock. Complete .BJ rows are outside this frozen source universe and abort rather than silently changing the request.",
+    "audit_result_normalization": "Apply Unicode NFKC, strip surrounding whitespace, and remove no internal wording or punctuation.",
+    "empty_or_nonstring_audit_result_policy": "abort the stock partition",
+    "duplicate_policy": "Exact four-field duplicates may be counted and collapsed. Differing audit_result values for one ts_code, ann_date, and end_date abort the stock partition.",
+    "multiple_report_periods_on_one_announcement_date": "Aggregate to one stock-announcement event by the minimum binary clean-opinion value, so any non-standard complete opinion makes that event zero; retain the report count only as context.",
+    "same_report_period_multiple_announcement_dates": "Treat later announcement dates as new observed updates; never erase or backfill the earlier event.",
+    "raw_audit_result_persistence": "Raw or normalized audit-result text is not written to Parquet. Only SHA-256 category counts may appear in a manifest, and no auditor or signer identity is requested.",
+    "conservative_availability": "first local trading session strictly after ann_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "forward_fill_beyond_event_age_allowed": false,
+    "historical_intraday_release_timestamp_available_per_row": false,
+    "residual_risk": "The interface has an announcement date but no historical intraday timestamp or complete vendor revision stream. Strict next-session availability and preservation of later updates reduce but cannot eliminate revision-history risk."
+  },
+  "factor": {
+    "name": "tushare_standard_unqualified_audit_opinion",
+    "raw_column": "tushare_is_standard_unqualified_audit_opinion",
+    "direction": "higher_is_better",
+    "formula": "1 if NFKC_trim(audit_result) == '标准无保留意见' else 0 for any other complete nonempty opinion",
+    "units": "binary event value",
+    "economic_direction": "an exact standard unqualified opinion is frozen as better",
+    "zero_policy": "zero is valid only for an observed complete nonempty opinion whose normalized text is not the exact frozen clean phrase",
+    "absent_event_policy": "missing; never treat an absent audit event as zero or clean",
+    "text_synonym_mapping_allowed": false,
+    "clipping_winsorization_log_absolute_value_inversion_offset_or_imputation": null,
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(tushare_is_standard_unqualified_audit_opinion)"
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "quarterly_quality_snapshot": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "prospective_execution_policy": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "cny_200000_pilot_policy": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_ts_codes": [
+      "600519.SH",
+      "000001.SZ",
+      "600518.SH"
+    ],
+    "announcement_start": "20190101",
+    "announcement_end": "20251231",
+    "provider_calls": 3,
+    "minimum_source_rows_per_stock": 5,
+    "minimum_retained_rows_per_stock": 5,
+    "minimum_distinct_hashed_opinion_categories_across_acceptance": 2,
+    "minimum_distinct_factor_values_across_acceptance": 2,
+    "defensive_row_ceiling_is_strict": true,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "exactly one fina_audit request is issued for each frozen stock with only the frozen four fields and date range",
+      "every response is below the defensive 1000-row ceiling and contains at least five source rows",
+      "stock code, announcement date, report period, and audit result are complete and valid",
+      "every stock code exactly matches its request, report periods are standard quarter ends, and no report period is later than its announcement",
+      "NFKC and trim are the only audit-result text normalization",
+      "exact four-field duplicates alone may collapse and conflicting event-key opinions abort acceptance",
+      "raw and normalized opinion text, audit fee, agency, and signer are not persisted",
+      "the exact clean phrase maps to one and every other complete nonempty opinion maps to zero",
+      "each stock retains at least five rows and the combined sample contains at least two hashed opinion categories and both binary values",
+      "no credential, narrative, identity, financial amount, price, score, or return appears in a published factor frame or manifest"
+    ],
+    "success_status": "accepted_entitlement_schema_point_in_time_policy_and_binary_formula_pending_full_history",
+    "failed_acceptance_policy": "write one no-return rejection record and stop without another stock, field relaxation, text synonym mapping, full sync, capacity, uniqueness, price access, formula or direction change, score, selection, sizing, orders, or Level-2 justification",
+    "one_shot_policy": "The exact contract may publish at most one terminal success or rejection record."
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_audit_opinion_events",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2025-12-31",
+    "fixed_source_universe": "factor_main_chinext_star fingerprinted above",
+    "provider_call_partition": "one source-universe stock over the complete announcement-date range",
+    "provider_calls": 5451,
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_stock": 3,
+    "retry_backoff_seconds": [
+      2,
+      5
+    ],
+    "requests_are_sequential": true,
+    "output_columns": [
+      "announcement_date",
+      "instrument",
+      "tushare_is_standard_unqualified_audit_opinion",
+      "audit_report_count",
+      "provider"
+    ],
+    "partition_policy": "one announcement calendar year per immutable Parquet partition",
+    "partial_snapshot_accepted": false,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "failure_cleanup": "delete the complete temporary snapshot and publish no final manifest",
+    "raw_provider_frames_persisted": false,
+    "raw_or_normalized_audit_result_text_persisted": false
+  },
+  "source_completeness_policy": {
+    "coverage_denominator": "factor_main_chinext_star instruments active at each standard annual report period",
+    "minimum_median_annual_report_coverage": 0.8,
+    "minimum_p05_annual_report_coverage": 0.7,
+    "minimum_observed_source_years": 5,
+    "duplicate_stock_announcement_report_period_keys_allowed": false,
+    "failed_gate_policy": "stop before event expansion, capacity, uniqueness, or returns; do not fill absent opinions, omit weak years, mix providers, map text synonyms, or add auditor identity and fee fields"
+  },
+  "no_return_capacity_policy": {
+    "separate_immutable_preregistration_required_after_full_snapshot": true,
+    "run_before_any_open_close_or_forward_return_read": true,
+    "holding_universe": "buyable_main_chinext",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_observed_years": 5,
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "failed_gate_policy": "stop without reading returns, mapping another opinion phrase, changing direction or age, lowering capacity, selecting report periods, or combining a rejected factor",
+    "selection_or_promotion_allowed": false
+  },
+  "no_return_uniqueness_policy": {
+    "required_after_capacity_and_before_factor_return_access": true,
+    "comparison_scope": "every factor in the frozen 43-factor accepted-price frontier plus later terminal independent mechanisms where a same-day comparison is defined",
+    "method": "On factor-active sessions, rank the frozen binary value as higher-is-better inside the same quality/listing-eligible cross-section; compare Spearman ranks with every existing eligible field and take each comparison's median daily correlation.",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_sessions": 100,
+    "failed_gate_policy": "stop without returns, inversion, another opinion mapping, report-period selection, event-age change, field substitution, or threshold relaxation"
+  },
+  "diagnostic_policy_if_source_capacity_and_uniqueness_pass": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_required": "docs/a_share_three_day_prospective_execution_policy.json",
+    "cny_200000_pilot_policy_required": "docs/a_share_three_day_pilot_execution_policy.json",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_window_text_mapping_age_quality_weight_or_threshold_search_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

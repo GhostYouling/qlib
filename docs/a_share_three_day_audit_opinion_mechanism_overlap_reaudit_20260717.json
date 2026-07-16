@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_audit_opinion_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_provider_rows",
+  "recorded_at": "2026-07-16T18:12:41Z",
+  "purpose": "Re-audit the exhausted three-session factor frontier after the disclosure-promptness source rejection and select at most one economically independent candidate that the user's existing 3000-point Tushare authorization can actually access.",
+  "frontier_revalidation": {
+    "path": "data/metadata/research_frontier_revalidation_20260717_after_disclosure.json",
+    "sha256": "1db406c556affa213a67a7ff6dc032109cc0e56a1146dd136c1c73ef47d99dee",
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "raw_prices_or_new_returns_read": false
+  },
+  "prior_mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "f21194cf93b5ac126d6cb39d93cab529d77a2e28ab153b90e0cc2326c860370e"
+  },
+  "official_permission_context": {
+    "current_account_points": 3000,
+    "permission_table": "https://tushare.pro/document/1?doc_id=290",
+    "audit_opinion_documentation": "https://tushare.pro/document/2?doc_id=80",
+    "audit_opinion_minimum_points": 2000,
+    "stock_basic_documentation": "https://tushare.pro/document/2?doc_id=25",
+    "stock_basic_minimum_points": 2000,
+    "fund_portfolio_documentation": "https://tushare.pro/document/2?doc_id=121",
+    "fund_portfolio_minimum_points": 5000,
+    "abnormal_volatility_documentation": "https://tushare.pro/document/2?doc_id=451",
+    "abnormal_volatility_minimum_points": 6000,
+    "historical_stock_list_documentation": "https://tushare.pro/document/2?doc_id=262",
+    "historical_stock_list_minimum_points": 5000,
+    "opening_call_auction_permission": "separate paid entitlement outside the points balance",
+    "provider_api_rows_observed": false,
+    "entitlement_requests_issued": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "historical opening or closing auction participation",
+      "decision": "deferred_before_rows",
+      "reason": "The relevant historical auction path is a specialty or separately purchased entitlement, so the current 3000-point authorization does not justify a probe or purchase."
+    },
+    {
+      "candidate": "exchange abnormal-volatility event",
+      "decision": "rejected_before_rows",
+      "reason": "The official stk_shock interface requires 6000 points, above the current authorization."
+    },
+    {
+      "candidate": "public-fund disclosed stock ownership",
+      "decision": "rejected_before_rows",
+      "reason": "The official fund_portfolio interface requires at least 5000 points, above the current authorization."
+    },
+    {
+      "candidate": "point-in-time listing and delisting coverage",
+      "decision": "retained_as_data_quality_infrastructure_not_a_factor",
+      "reason": "The 2000-point stock_basic interface exposes list_status, list_date, and delist_date and should later be used to measure survivorship gaps, but these fields do not form a cross-sectional three-session return hypothesis."
+    },
+    {
+      "candidate": "standard unqualified financial audit opinion",
+      "decision": "selected_for_one_predeclared_no_return_source_acceptance",
+      "reason": "The 2000-point fina_audit interface has a documented announcement date, report period, and audit result. Audit reliability is economically distinct from reported ROE, growth, cash conversion, valuation, ownership, analyst rating, transaction events, moneyflow, industry breadth, and daily price transforms."
+    }
+  ],
+  "selected_mechanism": {
+    "source": "Tushare Pro fina_audit",
+    "economic_mechanism": "A standard unqualified audit opinion represents lower reporting-reliability risk at the moment the opinion is announced.",
+    "factor_name": "tushare_standard_unqualified_audit_opinion",
+    "raw_factor_column": "tushare_is_standard_unqualified_audit_opinion",
+    "formula": "1 if NFKC_trim(audit_result) == '标准无保留意见' else 0 for any other complete nonempty opinion",
+    "direction": "higher_is_better",
+    "availability": "first local trading session strictly after ann_date",
+    "maximum_event_age_calendar_days": 3,
+    "absent_event_policy": "missing; never zero",
+    "independent_factor_count": 1,
+    "mandatory_no_return_near_synonym_gate": true,
+    "provider_rows_observed": false,
+    "factor_values_observed": false,
+    "returns_observed": false
+  },
+  "decision": {
+    "historical_factor_combination_allowed": false,
+    "same_history_inversion_or_parameter_search_allowed": false,
+    "audit_opinion_contract_must_be_frozen_before_provider_rows": true,
+    "one_shot_source_acceptance_allowed_after_contract_and_tests": true,
+    "full_history_capacity_uniqueness_or_return_work_allowed_before_acceptance": false,
+    "selection_scoring_sizing_or_orders_allowed": false,
+    "level2_purchase_justified": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

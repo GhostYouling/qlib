@@ -102,6 +102,14 @@ DEFAULT_TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_RECORD = (
     / "docs"
     / "a_share_tushare_disclosure_promptness_source_acceptance_record.json"
 )
+DEFAULT_TUSHARE_AUDIT_OPINION_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_audit_opinion_data_contract.json"
+)
+DEFAULT_TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_audit_opinion_source_acceptance_record.json"
+)
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
 )
@@ -225,6 +233,12 @@ TUSHARE_DISCLOSURE_PROMPTNESS_CONTRACT_SHA256 = (
 )
 TUSHARE_DISCLOSURE_PROMPTNESS_ACCEPTANCE_RECORD_SHA256 = (
     "2096e48a6126126e7fb4fd612e6f443a57e43df43bcfc45aa384d2574797e3ef"
+)
+TUSHARE_AUDIT_OPINION_CONTRACT_SHA256 = (
+    "701240585505558cf34a3e9bc51ba17fb2c50ed1617fc13b332973b331c76d97"
+)
+TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD_SHA256 = (
+    "f5909c8114eb8505de1f86eab75ccf246938d9c537d7bbaf0f308d09e3dfce92"
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
@@ -392,6 +406,27 @@ TUSHARE_DISCLOSURE_PROMPTNESS_FULL_PERIODS = tuple(
     for year in range(2019, 2026)
     for month_day in ("0331", "0630", "0930", "1231")
 )
+TUSHARE_AUDIT_OPINION_RAW_FIELDS = (
+    "ts_code",
+    "ann_date",
+    "end_date",
+    "audit_result",
+)
+TUSHARE_AUDIT_OPINION_COLUMNS = (
+    "announcement_date",
+    "instrument",
+    "tushare_is_standard_unqualified_audit_opinion",
+    "audit_report_count",
+    "provider",
+)
+TUSHARE_AUDIT_OPINION_ACCEPTANCE_TS_CODES = (
+    "600519.SH",
+    "000001.SZ",
+    "600518.SH",
+)
+TUSHARE_AUDIT_OPINION_ACCEPTANCE_START = "20190101"
+TUSHARE_AUDIT_OPINION_ACCEPTANCE_END = "20251231"
+TUSHARE_AUDIT_OPINION_CLEAN_TEXT = "标准无保留意见"
 TUSHARE_TOP10_FLOAT_RAW_FIELDS = (
     "ts_code",
     "ann_date",
@@ -1424,6 +1459,32 @@ def fetch_tushare_disclosure_plan(report_period: dt.date) -> pd.DataFrame:
     return result.copy()
 
 
+def fetch_tushare_audit_opinions(
+    ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> pd.DataFrame:
+    """Fetch one stock's audit opinions using only the frozen four fields."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.fina_audit(
+            ts_code=ts_code,
+            start_date=announcement_start.strftime("%Y%m%d"),
+            end_date=announcement_end.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_AUDIT_OPINION_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare fina_audit request failed for "
+            f"{ts_code}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
 def fetch_tushare_top10_float_holders(
     ts_code: str,
     report_period_start: dt.date,
@@ -2367,6 +2428,174 @@ def canonicalize_tushare_disclosure_plan(
         "distinct_lead_days": int(factor.nunique()),
         "minimum_lead_days": int(factor.min()) if len(factor) else None,
         "maximum_lead_days": int(factor.max()) if len(factor) else None,
+    }
+
+
+def canonicalize_tushare_audit_opinions(
+    frame: pd.DataFrame,
+    expected_ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Apply the frozen audit-opinion identity, date, text, and binary policy."""
+
+    empty_quality: dict[str, Any] = {
+        "input_rows": 0,
+        "exact_four_field_duplicate_rows_collapsed": 0,
+        "hashed_opinion_category_counts": {},
+        "source_report_rows_retained": 0,
+        "stock_announcement_events_written": 0,
+        "distinct_factor_values": 0,
+        "clean_report_rows": 0,
+        "nonclean_report_rows": 0,
+    }
+    if frame is None or frame.empty:
+        return pd.DataFrame(columns=TUSHARE_AUDIT_OPINION_COLUMNS), empty_quality
+    raw = frame.copy()
+    missing_columns = [
+        field for field in TUSHARE_AUDIT_OPINION_RAW_FIELDS if field not in raw
+    ]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare fina_audit response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_AUDIT_OPINION_RAW_FIELDS)
+    )
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare fina_audit response contains fields outside the frozen "
+            "whitelist: " + ", ".join(unexpected_columns)
+        )
+    expected_code = str(expected_ts_code).strip().upper()
+    expected_parts = pd.Series([expected_code], dtype="string").str.extract(
+        r"^(\d{6})\.(SH|SZ)$"
+    )
+    if expected_parts.isna().any(axis=None):
+        raise RichDataError(f"invalid frozen Tushare fina_audit stock: {expected_code}")
+    if announcement_start > announcement_end:
+        raise RichDataError("Tushare fina_audit announcement range is reversed")
+
+    source_code = (
+        raw["ts_code"].astype("string").str.strip().str.upper().replace("", pd.NA)
+    )
+    code_parts = source_code.str.extract(r"^(\d{6})\.(SH|SZ|BJ)$")
+    announcement_date = pd.to_datetime(
+        raw["ann_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    report_period = pd.to_datetime(
+        raw["end_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    audit_text = raw["audit_result"].astype("string").map(
+        lambda value: (
+            unicodedata.normalize("NFKC", str(value)).strip()
+            if pd.notna(value)
+            else pd.NA
+        )
+    )
+    audit_text = audit_text.astype("string").replace("", pd.NA)
+    invalid_key = (
+        source_code.isna()
+        | code_parts[0].isna()
+        | code_parts[1].isna()
+        | announcement_date.isna()
+        | report_period.isna()
+        | audit_text.isna()
+    )
+    if invalid_key.any():
+        raise RichDataError(
+            "Tushare fina_audit response contains "
+            f"{int(invalid_key.sum())} rows with invalid keys, dates, or opinions"
+        )
+    if not source_code.eq(expected_code).all():
+        raise RichDataError(
+            "Tushare fina_audit response contains a stock outside its frozen request"
+        )
+    if code_parts[1].eq("BJ").any():
+        raise RichDataError(
+            "Tushare fina_audit response contains BSE rows outside the frozen source universe"
+        )
+    start_ts = pd.Timestamp(announcement_start)
+    end_ts = pd.Timestamp(announcement_end)
+    if announcement_date.lt(start_ts).any() or announcement_date.gt(end_ts).any():
+        raise RichDataError(
+            "Tushare fina_audit response contains an announcement outside its request"
+        )
+    standard_quarter_end = report_period.dt.strftime("%m%d").isin(
+        {"0331", "0630", "0930", "1231"}
+    )
+    if not standard_quarter_end.all():
+        raise RichDataError(
+            "Tushare fina_audit response contains a non-standard report period"
+        )
+    if report_period.gt(announcement_date).any():
+        raise RichDataError(
+            "Tushare fina_audit response contains a report period after its announcement"
+        )
+
+    normalized = pd.DataFrame(
+        {
+            "source_code": source_code,
+            "announcement_date": announcement_date,
+            "report_period": report_period,
+            "audit_text": audit_text,
+            "code": code_parts[0],
+            "exchange": code_parts[1],
+        }
+    )
+    before_dedup = len(normalized)
+    normalized = normalized.drop_duplicates(ignore_index=True)
+    duplicate_rows = int(before_dedup - len(normalized))
+    report_key = ["source_code", "announcement_date", "report_period"]
+    if normalized.duplicated(report_key, keep=False).any():
+        raise RichDataError(
+            "Tushare fina_audit response contains conflicting stock-announcement-report rows"
+        )
+
+    code = str(expected_parts.iloc[0, 0])
+    exchange = str(expected_parts.iloc[0, 1])
+    instrument = qlib_symbol(code)
+    if not instrument.startswith(exchange):
+        raise RichDataError(
+            "Tushare fina_audit stock code and exchange suffix disagree: "
+            f"{expected_code}"
+        )
+    normalized["factor"] = normalized["audit_text"].eq(
+        TUSHARE_AUDIT_OPINION_CLEAN_TEXT
+    ).astype("int8")
+    hashed_categories = normalized["audit_text"].map(
+        lambda value: hashlib.sha256(str(value).encode("utf-8")).hexdigest()
+    )
+    hashed_counts = {
+        str(key): int(value)
+        for key, value in hashed_categories.value_counts().sort_index().items()
+    }
+    event_rows = (
+        normalized.groupby("announcement_date", as_index=False, sort=True)
+        .agg(
+            tushare_is_standard_unqualified_audit_opinion=("factor", "min"),
+            audit_report_count=("report_period", "size"),
+        )
+        .assign(instrument=instrument, provider="tushare")
+    )
+    result = (
+        event_rows.loc[:, list(TUSHARE_AUDIT_OPINION_COLUMNS)]
+        .sort_values(["announcement_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    factor = result["tushare_is_standard_unqualified_audit_opinion"]
+    if not factor.isin({0, 1}).all():
+        raise RichDataError("derived Tushare audit-opinion factor is not binary")
+    return result, {
+        "input_rows": int(len(raw)),
+        "exact_four_field_duplicate_rows_collapsed": duplicate_rows,
+        "hashed_opinion_category_counts": hashed_counts,
+        "source_report_rows_retained": int(len(normalized)),
+        "stock_announcement_events_written": int(len(result)),
+        "distinct_factor_values": int(factor.nunique()),
+        "clean_report_rows": int(normalized["factor"].sum()),
+        "nonclean_report_rows": int(normalized["factor"].eq(0).sum()),
     }
 
 
@@ -4309,6 +4538,210 @@ def tushare_disclosure_promptness_acceptance_records() -> list[Path]:
         if payload.get("dataset") == "tushare_disclosure_promptness_acceptance":
             records.append(path)
     return records
+
+
+def load_tushare_audit_opinion_contract(
+    path: Path = DEFAULT_TUSHARE_AUDIT_OPINION_CONTRACT,
+) -> dict[str, Any]:
+    """Load and revalidate the immutable pre-row audit-opinion contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_AUDIT_OPINION_CONTRACT_SHA256:
+        raise RichDataError("Tushare audit-opinion contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_tushare_audit_opinion_data_contract")
+    selection = contract.get("source_selection") or {}
+    mechanism = contract.get("mechanism_identity") or {}
+    overlap = mechanism.get("mechanism_overlap_audit") or {}
+    source = contract.get("source") or {}
+    timing = contract.get("point_in_time_and_version_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    capacity = contract.get("no_return_capacity_policy") or {}
+    uniqueness = contract.get("no_return_uniqueness_policy") or {}
+    diagnostic = contract.get(
+        "diagnostic_policy_if_source_capacity_and_uniqueness_pass"
+    ) or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_mechanism_overlap_audit_before_entitlement_rows_factor_values_or_returns"
+        or contract.get("preregistered_at") != "2026-07-16T18:13:26Z"
+        or selection.get("minimum_permission_points") != 2000
+        or selection.get("current_account_points") != 3000
+        or selection.get("defensive_maximum_rows_per_single_stock_call") != 1000
+        or overlap.get("path")
+        != "docs/a_share_three_day_audit_opinion_mechanism_overlap_reaudit_20260717.json"
+        or overlap.get("sha256")
+        != "a13470c5dafa4c278035e7b17e56f896ae03932b4131b6d90830a2168282acdb"
+        or source.get("provider") != "tushare"
+        or source.get("api") != "fina_audit"
+        or source.get("request_mode")
+        != "one frozen stock and announcement-date range per call"
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_AUDIT_OPINION_RAW_FIELDS
+        or timing.get("audit_result_normalization")
+        != "Apply Unicode NFKC, strip surrounding whitespace, and remove no internal wording or punctuation."
+        or timing.get("conservative_availability")
+        != "first local trading session strictly after ann_date"
+        or timing.get("same_announcement_session_trade_allowed") is not False
+        or timing.get("maximum_event_age_calendar_days") != 3
+        or timing.get("forward_fill_beyond_event_age_allowed") is not False
+        or factor.get("name") != "tushare_standard_unqualified_audit_opinion"
+        or factor.get("raw_column")
+        != "tushare_is_standard_unqualified_audit_opinion"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("formula")
+        != "1 if NFKC_trim(audit_result) == '标准无保留意见' else 0 for any other complete nonempty opinion"
+        or factor.get("text_synonym_mapping_allowed") is not False
+        or tuple(acceptance.get("fixed_ts_codes") or ())
+        != TUSHARE_AUDIT_OPINION_ACCEPTANCE_TS_CODES
+        or acceptance.get("announcement_start")
+        != TUSHARE_AUDIT_OPINION_ACCEPTANCE_START
+        or acceptance.get("announcement_end")
+        != TUSHARE_AUDIT_OPINION_ACCEPTANCE_END
+        or acceptance.get("provider_calls") != 3
+        or acceptance.get("minimum_source_rows_per_stock") != 5
+        or acceptance.get("minimum_retained_rows_per_stock") != 5
+        or acceptance.get(
+            "minimum_distinct_hashed_opinion_categories_across_acceptance"
+        )
+        != 2
+        or acceptance.get("minimum_distinct_factor_values_across_acceptance") != 2
+        or acceptance.get("defensive_row_ceiling_is_strict") is not True
+        or acceptance.get("success_status")
+        != "accepted_entitlement_schema_point_in_time_policy_and_binary_formula_pending_full_history"
+        or snapshot.get("provider_calls") != 5451
+        or tuple(snapshot.get("output_columns") or ())
+        != TUSHARE_AUDIT_OPINION_COLUMNS
+        or snapshot.get("raw_provider_frames_persisted") is not False
+        or snapshot.get("raw_or_normalized_audit_result_text_persisted") is not False
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("holding_period_local_sessions") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("minimum_pairwise_sessions") != 100
+        or uniqueness.get(
+            "maximum_allowed_absolute_median_daily_rank_correlation"
+        )
+        != 0.8
+        or diagnostic.get(
+            "separate_immutable_preregistration_required_before_price_access"
+        )
+        is not True
+        or diagnostic.get("holding_period_local_sessions") != 3
+        or diagnostic.get("topk") != 3
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare audit-opinion contract does not match the frozen protocol"
+        )
+    overlap_path = resolve_record_path(str(overlap["path"]))
+    if not overlap_path.exists() or file_digest(overlap_path) != str(
+        overlap["sha256"]
+    ):
+        raise RichDataError("Tushare audit-opinion mechanism-overlap evidence changed")
+    for label, evidence in (contract.get("local_context") or {}).items():
+        linked_path = resolve_record_path(str(evidence.get("path") or ""))
+        linked_sha = str(evidence.get("sha256") or "")
+        if not linked_path.exists() or file_digest(linked_path) != linked_sha:
+            raise RichDataError(f"Tushare audit-opinion local context changed: {label}")
+        manifest_value = evidence.get("manifest_path")
+        manifest_sha = evidence.get("manifest_sha256")
+        if manifest_value is not None or manifest_sha is not None:
+            manifest_file = resolve_record_path(str(manifest_value or ""))
+            if (
+                not manifest_value
+                or not manifest_sha
+                or not manifest_file.exists()
+                or file_digest(manifest_file) != str(manifest_sha)
+            ):
+                raise RichDataError(
+                    "Tushare audit-opinion manifest context changed: " f"{label}"
+                )
+    return contract
+
+
+def tushare_audit_opinion_acceptance_records() -> list[Path]:
+    """Return records that consumed the frozen audit-opinion acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*tushare_audit_opinion_acceptance*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_audit_opinion_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_audit_opinion_acceptance_record(
+    path: Path = DEFAULT_TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Validate the successful one-shot audit-opinion source acceptance."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError(
+            "Tushare audit-opinion acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path, kind="a_share_tushare_audit_opinion_source_acceptance_record"
+    )
+    contract = record.get("data_contract") or {}
+    acceptance = record.get("acceptance") or {}
+    factor_frame = acceptance.get("published_factor_frame") or {}
+    quality = acceptance.get("quality") or {}
+    privacy = record.get("privacy_and_scope") or {}
+    decision = record.get("one_shot_and_next_action") or {}
+    if (
+        record.get("status")
+        != "accepted_source_pending_frozen_full_history_and_no_return_gates"
+        or contract.get("sha256") != TUSHARE_AUDIT_OPINION_CONTRACT_SHA256
+        or acceptance.get("manifest_sha256")
+        != "f23e7cc7571dc08f72d8ca1cbf465e2556934f22043a34aff50a87af8aab9b51"
+        or acceptance.get("provider_calls_issued") != 3
+        or acceptance.get("source_rows") != 21
+        or factor_frame.get("content_sha256")
+        != "a0b6c96d447f05e5f4c08cfc67098ea8665b2bc5b88d1e05a2b060df8722f7b5"
+        or factor_frame.get("rows") != 21
+        or quality.get("duplicate_stock_announcement_keys") != 0
+        or quality.get("distinct_hashed_opinion_categories") != 4
+        or quality.get("factor_distinct_values") != 2
+        or quality.get("factor_value_counts") != {"0": 4, "1": 17}
+        or privacy.get("raw_provider_frames_persisted") is not False
+        or privacy.get("raw_or_normalized_audit_result_text_persisted") is not False
+        or privacy.get("credentials_logged_or_stored") is not False
+        or privacy.get("price_fields_loaded") != []
+        or privacy.get("forward_return_fields_read") is not False
+        or decision.get("acceptance_consumed") is not True
+        or decision.get("price_access_authorized_now") is not False
+        or decision.get("aggregation_scoring_selection_or_trading_authorized_now")
+        is not False
+    ):
+        raise RichDataError("Tushare audit-opinion acceptance record changed")
+    for link in (
+        record.get("mechanism_overlap_audit") or {},
+        contract,
+        {
+            "path": acceptance.get("manifest_path"),
+            "sha256": acceptance.get("manifest_sha256"),
+        },
+    ):
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        linked_sha = str(link.get("sha256") or "")
+        if linked_path.exists() and file_digest(linked_path) != linked_sha:
+            raise RichDataError(
+                "Tushare audit-opinion source-acceptance evidence changed: "
+                f"{linked_path}"
+            )
+    return record
 
 
 def load_tushare_disclosure_promptness_acceptance_record(
@@ -8659,6 +9092,250 @@ def sync_tushare_disclosure_promptness_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def sync_tushare_audit_opinion_acceptance() -> Path:
+    """Run the frozen three-stock audit-opinion acceptance without prices."""
+
+    accepted_path = DEFAULT_TUSHARE_AUDIT_OPINION_ACCEPTANCE_RECORD
+    if accepted_path.exists():
+        load_tushare_audit_opinion_acceptance_record(accepted_path)
+        raise RichDataError(
+            "Tushare audit-opinion source acceptance is already consumed; another "
+            "acceptance is forbidden"
+        )
+    contract = load_tushare_audit_opinion_contract()
+    prior_records = tushare_audit_opinion_acceptance_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare audit-opinion acceptance is one-shot and was already consumed: "
+            + ", ".join(str(path) for path in prior_records)
+        )
+    require_provider("tushare")
+    acceptance = contract["acceptance_protocol"]
+    ts_codes = tuple(str(value) for value in acceptance["fixed_ts_codes"])
+    announcement_start = dt.datetime.strptime(
+        str(acceptance["announcement_start"]), "%Y%m%d"
+    ).date()
+    announcement_end = dt.datetime.strptime(
+        str(acceptance["announcement_end"]), "%Y%m%d"
+    ).date()
+    run_id = new_run_id("tushare_audit_opinion_acceptance")
+    run_root = RAW_ROOT / "tushare" / "audit_opinion" / "acceptance" / run_id
+    temporary_root = run_root.parent / f".{run_id}.tmp"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(f"Tushare audit-opinion acceptance already exists: {run_id}")
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    calls_issued = 0
+    current_ts_code: str | None = None
+    source_rows_by_stock: dict[str, int] = {}
+    quality_by_stock: dict[str, dict[str, Any]] = {}
+    try:
+        frames: list[pd.DataFrame] = []
+        row_ceiling = int(
+            contract["source_selection"][
+                "defensive_maximum_rows_per_single_stock_call"
+            ]
+        )
+        for ts_code in ts_codes:
+            current_ts_code = ts_code
+            calls_issued += 1
+            raw = fetch_tushare_audit_opinions(
+                ts_code, announcement_start, announcement_end
+            )
+            source_rows_by_stock[ts_code] = int(len(raw))
+            if len(raw) >= row_ceiling:
+                raise RichDataError(
+                    "Tushare audit-opinion acceptance reached the frozen defensive "
+                    f"row ceiling for {ts_code}: {len(raw)}"
+                )
+            if len(raw) < int(acceptance["minimum_source_rows_per_stock"]):
+                raise RichDataError(
+                    "Tushare audit-opinion acceptance returned too few source rows "
+                    f"for {ts_code}: {len(raw)}"
+                )
+            normalized, quality = canonicalize_tushare_audit_opinions(
+                raw, ts_code, announcement_start, announcement_end
+            )
+            quality_by_stock[ts_code] = quality
+            if quality["source_report_rows_retained"] < int(
+                acceptance["minimum_retained_rows_per_stock"]
+            ):
+                raise RichDataError(
+                    "Tushare audit-opinion acceptance retained too few report rows "
+                    f"for {ts_code}: {quality['source_report_rows_retained']}"
+                )
+            frames.append(normalized)
+        if calls_issued != int(acceptance["provider_calls"]):
+            raise RichDataError("Tushare audit-opinion acceptance omitted a frozen request")
+        combined = pd.concat(frames, ignore_index=True)
+        event_key = ["instrument", "announcement_date"]
+        if combined.duplicated(event_key).any():
+            raise RichDataError(
+                "Tushare audit-opinion acceptance has duplicate stock-announcement keys"
+            )
+        combined = combined.sort_values(event_key, kind="stable").reset_index(drop=True)
+        hashed_category_counts: dict[str, int] = {}
+        for quality in quality_by_stock.values():
+            for category_hash, count in quality[
+                "hashed_opinion_category_counts"
+            ].items():
+                hashed_category_counts[category_hash] = (
+                    hashed_category_counts.get(category_hash, 0) + int(count)
+                )
+        if len(hashed_category_counts) < int(
+            acceptance[
+                "minimum_distinct_hashed_opinion_categories_across_acceptance"
+            ]
+        ):
+            raise RichDataError(
+                "Tushare audit-opinion acceptance has too few distinct hashed opinion "
+                f"categories: {len(hashed_category_counts)}"
+            )
+        factor_name = "tushare_is_standard_unqualified_audit_opinion"
+        distinct_factor_values = int(combined[factor_name].nunique())
+        if distinct_factor_values < int(
+            acceptance["minimum_distinct_factor_values_across_acceptance"]
+        ):
+            raise RichDataError(
+                "Tushare audit-opinion acceptance has too few distinct binary factor "
+                f"values: {distinct_factor_values}"
+            )
+        temporary_destination = temporary_root / "audit_opinion.parquet"
+        final_destination = run_root / "audit_opinion.parquet"
+        atomic_write_frame(combined, temporary_destination)
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_audit_opinion_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_AUDIT_OPINION_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_AUDIT_OPINION_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "fina_audit",
+                "request_mode": "one frozen stock and announcement-date range per call",
+                "ts_codes": list(ts_codes),
+                "announcement_start": acceptance["announcement_start"],
+                "announcement_end": acceptance["announcement_end"],
+                "provider_calls_issued": calls_issued,
+                "fields": list(TUSHARE_AUDIT_OPINION_RAW_FIELDS),
+                "raw_frames_persisted": False,
+                "raw_or_normalized_audit_result_text_persisted": False,
+                "audit_fee_agency_or_signer_requested": False,
+                "credentials_logged_or_stored": False,
+            },
+            "files": [
+                {
+                    "path": manifest_path(final_destination),
+                    "rows": int(len(combined)),
+                    "sha256": frame_digest(combined),
+                }
+            ],
+            "source_quality": {
+                "source_rows": int(sum(source_rows_by_stock.values())),
+                "source_rows_by_stock": source_rows_by_stock,
+                "quality_by_stock": quality_by_stock,
+                "stock_announcement_events_written": int(len(combined)),
+                "duplicate_stock_announcement_keys": 0,
+                "hashed_opinion_category_counts": dict(
+                    sorted(hashed_category_counts.items())
+                ),
+                "distinct_hashed_opinion_categories": int(
+                    len(hashed_category_counts)
+                ),
+                "factor_distinct_values": distinct_factor_values,
+                "factor_value_counts": {
+                    str(int(key)): int(value)
+                    for key, value in combined[factor_name]
+                    .value_counts()
+                    .sort_index()
+                    .items()
+                },
+            },
+            "factor_policy": {
+                "factor": "tushare_standard_unqualified_audit_opinion",
+                "raw_column": factor_name,
+                "formula": (
+                    "1 if NFKC_trim(audit_result) == '标准无保留意见' else 0 "
+                    "for any other complete nonempty opinion"
+                ),
+                "direction": "higher_is_better",
+                "text_synonym_mapping_allowed": False,
+            },
+            "availability_policy": {
+                "event_date": "ann_date",
+                "same_session_trade_allowed": False,
+                "eligible_entry": (
+                    "first local trading session open strictly after ann_date"
+                ),
+                "maximum_event_age_calendar_days": 3,
+                "forward_fill_beyond_event_age_allowed": False,
+            },
+            "acceptance_status": acceptance["success_status"],
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception as exc:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        error = safe_exception_text(exc)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_audit_opinion_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "failed_ts_code": current_ts_code,
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_AUDIT_OPINION_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_AUDIT_OPINION_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "fina_audit",
+                "ts_codes": list(ts_codes),
+                "announcement_start": acceptance["announcement_start"],
+                "announcement_end": acceptance["announcement_end"],
+                "provider_calls_issued": calls_issued,
+                "source_rows_by_stock": source_rows_by_stock,
+                "fields": list(TUSHARE_AUDIT_OPINION_RAW_FIELDS),
+                "raw_frames_persisted": False,
+                "raw_or_normalized_audit_result_text_persisted": False,
+                "audit_fee_agency_or_signer_requested": False,
+                "credentials_logged_or_stored": False,
+            },
+            "completed_stock_quality": quality_by_stock,
+            "files": [],
+            "partial_snapshot_deleted": not temporary_root.exists(),
+            "final_snapshot_published": run_root.exists(),
+            "acceptance_status": (
+                "rejected_stop_before_full_history_capacity_uniqueness_or_returns"
+            ),
+            "error_type": type(exc).__name__,
+            "error": error,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
+
+
 def sync_tushare_cash_conversion_acceptance() -> Path:
     """Run the frozen six-call, no-return accounting acceptance exactly once."""
 
@@ -11566,6 +12243,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the frozen three-period financial-report plan acceptance",
     )
 
+    subparsers.add_parser(
+        "acceptance-tushare-audit-opinion",
+        help="run the frozen three-stock financial-audit-opinion acceptance",
+    )
+
     ts_cash_conversion = subparsers.add_parser(
         "sync-tushare-cash-conversion",
         help="download the frozen 2019-2025 PIT accounting cash-conversion snapshot",
@@ -11743,6 +12425,8 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_earnings_forecast_acceptance()
         elif args.command == "acceptance-tushare-disclosure-promptness":
             manifest = sync_tushare_disclosure_promptness_acceptance()
+        elif args.command == "acceptance-tushare-audit-opinion":
+            manifest = sync_tushare_audit_opinion_acceptance()
         elif args.command == "sync-tushare-cash-conversion":
             manifest = sync_tushare_cash_conversion(allow_large=args.allow_large)
         elif args.command == "acceptance-tushare-daily-pb":
@@ -11812,6 +12496,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-tushare-disclosure-promptness": (
             "stored_no_return_disclosure_promptness_acceptance"
+        ),
+        "acceptance-tushare-audit-opinion": (
+            "stored_no_return_audit_opinion_acceptance"
         ),
         "sync-tushare-cash-conversion": (
             "stored_pending_no_return_cash_conversion_capacity_and_uniqueness"

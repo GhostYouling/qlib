@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_audit_opinion_source_acceptance_record",
+  "status": "accepted_source_pending_frozen_full_history_and_no_return_gates",
+  "recorded_at": "2026-07-16T18:25:00Z",
+  "purpose": "Preserve the sole Tushare financial-audit-opinion entitlement, schema, point-in-time policy, and exact binary formula acceptance without persisting opinion text or reading prices or returns.",
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_audit_opinion_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "a13470c5dafa4c278035e7b17e56f896ae03932b4131b6d90830a2168282acdb",
+    "decision": "select_fina_audit_as_the_only_independent_no_return_candidate_before_provider_rows"
+  },
+  "data_contract": {
+    "path": "docs/a_share_tushare_audit_opinion_data_contract.json",
+    "sha256": "701240585505558cf34a3e9bc51ba17fb2c50ed1617fc13b332973b331c76d97",
+    "preregistered_at": "2026-07-16T18:13:26Z",
+    "provider_rows_observed_before_registration": false,
+    "factor_values_observed_before_registration": false,
+    "factor_returns_observed_before_registration": false
+  },
+  "pre_request_validation": {
+    "focused_audit_opinion_tests_passed": 5,
+    "complete_data_collector_tests_passed": 378,
+    "complete_data_collector_warnings": 9,
+    "python_compile_passed": true,
+    "diff_check_passed": true,
+    "token_presence_confirmed_without_printing_or_storing_value": true,
+    "provider_rows_observed_before_contract_and_tests": false
+  },
+  "acceptance": {
+    "run_id": "20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a",
+    "manifest_path": "data/metadata/rich_data/runs/20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a.json",
+    "manifest_sha256": "f23e7cc7571dc08f72d8ca1cbf465e2556934f22043a34aff50a87af8aab9b51",
+    "retrieved_at": "2026-07-16T18:20:13.144219+00:00",
+    "acceptance_status": "accepted_entitlement_schema_point_in_time_policy_and_binary_formula_pending_full_history",
+    "fixed_announcement_start": "20190101",
+    "fixed_announcement_end": "20251231",
+    "fixed_ts_codes": [
+      "600519.SH",
+      "000001.SZ",
+      "600518.SH"
+    ],
+    "provider_calls_issued": 3,
+    "provider_calls_expected": 3,
+    "source_rows": 21,
+    "source_rows_by_stock": {
+      "600519.SH": 7,
+      "000001.SZ": 7,
+      "600518.SH": 7
+    },
+    "published_factor_frame": {
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/acceptance/20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a/audit_opinion.parquet",
+      "content_sha256": "a0b6c96d447f05e5f4c08cfc67098ea8665b2bc5b88d1e05a2b060df8722f7b5",
+      "rows": 21,
+      "columns": [
+        "announcement_date",
+        "instrument",
+        "tushare_is_standard_unqualified_audit_opinion",
+        "audit_report_count",
+        "provider"
+      ]
+    },
+    "quality": {
+      "stock_announcement_events_written": 21,
+      "duplicate_stock_announcement_keys": 0,
+      "distinct_hashed_opinion_categories": 4,
+      "factor_distinct_values": 2,
+      "factor_value_counts": {
+        "0": 4,
+        "1": 17
+      },
+      "clean_report_rows": 17,
+      "nonclean_report_rows": 4
+    },
+    "formula": "1 if NFKC_trim(audit_result) == '标准无保留意见' else 0 for any other complete nonempty opinion",
+    "direction": "higher_is_better",
+    "eligible_entry": "first local trading session open strictly after ann_date",
+    "maximum_event_age_calendar_days": 3
+  },
+  "privacy_and_scope": {
+    "raw_provider_frames_persisted": false,
+    "raw_or_normalized_audit_result_text_persisted": false,
+    "audit_fee_agency_or_signer_requested_or_stored": false,
+    "credentials_logged_or_stored": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_performed": false
+  },
+  "interpretation": {
+    "proven": [
+      "The current account can call the frozen fina_audit endpoint for all three acceptance stocks and the fixed 2019-2025 announcement range.",
+      "All responses contained only the frozen four requested fields and retained at least five complete report rows per stock.",
+      "The exact no-synonym formula produced both binary values across four hashed opinion categories without persisting opinion text.",
+      "The event frame contains no duplicate stock-announcement keys."
+    ],
+    "not_proven": [
+      "2019-2025 full-universe source completeness",
+      "three-session cross-sectional cohort capacity",
+      "independence from accepted local factor values",
+      "historical association, execution-aware returns, aggregation, current scores, stock selection, position sizing, or orders"
+    ]
+  },
+  "one_shot_and_next_action": {
+    "acceptance_consumed": true,
+    "acceptance_may_be_repeated_with_same_or_different_symbols_dates_fields_or_text_mapping": false,
+    "next_authorized_action": "Implement and validate only the contract-fixed sequential 2019-2025 full source snapshot. Run source-completeness, capacity, and uniqueness gates without prices before creating any immutable return-diagnostic preregistration.",
+    "full_history_or_no_return_gate_failure_policy": "Stop this factor without synonym mapping, text-category rescue, event-age widening, direction inversion, threshold reduction, year or stock subset, rejected-factor combination, current scoring, selection, sizing, orders, or Level-2 intake.",
+    "price_access_authorized_now": false,
+    "aggregation_scoring_selection_or_trading_authorized_now": false
+  }
+}
