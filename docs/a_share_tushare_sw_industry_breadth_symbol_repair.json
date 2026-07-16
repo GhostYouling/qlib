@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_sw_industry_breadth_symbol_normalization_repair",
+  "status": "frozen_after_first_full_snapshot_infrastructure_failure_before_exact_retry_factor_values_or_factor_returns",
+  "recorded_at": "2026-07-16T11:44:07Z",
+  "purpose": "Permit one infrastructure-only retry of the unchanged 62-call SW2021 L1 membership snapshot after proving that one provider placeholder symbol cannot belong to the frozen A-share peer universe.",
+  "bound_contract": {
+    "path": "docs/a_share_tushare_sw_industry_breadth_data_contract.json",
+    "sha256": "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
+  },
+  "bound_preregistration": {
+    "path": "docs/a_share_tushare_sw_industry_breadth_capacity_preregistration.json",
+    "sha256": "dc5e0525df07e21d628ab09d46843511ddbeacb09ecbc3afb41d14b43bcfae59"
+  },
+  "failed_attempt": {
+    "record_path": "data/metadata/rich_data/runs/20260716T114210Z_tushare_sw2021_l1_membership_7c9db8a4_source_failure.json",
+    "record_sha256": "c64e8b8a6cb6d6895c6a804505b10779bbd53b009691a973784657723de5fe3f",
+    "failed_l1_code": "801170.SI",
+    "failed_is_new": "Y",
+    "completed_provider_calls_before_failure": 22,
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false,
+    "factor_values_constructed": false,
+    "forward_return_fields_read": false
+  },
+  "targeted_no_price_diagnosis": {
+    "provider_calls_after_failure": 2,
+    "request_identity_unchanged": true,
+    "l1_code": "801170.SI",
+    "is_new": "Y",
+    "rows_each_call": 144,
+    "requested_fields": [
+      "l1_code",
+      "l1_name",
+      "l2_code",
+      "l2_name",
+      "l3_code",
+      "l3_name",
+      "ts_code",
+      "in_date",
+      "out_date",
+      "is_new"
+    ],
+    "missing_or_blank_by_field": {
+      "l1_code": 0,
+      "l1_name": 0,
+      "l2_code": 0,
+      "l2_name": 0,
+      "l3_code": 0,
+      "l3_name": 0,
+      "ts_code": 0,
+      "in_date": 0,
+      "out_date": 144,
+      "is_new": 0
+    },
+    "missing_out_date_is_allowed_for_current_rows": true,
+    "suffix_and_first_character_counts": {
+      "BJ:9": 2,
+      "SH:6": 92,
+      "SH:T": 1,
+      "SZ:0": 45,
+      "SZ:3": 4
+    },
+    "unsupported_provider_symbol_rows": 1,
+    "unsupported_provider_symbol_examples": [
+      "T00018.SH"
+    ],
+    "price_fields_loaded": [],
+    "factor_values_constructed": false,
+    "forward_return_fields_read": false
+  },
+  "repair": {
+    "true_missing_ts_code_policy": "reject the source partition",
+    "supported_symbol_mapping": {
+      "six_digit_SH": "SH plus six digits after validating the exchange suffix",
+      "six_digit_SZ": "SZ plus six digits after validating the exchange suffix",
+      "six_digit_BJ": "BJ plus six digits; retain for source audit and exclude later because the frozen peer universe has no BSE instruments"
+    },
+    "unsupported_non_six_digit_provider_symbol_policy": "exclude the row from the canonical membership frame and count it explicitly",
+    "justification": "The frozen peer universe contains only SH6, SZ0, and SZ3 six-digit A-share instruments. T00018.SH cannot join that universe on any session, so excluding it changes neither a peer set nor a candidate factor value.",
+    "interval_dates_changed": false,
+    "classification_codes_changed": false,
+    "is_new_states_changed": false,
+    "provider_fields_changed": false,
+    "provider_call_count_changed": false,
+    "factor_formula_direction_window_or_peer_threshold_changed": false
+  },
+  "retry_authorization": {
+    "exact_full_snapshot_retry_allowed": true,
+    "retry_must_restart_all_62_calls": true,
+    "partial_resume_allowed": false,
+    "maximum_accepted_full_snapshot_retries_under_this_repair": 1,
+    "required_manifest_disclosure": "record unsupported provider-symbol exclusions by request and in total",
+    "factor_or_return_access_allowed_by_this_record": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

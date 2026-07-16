@@ -105,3 +105,21 @@ re-window, subset years, combine with the JQData substitute, score, select, or
 size this historical factor.  The commands above document the accepted
 pipeline and recovery order; they are not authorization to create another
 historical trial from the same mechanism.
+
+The next independent source branch is the SW2021 level-one industry-membership
+snapshot.  The fixed 31-code by current/historical-state request completed all
+62 provider calls and published
+`20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe`: 7,803 canonical rows,
+5,863 instruments, all 31 level-one industries, no duplicate intervals, and
+one explicitly excluded non-six-digit provider placeholder.  The exact retry
+after that placeholder stopped the first attempt is governed by
+`docs/a_share_tushare_sw_industry_breadth_symbol_repair.json`; it did not
+change the factor formula, direction, peer threshold, or time window.
+
+The no-price interval audit passed with 7,043 consolidated point-in-time
+memberships and buyable-universe median/P05 coverage of 99.651%/98.145%.
+Factor construction is implemented and unit-tested, but the frozen capacity
+and 45-factor uniqueness audit has not completed.  This snapshot therefore
+cannot enter aggregation, current scoring, selection, sizing, or orders.  Do
+not repeat the full historical sync; continue only with the registered
+no-forward-return gates.

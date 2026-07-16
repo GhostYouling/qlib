@@ -24,6 +24,106 @@ def write_json_record(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def test_tushare_sw_membership_collapses_same_l1_and_rejects_conflicts():
+    membership = pd.DataFrame(
+        [
+            {
+                "instrument": "SZ000001",
+                "l1_code": "801010.SI",
+                "in_date": "2019-01-01",
+                "out_date": "2019-01-10",
+                "is_new": "N",
+            },
+            {
+                "instrument": "SZ000001",
+                "l1_code": "801010.SI",
+                "in_date": "2019-01-05",
+                "out_date": "2019-01-20",
+                "is_new": "N",
+            },
+        ]
+    )
+    intervals, audit = RESEARCH.consolidate_tushare_sw_l1_membership_intervals(
+        membership, start="2019-01-01", end="2019-01-31"
+    )
+    assert intervals.to_dict("records") == [
+        {
+            "instrument": "SZ000001",
+            "l1_code": "801010.SI",
+            "active_start": pd.Timestamp("2019-01-01"),
+            "active_end": pd.Timestamp("2019-01-20"),
+        }
+    ]
+    assert audit["interval_gate_passed"] is True
+    assert audit["forward_return_fields_read"] is False
+
+    conflicting = pd.concat(
+        [
+            membership,
+            pd.DataFrame(
+                [
+                    {
+                        "instrument": "SZ000001",
+                        "l1_code": "801020.SI",
+                        "in_date": "2019-01-15",
+                        "out_date": "2019-01-25",
+                        "is_new": "N",
+                    }
+                ]
+            ),
+        ],
+        ignore_index=True,
+    )
+    with pytest.raises(ValueError, match="conflicting active L1 intervals"):
+        RESEARCH.consolidate_tushare_sw_l1_membership_intervals(
+            conflicting, start="2019-01-01", end="2019-01-31"
+        )
+
+
+def test_tushare_sw_breadth_excludes_self_and_requires_three_exact_sessions():
+    calendar = pd.bdate_range("2019-01-02", periods=25)
+    instruments = [f"SZ{index:06d}" for index in range(1, 12)]
+    source_universe = pd.DataFrame(
+        {
+            "instrument": instruments,
+            "active_start": calendar[0],
+            "active_end": calendar[-1],
+        }
+    )
+    membership = source_universe.assign(l1_code="801010.SI").loc[
+        :, ["instrument", "l1_code", "active_start", "active_end"]
+    ]
+    close_returns = pd.DataFrame(
+        [
+            {
+                "datetime": date,
+                "instrument": instrument,
+                "daily_return": 0.01 if position < 6 else -0.01,
+            }
+            for date in calendar
+            for position, instrument in enumerate(instruments)
+        ]
+    )
+    factor, audit = RESEARCH.construct_tushare_sw_industry_breadth_from_returns(
+        close_returns,
+        membership,
+        source_universe,
+        calendar,
+        holding_instruments=set(instruments),
+        minimum_peer_listing_sessions=20,
+        minimum_other_valid_peers=10,
+    )
+    factor_name = RESEARCH.TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+    last = factor.loc[factor["trade_date"].eq(calendar[-1])].set_index("instrument")
+    assert len(factor) == 44
+    assert last.loc[instruments[0], factor_name] == pytest.approx(0.5)
+    assert last.loc[instruments[-1], factor_name] == pytest.approx(0.6)
+    assert factor["trade_date"].min() == calendar[21]
+    assert audit["stock_self_direction_included"] is False
+    assert audit["three_exact_local_sessions_required"] is True
+    assert audit["forward_return_fields_read"] is False
+
+
 def make_research_frontier_evidence(
     tmp_path: Path,
     *,

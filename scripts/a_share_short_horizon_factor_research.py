@@ -284,6 +284,46 @@ DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC = (
 TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC_SHA256 = (
     "ad1e14fa8d2a858b7c35a0259ebe7ab087f2c08b2f27281edb7f3c08582b47da"
 )
+DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_sw_industry_breadth_data_contract.json"
+)
+TUSHARE_SW_INDUSTRY_BREADTH_DATA_CONTRACT_SHA256 = (
+    "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
+)
+DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_sw_industry_breadth_capacity_preregistration.json"
+)
+TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC_SHA256 = (
+    "dc5e0525df07e21d628ab09d46843511ddbeacb09ecbc3afb41d14b43bcfae59"
+)
+DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR = (
+    REPO_ROOT / "docs" / "a_share_tushare_sw_industry_breadth_symbol_repair.json"
+)
+TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR_SHA256 = (
+    "5001ae0b278d086f26ca35bf8a1fc43c8009aa99c13b03258e7b2fb7bc99b18f"
+)
+DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST = (
+    DATA_ROOT
+    / "metadata"
+    / "rich_data"
+    / "runs"
+    / "20260716T085610Z_tushare_moneyflow_daily_6c78e93d.json"
+)
+TUSHARE_MONEYFLOW_FULL_MANIFEST_SHA256 = (
+    "eee76f4b3b3d3001f9c73e84fda6336a9732d648424828d7a000e045480e2fcb"
+)
+DEFAULT_TUSHARE_DAILY_PB_FULL_MANIFEST = (
+    DATA_ROOT
+    / "metadata"
+    / "rich_data"
+    / "runs"
+    / "20260716T102519Z_tushare_daily_pb_2e5c38bf.json"
+)
+TUSHARE_DAILY_PB_FULL_MANIFEST_SHA256 = (
+    "280bc68239cc70a5e7d6e44dbb0a15a0b331be8215ddfb8d9ebd27a408e1e366"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -424,6 +464,45 @@ TUSHARE_DAILY_PB_TECHNICAL_COMPARISON_FIELDS = tuple(
     field
     for field in TUSHARE_DAILY_PB_COMPARISON_FIELDS
     if field not in TUSHARE_DAILY_PB_QUALITY_COMPARISON_FIELDS
+)
+TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME = (
+    "sw1_three_session_leave_one_out_breadth"
+)
+TUSHARE_SW_MEMBERSHIP_RAW_FIELDS = (
+    "l1_code",
+    "l1_name",
+    "l2_code",
+    "l2_name",
+    "l3_code",
+    "l3_name",
+    "ts_code",
+    "in_date",
+    "out_date",
+    "is_new",
+)
+TUSHARE_SW_CLASSIFICATION_RAW_FIELDS = (
+    "index_code",
+    "industry_name",
+    "level",
+    "src",
+)
+TUSHARE_SW_MEMBERSHIP_COLUMNS = (
+    "l1_code",
+    "l1_name",
+    "l2_code",
+    "l2_name",
+    "l3_code",
+    "l3_name",
+    "instrument",
+    "in_date",
+    "out_date",
+    "is_new",
+    "provider",
+)
+TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS = (
+    *TUSHARE_DAILY_PB_COMPARISON_FIELDS,
+    TUSHARE_MONEYFLOW_FACTOR_NAME,
+    TUSHARE_DAILY_PB_FACTOR_NAME,
 )
 MINUTE_FEATURE_BASE_COLUMNS = (
     "symbol",
@@ -768,6 +847,9 @@ TUSHARE_MONEYFLOW_CAPACITY_PURPOSE = (
 )
 TUSHARE_DAILY_PB_NO_RETURN_AUDIT_PURPOSE = (
     "tushare_daily_pb_capacity_then_uniqueness_gate_without_forward_returns"
+)
+TUSHARE_SW_INDUSTRY_BREADTH_NO_RETURN_AUDIT_PURPOSE = (
+    "tushare_sw_industry_breadth_interval_coverage_capacity_then_uniqueness_gate_without_forward_returns"
 )
 TUSHARE_DAILY_PB_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_tushare_positive_book_to_market_research_not_investment_advice"
@@ -3048,6 +3130,283 @@ def load_tushare_daily_pb_capacity_preregistration(
         != {"sha256": calendar.get("sha256"), "sessions": calendar.get("sessions")}
     ):
         raise ValueError("Tushare daily PB point-in-time context fingerprint mismatch")
+    return spec
+
+
+def load_tushare_sw_industry_breadth_data_contract(
+    path: Path = DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_DATA_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen pre-row SW2021 L1 breadth contract."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_SW_INDUSTRY_BREADTH_DATA_CONTRACT_SHA256:
+        raise ValueError("Tushare SW industry-breadth data contract fingerprint mismatch")
+    contract = load_json_record(
+        path, kind="a_share_tushare_sw_industry_breadth_data_contract"
+    )
+    source = contract.get("source") or {}
+    membership = contract.get("point_in_time_membership_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    gates = contract.get("no_return_gates") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_index_member_rows_factor_values_or_factor_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-16T11:22:05Z"
+        or source.get("provider") != "tushare"
+        or source.get("classification_api") != "index_classify"
+        or source.get("classification_parameters")
+        != {"level": "L1", "src": "SW2021"}
+        or source.get("membership_api") != "index_member_all"
+        or tuple(source.get("membership_requested_fields") or ())
+        != TUSHARE_SW_MEMBERSHIP_RAW_FIELDS
+        or tuple(source.get("membership_is_new_values") or ()) != ("Y", "N")
+        or membership.get("maximum_active_level_one_memberships_per_stock_session")
+        != 1
+        or factor.get("name") != TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("minimum_other_valid_peers_each_session") != 10
+        or factor.get("peer_minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or factor.get("stock_self_direction_included") is not False
+        or acceptance.get("representative_l1_code") != "801010.SI"
+        or tuple(snapshot.get("canonical_columns") or ())
+        != TUSHARE_SW_MEMBERSHIP_COLUMNS
+        or ((gates.get("capacity") or {}).get("minimum_required_cohorts"))
+        != FACTOR_STABILITY_MIN_COHORTS
+        or ((gates.get("capacity") or {}).get("holding_period_trading_days"))
+        != 3
+        or ((gates.get("uniqueness") or {}).get("comparison_factor_count"))
+        != len(TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS)
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Tushare SW industry-breadth data contract is inconsistent")
+    return contract
+
+
+def load_tushare_sw_industry_breadth_symbol_repair(
+    path: Path = DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR,
+) -> dict[str, Any]:
+    """Validate the no-price placeholder-symbol repair used by the exact retry."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR_SHA256:
+        raise ValueError("Tushare SW symbol-repair fingerprint mismatch")
+    repair = load_json_record(
+        path,
+        kind="a_share_tushare_sw_industry_breadth_symbol_normalization_repair",
+    )
+    failed = repair.get("failed_attempt") or {}
+    diagnosis = repair.get("targeted_no_price_diagnosis") or {}
+    rule = repair.get("repair") or {}
+    retry = repair.get("retry_authorization") or {}
+    failure_path = resolve_repository_record_path(str(failed.get("record_path") or ""))
+    if (
+        not failure_path.exists()
+        or file_sha256(failure_path) != failed.get("record_sha256")
+    ):
+        raise ValueError("Tushare SW symbol-repair failure evidence mismatch")
+    failure = load_json_record(failure_path, kind="a_share_rich_data_source_failure")
+    if (
+        repair.get("version") != 1
+        or repair.get("status")
+        != "frozen_after_first_full_snapshot_infrastructure_failure_before_exact_retry_factor_values_or_factor_returns"
+        or (repair.get("bound_contract") or {}).get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_DATA_CONTRACT_SHA256
+        or (repair.get("bound_preregistration") or {}).get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC_SHA256
+        or failure.get("dataset") != "tushare_sw2021_l1_membership"
+        or failure.get("partial_snapshot_deleted") is not True
+        or failure.get("final_snapshot_published") is not False
+        or failure.get("forward_return_fields_read") is not False
+        or diagnosis.get("unsupported_provider_symbol_examples") != ["T00018.SH"]
+        or diagnosis.get("unsupported_provider_symbol_rows") != 1
+        or diagnosis.get("price_fields_loaded") != []
+        or diagnosis.get("forward_return_fields_read") is not False
+        or rule.get("unsupported_non_six_digit_provider_symbol_policy")
+        != "exclude the row from the canonical membership frame and count it explicitly"
+        or rule.get("factor_formula_direction_window_or_peer_threshold_changed")
+        is not False
+        or retry.get("exact_full_snapshot_retry_allowed") is not True
+        or retry.get("retry_must_restart_all_62_calls") is not True
+        or retry.get("partial_resume_allowed") is not False
+        or retry.get("maximum_accepted_full_snapshot_retries_under_this_repair")
+        != 1
+        or repair.get("forward_return_fields_read") is not False
+        or repair.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Tushare SW symbol-repair record is inconsistent")
+    return repair
+
+
+def load_tushare_sw_industry_breadth_capacity_preregistration(
+    path: Path = DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC,
+) -> dict[str, Any]:
+    """Enforce the frozen SW interval, capacity, and 45-factor uniqueness gates."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC_SHA256:
+        raise ValueError("Tushare SW capacity preregistration fingerprint mismatch")
+    spec = load_json_record(
+        path, kind="a_share_tushare_sw_industry_breadth_capacity_preregistration"
+    )
+    data_contract = spec.get("data_contract") or {}
+    acceptance = spec.get("source_acceptance") or {}
+    snapshot = spec.get("full_membership_snapshot") or {}
+    context = spec.get("point_in_time_context") or {}
+    factor = spec.get("factor_contract") or {}
+    audit = spec.get("combined_no_return_audit") or {}
+    coverage = audit.get("membership_coverage") or {}
+    capacity = audit.get("capacity") or {}
+    uniqueness = audit.get("uniqueness") or {}
+    contract_path = resolve_repository_record_path(
+        str(data_contract.get("path") or "")
+    )
+    contract = load_tushare_sw_industry_breadth_data_contract(contract_path)
+    expected_codes = tuple(snapshot.get("classification_codes") or ())
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_source_acceptance_before_full_membership_factor_values_or_factor_returns_observed"
+        or spec.get("preregistered_at") != "2026-07-16T11:29:22Z"
+        or data_contract.get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_DATA_CONTRACT_SHA256
+        or data_contract.get("preregistered_at") != contract.get("preregistered_at")
+        or snapshot.get("dataset") != "tushare_sw2021_l1_membership"
+        or snapshot.get("provider") != "tushare"
+        or snapshot.get("membership_api") != "index_member_all"
+        or tuple(snapshot.get("requested_fields") or ())
+        != TUSHARE_SW_MEMBERSHIP_RAW_FIELDS
+        or len(expected_codes) != 31
+        or len(set(expected_codes)) != 31
+        or tuple(sorted(expected_codes)) != expected_codes
+        or tuple(snapshot.get("is_new_values") or ()) != ("Y", "N")
+        or snapshot.get("expected_provider_calls") != 62
+        or snapshot.get("provider_documented_maximum_rows_per_call") != 2000
+        or snapshot.get("minimum_seconds_between_calls") != 0.32
+        or snapshot.get("maximum_attempts_per_call") != 3
+        or tuple(snapshot.get("retry_backoff_seconds") or ()) != (2, 5)
+        or tuple(snapshot.get("canonical_columns") or ())
+        != TUSHARE_SW_MEMBERSHIP_COLUMNS
+        or snapshot.get("required_success_status")
+        != "full_membership_snapshot_passed_pending_no_return_factor_capacity_and_uniqueness"
+        or factor.get("factor_catalog")
+        != [TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("minimum_other_valid_peers_each_session") != 10
+        or factor.get("peer_minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or factor.get("stock_self_direction_included") is not False
+        or factor.get("holding_universe") != "buyable_main_chinext"
+        or factor.get("maximum_quality_age_days") != 550
+        or factor.get("candidate_minimum_listing_sessions")
+        != MIN_LISTING_SESSIONS
+        or coverage.get("minimum_median_active_buyable_name_coverage") != 0.95
+        or coverage.get("minimum_p05_active_buyable_name_coverage") != 0.9
+        or coverage.get("minimum_sessions_with_fifty_factor_values") != 200
+        or capacity.get("development_start") != "2019-01-01"
+        or capacity.get("development_end") != "2025-12-31"
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 50
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts")
+        != FACTOR_STABILITY_MIN_COHORTS
+        or capacity.get("minimum_observed_years")
+        != FACTOR_STABILITY_MIN_CALENDAR_YEARS
+        or uniqueness.get("screen_start") != "2025-01-01"
+        or uniqueness.get("screen_end") != "2025-12-31"
+        or tuple(uniqueness.get("comparison_factors") or ())
+        != TUSHARE_SW_INDUSTRY_BREADTH_COMPARISON_FIELDS
+        or uniqueness.get("minimum_pairwise_sessions") != 100
+        or uniqueness.get(
+            "maximum_allowed_absolute_median_daily_rank_correlation"
+        )
+        != 0.8
+        or audit.get("forward_return_fields_read") is not False
+        or audit.get("selection_or_promotion_allowed") is not False
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Tushare SW capacity preregistration is inconsistent")
+
+    for label, linked_path, digest in (
+        ("acceptance record", acceptance.get("record_path"), acceptance.get("record_sha256")),
+        ("acceptance manifest", acceptance.get("manifest_path"), acceptance.get("manifest_sha256")),
+    ):
+        source_path = resolve_repository_record_path(str(linked_path or ""))
+        if not source_path.exists() or file_sha256(source_path) != digest:
+            raise ValueError(f"Tushare SW {label} fingerprint mismatch")
+    context_start = str(context.get("fingerprint_range_start") or "")
+    context_end = str(context.get("fingerprint_range_end") or "")
+    source_universe = context.get("source_universe") or {}
+    holding_universe = context.get("holding_universe") or {}
+    local_calendar = context.get("local_calendar") or {}
+    for label, link in (
+        ("source universe", source_universe),
+        ("holding universe", holding_universe),
+        ("local calendar", local_calendar),
+    ):
+        source_path = resolve_repository_record_path(str(link.get("path") or ""))
+        if not source_path.exists() or file_sha256(source_path) != link.get("file_sha256"):
+            raise ValueError(f"Tushare SW {label} file fingerprint mismatch")
+    if (
+        context_start != capacity["development_start"]
+        or context_end != capacity["development_end"]
+        or point_in_time_interval_fingerprint(
+            resolve_repository_record_path(source_universe["path"]),
+            start=context_start,
+            end=context_end,
+        )
+        != {
+            "sha256": source_universe["range_clipped_sha256"],
+            "intervals": source_universe["range_clipped_intervals"],
+        }
+        or point_in_time_interval_fingerprint(
+            resolve_repository_record_path(holding_universe["path"]),
+            start=context_start,
+            end=context_end,
+        )
+        != {
+            "sha256": holding_universe["range_clipped_sha256"],
+            "intervals": holding_universe["range_clipped_intervals"],
+        }
+        or local_calendar_range_fingerprint(
+            resolve_repository_record_path(local_calendar["path"]),
+            start=context_start,
+            end=context_end,
+        )
+        != {
+            "sha256": local_calendar["range_clipped_sha256"],
+            "sessions": local_calendar["range_clipped_sessions"],
+        }
+    ):
+        raise ValueError("Tushare SW point-in-time context fingerprint mismatch")
+    quality = context.get("quarterly_quality") or {}
+    price_basis = context.get("accepted_price_basis") or {}
+    for label, linked_path, digest in (
+        ("quarterly quality", quality.get("path"), quality.get("sha256")),
+        (
+            "quarterly quality manifest",
+            quality.get("manifest_path"),
+            quality.get("manifest_sha256"),
+        ),
+        ("accepted price basis", price_basis.get("path"), price_basis.get("sha256")),
+    ):
+        source_path = resolve_repository_record_path(str(linked_path or ""))
+        if not source_path.exists() or file_sha256(source_path) != digest:
+            raise ValueError(f"Tushare SW {label} fingerprint mismatch")
+    price_record = load_json_record(
+        resolve_repository_record_path(str(price_basis["path"]))
+    )
+    if (
+        price_record.get("status") != "passed"
+        or price_record.get("price_basis") != REQUIRED_PRICE_BASIS
+        or price_record.get("daily_sources") != ["baostock"]
+        or price_record.get("future_corporate_actions_used") is not False
+    ):
+        raise ValueError("Tushare SW accepted price basis is inconsistent")
+    load_tushare_sw_industry_breadth_symbol_repair()
     return spec
 
 
@@ -15519,6 +15878,804 @@ def validate_tushare_daily_pb_full_snapshot(
         "price_fields_loaded": [],
         "forward_return_fields_read": False,
     }
+
+
+def _read_point_in_time_universe_frame(path: Path, *, label: str) -> pd.DataFrame:
+    """Read one single-interval Qlib universe without touching market values."""
+
+    frame = pd.read_csv(
+        path,
+        sep="\t",
+        header=None,
+        names=["instrument", "active_start", "active_end"],
+        dtype={"instrument": "string"},
+    )
+    frame["active_start"] = pd.to_datetime(
+        frame["active_start"], errors="coerce"
+    ).dt.normalize()
+    frame["active_end"] = pd.to_datetime(
+        frame["active_end"], errors="coerce"
+    ).dt.normalize()
+    if (
+        frame.empty
+        or frame[["instrument", "active_start", "active_end"]].isna().any().any()
+        or frame["instrument"].duplicated().any()
+        or not frame["instrument"].str.fullmatch(r"(?:SH6|SZ[03])\d{5}", na=False).all()
+        or frame["active_start"].gt(frame["active_end"]).any()
+    ):
+        raise ValueError(f"Tushare SW {label} contains invalid intervals")
+    return frame.sort_values("instrument", kind="stable").reset_index(drop=True)
+
+
+def consolidate_tushare_sw_l1_membership_intervals(
+    membership: pd.DataFrame,
+    *,
+    start: str | pd.Timestamp,
+    end: str | pd.Timestamp,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Collapse same-L1 overlaps and reject conflicting active L1 assignments."""
+
+    required = {"instrument", "l1_code", "in_date", "out_date", "is_new"}
+    if missing := sorted(required - set(membership.columns)):
+        raise ValueError(
+            "Tushare SW membership interval frame is missing columns: "
+            + ", ".join(missing)
+        )
+    range_start = pd.Timestamp(start).normalize()
+    range_end = pd.Timestamp(end).normalize()
+    work = membership.loc[:, list(required)].copy()
+    work["instrument"] = work["instrument"].astype("string").str.strip()
+    work["l1_code"] = work["l1_code"].astype("string").str.strip()
+    work["in_date"] = pd.to_datetime(work["in_date"], errors="coerce").dt.normalize()
+    work["out_date"] = pd.to_datetime(work["out_date"], errors="coerce").dt.normalize()
+    if (
+        work[["instrument", "l1_code", "in_date", "is_new"]].isna().any().any()
+        or not work["instrument"].str.fullmatch(r"(?:SH|SZ|BJ)\d{6}", na=False).all()
+        or not work["l1_code"].str.fullmatch(r"\d{6}\.SI", na=False).all()
+        or not work["is_new"].isin(["Y", "N"]).all()
+        or work.loc[work["is_new"].eq("Y"), "out_date"].notna().any()
+        or work.loc[work["is_new"].eq("N"), "out_date"].isna().any()
+    ):
+        raise ValueError("Tushare SW membership interval values are invalid")
+    dated = work["out_date"].notna()
+    if work.loc[dated, "in_date"].gt(work.loc[dated, "out_date"]).any():
+        raise ValueError("Tushare SW membership interval starts after it ends")
+    work["effective_start"] = work["in_date"].clip(lower=range_start)
+    work["effective_end"] = work["out_date"].fillna(range_end).clip(upper=range_end)
+    work = work.loc[
+        work["effective_start"].le(range_end)
+        & work["effective_end"].ge(range_start)
+        & work["effective_start"].le(work["effective_end"])
+    ].copy()
+    raw_l1_interval_rows = int(len(work))
+    work = work.drop_duplicates(
+        ["instrument", "l1_code", "effective_start", "effective_end"]
+    )
+    collapsed_rows: list[dict[str, Any]] = []
+    for (instrument, l1_code), group in work.groupby(
+        ["instrument", "l1_code"], sort=True
+    ):
+        ordered = group.sort_values(
+            ["effective_start", "effective_end"], kind="stable"
+        )
+        current_start: pd.Timestamp | None = None
+        current_end: pd.Timestamp | None = None
+        for row in ordered.itertuples(index=False):
+            row_start = pd.Timestamp(row.effective_start).normalize()
+            row_end = pd.Timestamp(row.effective_end).normalize()
+            if current_start is None:
+                current_start, current_end = row_start, row_end
+            elif row_start <= current_end:
+                current_end = max(current_end, row_end)
+            else:
+                collapsed_rows.append(
+                    {
+                        "instrument": str(instrument),
+                        "l1_code": str(l1_code),
+                        "active_start": current_start,
+                        "active_end": current_end,
+                    }
+                )
+                current_start, current_end = row_start, row_end
+        if current_start is not None and current_end is not None:
+            collapsed_rows.append(
+                {
+                    "instrument": str(instrument),
+                    "l1_code": str(l1_code),
+                    "active_start": current_start,
+                    "active_end": current_end,
+                }
+            )
+    intervals = pd.DataFrame(
+        collapsed_rows,
+        columns=["instrument", "l1_code", "active_start", "active_end"],
+    ).sort_values(
+        ["instrument", "active_start", "active_end", "l1_code"], kind="stable"
+    )
+    conflict_examples: list[dict[str, str]] = []
+    for instrument, group in intervals.groupby("instrument", sort=True):
+        active_end: pd.Timestamp | None = None
+        active_l1: str | None = None
+        for row in group.itertuples(index=False):
+            row_start = pd.Timestamp(row.active_start)
+            row_end = pd.Timestamp(row.active_end)
+            if active_end is not None and row_start <= active_end:
+                conflict_examples.append(
+                    {
+                        "instrument": str(instrument),
+                        "first_l1_code": str(active_l1),
+                        "second_l1_code": str(row.l1_code),
+                        "overlap_start": row_start.date().isoformat(),
+                        "overlap_end": min(active_end, row_end).date().isoformat(),
+                    }
+                )
+                if len(conflict_examples) >= 5:
+                    break
+            if active_end is None or row_end > active_end:
+                active_end = row_end
+                active_l1 = str(row.l1_code)
+        if len(conflict_examples) >= 5:
+            break
+    if conflict_examples:
+        raise ValueError(
+            "Tushare SW membership has conflicting active L1 intervals: "
+            + json.dumps(conflict_examples, ensure_ascii=False)
+        )
+    intervals = intervals.reset_index(drop=True)
+    return intervals, {
+        "source_membership_rows_in_range": raw_l1_interval_rows,
+        "distinct_l1_interval_rows_before_collapse": int(len(work)),
+        "collapsed_nonconflicting_l1_intervals": int(len(intervals)),
+        "instruments_with_l1_intervals": int(intervals["instrument"].nunique()),
+        "maximum_active_level_one_memberships_per_stock_session": 1,
+        "conflicting_active_level_one_memberships": 0,
+        "interval_gate_passed": True,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def summarize_tushare_sw_membership_coverage(
+    universe: pd.DataFrame,
+    membership_intervals: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+) -> dict[str, Any]:
+    """Measure PIT universe membership coverage using interval arithmetic only."""
+
+    sessions = pd.DatetimeIndex(calendar).normalize().unique().sort_values()
+    if sessions.empty:
+        raise ValueError("Tushare SW membership coverage calendar is empty")
+    universe_by_instrument = universe.set_index("instrument")
+
+    def add_interval(diff: np.ndarray, start: pd.Timestamp, end: pd.Timestamp) -> None:
+        left = int(sessions.searchsorted(pd.Timestamp(start), side="left"))
+        right = int(sessions.searchsorted(pd.Timestamp(end), side="right"))
+        left = max(0, min(left, len(sessions)))
+        right = max(0, min(right, len(sessions)))
+        if left < right:
+            diff[left] += 1
+            diff[right] -= 1
+
+    expected_diff = np.zeros(len(sessions) + 1, dtype="int64")
+    for row in universe.itertuples(index=False):
+        add_interval(expected_diff, row.active_start, row.active_end)
+    observed_diff = np.zeros(len(sessions) + 1, dtype="int64")
+    intersection_rows = 0
+    for row in membership_intervals.itertuples(index=False):
+        instrument = str(row.instrument)
+        if instrument not in universe_by_instrument.index:
+            continue
+        holding = universe_by_instrument.loc[instrument]
+        intersection_start = max(
+            pd.Timestamp(row.active_start), pd.Timestamp(holding.active_start)
+        )
+        intersection_end = min(
+            pd.Timestamp(row.active_end), pd.Timestamp(holding.active_end)
+        )
+        if intersection_start <= intersection_end:
+            add_interval(observed_diff, intersection_start, intersection_end)
+            intersection_rows += 1
+    expected = np.cumsum(expected_diff[:-1])
+    observed = np.cumsum(observed_diff[:-1])
+    if (expected <= 0).any() or (observed > expected).any():
+        raise ValueError("Tushare SW membership coverage interval counts are invalid")
+    coverage = observed / expected
+    daily = [
+        {
+            "trade_date": date.date().isoformat(),
+            "expected_active_names": int(expected[position]),
+            "active_names_with_one_l1_membership": int(observed[position]),
+            "coverage": float(coverage[position]),
+        }
+        for position, date in enumerate(sessions)
+    ]
+    return {
+        "calendar_sessions": int(len(sessions)),
+        "universe_intervals": int(len(universe)),
+        "membership_universe_intersections": intersection_rows,
+        "median_active_name_coverage": float(np.median(coverage)),
+        "p05_active_name_coverage": float(np.quantile(coverage, 0.05)),
+        "minimum_active_name_coverage": float(np.min(coverage)),
+        "sessions_with_complete_active_name_coverage": int(np.sum(coverage == 1.0)),
+        "daily": daily,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def validate_tushare_sw_industry_membership_snapshot(
+    manifest_path: Path,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any], dict[str, Any]]:
+    """Revalidate the 62-call snapshot and PIT membership without market values."""
+
+    manifest_path = manifest_path.expanduser().resolve()
+    manifest = load_json_record(manifest_path, kind="a_share_rich_data_snapshot")
+    snapshot = spec["full_membership_snapshot"]
+    data_contract = manifest.get("data_contract") or {}
+    preregistration = manifest.get("no_return_preregistration") or {}
+    repair_link = manifest.get("symbol_normalization_repair") or {}
+    acceptance_link = manifest.get("source_acceptance") or {}
+    request = manifest.get("source_request") or {}
+    quality = manifest.get("source_quality") or {}
+    files = list(manifest.get("files") or [])
+    if (
+        manifest.get("schema_version") != 1
+        or manifest.get("dataset") != snapshot["dataset"]
+        or manifest.get("provider") != snapshot["provider"]
+        or manifest.get("acceptance_status") != snapshot["required_success_status"]
+        or data_contract.get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_DATA_CONTRACT_SHA256
+        or preregistration.get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC_SHA256
+        or repair_link.get("sha256")
+        != TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR_SHA256
+        or repair_link.get("factor_formula_or_membership_interval_changed") is not False
+        or request.get("api") != "index_member_all"
+        or tuple(request.get("classification_codes") or ())
+        != tuple(snapshot["classification_codes"])
+        or tuple(request.get("is_new_values") or ())
+        != tuple(snapshot["is_new_values"])
+        or int(request.get("expected_provider_calls") or 0)
+        != int(snapshot["expected_provider_calls"])
+        or int(request.get("completed_provider_calls") or 0)
+        != int(snapshot["expected_provider_calls"])
+        or request.get("request_mode")
+        != "sequential_one_l1_code_and_one_is_new_state_per_call"
+        or tuple(request.get("fields") or ()) != TUSHARE_SW_MEMBERSHIP_RAW_FIELDS
+        or request.get("forbidden_fields_requested_or_stored") != []
+        or request.get("credentials_logged_or_stored") is not False
+        or request.get("minimum_seconds_between_calls")
+        != snapshot["minimum_seconds_between_calls"]
+        or request.get("maximum_attempts_per_call")
+        != snapshot["maximum_attempts_per_call"]
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("factor_values_constructed") is not False
+        or manifest.get("open_close_or_forward_return_fields_read") is not False
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or len(files) != 1
+        or files[0].get("dataset") != "membership"
+    ):
+        raise ValueError("Tushare SW full membership snapshot identity mismatch")
+    for label, linked_path, digest in (
+        ("data contract", data_contract.get("path"), data_contract.get("sha256")),
+        (
+            "capacity preregistration",
+            preregistration.get("path"),
+            preregistration.get("sha256"),
+        ),
+        ("symbol repair", repair_link.get("path"), repair_link.get("sha256")),
+    ):
+        source_path = resolve_repository_record_path(str(linked_path or ""))
+        if not source_path.exists() or file_sha256(source_path) != digest:
+            raise ValueError(f"Tushare SW {label} fingerprint mismatch")
+    load_tushare_sw_industry_breadth_symbol_repair(
+        resolve_repository_record_path(str(repair_link["path"]))
+    )
+
+    acceptance_contract = spec["source_acceptance"]
+    record_path = resolve_repository_record_path(
+        str(acceptance_link.get("record_path") or "")
+    )
+    acceptance_manifest_path = resolve_repository_record_path(
+        str(acceptance_link.get("manifest_path") or "")
+    )
+    if (
+        not record_path.exists()
+        or file_sha256(record_path) != acceptance_link.get("record_sha256")
+        or file_sha256(record_path) != acceptance_contract["record_sha256"]
+        or not acceptance_manifest_path.exists()
+        or file_sha256(acceptance_manifest_path)
+        != acceptance_link.get("manifest_sha256")
+        or file_sha256(acceptance_manifest_path)
+        != acceptance_contract["manifest_sha256"]
+    ):
+        raise ValueError("Tushare SW acceptance evidence fingerprint mismatch")
+    acceptance_record = load_json_record(
+        record_path,
+        kind="a_share_tushare_sw_industry_breadth_source_acceptance_record",
+    )
+    acceptance_manifest = load_json_record(
+        acceptance_manifest_path, kind="a_share_rich_data_snapshot"
+    )
+    acceptance_files = {
+        str(item.get("dataset")): item
+        for item in acceptance_manifest.get("files") or []
+    }
+    stored_frames = acceptance_record.get("stored_frames") or {}
+    if (
+        acceptance_record.get("status")
+        != "accepted_entitlement_schema_and_point_in_time_intervals_pending_full_membership_snapshot"
+        or (acceptance_record.get("decision") or {}).get(
+            "source_accepted_for_frozen_full_membership_snapshot"
+        )
+        is not True
+        or (acceptance_record.get("decision") or {}).get(
+            "source_accepted_for_factor_construction_or_returns"
+        )
+        is not False
+        or acceptance_record.get("forward_return_fields_read") is not False
+        or acceptance_manifest.get("dataset") != "tushare_sw2021_l1_acceptance"
+        or acceptance_manifest.get("provider") != "tushare"
+        or acceptance_manifest.get("run_id") != acceptance_contract["run_id"]
+        or acceptance_manifest.get("acceptance_status")
+        != "accepted_entitlement_schema_and_point_in_time_intervals_pending_full_membership_snapshot"
+        or acceptance_manifest.get("price_fields_loaded") != []
+        or acceptance_manifest.get("factor_values_constructed") is not False
+        or acceptance_manifest.get("forward_return_fields_read") is not False
+        or set(acceptance_files) != {"classification", "membership"}
+    ):
+        raise ValueError("Tushare SW acceptance evidence identity mismatch")
+    accepted_frames: dict[str, pd.DataFrame] = {}
+    for label in ("classification", "membership"):
+        item = acceptance_files[label]
+        recorded = stored_frames.get(label) or {}
+        path = resolve_repository_record_path(str(item.get("path") or ""))
+        if (
+            not path.exists()
+            or item.get("path") != recorded.get("path")
+            or item.get("sha256") != recorded.get("sha256")
+            or int(item.get("rows") or -1) != int(recorded.get("rows") or -2)
+        ):
+            raise ValueError(f"Tushare SW accepted {label} frame link mismatch")
+        frame = pd.read_parquet(path)
+        if (
+            dataframe_content_sha256(frame) != item.get("sha256")
+            or len(frame) != int(item["rows"])
+        ):
+            raise ValueError(f"Tushare SW accepted {label} frame fingerprint mismatch")
+        accepted_frames[label] = frame
+    accepted_classification = accepted_frames["classification"]
+    accepted_membership = accepted_frames["membership"]
+    if (
+        tuple(accepted_classification.columns)
+        != TUSHARE_SW_CLASSIFICATION_RAW_FIELDS
+        or tuple(accepted_classification["index_code"].astype(str))
+        != tuple(snapshot["classification_codes"])
+        or not accepted_classification["level"].eq("L1").all()
+        or not accepted_classification["src"].eq("SW2021").all()
+        or tuple(accepted_membership.columns) != TUSHARE_SW_MEMBERSHIP_COLUMNS
+        or len(accepted_membership) != int(acceptance_contract["membership_rows"])
+        or dataframe_content_sha256(accepted_classification)
+        != acceptance_link.get("classification_frame_sha256")
+        or dataframe_content_sha256(accepted_membership)
+        != acceptance_link.get("membership_frame_sha256")
+    ):
+        raise ValueError("Tushare SW acceptance frame contents changed")
+
+    membership_path = resolve_repository_record_path(str(files[0].get("path") or ""))
+    if not membership_path.exists():
+        raise FileNotFoundError(
+            f"Tushare SW full membership frame is missing: {membership_path}"
+        )
+    membership = pd.read_parquet(membership_path)
+    if (
+        dataframe_content_sha256(membership) != files[0].get("sha256")
+        or len(membership) != int(files[0].get("rows") or -1)
+        or tuple(membership.columns) != TUSHARE_SW_MEMBERSHIP_COLUMNS
+    ):
+        raise ValueError("Tushare SW full membership frame fingerprint mismatch")
+    work = membership.copy()
+    work["in_date"] = pd.to_datetime(work["in_date"], errors="coerce").dt.normalize()
+    work["out_date"] = pd.to_datetime(work["out_date"], errors="coerce").dt.normalize()
+    required_nonmissing = [
+        "l1_code",
+        "l1_name",
+        "l2_code",
+        "l2_name",
+        "l3_code",
+        "l3_name",
+        "instrument",
+        "in_date",
+        "is_new",
+        "provider",
+    ]
+    duplicate_key = [
+        "l1_code",
+        "l2_code",
+        "l3_code",
+        "instrument",
+        "in_date",
+        "out_date",
+        "is_new",
+    ]
+    if (
+        work[required_nonmissing].isna().any().any()
+        or not work["instrument"].astype("string").str.fullmatch(
+            r"(?:SH|SZ|BJ)\d{6}", na=False
+        ).all()
+        or not work["l1_code"].astype("string").isin(
+            snapshot["classification_codes"]
+        ).all()
+        or not work["is_new"].isin(snapshot["is_new_values"]).all()
+        or not work["provider"].eq("tushare").all()
+        or work.loc[work["is_new"].eq("Y"), "out_date"].notna().any()
+        or work.loc[work["is_new"].eq("N"), "out_date"].isna().any()
+        or work.duplicated(duplicate_key).any()
+    ):
+        raise ValueError("Tushare SW full membership values are invalid")
+    dated = work["out_date"].notna()
+    if work.loc[dated, "in_date"].gt(work.loc[dated, "out_date"]).any():
+        raise ValueError("Tushare SW full membership has a reversed interval")
+    request_rows = list(quality.get("requests") or [])
+    expected_request_keys = [
+        (code, state)
+        for code in snapshot["classification_codes"]
+        for state in snapshot["is_new_values"]
+    ]
+    observed_request_keys = [
+        (str(row.get("l1_code")), str(row.get("is_new")))
+        for row in request_rows
+    ]
+    if (
+        observed_request_keys != expected_request_keys
+        or any(int(row.get("input_rows") or 0) >= 2000 for row in request_rows)
+        or any(
+            int(row.get("rows_written") or 0)
+            + int(row.get("unsupported_provider_symbol_rows_excluded") or 0)
+            != int(row.get("input_rows") or 0)
+            for row in request_rows
+        )
+        or int(quality.get("membership_rows") or -1) != len(work)
+        or int(quality.get("current_membership_rows") or -1)
+        != int(work["is_new"].eq("Y").sum())
+        or int(quality.get("historical_membership_rows") or -1)
+        != int(work["is_new"].eq("N").sum())
+        or int(quality.get("unique_instruments") or -1)
+        != int(work["instrument"].nunique())
+        or int(quality.get("l1_codes_with_rows") or -1)
+        != len(snapshot["classification_codes"])
+        or int(quality.get("duplicate_interval_rows", -1)) != 0
+        or int(quality.get("unsupported_provider_symbol_rows_excluded") or -1)
+        != 1
+    ):
+        raise ValueError("Tushare SW full membership request audit changed")
+
+    context = spec["point_in_time_context"]
+    source_path = resolve_repository_record_path(context["source_universe"]["path"])
+    holding_path = resolve_repository_record_path(context["holding_universe"]["path"])
+    calendar_path = resolve_repository_record_path(context["local_calendar"]["path"])
+    source_universe = _read_point_in_time_universe_frame(
+        source_path, label="source universe"
+    )
+    holding_universe = _read_point_in_time_universe_frame(
+        holding_path, label="holding universe"
+    )
+    raw_calendar = pd.to_datetime(
+        calendar_path.read_text(encoding="utf-8").splitlines(), errors="coerce"
+    )
+    if pd.isna(raw_calendar).any():
+        raise ValueError("Tushare SW local calendar contains an invalid session")
+    full_calendar = pd.DatetimeIndex(raw_calendar).normalize().unique().sort_values()
+    start = spec["combined_no_return_audit"]["capacity"]["development_start"]
+    end = spec["combined_no_return_audit"]["capacity"]["development_end"]
+    research_calendar = full_calendar[
+        (full_calendar >= pd.Timestamp(start)) & (full_calendar <= pd.Timestamp(end))
+    ]
+    intervals, interval_audit = consolidate_tushare_sw_l1_membership_intervals(
+        work, start=start, end=end
+    )
+    source_coverage = summarize_tushare_sw_membership_coverage(
+        source_universe, intervals, research_calendar
+    )
+    holding_coverage = summarize_tushare_sw_membership_coverage(
+        holding_universe, intervals, research_calendar
+    )
+    coverage_contract = spec["combined_no_return_audit"]["membership_coverage"]
+    membership_coverage_passed = bool(
+        holding_coverage["median_active_name_coverage"]
+        >= float(coverage_contract["minimum_median_active_buyable_name_coverage"])
+        and holding_coverage["p05_active_name_coverage"]
+        >= float(coverage_contract["minimum_p05_active_buyable_name_coverage"])
+    )
+    coverage_evidence = {
+        "interval_integrity": interval_audit,
+        "source_universe": source_coverage,
+        "holding_universe": holding_coverage,
+        "minimum_median_active_buyable_name_coverage": float(
+            coverage_contract["minimum_median_active_buyable_name_coverage"]
+        ),
+        "minimum_p05_active_buyable_name_coverage": float(
+            coverage_contract["minimum_p05_active_buyable_name_coverage"]
+        ),
+        "membership_coverage_gate_passed_before_close_known_inputs": (
+            membership_coverage_passed
+        ),
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    source_evidence = {
+        "manifest": {
+            "path": str(manifest_path),
+            "sha256": file_sha256(manifest_path),
+            "run_id": manifest.get("run_id"),
+            "status": manifest.get("acceptance_status"),
+            "rows": int(len(work)),
+        },
+        "source_acceptance": {
+            "record_path": str(record_path),
+            "record_sha256": file_sha256(record_path),
+            "manifest_path": str(acceptance_manifest_path),
+            "manifest_sha256": file_sha256(acceptance_manifest_path),
+            "run_id": acceptance_manifest.get("run_id"),
+        },
+        "symbol_normalization_repair": {
+            "path": str(resolve_repository_record_path(repair_link["path"])),
+            "sha256": repair_link["sha256"],
+            "unsupported_provider_symbol_rows_excluded": 1,
+        },
+        "membership_file": {
+            "path": str(membership_path),
+            "rows": int(len(work)),
+            "sha256": files[0]["sha256"],
+        },
+        "point_in_time_source_universe": context["source_universe"],
+        "point_in_time_holding_universe": context["holding_universe"],
+        "local_calendar": context["local_calendar"],
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    context_frames = {
+        "source_universe": source_universe,
+        "holding_universe": holding_universe,
+        "full_calendar": full_calendar,
+        "research_calendar": research_calendar,
+    }
+    return intervals, context_frames, {
+        "source_evidence": source_evidence,
+        "coverage": coverage_evidence,
+    }
+
+
+def construct_tushare_sw_industry_breadth_from_returns(
+    close_returns: pd.DataFrame,
+    membership_intervals: pd.DataFrame,
+    source_universe: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    *,
+    holding_instruments: set[str],
+    minimum_peer_listing_sessions: int = MIN_LISTING_SESSIONS,
+    minimum_other_valid_peers: int = 10,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Construct the frozen leave-one-out breadth from current/past returns only."""
+
+    required_returns = {"datetime", "instrument", "daily_return"}
+    if missing := sorted(required_returns - set(close_returns.columns)):
+        raise ValueError(
+            "Tushare SW close-return frame is missing columns: " + ", ".join(missing)
+        )
+    required_membership = {"instrument", "l1_code", "active_start", "active_end"}
+    if missing := sorted(required_membership - set(membership_intervals.columns)):
+        raise ValueError(
+            "Tushare SW L1 interval frame is missing columns: " + ", ".join(missing)
+        )
+    sessions = pd.DatetimeIndex(calendar).normalize().unique().sort_values()
+    if len(sessions) < 4:
+        raise ValueError("Tushare SW factor calendar is too short")
+    returns = close_returns.loc[:, ["datetime", "instrument", "daily_return"]].copy()
+    returns["datetime"] = pd.to_datetime(
+        returns["datetime"], errors="coerce"
+    ).dt.normalize()
+    returns["instrument"] = returns["instrument"].astype("string")
+    returns["daily_return"] = pd.to_numeric(
+        returns["daily_return"], errors="coerce"
+    )
+    if (
+        returns[["datetime", "instrument"]].isna().any().any()
+        or returns.duplicated(["instrument", "datetime"]).any()
+    ):
+        raise ValueError("Tushare SW close-return keys are invalid")
+    source = source_universe.rename(
+        columns={"active_start": "source_start", "active_end": "source_end"}
+    ).copy()
+    returns = returns.merge(source, on="instrument", how="inner", validate="many_to_one")
+    returns = returns.loc[
+        returns["datetime"].ge(returns["source_start"])
+        & returns["datetime"].le(returns["source_end"])
+    ].copy()
+    date_positions = sessions.get_indexer(returns["datetime"])
+    if (date_positions < 0).any():
+        raise ValueError("Tushare SW close-return row is absent from the local calendar")
+    listing_positions = returns["source_start"].map(
+        lambda value: int(sessions.searchsorted(pd.Timestamp(value), side="left"))
+    )
+    returns["peer_listing_age_sessions"] = (
+        date_positions - listing_positions.to_numpy(dtype="int64") + 1
+    )
+    finite_return = np.isfinite(returns["daily_return"])
+    returns = returns.loc[
+        finite_return
+        & returns["peer_listing_age_sessions"].ge(minimum_peer_listing_sessions)
+    ].copy()
+    eligible_peer_return_rows = int(len(returns))
+    membership = membership_intervals.rename(
+        columns={"active_start": "membership_start", "active_end": "membership_end"}
+    )
+    returns = returns.merge(
+        membership,
+        on="instrument",
+        how="inner",
+        validate="many_to_many",
+    )
+    returns = returns.loc[
+        returns["datetime"].ge(returns["membership_start"])
+        & returns["datetime"].le(returns["membership_end"])
+    ].copy()
+    if returns.duplicated(["instrument", "datetime"]).any():
+        raise ValueError("Tushare SW factor found multiple active L1 memberships")
+    returns["own_positive_return"] = returns["daily_return"].gt(0.0).astype("int8")
+    industry = (
+        returns.groupby(["datetime", "l1_code"], sort=False)
+        .agg(
+            valid_return_count=("instrument", "size"),
+            positive_return_count=("own_positive_return", "sum"),
+        )
+        .reset_index()
+    )
+    returns = returns.merge(
+        industry,
+        on=["datetime", "l1_code"],
+        how="left",
+        validate="many_to_one",
+    )
+    returns["other_valid_peers"] = returns["valid_return_count"] - 1
+    sufficient_peers = returns["other_valid_peers"].ge(minimum_other_valid_peers)
+    returns["daily_leave_one_out_breadth"] = np.where(
+        sufficient_peers,
+        (
+            returns["positive_return_count"] - returns["own_positive_return"]
+        )
+        / returns["other_valid_peers"],
+        np.nan,
+    )
+    returns = returns.sort_values(["instrument", "datetime"], kind="stable")
+    returns["calendar_position"] = sessions.get_indexer(returns["datetime"])
+    by_instrument = returns.groupby("instrument", sort=False)
+    prior_one = by_instrument["daily_leave_one_out_breadth"].shift(1)
+    prior_two = by_instrument["daily_leave_one_out_breadth"].shift(2)
+    prior_one_position = by_instrument["calendar_position"].shift(1)
+    prior_two_position = by_instrument["calendar_position"].shift(2)
+    complete_three_sessions = (
+        returns["daily_leave_one_out_breadth"].notna()
+        & prior_one.notna()
+        & prior_two.notna()
+        & returns["calendar_position"].sub(prior_one_position).eq(1)
+        & returns["calendar_position"].sub(prior_two_position).eq(2)
+    )
+    returns[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME] = np.where(
+        complete_three_sessions,
+        (returns["daily_leave_one_out_breadth"] + prior_one + prior_two) / 3.0,
+        np.nan,
+    )
+    factor = returns.loc[
+        returns["instrument"].astype(str).isin(holding_instruments)
+        & np.isfinite(returns[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME]),
+        ["datetime", "instrument", TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME],
+    ].copy()
+    factor = factor.rename(columns={"datetime": "trade_date"}).sort_values(
+        ["trade_date", "instrument"], kind="stable"
+    )
+    if (
+        factor.duplicated(["instrument", "trade_date"]).any()
+        or not factor[TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME].between(0.0, 1.0).all()
+    ):
+        raise ValueError("Tushare SW constructed factor values are invalid")
+    return factor.reset_index(drop=True), {
+        "close_return_rows_loaded": int(len(close_returns)),
+        "finite_listing_seasoned_peer_return_rows": eligible_peer_return_rows,
+        "peer_rows_with_active_l1_membership": int(len(returns)),
+        "daily_leave_one_out_values_with_minimum_peers": int(
+            returns["daily_leave_one_out_breadth"].notna().sum()
+        ),
+        "three_session_factor_rows_in_holding_instrument_set": int(len(factor)),
+        "minimum_other_valid_peers_each_session": minimum_other_valid_peers,
+        "peer_minimum_listing_sessions": minimum_peer_listing_sessions,
+        "stock_self_direction_included": False,
+        "three_exact_local_sessions_required": True,
+        "close_known_inputs_loaded": ["$close/Ref($close, 1) - 1"],
+        "future_open_close_or_return_fields_read": False,
+        "forward_return_fields_read": False,
+    }
+
+
+def load_tushare_sw_industry_breadth_factor(
+    provider_uri: Path,
+    membership_intervals: pd.DataFrame,
+    context_frames: dict[str, Any],
+    spec: dict[str, Any],
+    *,
+    batch_size: int = 256,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Load one close-known return expression and construct the frozen factor."""
+
+    if batch_size < 1:
+        raise ValueError("Tushare SW factor batch size must be positive")
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    import qlib
+    from qlib.data import D
+
+    provider_uri = provider_uri.expanduser().resolve()
+    require_research_price_basis(provider_uri)
+    qlib.init(provider_uri=str(provider_uri), region="cn", kernels=1)
+    capacity = spec["combined_no_return_audit"]["capacity"]
+    factor_contract = spec["factor_contract"]
+    full_calendar = pd.DatetimeIndex(context_frames["full_calendar"])
+    research_start = pd.Timestamp(capacity["development_start"])
+    research_end = pd.Timestamp(capacity["development_end"])
+    start_position = int(full_calendar.searchsorted(research_start, side="left"))
+    extended_start = full_calendar[max(0, start_position - 3)]
+    source_universe = context_frames["source_universe"]
+    overlap = source_universe["active_start"].le(research_end) & source_universe[
+        "active_end"
+    ].ge(extended_start)
+    instruments = sorted(source_universe.loc[overlap, "instrument"].astype(str))
+    if not instruments:
+        raise ValueError("Tushare SW source universe has no instruments in range")
+    expression = "$close/Ref($close, 1) - 1"
+    frames: list[pd.DataFrame] = []
+    for offset in range(0, len(instruments), batch_size):
+        batch = instruments[offset : offset + batch_size]
+        frame = D.features(
+            batch,
+            [expression],
+            start_time=extended_start.date().isoformat(),
+            end_time=research_end.date().isoformat(),
+            freq="day",
+        )
+        frame = frame.rename(columns={expression: "daily_return"}).reset_index()
+        frames.append(frame.loc[:, ["datetime", "instrument", "daily_return"]])
+        print(
+            "loaded SW close-known returns for "
+            f"{min(offset + len(batch), len(instruments))}/{len(instruments)} instruments"
+        )
+    close_returns = pd.concat(frames, ignore_index=True)
+    holding_instruments = set(
+        context_frames["holding_universe"]["instrument"].astype(str)
+    )
+    factor, construction = construct_tushare_sw_industry_breadth_from_returns(
+        close_returns,
+        membership_intervals,
+        source_universe,
+        full_calendar,
+        holding_instruments=holding_instruments,
+        minimum_peer_listing_sessions=int(
+            factor_contract["peer_minimum_listing_sessions"]
+        ),
+        minimum_other_valid_peers=int(
+            factor_contract["minimum_other_valid_peers_each_session"]
+        ),
+    )
+    factor = factor.loc[
+        pd.to_datetime(factor["trade_date"]).between(research_start, research_end)
+    ].reset_index(drop=True)
+    construction["source_instrument_count"] = len(instruments)
+    construction["extended_close_known_start"] = extended_start.date().isoformat()
+    construction["factor_start"] = research_start.date().isoformat()
+    construction["factor_end"] = research_end.date().isoformat()
+    construction["factor_rows_in_development_range"] = int(len(factor))
+    return factor, construction
 
 
 def jqdata_moneyflow_capacity(

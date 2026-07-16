@@ -1134,6 +1134,24 @@ def test_tushare_sw_industry_breadth_contract_is_fingerprint_frozen(tmp_path):
     with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
         RICH.load_tushare_sw_industry_breadth_contract(changed_path)
 
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC)
+        == RICH.TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC_SHA256
+    )
+    capacity_spec = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC.read_text()
+    )
+    assert capacity_spec["full_membership_snapshot"]["expected_provider_calls"] == 62
+    assert len(
+        capacity_spec["combined_no_return_audit"]["uniqueness"][
+            "comparison_factors"
+        ]
+    ) == 45
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR)
+        == RICH.TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR_SHA256
+    )
+
 
 def test_tushare_sw_requests_use_only_frozen_fields(monkeypatch):
     captured = []
@@ -1223,8 +1241,18 @@ def test_tushare_sw_normalization_preserves_point_in_time_intervals():
         "input_rows": 1,
         "rows_written": 1,
         "missing_out_date_rows": 0,
+        "unsupported_provider_symbol_rows_excluded": 0,
     }
     assert not ({"name", "close", "amount", "pb"} & set(normalized.columns))
+
+    unsupported = raw.copy()
+    unsupported.loc[0, "ts_code"] = "T00018.SH"
+    excluded, excluded_quality = RICH.canonicalize_tushare_sw_members(
+        unsupported, expected_l1_code="801010.SI", expected_is_new="N"
+    )
+    assert excluded.empty
+    assert excluded_quality["unsupported_provider_symbol_rows_excluded"] == 1
+    assert excluded_quality["rows_written"] == 0
 
     bad = raw.copy()
     bad.loc[0, "out_date"] = None
@@ -1317,6 +1345,128 @@ def test_tushare_sw_acceptance_writes_no_price_membership_snapshot(
         RICH.TUSHARE_SW_MEMBERSHIP_COLUMNS
     )
     assert not ({"name", "close", "amount", "return"} & set(stored["membership"]))
+
+
+def test_tushare_sw_full_membership_sync_is_atomic_and_no_price(
+    tmp_path, monkeypatch
+):
+    with pytest.raises(RICH.RichDataError, match="requires --allow-large"):
+        RICH.sync_tushare_sw_industry_membership(allow_large=False)
+
+    spec = copy.deepcopy(
+        RICH.json.loads(
+            RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC.read_text()
+        )
+    )
+    spec["full_membership_snapshot"]["minimum_seconds_between_calls"] = 0
+    contract = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT.read_text()
+    )
+    spec_path = tmp_path / "capacity_spec.json"
+    record_path = tmp_path / "acceptance_record.json"
+    acceptance_manifest_path = tmp_path / "acceptance_manifest.json"
+    symbol_repair_path = tmp_path / "symbol_repair.json"
+    for path in (
+        spec_path,
+        record_path,
+        acceptance_manifest_path,
+        symbol_repair_path,
+    ):
+        path.write_text("{}\n", encoding="utf-8")
+    classification = pd.DataFrame(
+        [
+            {
+                "index_code": code,
+                "industry_name": f"行业{index}",
+                "level": "L1",
+                "src": "SW2021",
+            }
+            for index, code in enumerate(
+                spec["full_membership_snapshot"]["classification_codes"]
+            )
+        ],
+        columns=RICH.TUSHARE_SW_CLASSIFICATION_RAW_FIELDS,
+    )
+    accepted_membership = pd.DataFrame(columns=RICH.TUSHARE_SW_MEMBERSHIP_COLUMNS)
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_sw_industry_breadth_source_chain",
+        lambda: {
+            "spec_path": spec_path,
+            "spec": spec,
+            "contract": contract,
+            "record_path": record_path,
+            "record": {},
+            "manifest_path": acceptance_manifest_path,
+            "manifest": {"run_id": "accepted-sw"},
+            "classification": classification,
+            "membership": accepted_membership,
+            "context_paths": {},
+            "symbol_repair_path": symbol_repair_path,
+            "symbol_repair": {},
+        },
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "new_run_id",
+        lambda prefix: "20260716T120000Z_tushare_sw2021_l1_membership_test",
+    )
+    calls = []
+
+    def fake_fetch(l1_code, is_new):
+        calls.append((l1_code, is_new))
+        return pd.DataFrame(
+            [
+                {
+                    "l1_code": l1_code,
+                    "l1_name": f"行业{l1_code}",
+                    "l2_code": "801011.SI",
+                    "l2_name": "二级行业",
+                    "l3_code": "850111.SI",
+                    "l3_name": "三级行业",
+                    "ts_code": "600519.SH",
+                    "in_date": "20200101" if is_new == "Y" else "20100101",
+                    "out_date": None if is_new == "Y" else "20191231",
+                    "is_new": is_new,
+                }
+            ],
+            columns=RICH.TUSHARE_SW_MEMBERSHIP_RAW_FIELDS,
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_sw_members", fake_fetch)
+    manifest_path = RICH.sync_tushare_sw_industry_membership(allow_large=True)
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert len(calls) == 62
+    assert calls[0] == ("801010.SI", "Y")
+    assert calls[-1] == ("801980.SI", "N")
+    assert manifest["dataset"] == "tushare_sw2021_l1_membership"
+    assert manifest["source_acceptance"]["run_id"] == "accepted-sw"
+    assert manifest["source_request"]["completed_provider_calls"] == 62
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_SW_MEMBERSHIP_RAW_FIELDS
+    )
+    assert manifest["source_quality"]["membership_rows"] == 62
+    assert manifest["source_quality"]["current_membership_rows"] == 31
+    assert manifest["source_quality"]["historical_membership_rows"] == 31
+    assert manifest["source_quality"][
+        "unsupported_provider_symbol_rows_excluded"
+    ] == 0
+    assert manifest["source_quality"]["duplicate_interval_rows"] == 0
+    assert manifest["acceptance_status"] == (
+        "full_membership_snapshot_passed_pending_no_return_factor_capacity_and_uniqueness"
+    )
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["factor_values_constructed"] is False
+    assert manifest["forward_return_fields_read"] is False
+    stored = RICH.load_snapshot_frame(manifest["files"][0])
+    assert stored.columns.tolist() == list(RICH.TUSHARE_SW_MEMBERSHIP_COLUMNS)
+    assert len(stored) == 62
+    assert not ({"price", "open", "close", "return"} & set(stored.columns))
+    assert not list((tmp_path / "raw").rglob("*.partial"))
 
 
 def test_tushare_daily_pb_sync_writes_immutable_no_return_snapshot(

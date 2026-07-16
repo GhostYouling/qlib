@@ -1620,6 +1620,14 @@ unset token
 
 因此 `tushare_positive_book_to_market` 高值方向正式终止。完整记录为 `docs/a_share_tushare_daily_pb_research_record.json`（SHA‑256 `2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3`）。不得重复诊断、反向、改 PB 变换或阈值、挑选 2021–2025、改变持有期/TopK/成本/质量/上市门、与旧失败因子组合，或生成当前评分、选股、仓位和订单；这一失败也不构成采购 Level‑2 的理由。
 
+### Tushare 申万一级行业广度（成员快照已通过，因子门禁未完成）
+
+独立行业机制使用 Tushare `index_classify(level="L1", src="SW2021")` 和 `index_member_all`，不把行业标签本身当作收益结论。合同 `docs/a_share_tushare_sw_industry_breadth_data_contract.json` 与无收益预注册 `docs/a_share_tushare_sw_industry_breadth_capacity_preregistration.json` 已在完整成员历史、行业广度值和因子收益出现前冻结。唯一候选为 `sw1_three_session_leave_one_out_breadth`：每天只用当日及过去收盘收益，按当日有效申万一级行业成员计算正收益占比，剔除股票自身，要求至少 10 个其他上市满 20 会话的有效同行，再对精确连续三个本地交易日取均值；高值方向固定为更好。持仓范围仍是 `buyable_main_chinext`，行业同伴来源使用 `factor_main_chinext_star`。
+
+完整成员同步固定 31 个申万一级代码、`Y/N` 两种成员状态、共 62 次顺序请求，且不请求价格、因子值或收益。第一次全量尝试在供应商占位代码 `T00018.SH` 处按严格股票代码校验停止，临时快照已删除且没有发布最终清单。修复记录 `docs/a_share_tushare_sw_industry_breadth_symbol_repair.json` 只允许把六位 `.SH/.SZ/.BJ` 转为本地代码，并排除、计数无法进入冻结股票池的非六位占位代码；没有改变公式、方向、窗口、同行阈值或请求集合。按原参数从 62 次请求全部重启的一次重试成功发布 `20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe.json`（清单 SHA‑256 `8582eb25f91ddcbe01130057ecb118431168545fa0a182cdb428c3a8d2a0228e`，成员帧 SHA‑256 `474bbfcd7da4bb4d1a7c1f6b30e7c26e19230782ddee2769af4539cc3eab5c88`）。快照共 7,803 行，其中当前成员 5,863 行、历史成员 1,940 行、唯一股票 5,863 只、31/31 个一级行业有记录、重复区间 0，并明确排除 1 条占位代码。
+
+独立无价格复核把同一股票同一一级行业的重叠区间合并为 7,043 个点时区间，并拒绝任何同时属于两个一级行业的冲突。2019–2025 可持有股票的行业成员覆盖率中位数为 **99.651%**、P5 为 **98.145%**，通过冻结的 95%/90% 门槛；复核记录仍是 `price_fields_loaded=[]`、`forward_return_fields_read=false`。当前代码已实现并测试“剔除自身、至少 10 个其他同行、精确连续三日”的因子构造，但尚未完成容量门和对既有 43 个字段、Tushare 资金流、PB 共 45 个字段的唯一性门，也没有冻结或运行收益诊断。因此这一分支现在仍不允许聚合、评分、选股、仓位或订单；下一步只能先完成一次无未来收益的容量与唯一性联合审计。
+
 ### 必经验收流程
 
 只对一个已收盘交易日和四只代表性股票运行验收。`acceptance` 会保存原始快照，并自动检查字段、非负成交量/成交额、常规交易时段、同日 OHLC/收盘比值，以及与本地日线的成交额和成交量比值：
