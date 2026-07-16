@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_stock_st_source_acceptance_record",
+  "status": "accepted_existing_entitlement_schema_and_type_pending_full_history",
+  "recorded_at": "2026-07-16T20:38:12Z",
+  "purpose": "Bind and independently revalidate the already accepted 2026-07-13 Tushare stock_st source evidence for the dedicated confirmed ST-exit mechanism without issuing another provider call, reading name text, deriving a transition or factor value, or reading a price or return.",
+  "protocol": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
+    },
+    "data_contract": {
+      "path": "docs/a_share_tushare_st_recovery_data_contract.json",
+      "sha256": "cae22e7c7f8bf8c6e14587d5e7f260664c8080c579c52561ef0253d7c8a7ca9e"
+    },
+    "official_stock_st_documentation": "https://tushare.pro/document/2?doc_id=397",
+    "official_permission_table": "https://tushare.pro/document/1?doc_id=290"
+  },
+  "bound_existing_evidence": {
+    "combined_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json",
+      "sha256": "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849",
+      "kind": "a_share_rich_data_snapshot",
+      "dataset": "tushare_events",
+      "provider": "tushare",
+      "acceptance_status": "pending_event_time_alignment_and_canonicalization"
+    },
+    "stock_st_frame": {
+      "path": "data/raw/a_share/rich/tushare/events/snapshots/20260716T081652Z_tushare_events_6264ce79/stock-st/2026-07-13.parquet",
+      "file_sha256": "6689ceeeecd1d13a5f5475a8c9993335e145052d146eb61014c86665d18010c3",
+      "content_sha256": "2480f243cd46c2a71d6337c6e1f11f64a959788b16f077cfc8936c6fd6bc650c",
+      "manifest_rows": 211,
+      "manifest_trade_date": "2026-07-13",
+      "manifest_quality_status": "raw_keys_passed"
+    }
+  },
+  "offline_revalidation": {
+    "provider_calls_issued": 0,
+    "columns_read": [
+      "ts_code",
+      "trade_date",
+      "type",
+      "provider",
+      "dataset"
+    ],
+    "name_values_read": false,
+    "type_name_values_read": false,
+    "rows_revalidated": 211,
+    "missing_required_rows": 0,
+    "duplicate_stock_date_keys": 0,
+    "observed_trade_dates": [
+      "2026-07-13"
+    ],
+    "observed_type_values": [
+      "ST"
+    ],
+    "observed_provider_values": [
+      "tushare"
+    ],
+    "observed_dataset_values": [
+      "stock-st"
+    ],
+    "manifest_fingerprint_passed": true,
+    "file_fingerprint_passed": true,
+    "content_fingerprint_bound_from_original_acceptance": true,
+    "schema_key_type_and_identity_checks_passed": true
+  },
+  "observation_boundary": {
+    "historical_membership_rows_observed_for_dedicated_mechanism": false,
+    "membership_transition_derived": false,
+    "consecutive_st_duration_derived": false,
+    "factor_value_derived": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "selection_or_promotion_performed": false
+  },
+  "decision": {
+    "source_entitlement_schema_and_literal_type_accepted": true,
+    "full_history_authorized_only_under_exact_contract": true,
+    "full_history_command": "python scripts/a_share_rich_data.py sync-tushare-stock-st-membership --allow-large",
+    "acceptance_call_may_be_repeated": false,
+    "static_st_membership_may_be_ranked": false,
+    "factor_or_return_stage_authorized": false
+  },
+  "required_next_gate": "Implement and locally test the exact 2019-2025 full-session request whitelist, source continuity checks, atomic annual publication, one-shot guard, and no-return manifest before accessing TUSHARE_TOKEN or the provider.",
+  "prohibited_actions": [
+    "issue another source-acceptance request",
+    "read or persist name or type_name values for the dedicated mechanism",
+    "treat the single accepted day as historical continuity evidence",
+    "derive an ST exit, duration, factor value, capacity, uniqueness, price, or return before the full source snapshot passes",
+    "rank current ST membership or use this record for a score, selection, sizing, order, or Level-2 justification"
+  ],
+  "selection_or_promotion_allowed": false
+}

@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_st_recovery_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_after_single_session_entitlement_evidence_before_historical_membership_transitions_factor_values_or_returns",
+  "recorded_at": "2026-07-16T20:35:22Z",
+  "purpose": "Re-audit the exhausted three-session research frontier after the terminal management-continuity source acceptance and select at most one economically independent mechanism. The audit may use only official documentation and the already accepted 2026-07-13 stock_st schema/entitlement frame; it may not request another provider row, inspect historical membership transitions, derive a duration factor, or read a new price or return.",
+  "frontier_state": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "stability_qualified_factor_count": 7,
+      "topk_qualified_factor_count": 0,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "latest_terminal_mechanism": {
+      "mechanism": "management_continuity_share",
+      "record": "docs/a_share_tushare_management_continuity_source_acceptance_record.json",
+      "sha256": "e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8",
+      "decision": "terminal_at_first_source_acceptance_point_in_time_gate"
+    },
+    "new_price_or_return_read": false
+  },
+  "official_source_context": {
+    "stock_st_documentation": "https://tushare.pro/document/2?doc_id=397",
+    "permission_table": "https://tushare.pro/document/1?doc_id=290",
+    "current_account_points": 3000,
+    "minimum_permission_points": 3000,
+    "documented_history_start": "2016-01-01",
+    "documented_update_time_asia_shanghai": "09:20",
+    "documented_maximum_rows_per_call": 1000,
+    "documented_inputs": [
+      "ts_code",
+      "trade_date",
+      "start_date",
+      "end_date"
+    ],
+    "documented_outputs": [
+      "ts_code",
+      "name",
+      "trade_date",
+      "type",
+      "type_name"
+    ]
+  },
+  "already_observed_entitlement_boundary": {
+    "combined_acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json",
+      "sha256": "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849"
+    },
+    "stock_st_frame": {
+      "path": "data/raw/a_share/rich/tushare/events/snapshots/20260716T081652Z_tushare_events_6264ce79/stock-st/2026-07-13.parquet",
+      "content_sha256": "2480f243cd46c2a71d6337c6e1f11f64a959788b16f077cfc8936c6fd6bc650c",
+      "rows": 211,
+      "trade_date": "2026-07-13",
+      "missing_stock_or_date_keys": 0,
+      "duplicate_stock_date_keys": 0,
+      "observed_type_values": [
+        "ST"
+      ]
+    },
+    "historical_rows_observed_for_this_mechanism": false,
+    "membership_transition_observed": false,
+    "consecutive_st_duration_observed": false,
+    "factor_value_observed": false,
+    "factor_return_observed": false,
+    "new_entitlement_request_issued_by_this_audit": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "same_session_st_membership_or_risk_warning_type",
+      "decision": "rejected_as_an_eligibility_and_execution_filter_not_a_ranked_factor",
+      "reason": "A stock that is currently ST remains outside the buyable holding universe. Ranking current ST membership, the ST label, or the risk-warning type would duplicate the existing point-in-time eligibility rule and would not produce an executable candidate list."
+    },
+    {
+      "candidate": "name_text_or_name_change_based_st_semantics",
+      "decision": "rejected_as_a_provider_variant_and_text_interpretation",
+      "reason": "Names and name-change text are not needed when the official daily membership list already supplies the state. Text parsing would introduce avoidable aliases, effective-date ambiguity, and post-hoc semantic choices."
+    },
+    {
+      "candidate": "confirmed_st_exit_prior_spell_recovery_speed",
+      "decision": "selected_as_the_only_independent_no_return_candidate",
+      "reason": "The candidate does not rank current ST membership. It measures a dated transition out of risk warning and the length of the immediately preceding uninterrupted ST spell. That remediation-duration event is economically distinct from static eligibility, price/volume paths, valuation, accounting magnitude, audit opinion, ownership, analyst activity, insider trading, transaction events, industry breadth, lending, and order flow."
+    }
+  ],
+  "selected_candidate": {
+    "economic_mechanism": "A company leaving risk-warning status after a shorter uninterrupted ST spell is hypothesized to represent faster distress remediation and a cleaner near-term information reset over the next three sessions.",
+    "factor_name": "tushare_st_recovery_speed",
+    "raw_measure": "prior_consecutive_st_sessions",
+    "formula": "1 / prior_consecutive_st_sessions",
+    "direction": "higher_is_better",
+    "membership_exit_definition": "The instrument is present in the official ST list on local session t-1 and absent on both consecutive local sessions t and t+1.",
+    "confirmation_session": "t+1, the second consecutive complete local session on which the instrument is absent from the ST list",
+    "availability": "confirmation-session close for entry at the next local session open",
+    "maximum_event_age_calendar_days": 3,
+    "spell_definition": "Count uninterrupted local sessions ending at t-1 for which the instrument is present in every complete ST list.",
+    "left_censor_policy": "If the spell touches the first requested 2019 session, its duration is unknown and its eventual exit is excluded and counted; it is never assigned the observed partial duration.",
+    "absence_policy": "Absence means non-ST only after every requested local session has a successful, positive, sub-limit complete list. A missing or failed session invalidates the entire snapshot.",
+    "reentry_policy": "A later new ST spell is a new state episode and can produce a later exit only if its complete start and end are observed; it does not alter a previously confirmed event.",
+    "absent_event_policy": "missing; never zero",
+    "selection_or_promotion_allowed": false
+  },
+  "relationship_to_existing_static_st_rule": {
+    "static_rule_preserved": "Current ST membership remains a point-in-time holding-universe exclusion and is never ranked.",
+    "new_mechanism_scope": "Only a confirmed transition into the non-ST state plus its prior spell duration can become an event value.",
+    "same_session_membership_factor_allowed": false,
+    "st_names_or_type_name_factor_allowed": false,
+    "direct_status_binary_factor_allowed": false
+  },
+  "required_gate_order": [
+    "freeze the exact field, completeness, transition, censoring, timing, duration, formula, direction, and one-shot source contract before any historical stock_st request",
+    "offline-revalidate and fingerprint the already accepted 2026-07-13 entitlement frame without requesting another row",
+    "implement and test exact field whitelisting, complete-calendar coverage, strict sub-limit responses, type semantics, atomic publication, and no-return metadata",
+    "run one atomic 2019-2025 full-session membership snapshot only after every preceding local check passes",
+    "derive transitions and factor values only inside a separately frozen no-return capacity audit",
+    "run the fixed 200-cohort capacity gate before loading any close-known comparison field",
+    "only after capacity passes, run the fixed no-return 54-factor uniqueness gate",
+    "freeze a separate one-time return diagnostic only if source, capacity, and uniqueness all pass"
+  ],
+  "prohibited_actions": [
+    "rank current ST membership, ST versus *ST name text, type_name, or a static risk-warning binary",
+    "request or persist name or type_name in the dedicated historical snapshot",
+    "infer a removal from a missing or failed session, an empty response, a response at the 1000-row ceiling, or a one-session absence",
+    "use a left-censored partial spell duration",
+    "change the two-session confirmation, reciprocal-duration formula, higher direction, three-calendar-day age, quality gate, listing gate, cohort minimum, or uniqueness threshold after historical membership is observed",
+    "read open, close, price, score, forward return, aggregate, select, size, order, or justify Level-2 before every no-return gate passes"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

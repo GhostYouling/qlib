@@ -1564,7 +1564,7 @@ tushare_large_order_net_inflow_share =
   sum(小/中/大/特大单的全部买入与卖出金额)
 ```
 
-高值方向固定为更好；分母为零或字段缺失的股票日保持缺失，任何负金额中止分片，不裁剪、填充、取绝对值或改方向。该经济机制替代尚未取得数据的 JQData 合同，不是第二个独立因子；日后即使购买 JQData，也只能先冻结供应商一致性审计，不能把两家字段分别加入聚合或按收益选供应商。`top_list` 已属于失败并停止的龙虎榜机制，只保留原始对账用途；`stock_st` 用作点时股票池排除，`stk_limit` 用作成交可实现性，不作为新因子。
+高值方向固定为更好；分母为零或字段缺失的股票日保持缺失，任何负金额中止分片，不裁剪、填充、取绝对值或改方向。该经济机制替代尚未取得数据的 JQData 合同，不是第二个独立因子；日后即使购买 JQData，也只能先冻结供应商一致性审计，不能把两家字段分别加入聚合或按收益选供应商。`top_list` 已属于失败并停止的龙虎榜机制，只保留原始对账用途；当日静态 `stock_st` 成员关系仍只用作点时股票池排除，不能直接排名；`stk_limit` 用作成交可实现性，不作为新因子。后文单独冻结的“确认退出 ST 后、按此前连续 ST 会话数排名”属于状态转换与恢复速度机制，不等同于静态 ST 二值。
 
 完整历史下载固定为 2019–2025，只遍历本地真实交易日。每次请求一个完整交易日，字段白名单精确固定，连续调用间隔至少 0.32 秒，单日最多三次尝试；每个年度写入同一个隐藏临时快照，七年全部通过后才原子发布。达到 6,000 行上限会按可能截断处理并停止。运行：
 
@@ -1839,5 +1839,30 @@ python scripts/a_share_short_horizon_factor_research.py minute-combination-holdo
 离线实现、隐私聚合、原子发布与一次性保护先通过 6 项专项测试。唯一真实验收原计划对 `000001.SZ`、`600000.SH`、`300750.SZ` 各请求一次 2019–2025 公告记录；第一个且唯一请求 `000001.SZ` 返回 184 行，其中 53 行的完整离任日不等于公告日，因此在身份聚合和因子值之前触发预先冻结的点时门禁。其余两只股票没有请求，临时快照已删除，`files=[]`、正式文件数为 0，姓名、身份哈希、原始响应、价格和收益均未持久化。
 
 失败清单是 `20260716T202120Z_tushare_management_continuity_acceptance_3e1824f5.json`（SHA‑256 `1de603f276d14e77fafc993ed552f709d9c2d35456607c336875e3a70a06d45b`），跟踪终止记录是 [`a_share_tushare_management_continuity_source_acceptance_record.json`](a_share_tushare_management_continuity_source_acceptance_record.json)（SHA‑256 `e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8`）。CLI 现在会在合同、凭据和供应商访问前拒绝重跑。不得请求剩余股票或失败股票来恢复细节、丢弃/填充/移动 53 行、改变字段/身份/日期/公式/方向/事件年龄、创建同机制 v2、运行全量/容量/唯一性/收益、聚合/评分/选股/仓位/订单或据此采购 Level‑2。该结果只说明当前快照不满足冻结的历史点时合同，不说明管理层连续性的收益好坏。
+
+### Tushare ST 确认退出恢复速度（全量来源待执行）
+
+管理层连续性终止后，机制核重记录 [`a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55`）保留静态 ST 成员作为不可排名的持仓资格过滤，并只推进不同的状态转换候选：股票在 `t-1` 属于 ST、在连续 `t` 和 `t+1` 两个本地会话都不属于 ST 后，才在 `t+1` 收盘确认退出；下一会话开盘最早可交易。候选固定为：
+
+```text
+tushare_st_recovery_speed = 1 / prior_consecutive_st_sessions
+```
+
+此前连续 ST 会话越短，值越高。因子最长保持 3 个日历日；触及 2019 年首个会话的左截断 ST 段必须排除。不得用名称中的 `ST`/`*ST` 字符串、当日静态成员二值、同日首次缺席或事后已知的完整持续时长代替。
+
+[Tushare 官方 `stock_st` 文档](https://tushare.pro/document/2?doc_id=397)说明接口提供历史每日 ST 列表、最低 3,000 积分、单次最多 1,000 行。已有 2026‑07‑13 事件快照中的 211 行仅被零网络复核为权限、结构和字面 `type=ST` 证据；复核只读取 `ts_code,trade_date,type,provider,dataset`，没有读取姓名、`type_name`、转换、持续时长、因子、价格或收益。绑定记录为 [`a_share_tushare_stock_st_source_acceptance_record.json`](a_share_tushare_stock_st_source_acceptance_record.json)（SHA‑256 `e1798221e8758bd2d39ee0f7f611d9c3299b8fcbf824fa9df6e7627c61bd8d0f`），该证据不允许再发一次验收请求。
+
+全量来源合同 [`a_share_tushare_st_recovery_data_contract.json`](a_share_tushare_st_recovery_data_contract.json)（SHA‑256 `cae22e7c7f8bf8c6e14587d5e7f260664c8080c579c52561ef0253d7c8a7ca9e`）固定遍历 2019–2025 的 1,699 个本地交易日，每日只请求 `ts_code,trade_date,type`，调用间隔至少 0.32 秒，每日最多三次尝试，空响应或达到 1,000 行都按来源不完整终止。合法 `.BJ` 行明确排除并计数；年度 Parquet 只保存 `trade_date,instrument,provider`。七年共享隐藏临时根，全部成功才原子发布；开始访问供应商后的任何失败也会删除半成品并留下终止清单。该全量合同只能消费一次。
+
+Token 必须按 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md) 隐藏输入、只验证有无并向单个子进程透传。唯一获准命令为：
+
+```bash
+python scripts/a_share_rich_data.py \
+  sync-tushare-stock-st-membership --allow-large
+```
+
+不要把 Token 明文加到命令中；完整的 `launchctl` 安全包装见上述 Token 文档。同步步骤本身不构造退出转换、持续时长或因子值，也不读取价格或收益。只有清单状态达到 `full_source_continuity_passed_pending_no_return_capacity_and_uniqueness`，才允许按 [`a_share_tushare_st_recovery_no_return_preregistration.json`](a_share_tushare_st_recovery_no_return_preregistration.json)（SHA‑256 `50c885bebe89c3e5e8b674afc86b3320639619431c17cad27f9fc4d00474a795`）实现并运行一次固定容量/唯一性审计：先要求至少 200 个六名称、两不同值、覆盖五年的非重叠三日 cohort；容量通过后才可临时比较预注册的 54 个既有字段，并要求至少 100 个可比会话且绝对中位日度 Spearman 小于 0.8。两门通过前不得读取收益；即使通过也只允许另行冻结一次收益诊断，不能直接聚合、评分或选股。
+
+当前实现与 11 项专项测试已通过，完整数据采集套件为 **413 passed, 9 warnings**。这个结果只证明来源合同、字段最小化、年度原子发布、失败清理和一次性保护按预注册实现；真实 2019–2025 全量来源尚未执行，因此目前仍没有 ST 恢复因子值、容量结论、收益结论或可用于选股的新增分数。
 
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。

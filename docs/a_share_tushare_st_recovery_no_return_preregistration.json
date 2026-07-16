@@ -1,0 +1,226 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_st_recovery_no_return_preregistration",
+  "status": "frozen_after_single_session_source_acceptance_before_full_history_transitions_factor_values_comparison_fields_or_returns",
+  "preregistered_at": "2026-07-16T20:38:12Z",
+  "purpose": "Run one no-outcome capacity gate for the frozen confirmed ST-exit recovery-speed factor and, only after capacity passes, compare it with the fixed 54-factor catalog before any return diagnostic.",
+  "source_protocol": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
+    },
+    "data_contract": {
+      "path": "docs/a_share_tushare_st_recovery_data_contract.json",
+      "sha256": "cae22e7c7f8bf8c6e14587d5e7f260664c8080c579c52561ef0253d7c8a7ca9e"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_stock_st_source_acceptance_record.json",
+      "sha256": "e1798221e8758bd2d39ee0f7f611d9c3299b8fcbf824fa9df6e7627c61bd8d0f"
+    },
+    "required_full_snapshot_kind": "a_share_rich_data_snapshot",
+    "required_full_snapshot_dataset": "tushare_stock_st_membership",
+    "required_full_snapshot_provider": "tushare",
+    "required_full_snapshot_status": "full_source_continuity_passed_pending_no_return_capacity_and_uniqueness",
+    "required_requested_start": "2019-01-01",
+    "required_requested_end": "2025-12-31",
+    "required_local_sessions": 1699,
+    "required_partition_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "required_canonical_columns": [
+      "trade_date",
+      "instrument",
+      "provider"
+    ],
+    "required_unique_key": [
+      "trade_date",
+      "instrument"
+    ],
+    "factor": "tushare_st_recovery_speed",
+    "raw_measure": "prior_consecutive_st_sessions",
+    "formula": "1 / prior_consecutive_st_sessions",
+    "direction": "higher_is_better",
+    "full_history_price_fields_allowed": [],
+    "full_history_forward_return_fields_allowed": []
+  },
+  "point_in_time_context": {
+    "fingerprint_range_start": "2019-01-01",
+    "fingerprint_range_end": "2025-12-31",
+    "source_universe": {
+      "name": "factor_main_chinext_star",
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "file_sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "name": "buyable_main_chinext",
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "file_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+      "range_clipped_sha256": "2b3a2fba2ebb6938853fe9c6e1f6649517bef844e0ee6347a032e2b74945394c",
+      "range_clipped_intervals": 4794
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "file_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "range_clipped_sha256": "c408af553ff2aa780f302eda8bc860d06d875a1a34c6bf37cd1341c6f890623c",
+      "range_clipped_sessions": 1699
+    },
+    "accepted_price_basis_for_later_diagnostic_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false,
+      "status": "passed"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    }
+  },
+  "transition_canonicalization": {
+    "complete_calendar_required": true,
+    "membership_exit_definition": "present on local session t-1 and absent on both consecutive local sessions t and t+1",
+    "confirmation_session": "t+1",
+    "availability": "confirmation-session close for next-local-session-open entry",
+    "same_first_absence_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "spell_duration": "count uninterrupted membership sessions ending at t-1",
+    "left_censored_spell": "exclude and count when the spell touches the first 2019 session",
+    "right_censored_spell": "no event when the spell remains active at the final session",
+    "one_session_absence": "not an exit and no event",
+    "overlapping_events": "use only the most recently confirmed event on an eligible target session",
+    "factor_clipping_winsorization_log_offset_inversion_imputation_or_bucketization": null,
+    "static_current_st_membership_ranked": false
+  },
+  "run_order": [
+    "validate the full snapshot manifest, source acceptance chain, all seven partition fingerprints, exact columns, unique keys, provider identity, and complete 1699-session request coverage without prices",
+    "derive confirmed exits, complete prior spell durations, and the reciprocal recovery-speed factor without prices",
+    "apply point-in-time holding, quarterly-quality, listing-seasoning, event-age, value-count, and non-overlapping-grid rules",
+    "run the fixed capacity gate before loading any close-known comparison field",
+    "only if capacity passes load the frozen 54 close-known comparison factors without deriving an open, close-to-future-close, or forward return",
+    "run the fixed rank-correlation uniqueness gate",
+    "only if capacity and uniqueness pass freeze a separate one-time return diagnostic bound to the no-return audit fingerprint"
+  ],
+  "capacity_contract": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "factor_availability": "confirmation-session close",
+    "maximum_event_age_calendar_days": 3,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "uniqueness_contract": {
+    "screen_start": "2025-01-01",
+    "screen_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_pairwise_names_per_session": 6,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "all_comparison_fields_must_have_minimum_sessions": true,
+    "method": "For each comparison field and eligible factor-active session, compute the Spearman correlation of pairwise-complete daily percentile ranks, then gate the absolute median daily correlation.",
+    "comparison_factors": [
+      "momentum_1",
+      "momentum_2",
+      "momentum_3",
+      "momentum_5",
+      "up_day_ratio_5",
+      "momentum_10",
+      "momentum_20",
+      "momentum_60",
+      "trend_ma_5",
+      "trend_ma_20",
+      "trend_ma_60",
+      "volume_surge_1",
+      "volume_surge",
+      "volume_surge_3",
+      "turnover_surge",
+      "turnover_surge_3",
+      "turnover_surge_1",
+      "liquidity_5",
+      "free_float_cap_proxy",
+      "volatility_5",
+      "volatility_10",
+      "volatility_20",
+      "amplitude_1",
+      "amplitude_5",
+      "gap_1",
+      "near_high_10",
+      "near_high_20",
+      "intraday_strength",
+      "intraday_return_sum_5",
+      "directional_serial_dependence_20",
+      "close_to_high",
+      "close_above_vwap_1",
+      "signed_efficiency_ratio_10",
+      "return_turnover_correlation_10",
+      "max_return_20",
+      "signed_volume_pressure_5",
+      "roe",
+      "revenue_yoy",
+      "profit_yoy",
+      "quality_age_days",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration",
+      "tushare_large_order_net_inflow_share",
+      "tushare_positive_book_to_market",
+      "sw1_three_session_leave_one_out_breadth",
+      "billboard_net_flow_to_float",
+      "billboard_net_flow_to_deal",
+      "billboard_deal_to_float",
+      "billboard_reason_count",
+      "billboard_freshness",
+      "holder_count_change_ratio",
+      "holder_count_change_absolute",
+      "holder_count_freshness"
+    ],
+    "comparison_factor_count": 54,
+    "close_known_price_or_volume_comparison_fields_may_be_loaded_only_after_capacity_passes": true,
+    "open_or_forward_return_fields_may_be_derived": false,
+    "forward_return_fields_read": false
+  },
+  "no_return_gate_policy": {
+    "capacity_must_run_before_comparison_fields": true,
+    "recompute_snapshot_fingerprints_membership_transitions_censoring_and_factor_formula_before_capacity": true,
+    "both_capacity_and_uniqueness_must_pass": true,
+    "one_completed_combined_audit_per_full_snapshot": true,
+    "no_formula_direction_confirmation_date_topk_quality_listing_correlation_or_minimum_cohort_override": true,
+    "failed_gate_must_stop_without_return_diagnostic": true,
+    "selection_or_promotion_allowed": false
+  },
+  "next_step_if_both_no_return_gates_pass": {
+    "separate_immutable_diagnostic_preregistration_required": true,
+    "combined_no_return_audit_fingerprint_must_be_bound_before_outcome_price_access": true,
+    "generic_factor_diagnostic_allowed": false,
+    "current_score_selection_sizing_or_order_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

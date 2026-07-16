@@ -123,6 +123,15 @@ DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD = (
     / "docs"
     / "a_share_tushare_management_continuity_source_acceptance_record.json"
 )
+DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_st_recovery_data_contract.json"
+)
+DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD = (
+    REPO_ROOT / "docs" / "a_share_tushare_stock_st_source_acceptance_record.json"
+)
+DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC = (
+    REPO_ROOT / "docs" / "a_share_tushare_st_recovery_no_return_preregistration.json"
+)
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
 )
@@ -267,6 +276,15 @@ TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT_SHA256 = (
 )
 TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD_SHA256 = (
     "e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8"
+)
+TUSHARE_ST_RECOVERY_CONTRACT_SHA256 = (
+    "cae22e7c7f8bf8c6e14587d5e7f260664c8080c579c52561ef0253d7c8a7ca9e"
+)
+TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256 = (
+    "e1798221e8758bd2d39ee0f7f611d9c3299b8fcbf824fa9df6e7627c61bd8d0f"
+)
+TUSHARE_ST_RECOVERY_NO_RETURN_SPEC_SHA256 = (
+    "50c885bebe89c3e5e8b674afc86b3320639619431c17cad27f9fc4d00474a795"
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
@@ -499,6 +517,16 @@ TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_TS_CODES = (
 )
 TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_START = "20190101"
 TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_END = "20251231"
+TUSHARE_ST_MEMBERSHIP_RAW_FIELDS = (
+    "ts_code",
+    "trade_date",
+    "type",
+)
+TUSHARE_ST_MEMBERSHIP_COLUMNS = (
+    "trade_date",
+    "instrument",
+    "provider",
+)
 TUSHARE_TOP10_FLOAT_RAW_FIELDS = (
     "ts_code",
     "ann_date",
@@ -1603,6 +1631,26 @@ def fetch_tushare_management_continuity_rows(
         raise RichDataError(
             "Tushare stk_managers request failed for "
             f"{ts_code}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
+def fetch_tushare_stock_st_membership(trade_date: dt.date) -> pd.DataFrame:
+    """Fetch one complete ST-membership session with the frozen field whitelist."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.stock_st(
+            trade_date=trade_date.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_ST_MEMBERSHIP_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare stock_st request failed for "
+            f"{trade_date.isoformat()}: {safe_exception_text(exc)}"
         ) from exc
     if result is None:
         return pd.DataFrame()
@@ -3152,6 +3200,114 @@ def canonicalize_tushare_management_continuity(
         "nondeparting_identity_rows": int((~identity_state["departing"]).sum()),
         "stock_announcement_events_written": int(len(result)),
         "distinct_factor_values": int(continuity.nunique()),
+    }
+
+
+def canonicalize_tushare_stock_st_membership(
+    frame: pd.DataFrame,
+    expected_trade_date: dt.date,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Validate one complete ST list and retain only code/date membership."""
+
+    if frame is None or frame.empty:
+        raise RichDataError(
+            "Tushare stock_st response is empty; absence cannot prove a complete list"
+        )
+    raw = frame.copy()
+    missing_columns = [
+        field for field in TUSHARE_ST_MEMBERSHIP_RAW_FIELDS if field not in raw
+    ]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare stock_st response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_ST_MEMBERSHIP_RAW_FIELDS)
+    )
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare stock_st response contains fields outside the frozen whitelist: "
+            + ", ".join(unexpected_columns)
+        )
+
+    source_code = (
+        raw["ts_code"].astype("string").str.strip().str.upper().replace("", pd.NA)
+    )
+    code_parts = source_code.str.extract(r"^(\d{6})\.(SH|SZ|BJ)$")
+    trade_date = pd.to_datetime(
+        raw["trade_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    source_type = (
+        raw["type"].astype("string").str.strip().str.upper().replace("", pd.NA)
+    )
+    invalid = (
+        source_code.isna()
+        | code_parts[0].isna()
+        | code_parts[1].isna()
+        | trade_date.isna()
+        | source_type.isna()
+    )
+    if invalid.any():
+        raise RichDataError(
+            "Tushare stock_st response contains "
+            f"{int(invalid.sum())} incomplete or malformed key/type rows"
+        )
+    expected_ts = pd.Timestamp(expected_trade_date)
+    if not trade_date.eq(expected_ts).all():
+        raise RichDataError(
+            "Tushare stock_st response contains a date outside the exact request"
+        )
+    if not source_type.eq("ST").all():
+        unsupported = sorted(set(source_type.loc[~source_type.eq("ST")].astype(str)))
+        raise RichDataError(
+            "Tushare stock_st response contains a type outside the frozen literal ST: "
+            + ", ".join(unsupported)
+        )
+    source_keys = pd.DataFrame(
+        {"ts_code": source_code, "trade_date": trade_date}
+    )
+    if source_keys.duplicated(["ts_code", "trade_date"]).any():
+        raise RichDataError(
+            "Tushare stock_st response contains duplicate stock-date keys"
+        )
+
+    outside_bj = code_parts[1].eq("BJ")
+    retained_parts = code_parts.loc[~outside_bj].copy()
+    retained_dates = trade_date.loc[~outside_bj]
+    instruments: list[str] = []
+    for code, exchange in retained_parts.itertuples(index=False, name=None):
+        instrument = qlib_symbol(str(code))
+        if not instrument.startswith(str(exchange)):
+            raise RichDataError(
+                "Tushare stock_st stock code and exchange suffix disagree: "
+                f"{code}.{exchange}"
+            )
+        instruments.append(instrument)
+    result = pd.DataFrame(
+        {
+            "trade_date": retained_dates.to_numpy(),
+            "instrument": instruments,
+            "provider": "tushare",
+        }
+    )
+    result = (
+        result.loc[:, list(TUSHARE_ST_MEMBERSHIP_COLUMNS)]
+        .sort_values(["trade_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if result.empty:
+        raise RichDataError(
+            "Tushare stock_st response has no supported SH/SZ membership rows"
+        )
+    if result.duplicated(["trade_date", "instrument"]).any():
+        raise RichDataError(
+            "canonical Tushare stock_st membership has duplicate stock-date keys"
+        )
+    return result, {
+        "input_rows": int(len(raw)),
+        "outside_target_bj_rows_excluded": int(outside_bj.sum()),
+        "rows_written": int(len(result)),
     }
 
 
@@ -5580,6 +5736,336 @@ def tushare_management_continuity_acceptance_records() -> list[Path]:
     ):
         payload = load_json_record(path)
         if payload.get("dataset") == "tushare_management_continuity_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_st_recovery_contract(
+    path: Path = DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable post-entitlement, pre-history ST recovery contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_ST_RECOVERY_CONTRACT_SHA256:
+        raise RichDataError("Tushare ST-recovery contract fingerprint mismatch")
+    contract = load_json_record(
+        path, kind="a_share_tushare_st_recovery_data_contract"
+    )
+    mechanism = contract.get("mechanism_identity") or {}
+    overlap = mechanism.get("mechanism_overlap_audit") or {}
+    selection = contract.get("source_selection") or {}
+    source = contract.get("source") or {}
+    accepted = contract.get("already_accepted_source_evidence") or {}
+    accepted_frame = accepted.get("stock_st_frame") or {}
+    canonical = contract.get("canonical_membership_policy") or {}
+    transition = contract.get("transition_and_factor_policy") or {}
+    offline = contract.get("offline_source_acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    downstream = contract.get("downstream_no_return_gate") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_single_session_entitlement_schema_evidence_before_historical_membership_rows_transition_values_or_returns"
+        or contract.get("preregistered_at") != "2026-07-16T20:35:22Z"
+        or overlap.get("path")
+        != "docs/a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json"
+        or overlap.get("sha256")
+        != "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
+        or selection.get("minimum_permission_points") != 3000
+        or selection.get("current_account_points") != 3000
+        or selection.get("documented_history_start") != "2016-01-01"
+        or selection.get("documented_update_time_asia_shanghai") != "09:20"
+        or selection.get("documented_maximum_rows_per_call") != 1000
+        or source.get("provider") != "tushare"
+        or source.get("api") != "stock_st"
+        or source.get("request_mode") != "one frozen local trading session per call"
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_ST_MEMBERSHIP_RAW_FIELDS
+        or accepted.get("new_provider_acceptance_call_allowed") is not False
+        or accepted.get("offline_revalidation_required_before_full_sync") is not True
+        or accepted_frame.get("content_sha256")
+        != "2480f243cd46c2a71d6337c6e1f11f64a959788b16f077cfc8936c6fd6bc650c"
+        or accepted_frame.get("rows") != 211
+        or accepted_frame.get("trade_date") != "2026-07-13"
+        or tuple(accepted_frame.get("relevant_columns_to_revalidate") or ())
+        != ("ts_code", "trade_date", "type", "provider", "dataset")
+        or accepted_frame.get("name_or_type_name_values_may_be_read_by_dedicated_revalidation")
+        is not False
+        or tuple(canonical.get("output_columns") or ())
+        != TUSHARE_ST_MEMBERSHIP_COLUMNS
+        or canonical.get("raw_provider_frame_persisted") is not False
+        or canonical.get("name_or_type_name_persisted") is not False
+        or canonical.get("factor_value_persisted_by_full_sync") is not False
+        or transition.get("factor_name") != "tushare_st_recovery_speed"
+        or transition.get("raw_column") != "prior_consecutive_st_sessions"
+        or transition.get("formula") != "1 / prior_consecutive_st_sessions"
+        or transition.get("direction") != "higher_is_better"
+        or transition.get("confirmation_session") != "t+1"
+        or transition.get("same_first_absence_session_trade_allowed") is not False
+        or transition.get("maximum_event_age_calendar_days") != 3
+        or offline.get("provider_calls") != 0
+        or offline.get("fixed_trade_date") != "2026-07-13"
+        or offline.get("required_rows") != 211
+        or offline.get("success_status")
+        != "accepted_existing_entitlement_schema_and_type_pending_full_history"
+        or snapshot.get("dataset") != "tushare_stock_st_membership"
+        or snapshot.get("requested_start") != "2019-01-01"
+        or snapshot.get("requested_end") != "2025-12-31"
+        or snapshot.get("requested_local_sessions") != 1699
+        or snapshot.get("provider_calls") != 1699
+        or snapshot.get("provider_call_partition")
+        != "one complete local trading session per call"
+        or snapshot.get("minimum_seconds_between_calls") != 0.32
+        or snapshot.get("maximum_attempts_per_session") != 3
+        or snapshot.get("response_row_ceiling_is_strict") is not True
+        or tuple(snapshot.get("required_partition_years") or ())
+        != tuple(range(2019, 2026))
+        or tuple(snapshot.get("required_output_columns") or ())
+        != TUSHARE_ST_MEMBERSHIP_COLUMNS
+        or snapshot.get("success_status")
+        != "full_source_continuity_passed_pending_no_return_capacity_and_uniqueness"
+        or downstream.get("capacity_before_comparison_fields") is not True
+        or downstream.get("holding_period_trading_days") != 3
+        or downstream.get("minimum_eligible_names_per_cross_section") != 6
+        or downstream.get("minimum_distinct_factor_values") != 2
+        or downstream.get("minimum_required_cohorts") != 200
+        or downstream.get("minimum_observed_years") != 5
+        or downstream.get("maximum_quality_age_days") != 550
+        or downstream.get("minimum_listing_sessions") != 20
+        or downstream.get("uniqueness_comparison_factor_count") != 54
+        or downstream.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("Tushare ST-recovery contract changed")
+    overlap_path = resolve_record_path(str(overlap.get("path") or ""))
+    if not overlap_path.exists() or file_digest(overlap_path) != overlap.get("sha256"):
+        raise RichDataError("Tushare ST-recovery overlap audit changed")
+
+    context = contract.get("local_context") or {}
+    context_files = {
+        "holding_universe": ("file_sha256", None),
+        "source_universe": ("file_sha256", None),
+        "calendar": ("file_sha256", None),
+        "accepted_price_basis_for_later_return_stage_only": ("sha256", None),
+        "quarterly_quality": ("sha256", "manifest_sha256"),
+        "accepted_price_frontier": ("sha256", None),
+    }
+    for label, (sha_key, manifest_sha_key) in context_files.items():
+        evidence = context.get(label) or {}
+        linked_path = resolve_record_path(str(evidence.get("path") or ""))
+        if (
+            not linked_path.exists()
+            or file_digest(linked_path) != str(evidence.get(sha_key) or "")
+        ):
+            raise RichDataError(f"Tushare ST-recovery local context changed: {label}")
+        if manifest_sha_key is not None:
+            manifest_file = resolve_record_path(
+                str(evidence.get("manifest_path") or "")
+            )
+            if (
+                not manifest_file.exists()
+                or file_digest(manifest_file)
+                != str(evidence.get(manifest_sha_key) or "")
+            ):
+                raise RichDataError(
+                    f"Tushare ST-recovery manifest context changed: {label}"
+                )
+    return contract
+
+
+def load_tushare_stock_st_acceptance_record(
+    path: Path = DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Validate the zero-network stock_st entitlement/schema acceptance record."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError("Tushare stock_st acceptance-record fingerprint mismatch")
+    record = load_json_record(
+        path, kind="a_share_tushare_stock_st_source_acceptance_record"
+    )
+    protocol = record.get("protocol") or {}
+    contract_link = protocol.get("data_contract") or {}
+    overlap_link = protocol.get("mechanism_overlap_audit") or {}
+    evidence = record.get("bound_existing_evidence") or {}
+    manifest_link = evidence.get("combined_manifest") or {}
+    frame_link = evidence.get("stock_st_frame") or {}
+    audit = record.get("offline_revalidation") or {}
+    boundary = record.get("observation_boundary") or {}
+    decision = record.get("decision") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_existing_entitlement_schema_and_type_pending_full_history"
+        or contract_link.get("sha256") != TUSHARE_ST_RECOVERY_CONTRACT_SHA256
+        or overlap_link.get("sha256")
+        != "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
+        or manifest_link.get("sha256")
+        != "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849"
+        or frame_link.get("file_sha256")
+        != "6689ceeeecd1d13a5f5475a8c9993335e145052d146eb61014c86665d18010c3"
+        or frame_link.get("content_sha256")
+        != "2480f243cd46c2a71d6337c6e1f11f64a959788b16f077cfc8936c6fd6bc650c"
+        or frame_link.get("manifest_rows") != 211
+        or audit.get("provider_calls_issued") != 0
+        or tuple(audit.get("columns_read") or ())
+        != ("ts_code", "trade_date", "type", "provider", "dataset")
+        or audit.get("name_values_read") is not False
+        or audit.get("type_name_values_read") is not False
+        or audit.get("rows_revalidated") != 211
+        or audit.get("missing_required_rows") != 0
+        or audit.get("duplicate_stock_date_keys") != 0
+        or tuple(audit.get("observed_type_values") or ()) != ("ST",)
+        or boundary.get("historical_membership_rows_observed_for_dedicated_mechanism")
+        is not False
+        or boundary.get("membership_transition_derived") is not False
+        or boundary.get("consecutive_st_duration_derived") is not False
+        or boundary.get("factor_value_derived") is not False
+        or boundary.get("price_fields_loaded") != []
+        or boundary.get("forward_return_fields_read") is not False
+        or decision.get("source_entitlement_schema_and_literal_type_accepted")
+        is not True
+        or decision.get("full_history_authorized_only_under_exact_contract")
+        is not True
+        or decision.get("acceptance_call_may_be_repeated") is not False
+        or decision.get("static_st_membership_may_be_ranked") is not False
+        or decision.get("factor_or_return_stage_authorized") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("Tushare stock_st acceptance record changed")
+    load_tushare_st_recovery_contract(
+        resolve_record_path(str(contract_link.get("path") or ""))
+    )
+    overlap_path = resolve_record_path(str(overlap_link.get("path") or ""))
+    manifest_file = resolve_record_path(str(manifest_link.get("path") or ""))
+    frame_file = resolve_record_path(str(frame_link.get("path") or ""))
+    if (
+        not overlap_path.exists()
+        or file_digest(overlap_path) != overlap_link.get("sha256")
+        or not manifest_file.exists()
+        or file_digest(manifest_file) != manifest_link.get("sha256")
+        or not frame_file.exists()
+        or file_digest(frame_file) != frame_link.get("file_sha256")
+    ):
+        raise RichDataError("Tushare stock_st accepted evidence fingerprint changed")
+    manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
+    files = [
+        item for item in manifest.get("files") or [] if item.get("dataset") == "stock-st"
+    ]
+    if (
+        manifest.get("dataset") != "tushare_events"
+        or manifest.get("provider") != "tushare"
+        or manifest.get("acceptance_status")
+        != "pending_event_time_alignment_and_canonicalization"
+        or len(files) != 1
+        or files[0].get("path") != frame_link.get("path")
+        or files[0].get("sha256") != frame_link.get("content_sha256")
+        or int(files[0].get("rows") or -1) != 211
+    ):
+        raise RichDataError("Tushare stock_st accepted manifest identity changed")
+    frame = pd.read_parquet(
+        frame_file,
+        columns=["ts_code", "trade_date", "type", "provider", "dataset"],
+    )
+    if (
+        len(frame) != 211
+        or frame.isna().any().any()
+        or frame.duplicated(["ts_code", "trade_date"]).any()
+        or set(frame["trade_date"].astype(str)) != {"20260713"}
+        or set(frame["type"].astype(str)) != {"ST"}
+        or set(frame["provider"].astype(str)) != {"tushare"}
+        or set(frame["dataset"].astype(str)) != {"stock-st"}
+    ):
+        raise RichDataError("Tushare stock_st accepted frame integrity changed")
+    return record
+
+
+def load_tushare_st_recovery_no_return_spec(
+    path: Path = DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Validate the pre-history no-return ST-recovery capacity protocol."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_ST_RECOVERY_NO_RETURN_SPEC_SHA256:
+        raise RichDataError("Tushare ST-recovery no-return spec fingerprint mismatch")
+    spec = load_json_record(
+        path, kind="a_share_tushare_st_recovery_no_return_preregistration"
+    )
+    source = spec.get("source_protocol") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    policy = spec.get("no_return_gate_policy") or {}
+    comparisons = tuple(uniqueness.get("comparison_factors") or ())
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_single_session_source_acceptance_before_full_history_transitions_factor_values_comparison_fields_or_returns"
+        or (source.get("data_contract") or {}).get("sha256")
+        != TUSHARE_ST_RECOVERY_CONTRACT_SHA256
+        or (source.get("source_acceptance_record") or {}).get("sha256")
+        != TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256
+        or source.get("required_full_snapshot_dataset")
+        != "tushare_stock_st_membership"
+        or source.get("required_full_snapshot_status")
+        != "full_source_continuity_passed_pending_no_return_capacity_and_uniqueness"
+        or source.get("required_local_sessions") != 1699
+        or tuple(source.get("required_partition_years") or ())
+        != tuple(range(2019, 2026))
+        or tuple(source.get("required_canonical_columns") or ())
+        != TUSHARE_ST_MEMBERSHIP_COLUMNS
+        or source.get("factor") != "tushare_st_recovery_speed"
+        or source.get("formula") != "1 / prior_consecutive_st_sessions"
+        or source.get("direction") != "higher_is_better"
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("comparison_factor_count") != 54
+        or len(comparisons) != 54
+        or len(set(comparisons)) != 54
+        or uniqueness.get("minimum_pairwise_names_per_session") != 6
+        or uniqueness.get("minimum_pairwise_sessions_per_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or policy.get("capacity_must_run_before_comparison_fields") is not True
+        or policy.get("both_capacity_and_uniqueness_must_pass") is not True
+        or policy.get("one_completed_combined_audit_per_full_snapshot") is not True
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("Tushare ST-recovery no-return spec changed")
+    for label in ("mechanism_overlap_audit", "data_contract", "source_acceptance_record"):
+        link = source.get(label) or {}
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(f"Tushare ST-recovery source protocol changed: {label}")
+    return spec
+
+
+def load_tushare_st_recovery_source_chain() -> dict[str, Any]:
+    """Validate contract, offline acceptance, and no-return protocol before Token use."""
+
+    contract = load_tushare_st_recovery_contract()
+    record = load_tushare_stock_st_acceptance_record()
+    spec = load_tushare_st_recovery_no_return_spec()
+    return {"contract": contract, "acceptance_record": record, "spec": spec}
+
+
+def tushare_stock_st_full_snapshot_records() -> list[Path]:
+    """Return any local manifest that consumed the one-shot full source contract."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*tushare_stock_st_membership*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_stock_st_membership":
             records.append(path)
     return records
 
@@ -11035,6 +11521,351 @@ def sync_tushare_management_continuity_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def _fetch_tushare_stock_st_with_policy(
+    trade_date: dt.date,
+    *,
+    minimum_interval: float,
+    maximum_attempts: int,
+    retry_backoffs: list[float],
+    last_request_started: list[float | None],
+    request_attempts: list[int],
+) -> pd.DataFrame:
+    """Apply the frozen sequential throttle and bounded session retry policy."""
+
+    for attempt in range(maximum_attempts):
+        previous = last_request_started[0]
+        if previous is not None:
+            remaining = minimum_interval - (time.monotonic() - previous)
+            if remaining > 0.0:
+                time.sleep(remaining)
+        last_request_started[0] = time.monotonic()
+        request_attempts[0] += 1
+        try:
+            return fetch_tushare_stock_st_membership(trade_date)
+        except RichDataError:
+            if attempt + 1 >= maximum_attempts:
+                raise
+            time.sleep(retry_backoffs[attempt])
+    raise AssertionError("unreachable Tushare stock_st retry state")
+
+
+def sync_tushare_stock_st_membership(
+    *,
+    allow_large: bool = False,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Store the one-shot complete 2019-2025 ST membership without factor values."""
+
+    dataset = "tushare_stock_st_membership"
+    with RichDataProcessLock(METADATA_ROOT / ".tushare_stock_st_membership.lock"):
+        prior_records = tushare_stock_st_full_snapshot_records()
+        if prior_records:
+            raise RichDataError(
+                "Tushare stock_st full-source contract is already consumed: "
+                + ", ".join(str(path) for path in prior_records)
+            )
+        source_chain = load_tushare_st_recovery_source_chain()
+        contract = source_chain["contract"]
+        snapshot = contract["full_snapshot_contract"]
+        start = dt.date.fromisoformat(str(snapshot["requested_start"]))
+        end = dt.date.fromisoformat(str(snapshot["requested_end"]))
+        validate_range(start, end, allow_large=allow_large, unit_count=1)
+        resolved_calendar = calendar_path.expanduser().resolve()
+        expected_calendar = contract["local_context"]["calendar"]
+        if (
+            not resolved_calendar.exists()
+            or file_digest(resolved_calendar)
+            != str(expected_calendar["file_sha256"])
+        ):
+            raise RichDataError("Tushare stock_st local calendar fingerprint mismatch")
+        calendar = local_calendar_dates(start, end, resolved_calendar)
+        expected_sessions = int(snapshot["requested_local_sessions"])
+        if len(calendar) != expected_sessions:
+            raise RichDataError(
+                "Tushare stock_st local calendar session count changed: "
+                f"expected {expected_sessions}, observed {len(calendar)}"
+            )
+        if calendar.empty:
+            raise RichDataError("Tushare stock_st local calendar is empty")
+        require_provider("tushare")
+
+        run_id = new_run_id("tushare_stock_st_membership")
+        parent = RAW_ROOT / "tushare" / "stock_st" / "membership" / "snapshots"
+        run_root = parent / run_id
+        temporary_root = parent / f".{run_id}.partial"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(f"Tushare stock_st snapshot already exists: {run_id}")
+        temporary_root.mkdir(parents=True)
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        minimum_interval = float(snapshot["minimum_seconds_between_calls"])
+        maximum_attempts = int(snapshot["maximum_attempts_per_session"])
+        retry_backoffs = [
+            float(value) for value in snapshot["retry_backoff_seconds"]
+        ]
+        row_ceiling = int(
+            contract["source_selection"]["documented_maximum_rows_per_call"]
+        )
+        last_request_started: list[float | None] = [None]
+        request_attempts = [0]
+        logical_sessions_issued = 0
+        logical_sessions_completed = 0
+        source_rows_observed = 0
+        current_session: str | None = None
+        files: list[dict[str, Any]] = []
+        daily_quality: list[dict[str, Any]] = []
+        total_bj_excluded = 0
+        total_rows_written = 0
+        published_manifest: Path | None = None
+        try:
+            for year in range(start.year, end.year + 1):
+                partition_start = max(start, dt.date(year, 1, 1))
+                partition_end = min(end, dt.date(year, 12, 31))
+                partition_calendar = calendar[
+                    (calendar >= pd.Timestamp(partition_start))
+                    & (calendar <= pd.Timestamp(partition_end))
+                ]
+                if partition_calendar.empty:
+                    raise RichDataError(
+                        f"Tushare stock_st required {year} partition has no sessions"
+                    )
+                year_frames: list[pd.DataFrame] = []
+                year_source_rows = 0
+                year_bj_excluded = 0
+                year_rows_written = 0
+                for session in partition_calendar:
+                    session_date = pd.Timestamp(session).date()
+                    current_session = session_date.isoformat()
+                    logical_sessions_issued += 1
+                    raw = _fetch_tushare_stock_st_with_policy(
+                        session_date,
+                        minimum_interval=minimum_interval,
+                        maximum_attempts=maximum_attempts,
+                        retry_backoffs=retry_backoffs,
+                        last_request_started=last_request_started,
+                        request_attempts=request_attempts,
+                    )
+                    source_rows = int(len(raw))
+                    source_rows_observed += source_rows
+                    year_source_rows += source_rows
+                    if source_rows >= row_ceiling:
+                        raise RichDataError(
+                            f"Tushare stock_st {current_session} reached the strict "
+                            f"{row_ceiling}-row ceiling"
+                        )
+                    normalized, quality = canonicalize_tushare_stock_st_membership(
+                        raw, session_date
+                    )
+                    logical_sessions_completed += 1
+                    bj_excluded = int(quality["outside_target_bj_rows_excluded"])
+                    rows_written = int(quality["rows_written"])
+                    total_bj_excluded += bj_excluded
+                    total_rows_written += rows_written
+                    year_bj_excluded += bj_excluded
+                    year_rows_written += rows_written
+                    daily_quality.append(
+                        {
+                            "trade_date": current_session,
+                            "source_rows": source_rows,
+                            "outside_target_bj_rows_excluded": bj_excluded,
+                            "membership_rows_written": rows_written,
+                        }
+                    )
+                    year_frames.append(normalized)
+                partition_frame = (
+                    pd.concat(year_frames, ignore_index=True)
+                    .sort_values(["trade_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                if partition_frame.empty:
+                    raise RichDataError(
+                        f"Tushare stock_st {year} partition has no membership rows"
+                    )
+                if tuple(partition_frame.columns) != TUSHARE_ST_MEMBERSHIP_COLUMNS:
+                    raise RichDataError(
+                        f"Tushare stock_st {year} partition columns changed"
+                    )
+                if partition_frame.duplicated(["trade_date", "instrument"]).any():
+                    raise RichDataError(
+                        f"Tushare stock_st {year} partition has duplicate keys"
+                    )
+                destination = temporary_root / f"{year}.parquet"
+                atomic_write_frame(partition_frame, destination)
+                files.append(
+                    {
+                        "year": year,
+                        "requested_start": partition_start.isoformat(),
+                        "requested_end": partition_end.isoformat(),
+                        "logical_session_calls": int(len(partition_calendar)),
+                        "source_rows": year_source_rows,
+                        "outside_target_bj_rows_excluded": year_bj_excluded,
+                        "rows": year_rows_written,
+                        "path": manifest_path(run_root / destination.name),
+                        "sha256": frame_digest(partition_frame),
+                    }
+                )
+            if logical_sessions_completed != expected_sessions:
+                raise RichDataError(
+                    "Tushare stock_st full source omitted a calendar session: "
+                    f"expected {expected_sessions}, completed {logical_sessions_completed}"
+                )
+            if tuple(item["year"] for item in files) != tuple(
+                snapshot["required_partition_years"]
+            ):
+                raise RichDataError("Tushare stock_st annual partition set changed")
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": dataset,
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_start": start.isoformat(),
+                "requested_end": end.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_overlap_audit": contract["mechanism_identity"][
+                    "mechanism_overlap_audit"
+                ],
+                "source_acceptance": {
+                    "path": manifest_path(DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD),
+                    "sha256": file_digest(
+                        DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD
+                    ),
+                    "status": source_chain["acceptance_record"]["status"],
+                    "provider_calls_issued_by_dedicated_acceptance": 0,
+                },
+                "no_return_preregistration": {
+                    "path": manifest_path(DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC),
+                    "sha256": file_digest(DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC),
+                    "status": source_chain["spec"]["status"],
+                },
+                "local_calendar": {
+                    "path": manifest_path(resolved_calendar),
+                    "sha256": file_digest(resolved_calendar),
+                    "sessions_in_requested_range": int(len(calendar)),
+                },
+                "source_request": {
+                    "api": "stock_st",
+                    "frequency": "daily_membership",
+                    "request_mode": "one complete local trading session per call",
+                    "fields": list(TUSHARE_ST_MEMBERSHIP_RAW_FIELDS),
+                    "forbidden_fields_requested_or_stored": [],
+                    "logical_sessions_planned": expected_sessions,
+                    "logical_sessions_issued": logical_sessions_issued,
+                    "logical_sessions_completed": logical_sessions_completed,
+                    "provider_request_attempts": request_attempts[0],
+                    "minimum_seconds_between_calls": minimum_interval,
+                    "maximum_attempts_per_session": maximum_attempts,
+                    "strict_response_row_ceiling": row_ceiling,
+                    "credentials_logged_or_stored": False,
+                },
+                "files": files,
+                "source_quality": {
+                    "source_rows": source_rows_observed,
+                    "membership_rows_written": total_rows_written,
+                    "outside_target_bj_rows_excluded": total_bj_excluded,
+                    "minimum_source_rows_per_session": int(
+                        min(item["source_rows"] for item in daily_quality)
+                    ),
+                    "maximum_source_rows_per_session": int(
+                        max(item["source_rows"] for item in daily_quality)
+                    ),
+                    "empty_source_sessions": 0,
+                    "responses_at_row_ceiling": 0,
+                    "missing_required_rows": 0,
+                    "unsupported_type_rows": 0,
+                    "duplicate_stock_date_keys": 0,
+                    "daily": daily_quality,
+                },
+                "materialization_boundary": {
+                    "raw_provider_frames_persisted": False,
+                    "name_or_type_name_requested_or_persisted": False,
+                    "static_st_membership_ranked": False,
+                    "membership_transitions_derived": False,
+                    "prior_spell_durations_derived": False,
+                    "factor_values_derived_or_persisted": False,
+                },
+                "acceptance_status": snapshot["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            published_manifest = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, published_manifest)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                published_manifest = None
+                raise
+            return published_manifest
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            if published_manifest is None and run_root.exists():
+                shutil.rmtree(run_root, ignore_errors=True)
+            message = safe_exception_text(exc)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": dataset,
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "failed_trade_date": current_session,
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "source_acceptance": {
+                    "path": manifest_path(DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD),
+                    "sha256": file_digest(
+                        DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD
+                    ),
+                },
+                "no_return_preregistration": {
+                    "path": manifest_path(DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC),
+                    "sha256": file_digest(DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC),
+                },
+                "source_request": {
+                    "api": "stock_st",
+                    "fields": list(TUSHARE_ST_MEMBERSHIP_RAW_FIELDS),
+                    "logical_sessions_planned": expected_sessions,
+                    "logical_sessions_issued": logical_sessions_issued,
+                    "logical_sessions_completed": logical_sessions_completed,
+                    "provider_request_attempts": request_attempts[0],
+                    "source_rows_observed": source_rows_observed,
+                    "credentials_logged_or_stored": False,
+                },
+                "files": [],
+                "partial_snapshot_deleted": not temporary_root.exists(),
+                "final_snapshot_published": run_root.exists(),
+                "acceptance_status": "terminal_source_failure_stop_before_transitions_factor_values_capacity_uniqueness_or_returns",
+                "error_type": type(exc).__name__,
+                "error": message,
+                "raw_provider_frames_persisted": False,
+                "name_or_type_name_requested_or_persisted": False,
+                "membership_transitions_derived": False,
+                "prior_spell_durations_derived": False,
+                "factor_values_derived_or_persisted": False,
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}_source_failure.json"
+            atomic_write_json(failure, failure_path)
+            if isinstance(exc, RichDataError):
+                raise RichDataError(
+                    f"{message}; rejection_record={failure_path}"
+                ) from exc
+            raise
+
+
 def _fetch_tushare_gross_margin_with_policy(
     ts_code: str,
     report_period_start: dt.date,
@@ -15131,6 +15962,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the frozen privacy-minimized management-continuity acceptance",
     )
 
+    ts_stock_st = subparsers.add_parser(
+        "sync-tushare-stock-st-membership",
+        help="download the frozen 2019-2025 daily ST-membership source snapshot",
+    )
+    ts_stock_st.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+    ts_stock_st.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the one-shot 1,699-call sequential licensed request",
+    )
+
     ts_audit_opinion = subparsers.add_parser(
         "sync-tushare-audit-opinions",
         help="download the frozen 2019-2025 full-market audit-opinion snapshot",
@@ -15346,6 +16190,11 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_gross_margin_acceptance()
         elif args.command == "acceptance-tushare-management-continuity":
             manifest = sync_tushare_management_continuity_acceptance()
+        elif args.command == "sync-tushare-stock-st-membership":
+            manifest = sync_tushare_stock_st_membership(
+                allow_large=args.allow_large,
+                calendar_path=args.calendar_file,
+            )
         elif args.command == "sync-tushare-audit-opinions":
             manifest = sync_tushare_audit_opinions(
                 allow_large=args.allow_large,
@@ -15436,6 +16285,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-tushare-management-continuity": (
             "stored_no_return_management_continuity_acceptance"
+        ),
+        "sync-tushare-stock-st-membership": (
+            "stored_pending_no_return_st_recovery_capacity_and_uniqueness"
         ),
         "sync-tushare-audit-opinions": (
             "stored_pending_no_return_audit_opinion_capacity_and_uniqueness"

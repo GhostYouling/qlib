@@ -85,7 +85,27 @@ exit "$rc"
 
 对仍处于活动状态且文档明确批准的命令，继续使用第 4 节的包装方式：只替换其中的 Python 子命令，保留空值检查、`TUSHARE_TOKEN="$token"` 的单进程注入、退出码保存和 `unset token`。`--allow-large`（若某个活动合同明确要求）只表示显式确认长任务，不能放宽合同或后续门禁。运行期间不要启动第二份相同同步；若出现锁，先确认现有进程，不要直接删除锁文件。
 
-### 4.2 当前审计意见与毛利率分支状态
+### 4.2 当前获准的 `stock_st` 全量来源命令
+
+ST 恢复速度候选因子已经完成单日来源证据的离线复核，并冻结了 2019–2025 全交易日来源合同。当前获准的一次性命令仅下载三列静态成员来源（`trade_date`、`instrument`、`provider`），不会在本步骤生成 ST 退出事件、因子值、收益、聚合分数或选股结果：
+
+```zsh
+token="$(launchctl getenv TUSHARE_TOKEN)"
+if [[ -z "$token" ]]; then
+  echo "TUSHARE_TOKEN 未配置"
+  rc=1
+else
+  TUSHARE_TOKEN="$token" python scripts/a_share_rich_data.py \
+    sync-tushare-stock-st-membership --allow-large
+  rc=$?
+fi
+unset token
+exit "$rc"
+```
+
+该命令固定按本地 1,699 个交易日逐日、串行请求 `stock_st` 的 `ts_code,trade_date,type`，并原子发布七个年度分区。它是一次性来源合同：成功或开始访问供应商后的终止失败都会留下清单，之后必须先阅读清单，不能自行重跑。执行前可以先运行 `python scripts/a_share_rich_data.py status`；状态检查不会消费一次性合同。
+
+### 4.3 已终止分支状态
 
 `fina_audit` 审计意见分支的一次性来源验收和全量同步已经完成，但固定三日、非重叠队列只有 9 个同时具备两种二值结果的有效截面，未达到 200 个截面的无收益容量门槛。终止记录是 [`a_share_tushare_audit_opinion_research_record.json`](a_share_tushare_audit_opinion_research_record.json)。不要再次运行验收、全量同步或容量审计，也不要降低门槛、改变文本映射、延长事件有效期或继续读取收益。
 

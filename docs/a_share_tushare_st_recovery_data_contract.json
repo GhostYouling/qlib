@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_st_recovery_data_contract",
+  "status": "frozen_after_single_session_entitlement_schema_evidence_before_historical_membership_rows_transition_values_or_returns",
+  "preregistered_at": "2026-07-16T20:35:22Z",
+  "purpose": "Ingest one complete 2019-2025 historical daily ST-membership snapshot and no-return screen exactly one confirmed ST-exit remediation-duration mechanism for the fixed three-session A-share protocol without sweeping fields, text rules, confirmation windows, formulas, directions, dates, prices, or returns.",
+  "freeze_evidence": {
+    "official_stock_st_documentation_observed": true,
+    "official_permission_table_observed": true,
+    "mechanism_overlap_audit_completed": true,
+    "single_session_entitlement_and_raw_schema_observed": true,
+    "historical_membership_rows_observed_for_this_mechanism": false,
+    "membership_transitions_observed": false,
+    "prior_spell_durations_observed": false,
+    "factor_values_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "Faster remediation from risk-warning status, measured by a shorter complete prior ST spell and confirmed by two consecutive non-ST sessions, is hypothesized to produce a cleaner near-term information reset.",
+    "factor_family": "confirmed_distress_remediation_duration_event",
+    "relationship_to_static_st_eligibility": "Current ST membership remains an exclusion rule and is never ranked. This candidate exists only after the stock has left the ST list for two consecutive complete local sessions and measures the length of the immediately preceding observed spell.",
+    "relationship_to_existing_fundamental_and_event_factors": "The candidate uses no price, volume, valuation, statement magnitude, audit opinion text, ownership, insider transaction, analyst, institutional survey, unlock, lending, industry breadth, or order-flow value. Its state-transition duration is not a provider substitute for an existing accepted-price factor.",
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
+    },
+    "independent_factor_count": 1
+  },
+  "source_selection": {
+    "source": "Tushare Pro stock_st",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=397",
+    "official_permission_table": "https://tushare.pro/document/1?doc_id=290",
+    "minimum_permission_points": 3000,
+    "current_account_points": 3000,
+    "documented_history_start": "2016-01-01",
+    "documented_update_time_asia_shanghai": "09:20",
+    "documented_maximum_rows_per_call": 1000,
+    "frozen_request_scope": "one complete local trading session per call",
+    "why_this_source": "The interface publishes a historical daily membership list. Exact full-session coverage permits a code-only state transition and duration calculation without name parsing, risk-type text, price, or return fields."
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "stock_st",
+    "frequency": "daily_membership",
+    "request_mode": "one frozen local trading session per call",
+    "requested_fields": [
+      "ts_code",
+      "trade_date",
+      "type"
+    ],
+    "explicitly_forbidden_fields": [
+      "name",
+      "type_name",
+      "open",
+      "high",
+      "low",
+      "close",
+      "pre_close",
+      "price",
+      "pct_chg",
+      "volume",
+      "amount",
+      "turnover_rate",
+      "market_cap",
+      "score",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "already_accepted_source_evidence": {
+    "combined_event_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json",
+      "sha256": "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849",
+      "required_dataset": "tushare_events",
+      "required_status": "pending_event_time_alignment_and_canonicalization"
+    },
+    "stock_st_frame": {
+      "path": "data/raw/a_share/rich/tushare/events/snapshots/20260716T081652Z_tushare_events_6264ce79/stock-st/2026-07-13.parquet",
+      "file_sha256": "6689ceeeecd1d13a5f5475a8c9993335e145052d146eb61014c86665d18010c3",
+      "content_sha256": "2480f243cd46c2a71d6337c6e1f11f64a959788b16f077cfc8936c6fd6bc650c",
+      "rows": 211,
+      "trade_date": "2026-07-13",
+      "observed_columns": [
+        "ts_code",
+        "name",
+        "trade_date",
+        "type",
+        "type_name",
+        "provider",
+        "dataset",
+        "retrieved_at"
+      ],
+      "relevant_columns_to_revalidate": [
+        "ts_code",
+        "trade_date",
+        "type",
+        "provider",
+        "dataset"
+      ],
+      "name_or_type_name_values_may_be_read_by_dedicated_revalidation": false,
+      "missing_required_rows": 0,
+      "duplicate_stock_date_keys": 0,
+      "observed_type_values": [
+        "ST"
+      ]
+    },
+    "new_provider_acceptance_call_allowed": false,
+    "offline_revalidation_required_before_full_sync": true,
+    "evidence_proves_only": "the existing account entitlement, one-session schema, key completeness, unique stock-date keys, and observed exact ST type; it does not prove historical continuity, transition correctness, duration capacity, factor uniqueness, or returns"
+  },
+  "canonical_membership_policy": {
+    "stock_code_policy": "ts_code must be complete, six numeric digits plus a recognized exchange suffix. SH and SZ rows are retained; complete BJ rows are excluded and counted because the holding universe excludes Beijing shares. Missing, malformed, or any other suffix is fatal.",
+    "trade_date_policy": "Every row must equal the single requested local trading session exactly.",
+    "type_policy": "Every complete row must have type exactly equal to the literal ST. Missing, blank, or any other type is fatal; no synonym or name-based interpretation is allowed.",
+    "duplicate_policy": "A duplicate ts_code and trade_date key is fatal; no source row is deduplicated.",
+    "response_completeness_policy": "Every requested local session must return at least one row and strictly fewer than 1000 rows. Empty, failed, missing-session, or exactly-1000-row responses invalidate the entire snapshot.",
+    "output_columns": [
+      "trade_date",
+      "instrument",
+      "provider"
+    ],
+    "raw_provider_frame_persisted": false,
+    "name_or_type_name_persisted": false,
+    "source_type_persisted": false,
+    "factor_value_persisted_by_full_sync": false
+  },
+  "transition_and_factor_policy": {
+    "membership_exit_definition": "For complete consecutive local sessions t-1, t, and t+1, the instrument is present at t-1 and absent at both t and t+1.",
+    "confirmation_session": "t+1",
+    "availability": "confirmation-session close for entry at the next local session open",
+    "same_first_absence_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "prior_spell_definition": "The number of uninterrupted complete local sessions ending at t-1 on which the instrument is present in every membership list.",
+    "left_censor_policy": "If the spell includes the first requested 2019 session, its duration is incomplete and that exit is excluded and counted.",
+    "right_censor_policy": "An ST spell still active on the final requested session has no exit event and remains unmaterialized.",
+    "one_session_absence_policy": "A one-session absence followed by immediate ST presence is not a confirmed exit and produces no event.",
+    "factor_name": "tushare_st_recovery_speed",
+    "raw_column": "prior_consecutive_st_sessions",
+    "formula": "1 / prior_consecutive_st_sessions",
+    "direction": "higher_is_better",
+    "valid_raw_measure": "a positive integer from a fully observed, non-left-censored spell",
+    "clipping_winsorization_log_offset_inversion_imputation_or_duration_bucket": null,
+    "absent_event_policy": "missing; never zero",
+    "score_formula_if_all_later_gates_pass": "cross_sectional_percentile_rank(tushare_st_recovery_speed)"
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "file_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+      "range_clipped_2019_2025_sha256": "2b3a2fba2ebb6938853fe9c6e1f6649517bef844e0ee6347a032e2b74945394c",
+      "range_clipped_intervals": 4794
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "file_sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "file_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "range_clipped_2019_2025_sha256": "c408af553ff2aa780f302eda8bc860d06d875a1a34c6bf37cd1341c6f890623c",
+      "range_clipped_sessions": 1699
+    },
+    "accepted_price_basis_for_later_return_stage_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "status": "passed"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    }
+  },
+  "offline_source_acceptance_protocol": {
+    "provider_calls": 0,
+    "fixed_trade_date": "2026-07-13",
+    "required_rows": 211,
+    "required_content_sha256": "2480f243cd46c2a71d6337c6e1f11f64a959788b16f077cfc8936c6fd6bc650c",
+    "required_checks": [
+      "revalidate the combined manifest and frame fingerprints before reading the frame",
+      "read only ts_code, trade_date, type, provider, and dataset from the accepted frame",
+      "require exactly 211 rows, one exact trade date, provider tushare, dataset stock-st, no missing required value, no duplicate stock-date key, and type exactly ST",
+      "read no name or type_name value, request no provider row, derive no transition or duration, and load no price or return"
+    ],
+    "success_status": "accepted_existing_entitlement_schema_and_type_pending_full_history",
+    "failure_policy": "record the mismatch and stop without repairing, replacing, or re-requesting the evidence"
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_stock_st_membership",
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31",
+    "requested_local_sessions": 1699,
+    "provider_call_partition": "one complete local trading session per call",
+    "provider_calls": 1699,
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_session": 3,
+    "retry_backoff_seconds": [
+      2,
+      5
+    ],
+    "requests_are_sequential": true,
+    "response_row_ceiling_is_strict": true,
+    "output_partition": "one Parquet per calendar year, published together through one hidden temporary snapshot",
+    "required_partition_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "required_output_columns": [
+      "trade_date",
+      "instrument",
+      "provider"
+    ],
+    "required_source_checks": [
+      "all 1699 calendar sessions are requested exactly once successfully after any in-call transient retry",
+      "every response has positive rows and strictly fewer than 1000 rows",
+      "every row has a valid code, exact requested date, literal ST type, unique stock-date key, and provider identity",
+      "every required annual partition has positive rows and an immutable content fingerprint",
+      "no final directory or manifest is published until all sessions and partitions pass",
+      "name, type_name, prices, factor values, scores, and returns are never requested or persisted"
+    ],
+    "success_status": "full_source_continuity_passed_pending_no_return_capacity_and_uniqueness",
+    "failed_full_source_policy": "delete the complete temporary snapshot, publish no annual partition, write one no-return terminal source record, and stop without skipping, filling, shortening, mixing providers, changing fields, re-requesting detail, deriving transitions, reading prices or returns, or running another full attempt",
+    "one_shot_policy": "The exact full-source contract may produce one terminal success manifest or one terminal source-failure record."
+  },
+  "downstream_no_return_gate": {
+    "factor_values_may_be_derived_only_after_full_source_success": true,
+    "capacity_before_comparison_fields": true,
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "uniqueness_comparison_factor_count": 54,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 6,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "return_protocol_may_be_frozen_only_after_both_capacity_and_uniqueness_pass": true,
+    "generic_factor_diagnostic_allowed_before_new_return_preregistration": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false
+  },
+  "prohibited_actions": [
+    "request or persist name or type_name",
+    "rank a current ST binary or type text",
+    "treat an empty or missing session as a non-ST list",
+    "accept a response at the documented row ceiling",
+    "infer an exit after only one absent session",
+    "use a left-censored spell duration",
+    "alter dates, fields, confirmation, duration formula, direction, event age, capacity, uniqueness, quality, or listing gates after historical rows or factor values are observed",
+    "read price or return, aggregate, score, select, size, order, or justify Level-2 before a separately frozen return protocol is authorized"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

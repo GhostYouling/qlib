@@ -2796,6 +2796,276 @@ def test_tushare_management_continuity_acceptance_failure_is_terminal_before_pri
     assert calls == ["000001.SZ"]
 
 
+def stock_st_row(ts_code: str, trade_date: dt.date, source_type: str = "ST") -> dict:
+    return {
+        "ts_code": ts_code,
+        "trade_date": trade_date.strftime("%Y%m%d"),
+        "type": source_type,
+    }
+
+
+def test_tushare_stock_st_protocol_documents_and_request_fields_are_frozen(monkeypatch):
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT)
+        == RICH.TUSHARE_ST_RECOVERY_CONTRACT_SHA256
+    )
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD)
+        == RICH.TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD_SHA256
+    )
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC)
+        == RICH.TUSHARE_ST_RECOVERY_NO_RETURN_SPEC_SHA256
+    )
+    contract = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT.read_text(encoding="utf-8")
+    )
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_ST_MEMBERSHIP_RAW_FIELDS
+    )
+    assert contract["transition_and_factor_policy"]["formula"] == (
+        "1 / prior_consecutive_st_sessions"
+    )
+    assert contract["forward_return_fields_read"] is False
+
+    captured = []
+
+    class Pro:
+        def stock_st(self, **kwargs):
+            captured.append(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_stock_st_membership(dt.date(2026, 7, 13))
+    assert captured == [
+        {
+            "trade_date": "20260713",
+            "fields": "ts_code,trade_date,type",
+        }
+    ]
+    assert set(captured[0]["fields"].split(",")) == {
+        "ts_code",
+        "trade_date",
+        "type",
+    }
+
+
+def test_tushare_stock_st_canonicalization_is_membership_only_and_excludes_bj():
+    trade_date = dt.date(2024, 4, 30)
+    raw = pd.DataFrame(
+        [
+            stock_st_row("600001.SH", trade_date),
+            stock_st_row("000001.SZ", trade_date),
+            stock_st_row("430001.BJ", trade_date),
+        ],
+        columns=RICH.TUSHARE_ST_MEMBERSHIP_RAW_FIELDS,
+    )
+    normalized, quality = RICH.canonicalize_tushare_stock_st_membership(
+        raw, trade_date
+    )
+    assert normalized.columns.tolist() == list(RICH.TUSHARE_ST_MEMBERSHIP_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600001", "SZ000001"]
+    assert normalized["provider"].tolist() == ["tushare", "tushare"]
+    assert quality == {
+        "input_rows": 3,
+        "outside_target_bj_rows_excluded": 1,
+        "rows_written": 2,
+    }
+    assert not (
+        {"name", "type_name", "type", "factor", "close", "return"}
+        & set(normalized.columns)
+    )
+
+
+@pytest.mark.parametrize(
+    ("mutation", "error"),
+    [
+        ("empty", "empty"),
+        ("unexpected_name", "outside the frozen whitelist"),
+        ("wrong_type", "outside the frozen literal ST"),
+        ("duplicate", "duplicate stock-date keys"),
+        ("wrong_date", "outside the exact request"),
+        ("malformed_code", "malformed key/type rows"),
+    ],
+)
+def test_tushare_stock_st_canonicalization_rejects_incomplete_source(
+    mutation, error
+):
+    trade_date = dt.date(2024, 4, 30)
+    raw = pd.DataFrame(
+        [stock_st_row("600001.SH", trade_date)],
+        columns=RICH.TUSHARE_ST_MEMBERSHIP_RAW_FIELDS,
+    )
+    if mutation == "empty":
+        raw = raw.iloc[0:0]
+    elif mutation == "unexpected_name":
+        raw["name"] = "forbidden"
+    elif mutation == "wrong_type":
+        raw.loc[0, "type"] = "*ST"
+    elif mutation == "duplicate":
+        raw = pd.concat([raw, raw], ignore_index=True)
+    elif mutation == "wrong_date":
+        raw.loc[0, "trade_date"] = "20240429"
+    elif mutation == "malformed_code":
+        raw.loc[0, "ts_code"] = "600001"
+    with pytest.raises(RICH.RichDataError, match=error):
+        RICH.canonicalize_tushare_stock_st_membership(raw, trade_date)
+
+
+def configure_stock_st_full_test(tmp_path, monkeypatch):
+    contract = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT.read_text(encoding="utf-8")
+    )
+    acceptance = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_ST_RECOVERY_ACCEPTANCE_RECORD.read_text(
+            encoding="utf-8"
+        )
+    )
+    spec = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_ST_RECOVERY_NO_RETURN_SPEC.read_text(encoding="utf-8")
+    )
+    calendar_path = tmp_path / "calendar.txt"
+    calendar_path.write_text(
+        "2019-01-02\n2019-01-03\n2020-01-02\n2020-01-03\n",
+        encoding="utf-8",
+    )
+    snapshot = contract["full_snapshot_contract"]
+    snapshot["requested_start"] = "2019-01-02"
+    snapshot["requested_end"] = "2020-01-03"
+    snapshot["requested_local_sessions"] = 4
+    snapshot["provider_calls"] = 4
+    snapshot["minimum_seconds_between_calls"] = 0.0
+    snapshot["maximum_attempts_per_session"] = 1
+    snapshot["retry_backoff_seconds"] = []
+    snapshot["required_partition_years"] = [2019, 2020]
+    contract["local_context"]["calendar"] = {
+        "path": str(calendar_path),
+        "file_sha256": RICH.file_digest(calendar_path),
+    }
+    source_chain = {
+        "contract": contract,
+        "acceptance_record": acceptance,
+        "spec": spec,
+    }
+    monkeypatch.setattr(
+        RICH, "load_tushare_st_recovery_source_chain", lambda: source_chain
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "new_run_id",
+        lambda prefix: "20260717T000000Z_tushare_stock_st_membership_test",
+    )
+    return calendar_path
+
+
+def test_tushare_stock_st_full_sync_is_atomic_membership_only_and_one_shot(
+    tmp_path, monkeypatch
+):
+    calendar_path = configure_stock_st_full_test(tmp_path, monkeypatch)
+    calls = []
+
+    def fake_fetch(trade_date, **kwargs):
+        calls.append(trade_date)
+        return pd.DataFrame(
+            [
+                stock_st_row("600001.SH", trade_date),
+                stock_st_row("000001.SZ", trade_date),
+                stock_st_row("430001.BJ", trade_date),
+            ],
+            columns=RICH.TUSHARE_ST_MEMBERSHIP_RAW_FIELDS,
+        )
+
+    monkeypatch.setattr(RICH, "_fetch_tushare_stock_st_with_policy", fake_fetch)
+    manifest_path = RICH.sync_tushare_stock_st_membership(
+        allow_large=True, calendar_path=calendar_path
+    )
+    manifest = RICH.json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest["acceptance_status"] == (
+        "full_source_continuity_passed_pending_no_return_capacity_and_uniqueness"
+    )
+    assert manifest["source_request"]["logical_sessions_completed"] == 4
+    assert manifest["source_request"]["fields"] == [
+        "ts_code",
+        "trade_date",
+        "type",
+    ]
+    assert manifest["source_request"]["credentials_logged_or_stored"] is False
+    assert manifest["source_quality"]["outside_target_bj_rows_excluded"] == 4
+    assert len(manifest["files"]) == 2
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert manifest["selection_or_promotion_allowed"] is False
+    for item in manifest["files"]:
+        frame = pd.read_parquet(RICH.resolve_record_path(item["path"]))
+        assert frame.columns.tolist() == list(RICH.TUSHARE_ST_MEMBERSHIP_COLUMNS)
+        assert not (
+            {"name", "type_name", "type", "factor", "close", "return"}
+            & set(frame.columns)
+        )
+    assert len(calls) == 4
+
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_st_recovery_source_chain",
+        lambda: pytest.fail("one-shot guard must run before source-chain access"),
+    )
+    with pytest.raises(RICH.RichDataError, match="already consumed"):
+        RICH.sync_tushare_stock_st_membership(
+            allow_large=True, calendar_path=calendar_path
+        )
+    assert len(calls) == 4
+
+
+def test_tushare_stock_st_full_sync_failure_is_atomic_and_terminal(
+    tmp_path, monkeypatch
+):
+    calendar_path = configure_stock_st_full_test(tmp_path, monkeypatch)
+    calls = []
+
+    def fake_fetch(trade_date, **kwargs):
+        calls.append(trade_date)
+        source_type = "*ST" if len(calls) == 2 else "ST"
+        return pd.DataFrame(
+            [stock_st_row("600001.SH", trade_date, source_type)],
+            columns=RICH.TUSHARE_ST_MEMBERSHIP_RAW_FIELDS,
+        )
+
+    monkeypatch.setattr(RICH, "_fetch_tushare_stock_st_with_policy", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="outside the frozen literal ST"):
+        RICH.sync_tushare_stock_st_membership(
+            allow_large=True, calendar_path=calendar_path
+        )
+    records = RICH.tushare_stock_st_full_snapshot_records()
+    assert len(records) == 1
+    failure = RICH.json.loads(records[0].read_text(encoding="utf-8"))
+    assert failure["source_request"]["logical_sessions_issued"] == 2
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["final_snapshot_published"] is False
+    assert failure["files"] == []
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+    assert not list((tmp_path / "raw").rglob("*.parquet"))
+
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_st_recovery_source_chain",
+        lambda: pytest.fail("terminal guard must run before source-chain access"),
+    )
+    with pytest.raises(RICH.RichDataError, match="already consumed"):
+        RICH.sync_tushare_stock_st_membership(
+            allow_large=True, calendar_path=calendar_path
+        )
+    assert len(calls) == 2
+
+
 def test_tushare_gross_margin_tracked_acceptance_blocks_before_provider(monkeypatch):
     monkeypatch.setattr(
         RICH,
