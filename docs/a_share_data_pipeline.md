@@ -1650,6 +1650,16 @@ unset token
 
 这一方向现已正式终止。完整记录为 `docs/a_share_tushare_top10_float_concentration_source_acceptance_record.json`（SHA‑256 `9396a687aeae176097006395406ab79d74a015b1d9392f89023658b438bd2cdf`）。不得换股票或报告期、删除/填补两条异常、改用总股本比例/持股数/持股变化/股东类型、放松恰好十名和紧邻季度规则，也不得运行全历史、容量、唯一性、收益、聚合、当前评分、选股、仓位、订单或据此采购 Level‑2。该分支不向任何组合贡献字段。
 
+### Tushare 经营现金流/归母净利润（来源验收通过，仅允许继续无收益门禁）
+
+新的独立会计质量候选在任何 `income`、`cashflow` 行、权限结果、因子值或收益出现前冻结于 `docs/a_share_tushare_cash_conversion_data_contract.json`（SHA‑256 `54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01`）。唯一因子是累计合并口径 `n_cashflow_act / n_income_attr_p`，高值固定为更好；只接受一般企业 `comp_type=1` 和 `report_type=1`。任一调整报表类型会剔除该接口整期，不同的一号报表版本会剔除该期，只有公告日、实际公告日和指标完全相同的语义重复行可以显式折叠。`update_flag` 只计数，不选值；归母净利润必须严格为正，经营现金流可为负。信号日期取两张表 `f_ann_date` 的较晚者，只能在下一本地交易日开盘使用，最长保留三个自然日。
+
+实现先通过 8 个聚焦测试、完整 **354** 个数据采集测试、Python 编译、CLI 和 diff 检查。无网络预检重新验证了合同和 10 个本地上下文指纹，确认既有验收记录为零且未读取价格或收益。唯一允许的验收随后按 `600519.SH`、`000333.SZ`、`300750.SZ` 各调用一次 `income` 和 `cashflow`，正好 6 次；各接口分别返回 11/15、12/14、11/13 行，共 76 行，全部低于单次 100 行上限。版本规则为每只股票保留 10 个可连接报告期，共发布 30 行因子；16 条完全相同的语义重复行被显式折叠，没有调整期、版本歧义、缺失指标、非正利润分母、非有限现金流或重复因子键。因子范围为 0.2889472485 至 2.6982034084。原始财务报表帧没有落盘，价格字段为空且 `forward_return_fields_read=false`。
+
+接受清单为 `data/metadata/rich_data/runs/20260716T135952Z_tushare_cash_conversion_acceptance_c829bf52.json`（SHA‑256 `8307b86d53a41a3fb2d5c827c9a2c1f356022ae8dd16d2f781b63ba2875af5b1`），已发布因子帧 SHA‑256 为 `0bd8b2b807ce4bbbd56285367267efa0b190ac31c93382a11c039fbda1093dcb`。跟踪记录为 `docs/a_share_tushare_cash_conversion_source_acceptance_record.json`（SHA‑256 `615f0b794c165569b3d89444c594ee16fc60c628b36f0f834c759e09167fe962`）。来源验收已永久消费，不得换股票、日期、字段或版本再次验收。它现在只允许按冻结合同顺序实现和运行 2019–2025 全量来源、无收益容量与 54 字段近同义门；尚未证明历史收益，也不得聚合、评分、选股、定仓、下单或据此采购 Level‑2。
+
+完整 Token 配置、无回显验证和旧进程的单次透传方式见 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md)。通过既有来源链验证后，唯一全量来源命令为 `sync-tushare-cash-conversion --allow-large`；Token 只能用该文档中的本地临时变量包装注入。该命令固定为 2019–2025 点时范围并原子发布年度分区，执行期间不得启动第二份同步，也不得用 `--allow-large` 绕过来源合同或后续无收益门禁。
+
 ### 必经验收流程
 
 只对一个已收盘交易日和四只代表性股票运行验收。`acceptance` 会保存原始快照，并自动检查字段、非负成交量/成交额、常规交易时段、同日 OHLC/收盘比值，以及与本地日线的成交额和成交量比值：

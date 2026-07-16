@@ -170,3 +170,40 @@ field, relax the exact-ten or consecutive-quarter rules, run history,
 capacity, uniqueness, returns, scoring, selection, sizing, orders, or justify
 Level-2.  Plaintext holder names and the rejected raw frames were not stored;
 the unavailable per-field breakdown does not authorize a retry.
+
+The next independent Tushare accounting mechanism has passed its one-shot
+source acceptance.  Its pre-row contract is
+`docs/a_share_tushare_cash_conversion_data_contract.json` (SHA-256
+`54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01`).
+The sole factor is higher `n_cashflow_act / n_income_attr_p`, using only
+general-industry cumulative consolidated `income` and `cashflow` rows.  Any
+adjustment report type excludes that endpoint-period, differing type-one
+versions exclude it, exact semantic duplicates are counted and collapsed,
+`update_flag` never selects a value, and attributable net income must be
+strictly positive.  Availability starts at the first local open strictly
+after the later accepted `f_ann_date`, with a three-calendar-day age.
+
+After the accepted source chain has been verified, the only full-source
+command is `sync-tushare-cash-conversion --allow-large`.  Forward the locally
+configured token with the temporary-variable wrapper documented in
+`docs/a_share_tushare_token_setup.md`; never put the token literal in this
+command, and never run two copies concurrently.  The command is fixed to the
+2019--2025 PIT universe and calendar and publishes annual partitions only
+after the complete sequential run succeeds.
+
+Eight focused tests, all 354 data-collector tests, and ten local no-network
+context fingerprints passed before the one allowed provider run.  The exact
+six calls for `600519.SH`, `000333.SZ`, and `300750.SZ` returned 76 source rows
+and retained ten joined periods per symbol.  Sixteen exact semantic duplicate
+rows were collapsed; no adjustment, ambiguous-version, missing-metric,
+nonpositive-income, nonfinite-cashflow, or duplicate-factor period remained.
+The accepted 30-row factor frame has SHA-256
+`0bd8b2b807ce4bbbd56285367267efa0b190ac31c93382a11c039fbda1093dcb`.
+Preserve `docs/a_share_tushare_cash_conversion_source_acceptance_record.json`
+(SHA-256 `615f0b794c165569b3d89444c594ee16fc60c628b36f0f834c759e09167fe962`).
+Do not invoke `acceptance-tushare-cash-conversion` again or change its symbols,
+dates, fields, version policy, formula, direction, or age.  This success only
+permits the contract-fixed sequential 2019--2025 source snapshot followed by
+source-completeness, capacity, and 54-field uniqueness gates without prices or
+returns.  It does not permit aggregation, scoring, selection, sizing, orders,
+or Level-2 intake.

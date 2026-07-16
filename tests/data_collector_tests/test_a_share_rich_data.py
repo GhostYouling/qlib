@@ -27,8 +27,12 @@ def complete_minute_frame(
     provider: str = "tushare",
 ) -> pd.DataFrame:
     times = RICH.expected_minute_times(bar_label)
-    datetimes = [pd.Timestamp.combine(pd.Timestamp(trade_date).date(), value) for value in times]
-    close = pd.Series([10.0 + index * 0.001 for index in range(len(datetimes))], dtype=float)
+    datetimes = [
+        pd.Timestamp.combine(pd.Timestamp(trade_date).date(), value) for value in times
+    ]
+    close = pd.Series(
+        [10.0 + index * 0.001 for index in range(len(datetimes))], dtype=float
+    )
     volume = pd.Series([100.0 + index for index in range(len(datetimes))], dtype=float)
     return pd.DataFrame(
         {
@@ -86,7 +90,8 @@ def complete_baostock_5m_frame(trade_dates: list[str]) -> pd.DataFrame:
     times = RICH.expected_minute_times("end", "5m")
     for trade_date in trade_dates:
         datetimes = [
-            pd.Timestamp.combine(pd.Timestamp(trade_date).date(), value) for value in times
+            pd.Timestamp.combine(pd.Timestamp(trade_date).date(), value)
+            for value in times
         ]
         close = pd.Series(
             [10.0 + index * 0.001 for index in range(len(datetimes))], dtype=float
@@ -229,10 +234,22 @@ def test_advisory_lock_status_distinguishes_active_and_inactive_marker(tmp_path)
 def test_baostock_5m_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_baostock_5m_contract()
     assert contract["source"]["requested_fields"] == [
-        "date", "time", "code", "open", "high", "low", "close", "volume", "amount", "adjustflag"
+        "date",
+        "time",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "adjustflag",
     ]
     assert contract["formal_acceptance"]["trade_date"] == "2026-07-10"
-    assert contract["timestamp_contract"]["expected_bars_per_complete_regular_session"] == 48
+    assert (
+        contract["timestamp_contract"]["expected_bars_per_complete_regular_session"]
+        == 48
+    )
     assert contract["forward_return_fields_read"] is False
 
     changed = RICH.json.loads(RICH.DEFAULT_BAOSTOCK_5M_CONTRACT.read_text())
@@ -250,12 +267,34 @@ def test_baostock_5m_request_uses_only_raw_frozen_fields(monkeypatch):
         error_code = "0"
         error_msg = "success"
         fields = [
-            "date", "time", "code", "open", "high", "low", "close", "volume", "amount", "adjustflag"
+            "date",
+            "time",
+            "code",
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume",
+            "amount",
+            "adjustflag",
         ]
 
         def __init__(self):
             self.rows = iter(
-                [["2026-07-10", "20260710093500000", "sh.600519", "10", "10", "10", "10", "100", "1000", "3"]]
+                [
+                    [
+                        "2026-07-10",
+                        "20260710093500000",
+                        "sh.600519",
+                        "10",
+                        "10",
+                        "10",
+                        "10",
+                        "100",
+                        "1000",
+                        "3",
+                    ]
+                ]
             )
             self.current = None
 
@@ -332,11 +371,14 @@ def test_baostock_5m_zero_price_suspension_placeholders_are_counted_and_ineligib
 
     zero_activity = complete_baostock_5m_frame(["2024-07-19"])
     zero_activity[["volume", "amount"]] = 0.0
-    assert RICH.validate_baostock_5m_partition(
-        zero_activity,
-        ("600519", "2024-07-19", "2024-07-19", 2024),
-        pd.DatetimeIndex(["2024-07-19"]),
-    ) == []
+    assert (
+        RICH.validate_baostock_5m_partition(
+            zero_activity,
+            ("600519", "2024-07-19", "2024-07-19", 2024),
+            pd.DatetimeIndex(["2024-07-19"]),
+        )
+        == []
+    )
 
 
 def test_baostock_5m_source_chain_and_pit_year_partitioning_are_frozen():
@@ -344,7 +386,10 @@ def test_baostock_5m_source_chain_and_pit_year_partitioning_are_frozen():
     suspension = RICH.load_baostock_5m_suspension_audit()
     assert chain["acceptance"]["run_id"] == "20260714T210140Z_baostock_5m_be9dfe63"
     assert chain["alignment"]["bar_timestamp_label"] == "end"
-    assert suspension["post_change_partition_verification"]["canonical_rows_written"] == 11138
+    assert (
+        suspension["post_change_partition_verification"]["canonical_rows_written"]
+        == 11138
+    )
     assert suspension["forward_return_fields_read"] is False
     intervals = pd.DataFrame(
         {
@@ -385,13 +430,13 @@ def test_baostock_blacklist_error_is_not_retried(monkeypatch):
         def query_history_k_data_plus(self, *args, **kwargs):
             nonlocal calls
             calls += 1
-            return SimpleNamespace(error_code="1", error_msg="黑名单用户，请与管理员联系")
+            return SimpleNamespace(
+                error_code="1", error_msg="黑名单用户，请与管理员联系"
+            )
 
     monkeypatch.setattr(RICH, "_BAOSTOCK_WORKER_CLIENT", BlacklistedClient())
     with pytest.raises(RICH.RichDataError, match="after 1 attempt"):
-        RICH.fetch_baostock_5m_request_worker(
-            ("600519", "2020-01-01", "2025-12-31")
-        )
+        RICH.fetch_baostock_5m_request_worker(("600519", "2020-01-01", "2025-12-31"))
     assert calls == 1
 
 
@@ -427,7 +472,9 @@ def test_baostock_restoration_probe_must_pass_and_remain_recent(tmp_path, monkey
 def test_jqdata_moneyflow_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_jqdata_moneyflow_contract()
     assert contract["factor"]["name"] == "jqdata_large_order_net_inflow_share"
-    assert contract["source"]["requested_fields"] == list(RICH.JQDATA_MONEYFLOW_RAW_FIELDS)
+    assert contract["source"]["requested_fields"] == list(
+        RICH.JQDATA_MONEYFLOW_RAW_FIELDS
+    )
     assert contract["source_selection"]["separate_product_entitlement_required"] is True
     assert contract["forward_return_fields_read"] is False
 
@@ -465,7 +512,9 @@ def test_jqdata_moneyflow_request_uses_only_frozen_fields(monkeypatch):
     assert captured["frequency"] == "daily"
     assert captured["data_type"] == "money"
     assert captured["fields"] == list(RICH.JQDATA_MONEYFLOW_RAW_FIELDS)
-    forbidden = set(RICH.load_jqdata_moneyflow_contract()["source"]["explicitly_forbidden_fields"])
+    forbidden = set(
+        RICH.load_jqdata_moneyflow_contract()["source"]["explicitly_forbidden_fields"]
+    )
     assert set(captured["fields"]).isdisjoint(forbidden)
 
 
@@ -507,7 +556,9 @@ def test_jqdata_moneyflow_normalization_derives_ratio_and_excludes_missing_zero(
     )
     assert normalized.columns.tolist() == list(RICH.JQDATA_MONEYFLOW_COLUMNS)
     assert normalized["instrument"].tolist() == ["SZ000001"]
-    assert normalized["jqdata_large_order_net_inflow_share"].item() == pytest.approx(0.4)
+    assert normalized["jqdata_large_order_net_inflow_share"].item() == pytest.approx(
+        0.4
+    )
     assert quality == {
         "input_rows": 3,
         "missing_rows_excluded": 1,
@@ -534,7 +585,9 @@ def test_jqdata_moneyflow_normalization_rejects_negative_raw_amount():
         )
 
 
-def test_jqdata_moneyflow_sync_writes_immutable_no_price_snapshot(tmp_path, monkeypatch):
+def test_jqdata_moneyflow_sync_writes_immutable_no_price_snapshot(
+    tmp_path, monkeypatch
+):
     contract = RICH.json.loads(RICH.DEFAULT_JQDATA_MONEYFLOW_CONTRACT.read_text())
     contract["snapshot_contract"]["development_start"] = "2024-04-29"
     contract["snapshot_contract"]["development_end"] = "2024-04-30"
@@ -592,7 +645,9 @@ def test_jqdata_moneyflow_sync_writes_immutable_no_price_snapshot(tmp_path, monk
     )
     manifest = RICH.json.loads(manifest_path.read_text())
     assert manifest["dataset"] == "jqdata_moneyflow_pro_daily"
-    assert manifest["source_request"]["fields"] == list(RICH.JQDATA_MONEYFLOW_RAW_FIELDS)
+    assert manifest["source_request"]["fields"] == list(
+        RICH.JQDATA_MONEYFLOW_RAW_FIELDS
+    )
     assert manifest["source_request"]["credentials_logged_or_stored"] is False
     assert manifest["source_acceptance"]["run_id"] == "accepted"
     assert manifest["point_in_time_universe"] == {
@@ -607,7 +662,10 @@ def test_jqdata_moneyflow_sync_writes_immutable_no_price_snapshot(tmp_path, monk
     }
     assert manifest["price_fields_loaded"] == []
     assert manifest["forward_return_fields_read"] is False
-    assert manifest["acceptance_status"] == "full_source_coverage_failed_stop_before_prices"
+    assert (
+        manifest["acceptance_status"]
+        == "full_source_coverage_failed_stop_before_prices"
+    )
     stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
     assert stored.columns.tolist() == list(RICH.JQDATA_MONEYFLOW_COLUMNS)
     assert len(stored) == 4
@@ -615,7 +673,9 @@ def test_jqdata_moneyflow_sync_writes_immutable_no_price_snapshot(tmp_path, monk
 
 
 def test_jqdata_moneyflow_full_sync_requires_fingerprinted_acceptance(tmp_path):
-    with pytest.raises(RICH.RichDataError, match="run acceptance-jqdata-moneyflow first"):
+    with pytest.raises(
+        RICH.RichDataError, match="run acceptance-jqdata-moneyflow first"
+    ):
         RICH.load_jqdata_moneyflow_acceptance(tmp_path)
 
     amounts = {f"{field}_amount": 1.0 for field in RICH.JQDATA_MONEYFLOW_RAW_FIELDS}
@@ -664,9 +724,12 @@ def test_tushare_moneyflow_contract_is_fingerprint_frozen(tmp_path):
     assert contract["source"]["requested_fields"] == list(
         RICH.TUSHARE_MONEYFLOW_RAW_FIELDS
     )
-    assert contract["mechanism_identity"][
-        "jqdata_and_tushare_may_be_combined_as_independent_factors"
-    ] is False
+    assert (
+        contract["mechanism_identity"][
+            "jqdata_and_tushare_may_be_combined_as_independent_factors"
+        ]
+        is False
+    )
     assert contract["forward_return_fields_read"] is False
 
     changed = RICH.json.loads(RICH.DEFAULT_TUSHARE_MONEYFLOW_CONTRACT.read_text())
@@ -732,7 +795,9 @@ def test_tushare_moneyflow_normalization_derives_ratio_and_excludes_missing_zero
     )
     assert normalized.columns.tolist() == list(RICH.TUSHARE_MONEYFLOW_COLUMNS)
     assert normalized["instrument"].tolist() == ["SZ000001"]
-    assert normalized["tushare_large_order_net_inflow_share"].item() == pytest.approx(0.4)
+    assert normalized["tushare_large_order_net_inflow_share"].item() == pytest.approx(
+        0.4
+    )
     assert quality == {
         "input_rows": 3,
         "missing_rows_excluded": 1,
@@ -762,11 +827,12 @@ def test_tushare_moneyflow_sync_writes_immutable_no_price_snapshot(
     contract = RICH.json.loads(RICH.DEFAULT_TUSHARE_MONEYFLOW_CONTRACT.read_text())
     contract["snapshot_contract"]["development_start"] = "2024-04-29"
     contract["snapshot_contract"]["development_end"] = "2024-04-30"
-    contract["snapshot_contract"]["partition_policy"]["minimum_seconds_between_calls"] = 0
+    contract["snapshot_contract"]["partition_policy"][
+        "minimum_seconds_between_calls"
+    ] = 0
     universe = tmp_path / "universe.txt"
     universe.write_text(
-        "SH600519\t2020-01-01\t2025-12-31\n"
-        "SZ000001\t2020-01-01\t2025-12-31\n",
+        "SH600519\t2020-01-01\t2025-12-31\n" "SZ000001\t2020-01-01\t2025-12-31\n",
         encoding="utf-8",
     )
     calendar = tmp_path / "day.txt"
@@ -793,7 +859,9 @@ def test_tushare_moneyflow_sync_writes_immutable_no_price_snapshot(
                     "trade_date": trade_date.strftime("%Y%m%d"),
                     **{
                         field: float(position + index + 1)
-                        for index, field in enumerate(RICH.TUSHARE_MONEYFLOW_AMOUNT_FIELDS)
+                        for index, field in enumerate(
+                            RICH.TUSHARE_MONEYFLOW_AMOUNT_FIELDS
+                        )
                     },
                 }
                 for position, code in enumerate(("600519.SH", "000001.SZ"))
@@ -815,7 +883,10 @@ def test_tushare_moneyflow_sync_writes_immutable_no_price_snapshot(
     assert manifest["source_acceptance"]["run_id"] == "accepted"
     assert manifest["price_fields_loaded"] == []
     assert manifest["forward_return_fields_read"] is False
-    assert manifest["acceptance_status"] == "full_source_coverage_failed_stop_before_prices"
+    assert (
+        manifest["acceptance_status"]
+        == "full_source_coverage_failed_stop_before_prices"
+    )
     stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
     assert stored.columns.tolist() == list(RICH.TUSHARE_MONEYFLOW_COLUMNS)
     assert len(stored) == 4
@@ -1122,7 +1193,9 @@ def test_tushare_top_inst_normalization_aggregates_and_reconciles_unique_seats()
     }
     assert not ({"exalter", "net_buy", "close", "reason"} & set(normalized.columns))
 
-    bad_reconciliation = pd.DataFrame([rows[0]], columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS)
+    bad_reconciliation = pd.DataFrame(
+        [rows[0]], columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS
+    )
     bad_reconciliation.loc[0, "net_buy"] = 19.0
     with pytest.raises(RICH.RichDataError, match="does not reconcile"):
         RICH.canonicalize_tushare_top_inst(
@@ -1131,7 +1204,9 @@ def test_tushare_top_inst_normalization_aggregates_and_reconciles_unique_seats()
             dt.date(2026, 7, 13),
         )
 
-    duplicate = pd.DataFrame([rows[0], rows[0]], columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS)
+    duplicate = pd.DataFrame(
+        [rows[0], rows[0]], columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS
+    )
     with pytest.raises(RICH.RichDataError, match="duplicate institution-seat keys"):
         RICH.canonicalize_tushare_top_inst(
             duplicate,
@@ -1197,13 +1272,17 @@ def test_tushare_top_inst_acceptance_writes_no_price_snapshot_and_is_one_shot(
         RICH.TUSHARE_TOP_INST_RAW_FIELDS
     )
     assert manifest["accepted_top_list_evidence"]["all_top_inst_stocks_present"] is True
-    assert manifest["accepted_top_list_evidence"][
-        "unsupported_security_rows_excluded"
-    ] == 2
+    assert (
+        manifest["accepted_top_list_evidence"]["unsupported_security_rows_excluded"]
+        == 2
+    )
     assert manifest["source_quality"]["institution_seat_rows_reconciled"] == 3
-    assert manifest["source_quality"][
-        "provider_net_buy_used_only_for_integrity_reconciliation"
-    ] is True
+    assert (
+        manifest["source_quality"][
+            "provider_net_buy_used_only_for_integrity_reconciliation"
+        ]
+        is True
+    )
     assert manifest["price_fields_loaded"] == []
     assert manifest["forward_return_fields_read"] is False
     stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
@@ -1290,9 +1369,10 @@ def test_tushare_top10_float_concentration_contract_is_fingerprint_frozen(
     assert contract["acceptance_protocol"]["fixed_symbols"] == list(
         RICH.TUSHARE_TOP10_FLOAT_ACCEPTANCE_SYMBOLS
     )
-    assert contract["freeze_evidence"][
-        "provider_top10_floatholders_rows_observed"
-    ] is False
+    assert (
+        contract["freeze_evidence"]["provider_top10_floatholders_rows_observed"]
+        is False
+    )
     assert contract["forward_return_fields_read"] is False
 
     changed = RICH.json.loads(
@@ -1339,12 +1419,8 @@ def test_tushare_top10_float_request_uses_only_frozen_fields(monkeypatch):
 
 def test_tushare_top10_float_normalization_hashes_names_and_uses_first_complete_version():
     rows = [
-        *top10_float_rows(
-            "600519.SH", "20250401", "20241231", ratio_start=0.5
-        ),
-        *top10_float_rows(
-            "600519.SH", "20250430", "20250331", ratio_start=0.6
-        ),
+        *top10_float_rows("600519.SH", "20250401", "20241231", ratio_start=0.5),
+        *top10_float_rows("600519.SH", "20250430", "20250331", ratio_start=0.6),
         *top10_float_rows(
             "600519.SH",
             "20250510",
@@ -1460,7 +1536,9 @@ def test_tushare_top10_float_acceptance_persists_hashes_without_prices_and_is_on
     assert manifest["source_request"]["fields"] == list(
         RICH.TUSHARE_TOP10_FLOAT_RAW_FIELDS
     )
-    assert manifest["source_request"]["plaintext_holder_names_logged_or_stored"] is False
+    assert (
+        manifest["source_request"]["plaintext_holder_names_logged_or_stored"] is False
+    )
     assert manifest["source_quality"]["input_rows"] == 60
     assert manifest["source_quality"]["factor_ready_consecutive_pairs"] == 3
     assert manifest["source_quality"]["plaintext_holder_names_persisted"] is False
@@ -1543,6 +1621,524 @@ def test_tushare_top10_float_acceptance_rejects_insufficient_consecutive_history
     assert len(calls) == 3
 
 
+def cash_statement_row(
+    ts_code: str,
+    endpoint: str,
+    ann_date: str,
+    f_ann_date: str,
+    end_date: str,
+    value,
+    *,
+    report_type: str = "1",
+    comp_type: str = "1",
+    update_flag: str = "1",
+) -> dict:
+    row = {
+        "ts_code": ts_code,
+        "ann_date": ann_date,
+        "f_ann_date": f_ann_date,
+        "end_date": end_date,
+        "report_type": report_type,
+        "comp_type": comp_type,
+        "update_flag": update_flag,
+    }
+    if endpoint == "income":
+        row["n_income_attr_p"] = value
+    else:
+        row["n_cashflow_act"] = value
+    return row
+
+
+def clean_cash_statement_frame(
+    ts_code: str,
+    endpoint: str,
+    *,
+    periods: int = 5,
+) -> pd.DataFrame:
+    schedule = [
+        ("20240330", "20240401", "20231231"),
+        ("20240429", "20240430", "20240331"),
+        ("20240829", "20240830", "20240630"),
+        ("20241030", "20241031", "20240930"),
+        ("20250330", "20250331", "20241231"),
+    ]
+    rows = []
+    for index, (ann_date, f_ann_date, end_date) in enumerate(schedule[:periods]):
+        value = 100.0 + index * 10.0
+        if endpoint == "cashflow":
+            value += 20.0
+        rows.append(
+            cash_statement_row(
+                ts_code,
+                endpoint,
+                ann_date,
+                f_ann_date,
+                end_date,
+                value,
+            )
+        )
+    fields = (
+        RICH.TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS
+        if endpoint == "income"
+        else RICH.TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS
+    )
+    return pd.DataFrame(rows, columns=fields)
+
+
+def test_tushare_cash_conversion_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_tushare_cash_conversion_contract()
+    assert contract["factor"]["name"] == "tushare_operating_cash_conversion"
+    assert contract["factor"]["formula"] == "n_cashflow_act / n_income_attr_p"
+    assert contract["source"]["income_requested_fields"] == list(
+        RICH.TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS
+    )
+    assert contract["source"]["cashflow_requested_fields"] == list(
+        RICH.TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS
+    )
+    assert contract["freeze_evidence"]["provider_income_rows_observed"] is False
+    assert contract["freeze_evidence"]["provider_cashflow_rows_observed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(RICH.DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT.read_text())
+    changed["factor"]["direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_cash_conversion_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_tushare_cash_conversion_contract(changed_path)
+
+
+def test_tushare_cash_conversion_requests_use_only_endpoint_whitelists(monkeypatch):
+    captured = []
+
+    class Pro:
+        def income(self, **kwargs):
+            captured.append(("income", kwargs))
+            return pd.DataFrame()
+
+        def cashflow(self, **kwargs):
+            captured.append(("cashflow", kwargs))
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    for endpoint in ("income", "cashflow"):
+        RICH.fetch_tushare_cash_conversion_statement(
+            endpoint,
+            "600519.SH",
+            dt.date(2024, 1, 1),
+            dt.date(2026, 6, 30),
+        )
+    assert captured == [
+        (
+            "income",
+            {
+                "ts_code": "600519.SH",
+                "start_date": "20240101",
+                "end_date": "20260630",
+                "fields": ",".join(RICH.TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS),
+            },
+        ),
+        (
+            "cashflow",
+            {
+                "ts_code": "600519.SH",
+                "start_date": "20240101",
+                "end_date": "20260630",
+                "fields": ",".join(RICH.TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS),
+            },
+        ),
+    ]
+    forbidden = set(
+        RICH.load_tushare_cash_conversion_contract()["source"][
+            "explicitly_forbidden_fields"
+        ]
+    )
+    for _, kwargs in captured:
+        assert set(kwargs["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_cash_conversion_endpoint_enforces_frozen_version_policy():
+    rows = [
+        cash_statement_row(
+            "600519.SH", "income", "20240330", "20240401", "20231231", 100.0
+        ),
+        cash_statement_row(
+            "600519.SH",
+            "income",
+            "20240330",
+            "20240401",
+            "20231231",
+            100.0,
+            update_flag="0",
+        ),
+        cash_statement_row(
+            "600519.SH", "income", "20240429", "20240430", "20240331", 110.0
+        ),
+        cash_statement_row(
+            "600519.SH",
+            "income",
+            "20240502",
+            "20240503",
+            "20240331",
+            111.0,
+            report_type="4",
+        ),
+        cash_statement_row(
+            "600519.SH", "income", "20240829", "20240830", "20240630", 120.0
+        ),
+        cash_statement_row(
+            "600519.SH", "income", "20240830", "20240831", "20240630", 121.0
+        ),
+        cash_statement_row(
+            "600519.SH", "income", "20241030", "20241031", "20240930", None
+        ),
+        cash_statement_row(
+            "600519.SH",
+            "income",
+            "20250330",
+            "20250331",
+            "20241231",
+            130.0,
+            report_type="2",
+        ),
+        cash_statement_row(
+            "600519.SH",
+            "income",
+            "20250429",
+            "20250430",
+            "20250331",
+            140.0,
+            comp_type="2",
+        ),
+        cash_statement_row(
+            "600519.SH", "income", "20250829", "20250830", "20250630", 150.0
+        ),
+    ]
+    frame = pd.DataFrame(rows, columns=RICH.TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS)
+    accepted, quality = RICH.canonicalize_tushare_cash_conversion_endpoint(
+        frame,
+        endpoint="income",
+        expected_ts_code="600519.SH",
+        announcement_start=dt.date(2024, 1, 1),
+        announcement_end=dt.date(2026, 6, 30),
+        latest_actual_announcement_date=dt.date(2026, 7, 16),
+    )
+    assert accepted.columns.tolist() == list(
+        RICH.TUSHARE_CASH_CONVERSION_INCOME_COLUMNS
+    )
+    assert accepted["report_period"].tolist() == [
+        pd.Timestamp("2023-12-31"),
+        pd.Timestamp("2025-06-30"),
+    ]
+    assert quality == {
+        "input_rows": 10,
+        "non_target_company_rows_excluded": 1,
+        "target_company_periods_observed": 6,
+        "adjustment_periods_excluded": 1,
+        "no_type_one_periods_excluded": 1,
+        "missing_metric_periods_excluded": 1,
+        "ambiguous_type_one_periods_excluded": 1,
+        "semantic_duplicate_rows_collapsed": 1,
+        "accepted_periods": 2,
+        "update_flag_counts": {"0": 1, "1": 9},
+    }
+
+    invalid = frame.copy()
+    invalid.loc[0, "f_ann_date"] = None
+    with pytest.raises(RICH.RichDataError, match="invalid statement keys"):
+        RICH.canonicalize_tushare_cash_conversion_endpoint(
+            invalid,
+            endpoint="income",
+            expected_ts_code="600519.SH",
+            announcement_start=dt.date(2024, 1, 1),
+            announcement_end=dt.date(2026, 6, 30),
+            latest_actual_announcement_date=dt.date(2026, 7, 16),
+        )
+
+
+def test_tushare_cash_conversion_join_uses_later_actual_date_and_positive_income():
+    income_raw = clean_cash_statement_frame("600519.SH", "income", periods=4)
+    income_raw.loc[:, "n_income_attr_p"] = [100.0, -10.0, 0.0, 50.0]
+    cashflow_raw = clean_cash_statement_frame("600519.SH", "cashflow", periods=4)
+    cashflow_raw.loc[:, "f_ann_date"] = [
+        "20240402",
+        "20240501",
+        "20240831",
+        "20241101",
+    ]
+    cashflow_raw.loc[:, "n_cashflow_act"] = [120.0, 30.0, -5.0, -20.0]
+    income, _ = RICH.canonicalize_tushare_cash_conversion_endpoint(
+        income_raw,
+        endpoint="income",
+        expected_ts_code="600519.SH",
+        announcement_start=dt.date(2024, 1, 1),
+        announcement_end=dt.date(2026, 6, 30),
+        latest_actual_announcement_date=dt.date(2026, 7, 16),
+    )
+    cashflow, _ = RICH.canonicalize_tushare_cash_conversion_endpoint(
+        cashflow_raw,
+        endpoint="cashflow",
+        expected_ts_code="600519.SH",
+        announcement_start=dt.date(2024, 1, 1),
+        announcement_end=dt.date(2026, 6, 30),
+        latest_actual_announcement_date=dt.date(2026, 7, 16),
+    )
+    factors, quality = RICH.derive_tushare_cash_conversion(income, cashflow)
+    assert factors.columns.tolist() == list(RICH.TUSHARE_CASH_CONVERSION_COLUMNS)
+    assert factors["report_period"].tolist() == [
+        pd.Timestamp("2023-12-31"),
+        pd.Timestamp("2024-09-30"),
+    ]
+    assert factors["announcement_date"].tolist() == [
+        pd.Timestamp("2024-04-02"),
+        pd.Timestamp("2024-11-01"),
+    ]
+    assert factors["tushare_operating_cash_conversion"].tolist() == pytest.approx(
+        [1.2, -0.4]
+    )
+    assert quality["nonpositive_income_periods_excluded"] == 2
+    assert quality["nonfinite_cashflow_periods_excluded"] == 0
+    assert quality["usable_joined_periods"] == 2
+
+
+def test_tushare_cash_conversion_acceptance_publishes_only_factor_and_is_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_cash_conversion_contract())
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "load_tushare_cash_conversion_contract", lambda: contract)
+    monkeypatch.setattr(
+        RICH,
+        "validate_tushare_cash_conversion_local_context",
+        lambda value: {"fixture": {"path": "fixture", "sha256": "0" * 64}},
+    )
+    calls = []
+
+    def fake_fetch(endpoint, symbol, announcement_start, announcement_end):
+        calls.append((endpoint, symbol, announcement_start, announcement_end))
+        return clean_cash_statement_frame(symbol, endpoint)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_cash_conversion_statement", fake_fetch)
+    manifest_path = RICH.sync_tushare_cash_conversion_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_cash_conversion_acceptance"
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_version_policy_and_formula_pending_full_history"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 6
+    assert manifest["source_quality"]["input_rows"] == 30
+    assert manifest["source_quality"]["usable_joined_periods"] == 15
+    assert manifest["source_quality"]["raw_statement_frames_persisted"] is False
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert len(manifest["files"]) == 1
+    factor_frame = pd.read_parquet(
+        RICH.resolve_record_path(manifest["files"][0]["path"])
+    )
+    assert factor_frame.columns.tolist() == list(RICH.TUSHARE_CASH_CONVERSION_COLUMNS)
+    assert len(factor_frame) == 15
+    assert len(calls) == 6
+
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_cash_conversion_acceptance()
+    assert len(calls) == 6
+
+
+def test_tushare_cash_conversion_acceptance_rejects_low_join_count_once(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_cash_conversion_contract())
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "load_tushare_cash_conversion_contract", lambda: contract)
+    monkeypatch.setattr(
+        RICH,
+        "validate_tushare_cash_conversion_local_context",
+        lambda value: {"fixture": {"path": "fixture", "sha256": "0" * 64}},
+    )
+    calls = []
+
+    def fake_fetch(endpoint, symbol, announcement_start, announcement_end):
+        calls.append((endpoint, symbol))
+        periods = 3 if symbol == "300750.SZ" else 5
+        return clean_cash_statement_frame(symbol, endpoint, periods=periods)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_cash_conversion_statement", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="too few usable joined periods"):
+        RICH.sync_tushare_cash_conversion_acceptance()
+    assert len(calls) == 6
+    records = RICH.tushare_cash_conversion_acceptance_records()
+    assert len(records) == 1
+    rejection = RICH.json.loads(records[0].read_text())
+    assert rejection["source_request"]["provider_calls_issued"] == 6
+    assert rejection["files"] == []
+    assert rejection["price_fields_loaded"] == []
+    assert rejection["forward_return_fields_read"] is False
+
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_cash_conversion_acceptance()
+    assert len(calls) == 6
+
+
+def configure_cash_conversion_full_sync_fixture(tmp_path, monkeypatch):
+    contract = copy.deepcopy(RICH.load_tushare_cash_conversion_contract())
+    contract["full_snapshot_contract"]["minimum_seconds_between_calls"] = 0.0
+    contract["full_snapshot_contract"]["maximum_attempts_per_symbol_endpoint"] = 1
+    contract["no_return_gates"]["source_completeness"][
+        "minimum_complete_joined_factor_events"
+    ] = 1
+    contract["no_return_gates"]["source_completeness"][
+        "minimum_observed_signal_years"
+    ] = 1
+    universe_path = tmp_path / "buyable.txt"
+    universe_path.write_text(
+        "SH600519\t2019-01-01\t2025-12-31\n" "SZ000333\t2019-01-01\t2025-12-31\n",
+        encoding="utf-8",
+    )
+    calendar_path = tmp_path / "day.txt"
+    calendar_path.write_text(
+        "2019-01-02\n"
+        "2024-04-02\n"
+        "2024-05-06\n"
+        "2024-09-02\n"
+        "2024-11-01\n"
+        "2025-04-01\n"
+        "2025-12-31\n"
+        "2026-01-05\n"
+        "2026-07-16\n",
+        encoding="utf-8",
+    )
+    contract["local_context"]["holding_universe"] = {
+        "path": str(universe_path),
+        "sha256": RICH.file_digest(universe_path),
+    }
+    contract["local_context"]["calendar"] = {
+        "path": str(calendar_path),
+        "sha256": RICH.file_digest(calendar_path),
+    }
+    record_path = tmp_path / "acceptance_record.json"
+    manifest_path = tmp_path / "acceptance_manifest.json"
+    frame_path = tmp_path / "acceptance.parquet"
+    record_path.write_text("{}\n", encoding="utf-8")
+    manifest_path.write_text("{}\n", encoding="utf-8")
+    acceptance_frame = pd.DataFrame(columns=RICH.TUSHARE_CASH_CONVERSION_COLUMNS)
+    RICH.atomic_write_frame(acceptance_frame, frame_path)
+    source_chain = {
+        "contract": contract,
+        "record_path": record_path,
+        "manifest_path": manifest_path,
+        "frame_path": frame_path,
+        "frame": acceptance_frame,
+    }
+    monkeypatch.setattr(
+        RICH, "load_tushare_cash_conversion_source_chain", lambda: source_chain
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_tushare_cash_conversion_local_context",
+        lambda value: {"fixture": {"path": "fixture", "sha256": "0" * 64}},
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    return contract, universe_path, calendar_path
+
+
+def test_tushare_cash_conversion_full_sync_is_atomic_pit_and_no_return(
+    tmp_path, monkeypatch
+):
+    _, universe_path, calendar_path = configure_cash_conversion_full_sync_fixture(
+        tmp_path, monkeypatch
+    )
+    calls = []
+
+    def fake_fetch(endpoint, symbol, announcement_start, announcement_end):
+        calls.append((endpoint, symbol, announcement_start, announcement_end))
+        return clean_cash_statement_frame(symbol, endpoint)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_cash_conversion_statement", fake_fetch)
+    manifest_path = RICH.sync_tushare_cash_conversion(
+        allow_large=True,
+        universe_path=universe_path,
+        calendar_path=calendar_path,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_operating_cash_conversion"
+    assert manifest["acceptance_status"] == (
+        "full_source_completeness_passed_pending_no_return_capacity_and_uniqueness"
+    )
+    assert manifest["source_request"]["planned_provider_calls"] == 4
+    assert manifest["source_request"]["completed_provider_calls"] == 4
+    assert manifest["source_request"]["raw_statement_frames_persisted"] is False
+    assert manifest["source_completeness"]["complete_joined_factor_events"] == 10
+    assert manifest["source_completeness"]["gate_passed_before_prices"] is True
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert [item["signal_year"] for item in manifest["files"]] == [2024, 2025]
+    partition = pd.concat(
+        [
+            pd.read_parquet(RICH.resolve_record_path(item["path"]))
+            for item in manifest["files"]
+        ],
+        ignore_index=True,
+    )
+    assert partition.columns.tolist() == list(RICH.TUSHARE_CASH_CONVERSION_COLUMNS)
+    assert len(partition) == 10
+    assert set(partition["instrument"]) == {"SH600519", "SZ000333"}
+    assert len(calls) == 4
+
+    with pytest.raises(RICH.RichDataError, match="already exists.*cannot be repeated"):
+        RICH.sync_tushare_cash_conversion(
+            allow_large=True,
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    assert len(calls) == 4
+
+
+def test_tushare_cash_conversion_full_sync_deletes_partial_on_failure(
+    tmp_path, monkeypatch
+):
+    _, universe_path, calendar_path = configure_cash_conversion_full_sync_fixture(
+        tmp_path, monkeypatch
+    )
+    calls = []
+
+    def fake_fetch(endpoint, symbol, announcement_start, announcement_end):
+        calls.append((endpoint, symbol))
+        if endpoint == "cashflow" and symbol == "000333.SZ":
+            raise RICH.RichDataError("synthetic provider failure")
+        return clean_cash_statement_frame(symbol, endpoint)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_cash_conversion_statement", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="rejection_record"):
+        RICH.sync_tushare_cash_conversion(
+            allow_large=True,
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    assert len(calls) == 4
+    failures = sorted((tmp_path / "runs").glob("*_source_failure.json"))
+    assert len(failures) == 1
+    failure = RICH.json.loads(failures[0].read_text())
+    assert failure["failed_instrument"] == "SZ000333"
+    assert failure["failed_endpoint"] == "cashflow"
+    assert failure["completed_provider_calls_before_failure"] == 3
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["final_snapshot_published"] is False
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+    snapshot_parent = tmp_path / "raw" / "tushare" / "cash_conversion" / "snapshots"
+    assert not list(snapshot_parent.glob(".*.partial"))
+
+
 def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_tushare_daily_pb_contract()
     assert contract["factor"]["name"] == "tushare_positive_book_to_market"
@@ -1550,9 +2146,12 @@ def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):
         RICH.TUSHARE_DAILY_PB_RAW_FIELDS
     )
     assert contract["freeze_evidence"]["provider_daily_basic_rows_observed"] is False
-    assert contract["no_return_uniqueness_policy"][
-        "maximum_allowed_absolute_median_daily_rank_correlation"
-    ] == 0.8
+    assert (
+        contract["no_return_uniqueness_policy"][
+            "maximum_allowed_absolute_median_daily_rank_correlation"
+        ]
+        == 0.8
+    )
     assert contract["forward_return_fields_read"] is False
 
     changed = RICH.json.loads(RICH.DEFAULT_TUSHARE_DAILY_PB_CONTRACT.read_text())
@@ -1573,9 +2172,12 @@ def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):
         "run_three_session_capacity_without_open_close_or_forward_returns"
     )
     assert capacity_spec["uniqueness_contract"]["comparison_field_count"] == 43
-    assert capacity_spec["no_return_gate_policy"][
-        "capacity_must_run_before_close_known_comparison_fields"
-    ] is True
+    assert (
+        capacity_spec["no_return_gate_policy"][
+            "capacity_must_run_before_close_known_comparison_fields"
+        ]
+        is True
+    )
 
 
 def test_tushare_daily_pb_request_uses_only_frozen_fields(monkeypatch):
@@ -1634,8 +2236,7 @@ def test_tushare_daily_pb_acceptance_writes_current_coverage_snapshot(
     contract["acceptance_protocol"]["minimum_all_market_source_rows"] = 2
     universe = tmp_path / "buyable.txt"
     universe.write_text(
-        "SH600519\t2020-01-01\t2026-12-31\n"
-        "SZ000001\t2020-01-01\t2026-12-31\n",
+        "SH600519\t2020-01-01\t2026-12-31\n" "SZ000001\t2020-01-01\t2026-12-31\n",
         encoding="utf-8",
     )
     monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
@@ -1664,9 +2265,12 @@ def test_tushare_daily_pb_acceptance_writes_current_coverage_snapshot(
         RICH.TUSHARE_DAILY_PB_RAW_FIELDS
     )
     assert manifest["source_quality"]["positive_pb_holding_coverage"] == 1.0
-    assert manifest["source_quality"][
-        "outside_point_in_time_holding_universe_rows_excluded"
-    ] == 1
+    assert (
+        manifest["source_quality"][
+            "outside_point_in_time_holding_universe_rows_excluded"
+        ]
+        == 1
+    )
     assert manifest["price_fields_loaded"] == []
     assert manifest["forward_return_fields_read"] is False
     stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
@@ -1702,11 +2306,14 @@ def test_tushare_sw_industry_breadth_contract_is_fingerprint_frozen(tmp_path):
         RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC.read_text()
     )
     assert capacity_spec["full_membership_snapshot"]["expected_provider_calls"] == 62
-    assert len(
-        capacity_spec["combined_no_return_audit"]["uniqueness"][
-            "comparison_factors"
-        ]
-    ) == 45
+    assert (
+        len(
+            capacity_spec["combined_no_return_audit"]["uniqueness"][
+                "comparison_factors"
+            ]
+        )
+        == 45
+    )
     assert (
         RICH.file_digest(RICH.DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR)
         == RICH.TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR_SHA256
@@ -1907,9 +2514,7 @@ def test_tushare_sw_acceptance_writes_no_price_membership_snapshot(
     assert not ({"name", "close", "amount", "return"} & set(stored["membership"]))
 
 
-def test_tushare_sw_full_membership_sync_is_atomic_and_no_price(
-    tmp_path, monkeypatch
-):
+def test_tushare_sw_full_membership_sync_is_atomic_and_no_price(tmp_path, monkeypatch):
     with pytest.raises(RICH.RichDataError, match="requires --allow-large"):
         RICH.sync_tushare_sw_industry_membership(allow_large=False)
 
@@ -2012,9 +2617,7 @@ def test_tushare_sw_full_membership_sync_is_atomic_and_no_price(
     assert manifest["source_quality"]["membership_rows"] == 62
     assert manifest["source_quality"]["current_membership_rows"] == 31
     assert manifest["source_quality"]["historical_membership_rows"] == 31
-    assert manifest["source_quality"][
-        "unsupported_provider_symbol_rows_excluded"
-    ] == 0
+    assert manifest["source_quality"]["unsupported_provider_symbol_rows_excluded"] == 0
     assert manifest["source_quality"]["duplicate_interval_rows"] == 0
     assert manifest["acceptance_status"] == (
         "full_membership_snapshot_passed_pending_no_return_factor_capacity_and_uniqueness"
@@ -2040,8 +2643,7 @@ def test_tushare_daily_pb_sync_writes_immutable_no_return_snapshot(
     ] = 0
     universe = tmp_path / "buyable.txt"
     universe.write_text(
-        "SH600519\t2020-01-01\t2025-12-31\n"
-        "SZ000001\t2020-01-01\t2025-12-31\n",
+        "SH600519\t2020-01-01\t2025-12-31\n" "SZ000001\t2020-01-01\t2025-12-31\n",
         encoding="utf-8",
     )
     calendar = tmp_path / "day.txt"
@@ -2124,7 +2726,11 @@ def test_tushare_daily_pb_sync_writes_immutable_no_return_snapshot(
 def test_canonicalize_minutes_handles_provider_column_names_and_sorts_rows():
     raw = pd.DataFrame(
         {
-            "trade_time": ["2026-07-13 09:31:00", "2026-07-13 09:30:00", "2026-07-13 09:30:00"],
+            "trade_time": [
+                "2026-07-13 09:31:00",
+                "2026-07-13 09:30:00",
+                "2026-07-13 09:30:00",
+            ],
             "open": [10.1, 10.0, 10.0],
             "high": [10.2, 10.1, 10.1],
             "low": [10.0, 9.9, 9.9],
@@ -2136,7 +2742,10 @@ def test_canonicalize_minutes_handles_provider_column_names_and_sorts_rows():
     normalized = RICH.canonicalize_minute_bars(
         raw, "tushare", "600519", dt.date(2026, 7, 13), dt.date(2026, 7, 13)
     )
-    assert normalized["datetime"].dt.strftime("%H:%M:%S").tolist() == ["09:30:00", "09:31:00"]
+    assert normalized["datetime"].dt.strftime("%H:%M:%S").tolist() == [
+        "09:30:00",
+        "09:31:00",
+    ]
     assert normalized["close"].tolist() == pytest.approx([10.04, 10.15])
     assert normalized["symbol"].tolist() == ["SH600519", "SH600519"]
     assert normalized["amount"].tolist() == pytest.approx([1014.0, 2030.0])
@@ -2146,46 +2755,77 @@ def test_canonicalize_minutes_rejects_invalid_ohlc():
     raw = pd.DataFrame(
         {
             "datetime": ["2026-07-13 09:30:00"],
-            "open": [10.0], "high": [9.0], "low": [9.5], "close": [9.8],
-            "volume": [100.0], "amount": [1000.0],
+            "open": [10.0],
+            "high": [9.0],
+            "low": [9.5],
+            "close": [9.8],
+            "volume": [100.0],
+            "amount": [1000.0],
         }
     )
     with pytest.raises(RICH.RichDataError, match="invalid minute bars"):
-        RICH.canonicalize_minute_bars(raw, "rqdata", "000001", dt.date(2026, 7, 13), dt.date(2026, 7, 13))
+        RICH.canonicalize_minute_bars(
+            raw, "rqdata", "000001", dt.date(2026, 7, 13), dt.date(2026, 7, 13)
+        )
 
 
-def test_minute_acceptance_reconciles_only_against_raw_daily_fields(tmp_path, monkeypatch):
+def test_minute_acceptance_reconciles_only_against_raw_daily_fields(
+    tmp_path, monkeypatch
+):
     monkeypatch.setattr(RICH, "DAILY_RAW_DIR", tmp_path / "daily")
     frame = pd.DataFrame(
         {
             "datetime": pd.to_datetime(["2026-07-13 09:31:00", "2026-07-13 09:32:00"]),
             "symbol": ["SH600519", "SH600519"],
             "source_symbol": ["600519.SH", "600519.SH"],
-            "open": [10.0, 10.1], "high": [10.15, 10.3], "low": [9.8, 10.0], "close": [10.1, 10.1],
-            "volume": [1.0, 2.0], "amount": [10.0, 20.0], "provider": ["tushare", "tushare"],
+            "open": [10.0, 10.1],
+            "high": [10.15, 10.3],
+            "low": [9.8, 10.0],
+            "close": [10.1, 10.1],
+            "volume": [1.0, 2.0],
+            "amount": [10.0, 20.0],
+            "provider": ["tushare", "tushare"],
         }
     )
     (tmp_path / "daily").mkdir()
     pd.DataFrame(
         {
-            "date": pd.to_datetime(["2026-07-13"]), "symbol": ["SH600519"],
-            "open": [20.0], "high": [20.6], "low": [19.6], "close": [20.2],
-            "volume": [1.5], "amount": [30.0],
-            "raw_open": [10.0], "raw_high": [10.3], "raw_low": [9.8], "raw_close": [10.1],
-            "raw_volume": [3.0], "price_basis": [RICH.REQUIRED_DAILY_PRICE_BASIS],
+            "date": pd.to_datetime(["2026-07-13"]),
+            "symbol": ["SH600519"],
+            "open": [20.0],
+            "high": [20.6],
+            "low": [19.6],
+            "close": [20.2],
+            "volume": [1.5],
+            "amount": [30.0],
+            "raw_open": [10.0],
+            "raw_high": [10.3],
+            "raw_low": [9.8],
+            "raw_close": [10.1],
+            "raw_volume": [3.0],
+            "price_basis": [RICH.REQUIRED_DAILY_PRICE_BASIS],
         }
     ).to_parquet(tmp_path / "daily" / "sh600519.parquet", index=False)
     report = RICH.minute_acceptance_report(frame)
     assert report["status"] == "automatic_checks_passed_pending_time_alignment"
-    assert report["daily_reconciliation"]["daily_price_basis"] == "raw_unadjusted_to_raw_daily"
+    assert (
+        report["daily_reconciliation"]["daily_price_basis"]
+        == "raw_unadjusted_to_raw_daily"
+    )
     assert report["daily_reconciliation"]["days"][0]["inferred_volume_unit"] == "lots"
 
 
 def test_minute_session_check_rejects_lunch_break_timestamp():
     frame = pd.DataFrame(
         {
-            "datetime": pd.to_datetime(["2026-07-13 12:00:00"]), "symbol": ["SH600519"],
-            "open": [10.0], "high": [10.0], "low": [10.0], "close": [10.0], "volume": [1.0], "amount": [10.0],
+            "datetime": pd.to_datetime(["2026-07-13 12:00:00"]),
+            "symbol": ["SH600519"],
+            "open": [10.0],
+            "high": [10.0],
+            "low": [10.0],
+            "close": [10.0],
+            "volume": [1.0],
+            "amount": [10.0],
         }
     )
     assert RICH.minute_session_check(frame)["status"] == "failed"
@@ -2201,7 +2841,9 @@ def test_tushare_minute_request_uses_explicit_session_timestamps(monkeypatch):
             return pd.DataFrame()
 
     monkeypatch.setattr(RICH, "_import_tushare", lambda: FakeTushare())
-    RICH.fetch_tushare_minutes("600519", dt.date(2026, 7, 13), dt.date(2026, 7, 13), "1m")
+    RICH.fetch_tushare_minutes(
+        "600519", dt.date(2026, 7, 13), dt.date(2026, 7, 13), "1m"
+    )
     assert captured["start_date"] == "2026-07-13 09:00:00"
     assert captured["end_date"] == "2026-07-13 17:00:00"
 
@@ -2313,11 +2955,18 @@ def test_snapshot_write_records_checksum_and_minute_summary(tmp_path, monkeypatc
             "datetime": pd.to_datetime(["2026-07-13 09:30:00", "2026-07-13 09:31:00"]),
             "symbol": ["SH600519", "SH600519"],
             "source_symbol": ["600519.SH", "600519.SH"],
-            "open": [10.0, 10.1], "high": [10.1, 10.2], "low": [9.9, 10.0], "close": [10.05, 10.15],
-            "volume": [100.0, 200.0], "amount": [1005.0, 2030.0], "provider": ["tushare", "tushare"],
+            "open": [10.0, 10.1],
+            "high": [10.1, 10.2],
+            "low": [9.9, 10.0],
+            "close": [10.05, 10.15],
+            "volume": [100.0, 200.0],
+            "amount": [1005.0, 2030.0],
+            "provider": ["tushare", "tushare"],
         }
     )
-    manifest_path = RICH.write_minute_snapshot("tushare", "1m", dt.date(2026, 7, 13), dt.date(2026, 7, 13), {"600519": frame})
+    manifest_path = RICH.write_minute_snapshot(
+        "tushare", "1m", dt.date(2026, 7, 13), dt.date(2026, 7, 13), {"600519": frame}
+    )
     manifest = RICH.json.loads(manifest_path.read_text())
     assert manifest["prices"] == "raw_unadjusted"
     assert manifest["files"][0]["rows"] == 2
@@ -2330,19 +2979,31 @@ def test_expected_minute_times_are_exact_for_start_and_end_labels():
     end = RICH.expected_minute_times("end")
     assert len(start) == len(end) == 240
     assert (start[0], start[119], start[120], start[-1]) == (
-        dt.time(9, 30), dt.time(11, 29), dt.time(13, 0), dt.time(14, 59)
+        dt.time(9, 30),
+        dt.time(11, 29),
+        dt.time(13, 0),
+        dt.time(14, 59),
     )
     assert (end[0], end[119], end[120], end[-1]) == (
-        dt.time(9, 31), dt.time(11, 30), dt.time(13, 1), dt.time(15, 0)
+        dt.time(9, 31),
+        dt.time(11, 30),
+        dt.time(13, 1),
+        dt.time(15, 0),
     )
     five_start = RICH.expected_minute_times("start", "5m")
     five_end = RICH.expected_minute_times("end", "5m")
     assert len(five_start) == len(five_end) == 48
     assert (five_start[0], five_start[23], five_start[24], five_start[-1]) == (
-        dt.time(9, 30), dt.time(11, 25), dt.time(13, 0), dt.time(14, 55)
+        dt.time(9, 30),
+        dt.time(11, 25),
+        dt.time(13, 0),
+        dt.time(14, 55),
     )
     assert (five_end[0], five_end[23], five_end[24], five_end[-1]) == (
-        dt.time(9, 35), dt.time(11, 30), dt.time(13, 5), dt.time(15, 0)
+        dt.time(9, 35),
+        dt.time(11, 30),
+        dt.time(13, 5),
+        dt.time(15, 0),
     )
 
 
@@ -2351,7 +3012,9 @@ def test_baostock_5m_acceptance_requires_exact_end_label_grid(monkeypatch):
     times = RICH.expected_minute_times("end", "5m")
     frame = pd.DataFrame(
         {
-            "datetime": [pd.Timestamp.combine(dt.date(2026, 7, 10), value) for value in times],
+            "datetime": [
+                pd.Timestamp.combine(dt.date(2026, 7, 10), value) for value in times
+            ],
             "symbol": "SH600519",
             "source_symbol": "sh.600519",
             "open": 10.0,
@@ -2401,9 +3064,7 @@ def test_baostock_5m_full_sync_stops_at_disk_gate_before_downloader(
             {"status": "passed_for_bulk_retry", "created_at": "2026-07-14T22:00:00Z"},
         ),
     )
-    monkeypatch.setattr(
-        RICH, "BAOSTOCK_5M_MINIMUM_FREE_BYTES", 10**30
-    )
+    monkeypatch.setattr(RICH, "BAOSTOCK_5M_MINIMUM_FREE_BYTES", 10**30)
     monkeypatch.setattr(RICH, "download_baostock_5m_requests", forbidden_download)
     with pytest.raises(RICH.RichDataError, match="before any network request"):
         RICH.sync_baostock_5m_history(
@@ -2415,9 +3076,7 @@ def test_baostock_5m_full_sync_stops_at_disk_gate_before_downloader(
     assert called is False
 
 
-def test_baostock_5m_full_sync_is_external_atomic_and_no_return(
-    tmp_path, monkeypatch
-):
+def test_baostock_5m_full_sync_is_external_atomic_and_no_return(tmp_path, monkeypatch):
     dates = ["2020-01-02", "2020-01-03", "2020-01-06", "2020-01-07"]
     universe = tmp_path / "universe.txt"
     universe.write_text("SH600519\t2020-01-02\t2020-01-07\n", encoding="utf-8")
@@ -2440,9 +3099,7 @@ def test_baostock_5m_full_sync_is_external_atomic_and_no_return(
     monkeypatch.setattr(
         RICH,
         "download_baostock_5m_requests",
-        lambda tasks, workers: iter(
-            [("600519", "2020-01-02", "2020-01-07", frame)]
-        ),
+        lambda tasks, workers: iter([("600519", "2020-01-02", "2020-01-07", frame)]),
     )
     data_root = tmp_path / "external"
     manifest_path = RICH.sync_baostock_5m_history(
@@ -2506,7 +3163,16 @@ def test_baostock_5m_full_sync_deletes_partial_snapshot_on_partition_failure(
             universe_path=universe,
             calendar_path=calendar,
         )
-    snapshots = data_root / "raw" / "a_share" / "rich" / "baostock" / "minutes" / "5m" / "snapshots"
+    snapshots = (
+        data_root
+        / "raw"
+        / "a_share"
+        / "rich"
+        / "baostock"
+        / "minutes"
+        / "5m"
+        / "snapshots"
+    )
     assert not snapshots.exists() or not list(snapshots.iterdir())
     assert list((data_root / "metadata" / "rich_data" / "preflights").glob("*.json"))
 
@@ -2524,7 +3190,10 @@ def test_frozen_minute_factor_spec_rejects_direction_changes(tmp_path):
 
 def test_frozen_baostock_5m_factor_spec_rejects_direction_changes(tmp_path):
     spec = RICH.load_baostock_5m_factor_spec()
-    assert tuple(item["name"] for item in spec["features"]) == RICH.BAOSTOCK_5M_FEATURE_NAMES
+    assert (
+        tuple(item["name"] for item in spec["features"])
+        == RICH.BAOSTOCK_5M_FEATURE_NAMES
+    )
     assert tuple(item["diagnostic_direction"] for item in spec["features"]) == (
         RICH.BAOSTOCK_5M_FEATURE_DIRECTIONS
     )
@@ -2588,7 +3257,9 @@ def test_alignment_confirmation_supports_exact_baostock_5m_grid(tmp_path):
     times = RICH.expected_minute_times("end", "5m")
     frame = pd.DataFrame(
         {
-            "datetime": [pd.Timestamp.combine(dt.date(2026, 7, 10), value) for value in times],
+            "datetime": [
+                pd.Timestamp.combine(dt.date(2026, 7, 10), value) for value in times
+            ],
             "symbol": "SH600519",
             "source_symbol": "sh.600519",
             "open": 10.0,
@@ -2616,7 +3287,9 @@ def test_alignment_confirmation_supports_exact_baostock_5m_grid(tmp_path):
                 "acceptance": {
                     "daily_reconciliation": {
                         "status": "passed",
-                        "days": [{"status": "passed", "inferred_volume_unit": "shares"}],
+                        "days": [
+                            {"status": "passed", "inferred_volume_unit": "shares"}
+                        ],
                     }
                 },
             }
@@ -2645,15 +3318,23 @@ def test_minute_features_require_exact_complete_session_and_never_fill_gaps():
     result = RICH.minute_feature_frame(frame, bar_label="end", previous_closes=previous)
     row = result.iloc[0]
     late = frame.loc[frame["datetime"].dt.time > dt.time(14, 30)]
-    anchor_close = frame.loc[frame["datetime"].dt.time == dt.time(14, 30), "close"].iloc[0]
+    anchor_close = frame.loc[
+        frame["datetime"].dt.time == dt.time(14, 30), "close"
+    ].iloc[0]
     expected_late_vwap = (late["amount"].sum() / late["volume"].sum()) / (
         frame["amount"].sum() / frame["volume"].sum()
     ) - 1.0
     assert row["minute_feature_eligible"]
-    assert row["late_return_30m"] == pytest.approx(frame["close"].iloc[-1] / anchor_close - 1.0)
-    assert row["late_amount_share_30m"] == pytest.approx(late["amount"].sum() / frame["amount"].sum())
+    assert row["late_return_30m"] == pytest.approx(
+        frame["close"].iloc[-1] / anchor_close - 1.0
+    )
+    assert row["late_amount_share_30m"] == pytest.approx(
+        late["amount"].sum() / frame["amount"].sum()
+    )
     assert row["late_vwap_to_day_vwap_30m"] == pytest.approx(expected_late_vwap)
-    assert row["opening_gap_digestion"] == pytest.approx(-(frame["close"].iloc[-1] / frame["open"].iloc[0] - 1.0))
+    assert row["opening_gap_digestion"] == pytest.approx(
+        -(frame["close"].iloc[-1] / frame["open"].iloc[0] - 1.0)
+    )
     assert row["intraday_realized_volatility"] > 0.0
 
     missing = RICH.minute_feature_frame(
@@ -2706,7 +3387,9 @@ def test_baostock_5m_features_use_six_late_bars_and_distinct_names():
     assert len(late) == 6
     assert row["minute_bars"] == 48
     assert row["minute_feature_eligible"]
-    assert row["late_return_30m_5m"] == pytest.approx(close.iloc[-1] / anchor_close - 1.0)
+    assert row["late_return_30m_5m"] == pytest.approx(
+        close.iloc[-1] / anchor_close - 1.0
+    )
     assert row["late_amount_share_30m_5m"] == pytest.approx(
         late["amount"].sum() / frame["amount"].sum()
     )
@@ -2730,7 +3413,9 @@ def test_previous_close_is_scaled_across_factor_change(tmp_path, monkeypatch):
     assert comparable[pd.Timestamp("2026-07-13")] == pytest.approx(80.0)
 
 
-def test_feature_builder_binds_snapshot_alignment_and_frozen_spec(tmp_path, monkeypatch):
+def test_feature_builder_binds_snapshot_alignment_and_frozen_spec(
+    tmp_path, monkeypatch
+):
     frame = complete_minute_frame()
     snapshot_path = write_accepted_snapshot(tmp_path, frame)
     alignment_path = RICH.confirm_minute_alignment(
@@ -2773,7 +3458,9 @@ def test_feature_builder_binds_snapshot_alignment_and_frozen_spec(tmp_path, monk
         )
 
 
-def test_feature_builder_accepts_passed_baostock_5m_history_snapshot(tmp_path, monkeypatch):
+def test_feature_builder_accepts_passed_baostock_5m_history_snapshot(
+    tmp_path, monkeypatch
+):
     frame = complete_baostock_5m_frame(["2025-12-31"])
     data_path = tmp_path / "sh600519" / "2025.parquet"
     RICH.atomic_write_frame(frame, data_path)
@@ -2837,8 +3524,9 @@ def test_feature_builder_accepts_passed_baostock_5m_history_snapshot(tmp_path, m
     features = pd.read_parquet(output)
     assert feature_manifest["frequency"] == "5m"
     assert feature_manifest["output"]["eligible_rows"] == 1
-    assert tuple(
-        column for column in RICH.BAOSTOCK_5M_FEATURE_NAMES if column in features
-    ) == RICH.BAOSTOCK_5M_FEATURE_NAMES
+    assert (
+        tuple(column for column in RICH.BAOSTOCK_5M_FEATURE_NAMES if column in features)
+        == RICH.BAOSTOCK_5M_FEATURE_NAMES
+    )
     assert features["minute_bars"].tolist() == [48]
     assert feature_manifest["forward_return_fields_read"] is False

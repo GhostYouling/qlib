@@ -77,6 +77,26 @@ exit "$rc"
 
 这里用 `rc` 保存命令退出码。不要在 zsh 中写 `status=$?`：`status` 是只读的特殊参数，会让包装脚本在 Python 命令成功后仍额外报错。退出当前交互式终端并非必要时，可以省略最后一行 `exit "$rc"`，改为查看或返回 `rc`。
 
+### 4.1 运行已经冻结并获准的全量命令
+
+只有对应的来源合同、一次性验收和本地上下文指纹都已经通过时，才可以把第 4 节中的 `status` 替换成获准的数据命令。例如，经营现金流/归母净利润因子的 2019–2025 点时全量来源命令是：
+
+```zsh
+token="$(launchctl getenv TUSHARE_TOKEN)"
+if [[ -z "$token" ]]; then
+  echo "TUSHARE_TOKEN 未配置"
+  rc=1
+else
+  TUSHARE_TOKEN="$token" python scripts/a_share_rich_data.py \
+    sync-tushare-cash-conversion --allow-large
+  rc=$?
+fi
+unset token
+exit "$rc"
+```
+
+该命令不会把 Token 作为 Python 参数或文件内容保存。`--allow-large` 只是对已经冻结的长任务进行显式确认，不会放宽数据合同。运行期间不要再启动第二个相同同步；若出现锁，先确认现有进程，不要直接删除锁文件。全量来源成功仍只允许继续无价格、无收益的容量与唯一性门禁，不代表可以直接做收益诊断、聚合、选股或下单。
+
 ## 5. 清除配置
 
 ```zsh

@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_cash_conversion_source_acceptance_record",
+  "status": "accepted_source_pending_frozen_full_history_and_no_return_gates",
+  "recorded_at": "2026-07-16T14:00:33Z",
+  "purpose": "Preserve the sole Tushare income/cashflow entitlement, schema, point-in-time version-policy, and operating-cash-conversion formula acceptance without reading prices or returns.",
+  "data_contract": {
+    "path": "docs/a_share_tushare_cash_conversion_data_contract.json",
+    "sha256": "54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01",
+    "preregistered_at": "2026-07-16T13:43:50Z",
+    "frozen_before_income_rows_observed": true,
+    "frozen_before_cashflow_rows_observed": true,
+    "frozen_before_factor_values_or_returns_observed": true
+  },
+  "implementation_at_acceptance": {
+    "script_path": "scripts/a_share_rich_data.py",
+    "script_sha256": "b9c23707bd07bbbbc2c10840555aa5df5a6c5e28c453158bafc06c98bff1cccb",
+    "test_path": "tests/data_collector_tests/test_a_share_rich_data.py",
+    "test_sha256": "0778eb621056ab33265654f0dcb0fdb5ba979f63ea7ae7da91b36c796b0ab418",
+    "focused_cash_conversion_tests_passed": 6,
+    "full_data_collector_tests_passed": 352,
+    "full_data_collector_warnings": 9,
+    "python_compile_passed": true,
+    "cli_registration_passed": true,
+    "diff_check_passed": true
+  },
+  "no_network_preflight": {
+    "status": "passed",
+    "validated_local_context_artifacts": 10,
+    "prior_acceptance_records": 0,
+    "tushare_token_presence_confirmed_without_printing_or_storing_value": true,
+    "provider_rows_observed_by_preflight": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "acceptance": {
+    "run_id": "20260716T135952Z_tushare_cash_conversion_acceptance_c829bf52",
+    "manifest_path": "data/metadata/rich_data/runs/20260716T135952Z_tushare_cash_conversion_acceptance_c829bf52.json",
+    "manifest_sha256": "8307b86d53a41a3fb2d5c827c9a2c1f356022ae8dd16d2f781b63ba2875af5b1",
+    "retrieved_at": "2026-07-16T13:59:52.365543+00:00",
+    "acceptance_status": "accepted_entitlement_schema_version_policy_and_formula_pending_full_history",
+    "fixed_announcement_start": "2024-01-01",
+    "fixed_announcement_end": "2026-06-30",
+    "latest_allowed_actual_announcement_date": "2026-07-16",
+    "fixed_symbols": [
+      "600519.SH",
+      "000333.SZ",
+      "300750.SZ"
+    ],
+    "endpoints_per_symbol": [
+      "income",
+      "cashflow"
+    ],
+    "provider_calls_issued": 6,
+    "provider_calls_expected": 6,
+    "provider_documented_row_ceiling_per_call": 100,
+    "source_rows_returned_by_symbol_endpoint": {
+      "600519.SH": {
+        "income": 11,
+        "cashflow": 15
+      },
+      "000333.SZ": {
+        "income": 12,
+        "cashflow": 14
+      },
+      "300750.SZ": {
+        "income": 11,
+        "cashflow": 13
+      }
+    },
+    "total_source_rows": 76,
+    "published_factor_frame": {
+      "path": "data/raw/a_share/rich/tushare/cash_conversion/acceptance/20260716T135952Z_tushare_cash_conversion_acceptance_c829bf52/operating_cash_conversion.parquet",
+      "sha256": "0bd8b2b807ce4bbbd56285367267efa0b190ac31c93382a11c039fbda1093dcb",
+      "rows": 30,
+      "columns": [
+        "announcement_date",
+        "income_actual_announcement_date",
+        "cashflow_actual_announcement_date",
+        "report_period",
+        "instrument",
+        "n_income_attr_p",
+        "n_cashflow_act",
+        "tushare_operating_cash_conversion",
+        "provider"
+      ],
+      "unique_instruments": 3,
+      "factor_min": 0.28894724853402354,
+      "factor_max": 2.698203408375049
+    },
+    "usable_joined_periods_by_symbol": {
+      "600519.SH": 10,
+      "000333.SZ": 10,
+      "300750.SZ": 10
+    },
+    "quality": {
+      "adjustment_periods_excluded": 0,
+      "ambiguous_type_one_periods_excluded": 0,
+      "missing_metric_periods_excluded": 0,
+      "nonpositive_income_periods_excluded": 0,
+      "nonfinite_cashflow_periods_excluded": 0,
+      "nonfinite_derived_periods_excluded": 0,
+      "semantic_duplicate_rows_collapsed": 16,
+      "raw_statement_frames_persisted": false,
+      "update_flag_used_for_value_selection": false,
+      "duplicate_factor_event_keys": 0
+    },
+    "formula": "n_cashflow_act / n_income_attr_p",
+    "direction": "higher_is_better",
+    "signal_source_date": "later accepted income/cashflow f_ann_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "selection_or_promotion_performed": false
+  },
+  "interpretation": {
+    "proven": [
+      "The current 3000-point account can call both frozen standard endpoints for the three-symbol acceptance scope.",
+      "All six responses stayed below the documented 100-row ceiling and contained the exact frozen field whitelists.",
+      "The frozen general-industry cumulative-consolidated version policy retained ten joined periods for every symbol.",
+      "The sole local factor formula produced 30 finite values without persisting raw statement frames, prices, or returns."
+    ],
+    "not_proven": [
+      "2019-2025 full-universe source completeness",
+      "point-in-time holding-universe coverage",
+      "three-session cohort capacity",
+      "near-synonym independence from existing quarterly quality fields",
+      "historical association, execution-aware returns, current scores, stock selection, position sizing, or orders"
+    ]
+  },
+  "one_shot_and_next_action": {
+    "acceptance_consumed": true,
+    "acceptance_may_be_repeated_with_same_or_different_symbols_dates_fields_or_versions": false,
+    "next_authorized_action": "Implement and run only the contract-fixed sequential 2019-2025 full snapshot, then the source-completeness, capacity, and 54-field uniqueness gates without price or forward-return access.",
+    "full_history_or_no_return_gate_failure_policy": "Stop this factor without statement substitution, denominator change, version rescue, direction inversion, event-age widening, threshold reduction, year or industry subset, rejected-factor combination, current scoring, selection, sizing, orders, or Level-2 intake.",
+    "price_access_authorized_now": false,
+    "aggregation_scoring_selection_or_trading_authorized_now": false
+  }
+}

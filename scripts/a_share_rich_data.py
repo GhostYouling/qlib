@@ -54,7 +54,9 @@ ALIGNMENTS_ROOT = METADATA_ROOT / "alignments"
 FEATURE_RUNS_ROOT = METADATA_ROOT / "feature_runs"
 DERIVED_ROOT = DATA_ROOT / "derived" / "a_share" / "rich"
 DAILY_RAW_DIR = DATA_ROOT / "raw" / "a_share" / "daily"
-DEFAULT_MINUTE_FACTOR_SPEC = REPO_ROOT / "docs" / "a_share_minute_factor_preregistration.json"
+DEFAULT_MINUTE_FACTOR_SPEC = (
+    REPO_ROOT / "docs" / "a_share_minute_factor_preregistration.json"
+)
 DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
@@ -68,12 +70,13 @@ DEFAULT_TUSHARE_TOP_INST_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_top_inst_data_contract.json"
 )
 DEFAULT_TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT = (
-    REPO_ROOT
-    / "docs"
-    / "a_share_tushare_top10_float_concentration_data_contract.json"
+    REPO_ROOT / "docs" / "a_share_tushare_top10_float_concentration_data_contract.json"
 )
 DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_cash_conversion_data_contract.json"
+)
+DEFAULT_TUSHARE_CASH_CONVERSION_ACCEPTANCE_RECORD = (
+    REPO_ROOT / "docs" / "a_share_tushare_cash_conversion_source_acceptance_record.json"
 )
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
@@ -90,11 +93,11 @@ DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC = (
     / "a_share_tushare_sw_industry_breadth_capacity_preregistration.json"
 )
 DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR = (
-    REPO_ROOT
-    / "docs"
-    / "a_share_tushare_sw_industry_breadth_symbol_repair.json"
+    REPO_ROOT / "docs" / "a_share_tushare_sw_industry_breadth_symbol_repair.json"
 )
-DEFAULT_BAOSTOCK_5M_CONTRACT = REPO_ROOT / "docs" / "a_share_baostock_5m_data_contract.json"
+DEFAULT_BAOSTOCK_5M_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_baostock_5m_data_contract.json"
+)
 DEFAULT_BAOSTOCK_5M_FACTOR_SPEC = (
     REPO_ROOT / "docs" / "a_share_baostock_5m_factor_preregistration.json"
 )
@@ -116,8 +119,14 @@ DEFAULT_ACCEPTANCE_SYMBOLS = ("600519", "000001", "300750", "688981")
 PROVIDER_REQUIREMENTS = {
     "baostock": {"package": "baostock", "environment": ()},
     "tushare": {"package": "tushare", "environment": ("TUSHARE_TOKEN",)},
-    "jqdata": {"package": "jqdatasdk", "environment": ("JQDATA_USERNAME", "JQDATA_PASSWORD")},
-    "rqdata": {"package": "rqdatac", "environment": ("RQDATA_USERNAME", "RQDATA_PASSWORD")},
+    "jqdata": {
+        "package": "jqdatasdk",
+        "environment": ("JQDATA_USERNAME", "JQDATA_PASSWORD"),
+    },
+    "rqdata": {
+        "package": "rqdatac",
+        "environment": ("RQDATA_USERNAME", "RQDATA_PASSWORD"),
+    },
 }
 DEFAULT_EVENT_DATASETS = ("moneyflow", "limit-price", "stock-st", "top-list")
 EVENT_DATASETS = DEFAULT_EVENT_DATASETS + ("limit-list",)
@@ -171,6 +180,9 @@ TUSHARE_TOP10_FLOAT_CONCENTRATION_CONTRACT_SHA256 = (
 )
 TUSHARE_CASH_CONVERSION_CONTRACT_SHA256 = (
     "54584d758fc0846d90281fecedc7b90113823bb56b55d4782e749a9a5212ee01"
+)
+TUSHARE_CASH_CONVERSION_ACCEPTANCE_RECORD_SHA256 = (
+    "615f0b794c165569b3d89444c594ee16fc60c628b36f0f834c759e09167fe962"
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
@@ -348,11 +360,31 @@ TUSHARE_CASH_CONVERSION_COLUMNS = (
     "tushare_operating_cash_conversion",
     "provider",
 )
+TUSHARE_CASH_CONVERSION_INCOME_COLUMNS = (
+    "income_announcement_date",
+    "income_actual_announcement_date",
+    "report_period",
+    "instrument",
+    "n_income_attr_p",
+    "provider",
+)
+TUSHARE_CASH_CONVERSION_CASHFLOW_COLUMNS = (
+    "cashflow_announcement_date",
+    "cashflow_actual_announcement_date",
+    "report_period",
+    "instrument",
+    "n_cashflow_act",
+    "provider",
+)
 TUSHARE_CASH_CONVERSION_ACCEPTANCE_SYMBOLS = (
     "600519.SH",
     "000333.SZ",
     "300750.SZ",
 )
+TUSHARE_CASH_CONVERSION_ADJUSTMENT_REPORT_TYPES = frozenset({3, 4, 5, 8, 9, 10, 11, 12})
+TUSHARE_CASH_CONVERSION_CONTEXT_REPORT_TYPES = frozenset({2, 6, 7})
+TUSHARE_CASH_CONVERSION_KNOWN_REPORT_TYPES = frozenset(range(1, 13))
+TUSHARE_CASH_CONVERSION_KNOWN_COMPANY_TYPES = frozenset({1, 2, 3, 4})
 TUSHARE_DAILY_PB_RAW_FIELDS = ("ts_code", "trade_date", "pb")
 TUSHARE_DAILY_PB_COLUMNS = (
     "trade_date",
@@ -542,7 +574,9 @@ def require_provider(provider: str) -> None:
         )
     if availability.missing_environment:
         keys = ", ".join(availability.missing_environment)
-        raise RichDataError(f"{provider} credentials are missing from the environment: {keys}")
+        raise RichDataError(
+            f"{provider} credentials are missing from the environment: {keys}"
+        )
 
 
 def safe_exception_text(exc: BaseException) -> str:
@@ -583,7 +617,16 @@ def canonicalize_minute_bars(
     if frame is None or frame.empty:
         return pd.DataFrame(
             columns=[
-                "datetime", "symbol", "source_symbol", "open", "high", "low", "close", "volume", "amount", "provider"
+                "datetime",
+                "symbol",
+                "source_symbol",
+                "open",
+                "high",
+                "low",
+                "close",
+                "volume",
+                "amount",
+                "provider",
             ]
         )
     normalized = frame.copy()
@@ -603,10 +646,15 @@ def canonicalize_minute_bars(
         "volume": ("volume", "vol"),
         "amount": ("amount", "money", "total_turnover", "turnover"),
     }
-    resolved = {field: _column(normalized, candidates) for field, candidates in field_map.items()}
+    resolved = {
+        field: _column(normalized, candidates)
+        for field, candidates in field_map.items()
+    }
     missing = [field for field, column in resolved.items() if column is None]
     if missing:
-        raise RichDataError(f"{provider} minute response is missing required columns: {', '.join(missing)}")
+        raise RichDataError(
+            f"{provider} minute response is missing required columns: {', '.join(missing)}"
+        )
     result = pd.DataFrame(
         {
             "datetime": pd.to_datetime(normalized[datetime_column], errors="coerce"),
@@ -620,8 +668,12 @@ def canonicalize_minute_bars(
         result[field] = pd.to_numeric(normalized[column], errors="coerce")
     start_timestamp = pd.Timestamp(start)
     end_timestamp = pd.Timestamp(end) + pd.Timedelta(days=1)
-    result = result.loc[(result["datetime"] >= start_timestamp) & (result["datetime"] < end_timestamp)].copy()
-    result = result.dropna(subset=["datetime", "open", "high", "low", "close", "volume", "amount"])
+    result = result.loc[
+        (result["datetime"] >= start_timestamp) & (result["datetime"] < end_timestamp)
+    ].copy()
+    result = result.dropna(
+        subset=["datetime", "open", "high", "low", "close", "volume", "amount"]
+    )
     if result.empty:
         return result.sort_values("datetime").reset_index(drop=True)
     invalid_price = (
@@ -632,8 +684,12 @@ def canonicalize_minute_bars(
         | (result["amount"] < 0)
     )
     if invalid_price.any():
-        raise RichDataError(f"{provider} returned {int(invalid_price.sum())} invalid minute bars for {code}")
-    result = result.drop_duplicates(subset=["datetime"], keep="last").sort_values("datetime")
+        raise RichDataError(
+            f"{provider} returned {int(invalid_price.sum())} invalid minute bars for {code}"
+        )
+    result = result.drop_duplicates(subset=["datetime"], keep="last").sort_values(
+        "datetime"
+    )
     return result.reset_index(drop=True)
 
 
@@ -655,15 +711,22 @@ def canonicalize_baostock_5m_bars(
         normalized = frame.copy()
         if not isinstance(normalized.index, pd.RangeIndex):
             normalized = normalized.reset_index()
-        datetime_column = _column(normalized, ("datetime", "trade_time", "time", "date"))
+        datetime_column = _column(
+            normalized, ("datetime", "trade_time", "time", "date")
+        )
         if datetime_column is None:
             raise RichDataError("baostock minute response has no datetime column")
         timestamps = pd.to_datetime(normalized[datetime_column], errors="coerce")
         source_rows_by_year = {
             int(year): int(count)
-            for year, count in timestamps.loc[timestamps.notna()].dt.year.value_counts().items()
+            for year, count in timestamps.loc[timestamps.notna()]
+            .dt.year.value_counts()
+            .items()
         }
-        if timestamps.notna().any() and timestamps[timestamps.notna()].duplicated().any():
+        if (
+            timestamps.notna().any()
+            and timestamps[timestamps.notna()].duplicated().any()
+        ):
             raise RichDataError(
                 f"BaoStock returned duplicate five-minute timestamps for {code}; "
                 "the frozen contract forbids silent deduplication"
@@ -681,7 +744,8 @@ def canonicalize_baostock_5m_bars(
         }
         if missing := [field for field, column in resolved.items() if column is None]:
             raise RichDataError(
-                "baostock minute response is missing required columns: " + ", ".join(missing)
+                "baostock minute response is missing required columns: "
+                + ", ".join(missing)
             )
         numeric = pd.DataFrame(
             {
@@ -700,7 +764,9 @@ def canonicalize_baostock_5m_bars(
             int(year): int(count)
             for year, count in timestamps.loc[
                 zero_price_placeholder & timestamps.notna()
-            ].dt.year.value_counts().items()
+            ]
+            .dt.year.value_counts()
+            .items()
         }
         placeholder_dates = sorted(
             timestamps.loc[zero_price_placeholder & timestamps.notna()]
@@ -744,7 +810,9 @@ def _in_regular_session(timestamp: pd.Timestamp) -> bool:
     """Accept either provider's start- or end-labelled A-share minute bar."""
 
     time_of_day = timestamp.time()
-    return dt.time(9, 30) <= time_of_day <= dt.time(11, 30) or dt.time(13, 0) <= time_of_day <= dt.time(15, 0)
+    return dt.time(9, 30) <= time_of_day <= dt.time(11, 30) or dt.time(
+        13, 0
+    ) <= time_of_day <= dt.time(15, 0)
 
 
 def minute_session_check(frame: pd.DataFrame) -> dict[str, Any]:
@@ -773,7 +841,11 @@ def minute_session_check(frame: pd.DataFrame) -> dict[str, Any]:
             }
         )
     return {
-        "status": "passed" if all(day["out_of_session_bars"] == 0 for day in days) else "failed",
+        "status": (
+            "passed"
+            if all(day["out_of_session_bars"] == 0 for day in days)
+            else "failed"
+        ),
         "days": days,
     }
 
@@ -799,7 +871,11 @@ def minute_daily_reconciliation(frame: pd.DataFrame) -> dict[str, Any]:
     symbol = str(frame["symbol"].iloc[0]).lower()
     path = DAILY_RAW_DIR / f"{symbol}.parquet"
     if not path.exists():
-        return {"status": "unavailable", "reason": f"missing_local_daily:{path}", "days": []}
+        return {
+            "status": "unavailable",
+            "reason": f"missing_local_daily:{path}",
+            "days": [],
+        }
     daily = pd.read_parquet(path)
     required_daily = {
         "date",
@@ -831,7 +907,12 @@ def minute_daily_reconciliation(frame: pd.DataFrame) -> dict[str, Any]:
     for trade_date, group in work.groupby("trade_date", sort=True):
         daily_row = daily.loc[daily.index == trade_date]
         if daily_row.empty:
-            days.append({"trade_date": trade_date.date().isoformat(), "status": "missing_local_daily"})
+            days.append(
+                {
+                    "trade_date": trade_date.date().isoformat(),
+                    "status": "missing_local_daily",
+                }
+            )
             continue
         reference = daily_row.iloc[-1]
         minute_close = float(group["close"].iloc[-1])
@@ -850,21 +931,37 @@ def minute_daily_reconciliation(frame: pd.DataFrame) -> dict[str, Any]:
             if float(reference["raw_volume"])
             else None
         )
-        amount_ratio = float(group["amount"].sum() / float(reference["amount"])) if float(reference["amount"]) else None
-        price_ok = all(error is not None and error <= 0.002 for error in price_relative_errors.values())
+        amount_ratio = (
+            float(group["amount"].sum() / float(reference["amount"]))
+            if float(reference["amount"])
+            else None
+        )
+        price_ok = all(
+            error is not None and error <= 0.002
+            for error in price_relative_errors.values()
+        )
         amount_ok = amount_ratio is not None and abs(amount_ratio - 1.0) <= 0.005
         # The public daily pipe reports volume in lots.  Sources can report
         # shares or lots, so accept either 1x or 100x here but record the
         # inferred ratio; never rescale a provider silently.
-        volume_ok = volume_ratio is not None and min(abs(volume_ratio - 1.0), abs(volume_ratio - 100.0)) <= 0.005
+        volume_ok = (
+            volume_ratio is not None
+            and min(abs(volume_ratio - 1.0), abs(volume_ratio - 100.0)) <= 0.005
+        )
         days.append(
             {
                 "trade_date": trade_date.date().isoformat(),
-                "status": "passed" if price_ok and amount_ok and volume_ok else "failed",
+                "status": (
+                    "passed" if price_ok and amount_ok and volume_ok else "failed"
+                ),
                 "price_relative_errors": price_relative_errors,
                 "amount_ratio_to_local_daily": amount_ratio,
                 "volume_ratio_to_local_daily": volume_ratio,
-                "inferred_volume_unit": "shares" if volume_ratio is not None and abs(volume_ratio - 100.0) <= 0.005 else "lots",
+                "inferred_volume_unit": (
+                    "shares"
+                    if volume_ratio is not None and abs(volume_ratio - 100.0) <= 0.005
+                    else "lots"
+                ),
             }
         )
     statuses = [day["status"] for day in days]
@@ -888,7 +985,11 @@ def minute_acceptance_report(frame: pd.DataFrame) -> dict[str, Any]:
     reconciliation = minute_daily_reconciliation(frame)
     passed = session["status"] == "passed" and reconciliation["status"] == "passed"
     return {
-        "status": "automatic_checks_passed_pending_time_alignment" if passed else "automatic_checks_failed",
+        "status": (
+            "automatic_checks_passed_pending_time_alignment"
+            if passed
+            else "automatic_checks_failed"
+        ),
         "session": session,
         "daily_reconciliation": reconciliation,
     }
@@ -901,7 +1002,9 @@ def _import_tushare() -> Any:
     return ts
 
 
-def _query_baostock_5m(client: Any, code: str, start: dt.date, end: dt.date) -> pd.DataFrame:
+def _query_baostock_5m(
+    client: Any, code: str, start: dt.date, end: dt.date
+) -> pd.DataFrame:
     """Query one raw partition through an already authenticated BaoStock client."""
 
     fields = "date,time,code,open,high,low,close,volume,amount,adjustflag"
@@ -914,7 +1017,9 @@ def _query_baostock_5m(client: Any, code: str, start: dt.date, end: dt.date) -> 
         adjustflag="3",
     )
     if str(response.error_code) != "0":
-        raise RichDataError(f"BaoStock five-minute query failed for {code}: {response.error_msg}")
+        raise RichDataError(
+            f"BaoStock five-minute query failed for {code}: {response.error_msg}"
+        )
     rows: list[list[str]] = []
     while response.next():
         rows.append(response.get_row_data())
@@ -923,22 +1028,32 @@ def _query_baostock_5m(client: Any, code: str, start: dt.date, end: dt.date) -> 
         return frame
     expected_fields = fields.split(",")
     if list(frame.columns) != expected_fields:
-        raise RichDataError("BaoStock five-minute response changed its frozen field schema")
+        raise RichDataError(
+            "BaoStock five-minute response changed its frozen field schema"
+        )
     if set(frame["adjustflag"].astype(str)) != {"3"}:
-        raise RichDataError("BaoStock five-minute response is not entirely raw unadjusted data")
+        raise RichDataError(
+            "BaoStock five-minute response is not entirely raw unadjusted data"
+        )
     frame["datetime"] = pd.to_datetime(
         frame["time"], format="%Y%m%d%H%M%S%f", errors="coerce"
     )
     if frame["datetime"].isna().any():
-        raise RichDataError("BaoStock five-minute response contains an invalid timestamp")
+        raise RichDataError(
+            "BaoStock five-minute response contains an invalid timestamp"
+        )
     return frame
 
 
-def fetch_baostock_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
+def fetch_baostock_minutes(
+    code: str, start: dt.date, end: dt.date, frequency: str
+) -> pd.DataFrame:
     """Fetch only the frozen anonymous raw five-minute BaoStock fields."""
 
     if frequency != "5m":
-        raise RichDataError("the frozen BaoStock intraday contract supports only 5m bars")
+        raise RichDataError(
+            "the frozen BaoStock intraday contract supports only 5m bars"
+        )
     import baostock as bs
 
     login = bs.login()
@@ -983,13 +1098,19 @@ def fetch_baostock_5m_request_worker(
             raw = _query_baostock_5m(_BAOSTOCK_WORKER_CLIENT, code, start, end)
             frame = canonicalize_baostock_5m_bars(raw, code, start, end)
             return code, start_value, end_value, frame
-        except Exception as exc:  # noqa: BLE001 - worker must preserve the final provider error.
+        except (
+            Exception
+        ) as exc:  # noqa: BLE001 - worker must preserve the final provider error.
             error = exc
             if "黑名单用户" in str(exc):
                 break
             if attempt < BAOSTOCK_5M_PARTITION_RETRIES:
                 time.sleep(float(attempt))
-    attempts = 1 if error is not None and "黑名单用户" in str(error) else BAOSTOCK_5M_PARTITION_RETRIES
+    attempts = (
+        1
+        if error is not None and "黑名单用户" in str(error)
+        else BAOSTOCK_5M_PARTITION_RETRIES
+    )
     raise RichDataError(
         f"BaoStock five-minute PIT request failed after {attempts} attempt(s): "
         f"{code} {start_value} {end_value}: {error}"
@@ -1037,7 +1158,9 @@ def download_baostock_5m_requests(
                 pending[executor.submit(fetch_baostock_5m_request_worker, task)] = None
 
 
-def fetch_tushare_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
+def fetch_tushare_minutes(
+    code: str, start: dt.date, end: dt.date, frequency: str
+) -> pd.DataFrame:
     """Fetch raw minute bars through Tushare's documented ``pro_bar`` wrapper."""
 
     ts = _import_tushare()
@@ -1053,7 +1176,9 @@ def fetch_tushare_minutes(code: str, start: dt.date, end: dt.date, frequency: st
     )
 
 
-def fetch_jqdata_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
+def fetch_jqdata_minutes(
+    code: str, start: dt.date, end: dt.date, frequency: str
+) -> pd.DataFrame:
     """Fetch raw minute bars with JQData, authenticating only in process memory."""
 
     from jqdatasdk import auth, get_price
@@ -1186,6 +1311,42 @@ def fetch_tushare_top10_float_holders(
     return result.copy()
 
 
+def fetch_tushare_cash_conversion_statement(
+    endpoint: str,
+    ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> pd.DataFrame:
+    """Fetch one frozen income or cashflow partition with its exact whitelist."""
+
+    fields_by_endpoint = {
+        "income": TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS,
+        "cashflow": TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS,
+    }
+    if endpoint not in fields_by_endpoint:
+        raise RichDataError(f"unsupported Tushare cash-conversion endpoint: {endpoint}")
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    request = getattr(pro, endpoint, None)
+    if request is None or not callable(request):
+        raise RichDataError(f"Tushare SDK lacks the required {endpoint} endpoint")
+    try:
+        result = request(
+            ts_code=ts_code,
+            start_date=announcement_start.strftime("%Y%m%d"),
+            end_date=announcement_end.strftime("%Y%m%d"),
+            fields=",".join(fields_by_endpoint[endpoint]),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            f"Tushare {endpoint} request failed for {ts_code}: "
+            f"{safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
 def fetch_tushare_daily_pb(trade_date: dt.date) -> pd.DataFrame:
     """Fetch one daily_basic session using only the frozen PB whitelist."""
 
@@ -1246,7 +1407,9 @@ def fetch_tushare_sw_members(l1_code: str, is_new: str) -> pd.DataFrame:
     return result.copy()
 
 
-def fetch_rqdata_minutes(code: str, start: dt.date, end: dt.date, frequency: str) -> pd.DataFrame:
+def fetch_rqdata_minutes(
+    code: str, start: dt.date, end: dt.date, frequency: str
+) -> pd.DataFrame:
     """Fetch raw minute bars from RQData's licensed API."""
 
     import rqdatac
@@ -1367,7 +1530,9 @@ def canonicalize_tushare_moneyflow(
     if frame is None or frame.empty:
         return pd.DataFrame(columns=TUSHARE_MONEYFLOW_COLUMNS), empty_stats
     raw = frame.copy()
-    missing_columns = [field for field in TUSHARE_MONEYFLOW_RAW_FIELDS if field not in raw]
+    missing_columns = [
+        field for field in TUSHARE_MONEYFLOW_RAW_FIELDS if field not in raw
+    ]
     if missing_columns:
         raise RichDataError(
             "Tushare moneyflow response lacks requested fields: "
@@ -1403,13 +1568,19 @@ def canonicalize_tushare_moneyflow(
     valid = normalized.loc[complete].copy()
     amount_columns = list(TUSHARE_MONEYFLOW_AMOUNT_FIELDS)
     if valid[amount_columns].lt(0.0).any().any():
-        raise RichDataError("Tushare moneyflow response contains a negative raw flow amount")
+        raise RichDataError(
+            "Tushare moneyflow response contains a negative raw flow amount"
+        )
     start_ts = pd.Timestamp(start)
     end_ts = pd.Timestamp(end)
     if not valid["trade_date"].between(start_ts, end_ts).all():
-        raise RichDataError("Tushare moneyflow response contains a date outside the request")
+        raise RichDataError(
+            "Tushare moneyflow response contains a date outside the request"
+        )
     if valid.duplicated(["instrument", "trade_date"]).any():
-        raise RichDataError("Tushare moneyflow response contains duplicate instrument/date keys")
+        raise RichDataError(
+            "Tushare moneyflow response contains duplicate instrument/date keys"
+        )
     valid[amount_columns] = valid[amount_columns].astype("float64")
     denominator = valid[amount_columns].sum(axis=1)
     positive = denominator.gt(0.0)
@@ -1463,7 +1634,9 @@ def canonicalize_tushare_northbound_top10(
             "Tushare hsgt_top10 response lacks requested fields: "
             + ", ".join(missing_columns)
         )
-    unexpected_columns = sorted(set(raw.columns) - set(TUSHARE_NORTHBOUND_TOP10_RAW_FIELDS))
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_NORTHBOUND_TOP10_RAW_FIELDS)
+    )
     if unexpected_columns:
         raise RichDataError(
             "Tushare hsgt_top10 response contains fields outside the frozen whitelist: "
@@ -1510,37 +1683,54 @@ def canonicalize_tushare_northbound_top10(
     missing_rows = int((~complete).sum())
     valid = normalized.loc[complete].copy()
     if valid[["amount", "buy", "sell"]].lt(0.0).any().any():
-        raise RichDataError("Tushare hsgt_top10 response contains a negative raw amount")
+        raise RichDataError(
+            "Tushare hsgt_top10 response contains a negative raw amount"
+        )
     start_ts = pd.Timestamp(start)
     end_ts = pd.Timestamp(end)
     if not valid["trade_date"].between(start_ts, end_ts).all():
-        raise RichDataError("Tushare hsgt_top10 response contains a date outside the request")
+        raise RichDataError(
+            "Tushare hsgt_top10 response contains a date outside the request"
+        )
     if not valid["market_type"].isin(TUSHARE_NORTHBOUND_TOP10_MARKET_TYPES).all():
-        raise RichDataError("Tushare hsgt_top10 response contains an unsupported market_type")
-    if expected_market_type is not None and not valid["market_type"].eq(
-        str(expected_market_type)
-    ).all():
+        raise RichDataError(
+            "Tushare hsgt_top10 response contains an unsupported market_type"
+        )
+    if (
+        expected_market_type is not None
+        and not valid["market_type"].eq(str(expected_market_type)).all()
+    ):
         raise RichDataError(
             "Tushare hsgt_top10 response market_type differs from the requested market"
         )
     integer_rank = valid["rank"].eq(np.floor(valid["rank"]))
     if not integer_rank.all() or not valid["rank"].between(1, 10).all():
-        raise RichDataError("Tushare hsgt_top10 ranks must be integers from 1 through 10")
+        raise RichDataError(
+            "Tushare hsgt_top10 ranks must be integers from 1 through 10"
+        )
     valid["rank"] = valid["rank"].astype("int64")
     if valid.duplicated(["trade_date", "market_type", "rank"]).any():
-        raise RichDataError("Tushare hsgt_top10 response contains duplicate market ranks")
+        raise RichDataError(
+            "Tushare hsgt_top10 response contains duplicate market ranks"
+        )
     if valid.duplicated(["instrument", "trade_date"]).any():
-        raise RichDataError("Tushare hsgt_top10 response contains duplicate instrument/date keys")
+        raise RichDataError(
+            "Tushare hsgt_top10 response contains duplicate instrument/date keys"
+        )
     market_counts = valid.groupby(["trade_date", "market_type"], observed=True).size()
     if market_counts.gt(10).any():
-        raise RichDataError("Tushare hsgt_top10 response contains more than ten rows per market")
+        raise RichDataError(
+            "Tushare hsgt_top10 response contains more than ten rows per market"
+        )
     valid[["amount", "buy", "sell"]] = valid[["amount", "buy", "sell"]].astype(
         "float64"
     )
     disclosed_total = valid["buy"] + valid["sell"]
     tolerance = np.maximum(1.0, np.maximum(valid["amount"], disclosed_total) * 0.000001)
     if (valid["amount"].sub(disclosed_total).abs() > tolerance).any():
-        raise RichDataError("Tushare hsgt_top10 amount does not reconcile to buy plus sell")
+        raise RichDataError(
+            "Tushare hsgt_top10 amount does not reconcile to buy plus sell"
+        )
     positive = disclosed_total.gt(0.0)
     zero_denominator_rows = int((~positive).sum())
     valid = valid.loc[positive].copy()
@@ -1580,7 +1770,9 @@ def canonicalize_tushare_top_inst(
     if frame is None or frame.empty:
         return pd.DataFrame(columns=TUSHARE_TOP_INST_COLUMNS), empty_stats
     raw = frame.copy()
-    missing_columns = [field for field in TUSHARE_TOP_INST_RAW_FIELDS if field not in raw]
+    missing_columns = [
+        field for field in TUSHARE_TOP_INST_RAW_FIELDS if field not in raw
+    ]
     if missing_columns:
         raise RichDataError(
             "Tushare top_inst response lacks requested fields: "
@@ -1630,14 +1822,20 @@ def canonicalize_tushare_top_inst(
             f"Tushare top_inst response contains {invalid_rows} incomplete or non-finite rows"
         )
     if normalized[["buy", "sell"]].lt(0.0).any().any():
-        raise RichDataError("Tushare top_inst response contains a negative buy or sell amount")
+        raise RichDataError(
+            "Tushare top_inst response contains a negative buy or sell amount"
+        )
     start_ts = pd.Timestamp(start)
     end_ts = pd.Timestamp(end)
     if not normalized["trade_date"].between(start_ts, end_ts).all():
-        raise RichDataError("Tushare top_inst response contains a date outside the request")
+        raise RichDataError(
+            "Tushare top_inst response contains a date outside the request"
+        )
     seat_key = ["trade_date", "instrument", "exalter"]
     if normalized.duplicated(seat_key).any():
-        raise RichDataError("Tushare top_inst response contains duplicate institution-seat keys")
+        raise RichDataError(
+            "Tushare top_inst response contains duplicate institution-seat keys"
+        )
 
     tolerance = np.maximum(
         0.01,
@@ -1647,8 +1845,13 @@ def canonicalize_tushare_top_inst(
             normalized["buy"] + normalized["sell"],
         ),
     )
-    if (normalized["net_buy"].sub(normalized["buy"] - normalized["sell"]).abs() > tolerance).any():
-        raise RichDataError("Tushare top_inst net_buy does not reconcile to buy minus sell")
+    if (
+        normalized["net_buy"].sub(normalized["buy"] - normalized["sell"]).abs()
+        > tolerance
+    ).any():
+        raise RichDataError(
+            "Tushare top_inst net_buy does not reconcile to buy minus sell"
+        )
 
     aggregated = (
         normalized.groupby(["trade_date", "instrument"], as_index=False, observed=True)
@@ -1672,7 +1875,9 @@ def canonicalize_tushare_top_inst(
     result = aggregated.loc[:, list(TUSHARE_TOP_INST_COLUMNS)].reset_index(drop=True)
     factor = result["tushare_top_inst_net_buy_share"]
     if not np.isfinite(factor).all() or not factor.between(-1.0, 1.0).all():
-        raise RichDataError("derived Tushare institution-seat ratio falls outside [-1, 1]")
+        raise RichDataError(
+            "derived Tushare institution-seat ratio falls outside [-1, 1]"
+        )
     return result, {
         "input_rows": int(len(raw)),
         "institution_seat_rows_reconciled": int(len(normalized)),
@@ -1715,14 +1920,11 @@ def canonicalize_tushare_top10_float_holders(
             "Tushare top10_floatholders response lacks requested fields: "
             + ", ".join(missing_columns)
         )
-    unexpected_columns = sorted(
-        set(raw.columns) - set(TUSHARE_TOP10_FLOAT_RAW_FIELDS)
-    )
+    unexpected_columns = sorted(set(raw.columns) - set(TUSHARE_TOP10_FLOAT_RAW_FIELDS))
     if unexpected_columns:
         raise RichDataError(
             "Tushare top10_floatholders response contains fields outside the "
-            "frozen whitelist: "
-            + ", ".join(unexpected_columns)
+            "frozen whitelist: " + ", ".join(unexpected_columns)
         )
 
     expected_parts = expected_ts_code.strip().upper().split(".", 1)
@@ -1763,9 +1965,7 @@ def canonicalize_tushare_top10_float_holders(
             ).dt.normalize(),
             "instrument": expected_instrument,
             "holder_name": holder_names,
-            "hold_float_ratio": pd.to_numeric(
-                raw["hold_float_ratio"], errors="coerce"
-            ),
+            "hold_float_ratio": pd.to_numeric(raw["hold_float_ratio"], errors="coerce"),
             "source_ts_code": raw["ts_code"].astype("string").str.strip().str.upper(),
         }
     )
@@ -1802,8 +2002,10 @@ def canonicalize_tushare_top10_float_holders(
             "Tushare top10_floatholders response contains a report period outside "
             "the request"
         )
-    standard_quarter_end = normalized["report_period"].dt.strftime("%m%d").isin(
-        {"0331", "0630", "0930", "1231"}
+    standard_quarter_end = (
+        normalized["report_period"]
+        .dt.strftime("%m%d")
+        .isin({"0331", "0630", "0930", "1231"})
     )
     if not standard_quarter_end.all():
         raise RichDataError(
@@ -1915,11 +2117,13 @@ def canonicalize_tushare_top10_float_holders(
                 "provider": "tushare",
             }
         )
-    factors = pd.DataFrame(
-        factor_rows, columns=TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS
-    ).sort_values(
-        ["instrument", "report_period", "announcement_date"], kind="stable"
-    ).reset_index(drop=True)
+    factors = (
+        pd.DataFrame(factor_rows, columns=TUSHARE_TOP10_FLOAT_FACTOR_COLUMNS)
+        .sort_values(
+            ["instrument", "report_period", "announcement_date"], kind="stable"
+        )
+        .reset_index(drop=True)
+    )
     if not factors.empty:
         changes = factors["top10_float_concentration_change_pp"]
         if (
@@ -1937,18 +2141,357 @@ def canonicalize_tushare_top10_float_holders(
             raise RichDataError(
                 "derived top-ten float concentration contains duplicate factor keys"
             )
-    return persisted, factors, {
-        "input_rows": int(len(raw)),
-        "source_rows_written": int(len(persisted)),
-        "report_groups_observed": int(len(groups)),
-        "complete_report_groups": int(complete.sum()),
-        "incomplete_report_groups_excluded": int((~complete).sum()),
-        "first_complete_report_periods": int(len(first_complete)),
-        "later_complete_revision_groups_not_used": int(
-            len(complete_groups) - len(first_complete)
-        ),
-        "factor_ready_consecutive_pairs": int(len(factors)),
+    return (
+        persisted,
+        factors,
+        {
+            "input_rows": int(len(raw)),
+            "source_rows_written": int(len(persisted)),
+            "report_groups_observed": int(len(groups)),
+            "complete_report_groups": int(complete.sum()),
+            "incomplete_report_groups_excluded": int((~complete).sum()),
+            "first_complete_report_periods": int(len(first_complete)),
+            "later_complete_revision_groups_not_used": int(
+                len(complete_groups) - len(first_complete)
+            ),
+            "factor_ready_consecutive_pairs": int(len(factors)),
+        },
+    )
+
+
+def canonicalize_tushare_cash_conversion_endpoint(
+    frame: pd.DataFrame,
+    endpoint: str,
+    expected_ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+    latest_actual_announcement_date: dt.date,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Apply the frozen statement-version policy before cross-endpoint joining."""
+
+    endpoint_specs = {
+        "income": {
+            "raw_fields": TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS,
+            "metric": "n_income_attr_p",
+            "columns": TUSHARE_CASH_CONVERSION_INCOME_COLUMNS,
+            "announcement_column": "income_announcement_date",
+            "actual_column": "income_actual_announcement_date",
+        },
+        "cashflow": {
+            "raw_fields": TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS,
+            "metric": "n_cashflow_act",
+            "columns": TUSHARE_CASH_CONVERSION_CASHFLOW_COLUMNS,
+            "announcement_column": "cashflow_announcement_date",
+            "actual_column": "cashflow_actual_announcement_date",
+        },
     }
+    if endpoint not in endpoint_specs:
+        raise RichDataError(f"unsupported cash-conversion endpoint: {endpoint}")
+    spec = endpoint_specs[endpoint]
+    empty_quality: dict[str, Any] = {
+        "input_rows": 0,
+        "non_target_company_rows_excluded": 0,
+        "target_company_periods_observed": 0,
+        "adjustment_periods_excluded": 0,
+        "no_type_one_periods_excluded": 0,
+        "missing_metric_periods_excluded": 0,
+        "ambiguous_type_one_periods_excluded": 0,
+        "semantic_duplicate_rows_collapsed": 0,
+        "accepted_periods": 0,
+        "update_flag_counts": {},
+    }
+    if frame is None or frame.empty:
+        return pd.DataFrame(columns=spec["columns"]), empty_quality
+
+    raw = frame.copy()
+    raw_fields = tuple(spec["raw_fields"])
+    missing_columns = [field for field in raw_fields if field not in raw]
+    if missing_columns:
+        raise RichDataError(
+            f"Tushare {endpoint} response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    unexpected_columns = sorted(set(raw.columns) - set(raw_fields))
+    if unexpected_columns:
+        raise RichDataError(
+            f"Tushare {endpoint} response contains fields outside the frozen "
+            "whitelist: " + ", ".join(unexpected_columns)
+        )
+
+    expected_code = expected_ts_code.strip().upper()
+    expected_parts = expected_code.split(".", 1)
+    if (
+        len(expected_parts) != 2
+        or len(expected_parts[0]) != 6
+        or not expected_parts[0].isdigit()
+        or expected_parts[1] not in {"SH", "SZ"}
+    ):
+        raise RichDataError(
+            f"invalid frozen cash-conversion stock code: {expected_ts_code}"
+        )
+    expected_instrument = qlib_symbol(expected_parts[0])
+    if not expected_instrument.startswith(expected_parts[1]):
+        raise RichDataError(
+            f"stock code and exchange suffix disagree: {expected_ts_code}"
+        )
+
+    source_code = (
+        raw["ts_code"].astype("string").str.strip().str.upper().replace("", pd.NA)
+    )
+    announcement_date = pd.to_datetime(
+        raw["ann_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    actual_announcement_date = pd.to_datetime(
+        raw["f_ann_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    report_period = pd.to_datetime(
+        raw["end_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    report_type_number = pd.to_numeric(raw["report_type"], errors="coerce")
+    company_type_number = pd.to_numeric(raw["comp_type"], errors="coerce")
+    update_flag = raw["update_flag"].astype("string").str.strip().replace("", pd.NA)
+    report_type_integer = (
+        report_type_number.notna()
+        & pd.Series(np.isfinite(report_type_number), index=raw.index)
+        & report_type_number.mod(1).eq(0)
+    )
+    company_type_integer = (
+        company_type_number.notna()
+        & pd.Series(np.isfinite(company_type_number), index=raw.index)
+        & company_type_number.mod(1).eq(0)
+    )
+    invalid_key = (
+        source_code.isna()
+        | announcement_date.isna()
+        | actual_announcement_date.isna()
+        | report_period.isna()
+        | ~report_type_integer
+        | ~company_type_integer
+        | update_flag.isna()
+    )
+    if invalid_key.any():
+        raise RichDataError(
+            f"Tushare {endpoint} response contains "
+            f"{int(invalid_key.sum())} rows with incomplete or invalid statement keys"
+        )
+
+    report_type = report_type_number.astype(int)
+    company_type = company_type_number.astype(int)
+    unknown_report_types = sorted(
+        set(report_type.astype(int)) - TUSHARE_CASH_CONVERSION_KNOWN_REPORT_TYPES
+    )
+    if unknown_report_types:
+        raise RichDataError(
+            f"Tushare {endpoint} response contains unknown report types: "
+            f"{unknown_report_types}"
+        )
+    unknown_company_types = sorted(
+        set(company_type.astype(int)) - TUSHARE_CASH_CONVERSION_KNOWN_COMPANY_TYPES
+    )
+    if unknown_company_types:
+        raise RichDataError(
+            f"Tushare {endpoint} response contains unknown company types: "
+            f"{unknown_company_types}"
+        )
+    if not source_code.eq(expected_code).all():
+        observed = sorted(set(source_code.astype(str)))
+        raise RichDataError(
+            f"Tushare {endpoint} response contains a stock outside its request: "
+            f"expected {expected_code}, observed {observed}"
+        )
+
+    start_stamp = pd.Timestamp(announcement_start)
+    end_stamp = pd.Timestamp(announcement_end)
+    latest_stamp = pd.Timestamp(latest_actual_announcement_date)
+    if announcement_date.lt(start_stamp).any() or announcement_date.gt(end_stamp).any():
+        raise RichDataError(
+            f"Tushare {endpoint} response contains an announcement outside the "
+            "frozen request range"
+        )
+    if actual_announcement_date.lt(announcement_date).any():
+        raise RichDataError(
+            f"Tushare {endpoint} response contains an actual announcement before ann_date"
+        )
+    if actual_announcement_date.gt(latest_stamp).any():
+        raise RichDataError(
+            f"Tushare {endpoint} response contains an actual announcement after "
+            "the frozen observation date"
+        )
+    if report_period.gt(announcement_date).any():
+        raise RichDataError(
+            f"Tushare {endpoint} response contains a report period after ann_date"
+        )
+    standard_quarter_ends = {"03-31", "06-30", "09-30", "12-31"}
+    if not report_period.dt.strftime("%m-%d").isin(standard_quarter_ends).all():
+        raise RichDataError(
+            f"Tushare {endpoint} response contains a non-standard quarter end"
+        )
+
+    metric_name = str(spec["metric"])
+    metric = pd.to_numeric(raw[metric_name], errors="coerce")
+    normalized = pd.DataFrame(
+        {
+            "announcement_date": announcement_date,
+            "actual_announcement_date": actual_announcement_date,
+            "report_period": report_period,
+            "instrument": expected_instrument,
+            "report_type": report_type,
+            "company_type": company_type,
+            "metric": metric,
+            "update_flag": update_flag,
+        }
+    )
+    update_flag_counts = {
+        str(key): int(value)
+        for key, value in normalized["update_flag"]
+        .value_counts(dropna=False)
+        .sort_index()
+        .items()
+    }
+    target = normalized.loc[normalized["company_type"].eq(1)].copy()
+    quality: dict[str, Any] = {
+        "input_rows": int(len(normalized)),
+        "non_target_company_rows_excluded": int(normalized["company_type"].ne(1).sum()),
+        "target_company_periods_observed": int(target["report_period"].nunique()),
+        "adjustment_periods_excluded": 0,
+        "no_type_one_periods_excluded": 0,
+        "missing_metric_periods_excluded": 0,
+        "ambiguous_type_one_periods_excluded": 0,
+        "semantic_duplicate_rows_collapsed": 0,
+        "accepted_periods": 0,
+        "update_flag_counts": update_flag_counts,
+    }
+    accepted_rows: list[dict[str, Any]] = []
+    for period, group in target.groupby("report_period", sort=True, observed=True):
+        observed_types = set(group["report_type"].astype(int))
+        if observed_types & TUSHARE_CASH_CONVERSION_ADJUSTMENT_REPORT_TYPES:
+            quality["adjustment_periods_excluded"] += 1
+            continue
+        type_one = group.loc[group["report_type"].eq(1)].copy()
+        if type_one.empty:
+            quality["no_type_one_periods_excluded"] += 1
+            continue
+        finite_metric = pd.Series(np.isfinite(type_one["metric"]), index=type_one.index)
+        if type_one["metric"].isna().any() or (~finite_metric).any():
+            quality["missing_metric_periods_excluded"] += 1
+            continue
+        semantic = type_one.drop_duplicates(
+            ["announcement_date", "actual_announcement_date", "metric"]
+        )
+        if len(semantic) != 1:
+            quality["ambiguous_type_one_periods_excluded"] += 1
+            continue
+        quality["semantic_duplicate_rows_collapsed"] += int(len(type_one) - 1)
+        row = semantic.iloc[0]
+        accepted_rows.append(
+            {
+                str(spec["announcement_column"]): pd.Timestamp(
+                    row["announcement_date"]
+                ),
+                str(spec["actual_column"]): pd.Timestamp(
+                    row["actual_announcement_date"]
+                ),
+                "report_period": pd.Timestamp(period),
+                "instrument": expected_instrument,
+                metric_name: float(row["metric"]),
+                "provider": "tushare",
+            }
+        )
+
+    accepted = pd.DataFrame(accepted_rows, columns=spec["columns"])
+    if not accepted.empty:
+        accepted = accepted.sort_values(
+            ["instrument", "report_period"], kind="stable"
+        ).reset_index(drop=True)
+        if accepted.duplicated(["instrument", "report_period"]).any():
+            raise RichDataError(
+                f"canonical Tushare {endpoint} rows contain a duplicate period key"
+            )
+    quality["accepted_periods"] = int(len(accepted))
+    return accepted, quality
+
+
+def derive_tushare_cash_conversion(
+    income: pd.DataFrame,
+    cashflow: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Join accepted statement periods and derive the sole frozen ratio."""
+
+    if income.columns.tolist() != list(TUSHARE_CASH_CONVERSION_INCOME_COLUMNS):
+        raise RichDataError(
+            "cash-conversion income columns do not match the frozen schema"
+        )
+    if cashflow.columns.tolist() != list(TUSHARE_CASH_CONVERSION_CASHFLOW_COLUMNS):
+        raise RichDataError(
+            "cash-conversion cashflow columns do not match the frozen schema"
+        )
+    key = ["instrument", "report_period"]
+    if income.duplicated(key).any() or cashflow.duplicated(key).any():
+        raise RichDataError(
+            "cash-conversion endpoint rows contain duplicate period keys"
+        )
+    income_keys = set(income.loc[:, key].itertuples(index=False, name=None))
+    cashflow_keys = set(cashflow.loc[:, key].itertuples(index=False, name=None))
+    joined = income.merge(
+        cashflow,
+        on=key,
+        how="inner",
+        suffixes=("_income", "_cashflow"),
+        validate="one_to_one",
+    )
+    quality: dict[str, Any] = {
+        "income_accepted_periods": int(len(income)),
+        "cashflow_accepted_periods": int(len(cashflow)),
+        "income_only_periods_excluded": int(len(income_keys - cashflow_keys)),
+        "cashflow_only_periods_excluded": int(len(cashflow_keys - income_keys)),
+        "joined_periods_before_metric_policy": int(len(joined)),
+        "nonpositive_income_periods_excluded": 0,
+        "nonfinite_cashflow_periods_excluded": 0,
+        "nonfinite_derived_periods_excluded": 0,
+        "usable_joined_periods": 0,
+    }
+    if joined.empty:
+        return pd.DataFrame(columns=TUSHARE_CASH_CONVERSION_COLUMNS), quality
+    if (
+        not joined["provider_income"].eq("tushare").all()
+        or not joined["provider_cashflow"].eq("tushare").all()
+    ):
+        raise RichDataError("cash-conversion endpoint provider identity mismatch")
+
+    denominator = pd.to_numeric(joined["n_income_attr_p"], errors="coerce")
+    numerator = pd.to_numeric(joined["n_cashflow_act"], errors="coerce")
+    denominator_finite = pd.Series(np.isfinite(denominator), index=joined.index)
+    numerator_finite = pd.Series(np.isfinite(numerator), index=joined.index)
+    positive_denominator = denominator_finite & denominator.gt(0.0)
+    quality["nonpositive_income_periods_excluded"] = int((~positive_denominator).sum())
+    quality["nonfinite_cashflow_periods_excluded"] = int((~numerator_finite).sum())
+    base_eligible = positive_denominator & numerator_finite
+    derived = pd.Series(np.nan, index=joined.index, dtype="float64")
+    derived.loc[base_eligible] = (
+        numerator.loc[base_eligible] / denominator.loc[base_eligible]
+    )
+    derived_finite = pd.Series(np.isfinite(derived), index=joined.index)
+    quality["nonfinite_derived_periods_excluded"] = int(
+        (base_eligible & ~derived_finite).sum()
+    )
+    eligible = base_eligible & derived_finite
+    accepted = joined.loc[eligible].copy()
+    accepted["announcement_date"] = accepted[
+        ["income_actual_announcement_date", "cashflow_actual_announcement_date"]
+    ].max(axis=1)
+    accepted["tushare_operating_cash_conversion"] = derived.loc[eligible]
+    accepted["provider"] = "tushare"
+    accepted = (
+        accepted.loc[:, list(TUSHARE_CASH_CONVERSION_COLUMNS)]
+        .sort_values(
+            ["instrument", "report_period", "announcement_date"], kind="stable"
+        )
+        .reset_index(drop=True)
+    )
+    if accepted.duplicated(["instrument", "announcement_date", "report_period"]).any():
+        raise RichDataError("cash-conversion factor rows contain duplicate event keys")
+    quality["usable_joined_periods"] = int(len(accepted))
+    return accepted, quality
 
 
 def canonicalize_tushare_daily_pb(
@@ -1967,7 +2510,9 @@ def canonicalize_tushare_daily_pb(
     if frame is None or frame.empty:
         return pd.DataFrame(columns=TUSHARE_DAILY_PB_COLUMNS), empty_stats
     raw = frame.copy()
-    missing_columns = [field for field in TUSHARE_DAILY_PB_RAW_FIELDS if field not in raw]
+    missing_columns = [
+        field for field in TUSHARE_DAILY_PB_RAW_FIELDS if field not in raw
+    ]
     if missing_columns:
         raise RichDataError(
             "Tushare daily_basic PB response lacks requested fields: "
@@ -2021,14 +2566,18 @@ def canonicalize_tushare_daily_pb(
     start_ts = pd.Timestamp(start)
     end_ts = pd.Timestamp(end)
     if not normalized["trade_date"].between(start_ts, end_ts).all():
-        raise RichDataError("Tushare daily_basic PB response contains a date outside the request")
+        raise RichDataError(
+            "Tushare daily_basic PB response contains a date outside the request"
+        )
     if normalized.duplicated(["instrument", "trade_date"]).any():
         raise RichDataError(
             "Tushare daily_basic PB response contains duplicate instrument/date keys"
         )
     finite_or_missing = normalized["pb"].isna() | np.isfinite(normalized["pb"])
     if not finite_or_missing.all():
-        raise RichDataError("Tushare daily_basic PB response contains an infinite PB value")
+        raise RichDataError(
+            "Tushare daily_basic PB response contains an infinite PB value"
+        )
     missing_pb = normalized["pb"].isna()
     nonpositive_pb = normalized["pb"].notna() & normalized["pb"].le(0.0)
     valid = normalized.loc[~missing_pb & ~nonpositive_pb].copy()
@@ -2059,7 +2608,9 @@ def canonicalize_tushare_sw_classification(frame: pd.DataFrame) -> pd.DataFrame:
     if frame is None or frame.empty:
         return pd.DataFrame(columns=TUSHARE_SW_CLASSIFICATION_RAW_FIELDS)
     raw = frame.copy()
-    missing = [field for field in TUSHARE_SW_CLASSIFICATION_RAW_FIELDS if field not in raw]
+    missing = [
+        field for field in TUSHARE_SW_CLASSIFICATION_RAW_FIELDS if field not in raw
+    ]
     if missing:
         raise RichDataError(
             "Tushare SW classification response lacks requested fields: "
@@ -2075,7 +2626,9 @@ def canonicalize_tushare_sw_classification(frame: pd.DataFrame) -> pd.DataFrame:
     for column in TUSHARE_SW_CLASSIFICATION_RAW_FIELDS:
         result[column] = result[column].astype("string").str.strip()
     if result[list(TUSHARE_SW_CLASSIFICATION_RAW_FIELDS)].isna().any(axis=None):
-        raise RichDataError("Tushare SW classification response contains a missing value")
+        raise RichDataError(
+            "Tushare SW classification response contains a missing value"
+        )
     if not result["level"].eq("L1").all() or not result["src"].eq("SW2021").all():
         raise RichDataError("Tushare SW classification response is not SW2021 L1")
     if not result["index_code"].str.fullmatch(r"\d{6}\.SI").all():
@@ -2094,7 +2647,9 @@ def canonicalize_tushare_sw_members(
     """Validate one frozen SW2021 membership partition without price data."""
 
     if expected_is_new not in {"Y", "N"}:
-        raise RichDataError(f"unsupported expected SW membership is_new: {expected_is_new}")
+        raise RichDataError(
+            f"unsupported expected SW membership is_new: {expected_is_new}"
+        )
     if frame is None or frame.empty:
         return pd.DataFrame(columns=TUSHARE_SW_MEMBERSHIP_COLUMNS), {
             "input_rows": 0,
@@ -2165,14 +2720,21 @@ def canonicalize_tushare_sw_members(
     if not normalized["l1_code"].eq(expected_l1_code).all():
         raise RichDataError("Tushare SW membership response contains another L1 code")
     if not normalized["is_new"].eq(expected_is_new).all():
-        raise RichDataError("Tushare SW membership response contains another is_new value")
-    if not normalized["l2_code"].str.fullmatch(r"\d{6}\.SI").all() or not normalized[
-        "l3_code"
-    ].str.fullmatch(r"\d{6}\.SI").all():
-        raise RichDataError("Tushare SW membership response contains an invalid industry code")
+        raise RichDataError(
+            "Tushare SW membership response contains another is_new value"
+        )
+    if (
+        not normalized["l2_code"].str.fullmatch(r"\d{6}\.SI").all()
+        or not normalized["l3_code"].str.fullmatch(r"\d{6}\.SI").all()
+    ):
+        raise RichDataError(
+            "Tushare SW membership response contains an invalid industry code"
+        )
     missing_out = normalized["out_date"].isna()
     if expected_is_new == "Y" and not missing_out.all():
-        raise RichDataError("current Tushare SW membership row unexpectedly has out_date")
+        raise RichDataError(
+            "current Tushare SW membership row unexpectedly has out_date"
+        )
     if expected_is_new == "N" and missing_out.any():
         raise RichDataError("historical Tushare SW membership row lacks out_date")
     dated = normalized["out_date"].notna()
@@ -2191,7 +2753,9 @@ def canonicalize_tushare_sw_members(
         "is_new",
     ]
     if normalized.duplicated(duplicate_key).any():
-        raise RichDataError("Tushare SW membership response contains duplicate intervals")
+        raise RichDataError(
+            "Tushare SW membership response contains duplicate intervals"
+        )
     normalized["provider"] = "tushare"
     result = (
         normalized.loc[:, list(TUSHARE_SW_MEMBERSHIP_COLUMNS)]
@@ -2236,7 +2800,9 @@ def canonicalize_jqdata_moneyflow(
     for field in JQDATA_MONEYFLOW_RAW_FIELDS:
         column = _column(raw, (field,))
         if column is None:
-            raise RichDataError(f"JQData moneyflow response lacks requested field: {field}")
+            raise RichDataError(
+                f"JQData moneyflow response lacks requested field: {field}"
+            )
         raw_columns[field] = column
 
     def instrument(value: Any) -> str | None:
@@ -2248,7 +2814,9 @@ def canonicalize_jqdata_moneyflow(
 
     normalized = pd.DataFrame(
         {
-            "trade_date": pd.to_datetime(raw[date_column], errors="coerce").dt.normalize(),
+            "trade_date": pd.to_datetime(
+                raw[date_column], errors="coerce"
+            ).dt.normalize(),
             "instrument": raw[code_column].map(instrument),
             **{
                 f"{field}_amount": pd.to_numeric(raw[column], errors="coerce")
@@ -2257,20 +2825,30 @@ def canonicalize_jqdata_moneyflow(
         }
     )
     amount_columns = [f"{field}_amount" for field in JQDATA_MONEYFLOW_RAW_FIELDS]
-    complete = normalized[["trade_date", "instrument", *amount_columns]].notna().all(axis=1)
+    complete = (
+        normalized[["trade_date", "instrument", *amount_columns]].notna().all(axis=1)
+    )
     missing_rows = int((~complete).sum())
     valid = normalized.loc[complete].copy()
     if valid[amount_columns].lt(0.0).any().any():
-        raise RichDataError("JQData moneyflow response contains a negative raw flow amount")
+        raise RichDataError(
+            "JQData moneyflow response contains a negative raw flow amount"
+        )
     start_ts = pd.Timestamp(start)
     end_ts = pd.Timestamp(end)
     if not valid["trade_date"].between(start_ts, end_ts).all():
-        raise RichDataError("JQData moneyflow response contains a date outside the request")
+        raise RichDataError(
+            "JQData moneyflow response contains a date outside the request"
+        )
     requested_instruments = {qlib_symbol(code) for code in codes}
     if not set(valid["instrument"]).issubset(requested_instruments):
-        raise RichDataError("JQData moneyflow response contains an unrequested instrument")
+        raise RichDataError(
+            "JQData moneyflow response contains an unrequested instrument"
+        )
     if valid.duplicated(["instrument", "trade_date"]).any():
-        raise RichDataError("JQData moneyflow response contains duplicate instrument/date keys")
+        raise RichDataError(
+            "JQData moneyflow response contains duplicate instrument/date keys"
+        )
     valid[amount_columns] = valid[amount_columns].astype("float64")
     denominator = valid[amount_columns].sum(axis=1)
     positive = denominator.gt(0.0)
@@ -2299,7 +2877,9 @@ def canonicalize_jqdata_moneyflow(
     }
 
 
-def validate_range(start: dt.date, end: dt.date, allow_large: bool, unit_count: int = 1) -> None:
+def validate_range(
+    start: dt.date, end: dt.date, allow_large: bool, unit_count: int = 1
+) -> None:
     """Guard against an accidental multi-year paid-data request."""
 
     if end < start:
@@ -2396,7 +2976,9 @@ def load_jqdata_moneyflow_contract(
         or contract.get("forward_return_fields_read") is not False
         or contract.get("selection_or_promotion_allowed") is not False
     ):
-        raise RichDataError("JQData moneyflow contract does not match the frozen protocol")
+        raise RichDataError(
+            "JQData moneyflow contract does not match the frozen protocol"
+        )
     return contract
 
 
@@ -2445,7 +3027,9 @@ def load_tushare_moneyflow_contract(
         or contract.get("forward_return_fields_read") is not False
         or contract.get("selection_or_promotion_allowed") is not False
     ):
-        raise RichDataError("Tushare moneyflow contract does not match the frozen protocol")
+        raise RichDataError(
+            "Tushare moneyflow contract does not match the frozen protocol"
+        )
     return contract
 
 
@@ -2478,8 +3062,7 @@ def load_tushare_northbound_top10_contract(
         != TUSHARE_NORTHBOUND_TOP10_MARKET_TYPES
         or tuple(source.get("requested_fields") or ())
         != TUSHARE_NORTHBOUND_TOP10_RAW_FIELDS
-        or tuple(snapshot.get("columns") or ())
-        != TUSHARE_NORTHBOUND_TOP10_COLUMNS
+        or tuple(snapshot.get("columns") or ()) != TUSHARE_NORTHBOUND_TOP10_COLUMNS
         or partition.get("partition") != "one calendar year"
         or partition.get("provider_call_partition")
         != "one local trading session and one market_type"
@@ -2545,8 +3128,7 @@ def load_tushare_top_inst_contract(
         or timing.get("forward_fill_allowed") is not False
         or factor.get("name") != "tushare_top_inst_net_buy_share"
         or factor.get("direction") != "higher_is_better"
-        or factor.get("formula")
-        != "(sum(buy) - sum(sell)) / (sum(buy) + sum(sell))"
+        or factor.get("formula") != "(sum(buy) - sum(sell)) / (sum(buy) + sum(sell))"
         or factor.get("provider_net_buy_use")
         != "integrity reconciliation only; never use provider net_buy as the factor numerator"
         or top_list_manifest.get("sha256")
@@ -2580,7 +3162,9 @@ def load_tushare_top_inst_contract(
         or uniqueness.get("minimum_pairwise_sessions") != 100
         or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
         != 0.8
-        or diagnostic.get("separate_immutable_preregistration_required_before_price_access")
+        or diagnostic.get(
+            "separate_immutable_preregistration_required_before_price_access"
+        )
         is not True
         or diagnostic.get("holding_period_trading_days") != 3
         or diagnostic.get("topk") != 3
@@ -2588,7 +3172,9 @@ def load_tushare_top_inst_contract(
         or contract.get("forward_return_fields_read") is not False
         or contract.get("selection_or_promotion_allowed") is not False
     ):
-        raise RichDataError("Tushare top_inst contract does not match the frozen protocol")
+        raise RichDataError(
+            "Tushare top_inst contract does not match the frozen protocol"
+        )
     return contract
 
 
@@ -2602,7 +3188,10 @@ def load_tushare_top_inst_top_list_context(
     frame_link = context["accepted_top_list_frame"]
     manifest_file = resolve_record_path(manifest_link["path"])
     frame_file = resolve_record_path(frame_link["path"])
-    if not manifest_file.exists() or file_digest(manifest_file) != manifest_link["sha256"]:
+    if (
+        not manifest_file.exists()
+        or file_digest(manifest_file) != manifest_link["sha256"]
+    ):
         raise RichDataError("accepted Tushare top-list manifest fingerprint mismatch")
     manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
     trade_date = contract["acceptance_protocol"]["fixed_completed_session"]
@@ -2623,7 +3212,9 @@ def load_tushare_top_inst_top_list_context(
         if item.get("dataset") == "top-list"
     ]
     if len(records) != 1:
-        raise RichDataError("accepted Tushare event manifest must contain one top-list frame")
+        raise RichDataError(
+            "accepted Tushare event manifest must contain one top-list frame"
+        )
     record = records[0]
     quality = record.get("quality") or {}
     if (
@@ -2640,8 +3231,13 @@ def load_tushare_top_inst_top_list_context(
     if not frame_file.exists():
         raise RichDataError("accepted Tushare top-list frame is missing")
     frame = pd.read_parquet(frame_file)
-    if frame_digest(frame) != frame_link["sha256"] or len(frame) != frame_link["raw_rows"]:
-        raise RichDataError("accepted Tushare top-list frame content fingerprint mismatch")
+    if (
+        frame_digest(frame) != frame_link["sha256"]
+        or len(frame) != frame_link["raw_rows"]
+    ):
+        raise RichDataError(
+            "accepted Tushare top-list frame content fingerprint mismatch"
+        )
     required = {"trade_date", "ts_code"}
     if not required.issubset(frame.columns):
         raise RichDataError("accepted Tushare top-list frame lacks stock/date keys")
@@ -2669,7 +3265,9 @@ def load_tushare_top_inst_top_list_context(
     instruments = frame["ts_code"].map(instrument)
     supported = instruments.dropna().astype(str)
     if supported.empty:
-        raise RichDataError("accepted Tushare top-list frame has no supported A-share stock keys")
+        raise RichDataError(
+            "accepted Tushare top-list frame has no supported A-share stock keys"
+        )
     return {
         "manifest_path": manifest_file,
         "manifest_sha256": manifest_link["sha256"],
@@ -2730,8 +3328,7 @@ def load_tushare_top10_float_concentration_contract(
         or source.get("api") != "top10_floatholders"
         or source.get("request_mode")
         != "one stock and one frozen report-period range per call"
-        or tuple(source.get("requested_fields") or ())
-        != TUSHARE_TOP10_FLOAT_RAW_FIELDS
+        or tuple(source.get("requested_fields") or ()) != TUSHARE_TOP10_FLOAT_RAW_FIELDS
         or source.get("plaintext_holder_name_may_be_logged_stored_or_committed")
         is not False
         or timing.get("conservative_availability")
@@ -2752,8 +3349,7 @@ def load_tushare_top10_float_concentration_contract(
         or acceptance.get("latest_allowed_announcement_date") != "20260716"
         or acceptance.get("provider_calls") != 3
         or acceptance.get("minimum_complete_report_groups_per_symbol") != 2
-        or acceptance.get("minimum_factor_ready_consecutive_pairs_per_symbol")
-        != 1
+        or acceptance.get("minimum_factor_ready_consecutive_pairs_per_symbol") != 1
         or acceptance.get("success_status")
         != "accepted_entitlement_schema_and_concentration_formula_pending_full_history"
         or snapshot.get("source_report_period_start") != "20181231"
@@ -2785,7 +3381,9 @@ def load_tushare_top10_float_concentration_contract(
         or uniqueness.get("minimum_pairwise_sessions") != 100
         or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
         != 0.8
-        or diagnostic.get("separate_immutable_preregistration_required_before_price_access")
+        or diagnostic.get(
+            "separate_immutable_preregistration_required_before_price_access"
+        )
         is not True
         or diagnostic.get("holding_period_trading_days") != 3
         or diagnostic.get("topk") != 3
@@ -2808,8 +3406,10 @@ def validate_tushare_top10_float_local_context(
     context = contract.get("local_context") or {}
     validated: dict[str, dict[str, str]] = {}
     for label, evidence in context.items():
-        if not isinstance(evidence, dict) or not evidence.get("path") or not evidence.get(
-            "sha256"
+        if (
+            not isinstance(evidence, dict)
+            or not evidence.get("path")
+            or not evidence.get("sha256")
         ):
             raise RichDataError(
                 f"top-ten float concentration context is incomplete: {label}"
@@ -2832,9 +3432,8 @@ def validate_tushare_top10_float_local_context(
                     f"top-ten float concentration manifest context is incomplete: {label}"
                 )
             manifest_file = resolve_record_path(str(manifest_value))
-            if (
-                not manifest_file.exists()
-                or file_digest(manifest_file) != str(manifest_sha)
+            if not manifest_file.exists() or file_digest(manifest_file) != str(
+                manifest_sha
             ):
                 raise RichDataError(
                     "top-ten float concentration manifest fingerprint mismatch: "
@@ -2858,6 +3457,310 @@ def tushare_top10_float_concentration_acceptance_records() -> list[Path]:
     ):
         payload = load_json_record(path)
         if payload.get("dataset") == "tushare_top10_float_concentration_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_cash_conversion_contract(
+    path: Path = DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT,
+) -> dict[str, Any]:
+    """Load and structurally revalidate the immutable pre-row accounting contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_CASH_CONVERSION_CONTRACT_SHA256:
+        raise RichDataError("Tushare cash-conversion contract fingerprint mismatch")
+    contract = load_json_record(
+        path, kind="a_share_tushare_cash_conversion_data_contract"
+    )
+    selection = contract.get("source_selection") or {}
+    source = contract.get("source") or {}
+    version = contract.get("point_in_time_and_version_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    gates = contract.get("no_return_gates") or {}
+    completeness = gates.get("source_completeness") or {}
+    capacity = gates.get("capacity") or {}
+    uniqueness = gates.get("uniqueness") or {}
+    diagnostic = contract.get("diagnostic_policy_if_all_no_return_gates_pass") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_income_or_cashflow_entitlement_rows_full_history_factor_values_or_factor_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-16T13:43:50Z"
+        or selection.get("minimum_permission_points_each") != 2000
+        or selection.get("current_account_points") != 3000
+        or selection.get("provider_documented_maximum_rows_per_call") != 100
+        or source.get("provider") != "tushare"
+        or tuple(source.get("apis") or ()) != ("income", "cashflow")
+        or source.get("request_mode")
+        != "one stock and one frozen announcement-date range per endpoint call"
+        or tuple(source.get("income_requested_fields") or ())
+        != TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS
+        or tuple(source.get("cashflow_requested_fields") or ())
+        != TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS
+        or version.get("candidate_company_type") != "1"
+        or version.get("candidate_report_type") != "1 consolidated cumulative report"
+        or tuple(version.get("non_candidate_context_report_types") or ())
+        != tuple(
+            str(value) for value in sorted(TUSHARE_CASH_CONVERSION_CONTEXT_REPORT_TYPES)
+        )
+        or tuple(
+            version.get(
+                "adjustment_report_types_that_exclude_the_whole_endpoint_period"
+            )
+            or ()
+        )
+        != tuple(
+            str(value)
+            for value in sorted(TUSHARE_CASH_CONVERSION_ADJUSTMENT_REPORT_TYPES)
+        )
+        or version.get("conservative_availability")
+        != "first local trading session strictly after the later actual announcement date"
+        or version.get("same_announcement_session_trade_allowed") is not False
+        or version.get("maximum_event_age_calendar_days") != 3
+        or version.get("forward_fill_beyond_event_age_allowed") is not False
+        or factor.get("name") != "tushare_operating_cash_conversion"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("formula") != "n_cashflow_act / n_income_attr_p"
+        or factor.get("clipping_winsorization_log_absolute_value_or_imputation")
+        is not None
+        or tuple(acceptance.get("fixed_symbols") or ())
+        != TUSHARE_CASH_CONVERSION_ACCEPTANCE_SYMBOLS
+        or acceptance.get("fixed_announcement_start") != "20240101"
+        or acceptance.get("fixed_announcement_end") != "20260630"
+        or acceptance.get("latest_allowed_actual_announcement_date") != "20260716"
+        or tuple(acceptance.get("endpoints_per_symbol") or ()) != ("income", "cashflow")
+        or acceptance.get("provider_calls") != 6
+        or acceptance.get("minimum_usable_joined_periods_per_symbol") != 4
+        or acceptance.get("success_status")
+        != "accepted_entitlement_schema_version_policy_and_formula_pending_full_history"
+        or snapshot.get("announcement_start") != "20190101"
+        or snapshot.get("announcement_end") != "20251231"
+        or snapshot.get("development_signal_start") != "2019-01-01"
+        or snapshot.get("development_signal_end") != "2025-12-31"
+        or snapshot.get(
+            "request_each_point_in_time_buyable_instrument_once_per_endpoint"
+        )
+        is not True
+        or snapshot.get("provider_call_partition")
+        != "one ts_code over the full frozen announcement-date range for each endpoint"
+        or snapshot.get("provider_documented_maximum_rows_per_call") != 100
+        or snapshot.get("minimum_seconds_between_calls") != 0.65
+        or snapshot.get("maximum_attempts_per_symbol_endpoint") != 3
+        or tuple(snapshot.get("canonical_columns") or ())
+        != TUSHARE_CASH_CONVERSION_COLUMNS
+        or completeness.get("minimum_complete_joined_factor_events") != 5000
+        or completeness.get("minimum_observed_signal_years") != 5
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("non_overlapping_cohorts") is not True
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("comparison_factor_count") != 54
+        or uniqueness.get("minimum_pairwise_sessions") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or diagnostic.get(
+            "separate_immutable_preregistration_required_before_price_access"
+        )
+        is not True
+        or diagnostic.get("holding_period_trading_days") != 3
+        or diagnostic.get("topk") != 3
+        or diagnostic.get("selection_or_promotion_allowed") is not False
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare cash-conversion contract does not match the frozen protocol"
+        )
+    return contract
+
+
+def validate_tushare_cash_conversion_local_context(
+    contract: dict[str, Any],
+) -> dict[str, dict[str, str]]:
+    """Fingerprint-bind every local no-return prerequisite before provider calls."""
+
+    context = contract.get("local_context") or {}
+    validated: dict[str, dict[str, str]] = {}
+    for label, evidence in context.items():
+        if (
+            not isinstance(evidence, dict)
+            or not evidence.get("path")
+            or not evidence.get("sha256")
+        ):
+            raise RichDataError(f"cash-conversion context is incomplete: {label}")
+        path = resolve_record_path(str(evidence["path"]))
+        expected = str(evidence["sha256"])
+        if not path.exists() or file_digest(path) != expected:
+            raise RichDataError(
+                f"cash-conversion context fingerprint mismatch: {label}"
+            )
+        validated[label] = {"path": manifest_path(path), "sha256": expected}
+        manifest_value = evidence.get("manifest_path")
+        manifest_sha = evidence.get("manifest_sha256")
+        if manifest_value is not None or manifest_sha is not None:
+            if not manifest_value or not manifest_sha:
+                raise RichDataError(
+                    f"cash-conversion manifest context is incomplete: {label}"
+                )
+            manifest_file = resolve_record_path(str(manifest_value))
+            if not manifest_file.exists() or file_digest(manifest_file) != str(
+                manifest_sha
+            ):
+                raise RichDataError(
+                    f"cash-conversion manifest fingerprint mismatch: {label}"
+                )
+            validated[f"{label}_manifest"] = {
+                "path": manifest_path(manifest_file),
+                "sha256": str(manifest_sha),
+            }
+    return validated
+
+
+def tushare_cash_conversion_acceptance_records() -> list[Path]:
+    """Return terminal records that consumed the cash-conversion one-shot gate."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*tushare_cash_conversion_acceptance*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_cash_conversion_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_cash_conversion_source_chain(
+    record_path: Path = DEFAULT_TUSHARE_CASH_CONVERSION_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Revalidate the frozen contract and accepted no-return factor sample."""
+
+    contract = load_tushare_cash_conversion_contract()
+    record_path = record_path.expanduser().resolve()
+    if (
+        not record_path.exists()
+        or file_digest(record_path) != TUSHARE_CASH_CONVERSION_ACCEPTANCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "Tushare cash-conversion acceptance record fingerprint mismatch"
+        )
+    record = load_json_record(
+        record_path,
+        kind="a_share_tushare_cash_conversion_source_acceptance_record",
+    )
+    contract_link = record.get("data_contract") or {}
+    acceptance = record.get("acceptance") or {}
+    next_action = record.get("one_shot_and_next_action") or {}
+    manifest_file = resolve_record_path(str(acceptance.get("manifest_path") or ""))
+    expected_manifest_sha = str(acceptance.get("manifest_sha256") or "")
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_source_pending_frozen_full_history_and_no_return_gates"
+        or contract_link.get("sha256") != TUSHARE_CASH_CONVERSION_CONTRACT_SHA256
+        or contract_link.get("preregistered_at") != contract.get("preregistered_at")
+        or acceptance.get("acceptance_status")
+        != "accepted_entitlement_schema_version_policy_and_formula_pending_full_history"
+        or tuple(acceptance.get("fixed_symbols") or ())
+        != TUSHARE_CASH_CONVERSION_ACCEPTANCE_SYMBOLS
+        or tuple(acceptance.get("endpoints_per_symbol") or ()) != ("income", "cashflow")
+        or acceptance.get("provider_calls_issued") != 6
+        or acceptance.get("provider_calls_expected") != 6
+        or acceptance.get("total_source_rows") != 76
+        or acceptance.get("formula") != "n_cashflow_act / n_income_attr_p"
+        or acceptance.get("direction") != "higher_is_better"
+        or acceptance.get("price_fields_loaded") != []
+        or acceptance.get("forward_return_fields_read") is not False
+        or acceptance.get("selection_or_promotion_performed") is not False
+        or next_action.get("acceptance_consumed") is not True
+        or next_action.get("price_access_authorized_now") is not False
+        or next_action.get("aggregation_scoring_selection_or_trading_authorized_now")
+        is not False
+        or not manifest_file.exists()
+        or file_digest(manifest_file) != expected_manifest_sha
+    ):
+        raise RichDataError("Tushare cash-conversion acceptance record is incompatible")
+    manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
+    files = list(manifest.get("files") or [])
+    published = acceptance.get("published_factor_frame") or {}
+    if (
+        manifest.get("dataset") != "tushare_cash_conversion_acceptance"
+        or manifest.get("provider") != "tushare"
+        or manifest.get("acceptance_status") != acceptance.get("acceptance_status")
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or len(files) != 1
+        or files[0].get("path") != published.get("path")
+        or files[0].get("sha256") != published.get("sha256")
+        or files[0].get("rows") != published.get("rows")
+    ):
+        raise RichDataError(
+            "Tushare cash-conversion acceptance manifest identity mismatch"
+        )
+    frame_path = resolve_record_path(str(published.get("path") or ""))
+    if not frame_path.exists():
+        raise RichDataError("Tushare cash-conversion accepted factor frame is missing")
+    frame = pd.read_parquet(frame_path)
+    denominator = pd.to_numeric(frame["n_income_attr_p"], errors="coerce")
+    numerator = pd.to_numeric(frame["n_cashflow_act"], errors="coerce")
+    factor = pd.to_numeric(frame["tushare_operating_cash_conversion"], errors="coerce")
+    later_actual = frame[
+        ["income_actual_announcement_date", "cashflow_actual_announcement_date"]
+    ].max(axis=1)
+    expected_instruments = {
+        qlib_symbol(symbol.split(".", 1)[0])
+        for symbol in TUSHARE_CASH_CONVERSION_ACCEPTANCE_SYMBOLS
+    }
+    if (
+        tuple(frame.columns) != TUSHARE_CASH_CONVERSION_COLUMNS
+        or len(frame) != int(published.get("rows") or -1)
+        or frame_digest(frame) != published.get("sha256")
+        or set(frame["instrument"].astype(str)) != expected_instruments
+        or frame.duplicated(["instrument", "announcement_date", "report_period"]).any()
+        or frame["announcement_date"].isna().any()
+        or not pd.to_datetime(frame["announcement_date"]).eq(later_actual).all()
+        or not np.isfinite(denominator).all()
+        or not denominator.gt(0.0).all()
+        or not np.isfinite(numerator).all()
+        or not np.isfinite(factor).all()
+        or not np.allclose(
+            factor.to_numpy(dtype="float64"),
+            numerator.to_numpy(dtype="float64") / denominator.to_numpy(dtype="float64"),
+            rtol=0.0,
+            atol=1e-12,
+        )
+        or not frame["provider"].eq("tushare").all()
+    ):
+        raise RichDataError(
+            "Tushare cash-conversion accepted factor integrity audit failed"
+        )
+    return {
+        "contract": contract,
+        "record_path": record_path,
+        "record": record,
+        "manifest_path": manifest_file,
+        "manifest": manifest,
+        "frame_path": frame_path,
+        "frame": frame,
+    }
+
+
+def tushare_cash_conversion_full_snapshot_records() -> list[Path]:
+    """Return completed full-snapshot manifests for this exact mechanism."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*tushare_cash_conversion_full*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_operating_cash_conversion":
             records.append(path)
     return records
 
@@ -2909,7 +3812,9 @@ def load_tushare_daily_pb_contract(
         or contract.get("forward_return_fields_read") is not False
         or contract.get("selection_or_promotion_allowed") is not False
     ):
-        raise RichDataError("Tushare daily PB contract does not match the frozen protocol")
+        raise RichDataError(
+            "Tushare daily PB contract does not match the frozen protocol"
+        )
     return contract
 
 
@@ -2938,8 +3843,7 @@ def load_tushare_sw_industry_breadth_contract(
         or contract.get("preregistered_at") != "2026-07-16T11:22:05Z"
         or source.get("provider") != "tushare"
         or source.get("classification_api") != "index_classify"
-        or source.get("classification_parameters")
-        != {"level": "L1", "src": "SW2021"}
+        or source.get("classification_parameters") != {"level": "L1", "src": "SW2021"}
         or tuple(source.get("classification_requested_fields") or ())
         != TUSHARE_SW_CLASSIFICATION_RAW_FIELDS
         or source.get("membership_api") != "index_member_all"
@@ -2948,8 +3852,7 @@ def load_tushare_sw_industry_breadth_contract(
         or tuple(source.get("membership_is_new_values") or ()) != ("Y", "N")
         or membership.get("classification_version") != "SW2021"
         or membership.get("industry_level") != "L1 only"
-        or membership.get("maximum_active_level_one_memberships_per_stock_session")
-        != 1
+        or membership.get("maximum_active_level_one_memberships_per_stock_session") != 1
         or factor.get("name") != "sw1_three_session_leave_one_out_breadth"
         or factor.get("direction") != "higher_is_better"
         or factor.get("minimum_other_valid_peers_each_session") != 10
@@ -2965,9 +3868,11 @@ def load_tushare_sw_industry_breadth_contract(
         or ((gates.get("capacity") or {}).get("minimum_required_cohorts")) != 200
         or ((gates.get("capacity") or {}).get("holding_period_trading_days")) != 3
         or ((gates.get("uniqueness") or {}).get("comparison_factor_count")) != 45
-        or ((gates.get("uniqueness") or {}).get(
-            "maximum_allowed_absolute_median_daily_rank_correlation"
-        ))
+        or (
+            (gates.get("uniqueness") or {}).get(
+                "maximum_allowed_absolute_median_daily_rank_correlation"
+            )
+        )
         != 0.8
         or diagnostic.get("holding_period_trading_days") != 3
         or diagnostic.get("topk") != 3
@@ -2999,21 +3904,17 @@ def load_tushare_sw_industry_breadth_symbol_repair(
     rule = repair.get("repair") or {}
     retry = repair.get("retry_authorization") or {}
     failure_path = resolve_record_path(str(failed.get("record_path") or ""))
-    if (
-        not failure_path.exists()
-        or file_digest(failure_path) != failed.get("record_sha256")
+    if not failure_path.exists() or file_digest(failure_path) != failed.get(
+        "record_sha256"
     ):
         raise RichDataError("Tushare SW symbol-repair failure evidence mismatch")
-    failure = load_json_record(
-        failure_path, kind="a_share_rich_data_source_failure"
-    )
+    failure = load_json_record(failure_path, kind="a_share_rich_data_source_failure")
     if (
         repair.get("version") != 1
         or repair.get("status")
         != "frozen_after_first_full_snapshot_infrastructure_failure_before_exact_retry_factor_values_or_factor_returns"
         or repair.get("recorded_at") != "2026-07-16T11:44:07Z"
-        or contract.get("sha256")
-        != TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256
+        or contract.get("sha256") != TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256
         or preregistration.get("sha256")
         != TUSHARE_SW_INDUSTRY_BREADTH_CAPACITY_SPEC_SHA256
         or failure.get("dataset") != "tushare_sw2021_l1_membership"
@@ -3046,8 +3947,7 @@ def load_tushare_sw_industry_breadth_symbol_repair(
         or retry.get("exact_full_snapshot_retry_allowed") is not True
         or retry.get("retry_must_restart_all_62_calls") is not True
         or retry.get("partial_resume_allowed") is not False
-        or retry.get("maximum_accepted_full_snapshot_retries_under_this_repair")
-        != 1
+        or retry.get("maximum_accepted_full_snapshot_retries_under_this_repair") != 1
         or retry.get("factor_or_return_access_allowed_by_this_record") is not False
         or repair.get("forward_return_fields_read") is not False
         or repair.get("selection_or_promotion_allowed") is not False
@@ -3096,8 +3996,7 @@ def load_tushare_sw_industry_breadth_source_chain(
             "factor_returns_observed": False,
             "selection_or_promotion_performed": False,
         }
-        or contract_link.get("sha256")
-        != TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256
+        or contract_link.get("sha256") != TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256
         or contract_link.get("preregistered_at") != contract.get("preregistered_at")
         or snapshot.get("dataset") != "tushare_sw2021_l1_membership"
         or snapshot.get("provider") != "tushare"
@@ -3120,8 +4019,7 @@ def load_tushare_sw_industry_breadth_source_chain(
         != TUSHARE_SW_MEMBERSHIP_COLUMNS
         or snapshot.get("required_success_status")
         != "full_membership_snapshot_passed_pending_no_return_factor_capacity_and_uniqueness"
-        or factor.get("factor_catalog")
-        != ["sw1_three_session_leave_one_out_breadth"]
+        or factor.get("factor_catalog") != ["sw1_three_session_leave_one_out_breadth"]
         or factor.get("direction") != "higher_is_better"
         or factor.get("minimum_other_valid_peers_each_session") != 10
         or factor.get("peer_minimum_listing_sessions") != 20
@@ -3140,9 +4038,7 @@ def load_tushare_sw_industry_breadth_source_chain(
         or uniqueness.get("screen_end") != "2025-12-31"
         or len(uniqueness.get("comparison_factors") or []) != 45
         or uniqueness.get("minimum_pairwise_sessions") != 100
-        or uniqueness.get(
-            "maximum_allowed_absolute_median_daily_rank_correlation"
-        )
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
         != 0.8
         or audit.get("forward_return_fields_read") is not False
         or audit.get("selection_or_promotion_allowed") is not False
@@ -3179,10 +4075,7 @@ def load_tushare_sw_industry_breadth_source_chain(
         context_paths[key] = source_path
     price_link = context.get("accepted_price_basis") or {}
     price_path = resolve_record_path(str(price_link.get("path") or ""))
-    if (
-        not price_path.exists()
-        or file_digest(price_path) != price_link.get("sha256")
-    ):
+    if not price_path.exists() or file_digest(price_path) != price_link.get("sha256"):
         raise RichDataError("Tushare SW accepted price-basis fingerprint mismatch")
     price_basis = load_json_record(price_path)
     if (
@@ -3210,9 +4103,7 @@ def load_tushare_sw_industry_breadth_source_chain(
         record_path,
         kind="a_share_tushare_sw_industry_breadth_source_acceptance_record",
     )
-    manifest = load_json_record(
-        manifest_path_value, kind="a_share_rich_data_snapshot"
-    )
+    manifest = load_json_record(manifest_path_value, kind="a_share_rich_data_snapshot")
     files = {str(item.get("dataset")): item for item in manifest.get("files") or []}
     stored_frames = record.get("stored_frames") or {}
     source_quality = manifest.get("source_quality") or {}
@@ -3223,13 +4114,17 @@ def load_tushare_sw_industry_breadth_source_chain(
         != TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256
         or (record.get("acceptance_manifest") or {}).get("sha256")
         != acceptance.get("manifest_sha256")
-        or ((record.get("decision") or {}).get(
-            "source_accepted_for_frozen_full_membership_snapshot"
-        ))
+        or (
+            (record.get("decision") or {}).get(
+                "source_accepted_for_frozen_full_membership_snapshot"
+            )
+        )
         is not True
-        or ((record.get("decision") or {}).get(
-            "source_accepted_for_factor_construction_or_returns"
-        ))
+        or (
+            (record.get("decision") or {}).get(
+                "source_accepted_for_factor_construction_or_returns"
+            )
+        )
         is not False
         or record.get("forward_return_fields_read") is not False
         or record.get("selection_or_promotion_allowed") is not False
@@ -3292,9 +4187,7 @@ def load_tushare_sw_industry_breadth_source_chain(
     ):
         raise RichDataError("Tushare SW accepted frame integrity audit failed")
     symbol_repair_path = DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_SYMBOL_REPAIR.resolve()
-    symbol_repair = load_tushare_sw_industry_breadth_symbol_repair(
-        symbol_repair_path
-    )
+    symbol_repair = load_tushare_sw_industry_breadth_symbol_repair(symbol_repair_path)
     return {
         "spec_path": path,
         "spec": spec,
@@ -3318,7 +4211,9 @@ def load_tushare_daily_pb_source_chain(
 
     path = path.expanduser().resolve()
     if file_digest(path) != TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256:
-        raise RichDataError("Tushare daily PB capacity preregistration fingerprint mismatch")
+        raise RichDataError(
+            "Tushare daily PB capacity preregistration fingerprint mismatch"
+        )
     spec = load_json_record(
         path, kind="a_share_tushare_daily_pb_capacity_preregistration"
     )
@@ -3466,7 +4361,18 @@ def load_baostock_5m_contract(
         or source.get("canonical_frequency") != "5m"
         or source.get("adjustflag") != "3"
         or source.get("requested_fields")
-        != ["date", "time", "code", "open", "high", "low", "close", "volume", "amount", "adjustflag"]
+        != [
+            "date",
+            "time",
+            "code",
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume",
+            "amount",
+            "adjustflag",
+        ]
         or timestamp.get("source_label") != "bar_end"
         or timestamp.get("expected_bars_per_complete_regular_session") != 48
         or acceptance.get("trade_date") != "2026-07-10"
@@ -3479,7 +4385,9 @@ def load_baostock_5m_contract(
         or contract.get("forward_return_fields_read") is not False
         or contract.get("selection_or_promotion_allowed") is not False
     ):
-        raise RichDataError("BaoStock five-minute contract does not match the frozen protocol")
+        raise RichDataError(
+            "BaoStock five-minute contract does not match the frozen protocol"
+        )
     return contract
 
 
@@ -3498,8 +4406,12 @@ def load_factor_universe_intervals(
         names=["instrument", "start_date", "end_date"],
         dtype={"instrument": "string"},
     )
-    frame["start_date"] = pd.to_datetime(frame["start_date"], errors="coerce").dt.normalize()
-    frame["end_date"] = pd.to_datetime(frame["end_date"], errors="coerce").dt.normalize()
+    frame["start_date"] = pd.to_datetime(
+        frame["start_date"], errors="coerce"
+    ).dt.normalize()
+    frame["end_date"] = pd.to_datetime(
+        frame["end_date"], errors="coerce"
+    ).dt.normalize()
     valid_symbols = frame["instrument"].str.fullmatch(r"(?:SH6|SZ[03])\d{5}", na=False)
     if (
         frame.empty
@@ -3522,7 +4434,9 @@ def local_calendar_dates(
     path = path.expanduser().resolve()
     if not path.exists():
         raise RichDataError(f"local calendar does not exist: {path}")
-    values = pd.to_datetime(path.read_text(encoding="utf-8").splitlines(), errors="coerce")
+    values = pd.to_datetime(
+        path.read_text(encoding="utf-8").splitlines(), errors="coerce"
+    )
     if pd.isna(values).any():
         raise RichDataError("local calendar contains an invalid date")
     calendar = pd.DatetimeIndex(values).normalize().unique().sort_values()
@@ -3533,7 +4447,9 @@ def atomic_write_frame(frame: pd.DataFrame, destination: Path) -> None:
     """Write one Parquet snapshot atomically."""
 
     destination.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(dir=destination.parent, suffix=".parquet", delete=False) as handle:
+    with tempfile.NamedTemporaryFile(
+        dir=destination.parent, suffix=".parquet", delete=False
+    ) as handle:
         temporary = Path(handle.name)
     try:
         frame.to_parquet(temporary, index=False)
@@ -3546,7 +4462,9 @@ def atomic_write_json(payload: dict[str, Any], destination: Path) -> None:
     """Write a manifest atomically."""
 
     destination.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(dir=destination.parent, suffix=".json", mode="w", encoding="utf-8", delete=False) as handle:
+    with tempfile.NamedTemporaryFile(
+        dir=destination.parent, suffix=".json", mode="w", encoding="utf-8", delete=False
+    ) as handle:
         json.dump(payload, handle, ensure_ascii=False, indent=2, sort_keys=True)
         handle.write("\n")
         temporary = Path(handle.name)
@@ -3613,7 +4531,11 @@ def write_minute_snapshot(
         "files": files,
         "acceptance_status": (
             "automatic_checks_passed_pending_time_alignment"
-            if acceptance_by_code and all(report["status"].startswith("automatic_checks_passed") for report in acceptance_by_code.values())
+            if acceptance_by_code
+            and all(
+                report["status"].startswith("automatic_checks_passed")
+                for report in acceptance_by_code.values()
+            )
             else "not_run" if acceptance_by_code is None else "automatic_checks_failed"
         ),
     }
@@ -3624,9 +4546,7 @@ def write_minute_snapshot(
     return run_manifest_path
 
 
-def expected_minute_times(
-    bar_label: str, frequency: str = "1m"
-) -> tuple[dt.time, ...]:
+def expected_minute_times(bar_label: str, frequency: str = "1m") -> tuple[dt.time, ...]:
     """Return exact regular-session timestamps for one supported bar contract."""
 
     if bar_label not in {"start", "end"}:
@@ -3681,7 +4601,10 @@ def confirmation_volume_units(snapshot: dict[str, Any]) -> set[str]:
         acceptance = file_record.get("acceptance") or {}
         reconciliation = acceptance.get("daily_reconciliation") or {}
         for day in reconciliation.get("days") or []:
-            if day.get("status") == "passed" and day.get("inferred_volume_unit") in {"shares", "lots"}:
+            if day.get("status") == "passed" and day.get("inferred_volume_unit") in {
+                "shares",
+                "lots",
+            }:
                 units.add(str(day["inferred_volume_unit"]))
     return units
 
@@ -3702,7 +4625,9 @@ def confirm_minute_alignment(
     """
 
     if not reviewed_boundaries:
-        raise RichDataError("pass --reviewed-boundaries only after checking the first and last minute labels")
+        raise RichDataError(
+            "pass --reviewed-boundaries only after checking the first and last minute labels"
+        )
     if bar_label not in {"start", "end"}:
         raise RichDataError("bar label must be 'start' or 'end'")
     if volume_unit not in {"shares", "lots"}:
@@ -3710,10 +4635,20 @@ def confirm_minute_alignment(
     snapshot_path = snapshot_path.expanduser().resolve()
     snapshot = load_json_record(snapshot_path, kind="a_share_rich_data_snapshot")
     frequency = str(snapshot.get("frequency") or "")
-    if snapshot.get("dataset") != "minutes" or frequency not in MINUTE_EXPECTED_BARS_BY_FREQUENCY:
-        raise RichDataError("minute alignment confirmation requires a supported minute snapshot")
-    if snapshot.get("acceptance_status") != "automatic_checks_passed_pending_time_alignment":
-        raise RichDataError("minute snapshot has not passed automatic acceptance checks")
+    if (
+        snapshot.get("dataset") != "minutes"
+        or frequency not in MINUTE_EXPECTED_BARS_BY_FREQUENCY
+    ):
+        raise RichDataError(
+            "minute alignment confirmation requires a supported minute snapshot"
+        )
+    if (
+        snapshot.get("acceptance_status")
+        != "automatic_checks_passed_pending_time_alignment"
+    ):
+        raise RichDataError(
+            "minute snapshot has not passed automatic acceptance checks"
+        )
     files = list(snapshot.get("files") or [])
     if not files:
         raise RichDataError("minute snapshot contains no files")
@@ -3725,9 +4660,22 @@ def confirm_minute_alignment(
         frame = load_snapshot_frame(file_record)
         if frame.empty:
             continue
-        required = {"datetime", "symbol", "open", "high", "low", "close", "volume", "amount", "provider"}
+        required = {
+            "datetime",
+            "symbol",
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume",
+            "amount",
+            "provider",
+        }
         if missing := sorted(required - set(frame.columns)):
-            raise RichDataError("minute snapshot file is missing canonical columns: " + ", ".join(missing))
+            raise RichDataError(
+                "minute snapshot file is missing canonical columns: "
+                + ", ".join(missing)
+            )
         timestamps = pd.to_datetime(frame["datetime"], errors="coerce")
         if timestamps.isna().any():
             raise RichDataError("minute snapshot contains an invalid timestamp")
@@ -3749,8 +4697,12 @@ def confirm_minute_alignment(
                     {
                         "symbol": str(group["symbol"].iloc[0]),
                         "trade_date": pd.Timestamp(trade_date).date().isoformat(),
-                        "first_bar": group.sort_values("_datetime")["_datetime"].iloc[0].isoformat(),
-                        "last_bar": group.sort_values("_datetime")["_datetime"].iloc[-1].isoformat(),
+                        "first_bar": group.sort_values("_datetime")["_datetime"]
+                        .iloc[0]
+                        .isoformat(),
+                        "last_bar": group.sort_values("_datetime")["_datetime"]
+                        .iloc[-1]
+                        .isoformat(),
                     }
                 )
     if not complete_session_evidence:
@@ -3792,7 +4744,11 @@ def confirm_minute_alignment(
             "Missing or halted minute bars remain missing and must never be zero-filled.",
         ],
     }
-    destination = output.expanduser().resolve() if output is not None else ALIGNMENTS_ROOT / f"{run_id}.json"
+    destination = (
+        output.expanduser().resolve()
+        if output is not None
+        else ALIGNMENTS_ROOT / f"{run_id}.json"
+    )
     if destination.exists():
         raise RichDataError(f"alignment confirmation already exists: {destination}")
     atomic_write_json(record, destination)
@@ -3807,7 +4763,9 @@ def load_minute_factor_spec(path: Path = DEFAULT_MINUTE_FACTOR_SPEC) -> dict[str
     features = list(spec.get("features") or [])
     names = tuple(str(item.get("name")) for item in features if isinstance(item, dict))
     directions = tuple(
-        str(item.get("diagnostic_direction")) for item in features if isinstance(item, dict)
+        str(item.get("diagnostic_direction"))
+        for item in features
+        if isinstance(item, dict)
     )
     minute_contract = spec.get("minute_contract") or {}
     holding_protocol = spec.get("holding_protocol") or {}
@@ -3820,7 +4778,8 @@ def load_minute_factor_spec(path: Path = DEFAULT_MINUTE_FACTOR_SPEC) -> dict[str
         and minute_contract.get("prices") == "raw_unadjusted"
         and minute_contract.get("timestamp_normalized_to") == "bar_end"
         and minute_contract.get("complete_regular_session_required") is True
-        and minute_contract.get("expected_regular_session_bars") == MINUTE_FEATURE_EXPECTED_BARS
+        and minute_contract.get("expected_regular_session_bars")
+        == MINUTE_FEATURE_EXPECTED_BARS
         and holding_protocol.get("holding_period_trading_days") == 3
         and holding_protocol.get("non_overlapping_cohorts") is True
         and holding_protocol.get("topk") == 3
@@ -3828,7 +4787,9 @@ def load_minute_factor_spec(path: Path = DEFAULT_MINUTE_FACTOR_SPEC) -> dict[str
         and holding_protocol.get("close_cost") == 0.00062
     )
     if not contract_ok:
-        raise RichDataError("minute factor preregistration does not match the frozen v1 feature catalog")
+        raise RichDataError(
+            "minute factor preregistration does not match the frozen v1 feature catalog"
+        )
     if (
         spec.get("forward_return_fields_read") is not False
         or spec.get("selection_or_promotion_allowed") is not False
@@ -3846,7 +4807,9 @@ def load_baostock_5m_factor_spec(
 
     path = path.expanduser().resolve()
     if file_digest(path) != BAOSTOCK_5M_FACTOR_SPEC_SHA256:
-        raise RichDataError("BaoStock five-minute factor preregistration fingerprint mismatch")
+        raise RichDataError(
+            "BaoStock five-minute factor preregistration fingerprint mismatch"
+        )
     spec = load_json_record(path, kind="a_share_baostock_5m_factor_preregistration")
     source_chain = spec.get("source_chain") or {}
     contract_link = source_chain.get("data_contract") or {}
@@ -3856,7 +4819,9 @@ def load_baostock_5m_factor_spec(
     features = list(spec.get("features") or [])
     names = tuple(str(item.get("name")) for item in features if isinstance(item, dict))
     directions = tuple(
-        str(item.get("diagnostic_direction")) for item in features if isinstance(item, dict)
+        str(item.get("diagnostic_direction"))
+        for item in features
+        if isinstance(item, dict)
     )
     development = spec.get("development_protocol") or {}
     coverage = spec.get("coverage_gate_before_forward_returns") or {}
@@ -3885,11 +4850,14 @@ def load_baostock_5m_factor_spec(
         or development.get("topk") != 3
         or development.get("open_cost") != 0.00012
         or development.get("close_cost") != 0.00062
-        or coverage.get("minimum_potential_non_overlapping_three_session_cohorts") != 200
+        or coverage.get("minimum_potential_non_overlapping_three_session_cohorts")
+        != 200
         or spec.get("forward_return_fields_read") is not False
         or spec.get("selection_or_promotion_allowed") is not False
     ):
-        raise RichDataError("BaoStock five-minute factor preregistration does not match the frozen protocol")
+        raise RichDataError(
+            "BaoStock five-minute factor preregistration does not match the frozen protocol"
+        )
     return spec
 
 
@@ -3905,34 +4873,53 @@ def load_baostock_5m_source_chain(
     alignment_link = chain["alignment_confirmation"]
     acceptance_path = resolve_record_path(acceptance_link["path"])
     alignment_path = resolve_record_path(alignment_link["path"])
-    if not acceptance_path.exists() or file_digest(acceptance_path) != acceptance_link["sha256"]:
+    if (
+        not acceptance_path.exists()
+        or file_digest(acceptance_path) != acceptance_link["sha256"]
+    ):
         raise RichDataError("BaoStock five-minute acceptance fingerprint mismatch")
-    if not alignment_path.exists() or file_digest(alignment_path) != alignment_link["sha256"]:
+    if (
+        not alignment_path.exists()
+        or file_digest(alignment_path) != alignment_link["sha256"]
+    ):
         raise RichDataError("BaoStock five-minute alignment fingerprint mismatch")
     acceptance = load_json_record(acceptance_path, kind="a_share_rich_data_snapshot")
-    alignment = load_json_record(alignment_path, kind="a_share_minute_alignment_confirmation")
-    expected_symbols = {qlib_symbol(code) for code in contract["formal_acceptance"]["symbols"]}
-    observed_symbols = {str(item.get("symbol")) for item in (acceptance.get("files") or [])}
+    alignment = load_json_record(
+        alignment_path, kind="a_share_minute_alignment_confirmation"
+    )
+    expected_symbols = {
+        qlib_symbol(code) for code in contract["formal_acceptance"]["symbols"]
+    }
+    observed_symbols = {
+        str(item.get("symbol")) for item in (acceptance.get("files") or [])
+    }
     if (
         acceptance.get("provider") != "baostock"
         or acceptance.get("frequency") != "5m"
         or acceptance.get("prices") != "raw_unadjusted"
         or acceptance.get("acceptance_status")
         != "automatic_checks_passed_pending_time_alignment"
-        or (acceptance.get("data_contract") or {}).get("sha256") != BAOSTOCK_5M_CONTRACT_SHA256
+        or (acceptance.get("data_contract") or {}).get("sha256")
+        != BAOSTOCK_5M_CONTRACT_SHA256
         or observed_symbols != expected_symbols
-        or any(int(item.get("rows") or 0) != 48 for item in (acceptance.get("files") or []))
+        or any(
+            int(item.get("rows") or 0) != 48 for item in (acceptance.get("files") or [])
+        )
         or alignment.get("status") != "passed_for_feature_research"
         or alignment.get("provider") != "baostock"
         or alignment.get("frequency") != "5m"
         or alignment.get("bar_timestamp_label") != "end"
         or alignment.get("volume_unit") != "shares"
-        or resolve_record_path((alignment.get("source_acceptance_snapshot") or {}).get("path") or "")
+        or resolve_record_path(
+            (alignment.get("source_acceptance_snapshot") or {}).get("path") or ""
+        )
         != acceptance_path
         or (alignment.get("source_acceptance_snapshot") or {}).get("sha256")
         != acceptance_link["sha256"]
     ):
-        raise RichDataError("BaoStock five-minute source chain violates the frozen protocol")
+        raise RichDataError(
+            "BaoStock five-minute source chain violates the frozen protocol"
+        )
     for file_record in acceptance.get("files") or []:
         frame = load_snapshot_frame(file_record)
         report = file_record.get("acceptance") or {}
@@ -3942,9 +4929,13 @@ def load_baostock_5m_source_chain(
             or exact.get("exact_timestamp_grid_passed") is not True
             or (report.get("daily_reconciliation") or {}).get("status") != "passed"
         ):
-            raise RichDataError("BaoStock five-minute acceptance file failed its frozen checks")
+            raise RichDataError(
+                "BaoStock five-minute acceptance file failed its frozen checks"
+            )
         if len(frame) != 48:
-            raise RichDataError("BaoStock five-minute acceptance data no longer has 48 rows")
+            raise RichDataError(
+                "BaoStock five-minute acceptance data no longer has 48 rows"
+            )
     return {
         "contract": contract,
         "factor_spec": spec,
@@ -3962,7 +4953,9 @@ def load_baostock_5m_suspension_audit(
 
     path = path.expanduser().resolve()
     if file_digest(path) != BAOSTOCK_5M_SUSPENSION_AUDIT_SHA256:
-        raise RichDataError("BaoStock five-minute suspension audit fingerprint mismatch")
+        raise RichDataError(
+            "BaoStock five-minute suspension audit fingerprint mismatch"
+        )
     audit = load_json_record(
         path, kind="a_share_baostock_5m_suspension_placeholder_audit"
     )
@@ -3987,7 +4980,9 @@ def load_baostock_5m_suspension_audit(
         or audit.get("forward_return_fields_read") is not False
         or audit.get("selection_or_promotion_allowed") is not False
     ):
-        raise RichDataError("BaoStock five-minute suspension audit violates its frozen protocol")
+        raise RichDataError(
+            "BaoStock five-minute suspension audit violates its frozen protocol"
+        )
     return audit
 
 
@@ -4020,7 +5015,9 @@ def load_baostock_5m_throttle_audit(
         or audit.get("forward_return_fields_read") is not False
         or audit.get("selection_or_promotion_allowed") is not False
     ):
-        raise RichDataError("BaoStock five-minute throttle audit violates its frozen protocol")
+        raise RichDataError(
+            "BaoStock five-minute throttle audit violates its frozen protocol"
+        )
     return audit
 
 
@@ -4055,7 +5052,9 @@ def baostock_5m_partition_tasks(
             continue
         code = str(row.instrument)[2:]
         for year in range(interval_start.year, interval_end.year + 1):
-            partition_start = max(interval_start, pd.Timestamp(year=year, month=1, day=1))
+            partition_start = max(
+                interval_start, pd.Timestamp(year=year, month=1, day=1)
+            )
             partition_end = min(interval_end, pd.Timestamp(year=year, month=12, day=31))
             tasks.append(
                 (
@@ -4067,7 +5066,9 @@ def baostock_5m_partition_tasks(
             )
     keys = [(code, year) for code, _, _, year in tasks]
     if len(keys) != len(set(keys)):
-        raise RichDataError("BaoStock five-minute point-in-time tasks contain duplicate symbol-years")
+        raise RichDataError(
+            "BaoStock five-minute point-in-time tasks contain duplicate symbol-years"
+        )
     return tasks
 
 
@@ -4095,7 +5096,9 @@ def baostock_5m_request_tasks(
         )
     codes = [code for code, _, _ in tasks]
     if len(codes) != len(set(codes)):
-        raise RichDataError("BaoStock five-minute provider requests contain duplicate symbols")
+        raise RichDataError(
+            "BaoStock five-minute provider requests contain duplicate symbols"
+        )
     return tasks
 
 
@@ -4142,18 +5145,14 @@ def split_baostock_5m_request_frame(
             value for value in placeholder_dates if pd.Timestamp(value).year == year
         ]
         partition.attrs["source_rows"] = source_by_year.get(year, 0)
-        partition.attrs["source_rows_by_year"] = {
-            year: source_by_year.get(year, 0)
-        }
+        partition.attrs["source_rows_by_year"] = {year: source_by_year.get(year, 0)}
         partition.attrs["zero_price_placeholder_rows_excluded"] = (
             placeholders_by_year.get(year, 0)
         )
         partition.attrs["zero_price_placeholder_rows_by_year"] = {
             year: placeholders_by_year.get(year, 0)
         }
-        partition.attrs["zero_price_placeholder_session_dates"] = (
-            year_placeholder_dates
-        )
+        partition.attrs["zero_price_placeholder_session_dates"] = year_placeholder_dates
         yield task, partition
 
 
@@ -4190,18 +5189,24 @@ def validate_baostock_5m_partition(
             f"BaoStock five-minute {code} {year} partition has invalid or duplicate timestamps"
         )
     if not timestamps.is_monotonic_increasing:
-        raise RichDataError(f"BaoStock five-minute {code} {year} partition is not sorted")
+        raise RichDataError(
+            f"BaoStock five-minute {code} {year} partition is not sorted"
+        )
     start_timestamp = pd.Timestamp(start_value)
     end_timestamp = pd.Timestamp(end_value) + pd.Timedelta(days=1)
     if timestamps.lt(start_timestamp).any() or timestamps.ge(end_timestamp).any():
-        raise RichDataError(f"BaoStock five-minute {code} {year} partition escaped its task range")
+        raise RichDataError(
+            f"BaoStock five-minute {code} {year} partition escaped its task range"
+        )
     expected_symbol = qlib_symbol(code)
     if (
         set(frame["symbol"].astype(str)) != {expected_symbol}
         or set(frame["source_symbol"].astype(str)) != {vendor_symbol(code, "baostock")}
         or set(frame["provider"].astype(str)) != {"baostock"}
     ):
-        raise RichDataError(f"BaoStock five-minute {code} {year} partition identity mismatch")
+        raise RichDataError(
+            f"BaoStock five-minute {code} {year} partition identity mismatch"
+        )
     calendar_dates = set(pd.DatetimeIndex(calendar).normalize())
     observed_dates = set(timestamps.dt.normalize())
     if not observed_dates.issubset(calendar_dates):
@@ -4250,7 +5255,9 @@ def baostock_5m_coverage_report(
         dtype=np.int64,
     )
     if (completed > active_counts).any():
-        raise RichDataError("BaoStock five-minute complete-session count exceeds the PIT universe")
+        raise RichDataError(
+            "BaoStock five-minute complete-session count exceeds the PIT universe"
+        )
     ratios = np.divide(
         completed,
         active_counts,
@@ -4259,11 +5266,16 @@ def baostock_5m_coverage_report(
     )
     valid_ratios = ratios[np.isfinite(ratios)]
     if valid_ratios.size == 0:
-        raise RichDataError("BaoStock five-minute coverage has no active PIT-universe sessions")
+        raise RichDataError(
+            "BaoStock five-minute coverage has no active PIT-universe sessions"
+        )
     bulk = contract["bulk_snapshot_contract"]
     potential_indices = np.arange(0, max(len(calendar) - 3, 0), 3, dtype=int)
     potential_cohorts = int(
-        (completed[potential_indices] >= int(bulk["minimum_names_per_factor_cross_section"])).sum()
+        (
+            completed[potential_indices]
+            >= int(bulk["minimum_names_per_factor_cross_section"])
+        ).sum()
     )
     median_coverage = float(np.median(valid_ratios))
     p05_coverage = float(np.quantile(valid_ratios, 0.05))
@@ -4287,7 +5299,9 @@ def baostock_5m_coverage_report(
                 "trade_date": value.date().isoformat(),
                 "active_pit_names": int(active),
                 "complete_five_minute_names": int(complete),
-                "eligible_universe_coverage": float(ratio) if np.isfinite(ratio) else None,
+                "eligible_universe_coverage": (
+                    float(ratio) if np.isfinite(ratio) else None
+                ),
             }
             for value, active, complete, ratio in zip(
                 calendar, active_counts, completed, ratios, strict=True
@@ -4316,7 +5330,9 @@ def write_baostock_5m_preflight(
     intervals = load_factor_universe_intervals(universe_path)
     calendar = local_calendar_dates(start, end, calendar_path)
     if calendar.empty:
-        raise RichDataError("local calendar has no sessions in the BaoStock five-minute range")
+        raise RichDataError(
+            "local calendar has no sessions in the BaoStock five-minute range"
+        )
     storage_tasks = baostock_5m_partition_tasks(intervals, start, end)
     request_tasks = baostock_5m_request_tasks(intervals, start, end)
     if not storage_tasks or not request_tasks:
@@ -4331,7 +5347,11 @@ def write_baostock_5m_preflight(
         "kind": "a_share_baostock_5m_preflight",
         "run_id": run_id,
         "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "status": "passed_before_network" if passed else "blocked_insufficient_disk_before_network",
+        "status": (
+            "passed_before_network"
+            if passed
+            else "blocked_insufficient_disk_before_network"
+        ),
         "data_root": str(resolved_data_root),
         "sdk_version": importlib.metadata.version("baostock"),
         "source_chain": {
@@ -4378,11 +5398,7 @@ def write_baostock_5m_preflight(
         "selection_or_promotion_allowed": False,
     }
     destination = (
-        resolved_data_root
-        / "metadata"
-        / "rich_data"
-        / "preflights"
-        / f"{run_id}.json"
+        resolved_data_root / "metadata" / "rich_data" / "preflights" / f"{run_id}.json"
     )
     atomic_write_json(payload, destination)
     return destination
@@ -4522,19 +5538,29 @@ def previous_comparable_close_map(symbol: str) -> dict[pd.Timestamp, float]:
 
     path = DAILY_RAW_DIR / f"{str(symbol).lower()}.parquet"
     if not path.exists():
-        raise RichDataError(f"local daily raw history is missing for minute feature construction: {path}")
+        raise RichDataError(
+            f"local daily raw history is missing for minute feature construction: {path}"
+        )
     daily = pd.read_parquet(path)
     required = {"date", "raw_close", "factor", "price_basis"}
     if missing := sorted(required - set(daily.columns)):
-        raise RichDataError("local daily history is missing raw-price columns: " + ", ".join(missing))
+        raise RichDataError(
+            "local daily history is missing raw-price columns: " + ", ".join(missing)
+        )
     bases = set(daily["price_basis"].dropna().astype(str))
     if bases != {REQUIRED_DAILY_PRICE_BASIS}:
-        raise RichDataError(f"local daily history has an unaccepted price basis for {symbol}: {sorted(bases)}")
+        raise RichDataError(
+            f"local daily history has an unaccepted price basis for {symbol}: {sorted(bases)}"
+        )
     work = daily[["date", "raw_close", "factor"]].copy()
     work["date"] = pd.to_datetime(work["date"], errors="coerce").dt.normalize()
     work["raw_close"] = pd.to_numeric(work["raw_close"], errors="coerce")
     work["factor"] = pd.to_numeric(work["factor"], errors="coerce")
-    work = work.dropna().sort_values("date", kind="stable").drop_duplicates("date", keep="last")
+    work = (
+        work.dropna()
+        .sort_values("date", kind="stable")
+        .drop_duplicates("date", keep="last")
+    )
     work["previous_comparable_close"] = (
         work["raw_close"].shift(1) * work["factor"].shift(1) / work["factor"]
     )
@@ -4556,33 +5582,55 @@ def minute_feature_frame(
 ) -> pd.DataFrame:
     """Construct one frozen close-known intraday feature catalog without returns."""
 
-    required = {"datetime", "symbol", "open", "high", "low", "close", "volume", "amount", "provider"}
+    required = {
+        "datetime",
+        "symbol",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "provider",
+    }
     if missing := sorted(required - set(frame.columns)):
-        raise RichDataError("minute feature input is missing columns: " + ", ".join(missing))
+        raise RichDataError(
+            "minute feature input is missing columns: " + ", ".join(missing)
+        )
     if bar_label not in {"start", "end"}:
         raise RichDataError("bar label must be 'start' or 'end'")
     if frequency not in MINUTE_EXPECTED_BARS_BY_FREQUENCY:
         raise RichDataError(f"unsupported minute feature frequency: {frequency}")
     if len(feature_names) != 5:
-        raise RichDataError("minute feature catalog must contain exactly five ordered names")
+        raise RichDataError(
+            "minute feature catalog must contain exactly five ordered names"
+        )
     interval_minutes = int(frequency.removesuffix("m"))
     if 30 % interval_minutes:
-        raise RichDataError("minute feature frequency must divide the frozen 30-minute late window")
+        raise RichDataError(
+            "minute feature frequency must divide the frozen 30-minute late window"
+        )
     expected_bars = MINUTE_EXPECTED_BARS_BY_FREQUENCY[frequency]
     late_bar_count = 30 // interval_minutes
-    late_return_name, late_amount_name, late_vwap_name, gap_name, volatility_name = feature_names
+    late_return_name, late_amount_name, late_vwap_name, gap_name, volatility_name = (
+        feature_names
+    )
     work = frame.copy()
     work["datetime"] = pd.to_datetime(work["datetime"], errors="coerce")
     if work["datetime"].isna().any():
         raise RichDataError("minute feature input contains invalid timestamps")
     work["bar_end"] = work["datetime"] + (
-        pd.Timedelta(minutes=interval_minutes) if bar_label == "start" else pd.Timedelta(0)
+        pd.Timedelta(minutes=interval_minutes)
+        if bar_label == "start"
+        else pd.Timedelta(0)
     )
     numeric_columns = ["open", "high", "low", "close", "volume", "amount"]
     for column in numeric_columns:
         work[column] = pd.to_numeric(work[column], errors="coerce")
     if not np.isfinite(work[numeric_columns].to_numpy(dtype=float)).all():
-        raise RichDataError("minute feature input contains non-finite OHLCV/amount values")
+        raise RichDataError(
+            "minute feature input contains non-finite OHLCV/amount values"
+        )
     if (work[["open", "high", "low", "close"]] <= 0.0).any().any():
         raise RichDataError("minute feature input contains non-positive prices")
     if (work[["volume", "amount"]] < 0.0).any().any():
@@ -4590,12 +5638,13 @@ def minute_feature_frame(
     work["trade_date"] = work["bar_end"].dt.normalize()
     expected_bar_ends = expected_minute_times("end", frequency)
     rows: list[dict[str, Any]] = []
-    for (symbol, trade_date), group in work.groupby(["symbol", "trade_date"], sort=True):
+    for (symbol, trade_date), group in work.groupby(
+        ["symbol", "trade_date"], sort=True
+    ):
         group = group.sort_values("bar_end", kind="stable")
         observed_bar_ends = tuple(group["bar_end"].dt.time)
         complete = (
-            len(group) == expected_bars
-            and observed_bar_ends == expected_bar_ends
+            len(group) == expected_bars and observed_bar_ends == expected_bar_ends
         )
         values = {name: float("nan") for name in feature_names}
         opening_gap_return = float("nan")
@@ -4613,20 +5662,31 @@ def minute_feature_frame(
                 and len(late) == late_bar_count
                 and float(anchor["close"].iloc[0]) > 0.0
             ):
-                values[late_return_name] = day_close / float(anchor["close"].iloc[0]) - 1.0
+                values[late_return_name] = (
+                    day_close / float(anchor["close"].iloc[0]) - 1.0
+                )
             if total_amount > 0.0:
                 values[late_amount_name] = late_amount / total_amount
-            if total_amount > 0.0 and total_volume > 0.0 and late_amount > 0.0 and late_volume > 0.0:
+            if (
+                total_amount > 0.0
+                and total_volume > 0.0
+                and late_amount > 0.0
+                and late_volume > 0.0
+            ):
                 values[late_vwap_name] = (late_amount / late_volume) / (
                     total_amount / total_volume
                 ) - 1.0
-            previous_close = previous_closes.get(str(symbol), {}).get(pd.Timestamp(trade_date))
+            previous_close = previous_closes.get(str(symbol), {}).get(
+                pd.Timestamp(trade_date)
+            )
             if previous_close is not None and previous_close > 0.0 and day_open > 0.0:
                 opening_gap_return = day_open / previous_close - 1.0
                 values[gap_name] = -float(np.sign(opening_gap_return)) * (
                     day_close / day_open - 1.0
                 )
-            log_returns = np.log(pd.to_numeric(group["close"], errors="coerce")).diff().dropna()
+            log_returns = (
+                np.log(pd.to_numeric(group["close"], errors="coerce")).diff().dropna()
+            )
             if len(log_returns) == expected_bars - 1 and np.isfinite(log_returns).all():
                 values[volatility_name] = float(np.sqrt(np.square(log_returns).sum()))
         eligible = complete and all(np.isfinite(values[name]) for name in feature_names)
@@ -4643,7 +5703,11 @@ def minute_feature_frame(
                 **values,
             }
         )
-    return pd.DataFrame(rows).sort_values(["trade_date", "symbol"], kind="stable").reset_index(drop=True)
+    return (
+        pd.DataFrame(rows)
+        .sort_values(["trade_date", "symbol"], kind="stable")
+        .reset_index(drop=True)
+    )
 
 
 def build_minute_features(
@@ -4659,14 +5723,18 @@ def build_minute_features(
     alignment_path = alignment_path.expanduser().resolve()
     factor_spec_path = factor_spec_path.expanduser().resolve()
     snapshot = load_json_record(snapshot_path, kind="a_share_rich_data_snapshot")
-    alignment = load_json_record(alignment_path, kind="a_share_minute_alignment_confirmation")
+    alignment = load_json_record(
+        alignment_path, kind="a_share_minute_alignment_confirmation"
+    )
     spec_kind = load_json_record(factor_spec_path).get("kind")
     if spec_kind == "a_share_minute_factor_preregistration":
         spec = load_minute_factor_spec(factor_spec_path)
     elif spec_kind == "a_share_baostock_5m_factor_preregistration":
         spec = load_baostock_5m_factor_spec(factor_spec_path)
     else:
-        raise RichDataError(f"unsupported minute factor preregistration kind: {spec_kind}")
+        raise RichDataError(
+            f"unsupported minute factor preregistration kind: {spec_kind}"
+        )
     minute_contract = spec["minute_contract"]
     frequency = str(minute_contract["frequency"])
     feature_names = tuple(str(item["name"]) for item in spec["features"])
@@ -4675,8 +5743,13 @@ def build_minute_features(
         if spec_kind == "a_share_baostock_5m_factor_preregistration"
         else {"minutes"}
     )
-    if snapshot.get("dataset") not in allowed_datasets or snapshot.get("frequency") != frequency:
-        raise RichDataError(f"minute feature construction requires a {frequency} minute snapshot")
+    if (
+        snapshot.get("dataset") not in allowed_datasets
+        or snapshot.get("frequency") != frequency
+    ):
+        raise RichDataError(
+            f"minute feature construction requires a {frequency} minute snapshot"
+        )
     if snapshot.get("dataset") == "baostock_five_minute_history" and (
         snapshot.get("status")
         != "full_source_coverage_passed_pending_no_return_feature_materialization"
@@ -4689,20 +5762,34 @@ def build_minute_features(
             "before feature materialization"
         )
     if snapshot.get("prices") != "raw_unadjusted":
-        raise RichDataError("minute feature construction requires raw unadjusted prices")
+        raise RichDataError(
+            "minute feature construction requires raw unadjusted prices"
+        )
     expected_provider = minute_contract.get("provider")
     if expected_provider is not None and snapshot.get("provider") != expected_provider:
-        raise RichDataError("minute snapshot provider does not match the frozen factor specification")
+        raise RichDataError(
+            "minute snapshot provider does not match the frozen factor specification"
+        )
     if alignment.get("status") != "passed_for_feature_research":
         raise RichDataError("minute alignment has not passed for feature research")
-    if snapshot.get("provider") != alignment.get("provider") or snapshot.get("frequency") != alignment.get("frequency"):
-        raise RichDataError("minute snapshot provider/frequency does not match the alignment confirmation")
+    if snapshot.get("provider") != alignment.get("provider") or snapshot.get(
+        "frequency"
+    ) != alignment.get("frequency"):
+        raise RichDataError(
+            "minute snapshot provider/frequency does not match the alignment confirmation"
+        )
     source_acceptance = alignment.get("source_acceptance_snapshot") or {}
-    source_acceptance_path = resolve_record_path(str(source_acceptance.get("path") or ""))
+    source_acceptance_path = resolve_record_path(
+        str(source_acceptance.get("path") or "")
+    )
     if not source_acceptance.get("path") or not source_acceptance_path.exists():
-        raise RichDataError("alignment confirmation has no readable source acceptance snapshot")
+        raise RichDataError(
+            "alignment confirmation has no readable source acceptance snapshot"
+        )
     if file_digest(source_acceptance_path) != source_acceptance.get("sha256"):
-        raise RichDataError("alignment confirmation source acceptance fingerprint mismatch")
+        raise RichDataError(
+            "alignment confirmation source acceptance fingerprint mismatch"
+        )
     acceptance_snapshot = load_json_record(
         source_acceptance_path, kind="a_share_rich_data_snapshot"
     )
@@ -4712,7 +5799,9 @@ def build_minute_features(
         or acceptance_snapshot.get("provider") != alignment.get("provider")
         or acceptance_snapshot.get("frequency") != alignment.get("frequency")
     ):
-        raise RichDataError("alignment confirmation is not bound to a compatible accepted snapshot")
+        raise RichDataError(
+            "alignment confirmation is not bound to a compatible accepted snapshot"
+        )
     if spec_kind == "a_share_baostock_5m_factor_preregistration":
         chain = spec["source_chain"]
         expected_acceptance = chain["acceptance_snapshot"]
@@ -4723,7 +5812,9 @@ def build_minute_features(
             or resolve_record_path(expected_alignment["path"]) != alignment_path
             or expected_alignment["sha256"] != file_digest(alignment_path)
         ):
-            raise RichDataError("BaoStock five-minute feature build is not bound to its frozen source chain")
+            raise RichDataError(
+                "BaoStock five-minute feature build is not bound to its frozen source chain"
+            )
         if snapshot.get("dataset") == "baostock_five_minute_history":
             history_chain = snapshot.get("source_chain") or {}
             history_spec = history_chain.get("factor_spec") or {}
@@ -4750,10 +5841,14 @@ def build_minute_features(
             continue
         providers = frame["provider"].dropna().astype(str).unique().tolist()
         if providers != [str(snapshot["provider"])]:
-            raise RichDataError("minute snapshot file contains a mixed or unexpected provider")
+            raise RichDataError(
+                "minute snapshot file contains a mixed or unexpected provider"
+            )
         symbols = frame["symbol"].dropna().astype(str).unique().tolist()
         if len(symbols) != 1:
-            raise RichDataError("each minute snapshot file must contain exactly one canonical symbol")
+            raise RichDataError(
+                "each minute snapshot file must contain exactly one canonical symbol"
+            )
         symbol = symbols[0]
         previous_closes.setdefault(symbol, previous_comparable_close_map(symbol))
         feature_frames.append(
@@ -4772,14 +5867,20 @@ def build_minute_features(
     )
     eligible_rows = int(features["minute_feature_eligible"].sum())
     if eligible_rows == 0:
-        raise RichDataError("minute snapshot has no complete feature-eligible sessions; missing bars are not filled")
+        raise RichDataError(
+            "minute snapshot has no complete feature-eligible sessions; missing bars are not filled"
+        )
 
     feature_version = "v1" if frequency == "1m" else "baostock_5m_v1"
     run_id = new_run_id(f"{snapshot['provider']}_{frequency}_features_v1")
     feature_path = (
         output.expanduser().resolve()
         if output is not None
-        else DERIVED_ROOT / "minute_features" / feature_version / run_id / "features.parquet"
+        else DERIVED_ROOT
+        / "minute_features"
+        / feature_version
+        / run_id
+        / "features.parquet"
     )
     if feature_path.exists():
         raise RichDataError(f"minute feature output already exists: {feature_path}")
@@ -4816,9 +5917,15 @@ def build_minute_features(
             "sha256": frame_digest(features),
             "rows": int(len(features)),
             "eligible_rows": eligible_rows,
-            "incomplete_session_rows": int((~features["complete_regular_session"]).sum()),
-            "calendar_start": pd.Timestamp(features["trade_date"].min()).date().isoformat(),
-            "calendar_end": pd.Timestamp(features["trade_date"].max()).date().isoformat(),
+            "incomplete_session_rows": int(
+                (~features["complete_regular_session"]).sum()
+            ),
+            "calendar_start": pd.Timestamp(features["trade_date"].min())
+            .date()
+            .isoformat(),
+            "calendar_end": pd.Timestamp(features["trade_date"].max())
+            .date()
+            .isoformat(),
         },
         "forward_return_fields_read": False,
         "future_price_fields_read": False,
@@ -4843,7 +5950,9 @@ def sync_minutes(
     if frequency not in {"1m", "5m", "15m", "30m", "60m"}:
         raise RichDataError("frequency must be one of 1m, 5m, 15m, 30m, 60m")
     if provider == "baostock" and frequency != "5m":
-        raise RichDataError("the frozen BaoStock intraday contract supports only 5m bars")
+        raise RichDataError(
+            "the frozen BaoStock intraday contract supports only 5m bars"
+        )
     require_provider(provider)
     validate_range(start, end, allow_large=allow_large, unit_count=len(codes))
     fetcher = MINUTE_FETCHERS[provider]
@@ -4876,7 +5985,9 @@ def baostock_5m_acceptance_report(
     report = minute_acceptance_report(frame)
     acceptance = contract["formal_acceptance"]
     expected_times = expected_minute_times("end", "5m")
-    observed_times = tuple(pd.to_datetime(frame["datetime"]).dt.time) if not frame.empty else ()
+    observed_times = (
+        tuple(pd.to_datetime(frame["datetime"]).dt.time) if not frame.empty else ()
+    )
     exact = (
         len(frame) == int(acceptance["required_rows_per_symbol"])
         and observed_times == expected_times
@@ -4996,7 +6107,9 @@ def _sync_baostock_5m_history_unlocked(
     intervals = load_factor_universe_intervals(universe_path)
     calendar = local_calendar_dates(start, end, calendar_path)
     if calendar.empty:
-        raise RichDataError("local calendar has no sessions in the BaoStock five-minute range")
+        raise RichDataError(
+            "local calendar has no sessions in the BaoStock five-minute range"
+        )
     storage_tasks = baostock_5m_partition_tasks(intervals, start, end)
     request_tasks = baostock_5m_request_tasks(intervals, start, end)
     if not storage_tasks or not request_tasks:
@@ -5006,7 +6119,9 @@ def _sync_baostock_5m_history_unlocked(
     resolved_data_root.mkdir(parents=True, exist_ok=True)
     storage_device = int(resolved_data_root.stat().st_dev)
     if storage_device != int(preflight["filesystem_device"]):
-        raise RichDataError("BaoStock five-minute target filesystem changed after preflight")
+        raise RichDataError(
+            "BaoStock five-minute target filesystem changed after preflight"
+        )
     disk_before = shutil.disk_usage(resolved_data_root)
     if disk_before.free < BAOSTOCK_5M_MINIMUM_FREE_BYTES:
         raise RichDataError(
@@ -5051,9 +6166,12 @@ def _sync_baostock_5m_history_unlocked(
     download_started_at = dt.datetime.now(dt.timezone.utc).isoformat()
     download_started_monotonic = time.monotonic()
     try:
-        for code, request_start, request_end, request_frame in download_baostock_5m_requests(
-            request_tasks, workers
-        ):
+        for (
+            code,
+            request_start,
+            request_end,
+            request_frame,
+        ) in download_baostock_5m_requests(request_tasks, workers):
             request_key = (str(code), str(request_start), str(request_end))
             if request_key not in expected_requests:
                 raise RichDataError(
@@ -5226,9 +6344,7 @@ def _sync_baostock_5m_history_unlocked(
                     "sha256": BAOSTOCK_5M_SUSPENSION_AUDIT_SHA256,
                 },
                 "request_throttle_audit": {
-                    "path": manifest_path(
-                        DEFAULT_BAOSTOCK_5M_THROTTLE_AUDIT.resolve()
-                    ),
+                    "path": manifest_path(DEFAULT_BAOSTOCK_5M_THROTTLE_AUDIT.resolve()),
                     "sha256": BAOSTOCK_5M_THROTTLE_AUDIT_SHA256,
                 },
             },
@@ -5567,9 +6683,7 @@ def sync_tushare_top_inst_acceptance() -> Path:
                 "Tushare top_inst acceptance reached the possible truncation ceiling: "
                 f"{len(raw)} >= {maximum_rows}"
             )
-        normalized, quality = canonicalize_tushare_top_inst(
-            raw, trade_date, trade_date
-        )
+        normalized, quality = canonicalize_tushare_top_inst(raw, trade_date, trade_date)
         minimum_aggregated = int(acceptance["minimum_aggregated_stock_rows"])
         if len(normalized) < minimum_aggregated:
             raise RichDataError(
@@ -5632,12 +6746,8 @@ def sync_tushare_top_inst_acceptance() -> Path:
             "source_quality": {
                 **quality,
                 "unique_instruments": int(normalized["instrument"].nunique()),
-                "factor_min": float(
-                    normalized["tushare_top_inst_net_buy_share"].min()
-                ),
-                "factor_max": float(
-                    normalized["tushare_top_inst_net_buy_share"].max()
-                ),
+                "factor_min": float(normalized["tushare_top_inst_net_buy_share"].min()),
+                "factor_max": float(normalized["tushare_top_inst_net_buy_share"].max()),
                 "duplicate_institution_seat_keys": 0,
                 "provider_net_buy_used_only_for_integrity_reconciliation": True,
             },
@@ -5720,8 +6830,7 @@ def sync_tushare_top10_float_concentration_acceptance() -> Path:
     if prior_records:
         raise RichDataError(
             "Tushare top-ten float concentration acceptance is one-shot and was "
-            "already consumed: "
-            + ", ".join(str(path) for path in prior_records)
+            "already consumed: " + ", ".join(str(path) for path in prior_records)
         )
     context = validate_tushare_top10_float_local_context(contract)
     require_provider("tushare")
@@ -5738,11 +6847,7 @@ def sync_tushare_top10_float_concentration_acceptance() -> Path:
     ).date()
     run_id = new_run_id("tushare_top10_float_concentration_acceptance")
     run_root = (
-        RAW_ROOT
-        / "tushare"
-        / "top10_float_concentration"
-        / "acceptance"
-        / run_id
+        RAW_ROOT / "tushare" / "top10_float_concentration" / "acceptance" / run_id
     )
     temporary_root = run_root.parent / f".{run_id}.tmp"
     if run_root.exists() or temporary_root.exists():
@@ -5806,13 +6911,26 @@ def sync_tushare_top10_float_concentration_acceptance() -> Path:
             factor_frames.append(factors)
             quality_by_symbol[symbol] = quality
 
-        normalized_source = pd.concat(source_frames, ignore_index=True).sort_values(
-            ["instrument", "report_period", "announcement_date", "holder_name_sha256"],
-            kind="stable",
-        ).reset_index(drop=True)
-        factors = pd.concat(factor_frames, ignore_index=True).sort_values(
-            ["instrument", "report_period", "announcement_date"], kind="stable"
-        ).reset_index(drop=True)
+        normalized_source = (
+            pd.concat(source_frames, ignore_index=True)
+            .sort_values(
+                [
+                    "instrument",
+                    "report_period",
+                    "announcement_date",
+                    "holder_name_sha256",
+                ],
+                kind="stable",
+            )
+            .reset_index(drop=True)
+        )
+        factors = (
+            pd.concat(factor_frames, ignore_index=True)
+            .sort_values(
+                ["instrument", "report_period", "announcement_date"], kind="stable"
+            )
+            .reset_index(drop=True)
+        )
         if normalized_source.columns.tolist() != list(
             TUSHARE_TOP10_FLOAT_SOURCE_COLUMNS
         ):
@@ -5977,6 +7095,271 @@ def sync_tushare_top10_float_concentration_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def sync_tushare_cash_conversion_acceptance() -> Path:
+    """Run the frozen six-call, no-return accounting acceptance exactly once."""
+
+    contract = load_tushare_cash_conversion_contract()
+    prior_records = tushare_cash_conversion_acceptance_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare cash-conversion acceptance is one-shot and was already "
+            "consumed: " + ", ".join(str(path) for path in prior_records)
+        )
+    context = validate_tushare_cash_conversion_local_context(contract)
+    require_provider("tushare")
+    acceptance = contract["acceptance_protocol"]
+    symbols = tuple(str(value) for value in acceptance["fixed_symbols"])
+    endpoints = tuple(str(value) for value in acceptance["endpoints_per_symbol"])
+    announcement_start = dt.datetime.strptime(
+        str(acceptance["fixed_announcement_start"]), "%Y%m%d"
+    ).date()
+    announcement_end = dt.datetime.strptime(
+        str(acceptance["fixed_announcement_end"]), "%Y%m%d"
+    ).date()
+    latest_actual = dt.datetime.strptime(
+        str(acceptance["latest_allowed_actual_announcement_date"]), "%Y%m%d"
+    ).date()
+    row_ceiling = int(
+        contract["source_selection"]["provider_documented_maximum_rows_per_call"]
+    )
+    run_id = new_run_id("tushare_cash_conversion_acceptance")
+    run_root = RAW_ROOT / "tushare" / "cash_conversion" / "acceptance" / run_id
+    temporary_root = run_root.parent / f".{run_id}.tmp"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(f"Tushare cash-conversion acceptance exists: {run_id}")
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    provider_calls_issued = 0
+    source_rows_by_symbol_endpoint: dict[str, dict[str, int]] = {
+        symbol: {} for symbol in symbols
+    }
+    quality_by_symbol: dict[str, dict[str, Any]] = {}
+    try:
+        raw_by_symbol_endpoint: dict[tuple[str, str], pd.DataFrame] = {}
+        for symbol in symbols:
+            for endpoint in endpoints:
+                provider_calls_issued += 1
+                raw = fetch_tushare_cash_conversion_statement(
+                    endpoint,
+                    symbol,
+                    announcement_start=announcement_start,
+                    announcement_end=announcement_end,
+                )
+                raw_by_symbol_endpoint[(symbol, endpoint)] = raw
+                source_rows_by_symbol_endpoint[symbol][endpoint] = int(len(raw))
+        if provider_calls_issued != int(acceptance["provider_calls"]):
+            raise RichDataError(
+                "Tushare cash-conversion acceptance did not issue exactly six calls"
+            )
+
+        factor_frames: list[pd.DataFrame] = []
+        minimum_periods = int(acceptance["minimum_usable_joined_periods_per_symbol"])
+        for symbol in symbols:
+            endpoint_frames: dict[str, pd.DataFrame] = {}
+            endpoint_quality: dict[str, dict[str, Any]] = {}
+            for endpoint in endpoints:
+                raw = raw_by_symbol_endpoint[(symbol, endpoint)]
+                if raw.empty:
+                    raise RichDataError(
+                        f"Tushare {endpoint} acceptance returned no rows for {symbol}"
+                    )
+                if len(raw) >= row_ceiling:
+                    raise RichDataError(
+                        f"Tushare {endpoint} acceptance reached the documented "
+                        f"{row_ceiling}-row ceiling for {symbol}"
+                    )
+                canonical, quality = canonicalize_tushare_cash_conversion_endpoint(
+                    raw,
+                    endpoint=endpoint,
+                    expected_ts_code=symbol,
+                    announcement_start=announcement_start,
+                    announcement_end=announcement_end,
+                    latest_actual_announcement_date=latest_actual,
+                )
+                endpoint_frames[endpoint] = canonical
+                endpoint_quality[endpoint] = quality
+            factors, join_quality = derive_tushare_cash_conversion(
+                endpoint_frames["income"], endpoint_frames["cashflow"]
+            )
+            if len(factors) < minimum_periods:
+                raise RichDataError(
+                    "Tushare cash-conversion acceptance has too few usable joined "
+                    f"periods for {symbol}: {len(factors)} < {minimum_periods}"
+                )
+            quality_by_symbol[symbol] = {
+                "income": endpoint_quality["income"],
+                "cashflow": endpoint_quality["cashflow"],
+                "join": join_quality,
+            }
+            factor_frames.append(factors)
+
+        factors = (
+            pd.concat(factor_frames, ignore_index=True)
+            .sort_values(
+                ["instrument", "report_period", "announcement_date"], kind="stable"
+            )
+            .reset_index(drop=True)
+        )
+        if factors.columns.tolist() != list(TUSHARE_CASH_CONVERSION_COLUMNS):
+            raise RichDataError(
+                "cash-conversion acceptance columns do not match the frozen schema"
+            )
+        if factors.duplicated(
+            ["instrument", "announcement_date", "report_period"]
+        ).any():
+            raise RichDataError(
+                "cash-conversion acceptance contains duplicate factor event keys"
+            )
+        observed_instruments = set(factors["instrument"].astype(str))
+        expected_instruments = {
+            qlib_symbol(symbol.split(".", 1)[0]) for symbol in symbols
+        }
+        if observed_instruments != expected_instruments:
+            raise RichDataError(
+                "cash-conversion acceptance does not retain every frozen instrument"
+            )
+
+        temporary_factor = temporary_root / "operating_cash_conversion.parquet"
+        final_factor = run_root / "operating_cash_conversion.parquet"
+        atomic_write_frame(factors, temporary_factor)
+        values = factors["tushare_operating_cash_conversion"]
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_cash_conversion_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "requested_start": announcement_start.isoformat(),
+            "requested_end": announcement_end.isoformat(),
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "apis": list(endpoints),
+                "request_mode": (
+                    "one stock and one frozen announcement-date range per "
+                    "endpoint call"
+                ),
+                "symbols": list(symbols),
+                "provider_calls_issued": provider_calls_issued,
+                "fields_by_endpoint": {
+                    "income": list(TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS),
+                    "cashflow": list(TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS),
+                },
+                "source_rows_returned_by_symbol_endpoint": (
+                    source_rows_by_symbol_endpoint
+                ),
+                "provider_documented_row_ceiling_per_call": row_ceiling,
+                "forbidden_fields_requested_or_stored": [],
+                "credentials_logged_or_stored": False,
+            },
+            "local_no_return_context": context,
+            "files": [
+                {
+                    "role": "joined_point_in_time_cash_conversion_factor",
+                    "path": manifest_path(final_factor),
+                    "rows": int(len(factors)),
+                    "sha256": frame_digest(factors),
+                }
+            ],
+            "source_quality": {
+                "by_symbol": quality_by_symbol,
+                "input_rows": int(
+                    sum(
+                        sum(endpoint_rows.values())
+                        for endpoint_rows in source_rows_by_symbol_endpoint.values()
+                    )
+                ),
+                "usable_joined_periods": int(len(factors)),
+                "unique_instruments": int(factors["instrument"].nunique()),
+                "factor_min": float(values.min()),
+                "factor_max": float(values.max()),
+                "duplicate_factor_event_keys": 0,
+                "raw_statement_frames_persisted": False,
+                "update_flag_use": "manifest_counts_only_never_value_selection",
+            },
+            "availability_policy": {
+                "source_time_fields": ["income.f_ann_date", "cashflow.f_ann_date"],
+                "signal_source_date": "later accepted actual announcement date",
+                "eligible_entry": (
+                    "first local session open strictly after the later actual "
+                    "announcement date"
+                ),
+                "same_announcement_session_trade_allowed": False,
+                "maximum_event_age_calendar_days": 3,
+                "forward_fill_beyond_event_age_allowed": False,
+            },
+            "acceptance_status": acceptance["success_status"],
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception as exc:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        error = safe_exception_text(exc)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_cash_conversion_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "requested_start": announcement_start.isoformat(),
+            "requested_end": announcement_end.isoformat(),
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "apis": list(endpoints),
+                "request_mode": (
+                    "one stock and one frozen announcement-date range per "
+                    "endpoint call"
+                ),
+                "symbols": list(symbols),
+                "provider_calls_issued": provider_calls_issued,
+                "fields_by_endpoint": {
+                    "income": list(TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS),
+                    "cashflow": list(TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS),
+                },
+                "source_rows_returned_by_symbol_endpoint": (
+                    source_rows_by_symbol_endpoint
+                ),
+                "provider_documented_row_ceiling_per_call": row_ceiling,
+                "forbidden_fields_requested_or_stored": [],
+                "raw_statement_frames_persisted": False,
+                "credentials_logged_or_stored": False,
+            },
+            "local_no_return_context": context,
+            "observed_quality_before_rejection": quality_by_symbol,
+            "files": [],
+            "acceptance_status": (
+                "rejected_stop_before_full_history_capacity_uniqueness_or_returns"
+            ),
+            "error_type": type(exc).__name__,
+            "error": error,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
+
+
 def sync_tushare_daily_pb_acceptance(
     universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
 ) -> Path:
@@ -6009,9 +7392,7 @@ def sync_tushare_daily_pb_acceptance(
                 "Tushare daily_basic PB acceptance reached the provider row ceiling; "
                 "the all-market response may be truncated"
             )
-        normalized, quality = canonicalize_tushare_daily_pb(
-            raw, trade_date, trade_date
-        )
+        normalized, quality = canonicalize_tushare_daily_pb(raw, trade_date, trade_date)
         intervals = load_factor_universe_intervals(universe_path)
         session = pd.Timestamp(trade_date)
         active_rows = intervals[
@@ -6019,7 +7400,9 @@ def sync_tushare_daily_pb_acceptance(
         ]
         active_instruments = set(active_rows["instrument"].astype(str))
         if not active_instruments:
-            raise RichDataError("buyable holding universe has no active acceptance-date names")
+            raise RichDataError(
+                "buyable holding universe has no active acceptance-date names"
+            )
         in_universe = normalized["instrument"].isin(active_instruments)
         outside_universe = int((~in_universe).sum())
         accepted = normalized.loc[in_universe].reset_index(drop=True)
@@ -6262,7 +7645,9 @@ def sync_tushare_sw_industry_breadth_acceptance() -> Path:
             ],
             "source_quality": {
                 "classification_rows": int(len(classification)),
-                "classification_codes": classification["index_code"].astype(str).tolist(),
+                "classification_codes": classification["index_code"]
+                .astype(str)
+                .tolist(),
                 "classification_duplicate_codes": int(
                     classification["index_code"].duplicated().sum()
                 ),
@@ -6275,7 +7660,10 @@ def sync_tushare_sw_industry_breadth_acceptance() -> Path:
                     membership.duplicated(duplicate_key).sum()
                 ),
                 "minimum_in_date": membership["in_date"].min().date().isoformat(),
-                "maximum_dated_out_date": membership["out_date"].max().date().isoformat(),
+                "maximum_dated_out_date": membership["out_date"]
+                .max()
+                .date()
+                .isoformat(),
             },
             "acceptance_status": (
                 "accepted_entitlement_schema_and_point_in_time_intervals_"
@@ -6374,7 +7762,9 @@ def sync_tushare_sw_industry_membership(*, allow_large: bool = False) -> Path:
         spec = source_chain["spec"]
         snapshot = spec["full_membership_snapshot"]
         contract = source_chain["contract"]
-        classification_codes = [str(value) for value in snapshot["classification_codes"]]
+        classification_codes = [
+            str(value) for value in snapshot["classification_codes"]
+        ]
         is_new_values = [str(value) for value in snapshot["is_new_values"]]
         total_calls = len(classification_codes) * len(is_new_values)
         if total_calls != int(snapshot["expected_provider_calls"]):
@@ -6385,7 +7775,9 @@ def sync_tushare_sw_industry_membership(*, allow_large: bool = False) -> Path:
         run_root = parent / run_id
         temporary_root = parent / f".{run_id}.partial"
         if run_root.exists() or temporary_root.exists():
-            raise RichDataError(f"Tushare SW membership snapshot already exists: {run_id}")
+            raise RichDataError(
+                f"Tushare SW membership snapshot already exists: {run_id}"
+            )
         temporary_root.mkdir(parents=True)
         minimum_interval = float(snapshot["minimum_seconds_between_calls"])
         maximum_attempts = int(snapshot["maximum_attempts_per_call"])
@@ -6447,9 +7839,13 @@ def sync_tushare_sw_industry_membership(*, allow_large: bool = False) -> Path:
                             flush=True,
                         )
             if completed_calls != total_calls or len(request_audit) != total_calls:
-                raise RichDataError("Tushare SW membership did not complete every frozen call")
+                raise RichDataError(
+                    "Tushare SW membership did not complete every frozen call"
+                )
             if not frames:
-                raise RichDataError("Tushare SW full membership snapshot returned no rows")
+                raise RichDataError(
+                    "Tushare SW full membership snapshot returned no rows"
+                )
             membership = (
                 pd.concat(frames, ignore_index=True)
                 .sort_values(
@@ -6467,7 +7863,9 @@ def sync_tushare_sw_industry_membership(*, allow_large: bool = False) -> Path:
                 )
                 .reset_index(drop=True)
             )
-            duplicate_key = list(contract["full_snapshot_contract"]["duplicate_event_key"])
+            duplicate_key = list(
+                contract["full_snapshot_contract"]["duplicate_event_key"]
+            )
             if (
                 tuple(membership.columns) != TUSHARE_SW_MEMBERSHIP_COLUMNS
                 or membership.duplicated(duplicate_key).any()
@@ -6479,16 +7877,19 @@ def sync_tushare_sw_industry_membership(*, allow_large: bool = False) -> Path:
                 )
                 or not membership["provider"].eq("tushare").all()
             ):
-                raise RichDataError("Tushare SW full membership frame failed integrity checks")
+                raise RichDataError(
+                    "Tushare SW full membership frame failed integrity checks"
+                )
             temporary_frame = temporary_root / "membership.parquet"
             final_frame = run_root / "membership.parquet"
             atomic_write_frame(membership, temporary_frame)
             stored = pd.read_parquet(temporary_frame)
-            if (
-                tuple(stored.columns) != TUSHARE_SW_MEMBERSHIP_COLUMNS
-                or frame_digest(stored) != frame_digest(membership)
-            ):
-                raise RichDataError("Tushare SW stored membership frame failed reread audit")
+            if tuple(stored.columns) != TUSHARE_SW_MEMBERSHIP_COLUMNS or frame_digest(
+                stored
+            ) != frame_digest(membership):
+                raise RichDataError(
+                    "Tushare SW stored membership frame failed reread audit"
+                )
 
             current_rows = int(membership["is_new"].eq("Y").sum())
             historical_rows = int(membership["is_new"].eq("N").sum())
@@ -6661,7 +8062,9 @@ def load_tushare_moneyflow_acceptance() -> tuple[Path, dict[str, Any]]:
     acceptance = contract["acceptance_protocol"]
     path = resolve_record_path(acceptance["bound_manifest_path"])
     if file_digest(path) != acceptance["bound_manifest_sha256"]:
-        raise RichDataError("Tushare moneyflow acceptance manifest fingerprint mismatch")
+        raise RichDataError(
+            "Tushare moneyflow acceptance manifest fingerprint mismatch"
+        )
     manifest = load_json_record(path, kind="a_share_rich_data_snapshot")
     if (
         manifest.get("dataset") != "tushare_events"
@@ -6674,7 +8077,9 @@ def load_tushare_moneyflow_acceptance() -> tuple[Path, dict[str, Any]]:
     ):
         raise RichDataError("Tushare moneyflow acceptance manifest identity mismatch")
     records = [
-        item for item in manifest.get("files") or [] if item.get("dataset") == "moneyflow"
+        item
+        for item in manifest.get("files") or []
+        if item.get("dataset") == "moneyflow"
     ]
     if len(records) != 1:
         raise RichDataError("Tushare acceptance must contain one moneyflow frame")
@@ -6694,6 +8099,503 @@ def load_tushare_moneyflow_acceptance() -> tuple[Path, dict[str, Any]]:
     if normalized.empty or normalized["trade_date"].nunique() != 1:
         raise RichDataError("Tushare moneyflow acceptance formula audit failed")
     return path, manifest
+
+
+def tushare_ts_code_from_qlib_instrument(instrument: str) -> str:
+    """Convert one frozen SH/SZ Qlib instrument into a Tushare stock code."""
+
+    value = str(instrument).strip().upper()
+    if len(value) != 8 or value[:2] not in {"SH", "SZ"} or not value[2:].isdigit():
+        raise RichDataError(f"invalid Qlib instrument for Tushare: {instrument}")
+    return f"{value[2:]}.{value[:2]}"
+
+
+def _fetch_tushare_cash_conversion_with_policy(
+    endpoint: str,
+    ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+    *,
+    minimum_interval: float,
+    maximum_attempts: int,
+    last_request_started: list[float | None],
+) -> pd.DataFrame:
+    """Apply the frozen sequential throttle and bounded endpoint retry policy."""
+
+    retry_backoffs = (1.0, 2.0)
+    for attempt in range(maximum_attempts):
+        previous = last_request_started[0]
+        if previous is not None:
+            remaining = minimum_interval - (time.monotonic() - previous)
+            if remaining > 0.0:
+                time.sleep(remaining)
+        last_request_started[0] = time.monotonic()
+        try:
+            return fetch_tushare_cash_conversion_statement(
+                endpoint,
+                ts_code,
+                announcement_start=announcement_start,
+                announcement_end=announcement_end,
+            )
+        except RichDataError:
+            if attempt + 1 >= maximum_attempts:
+                raise
+            time.sleep(retry_backoffs[min(attempt, len(retry_backoffs) - 1)])
+    raise AssertionError("unreachable Tushare cash-conversion retry state")
+
+
+def sync_tushare_cash_conversion(
+    *,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Store the frozen 2019-2025 PIT cash-conversion snapshot without prices."""
+
+    with RichDataProcessLock(METADATA_ROOT / ".tushare_cash_conversion.lock"):
+        source_chain = load_tushare_cash_conversion_source_chain()
+        contract = source_chain["contract"]
+        context = validate_tushare_cash_conversion_local_context(contract)
+        prior_full = tushare_cash_conversion_full_snapshot_records()
+        if prior_full:
+            raise RichDataError(
+                "Tushare cash-conversion full snapshot already exists and cannot be "
+                "repeated: " + ", ".join(str(path) for path in prior_full)
+            )
+        if not allow_large:
+            raise RichDataError(
+                "Tushare cash-conversion full snapshot requires --allow-large"
+            )
+        universe_path = universe_path.expanduser().resolve()
+        calendar_path = calendar_path.expanduser().resolve()
+        universe_context = contract["local_context"]["holding_universe"]
+        calendar_context = contract["local_context"]["calendar"]
+        if (
+            universe_path != resolve_record_path(universe_context["path"])
+            or file_digest(universe_path) != universe_context["sha256"]
+            or calendar_path != resolve_record_path(calendar_context["path"])
+            or file_digest(calendar_path) != calendar_context["sha256"]
+        ):
+            raise RichDataError(
+                "cash-conversion full snapshot universe or calendar is not the "
+                "frozen point-in-time source"
+            )
+        require_provider("tushare")
+
+        snapshot = contract["full_snapshot_contract"]
+        gates = contract["no_return_gates"]
+        completeness = gates["source_completeness"]
+        acceptance = contract["acceptance_protocol"]
+        announcement_start = dt.datetime.strptime(
+            str(snapshot["announcement_start"]), "%Y%m%d"
+        ).date()
+        announcement_end = dt.datetime.strptime(
+            str(snapshot["announcement_end"]), "%Y%m%d"
+        ).date()
+        development_start = dt.date.fromisoformat(snapshot["development_signal_start"])
+        development_end = dt.date.fromisoformat(snapshot["development_signal_end"])
+        latest_actual = dt.datetime.strptime(
+            str(acceptance["latest_allowed_actual_announcement_date"]), "%Y%m%d"
+        ).date()
+        all_intervals = load_factor_universe_intervals(universe_path)
+        overlap = all_intervals["start_date"].le(pd.Timestamp(development_end)) & (
+            all_intervals["end_date"].ge(pd.Timestamp(development_start))
+        )
+        intervals = (
+            all_intervals.loc[overlap].copy().sort_values("instrument", kind="stable")
+        )
+        if intervals.empty:
+            raise RichDataError(
+                "cash-conversion holding universe has no instruments in 2019-2025"
+            )
+        calendar = local_calendar_dates(development_start, latest_actual, calendar_path)
+        if calendar.empty or calendar[-1] < pd.Timestamp(development_end):
+            raise RichDataError(
+                "cash-conversion local calendar cannot map the frozen signal range"
+            )
+        endpoints = ("income", "cashflow")
+        total_planned_calls = int(len(intervals) * len(endpoints))
+        row_ceiling = int(snapshot["provider_documented_maximum_rows_per_call"])
+        minimum_interval = float(snapshot["minimum_seconds_between_calls"])
+        maximum_attempts = int(snapshot["maximum_attempts_per_symbol_endpoint"])
+
+        run_id = new_run_id("tushare_cash_conversion_full")
+        parent = RAW_ROOT / "tushare" / "cash_conversion" / "snapshots"
+        run_root = parent / run_id
+        temporary_root = parent / f".{run_id}.partial"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Tushare cash-conversion full snapshot already exists: {run_id}"
+            )
+        temporary_root.mkdir(parents=True)
+        yearly_frames: dict[int, list[pd.DataFrame]] = {
+            year: [] for year in range(development_start.year, development_end.year + 1)
+        }
+        endpoint_quality_totals: dict[str, dict[str, int]] = {
+            endpoint: {
+                "input_rows": 0,
+                "non_target_company_rows_excluded": 0,
+                "target_company_periods_observed": 0,
+                "adjustment_periods_excluded": 0,
+                "no_type_one_periods_excluded": 0,
+                "missing_metric_periods_excluded": 0,
+                "ambiguous_type_one_periods_excluded": 0,
+                "semantic_duplicate_rows_collapsed": 0,
+                "accepted_periods": 0,
+            }
+            for endpoint in endpoints
+        }
+        update_flag_totals: dict[str, dict[str, int]] = {
+            endpoint: {} for endpoint in endpoints
+        }
+        join_quality_totals = {
+            "income_accepted_periods": 0,
+            "cashflow_accepted_periods": 0,
+            "income_only_periods_excluded": 0,
+            "cashflow_only_periods_excluded": 0,
+            "joined_periods_before_metric_policy": 0,
+            "nonpositive_income_periods_excluded": 0,
+            "nonfinite_cashflow_periods_excluded": 0,
+            "nonfinite_derived_periods_excluded": 0,
+            "usable_joined_periods": 0,
+        }
+        source_rows_by_endpoint = {endpoint: 0 for endpoint in endpoints}
+        empty_responses_by_endpoint = {endpoint: 0 for endpoint in endpoints}
+        signal_quality = {
+            "without_next_calendar_session_excluded": 0,
+            "outside_development_signal_range_excluded": 0,
+            "outside_point_in_time_holding_interval_excluded": 0,
+            "rows_written": 0,
+        }
+        no_factor_instruments = 0
+        no_factor_instrument_examples: list[str] = []
+        completed_provider_calls = 0
+        completed_instruments = 0
+        last_request_started: list[float | None] = [None]
+        current_instrument: str | None = None
+        current_endpoint: str | None = None
+        started = time.monotonic()
+        try:
+            for interval in intervals.itertuples(index=False):
+                current_instrument = str(interval.instrument)
+                ts_code = tushare_ts_code_from_qlib_instrument(current_instrument)
+                endpoint_frames: dict[str, pd.DataFrame] = {}
+                for endpoint in endpoints:
+                    current_endpoint = endpoint
+                    raw = _fetch_tushare_cash_conversion_with_policy(
+                        endpoint,
+                        ts_code,
+                        announcement_start,
+                        announcement_end,
+                        minimum_interval=minimum_interval,
+                        maximum_attempts=maximum_attempts,
+                        last_request_started=last_request_started,
+                    )
+                    completed_provider_calls += 1
+                    source_rows_by_endpoint[endpoint] += int(len(raw))
+                    if raw.empty:
+                        empty_responses_by_endpoint[endpoint] += 1
+                    if len(raw) >= row_ceiling:
+                        raise RichDataError(
+                            f"Tushare {endpoint} {ts_code} reached the documented "
+                            f"{row_ceiling}-row ceiling; response may be truncated"
+                        )
+                    canonical, quality = canonicalize_tushare_cash_conversion_endpoint(
+                        raw,
+                        endpoint=endpoint,
+                        expected_ts_code=ts_code,
+                        announcement_start=announcement_start,
+                        announcement_end=announcement_end,
+                        latest_actual_announcement_date=latest_actual,
+                    )
+                    endpoint_frames[endpoint] = canonical
+                    for key in endpoint_quality_totals[endpoint]:
+                        endpoint_quality_totals[endpoint][key] += int(
+                            quality.get(key, 0)
+                        )
+                    for flag, count in (
+                        quality.get("update_flag_counts") or {}
+                    ).items():
+                        update_flag_totals[endpoint][str(flag)] = update_flag_totals[
+                            endpoint
+                        ].get(str(flag), 0) + int(count)
+
+                factors, join_quality = derive_tushare_cash_conversion(
+                    endpoint_frames["income"], endpoint_frames["cashflow"]
+                )
+                for key in join_quality_totals:
+                    join_quality_totals[key] += int(join_quality.get(key, 0))
+                if not factors.empty:
+                    announcement_dates = pd.DatetimeIndex(
+                        pd.to_datetime(factors["announcement_date"]).dt.normalize()
+                    )
+                    positions = calendar.searchsorted(announcement_dates, side="right")
+                    signal_sessions = pd.Series(
+                        pd.NaT, index=factors.index, dtype="datetime64[ns]"
+                    )
+                    has_next = positions < len(calendar)
+                    if has_next.any():
+                        signal_sessions.loc[has_next] = calendar.take(
+                            positions[has_next]
+                        ).to_numpy()
+                    signal_quality["without_next_calendar_session_excluded"] += int(
+                        (~has_next).sum()
+                    )
+                    in_development = signal_sessions.between(
+                        pd.Timestamp(development_start), pd.Timestamp(development_end)
+                    )
+                    signal_quality["outside_development_signal_range_excluded"] += int(
+                        (has_next & ~in_development).sum()
+                    )
+                    in_interval = signal_sessions.between(
+                        pd.Timestamp(interval.start_date),
+                        pd.Timestamp(interval.end_date),
+                    )
+                    signal_quality[
+                        "outside_point_in_time_holding_interval_excluded"
+                    ] += int((has_next & in_development & ~in_interval).sum())
+                    retained = has_next & in_development & in_interval
+                    factors = factors.loc[retained].copy()
+                    signal_sessions = signal_sessions.loc[retained]
+                    if not factors.empty:
+                        factors["_signal_year"] = signal_sessions.dt.year.astype(int)
+                        for year, year_frame in factors.groupby(
+                            "_signal_year", sort=True, observed=True
+                        ):
+                            stored = year_frame.drop(columns="_signal_year").loc[
+                                :, list(TUSHARE_CASH_CONVERSION_COLUMNS)
+                            ]
+                            yearly_frames[int(year)].append(stored)
+                            signal_quality["rows_written"] += int(len(stored))
+                if factors.empty:
+                    no_factor_instruments += 1
+                    if len(no_factor_instrument_examples) < 20:
+                        no_factor_instrument_examples.append(current_instrument)
+                completed_instruments += 1
+                if completed_instruments % 25 == 0 or completed_instruments == len(
+                    intervals
+                ):
+                    elapsed = max(time.monotonic() - started, 0.001)
+                    print(
+                        json.dumps(
+                            {
+                                "dataset": "tushare_operating_cash_conversion",
+                                "completed_instruments": completed_instruments,
+                                "total_instruments": int(len(intervals)),
+                                "completed_provider_calls": completed_provider_calls,
+                                "total_provider_calls": total_planned_calls,
+                                "factor_rows_retained": signal_quality["rows_written"],
+                                "elapsed_minutes": round(elapsed / 60.0, 2),
+                            },
+                            ensure_ascii=False,
+                        ),
+                        flush=True,
+                    )
+
+            if completed_provider_calls != total_planned_calls:
+                raise RichDataError(
+                    "cash-conversion full snapshot omitted one or more frozen calls"
+                )
+            files: list[dict[str, Any]] = []
+            duplicate_event_keys = 0
+            total_rows = 0
+            for year in sorted(yearly_frames):
+                frames = yearly_frames[year]
+                if not frames:
+                    continue
+                partition = (
+                    pd.concat(frames, ignore_index=True)
+                    .sort_values(
+                        ["announcement_date", "instrument", "report_period"],
+                        kind="stable",
+                    )
+                    .reset_index(drop=True)
+                )
+                if tuple(partition.columns) != TUSHARE_CASH_CONVERSION_COLUMNS:
+                    raise RichDataError(
+                        f"cash-conversion {year} partition columns changed"
+                    )
+                duplicates = int(
+                    partition.duplicated(
+                        ["instrument", "announcement_date", "report_period"]
+                    ).sum()
+                )
+                duplicate_event_keys += duplicates
+                if duplicates:
+                    raise RichDataError(
+                        f"cash-conversion {year} partition has duplicate event keys"
+                    )
+                destination = temporary_root / f"{year}.parquet"
+                atomic_write_frame(partition, destination)
+                total_rows += int(len(partition))
+                files.append(
+                    {
+                        "signal_year": int(year),
+                        "path": manifest_path(run_root / destination.name),
+                        "rows": int(len(partition)),
+                        "sha256": frame_digest(partition),
+                    }
+                )
+            observed_years = len(files)
+            source_gate_passed = bool(
+                total_rows >= int(completeness["minimum_complete_joined_factor_events"])
+                and observed_years >= int(completeness["minimum_observed_signal_years"])
+                and duplicate_event_keys == 0
+            )
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "tushare_operating_cash_conversion",
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "requested_start": announcement_start.isoformat(),
+                "requested_end": announcement_end.isoformat(),
+                "development_signal_start": development_start.isoformat(),
+                "development_signal_end": development_end.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "source_acceptance": {
+                    "record_path": manifest_path(source_chain["record_path"]),
+                    "record_sha256": file_digest(source_chain["record_path"]),
+                    "manifest_path": manifest_path(source_chain["manifest_path"]),
+                    "manifest_sha256": file_digest(source_chain["manifest_path"]),
+                    "factor_frame_path": manifest_path(source_chain["frame_path"]),
+                    "factor_frame_content_sha256": frame_digest(source_chain["frame"]),
+                },
+                "local_no_return_context": context,
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(universe_path),
+                    "sha256": file_digest(universe_path),
+                    "all_intervals": int(len(all_intervals)),
+                    "requested_overlap_intervals": int(len(intervals)),
+                },
+                "local_calendar": {
+                    "path": manifest_path(calendar_path),
+                    "sha256": file_digest(calendar_path),
+                    "mapping_sessions": int(len(calendar)),
+                },
+                "source_request": {
+                    "apis": list(endpoints),
+                    "request_mode": (
+                        "one ts_code over the full frozen announcement-date range "
+                        "for each endpoint"
+                    ),
+                    "fields_by_endpoint": {
+                        "income": list(TUSHARE_CASH_CONVERSION_INCOME_RAW_FIELDS),
+                        "cashflow": list(TUSHARE_CASH_CONVERSION_CASHFLOW_RAW_FIELDS),
+                    },
+                    "planned_instruments": int(len(intervals)),
+                    "planned_provider_calls": total_planned_calls,
+                    "completed_provider_calls": completed_provider_calls,
+                    "minimum_seconds_between_calls": minimum_interval,
+                    "maximum_attempts_per_symbol_endpoint": maximum_attempts,
+                    "retry_backoff_seconds": [1.0, 2.0],
+                    "provider_documented_row_ceiling_per_call": row_ceiling,
+                    "source_rows_by_endpoint": source_rows_by_endpoint,
+                    "empty_responses_by_endpoint": empty_responses_by_endpoint,
+                    "forbidden_fields_requested_or_stored": [],
+                    "raw_statement_frames_persisted": False,
+                    "credentials_logged_or_stored": False,
+                },
+                "files": files,
+                "normalization_quality": {
+                    "by_endpoint": endpoint_quality_totals,
+                    "update_flag_counts_by_endpoint": update_flag_totals,
+                    "join": join_quality_totals,
+                    "signal_and_universe": signal_quality,
+                    "instruments_without_retained_factor": no_factor_instruments,
+                    "instruments_without_retained_factor_examples": (
+                        no_factor_instrument_examples
+                    ),
+                },
+                "source_completeness": {
+                    "complete_joined_factor_events": total_rows,
+                    "minimum_required_events": int(
+                        completeness["minimum_complete_joined_factor_events"]
+                    ),
+                    "observed_signal_years": observed_years,
+                    "minimum_required_signal_years": int(
+                        completeness["minimum_observed_signal_years"]
+                    ),
+                    "duplicate_factor_event_keys": duplicate_event_keys,
+                    "gate_passed_before_prices": source_gate_passed,
+                },
+                "acceptance_status": (
+                    "full_source_completeness_passed_pending_no_return_capacity_and_uniqueness"
+                    if source_gate_passed
+                    else "full_source_completeness_failed_stop_before_capacity_uniqueness_or_prices"
+                ),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            message = safe_exception_text(exc)
+            if "row ceiling" in message:
+                failure_code = "provider_row_ceiling_possible_truncation"
+            elif "fields outside" in message or "lacks requested fields" in message:
+                failure_code = "source_schema_mismatch"
+            elif "duplicate" in message:
+                failure_code = "source_duplicate_key"
+            elif "statement keys" in message:
+                failure_code = "source_statement_key_failure"
+            elif "unknown report" in message or "unknown company" in message:
+                failure_code = "source_statement_type_failure"
+            else:
+                failure_code = "provider_or_local_snapshot_failure"
+            failure_path = RUNS_ROOT / f"{run_id}_source_failure.json"
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_source_failure",
+                "dataset": "tushare_operating_cash_conversion",
+                "provider": "tushare",
+                "run_id": run_id,
+                "failed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "requested_start": announcement_start.isoformat(),
+                "requested_end": announcement_end.isoformat(),
+                "failed_instrument": current_instrument,
+                "failed_endpoint": current_endpoint,
+                "completed_instruments_before_failure": completed_instruments,
+                "completed_provider_calls_before_failure": completed_provider_calls,
+                "total_planned_provider_calls": total_planned_calls,
+                "failure_code": failure_code,
+                "error": message,
+                "partial_snapshot_deleted": not temporary_root.exists(),
+                "final_snapshot_published": run_root.exists(),
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT),
+                    "sha256": file_digest(DEFAULT_TUSHARE_CASH_CONVERSION_CONTRACT),
+                },
+                "source_acceptance": {
+                    "record_path": manifest_path(source_chain["record_path"]),
+                    "record_sha256": file_digest(source_chain["record_path"]),
+                },
+                "credentials_logged_or_stored": False,
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            atomic_write_json(failure, failure_path)
+            if isinstance(exc, RichDataError):
+                raise RichDataError(
+                    f"{message}; rejection_record={failure_path}"
+                ) from exc
+            raise
 
 
 def _fetch_tushare_moneyflow_with_policy(
@@ -6742,13 +8644,17 @@ def sync_tushare_moneyflow(
         intervals = load_factor_universe_intervals(universe_path)
         calendar = local_calendar_dates(start, end, calendar_path)
         if calendar.empty:
-            raise RichDataError("local calendar has no sessions in the Tushare moneyflow range")
+            raise RichDataError(
+                "local calendar has no sessions in the Tushare moneyflow range"
+            )
         overlap = intervals["start_date"].le(pd.Timestamp(end)) & intervals[
             "end_date"
         ].ge(pd.Timestamp(start))
         intervals = intervals.loc[overlap].copy()
         if intervals.empty:
-            raise RichDataError("factor universe has no instruments in the frozen range")
+            raise RichDataError(
+                "factor universe has no instruments in the frozen range"
+            )
 
         run_id = new_run_id("tushare_moneyflow_daily")
         parent = RAW_ROOT / "tushare" / "moneyflow" / "daily" / "snapshots"
@@ -6768,7 +8674,9 @@ def sync_tushare_moneyflow(
         }
         minimum_interval = float(partition_policy["minimum_seconds_between_calls"])
         maximum_attempts = int(partition_policy["maximum_attempts_per_session"])
-        retry_backoffs = [float(value) for value in partition_policy["retry_backoff_seconds"]]
+        retry_backoffs = [
+            float(value) for value in partition_policy["retry_backoff_seconds"]
+        ]
         last_request_started: list[float | None] = [None]
         try:
             for year in range(start.year, end.year + 1):
@@ -6816,7 +8724,9 @@ def sync_tushare_moneyflow(
                     in_universe = normalized["instrument"].isin(active_instruments)
                     outside_universe = int((~in_universe).sum())
                     normalized = normalized.loc[in_universe].reset_index(drop=True)
-                    quality["outside_point_in_time_universe_rows_excluded"] = outside_universe
+                    quality["outside_point_in_time_universe_rows_excluded"] = (
+                        outside_universe
+                    )
                     quality["rows_written"] = int(len(normalized))
                     for key in year_quality:
                         year_quality[key] += int(quality.get(key, 0))
@@ -6828,7 +8738,9 @@ def sync_tushare_moneyflow(
                             "expected_active_names": expected_names,
                             "positive_activity_factor_names": observed_names,
                             "coverage": (
-                                observed_names / expected_names if expected_names else None
+                                observed_names / expected_names
+                                if expected_names
+                                else None
                             ),
                         }
                     )
@@ -6864,15 +8776,23 @@ def sync_tushare_moneyflow(
                     }
                 )
             if not files:
-                raise RichDataError("Tushare moneyflow sync produced no completed partitions")
+                raise RichDataError(
+                    "Tushare moneyflow sync produced no completed partitions"
+                )
             coverages = pd.Series(
-                [row["coverage"] for row in all_daily_coverage if row["coverage"] is not None],
+                [
+                    row["coverage"]
+                    for row in all_daily_coverage
+                    if row["coverage"] is not None
+                ],
                 dtype="float64",
             )
             median_coverage = float(coverages.median()) if len(coverages) else 0.0
             p05_coverage = float(coverages.quantile(0.05)) if len(coverages) else 0.0
             coverage_policy = contract["coverage_and_capacity_policy"]
-            minimum_names = int(coverage_policy["minimum_eligible_names_per_cross_section"])
+            minimum_names = int(
+                coverage_policy["minimum_eligible_names_per_cross_section"]
+            )
             dates_with_minimum_names = int(
                 sum(
                     row["positive_activity_factor_names"] >= minimum_names
@@ -6910,7 +8830,9 @@ def sync_tushare_moneyflow(
                 "point_in_time_universe": {
                     "path": manifest_path(universe_path.expanduser().resolve()),
                     "sha256": file_digest(universe_path.expanduser().resolve()),
-                    "intervals": int(len(load_factor_universe_intervals(universe_path))),
+                    "intervals": int(
+                        len(load_factor_universe_intervals(universe_path))
+                    ),
                 },
                 "local_calendar": {
                     "path": manifest_path(calendar_path.expanduser().resolve()),
@@ -7006,13 +8928,17 @@ def sync_tushare_daily_pb(
         all_intervals = load_factor_universe_intervals(universe_path)
         calendar = local_calendar_dates(start, end, calendar_path)
         if calendar.empty:
-            raise RichDataError("local calendar has no sessions in the Tushare daily PB range")
+            raise RichDataError(
+                "local calendar has no sessions in the Tushare daily PB range"
+            )
         overlap = all_intervals["start_date"].le(pd.Timestamp(end)) & all_intervals[
             "end_date"
         ].ge(pd.Timestamp(start))
         intervals = all_intervals.loc[overlap].copy()
         if intervals.empty:
-            raise RichDataError("holding universe has no instruments in the frozen PB range")
+            raise RichDataError(
+                "holding universe has no instruments in the frozen PB range"
+            )
 
         run_id = new_run_id("tushare_daily_pb")
         parent = RAW_ROOT / "tushare" / "daily_pb" / "snapshots"
@@ -7086,9 +9012,9 @@ def sync_tushare_daily_pb(
                     in_universe = normalized["instrument"].isin(active_instruments)
                     outside_universe = int((~in_universe).sum())
                     normalized = normalized.loc[in_universe].reset_index(drop=True)
-                    quality[
-                        "outside_point_in_time_holding_universe_rows_excluded"
-                    ] = outside_universe
+                    quality["outside_point_in_time_holding_universe_rows_excluded"] = (
+                        outside_universe
+                    )
                     quality["rows_written"] = int(len(normalized))
                     for key in year_quality:
                         year_quality[key] += int(quality.get(key, 0))
@@ -7100,7 +9026,9 @@ def sync_tushare_daily_pb(
                             "expected_active_holding_names": expected_names,
                             "positive_pb_holding_names": observed_names,
                             "coverage": (
-                                observed_names / expected_names if expected_names else None
+                                observed_names / expected_names
+                                if expected_names
+                                else None
                             ),
                         }
                     )
@@ -7165,9 +9093,15 @@ def sync_tushare_daily_pb(
                     flush=True,
                 )
             if not files:
-                raise RichDataError("Tushare daily PB sync produced no completed partitions")
+                raise RichDataError(
+                    "Tushare daily PB sync produced no completed partitions"
+                )
             coverages = pd.Series(
-                [row["coverage"] for row in all_daily_coverage if row["coverage"] is not None],
+                [
+                    row["coverage"]
+                    for row in all_daily_coverage
+                    if row["coverage"] is not None
+                ],
                 dtype="float64",
             )
             median_coverage = float(coverages.median()) if len(coverages) else 0.0
@@ -7175,8 +9109,7 @@ def sync_tushare_daily_pb(
             coverage_policy = contract["source_completeness_policy"]
             dates_with_minimum_names = int(
                 sum(
-                    row["positive_pb_holding_names"] >= 50
-                    for row in all_daily_coverage
+                    row["positive_pb_holding_names"] >= 50 for row in all_daily_coverage
                 )
             )
             observed_years = len({int(item["year"]) for item in files})
@@ -7190,9 +9123,7 @@ def sync_tushare_daily_pb(
                 )
                 and p05_coverage
                 >= float(
-                    coverage_policy[
-                        "minimum_p05_positive_pb_holding_universe_coverage"
-                    ]
+                    coverage_policy["minimum_p05_positive_pb_holding_universe_coverage"]
                 )
                 and dates_with_minimum_names
                 >= int(coverage_policy["minimum_sessions_with_fifty_positive_pb_names"])
@@ -7371,10 +9302,14 @@ def load_jqdata_moneyflow_acceptance(
             or manifest.get("forward_return_fields_read") is not False
             or manifest.get("selection_or_promotion_allowed") is not False
         ):
-            raise RichDataError("JQData moneyflow acceptance manifest violates the frozen contract")
+            raise RichDataError(
+                "JQData moneyflow acceptance manifest violates the frozen contract"
+            )
         files = list(manifest.get("files") or [])
         if len(files) != 1:
-            raise RichDataError("JQData moneyflow acceptance must contain one daily partition")
+            raise RichDataError(
+                "JQData moneyflow acceptance must contain one daily partition"
+            )
         frame = load_snapshot_frame(files[0])
         if (
             tuple(frame.columns) != JQDATA_MONEYFLOW_COLUMNS
@@ -7382,7 +9317,9 @@ def load_jqdata_moneyflow_acceptance(
             or frame["trade_date"].nunique() != 1
             or not frame["jqdata_large_order_net_inflow_share"].between(-1.0, 1.0).all()
         ):
-            raise RichDataError("JQData moneyflow acceptance data violates the frozen schema")
+            raise RichDataError(
+                "JQData moneyflow acceptance data violates the frozen schema"
+            )
         return path.resolve(), manifest
     raise RichDataError(
         "no accepted JQData moneyflow entitlement snapshot exists; "
@@ -7413,18 +9350,24 @@ def sync_jqdata_moneyflow(
         start = dt.date.fromisoformat(snapshot_contract["development_start"])
         end = dt.date.fromisoformat(snapshot_contract["development_end"])
         intervals = load_factor_universe_intervals(universe_path)
-        overlap = intervals["start_date"].le(pd.Timestamp(end)) & intervals["end_date"].ge(
-            pd.Timestamp(start)
-        )
+        overlap = intervals["start_date"].le(pd.Timestamp(end)) & intervals[
+            "end_date"
+        ].ge(pd.Timestamp(start))
         codes = intervals.loc[overlap, "instrument"].str[2:].astype(str).tolist()
         if not codes:
-            raise RichDataError("factor universe has no instruments in the frozen range")
+            raise RichDataError(
+                "factor universe has no instruments in the frozen range"
+            )
     validate_range(start, end, allow_large=allow_large, unit_count=len(codes))
     calendar = local_calendar_dates(start, end, calendar_path)
     if calendar.empty:
-        raise RichDataError("local calendar has no sessions in the JQData moneyflow range")
+        raise RichDataError(
+            "local calendar has no sessions in the JQData moneyflow range"
+        )
     if acceptance and len(calendar) != 1:
-        raise RichDataError("JQData moneyflow acceptance date is not a local trading session")
+        raise RichDataError(
+            "JQData moneyflow acceptance date is not a local trading session"
+        )
 
     run_id = new_run_id("jqdata_moneyflow_daily")
     parent = RAW_ROOT / "jqdata" / "moneyflow" / "daily" / "snapshots"
@@ -7456,11 +9399,13 @@ def sync_jqdata_moneyflow(
                 partition_codes = codes
                 partition_intervals = None
             else:
-                overlap = intervals["start_date"].le(pd.Timestamp(partition_end)) & intervals[
-                    "end_date"
-                ].ge(pd.Timestamp(partition_start))
+                overlap = intervals["start_date"].le(
+                    pd.Timestamp(partition_end)
+                ) & intervals["end_date"].ge(pd.Timestamp(partition_start))
                 partition_intervals = intervals.loc[overlap].copy()
-                partition_codes = partition_intervals["instrument"].str[2:].astype(str).tolist()
+                partition_codes = (
+                    partition_intervals["instrument"].str[2:].astype(str).tolist()
+                )
             raw = fetch_jqdata_moneyflow_pro(
                 partition_codes, partition_start, partition_end
             )
@@ -7540,9 +9485,15 @@ def sync_jqdata_moneyflow(
                 }
             )
         if not files:
-            raise RichDataError("JQData moneyflow sync produced no completed partitions")
+            raise RichDataError(
+                "JQData moneyflow sync produced no completed partitions"
+            )
         coverages = pd.Series(
-            [row["coverage"] for row in all_daily_coverage if row["coverage"] is not None],
+            [
+                row["coverage"]
+                for row in all_daily_coverage
+                if row["coverage"] is not None
+            ],
             dtype="float64",
         )
         median_coverage = float(coverages.median()) if len(coverages) else 0.0
@@ -7636,9 +9587,11 @@ def sync_jqdata_moneyflow(
             "acceptance_status": (
                 "accepted_entitlement_and_formula_pending_full_history"
                 if acceptance
-                else "full_source_coverage_passed_pending_no_return_capacity"
-                if coverage_gate_passed
-                else "full_source_coverage_failed_stop_before_prices"
+                else (
+                    "full_source_coverage_passed_pending_no_return_capacity"
+                    if coverage_gate_passed
+                    else "full_source_coverage_failed_stop_before_prices"
+                )
             ),
             "price_fields_loaded": [],
             "open_close_or_forward_return_fields_read": False,
@@ -7744,7 +9697,9 @@ def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
                 "rows": int(record.get("rows") or 0),
             }
 
-    preflight_paths = sorted(preflight_root.glob("*.json")) if preflight_root.exists() else []
+    preflight_paths = (
+        sorted(preflight_root.glob("*.json")) if preflight_root.exists() else []
+    )
     latest_preflight: dict[str, Any] | None = None
     if preflight_paths:
         latest_path = preflight_paths[-1]
@@ -7777,9 +9732,7 @@ def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
         ),
         "latest_restoration_probe": latest_probe,
         "latest_preflight": latest_preflight,
-        "process_lock": advisory_lock_status(
-            resolved / ".a_share_baostock_5m.lock"
-        ),
+        "process_lock": advisory_lock_status(resolved / ".a_share_baostock_5m.lock"),
     }
 
 
@@ -7787,12 +9740,20 @@ def status_payload(data_root: Path = DATA_ROOT) -> dict[str, Any]:
     """Return safe machine-readable readiness information."""
 
     manifests = sorted(RUNS_ROOT.glob("*.json")) if RUNS_ROOT.exists() else []
-    alignments = sorted(ALIGNMENTS_ROOT.glob("*.json")) if ALIGNMENTS_ROOT.exists() else []
-    feature_runs = sorted(FEATURE_RUNS_ROOT.glob("*.json")) if FEATURE_RUNS_ROOT.exists() else []
+    alignments = (
+        sorted(ALIGNMENTS_ROOT.glob("*.json")) if ALIGNMENTS_ROOT.exists() else []
+    )
+    feature_runs = (
+        sorted(FEATURE_RUNS_ROOT.glob("*.json")) if FEATURE_RUNS_ROOT.exists() else []
+    )
     return {
         "repository": str(REPO_ROOT),
         "data_root": str(DATA_ROOT),
-        "providers": [asdict(provider_availability(provider)) | {"ready": provider_availability(provider).ready} for provider in PROVIDER_REQUIREMENTS],
+        "providers": [
+            asdict(provider_availability(provider))
+            | {"ready": provider_availability(provider).ready}
+            for provider in PROVIDER_REQUIREMENTS
+        ],
         "snapshot_manifest_count": len(manifests),
         "latest_snapshot_manifest": str(manifests[-1]) if manifests else None,
         "alignment_confirmation_count": len(alignments),
@@ -7818,18 +9779,37 @@ def build_parser() -> argparse.ArgumentParser:
         help="inspect this BaoStock five-minute storage root without network access",
     )
 
-    minute = subparsers.add_parser("sync-minutes", help="download explicit-symbol minute bars")
+    minute = subparsers.add_parser(
+        "sync-minutes", help="download explicit-symbol minute bars"
+    )
     minute.add_argument("--provider", choices=sorted(MINUTE_FETCHERS), required=True)
-    minute.add_argument("--symbols", type=parse_symbols, required=True, help="comma-separated six-digit A-share codes")
+    minute.add_argument(
+        "--symbols",
+        type=parse_symbols,
+        required=True,
+        help="comma-separated six-digit A-share codes",
+    )
     minute.add_argument("--start", type=parse_date, required=True)
     minute.add_argument("--end", type=parse_date, required=True)
     minute.add_argument("--frequency", default="1m")
-    minute.add_argument("--allow-large", action="store_true", help="confirm a request above 100 symbol-sessions")
+    minute.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm a request above 100 symbol-sessions",
+    )
 
-    acceptance = subparsers.add_parser("acceptance", help="run a small minute-data acceptance download")
-    acceptance.add_argument("--provider", choices=sorted(MINUTE_FETCHERS), required=True)
-    acceptance.add_argument("--date", type=parse_date, default=latest_completed_session_date())
-    acceptance.add_argument("--symbols", type=parse_symbols, default=list(DEFAULT_ACCEPTANCE_SYMBOLS))
+    acceptance = subparsers.add_parser(
+        "acceptance", help="run a small minute-data acceptance download"
+    )
+    acceptance.add_argument(
+        "--provider", choices=sorted(MINUTE_FETCHERS), required=True
+    )
+    acceptance.add_argument(
+        "--date", type=parse_date, default=latest_completed_session_date()
+    )
+    acceptance.add_argument(
+        "--symbols", type=parse_symbols, default=list(DEFAULT_ACCEPTANCE_SYMBOLS)
+    )
     acceptance.add_argument("--frequency", default="1m")
 
     subparsers.add_parser(
@@ -7889,14 +9869,22 @@ def build_parser() -> argparse.ArgumentParser:
     events.add_argument("--datasets", default=",".join(DEFAULT_EVENT_DATASETS))
     events.add_argument("--start", type=parse_date, required=True)
     events.add_argument("--end", type=parse_date, required=True)
-    events.add_argument("--allow-large", action="store_true", help="confirm a request above 100 table-sessions")
+    events.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm a request above 100 table-sessions",
+    )
 
     ts_moneyflow = subparsers.add_parser(
         "sync-tushare-moneyflow",
         help="download the frozen 2019-2025 Tushare daily classified-moneyflow snapshot",
     )
-    ts_moneyflow.add_argument("--universe-file", type=Path, default=DEFAULT_FACTOR_UNIVERSE)
-    ts_moneyflow.add_argument("--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR)
+    ts_moneyflow.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_FACTOR_UNIVERSE
+    )
+    ts_moneyflow.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
     ts_moneyflow.add_argument(
         "--allow-large",
         action="store_true",
@@ -7916,6 +9904,21 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser(
         "acceptance-tushare-top10-float-concentration",
         help="run the frozen three-symbol top-ten float concentration acceptance",
+    )
+
+    subparsers.add_parser(
+        "acceptance-tushare-cash-conversion",
+        help="run the frozen three-symbol income/cashflow accounting acceptance",
+    )
+
+    ts_cash_conversion = subparsers.add_parser(
+        "sync-tushare-cash-conversion",
+        help="download the frozen 2019-2025 PIT accounting cash-conversion snapshot",
+    )
+    ts_cash_conversion.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the accepted 9,588-call sequential licensed request",
     )
 
     ts_daily_pb_acceptance = subparsers.add_parser(
@@ -7969,8 +9972,12 @@ def build_parser() -> argparse.ArgumentParser:
         "sync-jqdata-moneyflow",
         help="download the frozen 2019-2025 JQData professional daily moneyflow snapshot",
     )
-    jq_moneyflow.add_argument("--universe-file", type=Path, default=DEFAULT_FACTOR_UNIVERSE)
-    jq_moneyflow.add_argument("--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR)
+    jq_moneyflow.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_FACTOR_UNIVERSE
+    )
+    jq_moneyflow.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
     jq_moneyflow.add_argument(
         "--allow-large",
         action="store_true",
@@ -7997,7 +10004,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     features.add_argument("--manifest", type=Path, required=True)
     features.add_argument("--alignment", type=Path, required=True)
-    features.add_argument("--factor-spec", type=Path, default=DEFAULT_MINUTE_FACTOR_SPEC)
+    features.add_argument(
+        "--factor-spec", type=Path, default=DEFAULT_MINUTE_FACTOR_SPEC
+    )
     features.add_argument("--output", type=Path)
     return parser
 
@@ -8019,10 +10028,23 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "sync-minutes":
             manifest = sync_minutes(
-                args.provider, args.symbols, args.start, args.end, args.frequency, args.allow_large
+                args.provider,
+                args.symbols,
+                args.start,
+                args.end,
+                args.frequency,
+                args.allow_large,
             )
         elif args.command == "acceptance":
-            manifest = sync_minutes(args.provider, args.symbols, args.date, args.date, args.frequency, False, acceptance=True)
+            manifest = sync_minutes(
+                args.provider,
+                args.symbols,
+                args.date,
+                args.date,
+                args.frequency,
+                False,
+                acceptance=True,
+            )
         elif args.command == "acceptance-baostock-5m":
             manifest = sync_baostock_5m_acceptance()
         elif args.command == "preflight-baostock-5m":
@@ -8042,8 +10064,12 @@ def main(argv: list[str] | None = None) -> int:
                 workers=args.workers,
             )
         elif args.command == "sync-tushare-events":
-            datasets = [item.strip() for item in args.datasets.split(",") if item.strip()]
-            manifest = sync_tushare_events(datasets, args.start, args.end, args.allow_large)
+            datasets = [
+                item.strip() for item in args.datasets.split(",") if item.strip()
+            ]
+            manifest = sync_tushare_events(
+                datasets, args.start, args.end, args.allow_large
+            )
         elif args.command == "sync-tushare-moneyflow":
             manifest = sync_tushare_moneyflow(
                 allow_large=args.allow_large,
@@ -8056,6 +10082,10 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_top_inst_acceptance()
         elif args.command == "acceptance-tushare-top10-float-concentration":
             manifest = sync_tushare_top10_float_concentration_acceptance()
+        elif args.command == "acceptance-tushare-cash-conversion":
+            manifest = sync_tushare_cash_conversion_acceptance()
+        elif args.command == "sync-tushare-cash-conversion":
+            manifest = sync_tushare_cash_conversion(allow_large=args.allow_large)
         elif args.command == "acceptance-tushare-daily-pb":
             manifest = sync_tushare_daily_pb_acceptance(
                 universe_path=args.universe_file
@@ -8063,9 +10093,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "acceptance-tushare-sw-industry-breadth":
             manifest = sync_tushare_sw_industry_breadth_acceptance()
         elif args.command == "sync-tushare-sw-industry-membership":
-            manifest = sync_tushare_sw_industry_membership(
-                allow_large=args.allow_large
-            )
+            manifest = sync_tushare_sw_industry_membership(allow_large=args.allow_large)
         elif args.command == "sync-tushare-daily-pb":
             manifest = sync_tushare_daily_pb(
                 allow_large=args.allow_large,
@@ -8117,6 +10145,12 @@ def main(argv: list[str] | None = None) -> int:
         "acceptance-tushare-top10-float-concentration": (
             "stored_no_return_ownership_concentration_acceptance"
         ),
+        "acceptance-tushare-cash-conversion": (
+            "stored_no_return_accounting_cash_conversion_acceptance"
+        ),
+        "sync-tushare-cash-conversion": (
+            "stored_pending_no_return_cash_conversion_capacity_and_uniqueness"
+        ),
         "acceptance-tushare-sw-industry-breadth": (
             "stored_no_price_membership_acceptance"
         ),
@@ -8124,7 +10158,11 @@ def main(argv: list[str] | None = None) -> int:
             "stored_pending_no_return_factor_capacity_and_uniqueness"
         ),
     }.get(args.command, "stored_pending_acceptance")
-    print(json.dumps({"manifest": str(manifest), "status": command_status}, ensure_ascii=False))
+    print(
+        json.dumps(
+            {"manifest": str(manifest), "status": command_status}, ensure_ascii=False
+        )
+    )
     return 0
 
 
