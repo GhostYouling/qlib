@@ -1715,9 +1715,7 @@ def test_tushare_earnings_forecast_contract_is_frozen_before_rows():
     assert contract["source"]["requested_fields"] == list(
         RICH.TUSHARE_EARNINGS_FORECAST_RAW_FIELDS
     )
-    assert contract["factor"]["formula"] == (
-        "(p_change_min + p_change_max) / 2"
-    )
+    assert contract["factor"]["formula"] == ("(p_change_min + p_change_max) / 2")
     assert contract["freeze_evidence"]["provider_forecast_rows_observed"] is False
     assert contract["forward_return_fields_read"] is False
 
@@ -1853,9 +1851,12 @@ def test_tushare_earnings_forecast_terminal_record_blocks_before_provider(
     )
     assert record["acceptance_failure"]["provider_calls_issued"] == 1
     assert record["implementation_audit"]["retry_authorized"] is False
-    assert record["prior_mechanism_overlap"]["accepted_price_rebuild"][
-        "qualified_factor_count"
-    ] == 0
+    assert (
+        record["prior_mechanism_overlap"]["accepted_price_rebuild"][
+            "qualified_factor_count"
+        ]
+        == 0
+    )
     assert record["forward_return_fields_read"] is False
 
     monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
@@ -1893,11 +1894,11 @@ def test_tushare_disclosure_promptness_contract_is_frozen_before_rows():
     assert contract["source"]["requested_fields"] == list(
         RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS
     )
-    assert contract["factor"]["formula"] == (
-        "calendar_days(pre_date - ann_date)"
-    )
+    assert contract["factor"]["formula"] == ("calendar_days(pre_date - ann_date)")
     assert contract["factor"]["direction"] == "lower_is_better"
-    assert contract["freeze_evidence"]["provider_disclosure_date_rows_observed"] is False
+    assert (
+        contract["freeze_evidence"]["provider_disclosure_date_rows_observed"] is False
+    )
     assert contract["forward_return_fields_read"] is False
 
 
@@ -1934,15 +1935,11 @@ def test_tushare_disclosure_promptness_canonicalization_is_strict():
         disclosure_plan_row("000001.SZ", "20241229", "20241231", "20250331"),
         disclosure_plan_row("430001.BJ", "20241229", "20241231", "20250420"),
     ]
-    frame = pd.DataFrame(
-        rows, columns=RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS
-    )
+    frame = pd.DataFrame(rows, columns=RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS)
     accepted, quality = RICH.canonicalize_tushare_disclosure_plan(
         frame, dt.date(2024, 12, 31)
     )
-    assert accepted.columns.tolist() == list(
-        RICH.TUSHARE_DISCLOSURE_PROMPTNESS_COLUMNS
-    )
+    assert accepted.columns.tolist() == list(RICH.TUSHARE_DISCLOSURE_PROMPTNESS_COLUMNS)
     assert accepted["instrument"].tolist() == ["SH600000", "SZ000001"]
     assert accepted["tushare_disclosure_plan_lead_days"].tolist() == [108, 92]
     assert quality["outside_target_bj_rows_excluded"] == 1
@@ -1953,16 +1950,12 @@ def test_tushare_disclosure_promptness_canonicalization_is_strict():
     conflict = frame.iloc[[0, 0]].copy().reset_index(drop=True)
     conflict.loc[1, "pre_date"] = "20250416"
     with pytest.raises(RICH.RichDataError, match="conflicting stock-period"):
-        RICH.canonicalize_tushare_disclosure_plan(
-            conflict, dt.date(2024, 12, 31)
-        )
+        RICH.canonicalize_tushare_disclosure_plan(conflict, dt.date(2024, 12, 31))
 
     negative = frame.iloc[[0]].copy()
     negative.loc[:, "pre_date"] = "20241227"
     with pytest.raises(RICH.RichDataError, match="announcement after its planned"):
-        RICH.canonicalize_tushare_disclosure_plan(
-            negative, dt.date(2024, 12, 31)
-        )
+        RICH.canonicalize_tushare_disclosure_plan(negative, dt.date(2024, 12, 31))
 
     unknown_exchange = frame.iloc[[0]].copy()
     unknown_exchange.loc[:, "ts_code"] = "600000.HK"
@@ -2004,9 +1997,7 @@ def test_tushare_disclosure_promptness_acceptance_is_atomic_and_one_shot(
                     planned.strftime("%Y%m%d"),
                 )
             )
-        return pd.DataFrame(
-            rows, columns=RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS
-        )
+        return pd.DataFrame(rows, columns=RICH.TUSHARE_DISCLOSURE_PROMPTNESS_RAW_FIELDS)
 
     monkeypatch.setattr(RICH, "fetch_tushare_disclosure_plan", fake_fetch)
     manifest_path = RICH.sync_tushare_disclosure_promptness_acceptance()
@@ -2097,6 +2088,11 @@ def test_tushare_audit_opinion_source_acceptance_record_is_frozen():
     }
     assert record["privacy_and_scope"]["forward_return_fields_read"] is False
 
+    chain = RICH.load_tushare_audit_opinion_source_chain()
+    assert len(chain["frame"]) == 21
+    assert chain["frame"].columns.tolist() == list(RICH.TUSHARE_AUDIT_OPINION_COLUMNS)
+    assert not any("audit_result" in column for column in chain["frame"].columns)
+
 
 def test_tushare_audit_opinion_request_uses_only_frozen_fields(monkeypatch):
     captured = []
@@ -2150,10 +2146,16 @@ def test_tushare_audit_opinion_canonicalization_is_strict():
     assert quality["stock_announcement_events_written"] == 2
     assert quality["distinct_factor_values"] == 2
     assert len(quality["hashed_opinion_category_counts"]) == 2
+    assert quality["annual_report_period_counts"] == {
+        "2023-12-31": 1,
+        "2024-12-31": 1,
+    }
 
     conflict = frame.iloc[[0, 0]].copy().reset_index(drop=True)
     conflict.loc[1, "audit_result"] = "保留意见"
-    with pytest.raises(RICH.RichDataError, match="conflicting stock-announcement-report"):
+    with pytest.raises(
+        RICH.RichDataError, match="conflicting stock-announcement-report"
+    ):
         RICH.canonicalize_tushare_audit_opinions(
             conflict,
             expected_ts_code="600518.SH",
@@ -2182,9 +2184,7 @@ def test_tushare_audit_opinion_canonicalization_is_strict():
         )
 
 
-def test_tushare_audit_opinion_acceptance_is_atomic_and_one_shot(
-    tmp_path, monkeypatch
-):
+def test_tushare_audit_opinion_acceptance_is_atomic_and_one_shot(tmp_path, monkeypatch):
     contract = copy.deepcopy(RICH.load_tushare_audit_opinion_contract())
     monkeypatch.setattr(RICH, "load_tushare_audit_opinion_contract", lambda: contract)
     monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
@@ -2259,7 +2259,9 @@ def test_tushare_audit_opinion_acceptance_stops_after_first_failed_stock(
     def fake_fetch(ts_code, announcement_start, announcement_end):
         calls.append(ts_code)
         rows = [
-            audit_opinion_row(ts_code, f"{year}0430", f"{year - 1}1231", "标准无保留意见")
+            audit_opinion_row(
+                ts_code, f"{year}0430", f"{year - 1}1231", "标准无保留意见"
+            )
             for year in range(2019, 2023)
         ]
         return pd.DataFrame(rows, columns=RICH.TUSHARE_AUDIT_OPINION_RAW_FIELDS)
@@ -2285,6 +2287,600 @@ def test_tushare_audit_opinion_tracked_acceptance_blocks_before_provider(monkeyp
     )
     with pytest.raises(RICH.RichDataError, match="already consumed"):
         RICH.sync_tushare_audit_opinion_acceptance()
+
+
+def gross_margin_row(
+    ts_code: str,
+    ann_date: str,
+    end_date: str,
+    margin,
+    *,
+    update_flag: str = "0",
+) -> dict:
+    return {
+        "ts_code": ts_code,
+        "ann_date": ann_date,
+        "end_date": end_date,
+        "q_gsprofit_margin": margin,
+        "update_flag": update_flag,
+    }
+
+
+def complete_gross_margin_frame(ts_code: str) -> pd.DataFrame:
+    rows = []
+    schedule = (
+        ("0331", "0430", 0),
+        ("0630", "0830", 1),
+        ("0930", "1031", 2),
+        ("1231", "0430", 3),
+    )
+    for year in range(2018, 2026):
+        year_index = year - 2018
+        for month_day, announcement_month_day, quarter_index in schedule:
+            announcement_year = year + int(month_day == "1231")
+            margin = (
+                25.0
+                + year_index * year_index * 0.03
+                + quarter_index * year_index * 0.17
+            )
+            rows.append(
+                gross_margin_row(
+                    ts_code,
+                    f"{announcement_year}{announcement_month_day}",
+                    f"{year}{month_day}",
+                    margin,
+                )
+            )
+    rows.append(
+        gross_margin_row(
+            ts_code,
+            "20240430",
+            "20240331",
+            99.0,
+            update_flag="1",
+        )
+    )
+    return pd.DataFrame(rows, columns=RICH.TUSHARE_GROSS_MARGIN_RAW_FIELDS)
+
+
+def test_tushare_gross_margin_contract_and_request_are_frozen(monkeypatch):
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_GROSS_MARGIN_CONTRACT)
+        == RICH.TUSHARE_GROSS_MARGIN_CONTRACT_SHA256
+    )
+    contract = RICH.load_tushare_gross_margin_contract()
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_GROSS_MARGIN_RAW_FIELDS
+    )
+    assert contract["point_in_time_and_version_policy"]["factor_version"] == (
+        "initial_only"
+    )
+    assert contract["factor"]["direction"] == "higher_is_better"
+    assert contract["freeze_evidence"]["provider_fina_indicator_rows_observed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+    captured = []
+
+    class Pro:
+        def fina_indicator(self, **kwargs):
+            captured.append(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_gross_margin_indicators(
+        "600519.SH", dt.date(2018, 1, 1), dt.date(2025, 12, 31)
+    )
+    assert captured == [
+        {
+            "ts_code": "600519.SH",
+            "start_date": "20180101",
+            "end_date": "20251231",
+            "fields": ",".join(RICH.TUSHARE_GROSS_MARGIN_RAW_FIELDS),
+        }
+    ]
+
+
+def test_tushare_gross_margin_source_acceptance_record_is_frozen():
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_GROSS_MARGIN_ACCEPTANCE_RECORD)
+        == RICH.TUSHARE_GROSS_MARGIN_ACCEPTANCE_RECORD_SHA256
+    )
+    record = RICH.load_tushare_gross_margin_acceptance_record()
+    assert record["acceptance"]["provider_calls_issued"] == 3
+    assert record["acceptance"]["source_rows"] == 163
+    assert record["acceptance"]["quality"]["initial_rows_retained"] == 67
+    assert record["acceptance"]["quality"]["revised_rows_observed_but_not_used"] == 96
+    assert record["privacy_and_scope"]["price_fields_loaded"] == []
+    assert record["privacy_and_scope"]["forward_return_fields_read"] is False
+
+    chain = RICH.load_tushare_gross_margin_source_chain()
+    assert len(chain["frame"]) == 51
+    assert chain["frame"].columns.tolist() == list(RICH.TUSHARE_GROSS_MARGIN_COLUMNS)
+    assert "q_gsprofit_margin" not in chain["frame"]
+
+
+def test_tushare_gross_margin_uses_initial_same_fiscal_quarter_only():
+    rows = [
+        gross_margin_row("600519.SH", "20180430", "20180331", 30.0),
+        gross_margin_row("600519.SH", "20180430", "20180331", 30.0),
+        gross_margin_row("600519.SH", "20180830", "20180630", 40.0),
+        gross_margin_row("600519.SH", "20181031", "20180930", 35.0),
+        gross_margin_row("600519.SH", "20181101", "20180930", 36.0),
+        gross_margin_row("600519.SH", "20190430", "20190331", 32.0),
+        gross_margin_row(
+            "600519.SH", "20190515", "20190331", 99.0, update_flag="1"
+        ),
+        gross_margin_row("600519.SH", "20190830", "20190630", 38.0),
+        gross_margin_row("600519.SH", "20191031", "20190930", 40.0),
+        gross_margin_row("600519.SH", "20200430", "20200331", None),
+    ]
+    frame = pd.DataFrame(rows, columns=RICH.TUSHARE_GROSS_MARGIN_RAW_FIELDS)
+    accepted, quality = RICH.canonicalize_tushare_gross_margin_indicators(
+        frame,
+        expected_ts_code="600519.SH",
+        report_period_start=dt.date(2018, 1, 1),
+        report_period_end=dt.date(2025, 12, 31),
+    )
+    assert accepted.columns.tolist() == list(RICH.TUSHARE_GROSS_MARGIN_COLUMNS)
+    assert accepted["report_period"].tolist() == [
+        pd.Timestamp("2019-03-31"),
+        pd.Timestamp("2019-06-30"),
+    ]
+    assert accepted["tushare_q_gross_margin_yoy_change_pp"].tolist() == [2.0, -2.0]
+    assert "q_gsprofit_margin" not in accepted
+    assert quality["exact_five_field_duplicate_rows_collapsed"] == 1
+    assert quality["revised_rows_observed"] == 1
+    assert quality["missing_margin_rows_excluded"] == 1
+    assert quality["ambiguous_initial_periods_excluded"] == 1
+    assert quality["derived_yoy_events_written"] == 2
+    assert quality["distinct_derived_values"] == 2
+
+    invalid = frame.iloc[[0]].copy()
+    invalid.loc[:, "update_flag"] = "2"
+    with pytest.raises(RICH.RichDataError, match="unknown update_flag"):
+        RICH.canonicalize_tushare_gross_margin_indicators(
+            invalid,
+            expected_ts_code="600519.SH",
+            report_period_start=dt.date(2018, 1, 1),
+            report_period_end=dt.date(2025, 12, 31),
+        )
+
+
+def test_tushare_gross_margin_acceptance_is_atomic_and_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_gross_margin_contract())
+    monkeypatch.setattr(RICH, "load_tushare_gross_margin_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_GROSS_MARGIN_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    calls = []
+
+    def fake_fetch(ts_code, report_period_start, report_period_end):
+        calls.append((ts_code, report_period_start, report_period_end))
+        return complete_gross_margin_frame(ts_code)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_gross_margin_indicators", fake_fetch)
+    manifest_path = RICH.sync_tushare_gross_margin_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_initial_version_policy_and_formula_pending_full_history"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 3
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_GROSS_MARGIN_RAW_FIELDS
+    )
+    assert manifest["source_request"]["raw_frames_persisted"] is False
+    assert manifest["source_request"]["revised_values_persisted"] is False
+    assert manifest["source_quality"]["revised_rows_observed_but_not_used"] == 3
+    assert manifest["source_quality"]["factor_distinct_values"] >= 6
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert len(calls) == 3
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_gross_margin_acceptance()
+    assert len(calls) == 3
+
+
+def test_tushare_gross_margin_acceptance_failure_is_terminal_before_prices(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_gross_margin_contract())
+    monkeypatch.setattr(RICH, "load_tushare_gross_margin_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_GROSS_MARGIN_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    calls = []
+
+    def fake_fetch(ts_code, report_period_start, report_period_end):
+        calls.append(ts_code)
+        return complete_gross_margin_frame(ts_code).iloc[:4].copy()
+
+    monkeypatch.setattr(RICH, "fetch_tushare_gross_margin_indicators", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="too few source rows"):
+        RICH.sync_tushare_gross_margin_acceptance()
+    assert calls == ["600519.SH"]
+    records = RICH.tushare_gross_margin_acceptance_records()
+    assert len(records) == 1
+    failure = RICH.json.loads(records[0].read_text())
+    assert failure["source_request"]["provider_calls_issued"] == 1
+    assert failure["files"] == []
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_gross_margin_acceptance()
+    assert calls == ["600519.SH"]
+
+
+def test_tushare_gross_margin_tracked_acceptance_blocks_before_provider(monkeypatch):
+    monkeypatch.setattr(
+        RICH,
+        "require_provider",
+        lambda provider: pytest.fail("provider must not be checked"),
+    )
+    with pytest.raises(RICH.RichDataError, match="already consumed"):
+        RICH.sync_tushare_gross_margin_acceptance()
+
+
+def configure_gross_margin_full_test(tmp_path, monkeypatch):
+    source_chain = dict(RICH.load_tushare_gross_margin_source_chain())
+    contract = copy.deepcopy(source_chain["contract"])
+    instruments = ["SH600001", "SZ000001", "SZ300001"]
+    universe_path = tmp_path / "factor_universe.txt"
+    universe_path.write_text(
+        "".join(
+            f"{instrument}\t2015-01-01\t2026-12-31\n"
+            for instrument in instruments
+        ),
+        encoding="utf-8",
+    )
+    calendar_path = tmp_path / "calendar.txt"
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    contract["local_context"]["source_universe"] = {
+        "path": str(universe_path),
+        "sha256": RICH.file_digest(universe_path),
+    }
+    contract["local_context"]["calendar"] = {
+        "path": str(calendar_path),
+        "sha256": RICH.file_digest(calendar_path),
+    }
+    snapshot = contract["full_snapshot_contract"]
+    snapshot["provider_calls"] = len(instruments) * 2
+    snapshot["minimum_seconds_between_calls"] = 0.0
+    snapshot["maximum_attempts_per_stock_slice"] = 1
+    snapshot["retry_backoff_seconds"] = []
+    completeness = contract["source_completeness_policy"]
+    completeness["minimum_complete_derived_factor_events"] = 1
+    completeness["minimum_median_report_period_coverage"] = 1.0
+    completeness["minimum_p05_report_period_coverage"] = 1.0
+    source_chain["contract"] = contract
+    monkeypatch.setattr(
+        RICH, "load_tushare_gross_margin_source_chain", lambda: source_chain
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_GROSS_MARGIN_RESEARCH_RECORD",
+        tmp_path / "missing_research_record.json",
+    )
+    return instruments, universe_path, calendar_path
+
+
+def test_tushare_gross_margin_full_sync_is_atomic_and_passes_source_gate(
+    tmp_path, monkeypatch
+):
+    instruments, universe_path, calendar_path = configure_gross_margin_full_test(
+        tmp_path, monkeypatch
+    )
+    calls = []
+
+    def fake_fetch(ts_code, report_period_start, report_period_end, **kwargs):
+        calls.append((ts_code, report_period_start, report_period_end))
+        frame = complete_gross_margin_frame(ts_code)
+        period = pd.to_datetime(frame["end_date"], format="%Y%m%d")
+        return frame.loc[
+            period.between(
+                pd.Timestamp(report_period_start), pd.Timestamp(report_period_end)
+            )
+        ].reset_index(drop=True)
+
+    monkeypatch.setattr(RICH, "_fetch_tushare_gross_margin_with_policy", fake_fetch)
+    manifest_path = RICH.sync_tushare_gross_margin(
+        allow_large=True,
+        universe_path=universe_path,
+        calendar_path=calendar_path,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == (
+        "tushare_single_quarter_gross_margin_yoy_change_events"
+    )
+    assert manifest["source_request"]["completed_provider_calls"] == 6
+    assert manifest["source_request"]["raw_provider_frames_persisted"] is False
+    assert (
+        manifest["source_request"][
+            "initial_or_revised_source_margin_levels_persisted"
+        ]
+        is False
+    )
+    assert manifest["normalization_quality"]["revised_rows_observed"] == 3
+    assert manifest["normalization_quality"]["development_factor_events_written"] == 81
+    assert len(manifest["files"]) == 7
+    assert manifest["source_completeness"]["median_report_period_coverage"] == 1.0
+    assert manifest["source_completeness"]["p05_report_period_coverage"] == 1.0
+    assert (
+        manifest["source_completeness"][
+            "gate_passed_before_event_expansion_capacity_uniqueness_or_prices"
+        ]
+        is True
+    )
+    assert manifest["acceptance_status"] == (
+        "full_source_completeness_passed_pending_no_return_capacity_and_uniqueness"
+    )
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert len(calls) == len(instruments) * 2
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already exists"):
+        RICH.sync_tushare_gross_margin(
+            allow_large=True,
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    assert len(calls) == len(instruments) * 2
+
+
+def test_tushare_gross_margin_full_sync_deletes_partial_on_row_ceiling(
+    tmp_path, monkeypatch
+):
+    _, universe_path, calendar_path = configure_gross_margin_full_test(
+        tmp_path, monkeypatch
+    )
+    calls = []
+
+    def fake_fetch(ts_code, report_period_start, report_period_end, **kwargs):
+        calls.append(ts_code)
+        row = gross_margin_row(ts_code, "20190430", "20190331", 30.0)
+        return pd.DataFrame(
+            [row] * 100, columns=RICH.TUSHARE_GROSS_MARGIN_RAW_FIELDS
+        )
+
+    monkeypatch.setattr(RICH, "_fetch_tushare_gross_margin_with_policy", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="row ceiling"):
+        RICH.sync_tushare_gross_margin(
+            allow_large=True,
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    assert len(calls) == 1
+    records = RICH.tushare_gross_margin_full_snapshot_records()
+    assert len(records) == 1
+    failure = RICH.json.loads(records[0].read_text())
+    assert failure["failure_code"] == "provider_row_ceiling_possible_truncation"
+    assert failure["completed_provider_calls_before_failure"] == 1
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["final_snapshot_published"] is False
+    assert failure["files"] == []
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+
+
+def test_tushare_gross_margin_terminal_record_blocks_full_sync_before_source_chain(
+    monkeypatch,
+):
+    record = RICH.load_tushare_gross_margin_research_record()
+    assert record["full_source_attempt"]["completed_provider_calls_before_failure"] == 1058
+    assert record["full_source_attempt"]["partial_snapshot_deleted"] is True
+    assert record["scope_and_safety"]["price_fields_loaded"] == []
+    assert record["scope_and_safety"]["forward_return_fields_read"] is False
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_gross_margin_source_chain",
+        lambda: pytest.fail("terminal record must run before source-chain access"),
+    )
+    with pytest.raises(RICH.RichDataError, match="branch is terminal.*forbidden"):
+        RICH.sync_tushare_gross_margin(allow_large=True)
+
+
+def configure_audit_opinion_full_test(tmp_path, monkeypatch):
+    source_chain = dict(RICH.load_tushare_audit_opinion_source_chain())
+    contract = copy.deepcopy(source_chain["contract"])
+    instruments = ["SH600001", "SZ000001", "SZ300001"]
+    universe_path = tmp_path / "factor_universe.txt"
+    universe_path.write_text(
+        "".join(
+            f"{instrument}\t2015-01-01\t2026-12-31\n" for instrument in instruments
+        ),
+        encoding="utf-8",
+    )
+    calendar_path = tmp_path / "calendar.txt"
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    contract["local_context"]["source_universe"] = {
+        "path": str(universe_path),
+        "sha256": RICH.file_digest(universe_path),
+    }
+    contract["local_context"]["calendar"] = {
+        "path": str(calendar_path),
+        "sha256": RICH.file_digest(calendar_path),
+    }
+    snapshot = contract["full_snapshot_contract"]
+    snapshot["provider_calls"] = len(instruments)
+    snapshot["minimum_seconds_between_calls"] = 0.0
+    snapshot["maximum_attempts_per_stock"] = 1
+    snapshot["retry_backoff_seconds"] = []
+    source_chain["contract"] = contract
+    monkeypatch.setattr(
+        RICH, "load_tushare_audit_opinion_source_chain", lambda: source_chain
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    return instruments, universe_path, calendar_path
+
+
+def full_audit_opinion_rows(ts_code: str, *, nonclean: bool = False) -> pd.DataFrame:
+    rows = []
+    for announcement_year in range(2019, 2026):
+        opinion = (
+            "保留意见" if nonclean and announcement_year == 2021 else "标准无保留意见"
+        )
+        rows.append(
+            audit_opinion_row(
+                ts_code,
+                f"{announcement_year}0430",
+                f"{announcement_year - 1}1231",
+                opinion,
+            )
+        )
+    return pd.DataFrame(rows, columns=RICH.TUSHARE_AUDIT_OPINION_RAW_FIELDS)
+
+
+def test_tushare_audit_opinion_full_sync_is_atomic_and_passes_source_coverage(
+    tmp_path, monkeypatch
+):
+    instruments, universe_path, calendar_path = configure_audit_opinion_full_test(
+        tmp_path, monkeypatch
+    )
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append(ts_code)
+        return full_audit_opinion_rows(ts_code, nonclean=ts_code == "000001.SZ")
+
+    monkeypatch.setattr(RICH, "fetch_tushare_audit_opinions", fake_fetch)
+    manifest_path = RICH.sync_tushare_audit_opinions(
+        allow_large=True,
+        universe_path=universe_path,
+        calendar_path=calendar_path,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert calls == [
+        RICH.tushare_ts_code_from_qlib_instrument(instrument)
+        for instrument in instruments
+    ]
+    assert manifest["acceptance_status"] == (
+        "full_source_completeness_passed_pending_no_return_capacity_and_uniqueness"
+    )
+    assert manifest["source_request"]["completed_provider_calls"] == 3
+    assert manifest["source_request"]["source_rows"] == 21
+    assert len(manifest["files"]) == 7
+    assert manifest["source_completeness"]["observed_source_years"] == 7
+    assert manifest["source_completeness"]["median_annual_report_coverage"] == 1.0
+    assert manifest["source_completeness"]["p05_annual_report_coverage"] == 1.0
+    assert (
+        manifest["source_completeness"][
+            "gate_passed_before_event_expansion_capacity_uniqueness_or_prices"
+        ]
+        is True
+    )
+    assert manifest["normalization_quality"]["factor_value_counts"] == {
+        "0": 1,
+        "1": 20,
+    }
+    assert (
+        manifest["source_request"]["raw_or_normalized_audit_result_text_persisted"]
+        is False
+    )
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    for file_record in manifest["files"]:
+        frame = pd.read_parquet(RICH.resolve_record_path(file_record["path"]))
+        assert frame.columns.tolist() == list(RICH.TUSHARE_AUDIT_OPINION_COLUMNS)
+        assert not any("audit_result" in column for column in frame.columns)
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already exists"):
+        RICH.sync_tushare_audit_opinions(
+            allow_large=True,
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    assert len(calls) == 3
+
+
+def test_tushare_audit_opinion_full_sync_publishes_failed_coverage_without_prices(
+    tmp_path, monkeypatch
+):
+    instruments, universe_path, calendar_path = configure_audit_opinion_full_test(
+        tmp_path, monkeypatch
+    )
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        if ts_code == RICH.tushare_ts_code_from_qlib_instrument(instruments[-1]):
+            return pd.DataFrame(columns=RICH.TUSHARE_AUDIT_OPINION_RAW_FIELDS)
+        return full_audit_opinion_rows(ts_code, nonclean=ts_code == "000001.SZ")
+
+    monkeypatch.setattr(RICH, "fetch_tushare_audit_opinions", fake_fetch)
+    manifest_path = RICH.sync_tushare_audit_opinions(
+        allow_large=True,
+        universe_path=universe_path,
+        calendar_path=calendar_path,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["acceptance_status"] == (
+        "full_source_completeness_failed_stop_before_capacity_uniqueness_or_prices"
+    )
+    assert manifest["source_completeness"]["median_annual_report_coverage"] == (
+        pytest.approx(2 / 3)
+    )
+    assert (
+        manifest["source_completeness"][
+            "gate_passed_before_event_expansion_capacity_uniqueness_or_prices"
+        ]
+        is False
+    )
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+
+
+def test_tushare_audit_opinion_full_sync_deletes_partial_on_source_failure(
+    tmp_path, monkeypatch
+):
+    instruments, universe_path, calendar_path = configure_audit_opinion_full_test(
+        tmp_path, monkeypatch
+    )
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append(ts_code)
+        if len(calls) == 2:
+            raise RICH.RichDataError("synthetic provider failure")
+        return full_audit_opinion_rows(ts_code)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_audit_opinions", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="synthetic provider failure"):
+        RICH.sync_tushare_audit_opinions(
+            allow_large=True,
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    assert len(calls) == 2
+    records = list((tmp_path / "runs").glob("*.json"))
+    assert len(records) == 1
+    failure = RICH.json.loads(records[0].read_text())
+    assert failure["dataset"] == "tushare_audit_opinion_events"
+    assert failure["failed_instrument"] == instruments[1]
+    assert failure["completed_provider_calls_before_failure"] == 1
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["final_snapshot_published"] is False
+    assert failure["raw_or_normalized_audit_result_text_persisted"] is False
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+    assert not list((tmp_path / "raw").rglob("*.parquet"))
 
 
 def test_tushare_cash_conversion_contract_is_fingerprint_frozen(tmp_path):
@@ -2849,9 +3445,7 @@ def test_tushare_cash_conversion_company_type_repair_is_one_full_retry(
     assert repair["partial_snapshot_resumed"] is False
     assert repair["candidate_company_type"] == 1
     assert repair["complete_integer_non_target_company_types_excluded"] is True
-    assert repair["bound_first_failure_path"] == RICH.manifest_path(
-        prior_failure_path
-    )
+    assert repair["bound_first_failure_path"] == RICH.manifest_path(prior_failure_path)
     assert manifest["source_request"]["completed_provider_calls"] == 4
     assert manifest["normalization_quality"][
         "non_target_company_type_counts_by_endpoint"

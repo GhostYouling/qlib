@@ -7453,6 +7453,11 @@ def test_jqdata_moneyflow_full_snapshot_recomputes_bound_source_coverage(tmp_pat
     assert evidence["coverage"]["gate_passed_before_prices"] is True
     assert evidence["price_fields_loaded"] == []
     assert evidence["forward_return_fields_read"] is False
+    terminal = RESEARCH.load_tushare_audit_opinion_research_record()
+    assert terminal["status"] == "terminal_rejected_at_no_return_capacity_gate"
+    assert terminal["no_return_capacity_result"]["potential_complete_cohorts"] == 9
+    assert terminal["downstream_gates"]["uniqueness_audit_run"] is False
+    assert terminal["forward_return_fields_read"] is False
 
     manifest["coverage"]["median_positive_activity_factor_coverage"] = 0.99
     write_json_record(manifest_path, manifest)
@@ -8274,6 +8279,246 @@ def test_tushare_cash_conversion_capacity_failure_stops_before_comparison_load(
     assert audit["run_sequence"][-1]["future_open_close_or_return_fields_read"] is False
     with pytest.raises(ValueError, match="already consumed"):
         RESEARCH.run_tushare_cash_conversion_no_return_audit(args)
+
+
+def test_tushare_audit_opinion_no_return_preregistration_and_snapshot_are_frozen():
+    assert (
+        RESEARCH.file_sha256(RESEARCH.DEFAULT_TUSHARE_AUDIT_OPINION_NO_RETURN_SPEC)
+        == RESEARCH.TUSHARE_AUDIT_OPINION_NO_RETURN_SPEC_SHA256
+    )
+    spec = RESEARCH.load_tushare_audit_opinion_no_return_preregistration()
+    assert spec["source_protocol"]["factor"] == (
+        RESEARCH.TUSHARE_AUDIT_OPINION_FACTOR_NAME
+    )
+    assert spec["capacity_contract"]["minimum_required_cohorts"] == 200
+    assert spec["uniqueness_contract"]["comparison_factor_count"] == 54
+    frame, evidence = RESEARCH.validate_tushare_audit_opinion_full_snapshot(
+        RESEARCH.DEFAULT_TUSHARE_AUDIT_OPINION_FULL_MANIFEST,
+        spec,
+    )
+    assert len(frame) == 34228
+    assert frame[
+        RESEARCH.TUSHARE_AUDIT_OPINION_RAW_COLUMN
+    ].value_counts().to_dict() == {
+        1: 32357,
+        0: 1871,
+    }
+    assert evidence["manifest"]["sha256"] == (
+        RESEARCH.TUSHARE_AUDIT_OPINION_FULL_MANIFEST_SHA256
+    )
+    assert evidence["price_fields_loaded"] == []
+    assert evidence["forward_return_fields_read"] is False
+
+
+def test_tushare_audit_opinion_expansion_is_strict_next_session_and_announcement_aged():
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(["2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30"])
+    )
+    frame = pd.DataFrame(
+        [
+            {
+                "announcement_date": pd.Timestamp("2025-04-25"),
+                "instrument": "SZ000001",
+                RESEARCH.TUSHARE_AUDIT_OPINION_RAW_COLUMN: 0,
+                "audit_report_count": 1,
+                "provider": "tushare",
+            }
+        ],
+        columns=RESEARCH.TUSHARE_AUDIT_OPINION_COLUMNS,
+    )
+    canonical, canonical_audit = RESEARCH.canonicalize_tushare_audit_opinion_events(
+        frame, calendar
+    )
+    assert canonical["event_effective_date"].tolist() == [pd.Timestamp("2025-04-28")]
+    expanded, expansion_audit = (
+        RESEARCH.expand_tushare_audit_opinion_events_to_sessions(
+            canonical,
+            calendar,
+            maximum_event_age_days=3,
+        )
+    )
+    assert expanded["datetime"].tolist() == [pd.Timestamp("2025-04-28")]
+    assert expanded["event_age_days"].tolist() == [3]
+    assert canonical_audit["same_session_trade_allowed"] is False
+    assert expansion_audit["price_fields_loaded"] == []
+    assert expansion_audit["forward_return_fields_read"] is False
+
+
+def test_tushare_audit_opinion_terminal_record_stops_no_return_runner(tmp_path):
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "never_read.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(tmp_path / "provider"),
+    )
+    with pytest.raises(ValueError, match="terminal after the no-return capacity"):
+        RESEARCH.run_tushare_audit_opinion_no_return_audit(args)
+
+
+def test_tushare_audit_opinion_capacity_counts_only_binary_cross_sections():
+    full_calendar = pd.bdate_range("2023-10-02", periods=80)
+    research_calendar = full_calendar[-10:]
+    rebalances = research_calendar[:-3:3]
+    symbols = [f"SZ{index:06d}" for index in range(1, 7)]
+    intervals = {
+        symbol: [(full_calendar[0], research_calendar[-1])] for symbol in symbols
+    }
+    rows = []
+    for rebalance in rebalances:
+        announcement = full_calendar[int(full_calendar.get_loc(rebalance)) - 1]
+        for position, symbol in enumerate(symbols):
+            rows.append(
+                {
+                    "announcement_date": announcement,
+                    "instrument": symbol,
+                    RESEARCH.TUSHARE_AUDIT_OPINION_RAW_COLUMN: int(position > 0),
+                    "audit_report_count": 1,
+                    "provider": "tushare",
+                }
+            )
+    factor_frame = pd.DataFrame(rows, columns=RESEARCH.TUSHARE_AUDIT_OPINION_COLUMNS)
+    fundamentals = pd.DataFrame(
+        [
+            {
+                "instrument": symbol,
+                "report_date": pd.Timestamp("2023-09-30"),
+                "announcement_date": full_calendar[1],
+                "roe": 10.0,
+                "net_profit": 1.0,
+                "revenue_yoy": 10.0,
+                "profit_yoy": 10.0,
+            }
+            for symbol in symbols
+        ]
+    )
+    capacity = RESEARCH.tushare_audit_opinion_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        capacity_contract={
+            "holding_period_trading_days": 3,
+            "minimum_eligible_names_per_cross_section": 6,
+            "minimum_distinct_factor_values": 2,
+            "minimum_required_cohorts": 3,
+            "minimum_observed_years": 1,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": 20,
+        },
+        event_contract={"maximum_event_age_calendar_days": 3},
+    )
+    assert capacity["potential_complete_cohorts"] == 3
+    assert capacity["dates_with_both_binary_values"] == 3
+    assert capacity["capacity_gate_passed"] is True
+    assert capacity["price_fields_loaded"] == []
+    assert capacity["forward_return_fields_read"] is False
+
+
+def test_tushare_audit_opinion_capacity_failure_stops_before_comparison_load(
+    tmp_path, monkeypatch
+):
+    provider = tmp_path / "provider"
+    calendar_path = provider / "calendars" / "day.txt"
+    universe_path = provider / "instruments" / "buyable_main_chinext.txt"
+    price_basis_path = provider / RESEARCH.PRICE_BASIS_MANIFEST_NAME
+    calendar_path.parent.mkdir(parents=True)
+    universe_path.parent.mkdir(parents=True)
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    universe_path.write_text("SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8")
+    price_basis_path.write_text("{}\n", encoding="utf-8")
+    spec = {
+        "preregistered_at": "2026-07-16T19:09:17Z",
+        "point_in_time_context": {
+            "local_calendar": {"file_sha256": RESEARCH.file_sha256(calendar_path)},
+            "holding_universe": {"file_sha256": RESEARCH.file_sha256(universe_path)},
+            "accepted_price_basis": {"sha256": RESEARCH.file_sha256(price_basis_path)},
+            "quarterly_quality": {"path": str(tmp_path / "quality.parquet")},
+        },
+        "source_completeness_contract": {},
+        "event_canonicalization": {},
+        "capacity_contract": {
+            "development_start": "2019-01-01",
+            "development_end": "2025-12-31",
+            "holding_universe": "buyable_main_chinext",
+        },
+        "uniqueness_contract": {},
+        "comparison_sources": {},
+        "run_order": ["one"],
+    }
+    source_evidence = {
+        "manifest": {
+            "run_id": "full-audit-opinion-history",
+            "sha256": "a" * 64,
+            "path": str(tmp_path / "full.json"),
+        }
+    }
+    full_calendar = pd.DatetimeIndex(
+        [pd.Timestamp("2019-01-02"), pd.Timestamp("2025-12-31")]
+    )
+    capacity = {
+        "factor": RESEARCH.TUSHARE_AUDIT_OPINION_FACTOR_NAME,
+        "potential_complete_cohorts": 199,
+        "minimum_required_cohorts": 200,
+        "observed_calendar_years": 7,
+        "minimum_observed_calendar_years": 5,
+        "capacity_gate_passed": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_audit_opinion_no_return_preregistration",
+        lambda: spec,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "DEFAULT_TUSHARE_AUDIT_OPINION_RESEARCH_RECORD",
+        tmp_path / "no_terminal_audit_opinion_record.json",
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_audit_opinion_full_snapshot",
+        lambda manifest, loaded_spec: (pd.DataFrame(), source_evidence),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_market_capacity_context",
+        lambda *args, **kwargs: (
+            full_calendar,
+            full_calendar,
+            {"SZ000001": [(full_calendar[0], full_calendar[-1])]},
+        ),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH,
+        "tushare_audit_opinion_capacity",
+        lambda *args, **kwargs: capacity,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_cash_conversion_comparison_frame",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("comparison fields must not load after capacity failure")
+        ),
+    )
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "full.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(provider),
+    )
+    result = RESEARCH.run_tushare_audit_opinion_no_return_audit(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["capacity_gate_passed"] is False
+    assert audit["uniqueness"] is None
+    assert audit["data"]["close_known_comparison_fields_loaded"] == []
+    assert audit["forward_return_fields_read"] is False
+    assert audit["selection_or_promotion_allowed"] is False
+    assert audit["run_sequence"][3]["skipped_reason"] == (
+        "capacity_failed_before_comparison_field_load"
+    )
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_audit_opinion_no_return_audit(args)
 
 
 def test_tushare_moneyflow_capacity_counts_quality_seasoned_cross_sections():

@@ -1,0 +1,326 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_audit_opinion_no_return_preregistration",
+  "status": "frozen_after_full_source_completeness_before_event_expansion_capacity_uniqueness_or_returns",
+  "preregistered_at": "2026-07-16T19:09:17Z",
+  "purpose": "Run one no-outcome capacity gate for the frozen binary audit-opinion event and, only after capacity passes, compare it with the complete frozen existing-factor catalog before any return diagnostic.",
+  "source_protocol": {
+    "data_contract": {
+      "path": "docs/a_share_tushare_audit_opinion_data_contract.json",
+      "sha256": "701240585505558cf34a3e9bc51ba17fb2c50ed1617fc13b332973b331c76d97"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_audit_opinion_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a13470c5dafa4c278035e7b17e56f896ae03932b4131b6d90830a2168282acdb"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_audit_opinion_source_acceptance_record.json",
+      "sha256": "f5909c8114eb8505de1f86eab75ccf246938d9c537d7bbaf0f308d09e3dfce92"
+    },
+    "source_acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a.json",
+      "sha256": "f23e7cc7571dc08f72d8ca1cbf465e2556934f22043a34aff50a87af8aab9b51"
+    },
+    "source_acceptance_factor_frame": {
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/acceptance/20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a/audit_opinion.parquet",
+      "content_sha256": "a0b6c96d447f05e5f4c08cfc67098ea8665b2bc5b88d1e05a2b060df8722f7b5"
+    },
+    "full_snapshot_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T183642Z_tushare_audit_opinion_full_7a9aa307.json",
+      "sha256": "251589504b721ac303b9b7f9c09b8771b58929c25bc2a5ed6eaf64b5209a977d"
+    },
+    "required_full_snapshot_dataset": "tushare_audit_opinion_events",
+    "required_full_snapshot_status": "full_source_completeness_passed_pending_no_return_capacity_and_uniqueness",
+    "required_announcement_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "canonical_columns": [
+      "announcement_date",
+      "instrument",
+      "tushare_is_standard_unqualified_audit_opinion",
+      "audit_report_count",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date"
+    ],
+    "factor": "tushare_standard_unqualified_audit_opinion",
+    "raw_column": "tushare_is_standard_unqualified_audit_opinion",
+    "formula": "1 if NFKC_trim(audit_result) == '标准无保留意见' else 0 for any other complete nonempty opinion",
+    "direction": "higher_is_better",
+    "full_history_price_fields_allowed": [],
+    "full_history_forward_return_fields_allowed": []
+  },
+  "full_snapshot_partitions": [
+    {
+      "announcement_year": 2019,
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/snapshots/20260716T183642Z_tushare_audit_opinion_full_7a9aa307/2019.parquet",
+      "rows": 4057,
+      "sha256": "3d6f16aa9bddf5279691bf41d7b5b0bd96f98ec55b19aae7ff3c50f9930cc58b"
+    },
+    {
+      "announcement_year": 2020,
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/snapshots/20260716T183642Z_tushare_audit_opinion_full_7a9aa307/2020.parquet",
+      "rows": 4379,
+      "sha256": "e07eb66a46f259fbc1d6f3cc4d72e389bceef7be6c8c00b617fe693b7d800132"
+    },
+    {
+      "announcement_year": 2021,
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/snapshots/20260716T183642Z_tushare_audit_opinion_full_7a9aa307/2021.parquet",
+      "rows": 4807,
+      "sha256": "5b1178150da2d9425d7ca0530a81ad1e83a981ba002ba357a630b118307b92f6"
+    },
+    {
+      "announcement_year": 2022,
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/snapshots/20260716T183642Z_tushare_audit_opinion_full_7a9aa307/2022.parquet",
+      "rows": 5064,
+      "sha256": "99546caff3343bc81a4c0f9efd65ccac1276ec8ea84f8b0eb3381c183fde3fbd"
+    },
+    {
+      "announcement_year": 2023,
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/snapshots/20260716T183642Z_tushare_audit_opinion_full_7a9aa307/2023.parquet",
+      "rows": 5270,
+      "sha256": "204fa3802125614c33fb7ec0da37623be8411ddd68c9c3737cf39b2dd721c780"
+    },
+    {
+      "announcement_year": 2024,
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/snapshots/20260716T183642Z_tushare_audit_opinion_full_7a9aa307/2024.parquet",
+      "rows": 5285,
+      "sha256": "621779176d8f8e6b64fa5f1607edf38038fb29fb71ee6f165abc4e9b7740acba"
+    },
+    {
+      "announcement_year": 2025,
+      "path": "data/raw/a_share/rich/tushare/audit_opinion/snapshots/20260716T183642Z_tushare_audit_opinion_full_7a9aa307/2025.parquet",
+      "rows": 5366,
+      "sha256": "3c522507f1d8f406d8da5fa8e7a985ad91f2f64f1661ddd46796ada0736bdf2e"
+    }
+  ],
+  "source_completeness_contract": {
+    "fixed_annual_report_periods": [
+      "2018-12-31",
+      "2019-12-31",
+      "2020-12-31",
+      "2021-12-31",
+      "2022-12-31",
+      "2023-12-31",
+      "2024-12-31"
+    ],
+    "minimum_median_annual_report_coverage": 0.8,
+    "minimum_p05_annual_report_coverage": 0.7,
+    "minimum_observed_source_years": 5,
+    "duplicate_stock_announcement_report_period_keys_allowed": false,
+    "observed_full_snapshot_median_coverage": 0.9992149165848871,
+    "observed_full_snapshot_p05_coverage": 0.9977994706785094,
+    "observed_full_snapshot_source_years": 7
+  },
+  "point_in_time_context": {
+    "fingerprint_range_start": "2019-01-01",
+    "fingerprint_range_end": "2025-12-31",
+    "source_universe": {
+      "name": "factor_main_chinext_star",
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "file_sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "name": "buyable_main_chinext",
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "file_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+      "range_clipped_sha256": "2b3a2fba2ebb6938853fe9c6e1f6649517bef844e0ee6347a032e2b74945394c",
+      "range_clipped_intervals": 4794
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "file_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "range_clipped_sha256": "c408af553ff2aa780f302eda8bc860d06d875a1a34c6bf37cd1341c6f890623c",
+      "range_clipped_sessions": 1699
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false,
+      "status": "passed"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    }
+  },
+  "event_canonicalization": {
+    "availability": "first local trading session strictly after announcement_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "expiry": "session date must be no later than announcement_date plus three calendar days",
+    "overlapping_events": "use only the most recently effective observed event on a session",
+    "factor_clipping_winsorization_log_absolute_value_inversion_offset_or_imputation": null
+  },
+  "capacity_contract": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement"
+  },
+  "comparison_sources": {
+    "terminal_tushare_moneyflow": {
+      "research_record_path": "docs/a_share_tushare_moneyflow_research_record.json",
+      "research_record_sha256": "3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a",
+      "full_manifest_path": "data/metadata/rich_data/runs/20260716T085610Z_tushare_moneyflow_daily_6c78e93d.json",
+      "full_manifest_sha256": "eee76f4b3b3d3001f9c73e84fda6336a9732d648424828d7a000e045480e2fcb"
+    },
+    "terminal_tushare_positive_book_to_market": {
+      "research_record_path": "docs/a_share_tushare_daily_pb_research_record.json",
+      "research_record_sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3",
+      "full_manifest_path": "data/metadata/rich_data/runs/20260716T102519Z_tushare_daily_pb_2e5c38bf.json",
+      "full_manifest_sha256": "280bc68239cc70a5e7d6e44dbb0a15a0b331be8215ddfb8d9ebd27a408e1e366"
+    },
+    "terminal_tushare_sw_breadth": {
+      "research_record_path": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+      "research_record_sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3",
+      "capacity_preregistration_path": "docs/a_share_tushare_sw_industry_breadth_capacity_preregistration.json",
+      "capacity_preregistration_sha256": "dc5e0525df07e21d628ab09d46843511ddbeacb09ecbc3afb41d14b43bcfae59",
+      "full_manifest_path": "data/metadata/rich_data/runs/20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe.json",
+      "full_manifest_sha256": "8582eb25f91ddcbe01130057ecb118431168545fa0a182cdb428c3a8d2a0228e"
+    },
+    "daily_billboard": {
+      "path": "data/raw/a_share/events/daily_billboard.parquet",
+      "sha256": "0fee2fff3de2a8422203b9cf0dfbbe2a190129f0f746d9982542d53937b0cbe7",
+      "manifest_path": "data/metadata/daily_billboard_manifest.json",
+      "manifest_sha256": "aacefb639390fce6f5303812ec6f016aa34023edd84c6062a6cf83fe09ba2ce4",
+      "maximum_age_days": 3
+    },
+    "holder_count_changes": {
+      "path": "data/raw/a_share/events/holder_count_changes.parquet",
+      "sha256": "e14a0beb393bc713f6b6e5820da395430308eb117460541b3769116c8a265414",
+      "manifest_path": "data/metadata/holder_count_changes_manifest.json",
+      "manifest_sha256": "1d38b782968786f274ab57429f19bc967054a0e9f0a97459f21e9ac07ee2a988",
+      "maximum_age_days": 3
+    }
+  },
+  "uniqueness_contract": {
+    "screen_start": "2025-01-01",
+    "screen_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_pairwise_names_per_session": 6,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "method": "For each comparison field and eligible factor-active session, compute the Spearman correlation of pairwise-complete daily percentile ranks, then gate the absolute median daily correlation.",
+    "comparison_factors": [
+      "momentum_1",
+      "momentum_2",
+      "momentum_3",
+      "momentum_5",
+      "up_day_ratio_5",
+      "momentum_10",
+      "momentum_20",
+      "momentum_60",
+      "trend_ma_5",
+      "trend_ma_20",
+      "trend_ma_60",
+      "volume_surge_1",
+      "volume_surge",
+      "volume_surge_3",
+      "turnover_surge",
+      "turnover_surge_3",
+      "turnover_surge_1",
+      "liquidity_5",
+      "free_float_cap_proxy",
+      "volatility_5",
+      "volatility_10",
+      "volatility_20",
+      "amplitude_1",
+      "amplitude_5",
+      "gap_1",
+      "near_high_10",
+      "near_high_20",
+      "intraday_strength",
+      "intraday_return_sum_5",
+      "directional_serial_dependence_20",
+      "close_to_high",
+      "close_above_vwap_1",
+      "signed_efficiency_ratio_10",
+      "return_turnover_correlation_10",
+      "max_return_20",
+      "signed_volume_pressure_5",
+      "roe",
+      "revenue_yoy",
+      "profit_yoy",
+      "quality_age_days",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration",
+      "tushare_large_order_net_inflow_share",
+      "tushare_positive_book_to_market",
+      "sw1_three_session_leave_one_out_breadth",
+      "billboard_net_flow_to_float",
+      "billboard_net_flow_to_deal",
+      "billboard_deal_to_float",
+      "billboard_reason_count",
+      "billboard_freshness",
+      "holder_count_change_ratio",
+      "holder_count_change_absolute",
+      "holder_count_freshness"
+    ],
+    "comparison_factor_count": 54,
+    "explicit_quarterly_quality_semantic_checks": {
+      "quality_roe": "daily-rank alias of roe",
+      "quality_profit": "daily-rank alias of profit_yoy",
+      "quality_revenue": "daily-rank alias of revenue_yoy",
+      "quality_growth": "mean of daily revenue_yoy and profit_yoy percentile ranks",
+      "quality_score": "mean of daily roe, revenue_yoy, and profit_yoy percentile ranks",
+      "roe_change": "direct comparison factor",
+      "revenue_yoy_acceleration": "direct comparison factor",
+      "profit_yoy_acceleration": "direct comparison factor"
+    },
+    "additional_composite_semantic_checks_not_counted_twice": [
+      "quality_growth",
+      "quality_score"
+    ],
+    "historical_43_and_later_11_comparisons_plus_both_additional_composites_must_pass": true,
+    "close_known_current_or_prior_price_volume_inputs_may_be_loaded_only_after_capacity_passes": true,
+    "next_session_open_future_close_forward_return_score_or_selection_fields_allowed": false
+  },
+  "terminal_policy": {
+    "one_completed_no_return_audit_per_full_snapshot": true,
+    "capacity_failure": "stop before loading any comparison field, price input, or return",
+    "uniqueness_failure": "stop before returns without inversion, synonym mapping, event-age change, field substitution, period selection, or threshold relaxation",
+    "all_gates_pass": "authorize only a separate immutable single-factor return-diagnostic preregistration bound to the terminal no-return audit fingerprint"
+  },
+  "run_order": [
+    "revalidate the frozen contract, overlap audit, acceptance chain, full manifest, all seven partitions, source coverage, formula, provider, and point-in-time fingerprints",
+    "map every event to the first local session strictly after announcement and expire it after three calendar days without loading prices",
+    "count the fixed quality/listing/non-overlapping three-session Top3 capacity and stop if fewer than 200 cohorts or five years",
+    "only if capacity passes, materialize the exact close-known 2025 catalog of the historical 43 fields plus 11 later same-day independent fields",
+    "run all 54 pairwise uniqueness comparisons plus two non-duplicated quarterly semantic composites",
+    "write one terminal no-return audit record"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

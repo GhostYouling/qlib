@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_gross_margin_source_acceptance_record",
+  "status": "accepted_source_pending_frozen_full_history_and_no_return_gates",
+  "recorded_at": "2026-07-16T19:43:52Z",
+  "purpose": "Preserve the sole Tushare fina_indicator entitlement, schema, initial-only revision policy, and single-quarter gross-margin year-over-year formula acceptance without persisting source margin levels or reading prices or returns.",
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_gross_margin_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "df2e40d788c91e66de278437379180a7082d7940da8ce46a37ba2b8791164427",
+    "decision": "select_single_quarter_gross_margin_year_over_year_change_as_the_only_independent_no_return_candidate_before_provider_rows"
+  },
+  "data_contract": {
+    "path": "docs/a_share_tushare_gross_margin_data_contract.json",
+    "sha256": "7d0bd69e72aa40a7426ea98444952caae35ce593647123684d376dd12a82d215",
+    "preregistered_at": "2026-07-16T19:34:37Z",
+    "provider_rows_observed_before_registration": false,
+    "factor_values_observed_before_registration": false,
+    "factor_returns_observed_before_registration": false
+  },
+  "implementation_at_acceptance": {
+    "script_path": "scripts/a_share_rich_data.py",
+    "script_sha256": "a21ab21a0e21d9204dcd32fe91704fb04b4e1f70f4589d69ac21ce023bda809c",
+    "test_path": "tests/data_collector_tests/test_a_share_rich_data.py",
+    "test_sha256": "51c85e84597cabd7237c2ce1ce18a67dfef251b3b291fe78cb70476207e90e7c",
+    "focused_gross_margin_tests_passed": 4,
+    "complete_data_collector_tests_passed": 392,
+    "complete_data_collector_warnings": 9,
+    "python_compile_passed": true,
+    "cli_registration_passed": true,
+    "diff_check_passed": true,
+    "token_presence_confirmed_without_printing_or_storing_value": true,
+    "provider_rows_observed_before_contract_and_tests": false
+  },
+  "post_acceptance_record_validation": {
+    "focused_gross_margin_tests_passed": 6,
+    "complete_data_collector_tests_passed": 394,
+    "complete_data_collector_warnings": 9,
+    "python_compile_passed": true,
+    "diff_check_passed": true,
+    "tracked_record_blocks_repeat_acceptance_before_contract_credential_or_provider_access": true
+  },
+  "acceptance": {
+    "run_id": "20260716T194308Z_tushare_gross_margin_acceptance_270c845f",
+    "manifest_path": "data/metadata/rich_data/runs/20260716T194308Z_tushare_gross_margin_acceptance_270c845f.json",
+    "manifest_sha256": "21aafe677009f09ef78ba1fb6b1a5eed52c6c147dac29b2861cdbd05c8324c02",
+    "retrieved_at": "2026-07-16T19:43:08.087693+00:00",
+    "acceptance_status": "accepted_entitlement_schema_initial_version_policy_and_formula_pending_full_history",
+    "fixed_report_period_start": "20180101",
+    "fixed_report_period_end": "20251231",
+    "fixed_ts_codes": [
+      "600519.SH",
+      "000333.SZ",
+      "300750.SZ"
+    ],
+    "provider_calls_issued": 3,
+    "provider_calls_expected": 3,
+    "provider_documented_row_ceiling_per_call": 100,
+    "source_rows": 163,
+    "source_rows_by_stock": {
+      "600519.SH": 56,
+      "000333.SZ": 53,
+      "300750.SZ": 54
+    },
+    "published_factor_frame": {
+      "path": "data/raw/a_share/rich/tushare/gross_margin/acceptance/20260716T194308Z_tushare_gross_margin_acceptance_270c845f/gross_margin_yoy_change.parquet",
+      "content_sha256": "0147228cc123dd4ac4a538f9aa6708c10a449d8cd3d13d3b86d8c437030d5720",
+      "rows": 51,
+      "columns": [
+        "announcement_date",
+        "report_period",
+        "instrument",
+        "tushare_q_gross_margin_yoy_change_pp",
+        "provider"
+      ],
+      "unique_instruments": 3,
+      "factor_min": -12.794999999999998,
+      "factor_max": 8.4164,
+      "factor_distinct_values": 51
+    },
+    "usable_initial_quarters_by_stock": {
+      "600519.SH": 24,
+      "000333.SZ": 21,
+      "300750.SZ": 22
+    },
+    "derived_yoy_events_by_stock": {
+      "600519.SH": 18,
+      "000333.SZ": 15,
+      "300750.SZ": 18
+    },
+    "quality": {
+      "initial_rows_retained": 67,
+      "revised_rows_observed_but_not_used": 96,
+      "ambiguous_initial_periods_excluded": 0,
+      "missing_margin_rows_excluded": 0,
+      "prior_announcement_not_earlier_excluded": 0,
+      "duplicate_factor_event_keys": 0,
+      "raw_provider_frames_persisted": false,
+      "source_margin_levels_persisted": false,
+      "revised_values_persisted_or_used": false
+    },
+    "formula": "current_initial_q_gsprofit_margin - same_fiscal_quarter_previous_year_initial_q_gsprofit_margin",
+    "units": "percentage_points",
+    "direction": "higher_is_better",
+    "eligible_entry": "first local trading session open strictly after the current initial ann_date",
+    "maximum_event_age_calendar_days": 3
+  },
+  "privacy_and_scope": {
+    "raw_provider_frames_persisted": false,
+    "initial_or_revised_source_margin_levels_persisted": false,
+    "credentials_logged_or_stored": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_performed": false
+  },
+  "interpretation": {
+    "proven": [
+      "The current 3000-point account can call the frozen standard fina_indicator endpoint for all three acceptance stocks and the fixed 2018-2025 report-period range.",
+      "All three responses contained exactly the five requested fields, returned 53 to 56 rows, and stayed below the documented 100-row ceiling.",
+      "The initial-only policy retained 67 initial quarters and ignored all 96 revised rows without substituting them for missing initial data.",
+      "The same-fiscal-quarter year-over-year formula produced 51 finite, distinct events without persisting either source margin level, prices, or returns."
+    ],
+    "not_proven": [
+      "2018-2025 full-universe initial-row and derived-factor source completeness",
+      "point-in-time holding-universe coverage",
+      "three-session cross-sectional cohort capacity",
+      "independence from ROE, growth, and their quarterly accelerations",
+      "historical association, execution-aware returns, aggregation, current scores, stock selection, position sizing, or orders"
+    ]
+  },
+  "one_shot_and_next_action": {
+    "acceptance_consumed": true,
+    "acceptance_may_be_repeated_with_same_or_different_symbols_dates_fields_or_revision_policy": false,
+    "next_authorized_action": "Implement and validate only the contract-fixed two-slice-per-stock 2018-2025 full source snapshot. If and only if source completeness passes, freeze and run the separate no-return capacity and uniqueness protocol before any price or forward-return access.",
+    "full_history_or_no_return_gate_failure_policy": "Stop this factor without revised-row substitution, field replacement, formula or direction change, event-age widening, threshold reduction, fiscal-quarter or stock subset, residualization, rejected-factor combination, current scoring, selection, sizing, orders, or Level-2 intake.",
+    "price_access_authorized_now": false,
+    "aggregation_scoring_selection_or_trading_authorized_now": false
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_audit_opinion_research_record",
+  "status": "terminal_rejected_at_no_return_capacity_gate",
+  "recorded_at": "2026-07-16T19:20:50Z",
+  "factor": {
+    "name": "tushare_standard_unqualified_audit_opinion",
+    "raw_column": "tushare_is_standard_unqualified_audit_opinion",
+    "direction": "higher_is_better",
+    "event_availability": "first local trading session strictly after announcement_date",
+    "maximum_event_age_calendar_days_from_announcement": 3
+  },
+  "evidence_chain": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_audit_opinion_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a13470c5dafa4c278035e7b17e56f896ae03932b4131b6d90830a2168282acdb"
+    },
+    "data_contract": {
+      "path": "docs/a_share_tushare_audit_opinion_data_contract.json",
+      "sha256": "701240585505558cf34a3e9bc51ba17fb2c50ed1617fc13b332973b331c76d97"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_audit_opinion_source_acceptance_record.json",
+      "sha256": "f5909c8114eb8505de1f86eab75ccf246938d9c537d7bbaf0f308d09e3dfce92"
+    },
+    "source_acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a.json",
+      "sha256": "f23e7cc7571dc08f72d8ca1cbf465e2556934f22043a34aff50a87af8aab9b51"
+    },
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T183642Z_tushare_audit_opinion_full_7a9aa307.json",
+      "sha256": "251589504b721ac303b9b7f9c09b8771b58929c25bc2a5ed6eaf64b5209a977d"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_audit_opinion_no_return_preregistration.json",
+      "sha256": "5fb77e7060cbd1a03824d015cc33b75ffcf23b3afb5817e60b783e8bcaea3d69"
+    },
+    "terminal_no_return_audit": {
+      "path": "data/experiments/short_horizon/20260716T192050Z_tushare_audit_opinion_no_return_audit.json",
+      "sha256": "be37f987fd8fd7a29326c1108cf9f311e14aef9d413716f99738e20075917f5f"
+    }
+  },
+  "full_source_result": {
+    "provider_calls": 5451,
+    "source_report_rows": 38876,
+    "stock_announcement_events": 34228,
+    "clean_binary_events": 32357,
+    "nonclean_binary_events": 1871,
+    "announcement_year_partitions": 7,
+    "median_annual_report_coverage": 0.9992149165848871,
+    "p05_annual_report_coverage": 0.9977994706785094,
+    "observed_source_years": 7,
+    "source_completeness_gate_passed": true
+  },
+  "no_return_capacity_result": {
+    "non_overlapping_rebalance_capacity": 566,
+    "expanded_event_rows": 17662,
+    "active_holding_event_rows": 14920,
+    "quality_and_listing_eligible_event_rows": 3465,
+    "dates_with_any_valid_name": 119,
+    "dates_with_at_least_six_valid_names": 76,
+    "dates_with_both_binary_values": 9,
+    "potential_complete_cohorts": 9,
+    "minimum_required_cohorts": 200,
+    "potential_complete_cohorts_by_year": {
+      "2019": 1,
+      "2020": 1,
+      "2021": 3,
+      "2022": 1,
+      "2025": 3
+    },
+    "observed_calendar_years": 5,
+    "minimum_observed_calendar_years": 5,
+    "capacity_gate_passed": false
+  },
+  "downstream_gates": {
+    "historical_43_plus_later_11_comparison_fields_loaded": [],
+    "additional_quarterly_semantic_fields_loaded": [],
+    "uniqueness_audit_run": false,
+    "return_diagnostic_preregistration_allowed": false,
+    "return_diagnostic_run": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "decision": {
+    "classification": "useful_as_a_reporting_reliability_risk_flag_but_not_admitted_as_an_independent_three_session_cross_sectional_factor",
+    "same_source_or_same_mechanism_rerun_allowed": false,
+    "invert_binary_direction_allowed": false,
+    "map_additional_opinion_text_or_synonyms_allowed": false,
+    "extend_event_age_or_select_report_periods_allowed": false,
+    "lower_capacity_or_distinct_value_thresholds_allowed": false,
+    "combine_with_other_factors_allowed": false,
+    "next_action": "return to no-return mechanism discovery; require a genuinely independent candidate and freeze its contract before source rows or factor values"
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false,
+  "limitations": [
+    "The source universe is based on the current listing snapshot with point-in-time intervals and is not a historical delisting master.",
+    "The capacity rejection is not a return result; no association, Top3 return, or tradability claim was tested.",
+    "The binary clean opinion is overwhelmingly common, so only nine frozen non-overlapping cross-sections had both values after all eligibility gates.",
+    "The result does not forbid using audit opinion as a separately governed risk or data-quality flag outside this three-session factor protocol."
+  ]
+}

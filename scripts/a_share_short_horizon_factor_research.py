@@ -338,6 +338,34 @@ DEFAULT_TUSHARE_CASH_CONVERSION_RESEARCH_RECORD = (
 TUSHARE_CASH_CONVERSION_RESEARCH_RECORD_SHA256 = (
     "c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819"
 )
+DEFAULT_TUSHARE_AUDIT_OPINION_NO_RETURN_SPEC = (
+    REPO_ROOT / "docs" / "a_share_tushare_audit_opinion_no_return_preregistration.json"
+)
+TUSHARE_AUDIT_OPINION_NO_RETURN_SPEC_SHA256 = (
+    "5fb77e7060cbd1a03824d015cc33b75ffcf23b3afb5817e60b783e8bcaea3d69"
+)
+TUSHARE_AUDIT_OPINION_DATA_CONTRACT_SHA256 = (
+    "701240585505558cf34a3e9bc51ba17fb2c50ed1617fc13b332973b331c76d97"
+)
+TUSHARE_AUDIT_OPINION_SOURCE_ACCEPTANCE_RECORD_SHA256 = (
+    "f5909c8114eb8505de1f86eab75ccf246938d9c537d7bbaf0f308d09e3dfce92"
+)
+DEFAULT_TUSHARE_AUDIT_OPINION_FULL_MANIFEST = (
+    DATA_ROOT
+    / "metadata"
+    / "rich_data"
+    / "runs"
+    / "20260716T183642Z_tushare_audit_opinion_full_7a9aa307.json"
+)
+TUSHARE_AUDIT_OPINION_FULL_MANIFEST_SHA256 = (
+    "251589504b721ac303b9b7f9c09b8771b58929c25bc2a5ed6eaf64b5209a977d"
+)
+DEFAULT_TUSHARE_AUDIT_OPINION_RESEARCH_RECORD = (
+    REPO_ROOT / "docs" / "a_share_tushare_audit_opinion_research_record.json"
+)
+TUSHARE_AUDIT_OPINION_RESEARCH_RECORD_SHA256 = (
+    "48db650abbd108014eed55f0829f308d9ceb854e113b33d29aa489549fa91d65"
+)
 DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST = (
     DATA_ROOT
     / "metadata"
@@ -553,6 +581,15 @@ TUSHARE_CASH_CONVERSION_COLUMNS = (
 TUSHARE_CASH_CONVERSION_ADDITIONAL_SEMANTIC_FIELDS = (
     "quality_growth",
     "quality_score",
+)
+TUSHARE_AUDIT_OPINION_FACTOR_NAME = "tushare_standard_unqualified_audit_opinion"
+TUSHARE_AUDIT_OPINION_RAW_COLUMN = "tushare_is_standard_unqualified_audit_opinion"
+TUSHARE_AUDIT_OPINION_COLUMNS = (
+    "announcement_date",
+    "instrument",
+    TUSHARE_AUDIT_OPINION_RAW_COLUMN,
+    "audit_report_count",
+    "provider",
 )
 MINUTE_FEATURE_BASE_COLUMNS = (
     "symbol",
@@ -911,6 +948,9 @@ TUSHARE_SW_INDUSTRY_BREADTH_NO_RETURN_AUDIT_PURPOSE = (
 )
 TUSHARE_CASH_CONVERSION_NO_RETURN_AUDIT_PURPOSE = (
     "tushare_cash_conversion_source_capacity_then_54_field_uniqueness_gate_without_forward_returns"
+)
+TUSHARE_AUDIT_OPINION_NO_RETURN_AUDIT_PURPOSE = (
+    "tushare_audit_opinion_source_capacity_then_54_field_uniqueness_gate_without_forward_returns"
 )
 TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_tushare_sw_industry_breadth_research_not_investment_advice"
@@ -3642,6 +3682,246 @@ def load_tushare_sw_industry_breadth_diagnostic_preregistration(
             "Tushare SW diagnostic preregistration does not match the frozen protocol"
         )
     return spec
+
+
+def load_tushare_audit_opinion_no_return_preregistration(
+    path: Path = DEFAULT_TUSHARE_AUDIT_OPINION_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Enforce the frozen audit-opinion source, capacity, and uniqueness protocol."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_AUDIT_OPINION_NO_RETURN_SPEC_SHA256:
+        raise ValueError(
+            "Tushare audit-opinion no-return preregistration fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind="a_share_tushare_audit_opinion_no_return_preregistration",
+    )
+    source = spec.get("source_protocol") or {}
+    completeness = spec.get("source_completeness_contract") or {}
+    context = spec.get("point_in_time_context") or {}
+    event = spec.get("event_canonicalization") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    terminal = spec.get("terminal_policy") or {}
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_full_source_completeness_before_event_expansion_capacity_uniqueness_or_returns"
+        or spec.get("preregistered_at") != "2026-07-16T19:09:17Z"
+        or source.get("required_full_snapshot_dataset")
+        != "tushare_audit_opinion_events"
+        or source.get("required_full_snapshot_status")
+        != "full_source_completeness_passed_pending_no_return_capacity_and_uniqueness"
+        or tuple(source.get("required_announcement_years") or ())
+        != tuple(range(2019, 2026))
+        or tuple(source.get("canonical_columns") or ()) != TUSHARE_AUDIT_OPINION_COLUMNS
+        or tuple(source.get("event_key") or ()) != ("instrument", "announcement_date")
+        or source.get("factor") != TUSHARE_AUDIT_OPINION_FACTOR_NAME
+        or source.get("raw_column") != TUSHARE_AUDIT_OPINION_RAW_COLUMN
+        or source.get("direction") != "higher_is_better"
+        or source.get("full_history_price_fields_allowed") != []
+        or source.get("full_history_forward_return_fields_allowed") != []
+        or tuple(completeness.get("fixed_annual_report_periods") or ())
+        != tuple(f"{year}-12-31" for year in range(2018, 2025))
+        or completeness.get("minimum_median_annual_report_coverage") != 0.8
+        or completeness.get("minimum_p05_annual_report_coverage") != 0.7
+        or completeness.get("minimum_observed_source_years") != 5
+        or completeness.get("duplicate_stock_announcement_report_period_keys_allowed")
+        is not False
+        or event.get("same_announcement_session_trade_allowed") is not False
+        or event.get("maximum_event_age_calendar_days") != 3
+        or event.get(
+            "factor_clipping_winsorization_log_absolute_value_inversion_offset_or_imputation"
+        )
+        is not None
+        or capacity.get("development_start") != "2019-01-01"
+        or capacity.get("development_end") != "2025-12-31"
+        or capacity.get("holding_universe") != "buyable_main_chinext"
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("non_overlapping_cohorts") is not True
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != FACTOR_STABILITY_MIN_COHORTS
+        or capacity.get("minimum_observed_years") != FACTOR_STABILITY_MIN_CALENDAR_YEARS
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or uniqueness.get("screen_start") != "2025-01-01"
+        or uniqueness.get("screen_end") != "2025-12-31"
+        or uniqueness.get("minimum_pairwise_names_per_session") != 6
+        or uniqueness.get("minimum_pairwise_sessions_per_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or tuple(uniqueness.get("comparison_factors") or ())
+        != TUSHARE_CASH_CONVERSION_COMPARISON_FIELDS
+        or uniqueness.get("comparison_factor_count")
+        != len(TUSHARE_CASH_CONVERSION_COMPARISON_FIELDS)
+        or tuple(
+            uniqueness.get("additional_composite_semantic_checks_not_counted_twice")
+            or ()
+        )
+        != TUSHARE_CASH_CONVERSION_ADDITIONAL_SEMANTIC_FIELDS
+        or terminal.get("one_completed_no_return_audit_per_full_snapshot") is not True
+        or len(spec.get("run_order") or ()) != 6
+        or spec.get("price_fields_loaded") != []
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Tushare audit-opinion no-return preregistration is inconsistent"
+        )
+
+    fixed_links = (
+        (
+            source["data_contract"],
+            "sha256",
+            TUSHARE_AUDIT_OPINION_DATA_CONTRACT_SHA256,
+        ),
+        (source["mechanism_overlap_audit"], "sha256", None),
+        (
+            source["source_acceptance_record"],
+            "sha256",
+            TUSHARE_AUDIT_OPINION_SOURCE_ACCEPTANCE_RECORD_SHA256,
+        ),
+        (source["source_acceptance_manifest"], "sha256", None),
+        (
+            source["full_snapshot_manifest"],
+            "sha256",
+            TUSHARE_AUDIT_OPINION_FULL_MANIFEST_SHA256,
+        ),
+    )
+    for link, digest_key, fixed_digest in fixed_links:
+        linked_path = resolve_repository_record_path(str(link.get("path") or ""))
+        observed = file_sha256(linked_path) if linked_path.exists() else None
+        if observed != link.get(digest_key) or (
+            fixed_digest is not None and observed != fixed_digest
+        ):
+            raise ValueError("Tushare audit-opinion frozen source evidence changed")
+    acceptance_factor_link = source["source_acceptance_factor_frame"]
+    acceptance_factor_path = resolve_repository_record_path(
+        acceptance_factor_link["path"]
+    )
+    if not acceptance_factor_path.exists():
+        raise ValueError("Tushare audit-opinion acceptance factor frame is missing")
+
+    expected_partitions = list(spec.get("full_snapshot_partitions") or [])
+    if len(expected_partitions) != 7 or tuple(
+        item.get("announcement_year") for item in expected_partitions
+    ) != tuple(range(2019, 2026)):
+        raise ValueError("Tushare audit-opinion partition catalog changed")
+    for item in expected_partitions:
+        partition_path = resolve_repository_record_path(str(item.get("path") or ""))
+        if not partition_path.exists():
+            raise ValueError("Tushare audit-opinion frozen partition is missing")
+
+    range_start = str(context.get("fingerprint_range_start") or "")
+    range_end = str(context.get("fingerprint_range_end") or "")
+    for label, link, digest_key in (
+        ("source universe", context["source_universe"], "file_sha256"),
+        ("holding universe", context["holding_universe"], "file_sha256"),
+        ("local calendar", context["local_calendar"], "file_sha256"),
+        ("accepted price basis", context["accepted_price_basis"], "sha256"),
+        ("quarterly quality", context["quarterly_quality"], "sha256"),
+        ("accepted price frontier", context["accepted_price_frontier"], "sha256"),
+    ):
+        linked_path = resolve_repository_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_sha256(linked_path) != link.get(digest_key):
+            raise ValueError(f"Tushare audit-opinion {label} fingerprint mismatch")
+    quality_manifest = resolve_repository_record_path(
+        context["quarterly_quality"]["manifest_path"]
+    )
+    if (
+        file_sha256(quality_manifest) != context["quarterly_quality"]["manifest_sha256"]
+        or point_in_time_interval_fingerprint(
+            resolve_repository_record_path(context["holding_universe"]["path"]),
+            start=range_start,
+            end=range_end,
+        )
+        != {
+            "sha256": context["holding_universe"]["range_clipped_sha256"],
+            "intervals": context["holding_universe"]["range_clipped_intervals"],
+        }
+        or local_calendar_range_fingerprint(
+            resolve_repository_record_path(context["local_calendar"]["path"]),
+            start=range_start,
+            end=range_end,
+        )
+        != {
+            "sha256": context["local_calendar"]["range_clipped_sha256"],
+            "sessions": context["local_calendar"]["range_clipped_sessions"],
+        }
+    ):
+        raise ValueError("Tushare audit-opinion point-in-time context changed")
+    price_record = load_json_record(
+        resolve_repository_record_path(context["accepted_price_basis"]["path"])
+    )
+    if (
+        price_record.get("status") != "passed"
+        or price_record.get("price_basis") != REQUIRED_PRICE_BASIS
+        or price_record.get("future_corporate_actions_used") is not False
+    ):
+        raise ValueError("Tushare audit-opinion accepted price basis changed")
+    for source_link in (spec.get("comparison_sources") or {}).values():
+        for path_key, digest_key in (
+            ("research_record_path", "research_record_sha256"),
+            ("capacity_preregistration_path", "capacity_preregistration_sha256"),
+            ("full_manifest_path", "full_manifest_sha256"),
+            ("path", "sha256"),
+            ("manifest_path", "manifest_sha256"),
+        ):
+            if path_key not in source_link:
+                continue
+            linked_path = resolve_repository_record_path(source_link[path_key])
+            if not linked_path.exists() or file_sha256(linked_path) != source_link.get(
+                digest_key
+            ):
+                raise ValueError(
+                    "Tushare audit-opinion uniqueness comparison source changed"
+                )
+    return spec
+
+
+def load_tushare_audit_opinion_research_record(
+    path: Path = DEFAULT_TUSHARE_AUDIT_OPINION_RESEARCH_RECORD,
+) -> dict[str, Any]:
+    """Enforce the terminal audit-opinion capacity rejection."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_AUDIT_OPINION_RESEARCH_RECORD_SHA256:
+        raise ValueError("Tushare audit-opinion research-record fingerprint mismatch")
+    record = load_json_record(
+        path, kind="a_share_tushare_audit_opinion_research_record"
+    )
+    capacity = record.get("no_return_capacity_result") or {}
+    downstream = record.get("downstream_gates") or {}
+    decision = record.get("decision") or {}
+    evidence = record.get("evidence_chain") or {}
+    terminal = evidence.get("terminal_no_return_audit") or {}
+    if (
+        record.get("status") != "terminal_rejected_at_no_return_capacity_gate"
+        or capacity.get("potential_complete_cohorts") != 9
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("observed_calendar_years") != 5
+        or capacity.get("capacity_gate_passed") is not False
+        or downstream.get("historical_43_plus_later_11_comparison_fields_loaded") != []
+        or downstream.get("uniqueness_audit_run") is not False
+        or downstream.get("return_diagnostic_run") is not False
+        or downstream.get("aggregation_scoring_selection_sizing_or_orders_allowed")
+        is not False
+        or decision.get("same_source_or_same_mechanism_rerun_allowed") is not False
+        or terminal.get("sha256")
+        != "be37f987fd8fd7a29326c1108cf9f311e14aef9d413716f99738e20075917f5f"
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Tushare audit-opinion terminal research record changed")
+    terminal_path = resolve_repository_record_path(str(terminal.get("path") or ""))
+    if terminal_path.exists() and file_sha256(terminal_path) != terminal["sha256"]:
+        raise ValueError("Tushare audit-opinion terminal no-return audit changed")
+    return record
 
 
 def load_tushare_cash_conversion_no_return_preregistration(
@@ -16658,6 +16938,214 @@ def _validate_tushare_cash_conversion_partition(
     return work
 
 
+def validate_tushare_audit_opinion_full_snapshot(
+    manifest_path: Path,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Revalidate the complete binary audit-opinion source before capacity."""
+
+    manifest_path = manifest_path.expanduser().resolve()
+    source = spec["source_protocol"]
+    frozen_manifest = source["full_snapshot_manifest"]
+    if (
+        manifest_path != resolve_repository_record_path(frozen_manifest["path"])
+        or file_sha256(manifest_path) != frozen_manifest["sha256"]
+        or file_sha256(manifest_path) != TUSHARE_AUDIT_OPINION_FULL_MANIFEST_SHA256
+    ):
+        raise ValueError("Tushare audit-opinion full manifest fingerprint mismatch")
+    manifest = load_json_record(manifest_path, kind="a_share_rich_data_snapshot")
+    request = manifest.get("source_request") or {}
+    quality = manifest.get("normalization_quality") or {}
+    completeness = manifest.get("source_completeness") or {}
+    contract_link = manifest.get("data_contract") or {}
+    acceptance = manifest.get("source_acceptance") or {}
+    calendar_link = manifest.get("local_calendar") or {}
+    universe_link = manifest.get("point_in_time_source_universe") or {}
+    expected_completeness = spec["source_completeness_contract"]
+    if (
+        manifest.get("schema_version") != 1
+        or manifest.get("dataset") != source["required_full_snapshot_dataset"]
+        or manifest.get("provider") != "tushare"
+        or manifest.get("acceptance_status") != source["required_full_snapshot_status"]
+        or manifest.get("requested_start") != "2019-01-01"
+        or manifest.get("requested_end") != "2025-12-31"
+        or contract_link.get("sha256") != TUSHARE_AUDIT_OPINION_DATA_CONTRACT_SHA256
+        or request.get("api") != "fina_audit"
+        or tuple(request.get("fields") or ())
+        != ("ts_code", "ann_date", "end_date", "audit_result")
+        or int(request.get("planned_provider_calls") or 0) != 5451
+        or int(request.get("completed_provider_calls") or 0) != 5451
+        or int(request.get("maximum_attempts_per_stock") or 0) != 3
+        or float(request.get("minimum_seconds_between_calls") or 0.0) != 0.32
+        or request.get("forbidden_fields_requested_or_stored") != []
+        or request.get("raw_provider_frames_persisted") is not False
+        or request.get("raw_or_normalized_audit_result_text_persisted") is not False
+        or request.get("credentials_logged_or_stored") is not False
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("open_close_or_forward_return_fields_read") is not False
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or quality.get("raw_or_normalized_opinion_text_persisted") is not False
+        or int(quality.get("duplicate_stock_announcement_report_period_keys", -1)) != 0
+        or int(quality.get("stock_announcement_events_written") or 0) != 34228
+        or set((quality.get("factor_value_counts") or {}).keys()) != {"0", "1"}
+        or completeness.get(
+            "gate_passed_before_event_expansion_capacity_uniqueness_or_prices"
+        )
+        is not True
+        or tuple(completeness.get("fixed_annual_report_periods") or ())
+        != tuple(expected_completeness["fixed_annual_report_periods"])
+        or float(completeness.get("median_annual_report_coverage") or 0.0)
+        < float(expected_completeness["minimum_median_annual_report_coverage"])
+        or float(completeness.get("p05_annual_report_coverage") or 0.0)
+        < float(expected_completeness["minimum_p05_annual_report_coverage"])
+        or int(completeness.get("observed_source_years") or 0)
+        < int(expected_completeness["minimum_observed_source_years"])
+    ):
+        raise ValueError(
+            "Tushare audit-opinion full snapshot failed the frozen source gate"
+        )
+
+    for label, observed, frozen in (
+        ("data contract", contract_link, source["data_contract"]),
+        (
+            "source acceptance record",
+            {
+                "path": acceptance.get("record_path"),
+                "sha256": acceptance.get("record_sha256"),
+            },
+            source["source_acceptance_record"],
+        ),
+        (
+            "source acceptance manifest",
+            {
+                "path": acceptance.get("manifest_path"),
+                "sha256": acceptance.get("manifest_sha256"),
+            },
+            source["source_acceptance_manifest"],
+        ),
+    ):
+        linked_path = resolve_repository_record_path(str(observed.get("path") or ""))
+        if (
+            observed.get("path") != frozen["path"]
+            or observed.get("sha256") != frozen["sha256"]
+            or not linked_path.exists()
+            or file_sha256(linked_path) != frozen["sha256"]
+        ):
+            raise ValueError(f"Tushare audit-opinion {label} link changed")
+    acceptance_frame_link = source["source_acceptance_factor_frame"]
+    acceptance_frame_path = resolve_repository_record_path(
+        acceptance_frame_link["path"]
+    )
+    acceptance_frame = pd.read_parquet(acceptance_frame_path)
+    if (
+        acceptance.get("factor_frame_path") != acceptance_frame_link["path"]
+        or acceptance.get("factor_frame_content_sha256")
+        != acceptance_frame_link["content_sha256"]
+        or tuple(acceptance_frame.columns) != TUSHARE_AUDIT_OPINION_COLUMNS
+        or dataframe_content_sha256(acceptance_frame)
+        != acceptance_frame_link["content_sha256"]
+    ):
+        raise ValueError("Tushare audit-opinion acceptance factor frame changed")
+
+    context = spec["point_in_time_context"]
+    calendar_path = resolve_repository_record_path(context["local_calendar"]["path"])
+    source_universe_path = resolve_repository_record_path(
+        context["source_universe"]["path"]
+    )
+    if (
+        calendar_link.get("path") != context["local_calendar"]["path"]
+        or calendar_link.get("sha256") != context["local_calendar"]["file_sha256"]
+        or universe_link.get("path") != context["source_universe"]["path"]
+        or universe_link.get("sha256") != context["source_universe"]["file_sha256"]
+        or int(universe_link.get("intervals") or 0) != 5451
+        or file_sha256(calendar_path) != calendar_link.get("sha256")
+        or file_sha256(source_universe_path) != universe_link.get("sha256")
+    ):
+        raise ValueError("Tushare audit-opinion source context changed")
+    raw_calendar = pd.to_datetime(
+        calendar_path.read_text(encoding="utf-8").splitlines(), errors="coerce"
+    )
+    if pd.isna(raw_calendar).any():
+        raise ValueError("Tushare audit-opinion local calendar is invalid")
+    full_calendar = pd.DatetimeIndex(raw_calendar).normalize().unique().sort_values()
+
+    files = list(manifest.get("files") or [])
+    frozen_files = list(spec.get("full_snapshot_partitions") or [])
+    if files != frozen_files:
+        raise ValueError("Tushare audit-opinion full partition catalog changed")
+    frames: list[pd.DataFrame] = []
+    file_evidence: list[dict[str, Any]] = []
+    for item in files:
+        year = int(item["announcement_year"])
+        partition_path = resolve_repository_record_path(item["path"])
+        frame = pd.read_parquet(partition_path)
+        work = frame.copy()
+        work["announcement_date"] = pd.to_datetime(
+            work["announcement_date"], errors="coerce"
+        ).dt.normalize()
+        work[TUSHARE_AUDIT_OPINION_RAW_COLUMN] = pd.to_numeric(
+            work[TUSHARE_AUDIT_OPINION_RAW_COLUMN], errors="coerce"
+        )
+        work["audit_report_count"] = pd.to_numeric(
+            work["audit_report_count"], errors="coerce"
+        )
+        if (
+            tuple(frame.columns) != TUSHARE_AUDIT_OPINION_COLUMNS
+            or len(frame) != int(item["rows"])
+            or dataframe_content_sha256(frame) != item["sha256"]
+            or work[["announcement_date", "instrument"]].isna().any().any()
+            or not work["announcement_date"].dt.year.eq(year).all()
+            or not work["instrument"]
+            .astype("string")
+            .str.fullmatch(r"(?:SH6|SZ[03])\d{5}", na=False)
+            .all()
+            or not work[TUSHARE_AUDIT_OPINION_RAW_COLUMN].isin([0, 1]).all()
+            or not work["audit_report_count"].ge(1).all()
+            or set(work["provider"].astype(str)) != {"tushare"}
+            or work.duplicated(["instrument", "announcement_date"]).any()
+        ):
+            raise ValueError(
+                f"Tushare audit-opinion partition violates its contract: {year}"
+            )
+        frames.append(work)
+        file_evidence.append(
+            {
+                "announcement_year": year,
+                "path": item["path"],
+                "rows": int(len(frame)),
+                "sha256": item["sha256"],
+            }
+        )
+    factor_frame = pd.concat(frames, ignore_index=True)
+    if (
+        len(factor_frame) != 34228
+        or factor_frame.duplicated(["instrument", "announcement_date"]).any()
+        or set(factor_frame[TUSHARE_AUDIT_OPINION_RAW_COLUMN].astype(int)) != {0, 1}
+    ):
+        raise ValueError("Tushare audit-opinion full factor frame changed")
+    return factor_frame, {
+        "manifest": {
+            "path": str(manifest_path),
+            "sha256": file_sha256(manifest_path),
+            "run_id": manifest.get("run_id"),
+            "rows": int(len(factor_frame)),
+        },
+        "data_contract": source["data_contract"],
+        "mechanism_overlap_audit": source["mechanism_overlap_audit"],
+        "source_acceptance_record": source["source_acceptance_record"],
+        "source_acceptance_manifest": source["source_acceptance_manifest"],
+        "source_acceptance_factor_frame": source["source_acceptance_factor_frame"],
+        "files": file_evidence,
+        "source_completeness": completeness,
+        "source_universe": universe_link,
+        "local_calendar": calendar_link,
+        "full_snapshot_revalidated_before_capacity": True,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
 def validate_tushare_cash_conversion_full_snapshot(
     manifest_path: Path,
     spec: dict[str, Any],
@@ -18157,6 +18645,319 @@ def canonicalize_tushare_cash_conversion_audit_events(
     }
 
 
+def canonicalize_tushare_audit_opinion_events(
+    factor_frame: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Map every frozen audit event to the strict next local session."""
+
+    required = set(TUSHARE_AUDIT_OPINION_COLUMNS)
+    if missing := sorted(required - set(factor_frame.columns)):
+        raise ValueError(
+            "Tushare audit-opinion events are missing columns: " + ", ".join(missing)
+        )
+    events = factor_frame.loc[:, list(TUSHARE_AUDIT_OPINION_COLUMNS)].copy()
+    events["announcement_date"] = pd.to_datetime(
+        events["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    events[TUSHARE_AUDIT_OPINION_RAW_COLUMN] = pd.to_numeric(
+        events[TUSHARE_AUDIT_OPINION_RAW_COLUMN], errors="coerce"
+    )
+    if (
+        events[["announcement_date", "instrument"]].isna().any().any()
+        or events.duplicated(["instrument", "announcement_date"]).any()
+        or not events[TUSHARE_AUDIT_OPINION_RAW_COLUMN].isin([0, 1]).all()
+        or set(events["provider"].astype(str)) != {"tushare"}
+    ):
+        raise ValueError("Tushare audit-opinion event keys or values are invalid")
+    sessions = pd.DatetimeIndex(full_calendar).normalize().unique().sort_values()
+    positions = sessions.searchsorted(events["announcement_date"], side="right")
+    if (positions >= len(sessions)).any():
+        raise ValueError(
+            "Tushare audit-opinion event lacks a strict-next-session mapping"
+        )
+    events["event_effective_date"] = sessions.take(positions)
+    if not events["event_effective_date"].gt(events["announcement_date"]).all():
+        raise ValueError(
+            "Tushare audit-opinion availability is not strictly next-session"
+        )
+    events[TUSHARE_AUDIT_OPINION_FACTOR_NAME] = events[
+        TUSHARE_AUDIT_OPINION_RAW_COLUMN
+    ].astype("float64")
+    return events.reset_index(drop=True), {
+        "source_factor_events": int(len(events)),
+        "strictly_next_local_session_availability_applied": True,
+        "same_session_trade_allowed": False,
+        "event_formula_recomputed_from_frozen_binary_column": True,
+        "text_or_report_period_selection_performed": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def expand_tushare_audit_opinion_events_to_sessions(
+    canonical_events: pd.DataFrame,
+    target_sessions: pd.DatetimeIndex,
+    *,
+    maximum_event_age_days: int,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Expand strict-next-session events through announcement plus three days."""
+
+    if maximum_event_age_days != 3:
+        raise ValueError("Tushare audit-opinion event age changed")
+    required = {
+        "instrument",
+        "announcement_date",
+        "event_effective_date",
+        TUSHARE_AUDIT_OPINION_FACTOR_NAME,
+    }
+    if missing := sorted(required - set(canonical_events.columns)):
+        raise ValueError(
+            "Tushare audit-opinion canonical events are missing columns: "
+            + ", ".join(missing)
+        )
+    sessions = pd.DatetimeIndex(target_sessions).normalize().unique().sort_values()
+    rows: list[dict[str, Any]] = []
+    for event in canonical_events.itertuples(index=False):
+        announcement = pd.Timestamp(event.announcement_date).normalize()
+        effective = pd.Timestamp(event.event_effective_date).normalize()
+        expiry = announcement + pd.Timedelta(days=maximum_event_age_days)
+        first = int(sessions.searchsorted(effective, side="left"))
+        last = int(sessions.searchsorted(expiry, side="right"))
+        for session in sessions[first:last]:
+            rows.append(
+                {
+                    "datetime": pd.Timestamp(session),
+                    "instrument": str(event.instrument),
+                    "announcement_date": announcement,
+                    "event_effective_date": effective,
+                    "event_age_days": int((pd.Timestamp(session) - announcement).days),
+                    TUSHARE_AUDIT_OPINION_FACTOR_NAME: float(
+                        getattr(event, TUSHARE_AUDIT_OPINION_FACTOR_NAME)
+                    ),
+                }
+            )
+    columns = [
+        "datetime",
+        "instrument",
+        "announcement_date",
+        "event_effective_date",
+        "event_age_days",
+        TUSHARE_AUDIT_OPINION_FACTOR_NAME,
+    ]
+    expanded = pd.DataFrame(rows, columns=columns)
+    before_latest = int(len(expanded))
+    if not expanded.empty:
+        expanded = expanded.sort_values(
+            [
+                "instrument",
+                "datetime",
+                "event_effective_date",
+                "announcement_date",
+            ],
+            kind="stable",
+        ).drop_duplicates(["instrument", "datetime"], keep="last")
+    if (
+        expanded.duplicated(["instrument", "datetime"]).any()
+        or not expanded["event_age_days"].between(1, maximum_event_age_days).all()
+    ):
+        raise ValueError("Tushare audit-opinion session expansion is invalid")
+    return expanded.reset_index(drop=True), {
+        "target_session_count": int(len(sessions)),
+        "expanded_rows_before_latest_effective_event_rule": before_latest,
+        "older_overlapping_event_rows_superseded": before_latest - int(len(expanded)),
+        "expanded_rows": int(len(expanded)),
+        "maximum_event_age_calendar_days_from_announcement": maximum_event_age_days,
+        "strict_next_session_and_announcement_age_rule_applied": True,
+        "future_event_or_return_used_for_overlap_resolution": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def tushare_audit_opinion_capacity(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    research_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    capacity_contract: dict[str, Any],
+    event_contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Count fixed three-session binary audit-event cohorts without prices."""
+
+    sessions = pd.DatetimeIndex(research_calendar).normalize().unique().sort_values()
+    hold_days = int(capacity_contract["holding_period_trading_days"])
+    if len(sessions) <= hold_days:
+        raise ValueError("Tushare audit-opinion capacity calendar is too short")
+    rebalances = sessions[:-hold_days:hold_days]
+    canonical, canonical_audit = canonicalize_tushare_audit_opinion_events(
+        factor_frame, full_calendar
+    )
+    expanded, expansion_audit = expand_tushare_audit_opinion_events_to_sessions(
+        canonical,
+        rebalances,
+        maximum_event_age_days=int(event_contract["maximum_event_age_calendar_days"]),
+    )
+    if expanded.empty:
+        active = expanded.copy()
+    else:
+
+        def active_on_signal(row: Any) -> bool:
+            signal = pd.Timestamp(row.datetime).normalize()
+            return any(
+                pd.Timestamp(start).normalize()
+                <= signal
+                <= pd.Timestamp(end).normalize()
+                for start, end in instrument_intervals.get(str(row.instrument), [])
+            )
+
+        expanded["instrument_active"] = [
+            active_on_signal(row) for row in expanded.itertuples(index=False)
+        ]
+        active = expanded.loc[expanded["instrument_active"]].copy()
+    active = attach_listing_age_sessions(active, instrument_intervals, full_calendar)
+    active = active.rename(
+        columns={"announcement_date": "audit_opinion_announcement_date"}
+    )
+    active = attach_quality_asof(
+        active,
+        fundamentals,
+        max_age_days=int(capacity_contract["maximum_quality_age_days"]),
+        availability_calendar=full_calendar,
+    )
+    eligible = active.loc[active["quality_eligible"].fillna(False)].copy()
+    values = pd.to_numeric(eligible[TUSHARE_AUDIT_OPINION_FACTOR_NAME], errors="coerce")
+    valid = eligible.loc[np.isfinite(values)].copy()
+    valid[TUSHARE_AUDIT_OPINION_FACTOR_NAME] = values.loc[valid.index]
+    cross_sections = valid.groupby("datetime", sort=True).agg(
+        valid_names=("instrument", "nunique"),
+        distinct_factor_values=(TUSHARE_AUDIT_OPINION_FACTOR_NAME, "nunique"),
+        clean_names=(TUSHARE_AUDIT_OPINION_FACTOR_NAME, "sum"),
+    )
+    complete = cross_sections.loc[
+        cross_sections["valid_names"].ge(
+            int(capacity_contract["minimum_eligible_names_per_cross_section"])
+        )
+        & cross_sections["distinct_factor_values"].ge(
+            int(capacity_contract["minimum_distinct_factor_values"])
+        )
+    ]
+    by_year = {
+        str(int(year)): int(count)
+        for year, count in complete.groupby(complete.index.year).size().items()
+    }
+    cohort_count = int(len(complete))
+    observed_years = len(by_year)
+    passed = bool(
+        cohort_count >= int(capacity_contract["minimum_required_cohorts"])
+        and observed_years >= int(capacity_contract["minimum_observed_years"])
+    )
+    return {
+        "factor": TUSHARE_AUDIT_OPINION_FACTOR_NAME,
+        "source_rows": int(len(factor_frame)),
+        "event_canonicalization": canonical_audit,
+        "rebalance_expansion": expansion_audit,
+        "non_overlapping_rebalance_capacity": int(len(rebalances)),
+        "active_holding_event_rows": int(len(active)),
+        "quality_and_listing_eligible_event_rows": int(len(eligible)),
+        "valid_factor_rows": int(len(valid)),
+        "dates_with_any_valid_name": int(len(cross_sections)),
+        "dates_with_at_least_six_valid_names": int(
+            cross_sections["valid_names"]
+            .ge(int(capacity_contract["minimum_eligible_names_per_cross_section"]))
+            .sum()
+        ),
+        "dates_with_both_binary_values": int(
+            cross_sections["distinct_factor_values"].ge(2).sum()
+        ),
+        "potential_complete_cohorts": cohort_count,
+        "potential_complete_cohorts_by_year": by_year,
+        "observed_calendar_years": observed_years,
+        "minimum_required_cohorts": int(capacity_contract["minimum_required_cohorts"]),
+        "minimum_observed_calendar_years": int(
+            capacity_contract["minimum_observed_years"]
+        ),
+        "minimum_valid_names_per_factor_cohort": int(
+            capacity_contract["minimum_eligible_names_per_cross_section"]
+        ),
+        "minimum_distinct_factor_values_per_cohort": int(
+            capacity_contract["minimum_distinct_factor_values"]
+        ),
+        "capacity_gate_passed": passed,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def prepare_tushare_audit_opinion_uniqueness_sessions(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    event_contract: dict[str, Any],
+    uniqueness_contract: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Build quality/listing-eligible 2025 binary event sessions without prices."""
+
+    sessions = pd.DatetimeIndex(full_calendar).normalize().unique().sort_values()
+    sessions = sessions[
+        (sessions >= pd.Timestamp(uniqueness_contract["screen_start"]))
+        & (sessions <= pd.Timestamp(uniqueness_contract["screen_end"]))
+    ]
+    canonical, canonical_audit = canonicalize_tushare_audit_opinion_events(
+        factor_frame, full_calendar
+    )
+    expanded, expansion_audit = expand_tushare_audit_opinion_events_to_sessions(
+        canonical,
+        sessions,
+        maximum_event_age_days=int(event_contract["maximum_event_age_calendar_days"]),
+    )
+    if not expanded.empty:
+
+        def active_on_signal(row: Any) -> bool:
+            signal = pd.Timestamp(row.datetime).normalize()
+            return any(
+                pd.Timestamp(start).normalize()
+                <= signal
+                <= pd.Timestamp(end).normalize()
+                for start, end in instrument_intervals.get(str(row.instrument), [])
+            )
+
+        expanded["instrument_active"] = [
+            active_on_signal(row) for row in expanded.itertuples(index=False)
+        ]
+        expanded = expanded.loc[expanded["instrument_active"]].copy()
+    expanded = attach_listing_age_sessions(
+        expanded, instrument_intervals, full_calendar
+    )
+    expanded = expanded.rename(
+        columns={"announcement_date": "audit_opinion_announcement_date"}
+    )
+    expanded = attach_quality_asof(
+        expanded,
+        fundamentals,
+        max_age_days=int(uniqueness_contract["maximum_quality_age_days"]),
+        availability_calendar=full_calendar,
+    )
+    values = pd.to_numeric(expanded[TUSHARE_AUDIT_OPINION_FACTOR_NAME], errors="coerce")
+    eligible = expanded.loc[
+        expanded["quality_eligible"].fillna(False) & np.isfinite(values)
+    ].copy()
+    eligible[TUSHARE_AUDIT_OPINION_FACTOR_NAME] = values.loc[eligible.index]
+    return eligible.reset_index(drop=True), {
+        "event_canonicalization": canonical_audit,
+        "session_expansion": expansion_audit,
+        "screen_sessions": int(len(sessions)),
+        "active_quality_listing_eligible_factor_rows": int(len(eligible)),
+        "eligible_factor_sessions": int(eligible["datetime"].nunique()),
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
 def expand_tushare_cash_conversion_events_to_sessions(
     canonical_events: pd.DataFrame,
     target_sessions: pd.DatetimeIndex,
@@ -18366,17 +19167,19 @@ def summarize_tushare_cash_conversion_uniqueness(
     comparison_frame: pd.DataFrame,
     *,
     contract: dict[str, Any],
+    factor_name: str = TUSHARE_CASH_CONVERSION_FACTOR_NAME,
+    factor_label: str = "Tushare cash-conversion",
 ) -> dict[str, Any]:
-    """Gate the sparse cash factor against 54 fields and two quality composites."""
+    """Gate one sparse factor against 54 fields and two quality composites."""
 
     factor_columns = [
         "datetime",
         "instrument",
-        TUSHARE_CASH_CONVERSION_FACTOR_NAME,
+        factor_name,
     ]
     if missing := sorted(set(factor_columns) - set(factor_sessions.columns)):
         raise ValueError(
-            "Tushare cash-conversion uniqueness factor frame is missing columns: "
+            f"{factor_label} uniqueness factor frame is missing columns: "
             + ", ".join(missing)
         )
     all_fields = (
@@ -18393,8 +19196,7 @@ def summarize_tushare_cash_conversion_uniqueness(
     ]
     if missing := sorted(set(comparison_columns) - set(comparison_frame.columns)):
         raise ValueError(
-            "Tushare cash-conversion comparison frame is missing columns: "
-            + ", ".join(missing)
+            f"{factor_label} comparison frame is missing columns: " + ", ".join(missing)
         )
     if (
         tuple(contract.get("comparison_factors") or ())
@@ -18404,9 +19206,7 @@ def summarize_tushare_cash_conversion_uniqueness(
         )
         != TUSHARE_CASH_CONVERSION_ADDITIONAL_SEMANTIC_FIELDS
     ):
-        raise ValueError(
-            "Tushare cash-conversion uniqueness comparison catalog changed"
-        )
+        raise ValueError(f"{factor_label} uniqueness comparison catalog changed")
     start = pd.Timestamp(contract["screen_start"]).normalize()
     end = pd.Timestamp(contract["screen_end"]).normalize()
     minimum_names = int(contract["minimum_pairwise_names_per_session"])
@@ -18418,16 +19218,14 @@ def summarize_tushare_cash_conversion_uniqueness(
     factor["datetime"] = pd.to_datetime(
         factor["datetime"], errors="coerce"
     ).dt.normalize()
-    factor[TUSHARE_CASH_CONVERSION_FACTOR_NAME] = pd.to_numeric(
-        factor[TUSHARE_CASH_CONVERSION_FACTOR_NAME], errors="coerce"
-    )
+    factor[factor_name] = pd.to_numeric(factor[factor_name], errors="coerce")
     factor = factor.loc[factor["datetime"].between(start, end)].copy()
     if (
         factor[["datetime", "instrument"]].isna().any().any()
         or factor.duplicated(["instrument", "datetime"]).any()
-        or not np.isfinite(factor[TUSHARE_CASH_CONVERSION_FACTOR_NAME]).all()
+        or not np.isfinite(factor[factor_name]).all()
     ):
-        raise ValueError("Tushare cash-conversion uniqueness factor keys are invalid")
+        raise ValueError(f"{factor_label} uniqueness factor keys are invalid")
     comparison = comparison_frame.loc[:, comparison_columns].copy()
     comparison["datetime"] = pd.to_datetime(
         comparison["datetime"], errors="coerce"
@@ -18444,9 +19242,7 @@ def summarize_tushare_cash_conversion_uniqueness(
             )
         ).all()
     ):
-        raise ValueError(
-            "Tushare cash-conversion comparison keys or quality gate are invalid"
-        )
+        raise ValueError(f"{factor_label} comparison keys or quality gate are invalid")
     comparison = comparison.loc[comparison["quality_eligible"].fillna(False)].copy()
     merged = comparison.merge(
         factor,
@@ -18455,7 +19251,7 @@ def summarize_tushare_cash_conversion_uniqueness(
         validate="one_to_one",
     )
     if merged.empty:
-        raise ValueError("Tushare cash-conversion uniqueness has no eligible rows")
+        raise ValueError(f"{factor_label} uniqueness has no eligible rows")
 
     def compare_field(field: str) -> dict[str, Any]:
         values = merged.loc[
@@ -18463,14 +19259,13 @@ def summarize_tushare_cash_conversion_uniqueness(
             [
                 "datetime",
                 "instrument",
-                TUSHARE_CASH_CONVERSION_FACTOR_NAME,
+                factor_name,
                 field,
             ],
         ].copy()
         values[field] = pd.to_numeric(values[field], errors="coerce")
         values = values.loc[
-            np.isfinite(values[TUSHARE_CASH_CONVERSION_FACTOR_NAME])
-            & np.isfinite(values[field])
+            np.isfinite(values[factor_name]) & np.isfinite(values[field])
         ]
         correlations: list[float] = []
         pairwise_counts: list[int] = []
@@ -18483,13 +19278,13 @@ def summarize_tushare_cash_conversion_uniqueness(
             sessions_with_minimum_names += 1
             pairwise_counts.append(count)
             if (
-                daily[TUSHARE_CASH_CONVERSION_FACTOR_NAME].nunique(dropna=True) < 2
+                daily[factor_name].nunique(dropna=True) < 2
                 or daily[field].nunique(dropna=True) < 2
             ):
                 continue
             sessions_with_two_values += 1
             correlation = float(
-                daily[TUSHARE_CASH_CONVERSION_FACTOR_NAME]
+                daily[factor_name]
                 .rank(method="average", pct=True)
                 .corr(daily[field].rank(method="average", pct=True))
             )
@@ -18541,7 +19336,7 @@ def summarize_tushare_cash_conversion_uniqueness(
     )
     passed = all(item["uniqueness_gate_passed"] for item in every_result)
     return {
-        "factor": TUSHARE_CASH_CONVERSION_FACTOR_NAME,
+        "factor": factor_name,
         "comparison_field_count": len(field_results),
         "additional_composite_semantic_check_count": len(composite_results),
         "eligible_factor_comparison_rows": int(len(merged)),
@@ -19902,6 +20697,304 @@ def run_tushare_daily_pb_no_return_audit(
         "uniqueness": uniqueness,
         "both_no_return_gates_passed": both_passed,
         "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_tushare_audit_opinion_no_return_audit(
+    experiment_root: Path,
+    *,
+    source_manifest_sha256: str,
+) -> None:
+    """Allow one completed audit-opinion no-return audit per full snapshot."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob(
+            "*_tushare_audit_opinion_no_return_audit.json"
+        )
+    ):
+        record = load_json_record(path)
+        source = (
+            (record.get("preregistration") or {}).get("source_evidence") or {}
+        ).get("manifest") or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("purpose") == TUSHARE_AUDIT_OPINION_NO_RETURN_AUDIT_PURPOSE
+            and source.get("sha256") == source_manifest_sha256
+        ):
+            raise ValueError(
+                "Tushare audit-opinion no-return snapshot is already consumed: "
+                f"{path}"
+            )
+
+
+def run_tushare_audit_opinion_no_return_audit(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """Run source, capacity, then conditional 54-field uniqueness gates."""
+
+    terminal_path = DEFAULT_TUSHARE_AUDIT_OPINION_RESEARCH_RECORD
+    if terminal_path.exists():
+        load_tushare_audit_opinion_research_record(terminal_path)
+        raise ValueError(
+            "Tushare audit-opinion factor is terminal after the no-return "
+            "capacity rejection; reruns and downstream work are forbidden"
+        )
+    spec = load_tushare_audit_opinion_no_return_preregistration()
+    factor_frame, source_evidence = validate_tushare_audit_opinion_full_snapshot(
+        Path(args.manifest), spec
+    )
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_tushare_audit_opinion_no_return_audit(
+        experiment_root,
+        source_manifest_sha256=source_evidence["manifest"]["sha256"],
+    )
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    context = spec["point_in_time_context"]
+    capacity_contract = spec["capacity_contract"]
+    event_contract = spec["event_canonicalization"]
+    uniqueness_contract = spec["uniqueness_contract"]
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    holding_path = provider_uri / "instruments" / "buyable_main_chinext.txt"
+    price_basis_path = provider_uri / PRICE_BASIS_MANIFEST_NAME
+    for label, path, digest in (
+        ("calendar", calendar_path, context["local_calendar"]["file_sha256"]),
+        (
+            "holding universe",
+            holding_path,
+            context["holding_universe"]["file_sha256"],
+        ),
+        (
+            "accepted price basis",
+            price_basis_path,
+            context["accepted_price_basis"]["sha256"],
+        ),
+    ):
+        if not path.exists() or file_sha256(path) != digest:
+            raise ValueError(
+                f"Tushare audit-opinion provider {label} differs from preregistration"
+            )
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market=capacity_contract["holding_universe"],
+        start=capacity_contract["development_start"],
+        end=capacity_contract["development_end"],
+    )
+    fundamentals = load_fundamentals(
+        resolve_repository_record_path(context["quarterly_quality"]["path"])
+    )
+    capacity = tushare_audit_opinion_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        capacity_contract=capacity_contract,
+        event_contract=event_contract,
+    )
+    capacity_passed = bool(capacity["capacity_gate_passed"])
+    uniqueness_sessions: dict[str, Any] | None = None
+    comparison_evidence: dict[str, Any] | None = None
+    uniqueness: dict[str, Any] | None = None
+    comparison_fields_loaded: list[str] = []
+    additional_semantic_fields_loaded: list[str] = []
+    transient_close_known_inputs: list[str] = []
+    if capacity_passed:
+        factor_sessions, uniqueness_sessions = (
+            prepare_tushare_audit_opinion_uniqueness_sessions(
+                factor_frame,
+                fundamentals,
+                full_calendar,
+                intervals,
+                event_contract=event_contract,
+                uniqueness_contract=uniqueness_contract,
+            )
+        )
+        comparison_frame, comparison_evidence = (
+            load_tushare_cash_conversion_comparison_frame(
+                provider_uri,
+                fundamentals,
+                full_calendar,
+                uniqueness_contract=uniqueness_contract,
+                comparison_sources=spec["comparison_sources"],
+            )
+        )
+        comparison_fields_loaded = list(TUSHARE_CASH_CONVERSION_COMPARISON_FIELDS)
+        additional_semantic_fields_loaded = list(
+            TUSHARE_CASH_CONVERSION_ADDITIONAL_SEMANTIC_FIELDS
+        )
+        transient_close_known_inputs = list(
+            comparison_evidence[
+                "same_session_close_known_market_inputs_transiently_loaded"
+            ]
+        )
+        uniqueness = summarize_tushare_cash_conversion_uniqueness(
+            factor_sessions,
+            comparison_frame,
+            contract=uniqueness_contract,
+            factor_name=TUSHARE_AUDIT_OPINION_FACTOR_NAME,
+            factor_label="Tushare audit-opinion",
+        )
+        del factor_sessions, comparison_frame
+        gc.collect()
+    del factor_frame
+    gc.collect()
+
+    uniqueness_passed = bool(
+        uniqueness is not None and uniqueness["uniqueness_gate_passed"]
+    )
+    all_passed = bool(capacity_passed and uniqueness_passed)
+    if not capacity_passed:
+        decision = (
+            "terminal_rejected_before_comparison_or_returns_insufficient_"
+            "binary_event_cross_section_capacity"
+        )
+    elif not uniqueness_passed:
+        decision = (
+            "terminal_rejected_before_returns_near_synonym_or_insufficient_"
+            "pairwise_uniqueness_evidence"
+        )
+    else:
+        decision = (
+            "eligible_only_for_separate_fingerprint_bound_single_factor_"
+            "return_diagnostic_preregistration"
+        )
+    run_id = _timestamp()
+    audit = {
+        "kind": "a_share_tushare_audit_opinion_no_return_audit",
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": TUSHARE_AUDIT_OPINION_NO_RETURN_AUDIT_PURPOSE,
+        "preregistration": {
+            "path": str(DEFAULT_TUSHARE_AUDIT_OPINION_NO_RETURN_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_TUSHARE_AUDIT_OPINION_NO_RETURN_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [TUSHARE_AUDIT_OPINION_FACTOR_NAME],
+        "factor_direction": "higher_is_better",
+        "source_completeness_contract": spec["source_completeness_contract"],
+        "event_canonicalization_contract": event_contract,
+        "capacity_contract": capacity_contract,
+        "uniqueness_contract": uniqueness_contract,
+        "preregistered_run_order": list(spec["run_order"]),
+        "run_sequence": [
+            {
+                "step": "full_source_acceptance_partition_coverage_and_context_revalidation",
+                "completed": True,
+                "passed": True,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "strict_next_session_three_calendar_day_event_mapping",
+                "completed": True,
+                "passed": True,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "quality_listing_and_non_overlapping_three_session_capacity",
+                "completed": True,
+                "passed": capacity_passed,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "close_known_2025_comparison_materialization",
+                "completed": comparison_evidence is not None,
+                "skipped_reason": (
+                    None
+                    if capacity_passed
+                    else "capacity_failed_before_comparison_field_load"
+                ),
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "additional_semantic_fields_loaded": (
+                    additional_semantic_fields_loaded
+                ),
+                "future_open_close_or_return_fields_read": False,
+            },
+            {
+                "step": "historical_43_plus_later_11_and_two_composite_uniqueness",
+                "completed": uniqueness is not None,
+                "passed": uniqueness_passed,
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "additional_semantic_fields_loaded": (
+                    additional_semantic_fields_loaded
+                ),
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "atomic_terminal_no_return_audit_record",
+                "completed": True,
+                "passed": True,
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "future_open_close_or_return_fields_read": False,
+            },
+        ],
+        "source_capacity": capacity,
+        "uniqueness_session_preparation": uniqueness_sessions,
+        "comparison_source_evidence": comparison_evidence,
+        "uniqueness": uniqueness,
+        "source_completeness_gate_passed": True,
+        "capacity_gate_passed": capacity_passed,
+        "uniqueness_gate_passed": uniqueness_passed,
+        "all_no_return_gates_passed": all_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": all_passed,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri),
+            "full_calendar_start": full_calendar.min().date().isoformat(),
+            "full_calendar_end": full_calendar.max().date().isoformat(),
+            "research_calendar_start": research_calendar.min().date().isoformat(),
+            "research_calendar_end": research_calendar.max().date().isoformat(),
+            "calendar_path": str(calendar_path),
+            "calendar_sha256": file_sha256(calendar_path),
+            "holding_universe": capacity_contract["holding_universe"],
+            "holding_universe_path": str(holding_path),
+            "holding_universe_sha256": file_sha256(holding_path),
+            "instrument_span_count": int(len(intervals)),
+            "capacity_price_fields_loaded": [],
+            "capacity_completed_before_close_known_comparison_fields": True,
+            "close_known_comparison_fields_loaded": comparison_fields_loaded,
+            "additional_semantic_fields_loaded": additional_semantic_fields_loaded,
+            "same_session_close_known_market_inputs_transiently_loaded": (
+                transient_close_known_inputs
+            ),
+            "raw_market_columns_retained_in_audit": [],
+            "future_open_close_or_return_field_names": [],
+            "future_open_close_or_return_fields_read": False,
+            "forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Source, capacity, and uniqueness are no-outcome gates; a pass does not imply association, tradability, or a usable strategy.",
+            "An absent audit event remains missing and is never interpreted as either binary value.",
+            "The source universe is a current listing snapshot with point-in-time intervals, not a historical delisting master.",
+            "No next-session open, future close, forward return, score, current selection, position size, or order field is read or derived.",
+            "A complete pass permits only a separately frozen single-factor return diagnostic bound to this audit fingerprint.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = (
+        experiment_root / f"{run_id}_tushare_audit_opinion_no_return_audit.json"
+    )
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity,
+        "uniqueness": uniqueness,
+        "all_no_return_gates_passed": all_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": all_passed,
         "decision": decision,
         "forward_return_fields_read": False,
     }
@@ -34288,6 +35381,28 @@ def parse_args() -> argparse.Namespace:
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
+    tushare_audit_opinion_no_return_parser = subparsers.add_parser(
+        "tushare-audit-opinion-no-return-audit",
+        help=(
+            "run frozen audit-opinion source, binary-event capacity, and "
+            "conditional 54-field uniqueness gates"
+        ),
+    )
+    tushare_audit_opinion_no_return_parser.add_argument(
+        "--manifest",
+        default=str(DEFAULT_TUSHARE_AUDIT_OPINION_FULL_MANIFEST),
+        help=(
+            "the fingerprint-frozen full_source_completeness_passed_pending_"
+            "no_return_capacity_and_uniqueness snapshot manifest"
+        ),
+    )
+    tushare_audit_opinion_no_return_parser.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    tushare_audit_opinion_no_return_parser.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
     tushare_sw_industry_breadth_no_return_parser = subparsers.add_parser(
         "tushare-sw-industry-breadth-no-return-audit",
         help=(
@@ -34892,6 +36007,8 @@ def main() -> int:
         report = run_tushare_daily_pb_no_return_audit(args)
     elif args.command == "tushare-cash-conversion-no-return-audit":
         report = run_tushare_cash_conversion_no_return_audit(args)
+    elif args.command == "tushare-audit-opinion-no-return-audit":
+        report = run_tushare_audit_opinion_no_return_audit(args)
     elif args.command == "tushare-sw-industry-breadth-no-return-audit":
         report = run_tushare_sw_industry_breadth_no_return_audit(args)
     elif args.command == "sparse-announcement-capacity-audit":

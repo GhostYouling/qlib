@@ -1688,7 +1688,7 @@ unset token
 
 终止记录为 `docs/a_share_tushare_disclosure_promptness_source_acceptance_record.json`（SHA‑256 `2096e48a6126126e7fb4fd612e6f443a57e43df43bcfc45aa384d2574797e3ef`）。由于原始帧按合同未保留，25 行的具体字段分布未知；不得为了补这个细节再请求，也不得删除/填补/推断异常行、换报告期、增加 `actual_date`、删除 `modify_date`、改变日期锚点/方向/事件年龄或另写同机制 v2。生产入口会在合同、Token 或供应商访问前拒绝。不得运行全历史、容量、唯一性、收益、聚合、评分、选股、仓位、订单或据此采购 Level‑2；该拒绝只证明来源不符合冻结合同，不代表因子收益已经失败。
 
-### Tushare 审计意见（来源验收通过，等待全量实现）
+### Tushare 审计意见（全量来源通过、三日容量不足，方向终止）
 
 在重新复现 43 个历史因子、7 个关联稳定性通过、TopK 通过 0、双门交集 0 后，机制核重记录 `docs/a_share_three_day_audit_opinion_mechanism_overlap_reaudit_20260717.json`（SHA‑256 `a13470c5dafa4c278035e7b17e56f896ae03932b4131b6d90830a2168282acdb`）排除了权限不足或机制重叠的集合竞价、异常波动和基金持仓路线。唯一推进的独立无收益候选是 [Tushare `fina_audit`](https://tushare.pro/document/2?doc_id=80) 审计意见；官方接口最低 2,000 积分。`stock_basic` 只保留为上市/退市与幸存者偏差基础设施，不作为因子。
 
@@ -1696,7 +1696,13 @@ unset token
 
 唯一一次三股票验收已成功：固定请求贵州茅台 `600519.SH`、平安银行 `000001.SZ`、康美药业 `600518.SH` 的 2019–2025 公告范围，共发出 3 次调用并取得 21 条来源记录，每只 7 条。四种意见类别只以摘要计数，严格公式产生 17 个值 1 和 4 个值 0；发布 21 个股票公告事件，重复键为 0。验收清单为 `data/metadata/rich_data/runs/20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a.json`（SHA‑256 `f23e7cc7571dc08f72d8ca1cbf465e2556934f22043a34aff50a87af8aab9b51`），跟踪记录为 `docs/a_share_tushare_audit_opinion_source_acceptance_record.json`（SHA‑256 `f5909c8114eb8505de1f86eab75ccf246938d9c537d7bbaf0f308d09e3dfce92`）。一次性验收已永久消费，不能再次运行 `acceptance-tushare-audit-opinion`；入口会在 Token 或供应商访问前拒绝。
 
-该结果只证明权限、字段、时间语义和二值公式，没有证明全市场历史覆盖、三日横截面容量、与既有因子值的独立性或收益。当前只允许实现并测试合同固定的 2019–2025、5,451 只来源股票、逐股票顺序请求和年度原子分区；完整来源门通过后仍必须先做无价格容量与唯一性门。收益诊断、聚合、评分、当前选股、仓位和下单尚未获准。
+固定的全量来源同步已完成且只执行一次：2019–2025 共顺序请求 5,451 只来源股票，取得 38,876 条审计报告并聚合为 34,228 个股票公告事件，按公告年写入 7 个不可变 Parquet 分区。严格二值公式得到 32,357 个值 1 和 1,871 个值 0；没有保存原始或标准化意见文本。2018–2024 七个固定年报期的来源覆盖中位数为 **99.9215%**、P05 为 **99.7799%**，来源完整性门通过。全量清单为 `data/metadata/rich_data/runs/20260716T183642Z_tushare_audit_opinion_full_7a9aa307.json`（SHA‑256 `251589504b721ac303b9b7f9c09b8771b58929c25bc2a5ed6eaf64b5209a977d`）。它仍使用当前上市快照加点时区间，不是历史退市全表，历史幸存者偏差限制保留。
+
+在任何事件扩展、对照字段或收益读取之前，另行冻结无收益协议 `docs/a_share_tushare_audit_opinion_no_return_preregistration.json`（SHA‑256 `5fb77e7060cbd1a03824d015cc33b75ffcf23b3afb5817e60b783e8bcaea3d69`）。协议固定公告后的首个本地交易日才可用，且会话日期不得晚于公告日加 3 个自然日；容量使用 `buyable_main_chinext`、上市满 20 会话、550 天季度质量、固定非重叠三会话网格、Top‑3、每截面至少 6 个名称和两个二值、至少 200 个 cohort 与 5 个年份。只有容量通过，才允许临时构造历史 43 个字段和后来 11 个可同日比较的独立字段，并以至少 100 个日截面、绝对中位 Spearman 小于 0.8 做唯一性门。
+
+唯一一次无收益容量审计 `data/experiments/short_horizon/20260716T192050Z_tushare_audit_opinion_no_return_audit.json`（SHA‑256 `be37f987fd8fd7a29326c1108cf9f311e14aef9d413716f99738e20075917f5f`）在 566 个固定非重叠候选日中，只找到 119 个有任一合格事件的日期、76 个至少有 6 个名称的日期，但只有 **9** 个日期同时包含 0 和 1；有效 cohort 为 **9 / 200**，分布在 2019、2020、2021、2022、2025 五年。容量门失败后程序没有加载 54 个对照字段，没有运行唯一性，也没有读取开盘、未来收盘或远期收益。
+
+因此该候选作为独立三日横截面选股因子正式终止。完整跟踪记录为 `docs/a_share_tushare_audit_opinion_research_record.json`（SHA‑256 `48db650abbd108014eed55f0829f308d9ceb854e113b33d29aa489549fa91d65`）。不得重跑同一快照、反向、扩大事件年龄、选择报告期、映射额外意见文本、降低名称/二值/cohort 门槛、与其他因子组合或进入评分、当前选股、仓位和订单。审计意见仍可在另有治理的系统中作为财报可靠性风险标记，但不能把这种用途解释成已通过本管线的短线因子。下一步返回不读取收益的独立机制发现；新候选必须在来源行或因子值出现前另行冻结合同。
 
 ### 必经验收流程
 
@@ -1797,5 +1803,25 @@ python scripts/a_share_short_horizon_factor_research.py minute-combination-holdo
 命令会拒绝只审计部分因子、放宽 5 年/200 cohort 门槛、输入诊断哈希不一致或供应商/预注册不一致的记录。2026 条件留出仍须通过相同覆盖门禁，并在读取未来价格前证明至少有 20 个潜在非重叠 Top‑3 cohort；覆盖或容量不足只写拒绝记录，允许以后用延长但仍未读取收益的特征快照重试。一旦形成过未来收益，同一诊断、稳定性审计与 Top‑3 审计的哈希组合即被视为已消费，不能换新快照重跑。
 
 条件留出复用固定门槛：至少 20 个实际 cohort、扣费累计收益为正、最大回撤不差于 −20%。但此前其他日线研究已经观察过 2026 市场收益，因此这只是“分钟分数未见”的条件留出，不是纯净市场收益留出；即使通过也保持 `selection_or_promotion_allowed=false`，只能为这个完全相同的组合另行登记新日期开始的前瞻纸面观察，不能直接形成选股、仓位或实盘策略。所有通过、失败、无双门禁因子和未消费留出的覆盖/容量记录都会进入三日研究报告。
+
+### Tushare 单季度毛利率同比改善验收
+
+审计意见机制因事件横截面容量只有 9/200 而终止后，先做了新的无收益机制重叠审计：[`a_share_three_day_gross_margin_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_gross_margin_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `df2e40d788c91e66de278437379180a7082d7940da8ce46a37ba2b8791164427`）。日频股息率因与既有 PB/分红机制重叠而在请求前拒绝；`fina_mainbz` 主营构成因官方输出没有公告日期且分部文本身份会变化而暂缓。唯一进入验收的候选是 Tushare `fina_indicator.q_gsprofit_margin` 的单季度销售毛利率相对上年同季度变化。
+
+[Tushare 官方财务指标文档](https://tushare.pro/document/2?doc_id=79)说明标准接口需要 2000 积分、每次最多 100 行且只能按单只股票取历史；当前 3000 积分账户可以使用。[官方常见问题](https://tushare.pro/document/1?doc_id=122)明确 `update_flag=0` 为初始数据、`update_flag=1` 为修订数据。因此数据合同 [`a_share_tushare_gross_margin_data_contract.json`](a_share_tushare_gross_margin_data_contract.json)（SHA‑256 `7d0bd69e72aa40a7426ea98444952caae35ce593647123684d376dd12a82d215`）在任何接口行前固定：
+
+- 只请求 `ts_code,ann_date,end_date,q_gsprofit_margin,update_flag`；不请求 ROE、增长率、价格、市值、换手率或收益。
+- 只有 `update_flag=0` 的初始行能进入公式；修订行只计数，不用于选值或补缺。
+- 因子固定为“本期初始单季度毛利率 − 上年同季度初始单季度毛利率”，单位为百分点，高值方向固定为更好。
+- 只在本期初始公告日后的第一个本地交易日可用，最多保持 3 个日历日；缺失不填零。
+- 完整历史、容量和唯一性都通过前，不读取开盘、未来收盘或任何收益，也不允许聚合、评分或选股。
+
+离线实现先通过 6 项专项测试；加入来源记录防重跑后，完整 `tests/data_collector_tests` 为 **394 passed, 9 warnings**。唯一一次真实验收使用本地 `launchctl` 中的 Token，对 `600519.SH`、`000333.SZ`、`300750.SZ` 的 2018–2025 报告期各发出一次请求。验收清单为 `20260716T194308Z_tushare_gross_margin_acceptance_270c845f.json`（SHA‑256 `21aafe677009f09ef78ba1fb6b1a5eed52c6c147dac29b2861cdbd05c8324c02`）：共返回 163 行，三只股票分别为 56、53、54 行，均低于 100 行上限；保留 67 条初始季度，观察但完全未使用 96 条修订行；得到 51 个同比事件和 51 个不同值，范围为 −12.795 至 +8.4164 个百分点，重复事件键为 0。发布的五列因子帧不含本期/上年原始毛利率、修订值、凭据、价格或收益。
+
+跟踪验收记录为 [`a_share_tushare_gross_margin_source_acceptance_record.json`](a_share_tushare_gross_margin_source_acceptance_record.json)（SHA‑256 `86d90ecf0c47e97489c358762abf1d2f7a9eb07260fa1aae62d6587eea4e2637`）。同一验收已消费，CLI 会在合同、凭据和供应商访问前拒绝重跑。它只证明权限、五字段结构、初始版本政策和本地公式成立；不证明全市场覆盖、200 个三日 cohort、与 ROE/营收增长/利润增长及其加速度的独立性，更不证明收益。
+
+随后实现了合同固定的 5,451 只来源股票 × 两个报告期切片的原子全量同步，并通过成功发布和触及 100 行上限时删除临时目录的离线测试。唯一全量尝试 `20260716T195414Z_tushare_gross_margin_full_fea987b0_source_failure.json`（SHA‑256 `0089f7e37e08ad802c89f3dffffa7595d689d6b742a0d3d2ed97252295081607`）在完成 528 只股票、1,058/10,902 次调用后，于 `SH600638` 的 `20220101–20251231` 切片发现一行股票代码、公告日、报告期或 `update_flag` 不完整/无效。此前只观察到 28,566 行源数据，分别来自两个切片 16,786 和 11,780 行。程序立即删除完整临时快照，正式分片数为 0、`files=[]`、`final_snapshot_published=false`，且仍为 `price_fields_loaded=[]`、`forward_return_fields_read=false`。
+
+原始响应和源毛利率从未持久化，因此无法确定四个必填键/版本字段中究竟哪一个无效；一次性合同也不授权重新请求该股票来恢复字段级细节。终止记录为 [`a_share_tushare_gross_margin_research_record.json`](a_share_tushare_gross_margin_research_record.json)（SHA‑256 `83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18`）。验收和全量同步均已消费，CLI 会在来源链或供应商访问前拒绝再次全量运行；终止防护加入后，9 项专项测试以及完整数据测试 **397 passed, 9 warnings**。不得删除/填充/推断该行、改字段/日期/切片/公式/方向/修订政策/事件年龄、降低门槛、运行容量/唯一性/收益、聚合/评分/选股/仓位/下单或据此采购 Level‑2。这条机制不进入因子池；后续只能重新审计无收益机制前沿并为新的经济独立候选先冻结合同。
 
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。

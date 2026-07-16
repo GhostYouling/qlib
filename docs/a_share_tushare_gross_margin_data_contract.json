@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_gross_margin_data_contract",
+  "status": "frozen_after_mechanism_overlap_audit_before_entitlement_rows_factor_values_or_returns",
+  "preregistered_at": "2026-07-16T19:34:37Z",
+  "purpose": "Ingest and no-return screen one initial-report single-quarter gross-margin improvement mechanism for the fixed three-session A-share protocol without sweeping financial fields, revision choices, formulas, directions, event ages, dates, prices, or returns.",
+  "freeze_evidence": {
+    "official_fina_indicator_documentation_observed": true,
+    "official_financial_revision_faq_observed": true,
+    "mechanism_overlap_audit_completed": true,
+    "provider_fina_indicator_rows_observed": false,
+    "fina_indicator_entitlement_observed": false,
+    "factor_values_observed": false,
+    "full_history_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "source": "Tushare Pro fina_indicator",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=79",
+    "official_permission_table": "https://tushare.pro/document/1?doc_id=290",
+    "official_revision_faq": "https://tushare.pro/document/1?doc_id=122",
+    "minimum_permission_points": 2000,
+    "current_account_points": 3000,
+    "provider_documented_maximum_rows_per_call": 100,
+    "documented_standard_request_scope": "one stock's history per request",
+    "vip_variant_minimum_points": 5000,
+    "vip_variant_requested": false,
+    "why_this_source": "The documented interface supplies announcement date, report period, an explicit single-quarter sales gross-margin field, and an initial-versus-revised flag. This permits one predeclared profitability-structure mechanism that is absent from the accepted quarterly ROE and growth gates."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "A higher single-quarter sales gross margin than in the same fiscal quarter one year earlier represents newly disclosed pricing, product-mix, or input-cost power that may be incorporated over the next three sessions.",
+    "factor_family": "quarterly_initial_report_gross_profitability_change_event",
+    "relationship_to_existing_quarterly_quality": "ROE, positive net profit, revenue YoY, profit YoY, report age, and their already audited accelerations remain fixed context or eligibility fields. The candidate measures the percentage-point change in gross margin before operating expenses and must pass explicit no-return synonym checks against all six quarterly level and acceleration fields.",
+    "relationship_to_other_terminal_mechanisms": "It is not price momentum, valuation, dividend yield, cash conversion, audit reliability, forecast magnitude, disclosure timing, ownership, analyst activity, transaction events, industry breadth, or order flow.",
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_gross_margin_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "df2e40d788c91e66de278437379180a7082d7940da8ce46a37ba2b8791164427"
+    },
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "fina_indicator",
+    "frequency": "quarterly_financial_report_disclosure_event",
+    "request_mode": "one frozen stock and report-period range per call",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "q_gsprofit_margin",
+      "update_flag"
+    ],
+    "explicitly_forbidden_fields": [
+      "grossprofit_margin",
+      "roe",
+      "roe_waa",
+      "roa",
+      "netprofit_margin",
+      "q_netprofit_margin",
+      "q_roe",
+      "q_dt_roe",
+      "q_sales_yoy",
+      "q_profit_yoy",
+      "q_netprofit_yoy",
+      "tr_yoy",
+      "or_yoy",
+      "netprofit_yoy",
+      "ocf_yoy",
+      "inv_turn",
+      "ar_turn",
+      "assets_turn",
+      "close",
+      "open",
+      "high",
+      "low",
+      "price",
+      "market_cap",
+      "turnover_rate",
+      "score",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_and_version_policy": {
+    "documented_revision_semantics": "Tushare states that update_flag=0 is initial financial data and update_flag=1 is revised financial data.",
+    "factor_version": "initial_only",
+    "initial_row_policy": "Only complete update_flag=0 rows may supply q_gsprofit_margin, ann_date, or either side of the year-over-year formula.",
+    "revised_row_policy": "Complete update_flag=1 rows are counted as revision context but never selected, ranked, substituted, or used to repair a missing initial row.",
+    "unknown_update_flag_policy": "abort the stock partition",
+    "initial_duplicate_policy": "Exact five-field duplicates may be counted and collapsed. More than one distinct initial ann_date or q_gsprofit_margin tuple for one stock and report period makes that period version-ambiguous and excludes it.",
+    "revised_conflict_policy": "Differing revised rows do not change the frozen initial factor; they are counted without persisting their values.",
+    "date_policy": "ann_date and end_date must be complete valid dates, end_date must be a standard quarter end, and end_date must not be later than ann_date.",
+    "year_over_year_pair": "Match only the same stock and the exact same fiscal quarter end shifted back one calendar year; never use the immediately previous quarter, an annualized value, TTM value, interpolation, or a different provider.",
+    "current_event_date": "the initial ann_date of the current report period",
+    "prior_year_availability_check": "the prior-year initial ann_date must be strictly earlier than the current initial ann_date",
+    "conservative_availability": "first local trading session strictly after the current initial ann_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "forward_fill_beyond_event_age_allowed": false,
+    "historical_intraday_release_timestamp_available_per_row": false,
+    "residual_risk": "The initial-versus-revised flag and strict next-session rule reduce look-ahead risk, but the standard endpoint is a current vendor snapshot and does not provide a complete historical revision timestamp stream. Missing initial rows are therefore excluded rather than reconstructed."
+  },
+  "factor": {
+    "name": "tushare_single_quarter_gross_margin_yoy_change",
+    "raw_column": "tushare_q_gross_margin_yoy_change_pp",
+    "direction": "higher_is_better",
+    "formula": "current_initial_q_gsprofit_margin - same_fiscal_quarter_previous_year_initial_q_gsprofit_margin",
+    "units": "percentage points",
+    "finite_value_policy": "both margins and the derived difference must be finite",
+    "range_policy": "No economic clipping threshold is applied at source acceptance; observed extrema are reported and any nonfinite result is excluded and counted.",
+    "clipping_winsorization_log_absolute_value_inversion_offset_or_imputation": null,
+    "absent_event_policy": "missing; never zero",
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(tushare_q_gross_margin_yoy_change_pp)"
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "quarterly_quality_snapshot": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "terminal_audit_opinion": {
+      "path": "docs/a_share_tushare_audit_opinion_research_record.json",
+      "sha256": "48db650abbd108014eed55f0829f308d9ceb854e113b33d29aa489549fa91d65"
+    },
+    "prospective_execution_policy": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "cny_200000_pilot_policy": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_ts_codes": [
+      "600519.SH",
+      "000333.SZ",
+      "300750.SZ"
+    ],
+    "report_period_start": "20180101",
+    "report_period_end": "20251231",
+    "provider_calls": 3,
+    "minimum_source_rows_per_stock": 20,
+    "minimum_initial_quarter_rows_per_stock": 18,
+    "minimum_derived_yoy_events_per_stock": 12,
+    "minimum_distinct_derived_values_across_acceptance": 6,
+    "documented_row_ceiling_is_strict": true,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "exactly one fina_indicator request is issued for each frozen stock and report-period range with only the frozen five fields",
+      "each response has at least twenty rows and strictly fewer than the documented one-hundred-row ceiling",
+      "the response contains exactly the requested fields; keys are complete; every stock matches its request; dates are valid and report periods are standard quarter ends",
+      "update_flag is exactly zero or one; only zero rows enter the factor and one rows are count-only revision context",
+      "exact five-field duplicates alone may collapse; conflicting initial tuples exclude their period and are counted",
+      "both margins in a year-over-year pair come from initial rows for the same issuer and fiscal quarter and the prior initial announcement precedes the current one",
+      "each frozen stock retains at least eighteen initial quarters and twelve finite derived year-over-year events",
+      "the combined acceptance sample has at least six distinct derived values",
+      "no credential, forbidden financial field, revised value, price, market cap, turnover, score, or return appears in a published factor frame or manifest"
+    ],
+    "success_status": "accepted_entitlement_schema_initial_version_policy_and_formula_pending_full_history",
+    "failed_acceptance_policy": "write one no-return rejection record and stop without another stock, field relaxation, revised-row substitution, full sync, capacity, uniqueness, price access, formula or direction change, score, selection, sizing, orders, or Level-2 justification",
+    "one_shot_policy": "The exact contract may publish at most one terminal success or rejection record."
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_single_quarter_gross_margin_yoy_change_events",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2025-12-31",
+    "source_report_period_start": "2018-01-01",
+    "source_report_period_end": "2025-12-31",
+    "fixed_source_universe": "factor_main_chinext_star fingerprinted above",
+    "provider_call_partition": "two frozen report-period slices per source-universe stock: 20180101-20211231 and 20220101-20251231",
+    "provider_calls": 10902,
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_stock_slice": 3,
+    "retry_backoff_seconds": [
+      2,
+      5
+    ],
+    "requests_are_sequential": true,
+    "output_columns": [
+      "announcement_date",
+      "report_period",
+      "instrument",
+      "tushare_q_gross_margin_yoy_change_pp",
+      "provider"
+    ],
+    "partition_policy": "one announcement calendar year per immutable Parquet partition",
+    "partial_snapshot_accepted": false,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "failure_cleanup": "delete the complete temporary snapshot and publish no final manifest",
+    "raw_provider_frames_persisted": false,
+    "revised_values_persisted": false
+  },
+  "source_completeness_policy": {
+    "coverage_denominator": "factor_main_chinext_star instruments active at each standard report period and present in the frozen source universe",
+    "minimum_complete_derived_factor_events": 20000,
+    "minimum_median_report_period_coverage": 0.75,
+    "minimum_p05_report_period_coverage": 0.65,
+    "minimum_observed_signal_years": 5,
+    "duplicate_stock_announcement_report_period_keys_allowed": false,
+    "failed_gate_policy": "stop before event expansion, capacity, uniqueness, or returns; do not use revised rows, lower coverage thresholds, omit weak periods, mix providers, request another financial field, or alter the formula"
+  },
+  "no_return_capacity_policy": {
+    "separate_immutable_preregistration_required_after_full_snapshot": true,
+    "run_before_any_open_close_or_forward_return_read": true,
+    "holding_universe": "buyable_main_chinext",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_observed_years": 5,
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "failed_gate_policy": "stop without reading returns, using revised values, changing direction or age, lowering capacity, selecting fiscal quarters, or combining a rejected factor",
+    "selection_or_promotion_allowed": false
+  },
+  "no_return_uniqueness_policy": {
+    "required_after_capacity_and_before_factor_return_access": true,
+    "comparison_scope": "every factor in the frozen 43-factor accepted-price frontier plus every later mechanism with a defined same-session value",
+    "explicit_quarterly_semantic_checks": [
+      "roe",
+      "roe_change",
+      "revenue_yoy",
+      "revenue_yoy_acceleration",
+      "profit_yoy",
+      "profit_yoy_acceleration"
+    ],
+    "method": "On factor-active sessions, rank the frozen gross-margin change as higher-is-better inside the same quality/listing-eligible cross-section; compare Spearman ranks with every eligible comparison field and take each comparison's median daily correlation.",
+    "minimum_comparison_sessions_per_field": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "failed_gate_policy": "terminally classify the candidate as a near synonym before any return access; do not residualize, neutralize, invert, reweight, combine, or choose another gross-margin field"
+  },
+  "return_research_policy": {
+    "separate_immutable_return_preregistration_required": true,
+    "allowed_only_after_source_acceptance_full_source_capacity_and_uniqueness_gates_pass": true,
+    "formula_direction_dates_universe_holding_period_topk_and_cost_model_must_remain_frozen": true,
+    "factor_or_return_sweep_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

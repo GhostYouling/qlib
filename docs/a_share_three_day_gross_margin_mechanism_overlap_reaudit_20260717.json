@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_gross_margin_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_provider_rows",
+  "recorded_at": "2026-07-16T19:34:37Z",
+  "purpose": "Re-audit the exhausted three-session factor frontier after the audit-opinion capacity rejection and select at most one economically distinct mechanism that the existing 3000-point Tushare authorization can access, without observing provider rows, factor values, prices, or new returns.",
+  "frontier_revalidation": {
+    "path": "data/metadata/research_frontier_revalidation_20260717_after_disclosure.json",
+    "sha256": "1db406c556affa213a67a7ff6dc032109cc0e56a1146dd136c1c73ef47d99dee",
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "raw_prices_or_new_returns_read": false
+  },
+  "latest_terminal_mechanisms": [
+    {
+      "mechanism": "operating_cash_conversion",
+      "record": "docs/a_share_tushare_cash_conversion_research_record.json",
+      "sha256": "c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819",
+      "decision": "terminal_at_full_source_gate"
+    },
+    {
+      "mechanism": "management_earnings_forecast_midpoint",
+      "record": "docs/a_share_tushare_earnings_forecast_source_acceptance_record.json",
+      "sha256": "38b966eea1728769ca977c1e26733527fc908846188e4727f2d76b716e97878b",
+      "decision": "terminal_and_overlaps_existing_forecast_branch"
+    },
+    {
+      "mechanism": "disclosure_plan_promptness",
+      "record": "docs/a_share_tushare_disclosure_promptness_source_acceptance_record.json",
+      "sha256": "2096e48a6126126e7fb4fd612e6f443a57e43df43bcfc45aa384d2574797e3ef",
+      "decision": "terminal_source_rejected"
+    },
+    {
+      "mechanism": "standard_unqualified_audit_opinion",
+      "record": "docs/a_share_tushare_audit_opinion_research_record.json",
+      "sha256": "48db650abbd108014eed55f0829f308d9ceb854e113b33d29aa489549fa91d65",
+      "decision": "terminal_capacity_rejected_9_of_200_before_comparison_or_returns"
+    }
+  ],
+  "official_permission_context": {
+    "current_account_points": 3000,
+    "permission_table": "https://tushare.pro/document/1?doc_id=290",
+    "financial_indicator_documentation": "https://tushare.pro/document/2?doc_id=79",
+    "financial_indicator_minimum_points": 2000,
+    "financial_indicator_standard_call_scope": "one stock history per request",
+    "financial_indicator_documented_maximum_rows_per_call": 100,
+    "financial_indicator_vip_minimum_points": 5000,
+    "financial_revision_faq": "https://tushare.pro/document/1?doc_id=122",
+    "revision_semantics": "update_flag=0 is initial data and update_flag=1 is revised data",
+    "main_business_documentation": "https://tushare.pro/document/2?doc_id=81",
+    "provider_rows_observed": false,
+    "entitlement_requests_issued": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "daily_dividend_yield",
+      "source": "Tushare daily_basic dv_ratio or dv_ttm",
+      "decision": "rejected_before_rows_as_mechanism_overlap",
+      "reason": "Daily dividend yield is a valuation transform of price and distributions. The frontier already contains a terminal daily book-to-market mechanism and separately audited dividend-plan events, so another daily value-yield transform is not an economically independent next iteration."
+    },
+    {
+      "candidate": "main_business_concentration_change",
+      "source": "Tushare fina_mainbz",
+      "decision": "deferred_before_rows_for_point_in_time_identity_risk",
+      "reason": "The documented output has report period, segment text, sales, profit, cost, currency, and update_flag but no announcement date. Segment labels also change across reports. Without an event date and frozen segment-identity reconciliation, a strict next-session three-day signal cannot be made point-in-time compatible."
+    },
+    {
+      "candidate": "single_quarter_gross_margin_year_over_year_change",
+      "source": "Tushare fina_indicator q_gsprofit_margin",
+      "decision": "selected_for_one_predeclared_no_return_source_acceptance",
+      "economic_mechanism": "An improvement in the issuer's single-quarter sales gross margin relative to the same fiscal quarter one year earlier measures product mix or pricing-cost power newly disclosed with the report.",
+      "independence_reason": "The existing quarterly gates use ROE, revenue growth, profit growth, their accelerations, and report age. This candidate uses the level change in gross profitability before operating expenses and does not use price, valuation, ownership, order flow, forecast, audit text, cash conversion, or a revenue/profit growth rate.",
+      "closest_existing_fields_requiring_no_return_synonym_checks": [
+        "roe",
+        "roe_change",
+        "revenue_yoy",
+        "revenue_yoy_acceleration",
+        "profit_yoy",
+        "profit_yoy_acceleration"
+      ],
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false
+    }
+  ],
+  "selected_mechanism": {
+    "source": "Tushare Pro fina_indicator",
+    "factor_name": "tushare_single_quarter_gross_margin_yoy_change",
+    "raw_field": "q_gsprofit_margin",
+    "formula": "current initial q_gsprofit_margin minus the initial q_gsprofit_margin for the same issuer and fiscal quarter one year earlier",
+    "units": "percentage points",
+    "direction": "higher_is_better",
+    "revision_policy": "Only update_flag=0 initial rows may supply either side of the formula; revised rows are counted but never selected or used to repair missing initial rows.",
+    "availability": "first local trading session strictly after the current report's initial ann_date",
+    "maximum_event_age_calendar_days": 3,
+    "absent_event_policy": "missing; never zero or forward-filled beyond the frozen event age",
+    "independent_factor_count": 1,
+    "mandatory_no_return_near_synonym_gate": true,
+    "provider_rows_observed": false,
+    "factor_values_observed": false,
+    "returns_observed": false
+  },
+  "decision": {
+    "historical_factor_combination_allowed": false,
+    "financial_field_sweep_allowed": false,
+    "same_history_inversion_or_parameter_search_allowed": false,
+    "data_contract_must_be_frozen_before_provider_rows": true,
+    "one_shot_source_acceptance_allowed_after_contract_and_tests": true,
+    "full_history_capacity_uniqueness_or_return_work_allowed_before_acceptance": false,
+    "selection_scoring_sizing_or_orders_allowed": false,
+    "level2_purchase_justified": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

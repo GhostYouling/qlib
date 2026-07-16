@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_gross_margin_research_record",
+  "status": "terminal_rejected_at_full_source_identity_date_or_version_gate_before_partitions_capacity_uniqueness_or_returns",
+  "recorded_at": "2026-07-16T20:00:22Z",
+  "purpose": "Preserve the terminal outcome of the sole Tushare initial-report single-quarter gross-margin year-over-year source attempt after its small acceptance passed but its atomic full-market snapshot encountered one invalid required source row.",
+  "mechanism": {
+    "name": "tushare_single_quarter_gross_margin_yoy_change",
+    "formula": "current_initial_q_gsprofit_margin - same_fiscal_quarter_previous_year_initial_q_gsprofit_margin",
+    "units": "percentage_points",
+    "direction": "higher_is_better",
+    "availability": "first local trading session strictly after the current initial ann_date",
+    "maximum_event_age_calendar_days": 3,
+    "revision_policy": "update_flag=0 initial rows only; update_flag=1 revised rows are count-only and never used or persisted"
+  },
+  "frozen_evidence": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_gross_margin_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "df2e40d788c91e66de278437379180a7082d7940da8ce46a37ba2b8791164427"
+    },
+    "data_contract": {
+      "path": "docs/a_share_tushare_gross_margin_data_contract.json",
+      "sha256": "7d0bd69e72aa40a7426ea98444952caae35ce593647123684d376dd12a82d215",
+      "preregistered_at": "2026-07-16T19:34:37Z"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_gross_margin_source_acceptance_record.json",
+      "sha256": "86d90ecf0c47e97489c358762abf1d2f7a9eb07260fa1aae62d6587eea4e2637"
+    },
+    "source_acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T194308Z_tushare_gross_margin_acceptance_270c845f.json",
+      "sha256": "21aafe677009f09ef78ba1fb6b1a5eed52c6c147dac29b2861cdbd05c8324c02"
+    },
+    "terminal_full_source_failure": {
+      "path": "data/metadata/rich_data/runs/20260716T195414Z_tushare_gross_margin_full_fea987b0_source_failure.json",
+      "sha256": "0089f7e37e08ad802c89f3dffffa7595d689d6b742a0d3d2ed97252295081607"
+    }
+  },
+  "accepted_probe_context": {
+    "provider_calls": 3,
+    "source_rows": 163,
+    "initial_rows_retained": 67,
+    "revised_rows_observed_but_not_used": 96,
+    "derived_factor_events": 51,
+    "distinct_factor_values": 51,
+    "duplicate_event_keys": 0,
+    "interpretation": "The three-stock probe proved entitlement, exact five-field schema, initial-only handling, and the local formula, but did not waive the independently frozen full-source gate."
+  },
+  "full_source_attempt": {
+    "run_id": "20260716T195414Z_tushare_gross_margin_full_fea987b0",
+    "planned_source_universe_instruments": 5451,
+    "planned_provider_calls": 10902,
+    "completed_instruments_before_failure": 528,
+    "completed_provider_calls_before_failure": 1058,
+    "source_rows_observed_before_failure": 28566,
+    "source_rows_by_slice": {
+      "20180101-20211231": 16786,
+      "20220101-20251231": 11780
+    },
+    "failed_instrument": "SH600638",
+    "failed_slice": "20220101-20251231",
+    "failure_code": "source_identity_date_or_version_failure",
+    "failure": "One returned row had an invalid or incomplete required stock code, announcement date, report period, or update_flag.",
+    "field_level_failure_identity_known": false,
+    "reason_field_level_identity_is_unknown": "Raw provider frames and source margin levels were never persisted, and the one-shot contract does not authorize re-requesting the failed stock to recover unavailable field detail.",
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false,
+    "published_partition_count": 0,
+    "published_files": []
+  },
+  "scope_and_safety": {
+    "raw_provider_frames_persisted": false,
+    "initial_or_revised_source_margin_levels_persisted": false,
+    "revised_values_used_or_persisted": false,
+    "credentials_logged_or_stored": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "capacity_run": false,
+    "uniqueness_run": false,
+    "selection_or_promotion_performed": false
+  },
+  "interpretation": {
+    "proven": [
+      "The all-or-nothing implementation issued only the two frozen report-period slices and five-field whitelist, then stopped on the first invalid required source row.",
+      "The temporary full snapshot was deleted and no annual Parquet partition or full manifest was published.",
+      "No revised value, source margin level, price, forward return, score, selection, sizing, or order was used or persisted."
+    ],
+    "not_proven": [
+      "which one of the four required key/version fields was invalid on the unavailable source row",
+      "full-market initial-row or derived-factor coverage",
+      "three-session cross-sectional cohort capacity",
+      "near-synonym independence from quarterly quality fields",
+      "historical association, execution-aware returns, aggregation, current scoring, selection, sizing, or trading performance"
+    ],
+    "economic_classification": "The idea remains economically interpretable, but this exact public-source route failed its predeclared reproducibility gate and contributes no admitted factor."
+  },
+  "terminal_decision": {
+    "acceptance_retry_allowed": false,
+    "full_source_retry_allowed": false,
+    "failed_stock_detail_request_allowed": false,
+    "drop_fill_or_infer_invalid_row_allowed": false,
+    "change_fields_dates_slices_formula_direction_revision_policy_or_event_age_allowed": false,
+    "lower_source_coverage_capacity_or_uniqueness_thresholds_allowed": false,
+    "capacity_uniqueness_or_return_work_allowed": false,
+    "combine_aggregate_score_select_size_order_or_level2_justification_allowed": false,
+    "next_authorized_action": "Re-audit the no-return mechanism frontier and, if any candidate remains, freeze a newly economically independent source contract before provider rows or factor values."
+  }
+}
