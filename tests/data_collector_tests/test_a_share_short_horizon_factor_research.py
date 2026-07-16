@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -7285,6 +7286,192 @@ def test_tushare_daily_pb_partition_recomputes_frozen_formula():
         )
 
 
+def test_tushare_daily_pb_uniqueness_rejects_a_close_known_synonym():
+    dates = pd.bdate_range("2025-01-02", periods=6)
+    symbols = [f"SZ{index:06d}" for index in range(1, 61)]
+    rng = np.random.default_rng(20260716)
+    pb_rows = []
+    comparison_rows = []
+    for date in dates:
+        random_values = {
+            field: rng.normal(size=len(symbols))
+            for field in RESEARCH.TUSHARE_DAILY_PB_COMPARISON_FIELDS
+        }
+        for position, symbol in enumerate(symbols, start=1):
+            pb_value = position / 100.0
+            pb_rows.append(
+                {
+                    "trade_date": date,
+                    "instrument": symbol,
+                    RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME: pb_value,
+                }
+            )
+            comparison_rows.append(
+                {
+                    "datetime": date,
+                    "instrument": symbol,
+                    "fundamental_quality_eligible": True,
+                    "listing_seasoning_eligible": True,
+                    "quality_eligible": True,
+                    **{
+                        field: random_values[field][position - 1]
+                        for field in RESEARCH.TUSHARE_DAILY_PB_COMPARISON_FIELDS
+                    },
+                }
+            )
+    contract = {
+        "start": dates[0].date().isoformat(),
+        "end": dates[-1].date().isoformat(),
+        "comparison_fields": list(RESEARCH.TUSHARE_DAILY_PB_COMPARISON_FIELDS),
+        "minimum_pairwise_names_per_session": 50,
+        "minimum_pairwise_sessions_per_comparison": 5,
+        "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    }
+    pb_frame = pd.DataFrame(pb_rows)
+    comparison_frame = pd.DataFrame(comparison_rows)
+    independent = RESEARCH.summarize_tushare_daily_pb_uniqueness(
+        pb_frame, comparison_frame, contract=contract
+    )
+    assert independent["comparison_field_count"] == 43
+    assert independent["fields_with_minimum_sessions"] == 43
+    assert independent["fields_below_correlation_threshold"] == 43
+    assert independent["uniqueness_gate_passed"] is True
+
+    synonym = comparison_frame.copy()
+    synonym["momentum_1"] = [
+        (position % len(symbols) + 1) / 100.0
+        for position in range(len(synonym))
+    ]
+    rejected = RESEARCH.summarize_tushare_daily_pb_uniqueness(
+        pb_frame, synonym, contract=contract
+    )
+    momentum = next(
+        item
+        for item in rejected["field_results"]
+        if item["comparison_field"] == "momentum_1"
+    )
+    assert momentum["median_daily_rank_correlation"] == pytest.approx(1.0)
+    assert momentum["uniqueness_gate_passed"] is False
+    assert rejected["uniqueness_gate_passed"] is False
+    assert rejected["forward_return_fields_read"] is False
+
+
+def test_tushare_daily_pb_capacity_failure_stops_before_market_load(
+    tmp_path, monkeypatch
+):
+    provider = tmp_path / "provider"
+    calendar_path = provider / "calendars" / "day.txt"
+    universe_path = provider / "instruments" / "buyable_main_chinext.txt"
+    calendar_path.parent.mkdir(parents=True)
+    universe_path.parent.mkdir(parents=True)
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    universe_path.write_text(
+        "SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8"
+    )
+    contract = {
+        "start": "2019-01-01",
+        "end": "2025-12-31",
+        "holding_universe": "buyable_main_chinext",
+    }
+    uniqueness_contract = {
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+    }
+    spec = {
+        "preregistered_at": "2026-07-16T10:05:41Z",
+        "capacity_contract": contract,
+        "uniqueness_contract": uniqueness_contract,
+        "quarterly_quality_snapshot": {"path": str(tmp_path / "quality.parquet")},
+        "point_in_time_context": {
+            "fingerprint_range_start": "2019-01-01",
+            "fingerprint_range_end": "2025-12-31",
+            "holding_universe": {
+                "name": "buyable_main_chinext",
+                **RESEARCH.point_in_time_interval_fingerprint(
+                    universe_path, start="2019-01-01", end="2025-12-31"
+                ),
+            },
+        },
+        "later_diagnostic_direction_if_both_no_return_gates_pass": (
+            "higher_positive_book_to_market_is_better"
+        ),
+    }
+    source_evidence = {
+        "manifest": {
+            "run_id": "full-pb-history",
+            "sha256": "c" * 64,
+            "path": str(tmp_path / "full.json"),
+        },
+        "local_calendar": {"sha256": RESEARCH.file_sha256(calendar_path)},
+    }
+    full_calendar = pd.DatetimeIndex(
+        [pd.Timestamp("2019-01-02"), pd.Timestamp("2025-12-31")]
+    )
+    capacity = {
+        "factor": RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME,
+        "potential_complete_cohorts": 199,
+        "minimum_required_cohorts": 200,
+        "observed_calendar_years": 7,
+        "minimum_observed_calendar_years": 5,
+        "capacity_gate_passed": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH, "load_tushare_daily_pb_capacity_preregistration", lambda: spec
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_daily_pb_full_snapshot",
+        lambda manifest, loaded_spec: (pd.DataFrame(), source_evidence),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "local_market_capacity_context",
+        lambda *args, **kwargs: (
+            full_calendar,
+            full_calendar,
+            {"SZ000001": [(full_calendar[0], full_calendar[-1])]},
+        ),
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "tushare_daily_pb_capacity", lambda *args, **kwargs: capacity
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_market_data",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("market data must not load after a failed capacity gate")
+        ),
+    )
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "full.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(provider),
+    )
+    result = RESEARCH.run_tushare_daily_pb_no_return_audit(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["capacity_gate_passed"] is False
+    assert audit["uniqueness"] is None
+    assert audit["data"]["close_known_comparison_fields_loaded"] == []
+    assert audit["forward_return_fields_read"] is False
+    assert audit["selection_or_promotion_allowed"] is False
+    audits = RESEARCH.load_tushare_daily_pb_no_return_audits(
+        tmp_path / "experiments"
+    )
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        tushare_daily_pb_no_return_audits=audits,
+    )
+    assert "Tushare PB 联合无收益门禁" in report
+    assert "199 / 200" in report
+    assert "容量不足，停止" in report
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_daily_pb_no_return_audit(args)
+
+
 def test_tushare_moneyflow_capacity_counts_quality_seasoned_cross_sections():
     full_calendar = pd.bdate_range("2023-10-02", periods=80)
     research_calendar = full_calendar[-10:]
@@ -7455,6 +7642,145 @@ def test_tushare_moneyflow_diagnostic_preregistration_is_fingerprint_frozen(tmp_
     write_json_record(changed_path, changed)
     with pytest.raises(ValueError, match="fingerprint mismatch"):
         RESEARCH.load_tushare_moneyflow_diagnostic_preregistration(changed_path)
+
+
+def test_tushare_daily_pb_diagnostic_preregistration_is_fingerprint_frozen(
+    tmp_path,
+):
+    spec = RESEARCH.load_tushare_daily_pb_diagnostic_preregistration()
+    assert spec["combined_no_return_audit"]["potential_complete_cohorts"] == 540
+    assert spec["combined_no_return_audit"]["fields_below_correlation_threshold"] == 43
+    assert spec["factor"]["name"] == RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME
+    assert spec["factor"]["alternative_pb_transform_or_threshold_allowed"] is False
+    assert spec["run_contract"]["holding_period_trading_days"] == 3
+    assert spec["forward_return_fields_read"] is False
+
+    changed = json.loads(
+        RESEARCH.DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC.read_text()
+    )
+    changed["factor"]["raw_direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_tushare_pb_diagnostic.json"
+    write_json_record(changed_path, changed)
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_tushare_daily_pb_diagnostic_preregistration(changed_path)
+
+
+def test_tushare_daily_pb_diagnostic_is_single_factor_and_one_shot(
+    tmp_path, monkeypatch
+):
+    dates = pd.bdate_range("2023-01-02", periods=200)
+    symbols = [f"SZ{index:06d}" for index in range(1, 51)]
+    rows = [
+        {
+            "datetime": date,
+            "instrument": symbol,
+            "quality_eligible": True,
+            "fundamental_quality_eligible": True,
+            "listing_seasoning_eligible": True,
+        }
+        for date in dates
+        for symbol in symbols
+    ]
+    market = pd.DataFrame(rows)
+    factor_frame = market[["datetime", "instrument"]].rename(
+        columns={"datetime": "trade_date"}
+    )
+    factor_frame[RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME] = [
+        (position % 50 + 1) / 50.0 for position in range(len(factor_frame))
+    ]
+    spec = json.loads(
+        RESEARCH.DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC.read_text()
+    )
+    quality_path = tmp_path / "quality.parquet"
+    quality_path.write_bytes(b"fixture")
+    spec["source_snapshots"]["quarterly_quality"]["path"] = str(quality_path)
+    source_evidence = {
+        "combined_no_return_audit": {"sha256": "a" * 64},
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH, "load_tushare_daily_pb_diagnostic_preregistration", lambda: spec
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_daily_pb_diagnostic_sources",
+        lambda loaded: (factor_frame, source_evidence),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_prospective_execution_policy",
+        lambda: {"frozen_at": "2026-07-14T00:00:00Z"},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "require_prospective_execution_policy_compatibility",
+        lambda *args, **kwargs: None,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_pilot_execution_policy",
+        lambda: {"frozen_at": "2026-07-14T00:00:00Z"},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "research_price_basis_metadata",
+        lambda provider: {
+            "price_basis": RESEARCH.REQUIRED_PRICE_BASIS,
+            "future_corporate_actions_used": False,
+        },
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH, "load_market_data", lambda *args, **kwargs: market.copy()
+    )
+    monkeypatch.setattr(
+        RESEARCH, "attach_quality_asof", lambda frame, *args, **kwargs: frame
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "market_state_frame",
+        lambda frame, eligible: pd.DataFrame(
+            index=pd.DatetimeIndex(frame["datetime"].unique())
+        ),
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "forward_factor_return_frame",
+        lambda ranked, hold_days: pd.DataFrame({"placeholder": [1]}),
+    )
+    summary = {
+        "factor": RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME,
+        "cohorts": 200,
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "summarize_factor_diagnostics",
+        lambda *args, **kwargs: [dict(summary)],
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "simulate_prospective_execution_topk",
+        lambda *args, **kwargs: {"policy_applied": True},
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "simulate_pilot_execution_topk",
+        lambda *args, **kwargs: {"policy_applied": True},
+    )
+    args = SimpleNamespace(
+        provider_uri=str(tmp_path / "provider"),
+        experiment_root=str(tmp_path / "experiments"),
+        batch_size=500,
+    )
+    result = RESEARCH.run_tushare_daily_pb_diagnostic(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["factor_catalog"] == [RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME]
+    assert audit["mechanism_identity"]["alternative_pb_transforms_or_thresholds_allowed"] is False
+    assert audit["tushare_daily_pb"]["pe_market_cap_turnover_dividend_or_limit_fields_requested"] is False
+    assert audit["forward_return_fields_read"] is True
+    assert audit["selection_or_promotion_allowed"] is False
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_daily_pb_diagnostic(args)
 
 
 def test_tushare_moneyflow_diagnostic_is_single_factor_and_one_shot(

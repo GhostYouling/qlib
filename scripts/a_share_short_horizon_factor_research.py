@@ -278,6 +278,12 @@ DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC = (
 TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256 = (
     "14668ad3f97cef68cd2fae882507280ef835c0f5e7b4ddecb763c1907590c0a0"
 )
+DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC = (
+    REPO_ROOT / "docs" / "a_share_tushare_daily_pb_diagnostic_preregistration.json"
+)
+TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC_SHA256 = (
+    "ad1e14fa8d2a858b7c35a0259ebe7ab087f2c08b2f27281edb7f3c08582b47da"
+)
 DEFAULT_PILOT_CAPITALS = (200_000.0,)
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 PRICE_BASIS_MANIFEST_NAME = "price_basis.json"
@@ -404,6 +410,20 @@ TUSHARE_DAILY_PB_COMPARISON_FIELDS = (
     "roe_change",
     "revenue_yoy_acceleration",
     "profit_yoy_acceleration",
+)
+TUSHARE_DAILY_PB_QUALITY_COMPARISON_FIELDS = (
+    "roe",
+    "revenue_yoy",
+    "profit_yoy",
+    "quality_age_days",
+    "roe_change",
+    "revenue_yoy_acceleration",
+    "profit_yoy_acceleration",
+)
+TUSHARE_DAILY_PB_TECHNICAL_COMPARISON_FIELDS = tuple(
+    field
+    for field in TUSHARE_DAILY_PB_COMPARISON_FIELDS
+    if field not in TUSHARE_DAILY_PB_QUALITY_COMPARISON_FIELDS
 )
 MINUTE_FEATURE_BASE_COLUMNS = (
     "symbol",
@@ -748,6 +768,9 @@ TUSHARE_MONEYFLOW_CAPACITY_PURPOSE = (
 )
 TUSHARE_DAILY_PB_NO_RETURN_AUDIT_PURPOSE = (
     "tushare_daily_pb_capacity_then_uniqueness_gate_without_forward_returns"
+)
+TUSHARE_DAILY_PB_DIAGNOSTIC_PURPOSE = (
+    "development_only_preregistered_tushare_positive_book_to_market_research_not_investment_advice"
 )
 TUSHARE_MONEYFLOW_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_tushare_moneyflow_research_not_investment_advice"
@@ -3026,6 +3049,300 @@ def load_tushare_daily_pb_capacity_preregistration(
     ):
         raise ValueError("Tushare daily PB point-in-time context fingerprint mismatch")
     return spec
+
+
+def load_tushare_daily_pb_diagnostic_preregistration(
+    path: Path = DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC,
+) -> dict[str, Any]:
+    """Enforce the one-time capacity- and uniqueness-qualified PB diagnostic."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC_SHA256:
+        raise ValueError("Tushare daily PB diagnostic preregistration fingerprint mismatch")
+    spec = load_json_record(
+        path, kind="a_share_tushare_daily_pb_diagnostic_preregistration"
+    )
+    no_return = spec.get("combined_no_return_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    factor = spec.get("factor") or {}
+    contract = spec.get("run_contract") or {}
+    execution = spec.get("execution_policies") or {}
+    policy = spec.get("diagnostic_policy") or {}
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_combined_no_return_capacity_and_uniqueness_pass_before_pb_factor_returns_observed"
+        or spec.get("preregistered_at") != "2026-07-16T11:00:34Z"
+        or no_return.get("run_id") != "20260716T105955Z"
+        or no_return.get("sha256")
+        != "a6a548539dd8017e57e226189678195e646795050244fe4914627f574e6d6e9c"
+        or no_return.get("factor") != TUSHARE_DAILY_PB_FACTOR_NAME
+        or no_return.get("potential_complete_cohorts") != 540
+        or no_return.get("observed_calendar_years") != 7
+        or no_return.get("comparison_field_count") != 43
+        or no_return.get("fields_with_minimum_sessions") != 43
+        or no_return.get("fields_below_correlation_threshold") != 43
+        or no_return.get("capacity_gate_passed") is not True
+        or no_return.get("uniqueness_gate_passed") is not True
+        or no_return.get("both_no_return_gates_passed") is not True
+        or no_return.get("forward_return_fields_read") is not False
+        or no_return.get("source_admitted_for_return_diagnostic") is not True
+        or set(snapshots)
+        != {
+            "tushare_daily_pb",
+            "data_contract",
+            "capacity_and_uniqueness_preregistration",
+            "quarterly_quality",
+            "accepted_price_basis",
+            "holding_universe",
+            "local_calendar",
+        }
+        or snapshots["tushare_daily_pb"].get("manifest_sha256")
+        != "280bc68239cc70a5e7d6e44dbb0a15a0b331be8215ddfb8d9ebd27a408e1e366"
+        or snapshots["tushare_daily_pb"].get("rows") != 7042084
+        or snapshots["data_contract"].get("sha256")
+        != TUSHARE_DAILY_PB_DATA_CONTRACT_SHA256
+        or snapshots["capacity_and_uniqueness_preregistration"].get("sha256")
+        != TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256
+        or factor.get("name") != TUSHARE_DAILY_PB_FACTOR_NAME
+        or factor.get("raw_column") != TUSHARE_DAILY_PB_FACTOR_NAME
+        or factor.get("source_formula") != "1 / pb for finite positive pb only"
+        or factor.get("raw_direction") != "higher_is_better"
+        or factor.get("score_formula")
+        != "cross_sectional_percentile_rank(tushare_positive_book_to_market)"
+        or factor.get("maximum_event_age_days") != 0
+        or factor.get("same_session_trade_allowed") is not False
+        or factor.get("alternative_pb_transform_or_threshold_allowed") is not False
+        or factor.get("pe_market_cap_turnover_dividend_or_limit_fields_allowed")
+        is not False
+        or contract
+        != {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_universe": "buyable_main_chinext",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "minimum_valid_names_per_factor_cohort": 50,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        or execution
+        != {
+            "prospective_execution_policy_path": (
+                "docs/a_share_three_day_prospective_execution_policy.json"
+            ),
+            "prospective_execution_policy_sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "pilot_execution_policy_path": "docs/a_share_three_day_pilot_execution_policy.json",
+            "pilot_execution_policy_sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "pilot_initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+        }
+        or policy.get("source_capacity_and_uniqueness_gates_passed_before_return_read")
+        is not True
+        or policy.get("single_factor_only") is not True
+        or policy.get("pb_factor_returns_observed_before_registration") is not False
+        or policy.get("prior_pb_price_diagnostic_exists") is not False
+        or policy.get("one_completed_diagnostic_only") is not True
+        or policy.get("no_direction_formula_transform_date_cost_quality_source_factor_or_threshold_override")
+        is not True
+        or policy.get("apply_full_default_stability_and_topk_viability_audits_after_diagnostic")
+        is not True
+        or policy.get("selection_or_promotion_allowed") is not False
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Tushare daily PB diagnostic preregistration does not match the frozen protocol"
+        )
+    return spec
+
+
+def validate_tushare_daily_pb_diagnostic_sources(
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Validate the dual no-return authorization chain before market outcomes load."""
+
+    snapshots = spec["source_snapshots"]
+    for snapshot_name in (
+        "data_contract",
+        "capacity_and_uniqueness_preregistration",
+    ):
+        link = snapshots[snapshot_name]
+        source_path = resolve_repository_record_path(str(link["path"]))
+        if not source_path.exists() or file_sha256(source_path) != link["sha256"]:
+            raise ValueError(
+                f"Tushare daily PB diagnostic {snapshot_name} fingerprint mismatch"
+            )
+    quality = snapshots["quarterly_quality"]
+    for key, digest_key in (("path", "sha256"), ("manifest_path", "manifest_sha256")):
+        source_path = resolve_repository_record_path(str(quality[key]))
+        if not source_path.exists() or file_sha256(source_path) != quality[digest_key]:
+            raise ValueError("Tushare daily PB diagnostic quality fingerprint mismatch")
+    for name in ("accepted_price_basis", "holding_universe", "local_calendar"):
+        link = snapshots[name]
+        source_path = resolve_repository_record_path(str(link["path"]))
+        if not source_path.exists() or file_sha256(source_path) != link["sha256"]:
+            raise ValueError(f"Tushare daily PB diagnostic {name} fingerprint mismatch")
+    price_basis = load_json_record(
+        resolve_repository_record_path(snapshots["accepted_price_basis"]["path"])
+    )
+    if (
+        price_basis.get("status") != "passed"
+        or price_basis.get("price_basis") != REQUIRED_PRICE_BASIS
+        or price_basis.get("daily_sources") != ["baostock"]
+        or price_basis.get("future_corporate_actions_used") is not False
+    ):
+        raise ValueError("Tushare daily PB accepted price basis is invalid")
+
+    point_start = spec["run_contract"]["start"]
+    point_end = spec["run_contract"]["end"]
+    holding_link = snapshots["holding_universe"]
+    holding_path = resolve_repository_record_path(holding_link["path"])
+    if point_in_time_interval_fingerprint(
+        holding_path, start=point_start, end=point_end
+    ) != {
+        "sha256": holding_link["range_clipped_sha256"],
+        "intervals": holding_link["range_clipped_intervals"],
+    }:
+        raise ValueError("Tushare daily PB diagnostic holding context changed")
+    calendar_link = snapshots["local_calendar"]
+    calendar_path = resolve_repository_record_path(calendar_link["path"])
+    if local_calendar_range_fingerprint(
+        calendar_path, start=point_start, end=point_end
+    ) != {
+        "sha256": calendar_link["range_clipped_sha256"],
+        "sessions": calendar_link["range_clipped_sessions"],
+    }:
+        raise ValueError("Tushare daily PB diagnostic calendar context changed")
+
+    no_return_link = spec["combined_no_return_audit"]
+    no_return_path = resolve_repository_record_path(no_return_link["path"])
+    if (
+        not no_return_path.exists()
+        or file_sha256(no_return_path) != no_return_link["sha256"]
+    ):
+        raise ValueError("Tushare daily PB combined no-return audit fingerprint mismatch")
+    no_return = load_json_record(
+        no_return_path, kind="a_share_tushare_daily_pb_no_return_audit"
+    )
+    source_capacity = no_return.get("source_capacity") or {}
+    uniqueness = no_return.get("uniqueness") or {}
+    source_manifest_evidence = (
+        ((no_return.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "manifest"
+        )
+        or {}
+    )
+    snapshot_link = snapshots["tushare_daily_pb"]
+    sequence = list(no_return.get("run_sequence") or [])
+    if (
+        no_return.get("run_id") != no_return_link["run_id"]
+        or no_return.get("status") != "completed"
+        or no_return.get("purpose") != TUSHARE_DAILY_PB_NO_RETURN_AUDIT_PURPOSE
+        or no_return.get("factor_catalog") != [TUSHARE_DAILY_PB_FACTOR_NAME]
+        or no_return.get("forward_return_fields_read") is not False
+        or no_return.get("selection_or_promotion_allowed") is not False
+        or no_return.get("capacity_gate_passed") is not True
+        or no_return.get("uniqueness_gate_passed") is not True
+        or no_return.get("both_no_return_gates_passed") is not True
+        or no_return.get(
+            "source_admitted_for_separate_return_diagnostic_preregistration"
+        )
+        is not True
+        or source_capacity.get("factor") != TUSHARE_DAILY_PB_FACTOR_NAME
+        or source_capacity.get("capacity_gate_passed") is not True
+        or source_capacity.get("potential_complete_cohorts")
+        != no_return_link["potential_complete_cohorts"]
+        or source_capacity.get("observed_calendar_years")
+        != no_return_link["observed_calendar_years"]
+        or uniqueness.get("comparison_field_count")
+        != no_return_link["comparison_field_count"]
+        or uniqueness.get("fields_with_minimum_sessions")
+        != no_return_link["fields_with_minimum_sessions"]
+        or uniqueness.get("fields_below_correlation_threshold")
+        != no_return_link["fields_below_correlation_threshold"]
+        or uniqueness.get("nearest_existing_field")
+        != no_return_link["nearest_existing_field"]
+        or not math.isclose(
+            float(
+                uniqueness.get(
+                    "maximum_observed_absolute_median_daily_rank_correlation"
+                )
+            ),
+            float(
+                no_return_link[
+                    "maximum_observed_absolute_median_daily_rank_correlation"
+                ]
+            ),
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or uniqueness.get("uniqueness_gate_passed") is not True
+        or len(sequence) != 3
+        or sequence[1].get("step") != "three_session_capacity"
+        or sequence[1].get("close_known_comparison_fields_loaded") != []
+        or sequence[2].get("step") != "close_known_2025_uniqueness"
+        or tuple(sequence[2].get("close_known_comparison_fields_loaded") or ())
+        != TUSHARE_DAILY_PB_COMPARISON_FIELDS
+        or source_manifest_evidence.get("sha256") != snapshot_link["manifest_sha256"]
+        or source_manifest_evidence.get("run_id") != snapshot_link["run_id"]
+    ):
+        raise ValueError(
+            "Tushare daily PB no-return audit does not authorize the frozen diagnostic"
+        )
+
+    manifest_path = resolve_repository_record_path(snapshot_link["manifest_path"])
+    if (
+        not manifest_path.exists()
+        or file_sha256(manifest_path) != snapshot_link["manifest_sha256"]
+    ):
+        raise ValueError("Tushare daily PB diagnostic manifest fingerprint mismatch")
+    capacity_spec = load_tushare_daily_pb_capacity_preregistration()
+    factor_frame, source_evidence = validate_tushare_daily_pb_full_snapshot(
+        manifest_path, capacity_spec
+    )
+    if (
+        len(factor_frame) != snapshot_link["rows"]
+        or source_evidence["manifest"]["run_id"] != snapshot_link["run_id"]
+        or source_evidence["manifest"]["status"] != snapshot_link["status"]
+    ):
+        raise ValueError("Tushare daily PB source snapshot changed after registration")
+    return factor_frame, {
+        "combined_no_return_audit": {
+            "path": str(no_return_path),
+            "sha256": file_sha256(no_return_path),
+            "run_id": no_return.get("run_id"),
+            "source_capacity": source_capacity,
+            "uniqueness": uniqueness,
+            "forward_return_fields_read": False,
+        },
+        "source_snapshot": source_evidence,
+        "quarterly_quality": quality,
+        "accepted_price_basis": snapshots["accepted_price_basis"],
+        "holding_universe": holding_link,
+        "local_calendar": calendar_link,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_tushare_daily_pb_diagnostic(
+    experiment_root: Path,
+) -> None:
+    """Prevent a second accepted-price read for the PB mechanism."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == TUSHARE_DAILY_PB_DIAGNOSTIC_PURPOSE:
+            raise ValueError(f"Tushare daily PB diagnostic is already consumed: {path}")
 
 
 def load_tushare_moneyflow_diagnostic_preregistration(
@@ -15324,6 +15641,222 @@ def tushare_moneyflow_capacity(
     )
 
 
+def tushare_daily_pb_capacity(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    research_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Count PB-ready three-session cohorts without loading market outcomes."""
+
+    return jqdata_moneyflow_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        instrument_intervals,
+        contract=contract,
+        factor_name=TUSHARE_DAILY_PB_FACTOR_NAME,
+    )
+
+
+def summarize_tushare_daily_pb_uniqueness(
+    pb_frame: pd.DataFrame,
+    comparison_frame: pd.DataFrame,
+    *,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Compare PB with every frozen close-known field without reading returns."""
+
+    pb_columns = ["trade_date", "instrument", TUSHARE_DAILY_PB_FACTOR_NAME]
+    required_pb = set(pb_columns)
+    if missing := sorted(required_pb - set(pb_frame.columns)):
+        raise ValueError(
+            "Tushare daily PB uniqueness frame is missing columns: "
+            + ", ".join(missing)
+        )
+    comparison_columns = [
+        "datetime",
+        "instrument",
+        "fundamental_quality_eligible",
+        "listing_seasoning_eligible",
+        "quality_eligible",
+        *TUSHARE_DAILY_PB_COMPARISON_FIELDS,
+    ]
+    required_comparison = set(comparison_columns)
+    if missing := sorted(required_comparison - set(comparison_frame.columns)):
+        raise ValueError(
+            "Tushare daily PB comparison frame is missing columns: "
+            + ", ".join(missing)
+        )
+    if tuple(contract.get("comparison_fields") or ()) != TUSHARE_DAILY_PB_COMPARISON_FIELDS:
+        raise ValueError("Tushare daily PB uniqueness comparison-field order changed")
+
+    start = pd.Timestamp(str(contract["start"])).normalize()
+    end = pd.Timestamp(str(contract["end"])).normalize()
+    minimum_names = int(contract["minimum_pairwise_names_per_session"])
+    minimum_sessions = int(contract["minimum_pairwise_sessions_per_comparison"])
+    maximum_correlation = float(
+        contract["maximum_allowed_absolute_median_daily_rank_correlation"]
+    )
+    pb = pb_frame.loc[:, pb_columns].copy()
+    pb["trade_date"] = pd.to_datetime(pb["trade_date"], errors="coerce").dt.normalize()
+    pb[TUSHARE_DAILY_PB_FACTOR_NAME] = pd.to_numeric(
+        pb[TUSHARE_DAILY_PB_FACTOR_NAME], errors="coerce"
+    )
+    pb = pb.loc[pb["trade_date"].between(start, end)].copy()
+    if (
+        pb[["trade_date", "instrument"]].isna().any().any()
+        or pb.duplicated(["instrument", "trade_date"]).any()
+        or not pb[TUSHARE_DAILY_PB_FACTOR_NAME].gt(0.0).all()
+        or not np.isfinite(pb[TUSHARE_DAILY_PB_FACTOR_NAME]).all()
+    ):
+        raise ValueError("Tushare daily PB uniqueness input is invalid")
+
+    comparison = comparison_frame.loc[:, comparison_columns].copy()
+    comparison["datetime"] = pd.to_datetime(
+        comparison["datetime"], errors="coerce"
+    ).dt.normalize()
+    comparison = comparison.loc[comparison["datetime"].between(start, end)].copy()
+    if (
+        comparison[["datetime", "instrument"]].isna().any().any()
+        or comparison.duplicated(["instrument", "datetime"]).any()
+    ):
+        raise ValueError("Tushare daily PB comparison keys are invalid")
+    quality_consistent = (
+        comparison["quality_eligible"].fillna(False)
+        == (
+            comparison["fundamental_quality_eligible"].fillna(False)
+            & comparison["listing_seasoning_eligible"].fillna(False)
+        )
+    )
+    if not quality_consistent.all():
+        raise ValueError("Tushare daily PB comparison quality/listing gate is inconsistent")
+    comparison = comparison.loc[comparison["quality_eligible"].fillna(False)].copy()
+    merged = comparison.merge(
+        pb.rename(columns={"trade_date": "datetime"}),
+        on=["datetime", "instrument"],
+        how="inner",
+        validate="one_to_one",
+    )
+    if merged.empty:
+        raise ValueError("Tushare daily PB uniqueness has no common eligible rows")
+
+    field_results: list[dict[str, Any]] = []
+    for field in TUSHARE_DAILY_PB_COMPARISON_FIELDS:
+        values = merged.loc[
+            :,
+            ["datetime", "instrument", TUSHARE_DAILY_PB_FACTOR_NAME, field],
+        ].copy()
+        values[field] = pd.to_numeric(values[field], errors="coerce")
+        finite = np.isfinite(values[TUSHARE_DAILY_PB_FACTOR_NAME]) & np.isfinite(
+            values[field]
+        )
+        values = values.loc[finite]
+        correlations: list[float] = []
+        pairwise_name_counts: list[int] = []
+        sessions_with_minimum_names = 0
+        sessions_with_two_values = 0
+        for _, daily in values.groupby("datetime", sort=True):
+            pairwise_names = int(daily["instrument"].nunique())
+            if pairwise_names < minimum_names:
+                continue
+            sessions_with_minimum_names += 1
+            pairwise_name_counts.append(pairwise_names)
+            if (
+                daily[TUSHARE_DAILY_PB_FACTOR_NAME].nunique(dropna=True) < 2
+                or daily[field].nunique(dropna=True) < 2
+            ):
+                continue
+            sessions_with_two_values += 1
+            pb_rank = daily[TUSHARE_DAILY_PB_FACTOR_NAME].rank(
+                method="average", pct=True
+            )
+            comparison_rank = daily[field].rank(method="average", pct=True)
+            correlation = float(pb_rank.corr(comparison_rank, method="pearson"))
+            if math.isfinite(correlation):
+                correlations.append(correlation)
+        correlation_series = pd.Series(correlations, dtype="float64")
+        median_correlation = (
+            float(correlation_series.median()) if len(correlation_series) else None
+        )
+        enough_sessions = len(correlations) >= minimum_sessions
+        below_threshold = bool(
+            median_correlation is not None
+            and abs(median_correlation) < maximum_correlation
+        )
+        field_results.append(
+            {
+                "comparison_field": field,
+                "pairwise_rows": int(len(values)),
+                "sessions_with_minimum_pairwise_names": sessions_with_minimum_names,
+                "sessions_with_minimum_names_and_two_values": sessions_with_two_values,
+                "valid_daily_rank_correlation_sessions": int(len(correlations)),
+                "minimum_pairwise_names_observed": (
+                    int(min(pairwise_name_counts)) if pairwise_name_counts else 0
+                ),
+                "median_daily_rank_correlation": median_correlation,
+                "absolute_median_daily_rank_correlation": (
+                    abs(median_correlation)
+                    if median_correlation is not None
+                    else None
+                ),
+                "p05_daily_rank_correlation": (
+                    float(correlation_series.quantile(0.05))
+                    if len(correlation_series)
+                    else None
+                ),
+                "p95_daily_rank_correlation": (
+                    float(correlation_series.quantile(0.95))
+                    if len(correlation_series)
+                    else None
+                ),
+                "minimum_sessions_gate_passed": enough_sessions,
+                "absolute_median_correlation_gate_passed": below_threshold,
+                "uniqueness_gate_passed": bool(enough_sessions and below_threshold),
+            }
+        )
+    nearest = max(
+        field_results,
+        key=lambda item: float(
+            item["absolute_median_daily_rank_correlation"]
+            if item["absolute_median_daily_rank_correlation"] is not None
+            else -1.0
+        ),
+    )
+    passed = all(item["uniqueness_gate_passed"] for item in field_results)
+    return {
+        "factor": TUSHARE_DAILY_PB_FACTOR_NAME,
+        "comparison_field_count": len(field_results),
+        "eligible_pb_comparison_rows": int(len(merged)),
+        "eligible_pb_comparison_sessions": int(merged["datetime"].nunique()),
+        "minimum_pairwise_names_per_session": minimum_names,
+        "minimum_pairwise_sessions_per_comparison": minimum_sessions,
+        "maximum_allowed_absolute_median_daily_rank_correlation": maximum_correlation,
+        "fields_with_minimum_sessions": int(
+            sum(item["minimum_sessions_gate_passed"] for item in field_results)
+        ),
+        "fields_below_correlation_threshold": int(
+            sum(
+                item["absolute_median_correlation_gate_passed"]
+                for item in field_results
+            )
+        ),
+        "nearest_existing_field": nearest["comparison_field"],
+        "maximum_observed_absolute_median_daily_rank_correlation": nearest[
+            "absolute_median_daily_rank_correlation"
+        ],
+        "field_results": field_results,
+        "uniqueness_gate_passed": passed,
+        "same_quality_listing_and_pb_complete_cross_section_applied": True,
+        "forward_open_close_or_return_fields_derived": [],
+        "forward_return_fields_read": False,
+    }
+
+
 def require_unconsumed_jqdata_moneyflow_capacity(
     experiment_root: Path,
     *,
@@ -15621,6 +16154,278 @@ def run_tushare_moneyflow_capacity_audit(args: argparse.Namespace) -> dict[str, 
         "audit_path": str(destination.resolve()),
         "factor_capacity": capacity,
         "source_admitted_for_separate_return_diagnostic_preregistration": admitted,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_tushare_daily_pb_no_return_audit(
+    experiment_root: Path,
+    *,
+    source_manifest_sha256: str,
+) -> None:
+    """Allow one completed combined PB no-return audit per full snapshot."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob("*_tushare_daily_pb_no_return_audit.json")
+    ):
+        record = load_json_record(path)
+        source = ((record.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "manifest"
+        ) or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("purpose") == TUSHARE_DAILY_PB_NO_RETURN_AUDIT_PURPOSE
+            and source.get("sha256") == source_manifest_sha256
+        ):
+            raise ValueError(
+                f"Tushare daily PB no-return snapshot is already consumed: {path}"
+            )
+
+
+def run_tushare_daily_pb_no_return_audit(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """Run capacity first and conditionally run the frozen PB uniqueness gate."""
+
+    spec = load_tushare_daily_pb_capacity_preregistration()
+    factor_frame, source_evidence = validate_tushare_daily_pb_full_snapshot(
+        Path(args.manifest), spec
+    )
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_tushare_daily_pb_no_return_audit(
+        experiment_root,
+        source_manifest_sha256=source_evidence["manifest"]["sha256"],
+    )
+    capacity_contract = spec["capacity_contract"]
+    uniqueness_contract = spec["uniqueness_contract"]
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    if (
+        not calendar_path.exists()
+        or file_sha256(calendar_path)
+        != source_evidence["local_calendar"]["sha256"]
+    ):
+        raise ValueError(
+            "Tushare daily PB provider calendar does not match the source snapshot"
+        )
+    holding_universe_path = (
+        provider_uri
+        / "instruments"
+        / f"{capacity_contract['holding_universe']}.txt"
+    )
+    if not holding_universe_path.exists():
+        raise FileNotFoundError(
+            "Tushare daily PB holding-universe file is missing: "
+            f"{holding_universe_path}"
+        )
+    point_in_time = spec["point_in_time_context"]
+    holding_contract = point_in_time["holding_universe"]
+    holding_fingerprint = point_in_time_interval_fingerprint(
+        holding_universe_path,
+        start=point_in_time["fingerprint_range_start"],
+        end=point_in_time["fingerprint_range_end"],
+    )
+    if holding_fingerprint != {
+        "sha256": holding_contract["sha256"],
+        "intervals": holding_contract["intervals"],
+    }:
+        raise ValueError(
+            "Tushare daily PB holding universe differs from its preregistration"
+        )
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market=capacity_contract["holding_universe"],
+        start=capacity_contract["start"],
+        end=capacity_contract["end"],
+    )
+    quality = spec["quarterly_quality_snapshot"]
+    fundamentals = load_fundamentals(
+        resolve_repository_record_path(quality["path"])
+    )
+    capacity = tushare_daily_pb_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        contract=capacity_contract,
+    )
+    capacity_passed = bool(capacity["capacity_gate_passed"])
+    uniqueness: dict[str, Any] | None = None
+    comparison_fields_loaded: list[str] = []
+    transient_market_inputs: list[str] = []
+    if capacity_passed:
+        uniqueness_start = pd.Timestamp(uniqueness_contract["start"])
+        uniqueness_end = pd.Timestamp(uniqueness_contract["end"])
+        pb_for_uniqueness = factor_frame.loc[
+            pd.to_datetime(factor_frame["trade_date"])
+            .dt.normalize()
+            .between(uniqueness_start, uniqueness_end),
+            ["trade_date", "instrument", TUSHARE_DAILY_PB_FACTOR_NAME],
+        ].copy()
+        del factor_frame
+        gc.collect()
+        market = load_market_data(
+            provider_uri,
+            start=uniqueness_contract["start"],
+            end=uniqueness_contract["end"],
+            batch_size=128,
+        )
+        market = attach_quality_asof(
+            market,
+            fundamentals,
+            max_age_days=int(uniqueness_contract["maximum_quality_age_days"]),
+            availability_calendar=full_calendar,
+        )
+        comparison_columns = [
+            "datetime",
+            "instrument",
+            "fundamental_quality_eligible",
+            "listing_seasoning_eligible",
+            "quality_eligible",
+            *TUSHARE_DAILY_PB_COMPARISON_FIELDS,
+        ]
+        comparison_frame = market.loc[:, comparison_columns].copy()
+        del market
+        gc.collect()
+        comparison_fields_loaded = list(TUSHARE_DAILY_PB_COMPARISON_FIELDS)
+        transient_market_inputs = [
+            "$close",
+            "$open",
+            "$high",
+            "$low",
+            "$volume",
+            "$amount",
+            "$factor",
+            "$turnover",
+            "$vwap",
+        ]
+        uniqueness = summarize_tushare_daily_pb_uniqueness(
+            pb_for_uniqueness,
+            comparison_frame,
+            contract=uniqueness_contract,
+        )
+    else:
+        del factor_frame
+        gc.collect()
+
+    uniqueness_passed = bool(
+        uniqueness is not None and uniqueness["uniqueness_gate_passed"]
+    )
+    both_passed = bool(capacity_passed and uniqueness_passed)
+    if not capacity_passed:
+        decision = (
+            "rejected_before_close_known_comparison_load_and_return_diagnostic_"
+            "insufficient_quality_listing_seasoned_capacity"
+        )
+    elif not uniqueness_passed:
+        decision = (
+            "rejected_before_return_diagnostic_near_synonym_or_insufficient_"
+            "pairwise_uniqueness_evidence"
+        )
+    else:
+        decision = (
+            "eligible_only_for_separate_fingerprint_bound_return_diagnostic_"
+            "preregistration"
+        )
+    run_id = _timestamp()
+    audit = {
+        "kind": "a_share_tushare_daily_pb_no_return_audit",
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": TUSHARE_DAILY_PB_NO_RETURN_AUDIT_PURPOSE,
+        "preregistration": {
+            "path": str(DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [TUSHARE_DAILY_PB_FACTOR_NAME],
+        "later_diagnostic_direction_if_both_no_return_gates_pass": spec[
+            "later_diagnostic_direction_if_both_no_return_gates_pass"
+        ],
+        "capacity_contract": capacity_contract,
+        "uniqueness_contract": uniqueness_contract,
+        "run_sequence": [
+            {
+                "step": "full_snapshot_revalidation",
+                "completed": True,
+                "close_known_comparison_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "three_session_capacity",
+                "completed": True,
+                "passed": capacity_passed,
+                "close_known_comparison_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "close_known_2025_uniqueness",
+                "completed": uniqueness is not None,
+                "skipped_reason": (
+                    None
+                    if capacity_passed
+                    else "capacity_gate_failed_before_comparison_field_load"
+                ),
+                "passed": uniqueness_passed,
+                "close_known_comparison_fields_loaded": comparison_fields_loaded,
+                "forward_return_fields_read": False,
+            },
+        ],
+        "source_capacity": capacity,
+        "uniqueness": uniqueness,
+        "capacity_gate_passed": capacity_passed,
+        "uniqueness_gate_passed": uniqueness_passed,
+        "both_no_return_gates_passed": both_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri),
+            "full_calendar_start": full_calendar.min().date().isoformat(),
+            "full_calendar_end": full_calendar.max().date().isoformat(),
+            "research_calendar_start": research_calendar.min().date().isoformat(),
+            "research_calendar_end": research_calendar.max().date().isoformat(),
+            "calendar_path": str(calendar_path),
+            "calendar_sha256": file_sha256(calendar_path),
+            "holding_universe": capacity_contract["holding_universe"],
+            "holding_universe_path": str(holding_universe_path),
+            "holding_universe_sha256": file_sha256(holding_universe_path),
+            "holding_universe_clipped_fingerprint": holding_fingerprint,
+            "instrument_span_count": int(len(intervals)),
+            "capacity_price_fields_loaded": [],
+            "capacity_completed_before_close_known_comparison_fields": True,
+            "close_known_comparison_fields_loaded": comparison_fields_loaded,
+            "same_session_close_known_market_inputs_transiently_loaded": transient_market_inputs,
+            "raw_market_columns_retained_in_audit": [],
+            "future_open_close_or_return_fields_read": False,
+            "future_open_close_or_return_field_names": [],
+            "forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Capacity and uniqueness are no-outcome gates; passing does not imply association, tradability, or a usable strategy.",
+            "The 2025 comparison fields are same-session close-known inputs and are loaded only after capacity passes.",
+            "No future open, future close, forward return, score, current selection, position sizing, or order field is read or derived.",
+            "A dual pass authorizes only a new immutable single-factor return-diagnostic preregistration bound to this audit fingerprint.",
+            "The licensed Tushare snapshot is user-provided evidence and is not bundled in Git.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_tushare_daily_pb_no_return_audit.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity,
+        "uniqueness": uniqueness,
+        "both_no_return_gates_passed": both_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
         "decision": decision,
         "forward_return_fields_read": False,
     }
@@ -19362,6 +20167,74 @@ def load_jqdata_moneyflow_capacity_audits(
     return audits
 
 
+def load_tushare_daily_pb_no_return_audits(
+    experiment_root: Path,
+) -> list[dict[str, Any]]:
+    """Read combined PB capacity/uniqueness gates for the research log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(
+        experiment_root.expanduser().glob("*_tushare_daily_pb_no_return_audit.json")
+    ):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if (
+            audit.get("status") != "completed"
+            or audit.get("purpose") != TUSHARE_DAILY_PB_NO_RETURN_AUDIT_PURPOSE
+        ):
+            continue
+        capacity = audit.get("source_capacity") or {}
+        uniqueness = audit.get("uniqueness") or {}
+        source = ((audit.get("preregistration") or {}).get("source_evidence") or {}).get(
+            "manifest"
+        ) or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "source_run_id": str(source.get("run_id", "—")),
+                "source_sha256": str(source.get("sha256", "—")),
+                "complete_cohorts": int(
+                    capacity.get("potential_complete_cohorts") or 0
+                ),
+                "minimum_cohorts": int(capacity.get("minimum_required_cohorts") or 0),
+                "observed_years": int(capacity.get("observed_calendar_years") or 0),
+                "minimum_years": int(
+                    capacity.get("minimum_observed_calendar_years") or 0
+                ),
+                "capacity_passed": bool(audit.get("capacity_gate_passed", False)),
+                "comparison_field_count": int(
+                    uniqueness.get("comparison_field_count") or 0
+                ),
+                "fields_with_minimum_sessions": int(
+                    uniqueness.get("fields_with_minimum_sessions") or 0
+                ),
+                "fields_below_threshold": int(
+                    uniqueness.get("fields_below_correlation_threshold") or 0
+                ),
+                "nearest_existing_field": str(
+                    uniqueness.get("nearest_existing_field", "—")
+                ),
+                "maximum_absolute_median_correlation": uniqueness.get(
+                    "maximum_observed_absolute_median_daily_rank_correlation"
+                ),
+                "uniqueness_passed": bool(
+                    audit.get("uniqueness_gate_passed", False)
+                ),
+                "both_passed": bool(
+                    audit.get("both_no_return_gates_passed", False)
+                ),
+                "forward_return_fields_read": bool(
+                    audit.get("forward_return_fields_read", True)
+                ),
+                "decision": str(audit.get("decision", "—")),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_sparse_announcement_capacity_audits(experiment_root: Path) -> list[dict[str, Any]]:
     """Read no-return sparse-announcement capacity gates for the research log."""
 
@@ -20291,6 +21164,7 @@ def render_three_day_research_report(
     prospective_factor_ledger: dict[str, Any] | None = None,
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
     jqdata_moneyflow_capacity_audits: list[dict[str, Any]] | None = None,
+    tushare_daily_pb_no_return_audits: list[dict[str, Any]] | None = None,
     sparse_announcement_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_timing_capacity_audits: list[dict[str, Any]] | None = None,
@@ -20850,6 +21724,55 @@ def render_three_day_research_report(
                     ),
                     returns=(
                         "是（无效）" if audit["forward_return_fields_read"] else "否"
+                    ),
+                )
+            )
+        lines.append("")
+    if tushare_daily_pb_no_return_audits:
+        lines.extend(
+            [
+                "",
+                "## Tushare PB 联合无收益门禁",
+                "",
+                "本节严格先用季度质量、上市满 20 会话和非重叠三日网格检查容量；容量通过后，才加载 2025 年冻结的 43 个收盘已知字段，逐一检查 PB 的日截面秩相关唯一性。全过程不读取未来开收盘或远期收益。双门通过也只允许另行冻结一次收益诊断。",
+                "",
+                "| 审计 | 来源快照 | Cohort / 门槛 | 年份 / 门槛 | 唯一性字段通过 | 最近既有字段（绝对中位相关） | 联合结论 | 读取未来收益 |",
+                "| --- | --- | ---: | ---: | ---: | --- | --- | --- |",
+            ]
+        )
+        for audit in tushare_daily_pb_no_return_audits:
+            source_id = audit["source_run_id"]
+            if audit["source_sha256"] != "—":
+                source_id = f"{source_id} ({audit['source_sha256'][:12]})"
+            correlation = audit["maximum_absolute_median_correlation"]
+            correlation_text = (
+                f"{float(correlation):.4f}" if correlation is not None else "—"
+            )
+            lines.append(
+                "| {run_id} | {source} | {cohorts} / {minimum} | {years} / {minimum_years} | {unique} / {field_count} | {nearest} ({correlation}) | {result} | {returns} |".format(
+                    run_id=audit["run_id"],
+                    source=source_id,
+                    cohorts=audit["complete_cohorts"],
+                    minimum=audit["minimum_cohorts"],
+                    years=audit["observed_years"],
+                    minimum_years=audit["minimum_years"],
+                    unique=audit["fields_below_threshold"],
+                    field_count=audit["comparison_field_count"],
+                    nearest=audit["nearest_existing_field"],
+                    correlation=correlation_text,
+                    result=(
+                        "允许另行冻结收益诊断"
+                        if audit["both_passed"]
+                        else (
+                            "唯一性失败，停止"
+                            if audit["capacity_passed"]
+                            else "容量不足，停止"
+                        )
+                    ),
+                    returns=(
+                        "是（无效）"
+                        if audit["forward_return_fields_read"]
+                        else "否"
                     ),
                 )
             )
@@ -21698,6 +22621,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     jqdata_moneyflow_capacity_audits = load_jqdata_moneyflow_capacity_audits(
         experiment_root
     )
+    tushare_daily_pb_no_return_audits = load_tushare_daily_pb_no_return_audits(
+        experiment_root
+    )
     sparse_announcement_capacity_audits = load_sparse_announcement_capacity_audits(experiment_root)
     institutional_survey_capacity_audits = load_institutional_survey_capacity_audits(experiment_root)
     institutional_survey_timing_capacity_audits = (
@@ -21763,6 +22689,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         prospective_factor_ledger=prospective_factor_ledger,
         quarterly_event_capacity_audits=quarterly_event_capacity_audits,
         jqdata_moneyflow_capacity_audits=jqdata_moneyflow_capacity_audits,
+        tushare_daily_pb_no_return_audits=tushare_daily_pb_no_return_audits,
         sparse_announcement_capacity_audits=sparse_announcement_capacity_audits,
         institutional_survey_capacity_audits=institutional_survey_capacity_audits,
         institutional_survey_timing_capacity_audits=institutional_survey_timing_capacity_audits,
@@ -21831,6 +22758,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "quarterly_profit_acceleration_event_audits": len(quarterly_profit_acceleration_event_audits),
         "quarterly_event_capacity_audits": len(quarterly_event_capacity_audits),
         "jqdata_moneyflow_capacity_audits": len(jqdata_moneyflow_capacity_audits),
+        "tushare_daily_pb_no_return_audits": len(
+            tushare_daily_pb_no_return_audits
+        ),
         "sparse_announcement_capacity_audits": len(sparse_announcement_capacity_audits),
         "institutional_survey_capacity_audits": len(institutional_survey_capacity_audits),
         "institutional_survey_timing_capacity_audits": len(
@@ -23510,6 +24440,9 @@ def run_tushare_moneyflow_diagnostic(args: argparse.Namespace) -> dict[str, Any]
     for context_column in FACTOR_TAIL_ATTRIBUTION_COLUMNS:
         if context_column not in ranked.columns:
             continue
+        ranked[context_column] = pd.to_numeric(
+            ranked[context_column], errors="coerce"
+        ).astype("float64")
         context_rank = (
             ranked.loc[quality_eligible]
             .groupby("datetime", sort=False)[context_column]
@@ -23668,6 +24601,263 @@ def run_tushare_moneyflow_diagnostic(args: argparse.Namespace) -> dict[str, Any]
             "The no-return capacity pass proves only that a valid test was possible, not that this factor is associated with returns.",
             "Tushare and the unobserved JQData substitute are one economic mechanism and may not be combined as independent factors.",
             "Passing both default gates would only permit a separately registered genuinely future paper protocol; failure stops this historical version.",
+            "Daily bars and limit prices cannot reconstruct exact queue priority, partial fills, or realized market impact.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_factor_diagnostic.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_count": 1,
+        "top_factors_by_development_rank_ic": [summary],
+    }
+
+
+def run_tushare_daily_pb_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
+    """Run the dual-no-return-qualified positive book-to-market factor once."""
+
+    provider_uri = Path(args.provider_uri).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_tushare_daily_pb_diagnostic_preregistration()
+    factor_frame, source_evidence = validate_tushare_daily_pb_diagnostic_sources(
+        spec
+    )
+    require_unconsumed_tushare_daily_pb_diagnostic(experiment_root)
+    contract = spec["run_contract"]
+    snapshots = spec["source_snapshots"]
+    factor_name = spec["factor"]["name"]
+
+    execution_policy = load_prospective_execution_policy()
+    require_prospective_execution_policy_compatibility(
+        execution_policy,
+        hold_days=int(contract["holding_period_trading_days"]),
+        topk=int(contract["topk"]),
+        open_cost=float(contract["open_cost"]),
+        close_cost=float(contract["close_cost"]),
+    )
+    pilot_policy = load_pilot_execution_policy()
+    if int(contract["minimum_listing_sessions"]) != MIN_LISTING_SESSIONS:
+        raise ValueError("Tushare daily PB diagnostic conflicts with listing seasoning")
+    price_basis_metadata = research_price_basis_metadata(provider_uri)
+    fundamental_path = resolve_repository_record_path(
+        snapshots["quarterly_quality"]["path"]
+    )
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(
+        provider_uri,
+        contract["start"],
+        contract["end"],
+        args.batch_size,
+    )
+    if pd.Timestamp(market["datetime"].max()) > pd.Timestamp(
+        contract["development_end"]
+    ):
+        raise ValueError("Tushare daily PB diagnostic loaded rows after development end")
+    market = attach_quality_asof(
+        market,
+        fundamentals,
+        max_age_days=int(contract["maximum_quality_age_days"]),
+    )
+    source_rows = int(len(factor_frame))
+    raw_column = f"_raw_{factor_name}"
+    factor_values = factor_frame.rename(
+        columns={"trade_date": "datetime", factor_name: raw_column}
+    ).copy()
+    factor_values["datetime"] = pd.to_datetime(
+        factor_values["datetime"]
+    ).dt.normalize()
+    ranked = market.merge(
+        factor_values[["datetime", "instrument", raw_column]],
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    ranked[raw_column] = pd.to_numeric(ranked[raw_column], errors="coerce")
+    ranked[raw_column] = ranked[raw_column].where(np.isfinite(ranked[raw_column]))
+    quality_eligible = ranked["quality_eligible"].fillna(False)
+    quality_counts = {
+        "fundamental_eligible_rows_before_listing_gate": int(
+            market["fundamental_quality_eligible"].fillna(False).sum()
+        ),
+        "eligible_rows_after_listing_gate": int(
+            market["quality_eligible"].fillna(False).sum()
+        ),
+        "fundamental_rows_excluded_by_listing_gate": int(
+            (
+                market["fundamental_quality_eligible"].fillna(False)
+                & ~market["listing_seasoning_eligible"].fillna(False)
+            ).sum()
+        ),
+    }
+    market_rows = int(len(market))
+    eligible_rows = int(market["quality_eligible"].fillna(False).sum())
+    calendar_start = market["datetime"].min().date().isoformat()
+    calendar_end = market["datetime"].max().date().isoformat()
+    del market, factor_values, factor_frame
+    gc.collect()
+    ranked = ranked.join(market_state_frame(ranked, quality_eligible), on="datetime")
+    for context_column in FACTOR_TAIL_ATTRIBUTION_COLUMNS:
+        if context_column not in ranked.columns:
+            continue
+        ranked[context_column] = pd.to_numeric(
+            ranked[context_column], errors="coerce"
+        ).astype("float64")
+        context_rank = (
+            ranked.loc[quality_eligible]
+            .groupby("datetime", sort=False)[context_column]
+            .rank(pct=True)
+        )
+        ranked.loc[quality_eligible, context_column] = context_rank
+    factor_eligible = quality_eligible & ranked[raw_column].notna()
+    ranked[factor_name] = np.nan
+    ranked.loc[factor_eligible, factor_name] = (
+        ranked.loc[factor_eligible]
+        .groupby("datetime", sort=False)[raw_column]
+        .rank(pct=True)
+    )
+    ranked.drop(columns=[raw_column], inplace=True)
+    valid_names_by_date = ranked.loc[factor_eligible].groupby("datetime")[
+        "instrument"
+    ].nunique()
+    dates_with_minimum_names = int(
+        valid_names_by_date.ge(
+            int(contract["minimum_valid_names_per_factor_cohort"])
+        ).sum()
+    )
+    if dates_with_minimum_names < FACTOR_STABILITY_MIN_COHORTS:
+        raise RuntimeError(
+            "Tushare daily PB coverage fell below the passed capacity gate"
+        )
+
+    forward_returns = forward_factor_return_frame(
+        ranked, int(contract["holding_period_trading_days"])
+    )
+    summaries = summarize_factor_diagnostics(
+        forward_returns,
+        [factor_name],
+        hold_days=int(contract["holding_period_trading_days"]),
+        topk=int(contract["topk"]),
+        open_cost=float(contract["open_cost"]),
+        close_cost=float(contract["close_cost"]),
+    )
+    if len(summaries) != 1 or summaries[0].get("factor") != factor_name:
+        raise RuntimeError("Tushare daily PB diagnostic did not produce one factor")
+    summary = summaries[0]
+    summary["execution_aware_topk"] = simulate_prospective_execution_topk(
+        ranked,
+        factor_name,
+        policy=execution_policy,
+    )
+    summary["pilot_execution_topk"] = simulate_pilot_execution_topk(
+        ranked,
+        factor_name,
+        execution_policy=execution_policy,
+        pilot_policy=pilot_policy,
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": TUSHARE_DAILY_PB_DIAGNOSTIC_PURPOSE,
+        "factor_catalog": [factor_name],
+        "factor_direction": "higher positive book-to-market is better",
+        "mechanism_identity": {
+            "provider": "tushare",
+            "source_api": "daily_basic.pb",
+            "independent_from_rejected_classified_moneyflow": True,
+            "alternative_pb_transforms_or_thresholds_allowed": False,
+        },
+        "strategy_timing": {
+            "universe": contract["holding_universe"],
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
+            "holding_period_trading_days": int(
+                contract["holding_period_trading_days"]
+            ),
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": "Tushare daily_basic documented at 15:00-17:00 after close",
+            "same_session_trade_allowed": False,
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "diagnostic_topk": int(contract["topk"]),
+            "open_cost": float(contract["open_cost"]),
+            "close_cost": float(contract["close_cost"]),
+            "parameters_read_from_preregistration": True,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": int(contract["maximum_quality_age_days"]),
+            **quality_counts,
+        },
+        "tushare_daily_pb": {
+            "source_manifest": snapshots["tushare_daily_pb"]["manifest_path"],
+            "source_manifest_sha256": snapshots["tushare_daily_pb"][
+                "manifest_sha256"
+            ],
+            "source_rows": source_rows,
+            "quality_and_factor_eligible_rows": int(factor_eligible.sum()),
+            "dates_with_at_least_fifty_factor_names": dates_with_minimum_names,
+            "score_formula": spec["factor"]["score_formula"],
+            "maximum_event_age_days": 0,
+            "source_formula": spec["factor"]["source_formula"],
+            "pe_market_cap_turnover_dividend_or_limit_fields_requested": False,
+            "price_or_return_fields_stored_in_source": False,
+            "selection_or_promotion_allowed": False,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            **price_basis_metadata,
+            "calendar_start": calendar_start,
+            "calendar_end": calendar_end,
+            "development_start": contract["start"],
+            "development_end": contract["development_end"],
+            "market_rows": market_rows,
+            "eligible_rows": eligible_rows,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "complete_forward_name_observations": int(len(forward_returns)),
+            "test_period_used_for_factor_design": False,
+        },
+        "prospective_execution_policy": {
+            "path": str(DEFAULT_PROSPECTIVE_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": execution_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
+        "pilot_execution_policy": {
+            "path": str(DEFAULT_PILOT_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+            "existing_43_factor_frontier_retroactively_rerun": False,
+        },
+        "preregistration": {
+            "path": str(DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC.resolve()),
+            "sha256": file_sha256(DEFAULT_TUSHARE_DAILY_PB_DIAGNOSTIC_SPEC),
+            "preregistered_at": spec["preregistered_at"],
+            "pb_factor_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+        "ranking_by_development_rank_ic": [summary],
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "This is the single positive book-to-market direction frozen before returns; it does not create a current stock list or order.",
+            "Capacity and uniqueness passes prove only that a distinct, adequately powered test was possible.",
+            "No PB inversion, threshold, alternative transform, valuation field, or post-hoc year subset is authorized.",
+            "Passing both default gates would require a separately dated prospective protocol before any current scoring; failure stops this historical version.",
             "Daily bars and limit prices cannot reconstruct exact queue priority, partial fills, or realized market impact.",
         ],
     }
@@ -28205,6 +29395,18 @@ def parse_args() -> argparse.Namespace:
     )
     tushare_moneyflow_diagnostic.add_argument("--batch-size", type=int, default=500)
 
+    tushare_daily_pb_diagnostic = subparsers.add_parser(
+        "tushare-daily-pb-diagnostic",
+        help="diagnose the capacity- and uniqueness-qualified PB factor exactly once",
+    )
+    tushare_daily_pb_diagnostic.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    tushare_daily_pb_diagnostic.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    tushare_daily_pb_diagnostic.add_argument("--batch-size", type=int, default=500)
+
     minute_factor_diagnostic = subparsers.add_parser(
         "minute-factor-diagnostic",
         help="diagnose all five factors from one frozen minute protocol under the fixed three-day horizon",
@@ -28431,6 +29633,25 @@ def parse_args() -> argparse.Namespace:
         "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
     )
     tushare_moneyflow_capacity_parser.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
+    tushare_daily_pb_no_return_parser = subparsers.add_parser(
+        "tushare-daily-pb-no-return-audit",
+        help="run frozen PB capacity first, then conditionally audit close-known uniqueness",
+    )
+    tushare_daily_pb_no_return_parser.add_argument(
+        "--manifest",
+        required=True,
+        help=(
+            "full_source_coverage_passed_pending_no_return_uniqueness_and_capacity "
+            "snapshot manifest"
+        ),
+    )
+    tushare_daily_pb_no_return_parser.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    tushare_daily_pb_no_return_parser.add_argument(
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
@@ -28980,6 +30201,8 @@ def main() -> int:
         report = run_directional_serial_dependence_diagnostic(args)
     elif args.command == "tushare-moneyflow-diagnostic":
         report = run_tushare_moneyflow_diagnostic(args)
+    elif args.command == "tushare-daily-pb-diagnostic":
+        report = run_tushare_daily_pb_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
         report = run_minute_factor_diagnostic(args)
     elif args.command == "rolling-window-semantics-audit":
@@ -29008,6 +30231,8 @@ def main() -> int:
         report = run_jqdata_moneyflow_capacity_audit(args)
     elif args.command == "tushare-moneyflow-capacity-audit":
         report = run_tushare_moneyflow_capacity_audit(args)
+    elif args.command == "tushare-daily-pb-no-return-audit":
+        report = run_tushare_daily_pb_no_return_audit(args)
     elif args.command == "sparse-announcement-capacity-audit":
         report = run_sparse_announcement_capacity_audit(args)
     elif args.command == "institutional-survey-capacity-audit":

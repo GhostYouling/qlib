@@ -14,7 +14,9 @@ python -m pip install -r scripts/data_collector/a_share_rich/requirements.txt
 
 Credentials belong in the local process environment only.  On macOS with
 zsh, enter the Tushare token through a hidden prompt so the value never appears
-in shell history:
+in shell history.  The complete setup, verification, one-command forwarding,
+and cleanup guide is in
+[`docs/a_share_tushare_token_setup.md`](../../../docs/a_share_tushare_token_setup.md):
 
 ```zsh
 read -s "token?Paste the Tushare token, then press Enter: "; echo

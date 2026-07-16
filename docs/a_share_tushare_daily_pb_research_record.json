@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_daily_pb_research_record",
+  "status": "terminal_rejected_after_capacity_uniqueness_association_and_execution_gates",
+  "recorded_at": "2026-07-16T11:10:51Z",
+  "factor": {
+    "name": "tushare_positive_book_to_market",
+    "source_formula": "1 / pb for finite positive pb only",
+    "direction_tested": "higher_is_better",
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31"
+  },
+  "evidence_chain": {
+    "source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T102519Z_tushare_daily_pb_2e5c38bf.json",
+      "sha256": "280bc68239cc70a5e7d6e44dbb0a15a0b331be8215ddfb8d9ebd27a408e1e366",
+      "rows": 7042084
+    },
+    "capacity_and_uniqueness_preregistration": {
+      "path": "docs/a_share_tushare_daily_pb_capacity_preregistration.json",
+      "sha256": "14668ad3f97cef68cd2fae882507280ef835c0f5e7b4ddecb763c1907590c0a0"
+    },
+    "combined_no_return_audit": {
+      "path": "data/experiments/short_horizon/20260716T105955Z_tushare_daily_pb_no_return_audit.json",
+      "sha256": "a6a548539dd8017e57e226189678195e646795050244fe4914627f574e6d6e9c",
+      "potential_complete_cohorts": 540,
+      "observed_calendar_years": 7,
+      "comparison_fields_passing_minimum_sessions": 43,
+      "comparison_fields_below_absolute_median_correlation_threshold": 43,
+      "nearest_existing_field": "amplitude_5",
+      "maximum_absolute_median_daily_rank_correlation": 0.4410579409621197,
+      "capacity_gate_passed": true,
+      "uniqueness_gate_passed": true,
+      "forward_return_fields_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_daily_pb_diagnostic_preregistration.json",
+      "sha256": "ad1e14fa8d2a858b7c35a0259ebe7ab087f2c08b2f27281edb7f3c08582b47da",
+      "pb_factor_returns_observed_before_registration": false
+    },
+    "diagnostic": {
+      "run_id": "20260716T110957Z",
+      "path": "data/experiments/short_horizon/20260716T110957Z_factor_diagnostic.json",
+      "sha256": "c1afa5fa4a4551a14b202e0c84dbaf0fea3f1433410becbbbd5f75771b200763"
+    },
+    "stability_audit": {
+      "run_id": "20260716T111018Z",
+      "path": "data/experiments/short_horizon/20260716T111018Z_factor_stability_audit.json",
+      "sha256": "7b4aad95bb3c5c67cbfe9ef1d6007f7e0e2f88e745c43e15e5288dce39a9c201",
+      "qualified_factor_count": 0
+    },
+    "topk_viability_audit": {
+      "run_id": "20260716T111028Z",
+      "path": "data/experiments/short_horizon/20260716T111028Z_factor_topk_viability_audit.json",
+      "sha256": "d3055ab38cbd26508ae15cf07df892d6e58f3e24922c7d420059fe8eaedc751e",
+      "qualified_factor_count": 0
+    }
+  },
+  "diagnostic_summary": {
+    "cohorts": 542,
+    "mean_rank_ic": 0.021642468311931746,
+    "median_rank_ic": 0.01788427856,
+    "positive_rank_ic_rate": 0.5387453874538746,
+    "mean_top_minus_bottom_gross_return": 0.0019645060299177453,
+    "annual_mean_rank_ic": {
+      "2019": -0.05068164789381118,
+      "2020": -0.017190450571566387,
+      "2021": 0.035624434340514835,
+      "2022": 0.051122514559455864,
+      "2023": 0.05453255246898171,
+      "2024": 0.044415614628986695,
+      "2025": 0.014211135010444707
+    },
+    "naive_fixed_horizon_top3": {
+      "rounds": 542,
+      "net_cumulative_return": 1.0738391847428144,
+      "annualized_return": 0.11968095762404451,
+      "maximum_drawdown": -0.2355223965514397,
+      "win_rate": 0.5055350553505535,
+      "gate_alone_is_sufficient": false
+    },
+    "execution_aware_top3": {
+      "complete_signal_count": 536,
+      "net_cumulative_return": 1.104886972648325,
+      "maximum_drawdown": -0.24119195352902267,
+      "annual_net_cumulative_return_by_signal_year": {
+        "2019": -0.12617359631877934,
+        "2020": 0.09589505978528634,
+        "2021": 0.2702156703515355,
+        "2022": 0.17077805471559815,
+        "2023": 0.0029826715759566635,
+        "2024": 0.3188513857339914,
+        "2025": 0.11736051007156578
+      },
+      "gate_passed": false,
+      "failures": [
+        "execution-aware maximum drawdown worse than -20%",
+        "non-positive execution-aware signal-year return: 2019"
+      ]
+    },
+    "cny_200000_board_lot_top3_at_ten_basis_points": {
+      "filled_slot_count": 1608,
+      "board_lot_affordable_opportunity_rate": 1.0,
+      "net_cumulative_return": -0.03327569663274388,
+      "maximum_drawdown": -0.06198984866398549,
+      "maximum_filled_trade_daily_amount_participation": 0.0009279617221554741,
+      "annual_net_cumulative_return_by_signal_year": {
+        "2019": -0.03385170440476648,
+        "2020": -0.006942489591186485,
+        "2021": 0.013607999201768584,
+        "2022": -0.00003544669608923634,
+        "2023": -0.02185500502216009,
+        "2024": 0.019845517423596082,
+        "2025": -0.0034658605828205014
+      },
+      "gate_passed": false,
+      "failures": [
+        "non-positive pilot return under ten-basis-point slippage",
+        "non-positive pilot signal-year return under ten-basis-point slippage: 2019, 2020, 2022, 2023, 2025"
+      ]
+    }
+  },
+  "gate_decisions": {
+    "association_stability_gate_passed": false,
+    "association_failures": [
+      "non-positive annual mean Rank IC: 2019, 2020"
+    ],
+    "topk_viability_gate_passed": false,
+    "topk_failures": [
+      "association screen failed in 2019 and 2020",
+      "pilot execution gate failed at ten-basis-point slippage",
+      "execution-aware maximum drawdown worse than -20%",
+      "non-positive execution-aware signal-year return: 2019"
+    ],
+    "dual_gate_qualified": false
+  },
+  "decision": {
+    "outcome": "stop_positive_book_to_market_historical_direction_without_aggregation_scoring_selection_or_orders",
+    "rerun_same_history_allowed": false,
+    "invert_factor_allowed": false,
+    "change_pb_transform_or_threshold_allowed": false,
+    "subset_years_allowed": false,
+    "change_holding_period_topk_cost_quality_or_listing_gate_allowed": false,
+    "combine_with_rejected_existing_factors_allowed": false,
+    "current_score_selection_position_or_order_allowed": false,
+    "level2_intake_justified_by_this_result": false
+  },
+  "forward_return_fields_read": true,
+  "selection_or_promotion_allowed": false
+}
