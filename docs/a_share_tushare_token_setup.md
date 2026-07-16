@@ -83,3 +83,9 @@ launchctl unsetenv TUSHARE_TOKEN
 ```
 
 清除后重新运行第 3 节的状态检查。仓库内任何文件都不应包含真实 Token；如果曾误写或误提交，应立即在 Tushare 账户侧轮换 Token，再清理泄露位置，不能只删除最新一行提交记录。
+
+## 6. 交给 Codex 使用
+
+完成第 2 节的 `launchctl setenv` 后，彻底退出并重新打开 Codex，再让它在本仓库运行 `python scripts/a_share_rich_data.py status`。你只需确认输出中 Tushare 环境变量和 SDK 已就绪，不需要把 Token 发给 Codex，也不要粘贴任何 `launchctl getenv` 的明文输出。
+
+本项目的后续数据命令必须从进程环境读取 `TUSHARE_TOKEN`，并且仍要遵守对应数据合同的单日验收、不读取收益门禁和原子发布要求。“状态已就绪”只证明本机凭据可用，不代表已授权跳过验收、批量下载、因子诊断或选股。

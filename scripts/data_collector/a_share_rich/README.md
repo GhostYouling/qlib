@@ -106,8 +106,8 @@ size this historical factor.  The commands above document the accepted
 pipeline and recovery order; they are not authorization to create another
 historical trial from the same mechanism.
 
-The next independent source branch is the SW2021 level-one industry-membership
-snapshot.  The fixed 31-code by current/historical-state request completed all
+The SW2021 level-one industry-membership branch is now complete and terminal.
+The fixed 31-code by current/historical-state request completed all
 62 provider calls and published
 `20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe`: 7,803 canonical rows,
 5,863 instruments, all 31 level-one industries, no duplicate intervals, and
@@ -118,8 +118,26 @@ change the factor formula, direction, peer threshold, or time window.
 
 The no-price interval audit passed with 7,043 consolidated point-in-time
 memberships and buyable-universe median/P05 coverage of 99.651%/98.145%.
-Factor construction is implemented and unit-tested, but the frozen capacity
-and 45-factor uniqueness audit has not completed.  This snapshot therefore
-cannot enter aggregation, current scoring, selection, sizing, or orders.  Do
-not repeat the full historical sync; continue only with the registered
-no-forward-return gates.
+The combined no-return audit then passed coverage, 540/200 cohort capacity
+across seven years, and all 45 fixed uniqueness comparisons; its nearest
+existing field was `momentum_3` at absolute median daily rank correlation
+0.26385.  The separately frozen one-time diagnostic nevertheless qualified
+0/1 factors in both default audits: mean Rank IC was only +0.00049, TopK minus
+BottomK gross spread was -0.2107%, execution-aware Top-3 lost 60.40%, and the
+CNY 200,000 board-lot ledger at ten basis points per side lost 18.42%.
+Preserve `docs/a_share_tushare_sw_industry_breadth_research_record.json`.
+Do not repeat the sync or diagnostic, invert, re-window, change peer rules,
+subset years, aggregate, score, select, size, order, or justify Level-2 from
+this result.  A later branch must begin from a genuinely independent,
+pre-registered no-return mechanism.
+
+The next independent candidate is the institution-only seat flow from
+Tushare `top_inst`.  Its six-field, no-return data contract is frozen in
+`docs/a_share_tushare_top_inst_data_contract.json` before any entitlement
+result or provider row was observed.  No `top_inst` API request has run yet.
+Only one fixed-session acceptance for 2026-07-13 is allowed next; it must
+reconcile seat-level buy, sell, and provider net buy, reject duplicate seat
+keys, and confirm every institution-seat stock against the already accepted
+same-date raw `top_list` snapshot.  Do not run full history, capacity,
+uniqueness, returns, aggregation, scoring, selection, sizing, or orders unless
+that acceptance passes and the next protocol is frozen separately.

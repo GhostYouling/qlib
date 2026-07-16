@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_sw_industry_breadth_research_record",
+  "status": "terminal_rejected_after_membership_factor_coverage_capacity_uniqueness_association_and_execution_gates",
+  "recorded_at": "2026-07-16T12:39:56Z",
+  "factor": {
+    "name": "sw1_three_session_leave_one_out_breadth",
+    "daily_formula": "(industry positive-return count - own positive-return indicator) / (industry valid-return count - 1)",
+    "lookback": "arithmetic mean of exact daily leave-one-out breadth over signal session and prior two local sessions; all three required",
+    "direction_tested": "higher_is_better",
+    "minimum_other_valid_peers_each_session": 10,
+    "peer_minimum_listing_sessions": 20,
+    "stock_self_direction_included": false,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31"
+  },
+  "evidence_chain": {
+    "data_contract": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_data_contract.json",
+      "sha256": "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
+    },
+    "source_acceptance": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_source_acceptance_record.json",
+      "sha256": "bac35e9feacd62d0db7cd15fe15be444c308e1b8152f08dbdf3292a550d5da6f"
+    },
+    "source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe.json",
+      "sha256": "8582eb25f91ddcbe01130057ecb118431168545fa0a182cdb428c3a8d2a0228e",
+      "membership_frame_sha256": "474bbfcd7da4bb4d1a7c1f6b30e7c26e19230782ddee2769af4539cc3eab5c88",
+      "rows": 7803,
+      "instruments": 5863,
+      "level_one_industries": 31
+    },
+    "symbol_normalization_repair": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_symbol_repair.json",
+      "sha256": "5001ae0b278d086f26ca35bf8a1fc43c8009aa99c13b03258e7b2fb7bc99b18f"
+    },
+    "capacity_and_uniqueness_preregistration": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_capacity_preregistration.json",
+      "sha256": "dc5e0525df07e21d628ab09d46843511ddbeacb09ecbc3afb41d14b43bcfae59"
+    },
+    "combined_no_return_audit": {
+      "run_id": "20260716T121912Z",
+      "path": "data/experiments/short_horizon/20260716T121912Z_tushare_sw_industry_breadth_no_return_audit.json",
+      "sha256": "083a6941aba00fd9caac954a404bf7e06bac4213b5e3668f161f3a47fc4680e3",
+      "membership_interval_count": 7043,
+      "active_holding_factor_rows": 7048922,
+      "sessions_with_at_least_fifty_factor_values": 1697,
+      "potential_complete_cohorts": 540,
+      "observed_calendar_years": 7,
+      "comparison_field_count": 45,
+      "fields_with_minimum_sessions": 45,
+      "fields_below_correlation_threshold": 45,
+      "nearest_existing_field": "momentum_3",
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.26384671643824736,
+      "membership_coverage_gate_passed": true,
+      "factor_coverage_gate_passed": true,
+      "capacity_gate_passed": true,
+      "uniqueness_gate_passed": true,
+      "forward_return_fields_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_diagnostic_preregistration.json",
+      "sha256": "54940682e5325beafd086e80883fc2a02c2fc9f24eede08a11b53ce89c6628e1",
+      "breadth_factor_returns_observed_before_registration": false
+    },
+    "diagnostic": {
+      "run_id": "20260716T123832Z",
+      "path": "data/experiments/short_horizon/20260716T123832Z_factor_diagnostic.json",
+      "sha256": "01b3825a751a302f7ab041a04ff92ad32272364ee3cd939bb0e026e68e05f30d"
+    },
+    "stability_audit": {
+      "run_id": "20260716T123902Z",
+      "path": "data/experiments/short_horizon/20260716T123902Z_factor_stability_audit.json",
+      "sha256": "87680eb84e63d9bd4a5741aa783143c32a3c934b5bd1875df62d7d56550a63a4",
+      "requested_factors": null,
+      "qualified_factor_count": 0
+    },
+    "topk_viability_audit": {
+      "run_id": "20260716T123907Z",
+      "path": "data/experiments/short_horizon/20260716T123907Z_factor_topk_viability_audit.json",
+      "sha256": "196d7726793574468852481baf3c7ad1a07b8fc4edd14530cae4c5131d68ac49",
+      "requested_factors": null,
+      "qualified_factor_count": 0
+    }
+  },
+  "diagnostic_summary": {
+    "cohorts": 542,
+    "mean_rank_ic": 0.0004875540260609676,
+    "median_rank_ic": -4.474905325274842e-06,
+    "positive_rank_ic_rate": 0.5,
+    "mean_top_minus_bottom_gross_return": -0.002107002477486346,
+    "annual_mean_rank_ic": {
+      "2019": 0.020057105751618204,
+      "2020": 0.028525249056840205,
+      "2021": 0.017753572542380858,
+      "2022": -0.0074950190833911814,
+      "2023": -0.026942506951583872,
+      "2024": -0.002200851927080167,
+      "2025": -0.021613745707775373
+    },
+    "naive_fixed_horizon_top3": {
+      "rounds": 542,
+      "net_cumulative_return": -0.6829145581001336,
+      "annualized_return": -0.1630653849371042,
+      "maximum_drawdown": -0.7603162773226632,
+      "win_rate": 0.46863468634686345,
+      "gate_alone_is_sufficient": false
+    },
+    "execution_aware_top3": {
+      "complete_signal_count": 536,
+      "filled_slot_count": 1605,
+      "net_cumulative_return": -0.603974716584716,
+      "maximum_drawdown": -0.7239502203649684,
+      "terminal_unresolved_position_count": 0,
+      "annual_net_cumulative_return_by_signal_year": {
+        "2019": -0.011962709441682207,
+        "2020": -0.4440370913895104,
+        "2021": -0.054638427245970234,
+        "2022": 0.050636580220262406,
+        "2023": 0.03269960943753336,
+        "2024": -0.35531744961676714,
+        "2025": 0.09026825802889227
+      },
+      "gate_passed": false,
+      "failures": [
+        "non-positive execution-aware net cumulative return",
+        "execution-aware maximum drawdown worse than -20%",
+        "non-positive execution-aware signal-year return: 2019, 2020, 2021, 2024"
+      ]
+    },
+    "cny_200000_board_lot_top3_at_ten_basis_points": {
+      "filled_slot_count": 1484,
+      "board_lot_affordable_opportunity_rate": 0.9246105919003115,
+      "net_cumulative_return": -0.18417773636624024,
+      "maximum_drawdown": -0.20759764707624262,
+      "maximum_filled_trade_daily_amount_participation": 0.005278109026654104,
+      "terminal_unresolved_position_count": 0,
+      "annual_net_cumulative_return_by_signal_year": {
+        "2019": -0.012137251569111496,
+        "2020": -0.07818281169257313,
+        "2021": -0.020179204023785924,
+        "2022": -0.017656094914729414,
+        "2023": -0.012761762628338613,
+        "2024": -0.05904163185575462,
+        "2025": 0.0019627078848734048
+      },
+      "gate_passed": false,
+      "failures": [
+        "non-positive pilot return under ten-basis-point slippage",
+        "non-positive pilot signal-year return under ten-basis-point slippage: 2019, 2020, 2021, 2022, 2023, 2024"
+      ]
+    }
+  },
+  "gate_decisions": {
+    "association_stability_gate_passed": false,
+    "association_failures": [
+      "positive Rank IC rate is not above 50%",
+      "non-positive mean TopK-minus-BottomK gross spread",
+      "non-positive annual mean Rank IC: 2022, 2023, 2024, 2025"
+    ],
+    "topk_viability_gate_passed": false,
+    "topk_failures": [
+      "association screen failed",
+      "pilot execution gate failed at ten-basis-point slippage",
+      "non-positive execution-aware TopK net cumulative return after diagnostic costs",
+      "execution-aware TopK maximum drawdown worse than -20%",
+      "non-positive annual execution-aware TopK net cumulative return: 2019, 2020, 2021, 2024"
+    ],
+    "dual_gate_qualified": false
+  },
+  "decision": {
+    "outcome": "stop_sw2021_l1_three_session_leave_one_out_breadth_historical_direction_without_aggregation_scoring_selection_or_orders",
+    "rerun_same_history_allowed": false,
+    "invert_factor_allowed": false,
+    "change_window_peer_threshold_industry_level_or_self_inclusion_allowed": false,
+    "subset_years_allowed": false,
+    "change_holding_period_topk_cost_quality_listing_or_execution_gate_allowed": false,
+    "combine_with_rejected_existing_factors_allowed": false,
+    "current_score_selection_position_or_order_allowed": false,
+    "level2_intake_justified_by_this_result": false,
+    "next_research_direction": "Use a genuinely independent pre-registered no-return mechanism; do not derive another historical breadth variant from this result."
+  },
+  "forward_return_fields_read": true,
+  "selection_or_promotion_allowed": false
+}

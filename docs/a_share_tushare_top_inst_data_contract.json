@@ -1,0 +1,240 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_top_inst_data_contract",
+  "status": "frozen_before_top_inst_entitlement_rows_full_history_factor_values_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T12:50:27Z",
+  "purpose": "Ingest and capacity-screen one institution-seat net-buy mechanism from Tushare top_inst for the fixed three-session A-share protocol without sweeping seat fields, formulas, directions, event ages, or dates.",
+  "freeze_evidence": {
+    "official_documentation_observed": true,
+    "prior_top_list_snapshot_observed": true,
+    "provider_top_inst_rows_observed": false,
+    "top_inst_entitlement_observed": false,
+    "full_history_observed": false,
+    "factor_values_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "chosen_source": "Tushare Pro top_inst institution-seat transaction detail",
+    "official_permission_and_update_documentation": "https://tushare.pro/document/1?doc_id=108",
+    "official_interface_documentation": "https://tushare.pro/document/2?doc_id=190",
+    "documented_history_start": "2005",
+    "documented_daily_update_time": "20:00 Asia/Shanghai",
+    "minimum_permission_points": 2000,
+    "current_account_points": 3000,
+    "provider_documented_maximum_rows_per_call": 10000,
+    "why_this_source": "Institution-only seats are an identifiable participant mechanism rather than another OHLC transform. Existing aggregate billboard factors mix every disclosed participant, so a fixed no-return synonym screen against those factors remains mandatory before any return read."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "Net buying by institution-only seats on an abnormal-trading disclosure day may persist over the next three sessions.",
+    "factor_family": "after_close_institution_seat_flow_event",
+    "relationship_to_existing_billboard_factors": "The existing billboard branch measures aggregate disclosed net flow, deal size, reason count, and freshness. This branch aggregates only Tushare top_inst institution-seat buy and sell amounts and must prove no-return uniqueness against all five existing billboard fields.",
+    "relationship_to_tushare_moneyflow": "top_inst identifies institution-only seats on sparse exchange abnormal-trading disclosures; Tushare moneyflow classifies all-market transactions by order size without participant identity.",
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "top_inst",
+    "frequency": "daily_after_close_event",
+    "request_mode": "one completed local trading session per call",
+    "requested_fields": [
+      "trade_date",
+      "ts_code",
+      "exalter",
+      "buy",
+      "sell",
+      "net_buy"
+    ],
+    "explicitly_forbidden_fields": [
+      "name",
+      "close",
+      "pct_change",
+      "turnover_rate",
+      "amount",
+      "l_sell",
+      "l_buy",
+      "l_amount",
+      "net_amount",
+      "net_rate",
+      "amount_rate",
+      "float_values",
+      "reason",
+      "buy_rate",
+      "sell_rate",
+      "open",
+      "high",
+      "low",
+      "price",
+      "market_cap",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_policy": {
+    "source_time_field": "trade_date normalized to the local A-share trading session",
+    "documented_availability": "20:00 Asia/Shanghai after the event session",
+    "conservative_availability": "20:00 Asia/Shanghai after the event session",
+    "signal_assignment": "event-session close for following-local-session-open entry after the 20:00 release",
+    "same_session_trade_allowed": false,
+    "maximum_event_age_days": 0,
+    "forward_fill_allowed": false,
+    "historical_release_timestamp_available_per_row": false,
+    "residual_risk": "A provider delay beyond the documented 20:00 update can make a row unavailable for the next open; every immutable snapshot retains its retrieval timestamp."
+  },
+  "factor": {
+    "name": "tushare_top_inst_net_buy_share",
+    "raw_column": "tushare_top_inst_net_buy_share",
+    "direction": "higher_is_better",
+    "aggregation": "Within each instrument and trade_date, sum buy and sell across every unique nonmissing institution-seat row.",
+    "numerator": "sum(buy) - sum(sell)",
+    "denominator": "sum(buy) + sum(sell)",
+    "formula": "(sum(buy) - sum(sell)) / (sum(buy) + sum(sell))",
+    "provider_net_buy_use": "integrity reconciliation only; never use provider net_buy as the factor numerator",
+    "provider_net_buy_reconciliation": "For every raw row, abs(net_buy - (buy - sell)) <= max(0.01 source amount units, 0.000001 * max(abs(net_buy), buy + sell)).",
+    "absent_security_policy": "missing; never treat a security without a top_inst row as zero",
+    "missing_seat_buy_or_sell_policy": "reject the raw row and fail acceptance or the full partition; never fill zero",
+    "zero_aggregated_denominator_policy": "exclude and count the observed instrument-day; never rank, offset, or impute it",
+    "negative_raw_buy_or_sell_policy": "abort the acceptance or full partition",
+    "duplicate_seat_event_key_policy": "abort before aggregation; never silently deduplicate or double count",
+    "clipping_winsorization_imputation_or_absolute_value": null,
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(tushare_top_inst_net_buy_share)"
+  },
+  "local_context": {
+    "accepted_top_list_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json",
+      "sha256": "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849"
+    },
+    "accepted_top_list_frame": {
+      "path": "data/raw/a_share/rich/tushare/events/snapshots/20260716T081652Z_tushare_events_6264ce79/top-list/2026-07-13.parquet",
+      "sha256": "658592ebdcc44685e15184a2f01bc77f3c9ebdac7f0147b537564b7290ae24e6",
+      "raw_rows": 91,
+      "exact_duplicate_rows_preserved": 2
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "base_research_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "terminal_tushare_moneyflow": {
+      "path": "docs/a_share_tushare_moneyflow_research_record.json",
+      "sha256": "3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a"
+    },
+    "terminal_tushare_pb": {
+      "path": "docs/a_share_tushare_daily_pb_research_record.json",
+      "sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3"
+    },
+    "terminal_tushare_sw_breadth": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+      "sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3"
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_completed_session": "2026-07-13",
+    "provider_calls": 1,
+    "minimum_raw_institution_rows": 1,
+    "minimum_aggregated_stock_rows": 1,
+    "required_checks_before_full_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "the response contains exactly the frozen six-field whitelist",
+      "the response is nonempty and below the documented 10000-row ceiling",
+      "trade_date and stock-code keys are present and inside the fixed completed session",
+      "institution-seat event keys trade_date, ts_code, exalter are unique",
+      "buy, sell, and net_buy are numeric and buy and sell are nonnegative",
+      "provider net_buy reconciles row-by-row to local buy minus sell under the frozen tolerance",
+      "every top_inst stock appears in the already accepted same-date raw top_list frame",
+      "the locally aggregated positive-denominator factor is finite and lies in [-1, 1]",
+      "no credential, price, reason, provider aggregate billboard flow, market-cap, or return field appears in the snapshot or manifest"
+    ],
+    "failed_acceptance_policy": "write one no-return rejection record and stop without another date, full sync, capacity or uniqueness audit, price access, formula or direction change, another seat type, purchase recommendation, aggregation, score, selection, sizing, or order"
+  },
+  "full_snapshot_contract": {
+    "dataset": "tushare_top_inst_daily",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "request_every_local_session": true,
+    "provider_call_partition": "one local trading session",
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_session": 3,
+    "requests_are_sequential": true,
+    "partial_snapshot_accepted": false,
+    "immutable_annual_partitions_and_manifest": true,
+    "canonical_columns": [
+      "trade_date",
+      "instrument",
+      "institution_seat_count",
+      "buy",
+      "sell",
+      "tushare_top_inst_net_buy_share",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "trade_date"
+    ],
+    "holding_universe": "buyable_main_chinext point-in-time members only; outside names are excluded and counted"
+  },
+  "no_return_gates": {
+    "order": [
+      "source_fingerprint_schema_and_daily_completeness",
+      "quality_listing_and_non_overlapping_three_session_capacity",
+      "factor_uniqueness"
+    ],
+    "source_completeness": {
+      "minimum_nonempty_source_sessions": 200,
+      "minimum_observed_source_years": 5,
+      "duplicate_seat_or_stock_date_keys_allowed": false
+    },
+    "capacity": {
+      "development_start": "2019-01-01",
+      "development_end": "2025-12-31",
+      "minimum_eligible_names_per_cross_section": 6,
+      "minimum_distinct_factor_values": 2,
+      "minimum_observed_years": 5,
+      "holding_period_trading_days": 3,
+      "non_overlapping_cohorts": true,
+      "topk": 3,
+      "minimum_required_cohorts": 200,
+      "maximum_quality_age_days": 550,
+      "minimum_listing_sessions": 20
+    },
+    "uniqueness": {
+      "comparison_factor_count": 51,
+      "comparison_scope": "the accepted 43 close-known technical and quarterly-quality fields, terminal Tushare classified-moneyflow, positive-book-to-market and SW-breadth fields, plus billboard_net_flow_to_float, billboard_net_flow_to_deal, billboard_deal_to_float, billboard_reason_count and billboard_freshness",
+      "minimum_pairwise_sessions": 100,
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+    },
+    "failed_gate_policy": "stop without returns, another institution aggregation, net_buy substitution, direction inversion, event-age widening, lower cohort size, year subset, billboard-field combination, current scoring, selection, sizing, orders, or Level-2 intake"
+  },
+  "diagnostic_policy_if_all_no_return_gates_pass": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_required": "docs/a_share_three_day_prospective_execution_policy.json",
+    "cny_200000_pilot_policy_required": "docs/a_share_three_day_pilot_execution_policy.json",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_event_age_seat_filter_formula_weight_or_threshold_search_allowed": false,
+    "selection_or_promotion_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
