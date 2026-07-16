@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_free_float_scarcity_data_contract",
+  "status": "frozen_after_mechanism_overlap_and_suspend_capacity_rejection_before_free_float_provider_rows_factor_values_prices_or_returns",
+  "preregistered_at": "2026-07-16T21:21:37Z",
+  "purpose": "Acquire only the Tushare daily_basic share-count fields required for one structural free-float-scarcity factor, first through a fixed completed-session acceptance and then, only if accepted, through one atomic 2019-2025 source snapshot before no-return capacity and uniqueness gates.",
+  "freeze_evidence": {
+    "mechanism_overlap_and_suspend_capacity_audit": {
+      "path": "docs/a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "62c6affbf4ea77a8d85a162f6a641a92bca17dc2d0a661744ed68b8e49b5c3d7"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "terminal_st_recovery_record": {
+      "path": "docs/a_share_tushare_st_recovery_research_record.json",
+      "sha256": "bbed853556c603a154501d59196ab353299b1ce4199a6bbd978197b01d37e067"
+    },
+    "terminal_same_api_pb_record": {
+      "path": "docs/a_share_tushare_daily_pb_research_record.json",
+      "sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3",
+      "separation": "The terminal PB branch requested only ts_code,trade_date,pb and contains no share count. It cannot be resynced, reinterpreted, or used as free-float evidence."
+    }
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "daily_basic",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=32",
+    "minimum_permission_points": 2000,
+    "authorized_account_points": 3000,
+    "documented_update_window_asia_shanghai": "15:00-17:00 on each trading session",
+    "request_mode": "one completed local trading session per call",
+    "requested_fields": [
+      "ts_code",
+      "trade_date",
+      "total_share",
+      "free_share"
+    ],
+    "explicitly_forbidden_fields": [
+      "close",
+      "turnover_rate",
+      "turnover_rate_f",
+      "volume_ratio",
+      "pe",
+      "pe_ttm",
+      "pb",
+      "ps",
+      "ps_ttm",
+      "dv_ratio",
+      "dv_ttm",
+      "float_share",
+      "total_mv",
+      "circ_mv",
+      "limit_status",
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "price",
+      "score",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "factor": {
+    "name": "tushare_free_float_scarcity",
+    "raw_column": "tushare_free_float_scarcity",
+    "direction": "higher_is_better",
+    "formula": "1 - free_share / total_share",
+    "economic_direction": "less freely tradable supply relative to total shares means greater structural supply scarcity and is frozen as the higher score",
+    "valid_source_row": "total_share and free_share are both finite and strictly positive and free_share is no greater than total_share",
+    "invalid_source_row_policy": "exclude and count; never clip, absolutize, swap fields, fill, or infer a value",
+    "derived_range": "0 <= tushare_free_float_scarcity < 1",
+    "winsorization_clipping_imputation_or_absolute_value": null,
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(tushare_free_float_scarcity)"
+  },
+  "point_in_time_policy": {
+    "source_row_availability": "after the documented 15:00-17:00 update on trade_date",
+    "earliest_entry": "the next local trading session open after trade_date",
+    "maximum_event_age_calendar_days": 0,
+    "holding_universe": "buyable_main_chinext",
+    "universe_membership": "retain only a stock whose trade_date is inside its point-in-time buyable interval; exclude and count STAR, BSE, funds, bonds, and every outside-interval row",
+    "absent_or_invalid_value": "missing; never zero or one",
+    "current_daily_value_may_be_carried_forward": false
+  },
+  "acceptance_protocol": {
+    "fixed_completed_session": "2026-07-13",
+    "minimum_all_market_source_rows": 4000,
+    "provider_documented_maximum_rows_per_call": 6000,
+    "minimum_valid_holding_universe_coverage": 0.95,
+    "minimum_valid_holding_names": 50,
+    "minimum_distinct_factor_values": 2,
+    "required_checks_before_large_sync": [
+      "TUSHARE_TOKEN is present only in the child-process environment and is never logged",
+      "the response contains exactly ts_code,trade_date,total_share,free_share",
+      "the response is positive and strictly below the documented 6000-row ceiling",
+      "stock-date keys are complete, unique, and equal to the fixed completed session",
+      "invalid or missing share-count rows are excluded and counted without repair",
+      "every retained local factor equals 1-free_share/total_share and lies in [0,1)",
+      "at least 95 percent of point-in-time buyable names have a valid factor",
+      "at least 50 names and two distinct factor values remain",
+      "no forbidden field, credential, price, score, or return is requested or stored"
+    ],
+    "failed_acceptance_policy": "atomically delete any temporary frame, write one no-return rejection manifest, install a tracked terminal record, and stop without retry, another date, full history, capacity, uniqueness, prices, returns, aggregation, scoring, selection, sizing, orders, or Level-2"
+  },
+  "snapshot_contract": {
+    "acceptance_dataset": "tushare_free_float_scarcity_acceptance",
+    "full_dataset": "tushare_free_float_scarcity",
+    "columns": [
+      "trade_date",
+      "instrument",
+      "total_share",
+      "free_share",
+      "tushare_free_float_scarcity",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "trade_date"
+    ],
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+    "partition_policy": {
+      "storage_partition": "one calendar year",
+      "provider_call_partition": "one local trading session",
+      "provider_documented_maximum_rows_per_call": 6000,
+      "minimum_seconds_between_calls": 0.32,
+      "maximum_attempts_per_session": 3,
+      "retry_backoff_seconds": [
+        2,
+        5
+      ],
+      "requests_are_sequential": true,
+      "all_years_share_one_hidden_temporary_root": true,
+      "partial_snapshot_accepted": false,
+      "immutable_partition_files_and_manifest": true
+    }
+  },
+  "source_completeness_policy": {
+    "request_every_local_2019_2025_session": true,
+    "empty_response_allowed": false,
+    "response_at_row_ceiling_allowed": false,
+    "duplicate_event_keys_allowed": false,
+    "minimum_median_valid_holding_universe_coverage": 0.95,
+    "minimum_p05_valid_holding_universe_coverage": 0.9,
+    "minimum_sessions_with_fifty_valid_names": 200,
+    "minimum_observed_source_years": 5,
+    "failed_gate_policy": "delete the full temporary snapshot and stop before factor capacity, comparison fields, prices, or returns; never fill missing shares, mix providers, shorten the dates, or request a substitute daily_basic field"
+  },
+  "no_return_capacity_policy": {
+    "must_be_frozen_again_and_fingerprint_bound_after_source_acceptance_before_full_history": true,
+    "capacity_runs_before_any_close_known_comparison_field": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "failed_gate_policy": "stop without comparison fields or returns; do not alter direction, field, denominator, dates, cohort spacing, quality, listing, or minimum thresholds"
+  },
+  "no_return_uniqueness_policy": {
+    "runs_only_if_capacity_passes": true,
+    "screen_start": "2025-01-01",
+    "screen_end": "2025-12-31",
+    "method": "Inside the same quality/listing-eligible daily cross-section, rank free-float scarcity and every frozen existing same-session comparison field, compute Spearman correlation by session, and take each comparison's median daily correlation.",
+    "comparison_factor_count": 54,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_sessions": 100,
+    "required_named_near_neighbor": "free_float_cap_proxy",
+    "failed_gate_policy": "stop without returns, inversion, a ratio change, size residualization, industry neutralization, a demand interaction, field substitution, or threshold relaxation"
+  },
+  "diagnostic_policy_if_all_no_return_gates_pass": {
+    "automatic_return_access": false,
+    "next_action": "Freeze one new immutable single-factor return and prospective-execution diagnostic bound to the accepted full manifest and completed capacity/uniqueness audit.",
+    "aggregation_scoring_selection_sizing_or_ordering_allowed": false,
+    "level2_justification_allowed": false
+  },
+  "local_context": {
+    "buyable_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "accepted_price_basis_manifest": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_sources": [
+        "baostock"
+      ]
+    }
+  },
+  "provider_rows_observed_before_freeze": false,
+  "factor_values_observed_before_freeze": false,
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_after_corrected_suspend_capacity_upper_bound_before_provider_rows_factor_values_prices_or_returns",
+  "recorded_at": "2026-07-16T21:18:57Z",
+  "purpose": "Re-audit the exhausted three-session frontier after the terminal Tushare stock_st source attempt, correct a date-only suspension screen that ignored zero-volume placeholders, stop the suspend_d resumption candidate on an intentionally optimistic no-return capacity upper bound, and select at most one newly independent mechanism available to the existing 3000-point account before requesting a provider row.",
+  "frontier_state": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "stability_qualified_factor_count": 7,
+      "topk_qualified_factor_count": 0,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "latest_terminal_mechanism": {
+      "mechanism": "tushare_st_recovery_speed",
+      "record": "docs/a_share_tushare_st_recovery_research_record.json",
+      "sha256": "bbed853556c603a154501d59196ab353299b1ce4199a6bbd978197b01d37e067",
+      "decision": "terminal_at_the_sole_full_source_continuity_attempt_before_factor_values_or_returns"
+    },
+    "new_provider_row_requested_by_this_audit": false,
+    "new_factor_value_observed": false,
+    "new_price_or_return_read": false
+  },
+  "corrected_suspend_resumption_no_return_capacity_upper_bound": {
+    "candidate": "full_day_suspend_d_resumption_after_prior_suspension_duration",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=214",
+    "initial_date_only_screen": {
+      "status": "invalidated_and_not_used_as_evidence",
+      "reported_possible_events": 0,
+      "reason": "BaoStock can retain a daily row for a suspended stock-session with nonpositive activity. Therefore absence of a missing date is not an upper bound on official full-day suspension or resumption events. The date-only result is preserved here only to prevent accidental reuse."
+    },
+    "corrected_input_contract": {
+      "research_start": "2019-01-01",
+      "research_end": "2025-12-31",
+      "holding_universe": "buyable_main_chinext",
+      "input_columns_read": [
+        "date",
+        "raw_volume"
+      ],
+      "ohlc_price_factor_score_or_return_columns_read": [],
+      "possible_full_day_suspension_definition": "Every missing local stock-session or row with nonfinite or nonpositive raw_volume is counted as a possible full-day suspension.",
+      "possible_resumption_definition": "The first positive finite raw_volume local session immediately after one or more possible full-day suspension sessions.",
+      "optimistic_biases": [
+        "missing or malformed source activity is counted as suspension instead of rejected",
+        "left-censored spells beginning at a point-in-time holding interval boundary are retained",
+        "no official suspend_d confirmation is required",
+        "the 550-calendar-day quarterly-quality gate is omitted",
+        "the 20-session listing-seasoning gate is omitted"
+      ],
+      "fixed_cohort_grid": "Every third local session after each complete three-session block, producing 566 non-overlapping signal dates.",
+      "maximum_event_age_calendar_days": 3,
+      "minimum_names_per_cohort": 6,
+      "minimum_distinct_prior_duration_values": 2,
+      "minimum_required_cohorts": 200,
+      "minimum_required_years": 5
+    },
+    "bound_local_inputs": {
+      "buyable_universe": {
+        "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+        "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+      },
+      "local_calendar": {
+        "path": "data/qlib/cn_a_share/calendars/day.txt",
+        "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+      },
+      "accepted_price_basis_manifest": {
+        "path": "data/qlib/cn_a_share/price_basis.json",
+        "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+        "status": "passed",
+        "price_basis": "close_known_raw_pct_chg_chain_v1",
+        "daily_sources": [
+          "baostock"
+        ]
+      },
+      "normalized_date_raw_volume_input_fingerprint_sha256": "e7b9a2bcb093d63af645b2e753940e444ddbaad19bd2b4904042e172a52f0520"
+    },
+    "result": {
+      "calendar_sessions": 1699,
+      "buyable_intervals_overlapping_window": 4794,
+      "daily_files_read": 4794,
+      "missing_daily_files": 0,
+      "missing_stock_sessions_treated_as_possible_full_day_suspension": 11800,
+      "nonpositive_or_nonfinite_raw_volume_stock_sessions_treated_as_possible_full_day_suspension": 14465,
+      "optimistic_possible_resumption_events": 3157,
+      "optimistic_possible_resumption_dates": 1216,
+      "possible_resumption_dates_with_six_names_and_two_durations": 63,
+      "nonoverlapping_three_session_signal_dates": 566,
+      "optimistic_complete_cohorts": 181,
+      "optimistic_complete_cohorts_by_year": {
+        "2019": 37,
+        "2020": 40,
+        "2021": 25,
+        "2022": 26,
+        "2023": 10,
+        "2024": 10,
+        "2025": 33
+      },
+      "left_censored_interval_spells_retained_optimistically": 13,
+      "minimum_required_cohorts": 200,
+      "minimum_required_years": 5,
+      "upper_bound_passed": false
+    },
+    "decision": "rejected_before_suspend_d_provider_rows_because_even_the_deliberately_overstated_capacity_is_181_of_200",
+    "interpretation": "This rejects the exact full-day suspension-duration resumption candidate for the fixed three-session cross-sectional protocol. It does not prove that suspend_d lacks events or that resumption returns are negative.",
+    "prohibited_actions": [
+      "request suspend_d rows for this rejected mechanism",
+      "treat the invalid date-only zero result as evidence",
+      "lower the 200-cohort or five-year gate",
+      "add intraday suspensions, widen event age, use overlapping cohorts, or combine sparse events to manufacture capacity",
+      "read prices or returns for this candidate"
+    ]
+  },
+  "official_documentation_screen": [
+    {
+      "candidate": "stk_shock_stk_high_shock_or_stk_alert",
+      "documents": [
+        "https://tushare.pro/document/2?doc_id=451",
+        "https://tushare.pro/document/2?doc_id=452",
+        "https://tushare.pro/document/2?doc_id=453"
+      ],
+      "decision": "rejected_before_rows_for_permission_and_history_reproducibility",
+      "reason": "Each official exchange-warning interface requires 6000 points, while the authorized account has 3000. The pages do not document a continuous 2019-2025 archive."
+    },
+    {
+      "candidate": "stk_auction_o_or_stk_auction_c",
+      "documents": [
+        "https://tushare.pro/document/2?doc_id=353",
+        "https://tushare.pro/document/2?doc_id=354"
+      ],
+      "decision": "rejected_before_rows_for_separate_unpurchased_entitlement",
+      "reason": "Opening and closing auction data use separate permissions unrelated to points; the current authorization does not include them."
+    },
+    {
+      "candidate": "stk_premarket",
+      "document": "https://tushare.pro/document/2?doc_id=329",
+      "decision": "rejected_before_rows_for_separate_unpurchased_entitlement",
+      "reason": "The official page states that premarket share-capital data require separately opened permission unrelated to points."
+    },
+    {
+      "candidate": "report_rc_sell_side_forecast_revision",
+      "document": "https://tushare.pro/document/2?doc_id=292",
+      "decision": "rejected_before_rows_for_nonreproducible_trial_quota_and_analyst_overlap",
+      "reason": "A 2000-point account has only ten trial requests per day; formal history requires 8000 points. It also overlaps the already completed analyst-rating and performance-expectation branches."
+    },
+    {
+      "candidate": "broker_recommend",
+      "document": "https://tushare.pro/document/2?doc_id=267",
+      "decision": "rejected_before_rows_for_permission_and_fixed_capacity",
+      "reason": "The interface requires 6000 points. Even perfect 2019-2025 monthly coverage supplies at most 84 distinct monthly event anchors, below the fixed 200-cohort gate."
+    },
+    {
+      "candidate": "ths_hot_or_dc_hot",
+      "documents": [
+        "https://tushare.pro/document/2?doc_id=320",
+        "https://tushare.pro/document/2?doc_id=321"
+      ],
+      "decision": "rejected_before_rows_for_permission_and_short_history",
+      "reason": "The interfaces require 6000 and 8000 points and were introduced only in late 2024, so they cannot satisfy the fixed five-year gate."
+    },
+    {
+      "candidate": "investor_question_answer",
+      "document": "https://tushare.pro/document/1?doc_id=290",
+      "decision": "rejected_before_rows_for_separate_unpurchased_entitlement",
+      "reason": "Shanghai and Shenzhen investor Q&A are a separate paid entitlement rather than a points interface, and the current account has not purchased it."
+    },
+    {
+      "candidate": "daily_basic_free_float_scarcity",
+      "document": "https://tushare.pro/document/2?doc_id=32",
+      "decision": "selected_as_the_only_independent_currently_authorized_no_return_candidate",
+      "reason": "daily_basic requires 2000 points, supports daily historical extraction, documents total_share and free_share, and updates after the close. Structural freely tradable supply is economically different from price paths, PB valuation, order flow, and the terminal realized-unlock event shock."
+    }
+  ],
+  "selected_candidate": {
+    "economic_mechanism": "A smaller freely tradable share base relative to total shares creates structural supply scarcity. The hypothesis fixes greater scarcity as the higher short-horizon score because a given demand impulse is spread across less freely tradable supply.",
+    "factor_name": "tushare_free_float_scarcity",
+    "source_api": "daily_basic",
+    "requested_fields": [
+      "ts_code",
+      "trade_date",
+      "total_share",
+      "free_share"
+    ],
+    "formula": "1 - free_share / total_share",
+    "direction": "higher_is_better",
+    "eligibility": "total_share and free_share must both be finite and strictly positive, with free_share no greater than total_share; every other row is excluded and counted without clipping or imputation",
+    "availability": "after the documented same-session 15:00-17:00 update for entry at the next local session open",
+    "maximum_event_age_calendar_days": 0,
+    "absent_or_invalid_value_policy": "missing; never zero, one, clipped, or filled",
+    "holding_universe": "buyable_main_chinext",
+    "selection_or_promotion_allowed": false
+  },
+  "economic_independence": {
+    "versus_positive_book_to_market": "PB is a price-to-book valuation state; free-float scarcity uses only share counts and requests no price, book value, or valuation field.",
+    "versus_restricted_share_unlock_pressure": "The terminal unlock factor was a dated realized supply-release event and ranked event magnitude. This candidate is a daily structural state of freely tradable supply and does not request unlock schedules, holder counts, market values, or returns.",
+    "versus_liquidity_and_volume": "The candidate requests no volume, turnover, amount, market capitalization, or price. A separate no-return rank-correlation gate must still reject it if the structural state behaves as a near-synonym of an existing liquidity field.",
+    "same_provider_is_not_same_mechanism": "The prior daily_basic PB snapshot does not contain total_share or free_share and cannot be reused or reinterpreted. A new exact-field contract is required."
+  },
+  "required_gate_order": [
+    "freeze the exact source, fields, formula, direction, timing, invalid-row, completeness, atomicity, capacity, and uniqueness contract before any free-float provider row",
+    "implement exact-field fetching and a one-session 2026-07-13 acceptance with no price or return access",
+    "require a positive sub-6000 all-market response, unique keys, range-valid shares, at least 95 percent point-in-time buyable coverage, at least 50 names, and at least two factor values",
+    "only after acceptance, run one atomic 2019-2025 full-session snapshot under the unchanged contract",
+    "run the fixed no-return 200-cohort five-year capacity gate before loading comparison fields",
+    "only after capacity passes, compare against every existing same-session factor using the fixed absolute median daily Spearman below 0.8 gate",
+    "freeze a separate one-time return diagnostic only if source, capacity, and uniqueness all pass"
+  ],
+  "prohibited_actions": [
+    "request close, turnover, volume_ratio, PE, PB, PS, dividend yield, market capitalization, float_share, limit_status, price, or return fields",
+    "substitute float_share for free_share or switch from the frozen scarcity direction to free-float abundance",
+    "derive a change, unlock event, interaction, size residual, or demand confirmation after observing source values",
+    "reuse the terminal PB snapshot as if it contained share counts",
+    "read returns, aggregate, score, select, size, order, or justify Level-2 before all no-return gates pass"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

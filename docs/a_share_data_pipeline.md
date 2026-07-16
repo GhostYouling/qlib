@@ -1868,3 +1868,11 @@ python scripts/a_share_rich_data.py \
 终止记录、跨克隆保护和原子失败路径通过 12 项 `stock_st` 专项测试；完整数据采集套件为 **414 passed, 9 warnings**。因此这条精确的 Tushare 历史路线正式终止且不向因子池贡献值。不得重请求 2019‑04‑01、把空表解释为无 ST、跳过/填充/插值该日、使用前 58 个会话、混入名称解析或其他供应商、修改日期/字段/确认规则/公式/方向/事件年龄、降低容量/唯一性门槛，或继续收益、聚合、评分、选股、仓位、订单和 Level‑2 采购。它证明的是历史来源连续性失败，不证明该经济机制的收益为正或为负；下一步只能回到不读收益的独立机制发现。
 
 超过 100 个“股票 × 工作日”的付费请求必须显式加入 `--allow-large`，防止误触发多年全市场下载。每次下载按不可变快照写到 `data/raw/a_share/rich/`，并在 `data/metadata/rich_data/runs/` 写入供应商、原始价格口径、请求区间、SHA-256、日内汇总和验收结果。这些文件均由 `data/` 的 Git 忽略规则保护，不应提交或删除来掩盖失败。
+
+### Tushare 自由流通股稀缺度（合同已冻结，等待一次性单日验收）
+
+停复牌恢复候选在供应商请求前被容量上界淘汰。旧的“缺少日线行等于停牌”筛查无效，因为 BaoStock 可能保留 `raw_volume <= 0` 的停牌占位行，不能引用该结果。修正后的无收益乐观上界同时把缺少股票交易日和非有限/非正 `raw_volume` 都算作可能停牌，并保留左截断事件、跳过质量和上市门，仍只形成 **181/200** 个固定三交易日非重叠 cohort，虽覆盖 2019–2025 七年但容量失败。该上界没有读取 OHLC、价格、因子、评分或收益，因此无需为这一精确定义的全日停牌时长候选请求 `suspend_d`。完整记录为 [`a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `62c6affbf4ea77a8d85a162f6a641a92bca17dc2d0a661744ed68b8e49b5c3d7`）。
+
+下一项机制独立候选冻结为 `tushare_free_float_scarcity = 1 - free_share / total_share`，高值代表相对总股本可自由交易供给更稀缺。来源只允许 Tushare `daily_basic` 的 `ts_code,trade_date,total_share,free_share` 四个字段；缺失、非有限、非正或 `free_share > total_share` 的行只排除并计数，不得修复、裁剪或填充。[Tushare 官方 `daily_basic` 文档](https://tushare.pro/document/2?doc_id=32)说明该接口最低 2,000 积分、每日 15:00–17:00 更新、单次最多 6,000 行，并提供 `total_share` 与 `free_share` 字段。数据在更新后才视为已知，最早在下一本地交易日开盘使用。合同 [`a_share_tushare_free_float_scarcity_data_contract.json`](a_share_tushare_free_float_scarcity_data_contract.json)（SHA‑256 `a5897cf4bda28bb55e4a0f5c8db6fc328e916c68494e71931a313357d43bc1eb`）已在任何该接口行、因子值、价格或收益出现前冻结。
+
+当前仅实现一次性 `2026-07-13` 来源验收：要求全市场返回至少 4,000 且严格少于 6,000 行，点时可持有股票有效覆盖至少 95%，至少 50 只股票和两个不同因子值。入口为 `acceptance-tushare-free-float-scarcity`；无论成功或失败都必须先安装跟踪记录，不能换日期、字段或删除记录重跑。现在没有获准的全量同步命令，也不得读取收益、聚合、当前评分、选股或下单。Token 的隐藏输入、无回显检查和旧进程单次透传命令见 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md)。

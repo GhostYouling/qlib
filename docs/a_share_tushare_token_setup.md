@@ -85,6 +85,27 @@ exit "$rc"
 
 对仍处于活动状态且文档明确批准的命令，继续使用第 4 节的包装方式：只替换其中的 Python 子命令，保留空值检查、`TUSHARE_TOKEN="$token"` 的单进程注入、退出码保存和 `unset token`。`--allow-large`（若某个活动合同明确要求）只表示显式确认长任务，不能放宽合同或后续门禁。运行期间不要启动第二份相同同步；若出现锁，先确认现有进程，不要直接删除锁文件。
 
+#### 当前活动入口：自由流通股稀缺度单日验收
+
+当前新冻结的候选只允许执行一次 `2026-07-13` 单日来源验收。它仅请求 `ts_code,trade_date,total_share,free_share`，本地只派生 `1 - free_share / total_share`；不请求价格、估值、成交、评分或收益字段。合同见 [`a_share_tushare_free_float_scarcity_data_contract.json`](a_share_tushare_free_float_scarcity_data_contract.json)，机制与停复牌容量复核见 [`a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_free_float_scarcity_mechanism_overlap_reaudit_20260717.json)。
+
+先运行第 3 节的无回显状态检查。需要从 `launchctl` 向当前旧进程安全透传时，使用：
+
+```zsh
+token="$(launchctl getenv TUSHARE_TOKEN)"
+if [[ -z "$token" ]]; then
+  echo "TUSHARE_TOKEN 未配置"
+  rc=1
+else
+  TUSHARE_TOKEN="$token" python scripts/a_share_rich_data.py acceptance-tushare-free-float-scarcity
+  rc=$?
+fi
+unset token
+exit "$rc"
+```
+
+这个入口是一次性的：无论成功还是失败，都必须先把结果冻结为跟踪记录，之后才能决定是否实现 2019–2025 全量来源同步。当前没有获准的自由流通股全量命令；不得手工循环日期、修改验收日或字段、删除运行记录后重试，也不得在单日验收后直接读取收益、聚合、评分或选股。提交仓库只提交合同、代码、测试和文档，不提交 Token，也不把本机 `launchctl` 环境复制到任何文件。
+
 ### 4.2 `stock_st` 分支已终止
 
 ST 恢复速度的唯一全量来源尝试已经消费：完成 58 个历史会话后，2019‑04‑01 返回空表。冻结合同不允许把空表当作“当天没有 ST 股票”，因此程序停止、删除完整临时快照且没有发布年度分区；转换、因子、价格和收益均未读取。终止记录是 [`a_share_tushare_st_recovery_research_record.json`](a_share_tushare_st_recovery_research_record.json)。

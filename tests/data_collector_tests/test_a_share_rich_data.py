@@ -4067,6 +4067,207 @@ def test_tushare_cash_conversion_terminal_record_forbids_another_full_sync(
         RICH.sync_tushare_cash_conversion(allow_large=True)
 
 
+def test_tushare_free_float_scarcity_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_tushare_free_float_scarcity_contract()
+    assert contract["factor"]["name"] == "tushare_free_float_scarcity"
+    assert contract["factor"]["formula"] == "1 - free_share / total_share"
+    assert contract["factor"]["direction"] == "higher_is_better"
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+    )
+    assert contract["provider_rows_observed_before_freeze"] is False
+    assert contract["factor_values_observed_before_freeze"] is False
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT.read_text()
+    )
+    changed["factor"]["formula"] = "free_share / total_share"
+    changed_path = tmp_path / "changed_free_float_scarcity_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_tushare_free_float_scarcity_contract(changed_path)
+
+
+def test_tushare_free_float_scarcity_request_uses_only_frozen_fields(monkeypatch):
+    captured = {}
+
+    class Pro:
+        def daily_basic(self, **kwargs):
+            captured.update(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_free_float_scarcity(dt.date(2026, 7, 13))
+    assert captured["trade_date"] == "20260713"
+    assert captured["fields"].split(",") == list(
+        RICH.TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+    )
+    forbidden = set(
+        RICH.load_tushare_free_float_scarcity_contract()["source"][
+            "explicitly_forbidden_fields"
+        ]
+    )
+    assert set(captured["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_free_float_scarcity_normalization_derives_structural_scarcity():
+    raw = pd.DataFrame(
+        [
+            {
+                "ts_code": "600519.SH",
+                "trade_date": "20260713",
+                "total_share": 100.0,
+                "free_share": 40.0,
+            },
+            {
+                "ts_code": "920002.BJ",
+                "trade_date": "20260713",
+                "total_share": 100.0,
+                "free_share": 25.0,
+            },
+            {
+                "ts_code": "000001.SZ",
+                "trade_date": "20260713",
+                "total_share": 100.0,
+                "free_share": None,
+            },
+            {
+                "ts_code": "300750.SZ",
+                "trade_date": "20260713",
+                "total_share": 100.0,
+                "free_share": 120.0,
+            },
+            {
+                "ts_code": "002345.SZ",
+                "trade_date": "20260713",
+                "total_share": 100.0,
+                "free_share": 0.0,
+            },
+        ],
+        columns=RICH.TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS,
+    )
+    normalized, quality = RICH.canonicalize_tushare_free_float_scarcity(
+        raw, dt.date(2026, 7, 13), dt.date(2026, 7, 13)
+    )
+    assert normalized.columns.tolist() == list(
+        RICH.TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
+    )
+    assert normalized["instrument"].tolist() == ["BJ920002", "SH600519"]
+    assert normalized["tushare_free_float_scarcity"].tolist() == pytest.approx(
+        [0.75, 0.6]
+    )
+    assert quality == {
+        "input_rows": 5,
+        "missing_or_nonfinite_share_rows_excluded": 1,
+        "nonpositive_share_rows_excluded": 1,
+        "free_share_above_total_share_rows_excluded": 1,
+        "rows_written": 2,
+    }
+    assert not ({"close", "pb", "total_mv", "forward_return"} & set(normalized))
+
+
+def test_tushare_free_float_scarcity_acceptance_writes_current_coverage_snapshot(
+    tmp_path, monkeypatch
+):
+    contract = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT.read_text()
+    )
+    acceptance = contract["acceptance_protocol"]
+    acceptance["minimum_all_market_source_rows"] = 2
+    acceptance["minimum_valid_holding_names"] = 2
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2020-01-01\t2026-12-31\n"
+        "SZ000001\t2020-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(
+        RICH, "load_tushare_free_float_scarcity_contract", lambda: contract
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "fetch_tushare_free_float_scarcity",
+        lambda trade_date: pd.DataFrame(
+            [
+                {
+                    "ts_code": "600519.SH",
+                    "trade_date": "20260713",
+                    "total_share": 100.0,
+                    "free_share": 40.0,
+                },
+                {
+                    "ts_code": "000001.SZ",
+                    "trade_date": "20260713",
+                    "total_share": 100.0,
+                    "free_share": 80.0,
+                },
+                {
+                    "ts_code": "688981.SH",
+                    "trade_date": "20260713",
+                    "total_share": 100.0,
+                    "free_share": 50.0,
+                },
+            ],
+            columns=RICH.TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS,
+        ),
+    )
+    manifest_path = RICH.sync_tushare_free_float_scarcity_acceptance(
+        universe_path=universe
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_free_float_scarcity_acceptance"
+    assert manifest["acceptance_status"].startswith("accepted_entitlement_formula")
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+    )
+    assert manifest["source_quality"]["valid_free_float_holding_coverage"] == 1.0
+    assert manifest["source_quality"][
+        "outside_point_in_time_holding_universe_rows_excluded"
+    ] == 1
+    assert manifest["source_quality"]["distinct_factor_values"] == 2
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(
+        RICH.TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
+    )
+    assert stored["instrument"].tolist() == ["SH600519", "SZ000001"]
+
+
+def test_tushare_free_float_scarcity_acceptance_is_one_shot_before_provider(
+    tmp_path, monkeypatch
+):
+    prior = tmp_path / "prior-acceptance.json"
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_free_float_scarcity_contract",
+        lambda: RICH.json.loads(
+            RICH.DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT.read_text()
+        ),
+    )
+    monkeypatch.setattr(
+        RICH, "tushare_free_float_scarcity_acceptance_records", lambda: [prior]
+    )
+    monkeypatch.setattr(
+        RICH,
+        "require_provider",
+        lambda provider: pytest.fail("provider must not be touched after consumption"),
+    )
+    with pytest.raises(RICH.RichDataError, match="one-shot.*consumed"):
+        RICH.sync_tushare_free_float_scarcity_acceptance()
+
+
 def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_tushare_daily_pb_contract()
     assert contract["factor"]["name"] == "tushare_positive_book_to_market"

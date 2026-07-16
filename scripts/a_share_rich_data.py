@@ -141,6 +141,9 @@ DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
 DEFAULT_TUSHARE_DAILY_PB_CAPACITY_SPEC = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_capacity_preregistration.json"
 )
+DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_free_float_scarcity_data_contract.json"
+)
 DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_sw_industry_breadth_data_contract.json"
 )
@@ -297,6 +300,9 @@ TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
 )
 TUSHARE_DAILY_PB_CAPACITY_SPEC_SHA256 = (
     "14668ad3f97cef68cd2fae882507280ef835c0f5e7b4ddecb763c1907590c0a0"
+)
+TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT_SHA256 = (
+    "a5897cf4bda28bb55e4a0f5c8db6fc328e916c68494e71931a313357d43bc1eb"
 )
 TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256 = (
     "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
@@ -625,6 +631,20 @@ TUSHARE_DAILY_PB_COLUMNS = (
     "instrument",
     "pb",
     "tushare_positive_book_to_market",
+    "provider",
+)
+TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS = (
+    "ts_code",
+    "trade_date",
+    "total_share",
+    "free_share",
+)
+TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS = (
+    "trade_date",
+    "instrument",
+    "total_share",
+    "free_share",
+    "tushare_free_float_scarcity",
     "provider",
 )
 TUSHARE_SW_CLASSIFICATION_RAW_FIELDS = (
@@ -1738,6 +1758,26 @@ def fetch_tushare_daily_pb(trade_date: dt.date) -> pd.DataFrame:
     except Exception as exc:
         raise RichDataError(
             f"Tushare daily_basic PB request failed for {trade_date.isoformat()}: {exc}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
+def fetch_tushare_free_float_scarcity(trade_date: dt.date) -> pd.DataFrame:
+    """Fetch one daily_basic session using only the frozen share-count whitelist."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.daily_basic(
+            trade_date=trade_date.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare daily_basic free-float-scarcity request failed for "
+            f"{trade_date.isoformat()}: {safe_exception_text(exc)}"
         ) from exc
     if result is None:
         return pd.DataFrame()
@@ -4045,6 +4085,142 @@ def canonicalize_tushare_daily_pb(
         "input_rows": int(len(raw)),
         "missing_pb_rows_excluded": int(missing_pb.sum()),
         "nonpositive_pb_rows_excluded": int(nonpositive_pb.sum()),
+        "rows_written": int(len(result)),
+    }
+
+
+def canonicalize_tushare_free_float_scarcity(
+    frame: pd.DataFrame,
+    start: dt.date,
+    end: dt.date,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Normalize daily_basic share counts and derive structural scarcity."""
+
+    empty_stats = {
+        "input_rows": 0,
+        "missing_or_nonfinite_share_rows_excluded": 0,
+        "nonpositive_share_rows_excluded": 0,
+        "free_share_above_total_share_rows_excluded": 0,
+        "rows_written": 0,
+    }
+    if frame is None or frame.empty:
+        return (
+            pd.DataFrame(columns=TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS),
+            empty_stats,
+        )
+    raw = frame.copy()
+    missing_columns = [
+        field
+        for field in TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+        if field not in raw
+    ]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare daily_basic free-float response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS)
+    )
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare daily_basic free-float response contains fields outside the "
+            "frozen whitelist: "
+            + ", ".join(unexpected_columns)
+        )
+
+    def instrument(value: Any) -> str | None:
+        if pd.isna(value):
+            return None
+        source_code = str(value).strip()
+        parts = source_code.split(".", 1)
+        code = parts[0].strip()
+        if len(code) != 6 or not code.isdigit():
+            return None
+        suffix = parts[1].upper() if len(parts) == 2 else ""
+        if suffix == "BJ" and code.startswith(("4", "8", "9")):
+            return f"BJ{code}"
+        try:
+            symbol = qlib_symbol(code)
+        except RichDataError:
+            return None
+        if suffix in {"SH", "SZ"} and not symbol.startswith(suffix):
+            return None
+        return symbol
+
+    normalized = pd.DataFrame(
+        {
+            "trade_date": pd.to_datetime(
+                raw["trade_date"].astype("string"),
+                format="%Y%m%d",
+                errors="coerce",
+            ).dt.normalize(),
+            "instrument": raw["ts_code"].map(instrument),
+            "total_share": pd.to_numeric(raw["total_share"], errors="coerce"),
+            "free_share": pd.to_numeric(raw["free_share"], errors="coerce"),
+        }
+    )
+    missing_key = normalized[["trade_date", "instrument"]].isna().any(axis=1)
+    if missing_key.any():
+        raise RichDataError(
+            "Tushare daily_basic free-float response contains "
+            f"{int(missing_key.sum())} missing keys"
+        )
+    start_ts = pd.Timestamp(start)
+    end_ts = pd.Timestamp(end)
+    if not normalized["trade_date"].between(start_ts, end_ts).all():
+        raise RichDataError(
+            "Tushare daily_basic free-float response contains a date outside the request"
+        )
+    if normalized.duplicated(["instrument", "trade_date"]).any():
+        raise RichDataError(
+            "Tushare daily_basic free-float response contains duplicate "
+            "instrument/date keys"
+        )
+
+    finite = pd.Series(
+        np.isfinite(normalized["total_share"])
+        & np.isfinite(normalized["free_share"]),
+        index=normalized.index,
+    )
+    missing_or_nonfinite = ~finite
+    nonpositive = finite & (
+        normalized["total_share"].le(0.0) | normalized["free_share"].le(0.0)
+    )
+    above_total = (
+        finite
+        & ~nonpositive
+        & normalized["free_share"].gt(normalized["total_share"])
+    )
+    eligible = finite & ~nonpositive & ~above_total
+    accepted = normalized.loc[eligible].copy()
+    accepted["total_share"] = accepted["total_share"].astype("float64")
+    accepted["free_share"] = accepted["free_share"].astype("float64")
+    accepted["tushare_free_float_scarcity"] = (
+        1.0 - accepted["free_share"] / accepted["total_share"]
+    )
+    factor = accepted["tushare_free_float_scarcity"]
+    if (
+        not np.isfinite(factor).all()
+        or not factor.ge(0.0).all()
+        or not factor.lt(1.0).all()
+    ):
+        raise RichDataError(
+            "derived Tushare free-float scarcity is outside the frozen [0, 1) range"
+        )
+    accepted["provider"] = "tushare"
+    result = (
+        accepted.loc[:, list(TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS)]
+        .sort_values(["trade_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    return result, {
+        "input_rows": int(len(raw)),
+        "missing_or_nonfinite_share_rows_excluded": int(
+            missing_or_nonfinite.sum()
+        ),
+        "nonpositive_share_rows_excluded": int(nonpositive.sum()),
+        "free_share_above_total_share_rows_excluded": int(above_total.sum()),
         "rows_written": int(len(result)),
     }
 
@@ -7208,6 +7384,95 @@ def load_tushare_daily_pb_contract(
         raise RichDataError(
             "Tushare daily PB contract does not match the frozen protocol"
         )
+    return contract
+
+
+def load_tushare_free_float_scarcity_contract(
+    path: Path = DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT,
+) -> dict[str, Any]:
+    """Load and verify the frozen pre-row free-float-scarcity contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT_SHA256:
+        raise RichDataError(
+            "Tushare free-float-scarcity contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_tushare_free_float_scarcity_data_contract"
+    )
+    source = contract.get("source") or {}
+    factor = contract.get("factor") or {}
+    point_in_time = contract.get("point_in_time_policy") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("snapshot_contract") or {}
+    partition = snapshot.get("partition_policy") or {}
+    completeness = contract.get("source_completeness_policy") or {}
+    capacity = contract.get("no_return_capacity_policy") or {}
+    uniqueness = contract.get("no_return_uniqueness_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_mechanism_overlap_and_suspend_capacity_rejection_before_free_float_provider_rows_factor_values_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-16T21:21:37Z"
+        or source.get("provider") != "tushare"
+        or source.get("api") != "daily_basic"
+        or source.get("minimum_permission_points") != 2000
+        or source.get("authorized_account_points") != 3000
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS
+        or tuple(snapshot.get("columns") or ())
+        != TUSHARE_FREE_FLOAT_SCARCITY_COLUMNS
+        or factor.get("name") != "tushare_free_float_scarcity"
+        or factor.get("formula") != "1 - free_share / total_share"
+        or factor.get("direction") != "higher_is_better"
+        or point_in_time.get("availability", point_in_time.get("source_row_availability"))
+        != "after the documented 15:00-17:00 update on trade_date"
+        or point_in_time.get("maximum_event_age_calendar_days") != 0
+        or acceptance.get("fixed_completed_session") != "2026-07-13"
+        or acceptance.get("minimum_all_market_source_rows") != 4000
+        or acceptance.get("provider_documented_maximum_rows_per_call") != 6000
+        or acceptance.get("minimum_valid_holding_universe_coverage") != 0.95
+        or acceptance.get("minimum_valid_holding_names") != 50
+        or acceptance.get("minimum_distinct_factor_values") != 2
+        or partition.get("storage_partition") != "one calendar year"
+        or partition.get("provider_call_partition") != "one local trading session"
+        or partition.get("provider_documented_maximum_rows_per_call") != 6000
+        or partition.get("minimum_seconds_between_calls") != 0.32
+        or partition.get("maximum_attempts_per_session") != 3
+        or completeness.get("minimum_median_valid_holding_universe_coverage")
+        != 0.95
+        or completeness.get("minimum_p05_valid_holding_universe_coverage") != 0.9
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("holding_period_trading_days") != 3
+        or uniqueness.get("comparison_factor_count") != 54
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or uniqueness.get("minimum_pairwise_sessions") != 100
+        or uniqueness.get("required_named_near_neighbor")
+        != "free_float_cap_proxy"
+        or contract.get("provider_rows_observed_before_freeze") is not False
+        or contract.get("factor_values_observed_before_freeze") is not False
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare free-float-scarcity contract does not match the frozen protocol"
+        )
+
+    for label, link in (contract.get("freeze_evidence") or {}).items():
+        linked_path = resolve_record_path(str((link or {}).get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(
+                f"Tushare free-float-scarcity freeze evidence changed: {label}"
+            )
+    for label, link in (contract.get("local_context") or {}).items():
+        linked_path = resolve_record_path(str((link or {}).get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(
+                f"Tushare free-float-scarcity local context changed: {label}"
+            )
     return contract
 
 
@@ -13468,6 +13733,232 @@ def sync_tushare_cash_conversion_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def tushare_free_float_scarcity_acceptance_records() -> list[Path]:
+    """Return prior local acceptance or rejection manifests for this mechanism."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*tushare_free_float_scarcity_acceptance*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_free_float_scarcity_acceptance":
+            records.append(path)
+    return records
+
+
+def sync_tushare_free_float_scarcity_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Run the sole frozen one-session free-float entitlement and coverage check."""
+
+    with RichDataProcessLock(
+        METADATA_ROOT / ".tushare_free_float_scarcity_acceptance.lock"
+    ):
+        contract = load_tushare_free_float_scarcity_contract()
+        prior_records = tushare_free_float_scarcity_acceptance_records()
+        if prior_records:
+            raise RichDataError(
+                "Tushare free-float-scarcity acceptance is one-shot and already "
+                f"consumed by {prior_records[-1]}"
+            )
+        require_provider("tushare")
+        acceptance = contract["acceptance_protocol"]
+        trade_date = dt.date.fromisoformat(acceptance["fixed_completed_session"])
+        run_id = new_run_id("tushare_free_float_scarcity_acceptance")
+        run_root = (
+            RAW_ROOT
+            / "tushare"
+            / "free_float_scarcity"
+            / "acceptance"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Tushare free-float-scarcity acceptance already exists: {run_id}"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        try:
+            provider_request_issued = True
+            raw = fetch_tushare_free_float_scarcity(trade_date)
+            minimum_rows = int(acceptance["minimum_all_market_source_rows"])
+            if len(raw) < minimum_rows:
+                raise RichDataError(
+                    "Tushare daily_basic free-float acceptance returned too few "
+                    f"all-market rows: {len(raw)} < {minimum_rows}"
+                )
+            row_ceiling = int(
+                acceptance["provider_documented_maximum_rows_per_call"]
+            )
+            if len(raw) >= row_ceiling:
+                raise RichDataError(
+                    "Tushare daily_basic free-float acceptance reached the provider "
+                    "row ceiling; the all-market response may be truncated"
+                )
+            normalized, quality = canonicalize_tushare_free_float_scarcity(
+                raw, trade_date, trade_date
+            )
+            intervals = load_factor_universe_intervals(universe_path)
+            session = pd.Timestamp(trade_date)
+            active_rows = intervals[
+                intervals["start_date"].le(session)
+                & intervals["end_date"].ge(session)
+            ]
+            active_instruments = set(active_rows["instrument"].astype(str))
+            if not active_instruments:
+                raise RichDataError(
+                    "buyable holding universe has no active free-float acceptance-date names"
+                )
+            in_universe = normalized["instrument"].isin(active_instruments)
+            outside_universe = int((~in_universe).sum())
+            accepted = normalized.loc[in_universe].reset_index(drop=True)
+            observed_names = int(accepted["instrument"].nunique())
+            expected_names = int(len(active_instruments))
+            coverage = observed_names / expected_names
+            minimum_coverage = float(
+                acceptance["minimum_valid_holding_universe_coverage"]
+            )
+            if coverage < minimum_coverage:
+                raise RichDataError(
+                    "Tushare daily_basic free-float holding coverage failed: "
+                    f"{coverage:.6f} < {minimum_coverage:.6f}"
+                )
+            minimum_names = int(acceptance["minimum_valid_holding_names"])
+            if observed_names < minimum_names:
+                raise RichDataError(
+                    "Tushare daily_basic free-float acceptance has too few valid "
+                    f"holding names: {observed_names} < {minimum_names}"
+                )
+            distinct_values = int(
+                accepted["tushare_free_float_scarcity"].nunique(dropna=True)
+            )
+            minimum_values = int(acceptance["minimum_distinct_factor_values"])
+            if distinct_values < minimum_values:
+                raise RichDataError(
+                    "Tushare daily_basic free-float acceptance lacks factor variation: "
+                    f"{distinct_values} < {minimum_values}"
+                )
+            if accepted.duplicated(["instrument", "trade_date"]).any():
+                raise RichDataError(
+                    "Tushare daily_basic free-float accepted frame contains duplicate keys"
+                )
+
+            temporary_destination = temporary_root / "free_float_scarcity.parquet"
+            final_destination = run_root / "free_float_scarcity.parquet"
+            atomic_write_frame(accepted, temporary_destination)
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "tushare_free_float_scarcity_acceptance",
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_start": trade_date.isoformat(),
+                "requested_end": trade_date.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT
+                    ),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["freeze_evidence"][
+                    "mechanism_overlap_and_suspend_capacity_audit"
+                ],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(universe_path.expanduser().resolve()),
+                    "sha256": file_digest(universe_path.expanduser().resolve()),
+                    "active_names": expected_names,
+                },
+                "source_request": {
+                    "api": "daily_basic",
+                    "request_mode": "one fixed completed local trading session",
+                    "fields": list(TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS),
+                    "provider_request_issued": provider_request_issued,
+                    "forbidden_fields_requested_or_stored": [],
+                    "credentials_logged_or_stored": False,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(accepted)),
+                        "sha256": frame_digest(accepted),
+                    }
+                ],
+                "source_quality": {
+                    **quality,
+                    "outside_point_in_time_holding_universe_rows_excluded": (
+                        outside_universe
+                    ),
+                    "expected_active_holding_names": expected_names,
+                    "valid_free_float_holding_names": observed_names,
+                    "valid_free_float_holding_coverage": coverage,
+                    "distinct_factor_values": distinct_values,
+                    "duplicate_event_key_rows": 0,
+                    "scarcity_min": float(
+                        accepted["tushare_free_float_scarcity"].min()
+                    ),
+                    "scarcity_max": float(
+                        accepted["tushare_free_float_scarcity"].max()
+                    ),
+                },
+                "acceptance_status": "accepted_entitlement_formula_and_current_coverage_pending_full_history_and_frozen_no_return_protocol",
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "tushare_free_float_scarcity_acceptance",
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_start": trade_date.isoformat(),
+                "requested_end": trade_date.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_CONTRACT
+                    ),
+                },
+                "source_request": {
+                    "api": "daily_basic",
+                    "fields": list(TUSHARE_FREE_FLOAT_SCARCITY_RAW_FIELDS),
+                    "provider_request_issued": provider_request_issued,
+                    "credentials_logged_or_stored": False,
+                },
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": "terminal_entitlement_schema_formula_or_current_coverage_rejected_stop_before_full_history_capacity_uniqueness_or_returns",
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def sync_tushare_daily_pb_acceptance(
     universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
 ) -> Path:
@@ -16169,6 +16660,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="confirm the accepted 9,588-call sequential licensed request",
     )
 
+    ts_free_float_acceptance = subparsers.add_parser(
+        "acceptance-tushare-free-float-scarcity",
+        help="run the frozen completed-session structural free-float acceptance",
+    )
+    ts_free_float_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+
     ts_daily_pb_acceptance = subparsers.add_parser(
         "acceptance-tushare-daily-pb",
         help="run the frozen completed-session positive book-to-market acceptance",
@@ -16361,6 +16860,10 @@ def main(argv: list[str] | None = None) -> int:
             )
         elif args.command == "sync-tushare-cash-conversion":
             manifest = sync_tushare_cash_conversion(allow_large=args.allow_large)
+        elif args.command == "acceptance-tushare-free-float-scarcity":
+            manifest = sync_tushare_free_float_scarcity_acceptance(
+                universe_path=args.universe_file
+            )
         elif args.command == "acceptance-tushare-daily-pb":
             manifest = sync_tushare_daily_pb_acceptance(
                 universe_path=args.universe_file
@@ -16414,6 +16917,9 @@ def main(argv: list[str] | None = None) -> int:
         "sync-jqdata-moneyflow": "stored_pending_no_return_capacity",
         "sync-tushare-moneyflow": "stored_pending_no_return_capacity",
         "sync-tushare-daily-pb": "stored_pending_no_return_uniqueness_and_capacity",
+        "acceptance-tushare-free-float-scarcity": (
+            "stored_no_return_structural_free_float_acceptance"
+        ),
         "acceptance-tushare-top-inst": (
             "stored_no_return_entitlement_and_top_list_acceptance"
         ),
