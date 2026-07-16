@@ -40,6 +40,8 @@ unset token
 
 不要把 Token 直接写成 `export TUSHARE_TOKEN=真实值` 或 `launchctl setenv TUSHARE_TOKEN 真实值`，否则可能进入命令历史、终端录屏或日志。也不要把它明文写进 `.zshrc`。
 
+如果曾运行 `read -s "xxxxxx"; echo`，zsh 会把 `xxxxxx` 当成接收输入的变量名，并不会自动创建本文后续使用的 `token` 变量；此时再执行 `launchctl setenv TUSHARE_TOKEN "$token"` 可能写入空值。请直接重新运行本节使用 `token?…` 提示的完整命令，再用下一节的“有或无”检查确认，不要打印实际值排查。
+
 ## 3. 只验证“有或无”
 
 不要单独运行会把值打印到屏幕的 `launchctl getenv TUSHARE_TOKEN`。使用只输出状态的检查：

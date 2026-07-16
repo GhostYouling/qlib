@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_top_inst_source_acceptance_record",
+  "status": "terminal_source_acceptance_rejected_before_snapshot_full_history_factor_values_or_returns",
+  "recorded_at": "2026-07-16T13:09:32Z",
+  "purpose": "Permanently record the one allowed no-return Tushare top_inst entitlement/schema/integrity acceptance outcome for the fixed three-session A-share research protocol.",
+  "data_contract": {
+    "path": "docs/a_share_tushare_top_inst_data_contract.json",
+    "sha256": "0520cd8bac454f14c2434cf7b8092aaaf3ff94cdc09b5404a6b55323bf0e7461",
+    "preregistered_at": "2026-07-16T12:50:27Z",
+    "provider_rows_observed_before_contract_freeze": false
+  },
+  "implementation_evidence": {
+    "adapter_path": "scripts/a_share_rich_data.py",
+    "adapter_sha256_at_acceptance": "9ef220838e4224882a07ca4c2bcecff819ec5a66d24fe9b0dd3a1b42431f9825",
+    "test_path": "tests/data_collector_tests/test_a_share_rich_data.py",
+    "test_sha256_at_acceptance": "1bf93337bee6a661332951b6c9da2f813d76252c33b399406120124763824bff",
+    "focused_tests_before_acceptance": {
+      "passed": 5,
+      "failed": 0
+    },
+    "full_data_collector_tests_before_acceptance": {
+      "passed": 341,
+      "failed": 0,
+      "warnings": 9
+    }
+  },
+  "no_network_preflight": {
+    "contract_fingerprint_passed": true,
+    "prior_top_inst_acceptance_records": 0,
+    "accepted_top_list_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json",
+      "sha256": "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849"
+    },
+    "accepted_top_list_frame": {
+      "path": "data/raw/a_share/rich/tushare/events/snapshots/20260716T081652Z_tushare_events_6264ce79/top-list/2026-07-13.parquet",
+      "frame_content_sha256": "658592ebdcc44685e15184a2f01bc77f3c9ebdac7f0147b537564b7290ae24e6",
+      "raw_rows": 91,
+      "exact_duplicate_rows_preserved": 2,
+      "unsupported_security_rows_excluded_from_stock_concordance": 8
+    },
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "network_request_issued": false
+  },
+  "only_acceptance_attempt": {
+    "run_id": "20260716T130843Z_tushare_top_inst_acceptance_85802249",
+    "manifest_path": "data/metadata/rich_data/runs/20260716T130843Z_tushare_top_inst_acceptance_85802249.json",
+    "manifest_sha256": "0d4c060e581b86823e853549192ff6fc3cfd6cb30401e872a2926bd270f4122f",
+    "fixed_completed_session": "2026-07-13",
+    "provider": "tushare",
+    "api": "top_inst",
+    "provider_calls_issued": 1,
+    "requested_fields": [
+      "trade_date",
+      "ts_code",
+      "exalter",
+      "buy",
+      "sell",
+      "net_buy"
+    ],
+    "exact_six_field_schema_reached_canonical_validation": true,
+    "incomplete_or_nonfinite_required_rows": 505,
+    "raw_response_row_count": null,
+    "raw_response_row_count_note": "The strict rejection manifest retained the invalid-row count but deliberately did not persist the rejected raw response, so the total response row count and per-field missing breakdown are unavailable without a forbidden second request.",
+    "failure_stage": "before institution-seat uniqueness, provider-net reconciliation, stock-date aggregation, top-list stock concordance, full snapshot, factor values, or returns",
+    "error": "Tushare top_inst response contains 505 incomplete or non-finite rows",
+    "acceptance_status": "rejected_stop_before_full_history_or_returns",
+    "raw_or_canonical_snapshot_published": false,
+    "files": [],
+    "credentials_logged_or_stored": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false
+  },
+  "interpretation": {
+    "entitlement_or_endpoint_response_observed": true,
+    "usable_institution_seat_data_proven": false,
+    "factor_formula_or_direction_tested_on_returns": false,
+    "factor_capacity_or_uniqueness_tested": false,
+    "reason_for_terminal_stop": "The frozen contract rejects any row with a missing or non-finite trade date, stock key, institution seat, buy, sell, or net_buy integrity field. Five hundred and five rows failed that rule, and the one-shot protocol forbids changing the date or schema after observing the response.",
+    "not_global_provider_absence_claim": true,
+    "level2_purchase_justified": false
+  },
+  "terminal_decision": {
+    "mechanism": "tushare_top_inst_net_buy_share",
+    "decision": "stop_source_before_full_history_and_returns",
+    "full_history_authorized": false,
+    "capacity_or_uniqueness_audit_authorized": false,
+    "return_diagnostic_authorized": false,
+    "aggregation_scoring_selection_sizing_or_orders_authorized": false,
+    "retry_allowed": false
+  },
+  "prohibited_actions": [
+    "repeat top_inst on 2026-07-13 or any other date",
+    "drop net_buy or use buy minus sell without the frozen provider integrity reconciliation",
+    "fill missing buy, sell, net_buy, exalter, stock code, or date values",
+    "silently exclude the 505 invalid rows and treat the remainder as accepted",
+    "request buy_rate, sell_rate, prices, reason, market value, returns, or another institution-seat schema",
+    "change the formula, direction, event age, date, minimum rows, uniqueness threshold, capacity threshold, holding period, TopK, costs, quality age, or listing gate",
+    "run full history, capacity, uniqueness, return diagnostics, aggregation, current scoring, selection, sizing, orders, or Level-2 intake from this branch"
+  ],
+  "next_allowed_work": "Start only from a genuinely independent economic mechanism under a new immutable no-return contract frozen before observing that source's rows; this rejected branch contributes no factor to any combination.",
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -63,6 +63,9 @@ DEFAULT_TUSHARE_MONEYFLOW_CONTRACT = (
 DEFAULT_TUSHARE_NORTHBOUND_TOP10_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_northbound_top10_data_contract.json"
 )
+DEFAULT_TUSHARE_TOP_INST_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_top_inst_data_contract.json"
+)
 DEFAULT_TUSHARE_DAILY_PB_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_daily_pb_data_contract.json"
 )
@@ -150,6 +153,9 @@ TUSHARE_MONEYFLOW_CONTRACT_SHA256 = (
 )
 TUSHARE_NORTHBOUND_TOP10_CONTRACT_SHA256 = (
     "9362211f3e35cbb24c779d49d138fb757d61f7a092b61f0304d0e147a739f63e"
+)
+TUSHARE_TOP_INST_CONTRACT_SHA256 = (
+    "0520cd8bac454f14c2434cf7b8092aaaf3ff94cdc09b5404a6b55323bf0e7461"
 )
 TUSHARE_DAILY_PB_CONTRACT_SHA256 = (
     "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2"
@@ -249,6 +255,23 @@ TUSHARE_NORTHBOUND_TOP10_COLUMNS = (
     "provider",
 )
 TUSHARE_NORTHBOUND_TOP10_MARKET_TYPES = ("1", "3")
+TUSHARE_TOP_INST_RAW_FIELDS = (
+    "trade_date",
+    "ts_code",
+    "exalter",
+    "buy",
+    "sell",
+    "net_buy",
+)
+TUSHARE_TOP_INST_COLUMNS = (
+    "trade_date",
+    "instrument",
+    "institution_seat_count",
+    "buy",
+    "sell",
+    "tushare_top_inst_net_buy_share",
+    "provider",
+)
 TUSHARE_DAILY_PB_RAW_FIELDS = ("ts_code", "trade_date", "pb")
 TUSHARE_DAILY_PB_COLUMNS = (
     "trade_date",
@@ -439,6 +462,18 @@ def require_provider(provider: str) -> None:
     if availability.missing_environment:
         keys = ", ".join(availability.missing_environment)
         raise RichDataError(f"{provider} credentials are missing from the environment: {keys}")
+
+
+def safe_exception_text(exc: BaseException) -> str:
+    """Render an exception after removing any configured provider secret values."""
+
+    message = str(exc)
+    for details in PROVIDER_REQUIREMENTS.values():
+        for key in details["environment"]:
+            secret = os.environ.get(str(key))
+            if secret:
+                message = message.replace(secret, "<redacted>")
+    return message
 
 
 def _column(frame: pd.DataFrame, candidates: Iterable[str]) -> str | None:
@@ -1024,6 +1059,26 @@ def fetch_tushare_northbound_top10(
     return result.copy()
 
 
+def fetch_tushare_top_inst(trade_date: dt.date) -> pd.DataFrame:
+    """Fetch one institution-seat session using only the frozen whitelist."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.top_inst(
+            trade_date=trade_date.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_TOP_INST_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare top_inst request failed for "
+            f"{trade_date.isoformat()}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
 def fetch_tushare_daily_pb(trade_date: dt.date) -> pd.DataFrame:
     """Fetch one daily_basic session using only the frozen PB whitelist."""
 
@@ -1398,6 +1453,123 @@ def canonicalize_tushare_northbound_top10(
         "input_rows": int(len(raw)),
         "missing_rows_excluded": missing_rows,
         "zero_denominator_rows_excluded": zero_denominator_rows,
+        "rows_written": int(len(result)),
+    }
+
+
+def canonicalize_tushare_top_inst(
+    frame: pd.DataFrame,
+    start: dt.date,
+    end: dt.date,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Reconcile unique institution-seat rows and derive the frozen ratio."""
+
+    empty_stats = {
+        "input_rows": 0,
+        "institution_seat_rows_reconciled": 0,
+        "zero_denominator_stock_days_excluded": 0,
+        "rows_written": 0,
+    }
+    if frame is None or frame.empty:
+        return pd.DataFrame(columns=TUSHARE_TOP_INST_COLUMNS), empty_stats
+    raw = frame.copy()
+    missing_columns = [field for field in TUSHARE_TOP_INST_RAW_FIELDS if field not in raw]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare top_inst response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    unexpected_columns = sorted(set(raw.columns) - set(TUSHARE_TOP_INST_RAW_FIELDS))
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare top_inst response contains fields outside the frozen whitelist: "
+            + ", ".join(unexpected_columns)
+        )
+
+    def instrument(value: Any) -> str | None:
+        if pd.isna(value):
+            return None
+        source_code = str(value).strip()
+        parts = source_code.split(".", 1)
+        if len(parts) != 2:
+            return None
+        code, suffix = parts[0].strip(), parts[1].strip().upper()
+        if len(code) != 6 or not code.isdigit() or suffix not in {"SH", "SZ"}:
+            return None
+        try:
+            symbol = qlib_symbol(code)
+        except RichDataError:
+            return None
+        return symbol if symbol.startswith(suffix) else None
+
+    normalized = pd.DataFrame(
+        {
+            "trade_date": pd.to_datetime(
+                raw["trade_date"].astype("string"), format="%Y%m%d", errors="coerce"
+            ).dt.normalize(),
+            "instrument": raw["ts_code"].map(instrument),
+            "exalter": raw["exalter"].astype("string").str.strip(),
+            "buy": pd.to_numeric(raw["buy"], errors="coerce"),
+            "sell": pd.to_numeric(raw["sell"], errors="coerce"),
+            "net_buy": pd.to_numeric(raw["net_buy"], errors="coerce"),
+        }
+    )
+    required = ["trade_date", "instrument", "exalter", "buy", "sell", "net_buy"]
+    missing = normalized[required].isna().any(axis=1) | normalized["exalter"].eq("")
+    finite_amounts = np.isfinite(normalized[["buy", "sell", "net_buy"]]).all(axis=1)
+    if missing.any() or (~finite_amounts).any():
+        invalid_rows = int((missing | ~finite_amounts).sum())
+        raise RichDataError(
+            f"Tushare top_inst response contains {invalid_rows} incomplete or non-finite rows"
+        )
+    if normalized[["buy", "sell"]].lt(0.0).any().any():
+        raise RichDataError("Tushare top_inst response contains a negative buy or sell amount")
+    start_ts = pd.Timestamp(start)
+    end_ts = pd.Timestamp(end)
+    if not normalized["trade_date"].between(start_ts, end_ts).all():
+        raise RichDataError("Tushare top_inst response contains a date outside the request")
+    seat_key = ["trade_date", "instrument", "exalter"]
+    if normalized.duplicated(seat_key).any():
+        raise RichDataError("Tushare top_inst response contains duplicate institution-seat keys")
+
+    tolerance = np.maximum(
+        0.01,
+        0.000001
+        * np.maximum(
+            normalized["net_buy"].abs(),
+            normalized["buy"] + normalized["sell"],
+        ),
+    )
+    if (normalized["net_buy"].sub(normalized["buy"] - normalized["sell"]).abs() > tolerance).any():
+        raise RichDataError("Tushare top_inst net_buy does not reconcile to buy minus sell")
+
+    aggregated = (
+        normalized.groupby(["trade_date", "instrument"], as_index=False, observed=True)
+        .agg(
+            institution_seat_count=("exalter", "nunique"),
+            buy=("buy", "sum"),
+            sell=("sell", "sum"),
+        )
+        .sort_values(["trade_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    denominator = aggregated["buy"] + aggregated["sell"]
+    positive = denominator.gt(0.0)
+    zero_denominator_stock_days = int((~positive).sum())
+    aggregated = aggregated.loc[positive].copy()
+    denominator = denominator.loc[positive]
+    aggregated["tushare_top_inst_net_buy_share"] = (
+        aggregated["buy"] - aggregated["sell"]
+    ) / denominator
+    aggregated["provider"] = "tushare"
+    result = aggregated.loc[:, list(TUSHARE_TOP_INST_COLUMNS)].reset_index(drop=True)
+    factor = result["tushare_top_inst_net_buy_share"]
+    if not np.isfinite(factor).all() or not factor.between(-1.0, 1.0).all():
+        raise RichDataError("derived Tushare institution-seat ratio falls outside [-1, 1]")
+    return result, {
+        "input_rows": int(len(raw)),
+        "institution_seat_rows_reconciled": int(len(normalized)),
+        "zero_denominator_stock_days_excluded": zero_denominator_stock_days,
         "rows_written": int(len(result)),
     }
 
@@ -1954,6 +2126,196 @@ def load_tushare_northbound_top10_contract(
             "Tushare Northbound top-ten contract does not match the frozen protocol"
         )
     return contract
+
+
+def load_tushare_top_inst_contract(
+    path: Path = DEFAULT_TUSHARE_TOP_INST_CONTRACT,
+) -> dict[str, Any]:
+    """Load the immutable pre-entitlement institution-seat contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_TOP_INST_CONTRACT_SHA256:
+        raise RichDataError("Tushare top_inst contract fingerprint mismatch")
+    contract = load_json_record(path, kind="a_share_tushare_top_inst_data_contract")
+    source_selection = contract.get("source_selection") or {}
+    source = contract.get("source") or {}
+    timing = contract.get("point_in_time_policy") or {}
+    factor = contract.get("factor") or {}
+    context = contract.get("local_context") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("full_snapshot_contract") or {}
+    gates = contract.get("no_return_gates") or {}
+    completeness = gates.get("source_completeness") or {}
+    capacity = gates.get("capacity") or {}
+    uniqueness = gates.get("uniqueness") or {}
+    diagnostic = contract.get("diagnostic_policy_if_all_no_return_gates_pass") or {}
+    top_list_manifest = context.get("accepted_top_list_manifest") or {}
+    top_list_frame = context.get("accepted_top_list_frame") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_top_inst_entitlement_rows_full_history_factor_values_or_factor_returns_observed"
+        or contract.get("preregistered_at") != "2026-07-16T12:50:27Z"
+        or source_selection.get("minimum_permission_points") != 2000
+        or source_selection.get("provider_documented_maximum_rows_per_call") != 10000
+        or source.get("provider") != "tushare"
+        or source.get("api") != "top_inst"
+        or source.get("frequency") != "daily_after_close_event"
+        or source.get("request_mode") != "one completed local trading session per call"
+        or tuple(source.get("requested_fields") or ()) != TUSHARE_TOP_INST_RAW_FIELDS
+        or timing.get("same_session_trade_allowed") is not False
+        or timing.get("maximum_event_age_days") != 0
+        or timing.get("forward_fill_allowed") is not False
+        or factor.get("name") != "tushare_top_inst_net_buy_share"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("formula")
+        != "(sum(buy) - sum(sell)) / (sum(buy) + sum(sell))"
+        or factor.get("provider_net_buy_use")
+        != "integrity reconciliation only; never use provider net_buy as the factor numerator"
+        or top_list_manifest.get("sha256")
+        != "83c141749256a01852cf2cb0534da653e947e264a1b5ba3eb0efa2fd4b87a849"
+        or top_list_frame.get("sha256")
+        != "658592ebdcc44685e15184a2f01bc77f3c9ebdac7f0147b537564b7290ae24e6"
+        or top_list_frame.get("raw_rows") != 91
+        or top_list_frame.get("exact_duplicate_rows_preserved") != 2
+        or acceptance.get("fixed_completed_session") != "2026-07-13"
+        or acceptance.get("provider_calls") != 1
+        or acceptance.get("minimum_raw_institution_rows") != 1
+        or acceptance.get("minimum_aggregated_stock_rows") != 1
+        or snapshot.get("development_start") != "2019-01-01"
+        or snapshot.get("development_end") != "2025-12-31"
+        or snapshot.get("request_every_local_session") is not True
+        or snapshot.get("provider_call_partition") != "one local trading session"
+        or snapshot.get("minimum_seconds_between_calls") != 0.32
+        or snapshot.get("maximum_attempts_per_session") != 3
+        or tuple(snapshot.get("canonical_columns") or ()) != TUSHARE_TOP_INST_COLUMNS
+        or completeness.get("minimum_nonempty_source_sessions") != 200
+        or completeness.get("minimum_observed_source_years") != 5
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("maximum_quality_age_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("comparison_factor_count") != 51
+        or uniqueness.get("minimum_pairwise_sessions") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or diagnostic.get("separate_immutable_preregistration_required_before_price_access")
+        is not True
+        or diagnostic.get("holding_period_trading_days") != 3
+        or diagnostic.get("topk") != 3
+        or diagnostic.get("selection_or_promotion_allowed") is not False
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("Tushare top_inst contract does not match the frozen protocol")
+    return contract
+
+
+def load_tushare_top_inst_top_list_context(
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Revalidate the accepted same-date raw top-list evidence without prices."""
+
+    context = contract["local_context"]
+    manifest_link = context["accepted_top_list_manifest"]
+    frame_link = context["accepted_top_list_frame"]
+    manifest_file = resolve_record_path(manifest_link["path"])
+    frame_file = resolve_record_path(frame_link["path"])
+    if not manifest_file.exists() or file_digest(manifest_file) != manifest_link["sha256"]:
+        raise RichDataError("accepted Tushare top-list manifest fingerprint mismatch")
+    manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
+    trade_date = contract["acceptance_protocol"]["fixed_completed_session"]
+    if (
+        manifest.get("dataset") != "tushare_events"
+        or manifest.get("provider") != "tushare"
+        or manifest.get("requested_start") != trade_date
+        or manifest.get("requested_end") != trade_date
+        or manifest.get("acceptance_status")
+        != "pending_event_time_alignment_and_canonicalization"
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("accepted Tushare top-list manifest is incompatible")
+    records = [
+        item
+        for item in manifest.get("files") or []
+        if item.get("dataset") == "top-list"
+    ]
+    if len(records) != 1:
+        raise RichDataError("accepted Tushare event manifest must contain one top-list frame")
+    record = records[0]
+    quality = record.get("quality") or {}
+    if (
+        resolve_record_path(record.get("path", "")) != frame_file
+        or record.get("sha256") != frame_link["sha256"]
+        or record.get("rows") != frame_link["raw_rows"]
+        or quality.get("exact_duplicate_rows")
+        != frame_link["exact_duplicate_rows_preserved"]
+        or quality.get("missing_key_rows") != 0
+        or quality.get("outside_requested_date_rows") != 0
+        or quality.get("raw_rows_preserved_without_deduplication") is not True
+    ):
+        raise RichDataError("accepted Tushare top-list frame metadata mismatch")
+    if not frame_file.exists():
+        raise RichDataError("accepted Tushare top-list frame is missing")
+    frame = pd.read_parquet(frame_file)
+    if frame_digest(frame) != frame_link["sha256"] or len(frame) != frame_link["raw_rows"]:
+        raise RichDataError("accepted Tushare top-list frame content fingerprint mismatch")
+    required = {"trade_date", "ts_code"}
+    if not required.issubset(frame.columns):
+        raise RichDataError("accepted Tushare top-list frame lacks stock/date keys")
+    dates = pd.to_datetime(
+        frame["trade_date"].astype("string"), format="%Y%m%d", errors="coerce"
+    ).dt.strftime("%Y-%m-%d")
+    if dates.isna().any() or not dates.eq(trade_date).all():
+        raise RichDataError("accepted Tushare top-list frame has an incompatible date")
+
+    def instrument(value: Any) -> str | None:
+        if pd.isna(value):
+            return None
+        parts = str(value).strip().split(".", 1)
+        if len(parts) != 2:
+            return None
+        code, suffix = parts[0].strip(), parts[1].strip().upper()
+        if len(code) != 6 or not code.isdigit() or suffix not in {"SH", "SZ"}:
+            return None
+        try:
+            symbol = qlib_symbol(code)
+        except RichDataError:
+            return None
+        return symbol if symbol.startswith(suffix) else None
+
+    instruments = frame["ts_code"].map(instrument)
+    supported = instruments.dropna().astype(str)
+    if supported.empty:
+        raise RichDataError("accepted Tushare top-list frame has no supported A-share stock keys")
+    return {
+        "manifest_path": manifest_file,
+        "manifest_sha256": manifest_link["sha256"],
+        "frame_path": frame_file,
+        "frame_sha256": frame_link["sha256"],
+        "frame_rows": int(len(frame)),
+        "exact_duplicate_rows_preserved": int(quality["exact_duplicate_rows"]),
+        "unsupported_security_rows_excluded": int(instruments.isna().sum()),
+        "instruments": frozenset(supported),
+    }
+
+
+def tushare_top_inst_acceptance_records() -> list[Path]:
+    """Return prior success or rejection records that consumed the one-shot gate."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*tushare_top_inst_acceptance*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_top_inst_acceptance":
+            records.append(path)
+    return records
 
 
 def load_tushare_daily_pb_contract(
@@ -4622,6 +4984,190 @@ def sync_tushare_northbound_top10_acceptance() -> Path:
         raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
 
 
+def sync_tushare_top_inst_acceptance() -> Path:
+    """Run the single frozen no-return institution-seat acceptance request."""
+
+    contract = load_tushare_top_inst_contract()
+    prior_records = tushare_top_inst_acceptance_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare top_inst acceptance is one-shot and was already consumed: "
+            + ", ".join(str(path) for path in prior_records)
+        )
+    top_list = load_tushare_top_inst_top_list_context(contract)
+    require_provider("tushare")
+    acceptance = contract["acceptance_protocol"]
+    trade_date = dt.date.fromisoformat(acceptance["fixed_completed_session"])
+    validate_range(trade_date, trade_date, allow_large=False)
+    run_id = new_run_id("tushare_top_inst_acceptance")
+    run_root = RAW_ROOT / "tushare" / "top_inst" / "acceptance" / run_id
+    temporary_root = run_root.parent / f".{run_id}.tmp"
+    if run_root.exists() or temporary_root.exists():
+        raise RichDataError(f"Tushare top_inst acceptance already exists: {run_id}")
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    provider_call_issued = False
+    try:
+        provider_call_issued = True
+        raw = fetch_tushare_top_inst(trade_date)
+        minimum_raw = int(acceptance["minimum_raw_institution_rows"])
+        if len(raw) < minimum_raw:
+            raise RichDataError(
+                "Tushare top_inst acceptance returned too few institution-seat rows: "
+                f"{len(raw)} < {minimum_raw}"
+            )
+        maximum_rows = int(
+            contract["source_selection"]["provider_documented_maximum_rows_per_call"]
+        )
+        if len(raw) >= maximum_rows:
+            raise RichDataError(
+                "Tushare top_inst acceptance reached the possible truncation ceiling: "
+                f"{len(raw)} >= {maximum_rows}"
+            )
+        normalized, quality = canonicalize_tushare_top_inst(
+            raw, trade_date, trade_date
+        )
+        minimum_aggregated = int(acceptance["minimum_aggregated_stock_rows"])
+        if len(normalized) < minimum_aggregated:
+            raise RichDataError(
+                "Tushare top_inst acceptance retained too few positive-activity stocks: "
+                f"{len(normalized)} < {minimum_aggregated}"
+            )
+        observed_instruments = frozenset(normalized["instrument"].astype(str))
+        absent_from_top_list = sorted(observed_instruments - top_list["instruments"])
+        if absent_from_top_list:
+            raise RichDataError(
+                "Tushare top_inst stocks are absent from the accepted same-date top_list: "
+                + ", ".join(absent_from_top_list)
+            )
+        temporary_destination = temporary_root / "top_inst.parquet"
+        final_destination = run_root / "top_inst.parquet"
+        atomic_write_frame(normalized, temporary_destination)
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_top_inst_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "requested_start": trade_date.isoformat(),
+            "requested_end": trade_date.isoformat(),
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_TOP_INST_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_TOP_INST_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "top_inst",
+                "request_mode": "one completed local trading session per call",
+                "provider_calls_issued": 1,
+                "fields": list(TUSHARE_TOP_INST_RAW_FIELDS),
+                "forbidden_fields_requested_or_stored": [],
+                "credentials_logged_or_stored": False,
+            },
+            "accepted_top_list_evidence": {
+                "manifest_path": manifest_path(top_list["manifest_path"]),
+                "manifest_sha256": top_list["manifest_sha256"],
+                "frame_path": manifest_path(top_list["frame_path"]),
+                "frame_content_sha256": top_list["frame_sha256"],
+                "raw_rows": top_list["frame_rows"],
+                "exact_duplicate_rows_preserved": top_list[
+                    "exact_duplicate_rows_preserved"
+                ],
+                "unsupported_security_rows_excluded": top_list[
+                    "unsupported_security_rows_excluded"
+                ],
+                "all_top_inst_stocks_present": True,
+            },
+            "files": [
+                {
+                    "path": manifest_path(final_destination),
+                    "rows": int(len(normalized)),
+                    "sha256": frame_digest(normalized),
+                }
+            ],
+            "source_quality": {
+                **quality,
+                "unique_instruments": int(normalized["instrument"].nunique()),
+                "factor_min": float(
+                    normalized["tushare_top_inst_net_buy_share"].min()
+                ),
+                "factor_max": float(
+                    normalized["tushare_top_inst_net_buy_share"].max()
+                ),
+                "duplicate_institution_seat_keys": 0,
+                "provider_net_buy_used_only_for_integrity_reconciliation": True,
+            },
+            "availability_policy": {
+                "documented_after_close_time": "20:00 Asia/Shanghai",
+                "same_session_trade_allowed": False,
+                "eligible_entry": "following local session open",
+                "maximum_event_age_days": 0,
+                "forward_fill_allowed": False,
+            },
+            "acceptance_status": (
+                "accepted_entitlement_schema_formula_and_top_list_concordance_"
+                "pending_full_history_protocol"
+            ),
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        temporary_root.replace(run_root)
+        destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, destination)
+        except Exception:
+            shutil.rmtree(run_root, ignore_errors=True)
+            raise
+        return destination
+    except Exception as exc:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        error = safe_exception_text(exc)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_top_inst_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "requested_start": trade_date.isoformat(),
+            "requested_end": trade_date.isoformat(),
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_TOP_INST_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_TOP_INST_CONTRACT),
+                "preregistered_at": contract["preregistered_at"],
+            },
+            "source_request": {
+                "api": "top_inst",
+                "request_mode": "one completed local trading session per call",
+                "provider_calls_issued": int(provider_call_issued),
+                "fields": list(TUSHARE_TOP_INST_RAW_FIELDS),
+                "credentials_logged_or_stored": False,
+            },
+            "accepted_top_list_evidence": {
+                "manifest_path": manifest_path(top_list["manifest_path"]),
+                "manifest_sha256": top_list["manifest_sha256"],
+                "frame_path": manifest_path(top_list["frame_path"]),
+                "frame_content_sha256": top_list["frame_sha256"],
+                "unsupported_security_rows_excluded": top_list[
+                    "unsupported_security_rows_excluded"
+                ],
+            },
+            "files": [],
+            "acceptance_status": "rejected_stop_before_full_history_or_returns",
+            "error_type": type(exc).__name__,
+            "error": error,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
+
+
 def sync_tushare_daily_pb_acceptance(
     universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
 ) -> Path:
@@ -6553,6 +7099,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the frozen completed-session Northbound top-ten entitlement check",
     )
 
+    subparsers.add_parser(
+        "acceptance-tushare-top-inst",
+        help="run the one-shot completed-session institution-seat acceptance",
+    )
+
     ts_daily_pb_acceptance = subparsers.add_parser(
         "acceptance-tushare-daily-pb",
         help="run the frozen completed-session positive book-to-market acceptance",
@@ -6687,6 +7238,8 @@ def main(argv: list[str] | None = None) -> int:
             )
         elif args.command == "acceptance-tushare-northbound-top10":
             manifest = sync_tushare_northbound_top10_acceptance()
+        elif args.command == "acceptance-tushare-top-inst":
+            manifest = sync_tushare_top_inst_acceptance()
         elif args.command == "acceptance-tushare-daily-pb":
             manifest = sync_tushare_daily_pb_acceptance(
                 universe_path=args.universe_file
@@ -6742,6 +7295,9 @@ def main(argv: list[str] | None = None) -> int:
         "sync-jqdata-moneyflow": "stored_pending_no_return_capacity",
         "sync-tushare-moneyflow": "stored_pending_no_return_capacity",
         "sync-tushare-daily-pb": "stored_pending_no_return_uniqueness_and_capacity",
+        "acceptance-tushare-top-inst": (
+            "stored_no_return_entitlement_and_top_list_acceptance"
+        ),
         "acceptance-tushare-sw-industry-breadth": (
             "stored_no_price_membership_acceptance"
         ),

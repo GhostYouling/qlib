@@ -983,6 +983,281 @@ def test_tushare_northbound_top10_acceptance_writes_no_price_snapshot(
     assert len(stored) == 20
 
 
+def write_top_inst_top_list_context(tmp_path: Path, codes: list[str]) -> dict:
+    """Point a copied top_inst contract at one immutable local top-list fixture."""
+
+    contract = copy.deepcopy(RICH.load_tushare_top_inst_contract())
+    frame = pd.DataFrame(
+        {
+            "trade_date": ["20260713"] * len(codes),
+            "ts_code": codes,
+            "reason": [f"reason-{index}" for index in range(len(codes))],
+        }
+    )
+    frame_path = tmp_path / "accepted_top_list.parquet"
+    RICH.atomic_write_frame(frame, frame_path)
+    frame_sha = RICH.frame_digest(frame)
+    manifest = {
+        "kind": "a_share_rich_data_snapshot",
+        "dataset": "tushare_events",
+        "provider": "tushare",
+        "requested_start": "2026-07-13",
+        "requested_end": "2026-07-13",
+        "files": [
+            {
+                "dataset": "top-list",
+                "path": str(frame_path),
+                "rows": len(frame),
+                "sha256": frame_sha,
+                "quality": {
+                    "exact_duplicate_rows": 0,
+                    "missing_key_rows": 0,
+                    "outside_requested_date_rows": 0,
+                    "raw_rows_preserved_without_deduplication": True,
+                },
+            }
+        ],
+        "acceptance_status": "pending_event_time_alignment_and_canonicalization",
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+    }
+    manifest_path = tmp_path / "accepted_top_list_manifest.json"
+    RICH.atomic_write_json(manifest, manifest_path)
+    contract["local_context"]["accepted_top_list_manifest"] = {
+        "path": str(manifest_path),
+        "sha256": RICH.file_digest(manifest_path),
+    }
+    contract["local_context"]["accepted_top_list_frame"] = {
+        "path": str(frame_path),
+        "sha256": frame_sha,
+        "raw_rows": len(frame),
+        "exact_duplicate_rows_preserved": 0,
+    }
+    return contract
+
+
+def test_tushare_top_inst_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_tushare_top_inst_contract()
+    assert contract["factor"]["name"] == "tushare_top_inst_net_buy_share"
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_TOP_INST_RAW_FIELDS
+    )
+    assert contract["acceptance_protocol"]["provider_calls"] == 1
+    assert contract["freeze_evidence"]["provider_top_inst_rows_observed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(RICH.DEFAULT_TUSHARE_TOP_INST_CONTRACT.read_text())
+    changed["factor"]["direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_top_inst_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_tushare_top_inst_contract(changed_path)
+
+
+def test_tushare_top_inst_request_uses_only_frozen_fields(monkeypatch):
+    captured = {}
+
+    class Pro:
+        def top_inst(self, **kwargs):
+            captured.update(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_top_inst(dt.date(2026, 7, 13))
+    assert captured["trade_date"] == "20260713"
+    assert captured["fields"].split(",") == list(RICH.TUSHARE_TOP_INST_RAW_FIELDS)
+    forbidden = set(
+        RICH.load_tushare_top_inst_contract()["source"]["explicitly_forbidden_fields"]
+    )
+    assert set(captured["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_top_inst_normalization_aggregates_and_reconciles_unique_seats():
+    rows = [
+        {
+            "trade_date": "20260713",
+            "ts_code": "600519.SH",
+            "exalter": "institution-a",
+            "buy": 60.0,
+            "sell": 40.0,
+            "net_buy": 20.0,
+        },
+        {
+            "trade_date": "20260713",
+            "ts_code": "600519.SH",
+            "exalter": "institution-b",
+            "buy": 30.0,
+            "sell": 70.0,
+            "net_buy": -40.0,
+        },
+        {
+            "trade_date": "20260713",
+            "ts_code": "600000.SH",
+            "exalter": "institution-c",
+            "buy": 0.0,
+            "sell": 0.0,
+            "net_buy": 0.0,
+        },
+    ]
+    normalized, quality = RICH.canonicalize_tushare_top_inst(
+        pd.DataFrame(rows, columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS),
+        dt.date(2026, 7, 13),
+        dt.date(2026, 7, 13),
+    )
+    assert normalized.columns.tolist() == list(RICH.TUSHARE_TOP_INST_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600519"]
+    assert normalized["institution_seat_count"].item() == 2
+    assert normalized["buy"].item() == pytest.approx(90.0)
+    assert normalized["sell"].item() == pytest.approx(110.0)
+    assert normalized["tushare_top_inst_net_buy_share"].item() == pytest.approx(-0.1)
+    assert quality == {
+        "input_rows": 3,
+        "institution_seat_rows_reconciled": 3,
+        "zero_denominator_stock_days_excluded": 1,
+        "rows_written": 1,
+    }
+    assert not ({"exalter", "net_buy", "close", "reason"} & set(normalized.columns))
+
+    bad_reconciliation = pd.DataFrame([rows[0]], columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS)
+    bad_reconciliation.loc[0, "net_buy"] = 19.0
+    with pytest.raises(RICH.RichDataError, match="does not reconcile"):
+        RICH.canonicalize_tushare_top_inst(
+            bad_reconciliation,
+            dt.date(2026, 7, 13),
+            dt.date(2026, 7, 13),
+        )
+
+    duplicate = pd.DataFrame([rows[0], rows[0]], columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS)
+    with pytest.raises(RICH.RichDataError, match="duplicate institution-seat keys"):
+        RICH.canonicalize_tushare_top_inst(
+            duplicate,
+            dt.date(2026, 7, 13),
+            dt.date(2026, 7, 13),
+        )
+
+
+def test_tushare_top_inst_acceptance_writes_no_price_snapshot_and_is_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = write_top_inst_top_list_context(
+        tmp_path, ["600519.SH", "000001.SZ", "118069.SH", "920081.BJ"]
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "load_tushare_top_inst_contract", lambda: contract)
+    calls = []
+
+    def fake_fetch(trade_date):
+        calls.append(trade_date)
+        return pd.DataFrame(
+            [
+                {
+                    "trade_date": "20260713",
+                    "ts_code": "600519.SH",
+                    "exalter": "institution-a",
+                    "buy": 60.0,
+                    "sell": 40.0,
+                    "net_buy": 20.0,
+                },
+                {
+                    "trade_date": "20260713",
+                    "ts_code": "600519.SH",
+                    "exalter": "institution-b",
+                    "buy": 30.0,
+                    "sell": 70.0,
+                    "net_buy": -40.0,
+                },
+                {
+                    "trade_date": "20260713",
+                    "ts_code": "000001.SZ",
+                    "exalter": "institution-c",
+                    "buy": 100.0,
+                    "sell": 0.0,
+                    "net_buy": 100.0,
+                },
+            ],
+            columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS,
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_top_inst", fake_fetch)
+    manifest_path = RICH.sync_tushare_top_inst_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_top_inst_acceptance"
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_schema_formula_and_top_list_concordance_"
+        "pending_full_history_protocol"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 1
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_TOP_INST_RAW_FIELDS
+    )
+    assert manifest["accepted_top_list_evidence"]["all_top_inst_stocks_present"] is True
+    assert manifest["accepted_top_list_evidence"][
+        "unsupported_security_rows_excluded"
+    ] == 2
+    assert manifest["source_quality"]["institution_seat_rows_reconciled"] == 3
+    assert manifest["source_quality"][
+        "provider_net_buy_used_only_for_integrity_reconciliation"
+    ] is True
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(RICH.TUSHARE_TOP_INST_COLUMNS)
+    assert len(stored) == 2
+    assert len(calls) == 1
+
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_top_inst_acceptance()
+    assert len(calls) == 1
+
+
+def test_tushare_top_inst_acceptance_rejects_stock_absent_from_top_list(
+    tmp_path, monkeypatch
+):
+    contract = write_top_inst_top_list_context(tmp_path, ["600519.SH"])
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "load_tushare_top_inst_contract", lambda: contract)
+    monkeypatch.setattr(
+        RICH,
+        "fetch_tushare_top_inst",
+        lambda trade_date: pd.DataFrame(
+            [
+                {
+                    "trade_date": "20260713",
+                    "ts_code": "000001.SZ",
+                    "exalter": "institution-a",
+                    "buy": 60.0,
+                    "sell": 40.0,
+                    "net_buy": 20.0,
+                }
+            ],
+            columns=RICH.TUSHARE_TOP_INST_RAW_FIELDS,
+        ),
+    )
+    with pytest.raises(RICH.RichDataError, match="absent from.*top_list"):
+        RICH.sync_tushare_top_inst_acceptance()
+    records = RICH.tushare_top_inst_acceptance_records()
+    assert len(records) == 1
+    rejection = RICH.json.loads(records[0].read_text())
+    assert rejection["acceptance_status"] == (
+        "rejected_stop_before_full_history_or_returns"
+    )
+    assert rejection["source_request"]["provider_calls_issued"] == 1
+    assert rejection["files"] == []
+    assert rejection["price_fields_loaded"] == []
+    assert rejection["forward_return_fields_read"] is False
+
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_top_inst_acceptance()
+
+
 def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_tushare_daily_pb_contract()
     assert contract["factor"]["name"] == "tushare_positive_book_to_market"

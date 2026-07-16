@@ -131,13 +131,20 @@ subset years, aggregate, score, select, size, order, or justify Level-2 from
 this result.  A later branch must begin from a genuinely independent,
 pre-registered no-return mechanism.
 
-The next independent candidate is the institution-only seat flow from
-Tushare `top_inst`.  Its six-field, no-return data contract is frozen in
-`docs/a_share_tushare_top_inst_data_contract.json` before any entitlement
-result or provider row was observed.  No `top_inst` API request has run yet.
-Only one fixed-session acceptance for 2026-07-13 is allowed next; it must
-reconcile seat-level buy, sell, and provider net buy, reject duplicate seat
-keys, and confirm every institution-seat stock against the already accepted
-same-date raw `top_list` snapshot.  Do not run full history, capacity,
-uniqueness, returns, aggregation, scoring, selection, sizing, or orders unless
-that acceptance passes and the next protocol is frozen separately.
+The institution-only seat-flow branch from Tushare `top_inst` is also
+terminal.  Its six-field, no-return contract was frozen before any endpoint
+result or row was observed.  Five focused tests and all 341 data-pipeline
+tests passed before the single allowed 2026-07-13 request.  The request
+reached exact-whitelist canonical validation, but 505 rows had at least one
+missing or non-finite required date, stock, seat, buy, sell, or `net_buy`
+value.  It stopped before seat uniqueness, provider-net reconciliation,
+stock-date aggregation, factor values, prices, or returns and published no
+data frame.  Preserve
+`docs/a_share_tushare_top_inst_source_acceptance_record.json` (SHA-256
+`1a69c5029154c9a81bfb4ee90d60742989eb6d7c86b8cce0c390dfa88899cb07`).
+Do not invoke `acceptance-tushare-top-inst` again, change the date or fields,
+drop the `net_buy` integrity check, fill or silently exclude invalid rows,
+run full history/capacity/uniqueness/returns, combine, score, select, size,
+order, or justify Level-2 from this rejection.  The rejected raw response was
+not persisted, so its total row count and per-field missing breakdown are
+unknown and do not authorize a second request.
