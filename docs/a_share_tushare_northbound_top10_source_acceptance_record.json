@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_northbound_top10_source_acceptance_record",
+  "status": "rejected_stop_before_full_history_capacity_or_returns",
+  "created_at": "2026-07-16T09:45:10Z",
+  "purpose": "Preserve the one allowed no-return entitlement/schema acceptance outcome for the preregistered Northbound top-ten mechanism.",
+  "data_contract": {
+    "path": "docs/a_share_tushare_northbound_top10_data_contract.json",
+    "sha256": "9362211f3e35cbb24c779d49d138fb757d61f7a092b61f0304d0e147a739f63e",
+    "preregistered_before_interface_rows": true
+  },
+  "acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T094433Z_tushare_northbound_top10_acceptance_c74c2f2b.json",
+    "sha256": "35c9e31f9c5bf93ad09efdc1161dff8dbe1ec9e158a7d1b6aff9597cbd508a2c",
+    "run_id": "20260716T094433Z_tushare_northbound_top10_acceptance_c74c2f2b",
+    "requested_session": "2026-07-13",
+    "market_types": [
+      "1",
+      "3"
+    ],
+    "acceptance_status": "entitlement_or_schema_rejected_stop_before_full_history"
+  },
+  "observed_result": {
+    "first_request_market_type": "1",
+    "first_request_rows": 0,
+    "observed_ranks": [],
+    "required_ranks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "provider_entitlement_error_observed": false,
+    "schema_or_completeness_gate_passed": false,
+    "second_market_request_issued": false,
+    "reason": "The fixed completed-session Shanghai request returned zero rows. The contract requires complete ranks 1 through 10 for both markets, so the acceptance stopped immediately."
+  },
+  "interpretation": {
+    "global_provider_history_absence_claimed": false,
+    "local_current_session_route_usable_for_three_session_research": false,
+    "why_not_retry_an_old_date": "Changing to an older sample after seeing an empty current session would test historical availability rather than the preregistered ability to form a current signal.",
+    "relationship_to_hk_hold": "The official hk_hold page separately states that daily Northbound holdings stopped from 2024-08-20 and changed to quarterly disclosure; it cannot replace a failed current daily top-ten route.",
+    "factor_return_conclusion": "none; no factor return was read"
+  },
+  "stop_rules": [
+    "Do not retry another date under this contract.",
+    "Do not treat an empty response as a valid zero-flow event.",
+    "Do not lower the two-market or rank-completeness requirements.",
+    "Do not switch to provider net_amount, close, change, another direction, or an older-only research window.",
+    "Do not run a full sync, capacity audit, return diagnostic, aggregation, current score, selection, sizing, or order from this source."
+  ],
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

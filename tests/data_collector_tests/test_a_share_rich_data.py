@@ -822,6 +822,280 @@ def test_tushare_moneyflow_sync_writes_immutable_no_price_snapshot(
     assert not list((tmp_path / "raw").rglob("*.partial"))
 
 
+def test_tushare_northbound_top10_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_tushare_northbound_top10_contract()
+    assert contract["factor"]["name"] == "tushare_northbound_top10_net_buy_share"
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_NORTHBOUND_TOP10_RAW_FIELDS
+    )
+    assert contract["source"]["market_types"] == ["1", "3"]
+    assert contract["freeze_evidence"]["provider_interface_rows_observed"] is False
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(
+        RICH.DEFAULT_TUSHARE_NORTHBOUND_TOP10_CONTRACT.read_text()
+    )
+    changed["factor"]["direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed_northbound_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_tushare_northbound_top10_contract(changed_path)
+
+
+def test_tushare_northbound_top10_request_uses_only_frozen_fields(monkeypatch):
+    captured = {}
+
+    class Pro:
+        def hsgt_top10(self, **kwargs):
+            captured.update(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_northbound_top10(dt.date(2026, 7, 13), "3")
+    assert captured["trade_date"] == "20260713"
+    assert captured["market_type"] == "3"
+    assert captured["fields"].split(",") == list(
+        RICH.TUSHARE_NORTHBOUND_TOP10_RAW_FIELDS
+    )
+    forbidden = set(
+        RICH.load_tushare_northbound_top10_contract()["source"][
+            "explicitly_forbidden_fields"
+        ]
+    )
+    assert set(captured["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_northbound_top10_normalization_derives_ratio_and_reconciles():
+    rows = [
+        {
+            "trade_date": "20260713",
+            "ts_code": "600519.SH",
+            "rank": 1,
+            "market_type": "1",
+            "amount": 100.0,
+            "buy": 70.0,
+            "sell": 30.0,
+        },
+        {
+            "trade_date": "20260713",
+            "ts_code": "600000.SH",
+            "rank": 2,
+            "market_type": "1",
+            "amount": 0.0,
+            "buy": 0.0,
+            "sell": 0.0,
+        },
+        {
+            "trade_date": "20260713",
+            "ts_code": None,
+            "rank": 3,
+            "market_type": "1",
+            "amount": 100.0,
+            "buy": 50.0,
+            "sell": 50.0,
+        },
+    ]
+    normalized, quality = RICH.canonicalize_tushare_northbound_top10(
+        pd.DataFrame(rows),
+        dt.date(2026, 7, 13),
+        dt.date(2026, 7, 13),
+        expected_market_type="1",
+    )
+    assert normalized.columns.tolist() == list(RICH.TUSHARE_NORTHBOUND_TOP10_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600519"]
+    assert normalized["tushare_northbound_top10_net_buy_share"].item() == pytest.approx(
+        0.4
+    )
+    assert quality == {
+        "input_rows": 3,
+        "missing_rows_excluded": 1,
+        "zero_denominator_rows_excluded": 1,
+        "rows_written": 1,
+    }
+    assert not ({"close", "change", "net_amount"} & set(normalized.columns))
+
+    bad = pd.DataFrame(
+        [
+            {
+                "trade_date": "20260713",
+                "ts_code": "600519.SH",
+                "rank": 1,
+                "market_type": "1",
+                "amount": 98.0,
+                "buy": 70.0,
+                "sell": 30.0,
+            }
+        ]
+    )
+    with pytest.raises(RICH.RichDataError, match="does not reconcile"):
+        RICH.canonicalize_tushare_northbound_top10(
+            bad,
+            dt.date(2026, 7, 13),
+            dt.date(2026, 7, 13),
+            expected_market_type="1",
+        )
+
+
+def test_tushare_northbound_top10_acceptance_writes_no_price_snapshot(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+
+    def fake_fetch(trade_date, market_type):
+        prefix = "600" if market_type == "1" else "000"
+        return pd.DataFrame(
+            [
+                {
+                    "trade_date": trade_date.strftime("%Y%m%d"),
+                    "ts_code": f"{prefix}{rank:03d}.{'SH' if market_type == '1' else 'SZ'}",
+                    "rank": rank,
+                    "market_type": market_type,
+                    "amount": 1000.0 + rank,
+                    "buy": 600.0 + rank,
+                    "sell": 400.0,
+                }
+                for rank in range(1, 11)
+            ],
+            columns=RICH.TUSHARE_NORTHBOUND_TOP10_RAW_FIELDS,
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_northbound_top10", fake_fetch)
+    manifest_path = RICH.sync_tushare_northbound_top10_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_northbound_top10_acceptance"
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_and_formula_pending_full_history"
+    )
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_NORTHBOUND_TOP10_RAW_FIELDS
+    )
+    assert manifest["source_quality"]["rows_written"] == 20
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(RICH.TUSHARE_NORTHBOUND_TOP10_COLUMNS)
+    assert len(stored) == 20
+
+
+def test_tushare_daily_pb_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_tushare_daily_pb_contract()
+    assert contract["factor"]["name"] == "tushare_positive_book_to_market"
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_DAILY_PB_RAW_FIELDS
+    )
+    assert contract["freeze_evidence"]["provider_daily_basic_rows_observed"] is False
+    assert contract["no_return_uniqueness_policy"][
+        "maximum_allowed_absolute_median_daily_rank_correlation"
+    ] == 0.8
+    assert contract["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(RICH.DEFAULT_TUSHARE_DAILY_PB_CONTRACT.read_text())
+    changed["factor"]["formula"] = "-pb"
+    changed_path = tmp_path / "changed_daily_pb_contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_tushare_daily_pb_contract(changed_path)
+
+
+def test_tushare_daily_pb_request_uses_only_frozen_fields(monkeypatch):
+    captured = {}
+
+    class Pro:
+        def daily_basic(self, **kwargs):
+            captured.update(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_daily_pb(dt.date(2026, 7, 13))
+    assert captured["trade_date"] == "20260713"
+    assert captured["fields"].split(",") == list(RICH.TUSHARE_DAILY_PB_RAW_FIELDS)
+    forbidden = set(
+        RICH.load_tushare_daily_pb_contract()["source"]["explicitly_forbidden_fields"]
+    )
+    assert set(captured["fields"].split(",")).isdisjoint(forbidden)
+
+
+def test_tushare_daily_pb_normalization_derives_positive_book_to_market():
+    raw = pd.DataFrame(
+        [
+            {"ts_code": "600519.SH", "trade_date": "20260713", "pb": 2.5},
+            {"ts_code": "000001.SZ", "trade_date": "20260713", "pb": None},
+            {"ts_code": "300750.SZ", "trade_date": "20260713", "pb": -1.0},
+        ],
+        columns=RICH.TUSHARE_DAILY_PB_RAW_FIELDS,
+    )
+    normalized, quality = RICH.canonicalize_tushare_daily_pb(
+        raw, dt.date(2026, 7, 13), dt.date(2026, 7, 13)
+    )
+    assert normalized.columns.tolist() == list(RICH.TUSHARE_DAILY_PB_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600519"]
+    assert normalized["tushare_positive_book_to_market"].item() == pytest.approx(0.4)
+    assert quality == {
+        "input_rows": 3,
+        "missing_pb_rows_excluded": 1,
+        "nonpositive_pb_rows_excluded": 1,
+        "rows_written": 1,
+    }
+    assert not ({"close", "pe", "total_mv", "turnover_rate"} & set(normalized))
+
+
+def test_tushare_daily_pb_acceptance_writes_current_coverage_snapshot(
+    tmp_path, monkeypatch
+):
+    contract = RICH.json.loads(RICH.DEFAULT_TUSHARE_DAILY_PB_CONTRACT.read_text())
+    contract["acceptance_protocol"]["minimum_all_market_source_rows"] = 2
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2020-01-01\t2026-12-31\n"
+        "SZ000001\t2020-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "load_tushare_daily_pb_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "fetch_tushare_daily_pb",
+        lambda trade_date: pd.DataFrame(
+            [
+                {"ts_code": "600519.SH", "trade_date": "20260713", "pb": 2.0},
+                {"ts_code": "000001.SZ", "trade_date": "20260713", "pb": 1.0},
+                {"ts_code": "688981.SH", "trade_date": "20260713", "pb": 4.0},
+            ],
+            columns=RICH.TUSHARE_DAILY_PB_RAW_FIELDS,
+        ),
+    )
+    manifest_path = RICH.sync_tushare_daily_pb_acceptance(universe_path=universe)
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "tushare_daily_pb_acceptance"
+    assert manifest["acceptance_status"] == (
+        "accepted_entitlement_formula_and_current_coverage_pending_full_history"
+    )
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_DAILY_PB_RAW_FIELDS
+    )
+    assert manifest["source_quality"]["positive_pb_holding_coverage"] == 1.0
+    assert manifest["source_quality"][
+        "outside_point_in_time_holding_universe_rows_excluded"
+    ] == 1
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(RICH.TUSHARE_DAILY_PB_COLUMNS)
+    assert stored["instrument"].tolist() == ["SH600519", "SZ000001"]
+
+
 def test_canonicalize_minutes_handles_provider_column_names_and_sorts_rows():
     raw = pd.DataFrame(
         {

@@ -1372,6 +1372,8 @@ python scripts/install_a_share_launchd.py uninstall
 
 ### 本机凭据和 SDK
 
+完整的复制即用说明、继承范围、无回显验证、当前进程临时注入和清除步骤见 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md)。下面保留最短配置路径。
+
 先看安全状态；输出只显示“已配置/缺失”，不会显示令牌或密码：
 
 ```bash
@@ -1590,6 +1592,14 @@ python scripts/a_share_short_horizon_factor_research.py \
 成交感知 Top‑3 账本的 536 个完整信号最终为 **−89.23%**、最大回撤 **−96.99%**，2019、2022–2025 年均为负；20 万元、100 股整手、双边 10bp 滑点的试运行账本为 **−29.16%**、最大回撤 **−38.90%**，并有一笔成交额参与率 1.0619% 略超 1% 上限。正式稳定性审计 `20260716T092540Z_factor_stability_audit.json`（SHA‑256 `bb2b0eb4f17a4e2c4e6eebed60692d11a70a87deaaca32737c45fa35f82b2ed1`）与 TopK 审计 `20260716T092540Z_factor_topk_viability_audit.json`（SHA‑256 `361bec4f83d4cca224e1eb23447bbeb1da12b1ea9aa3820a5ea484aa9da44343`）均通过 **0/1**。
 
 因此 `tushare_large_order_net_inflow_share` 高值方向正式淘汰。完整终止记录为 `docs/a_share_tushare_moneyflow_research_record.json`（SHA‑256 `3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a`）。不得反向、修改大小单阈值或分母、改变三日窗口/年份/TopK/成本、挑选 2019–2021、与旧因子或 JQData 同机制复制品组合、重新运行诊断、生成当前评分/选股/仓位或据此采购 Level‑2。完成诊断的最差 cohort 明细中 `close_known_feature_ranks` 名称下保存的是原始收盘已知上下文值；这些字段只用于尾部说明，不参与 Tushare 排名、Rank IC、TopK 选择、市场状态构造、两套成交账本或门禁，不能按“分位排名”解释，也不授权为修复展示标签而重跑结果。
+
+### Tushare 北向 Top10 与日频 PB 验收
+
+在大单资金流停止后，只按独立经济机制依次做了两个不读取价格或收益的单日来源验收。北向成交 Top10 合同 `docs/a_share_tushare_northbound_top10_data_contract.json`（SHA‑256 `9362211f3e35cbb24c779d49d138fb757d61f7a092b61f0304d0e147a739f63e`）先于接口行冻结，固定要求 2026‑07‑13 沪股通与深股通各含完整排名 1–10。第一个沪股通请求返回 0 行，程序立即停止，没有发出第二个市场请求。终止记录为 `docs/a_share_tushare_northbound_top10_source_acceptance_record.json`（SHA‑256 `29f1dd342f64b2a19efd0f5f9723db6d6b7b867940c12520395f41a8f5b6df81`）。这只证明当前日期路线不能形成合格信号，不声称供应商全球历史为空；不得改用旧日期、把空响应当零、降低完整性、同步历史或读取收益。
+
+随后选择 `daily_basic.pb` 作为独立的点时估值机制，合同 `docs/a_share_tushare_daily_pb_data_contract.json`（SHA‑256 `cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2`）在任何接口行前冻结。请求字段严格为 `ts_code,trade_date,pb`，唯一因子为正 PB 的倒数 `tushare_positive_book_to_market = 1 / pb`，高值方向固定为更好；不请求价格、PE、市值、换手率、股息、涨跌停或收益。2026‑07‑13 单日验收返回 5,524 条全市场源行，在 4,592 只点时可持有股票中保留 4,546 只正 PB，覆盖率 **98.9983%**，高于冻结的 90% 门槛；排除 42 条缺失 PB、0 条非正 PB 和 936 条股票池外记录，重复股票日为 0。可提交的验收记录为 `docs/a_share_tushare_daily_pb_source_acceptance_record.json`（SHA‑256 `0f4dcf910bfd7fca29a1ea97781ce8d65094fe54b53e98c54fd81f3817028574`）；本地原始清单 SHA‑256 为 `29951a3581e427f2ce0be875fadb50567dd4a8b1c55159601a3cb68040d2e4b7`。
+
+PB 验收通过只说明账户权限、三字段口径、倒数公式和当前覆盖率成立，不说明因子有效。下一步必须先冻结并绑定该验收的 2019–2025 全历史、无收益唯一性和容量协议，再允许固定历史同步；之后还须在不读取远期收益的阶段同时通过完整覆盖、与既有因子的日截面秩相关唯一性（绝对中位数小于 0.8）和至少 200 个非重叠三日 cohort。任一门失败即停止，不得反向、换 PB 变换、加入 PE/市值/换手率、放宽门槛或与旧失败因子组合。上述门都没有完成，因此当前不得用 PB 做聚合、最新评分、选股、仓位或订单。
 
 ### 必经验收流程
 

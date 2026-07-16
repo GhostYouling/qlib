@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_daily_pb_source_acceptance_record",
+  "status": "accepted_pending_full_history_uniqueness_and_capacity",
+  "created_at": "2026-07-16T09:55:00Z",
+  "purpose": "Preserve the one allowed no-return entitlement, formula, and current-coverage acceptance outcome for the preregistered positive book-to-market mechanism.",
+  "data_contract": {
+    "path": "docs/a_share_tushare_daily_pb_data_contract.json",
+    "sha256": "cd5c95636d9efa8eb975190072dfe94c4ee6da954dd4d9d6826d2c0b391ebdd2",
+    "preregistered_before_interface_rows": true
+  },
+  "acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T095303Z_tushare_daily_pb_acceptance_bcce64ae.json",
+    "sha256": "29951a3581e427f2ce0be875fadb50567dd4a8b1c55159601a3cb68040d2e4b7",
+    "run_id": "20260716T095303Z_tushare_daily_pb_acceptance_bcce64ae",
+    "requested_session": "2026-07-13",
+    "acceptance_status": "accepted_entitlement_formula_and_current_coverage_pending_full_history"
+  },
+  "accepted_frame": {
+    "path": "data/raw/a_share/rich/tushare/daily_pb/acceptance/20260716T095303Z_tushare_daily_pb_acceptance_bcce64ae/daily_pb.parquet",
+    "sha256": "e52db4d9ec0f97e8e2c98eb7611b9453ba2eef45d16f621635db9852762de94c",
+    "rows": 4546,
+    "columns": [
+      "trade_date",
+      "instrument",
+      "pb",
+      "tushare_positive_book_to_market",
+      "provider"
+    ]
+  },
+  "observed_result": {
+    "all_market_source_rows": 5524,
+    "expected_point_in_time_holding_names": 4592,
+    "positive_pb_holding_names": 4546,
+    "positive_pb_holding_coverage": 0.9899825783972126,
+    "minimum_required_acceptance_coverage": 0.9,
+    "missing_pb_rows_excluded": 42,
+    "nonpositive_pb_rows_excluded": 0,
+    "outside_point_in_time_holding_universe_rows_excluded": 936,
+    "duplicate_event_key_rows": 0,
+    "schema_formula_and_current_coverage_gate_passed": true
+  },
+  "interpretation": {
+    "what_passed": "The configured account can read the exact three-field daily_basic request, the reciprocal factor is finite and positive for retained rows, and current-session buyable-universe coverage exceeds the frozen acceptance threshold.",
+    "what_did_not_pass": "No 2019-2025 source-completeness, no-return uniqueness, capacity, return, stability, TopK, aggregation, current score, selection, sizing, or order gate has run.",
+    "factor_return_conclusion": "none; no factor return was read"
+  },
+  "next_allowed_step": "Freeze a post-acceptance no-return full-history, uniqueness, and capacity protocol bound to this record before the fixed 2019-2025 sync.",
+  "stop_rules": [
+    "Do not infer factor efficacy from entitlement or current-session coverage.",
+    "Do not request PE, market capitalization, turnover, price, dividend, limit-status, or another daily_basic field under this hypothesis.",
+    "Do not access factor returns before both the frozen no-return uniqueness and capacity gates pass.",
+    "Do not aggregate, score, select, size, or order from the acceptance frame."
+  ],
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

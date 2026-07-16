@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_northbound_top10_data_contract",
+  "status": "frozen_before_entitlement_rows_full_history_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T09:37:55Z",
+  "purpose": "Ingest and capacity-screen one defined Northbound Stock Connect top-turnover net-buy mechanism before observing any interface row or historical factor return.",
+  "freeze_evidence": {
+    "official_documentation_observed": true,
+    "provider_interface_rows_observed": false,
+    "entitlement_observed": false,
+    "full_history_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "chosen_source": "Tushare Pro hsgt_top10",
+    "official_field_documentation": "https://tushare.pro/document/2?doc_id=48",
+    "documented_daily_update_window": "18:00-20:00 Asia/Shanghai on trading days",
+    "provider_documented_rows_per_market_session": 10,
+    "permission_points_documented_on_interface_page": null,
+    "entitlement_must_be_proven_by_one_completed_session": true,
+    "rejected_alternative": {
+      "source": "Tushare Pro hk_hold",
+      "official_field_documentation": "https://tushare.pro/document/2?doc_id=188",
+      "reason": "The official page states that exchanges stopped daily Northbound holding publication from 2024-08-20 and changed to quarterly disclosure, so it cannot support a current three-session signal."
+    }
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "Net Northbound buy amount among each Shanghai and Shenzhen Stock Connect market's ten highest-turnover securities, normalized by that security's disclosed buy plus sell amount.",
+    "relationship_to_tushare_moneyflow": "Independent participant-and-event mechanism: hsgt_top10 is a sparse Northbound Stock Connect top-turnover disclosure, while moneyflow classifies all-market transactions by order size without identifying Northbound participation.",
+    "relationship_to_billboard": "Independent disclosure population: Stock Connect top turnover is not the exchange abnormal-trading billboard and does not use billboard reasons, seats, or post-return fields.",
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "hsgt_top10",
+    "frequency": "daily_after_close_event",
+    "request_mode": "one completed local trading session and one fixed market_type per call",
+    "market_types": [
+      "1",
+      "3"
+    ],
+    "market_type_meaning": {
+      "1": "Shanghai Northbound Stock Connect",
+      "3": "Shenzhen Northbound Stock Connect"
+    },
+    "requested_fields": [
+      "trade_date",
+      "ts_code",
+      "rank",
+      "market_type",
+      "amount",
+      "buy",
+      "sell"
+    ],
+    "explicitly_forbidden_fields": [
+      "name",
+      "close",
+      "change",
+      "net_amount",
+      "open",
+      "high",
+      "low",
+      "price",
+      "market_cap",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_policy": {
+    "source_time_field": "trade_date normalized to the local A-share trading session",
+    "documented_availability": "18:00-20:00 Asia/Shanghai after the signal session",
+    "conservative_availability": "20:00 Asia/Shanghai after the signal session",
+    "signal_assignment": "signal-session close for a following-local-session-open entry",
+    "same_session_trade_allowed": false,
+    "maximum_event_age_days": 0,
+    "historical_release_timestamp_available_per_row": false,
+    "residual_risk": "A provider delay beyond 20:00 can make a row unavailable for the next open; every immutable snapshot retains its retrieval timestamp."
+  },
+  "factor": {
+    "name": "tushare_northbound_top10_net_buy_share",
+    "raw_column": "tushare_northbound_top10_net_buy_share",
+    "direction": "higher_is_better",
+    "numerator": "buy - sell",
+    "denominator": "buy + sell",
+    "formula": "(buy - sell) / (buy + sell)",
+    "absent_security_policy": "missing; never treat a security outside that market's disclosed top ten as zero",
+    "zero_denominator_policy": "exclude the observed security-day and keep the factor missing",
+    "negative_or_missing_raw_policy": "exclude and count incomplete rows; any negative amount, buy, or sell value aborts the partition",
+    "amount_reconciliation": "abs(amount - (buy + sell)) <= max(1 CNY, 0.000001 * max(amount, buy + sell))",
+    "rank_policy": "rank must be an integer from 1 through 10 within each trade_date and market_type",
+    "clipping_winsorization_imputation_or_absolute_value": null,
+    "score_formula_if_capacity_and_return_gates_pass": "cross_sectional_percentile_rank(tushare_northbound_top10_net_buy_share)"
+  },
+  "snapshot_contract": {
+    "acceptance_dataset": "tushare_northbound_top10_acceptance",
+    "full_dataset": "tushare_northbound_top10_daily",
+    "columns": [
+      "trade_date",
+      "instrument",
+      "rank",
+      "market_type",
+      "amount",
+      "buy",
+      "sell",
+      "tushare_northbound_top10_net_buy_share",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "trade_date"
+    ],
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+    "universe_membership": "retain only instruments inside their point-in-time holding interval on trade_date; STAR, BSE, funds, bonds, and absent names are excluded and counted",
+    "partition_policy": {
+      "partition": "one calendar year",
+      "provider_call_partition": "one local trading session and one market_type",
+      "minimum_seconds_between_calls": 0.32,
+      "maximum_attempts_per_market_session": 3,
+      "retry_backoff_seconds": [
+        2,
+        5
+      ],
+      "requests_are_sequential": true,
+      "partial_snapshot_accepted": false,
+      "immutable_partition_files_and_manifest": true
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_completed_session": "2026-07-13",
+    "markets_requested": [
+      "1",
+      "3"
+    ],
+    "required_checks_before_large_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "both fixed market requests return without an entitlement error",
+      "the response contains exactly the requested field whitelist",
+      "returned keys are unique and inside the fixed completed session",
+      "market_type equals the requested market and ranks are unique integers from 1 through 10",
+      "amount, buy, and sell are numeric and nonnegative",
+      "amount reconciles to buy plus sell under the frozen tolerance",
+      "the locally recomputed positive-denominator factor lies in [-1, 1]",
+      "no credential, price, provider net amount, or return appears in the snapshot or manifest"
+    ],
+    "failed_acceptance_policy": "write a no-return entitlement/schema rejection record and stop without a large sync, capacity audit, price access, substitute formula, or purchase recommendation"
+  },
+  "source_completeness_policy": {
+    "request_every_local_2019_2025_session_for_both_markets": true,
+    "empty_market_session_allowed": "yes, because Stock Connect can be closed on a local A-share session; record every empty request explicitly",
+    "maximum_rows_per_market_session": 10,
+    "minimum_nonempty_source_sessions": 1000,
+    "minimum_observed_source_years": 5,
+    "minimum_rows_per_nonempty_combined_session": 6,
+    "duplicate_event_keys_allowed": false,
+    "failed_gate_policy": "stop before factor capacity or returns; do not fill closed sessions, widen dates, mix a second provider, or use hk_hold after its daily discontinuation"
+  },
+  "coverage_and_capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_observed_years": 5,
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "failed_gate_policy": "stop without reading returns, changing direction, adding transaction rank or amount as a second factor, lowering cohort size, widening event age, or combining an old rejected factor",
+    "selection_or_promotion_allowed": false
+  },
+  "diagnostic_policy_if_capacity_passes": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_required": "docs/a_share_three_day_prospective_execution_policy.json",
+    "cny_200000_pilot_policy_required": "docs/a_share_three_day_pilot_execution_policy.json",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_window_rank_amount_filter_or_threshold_search_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

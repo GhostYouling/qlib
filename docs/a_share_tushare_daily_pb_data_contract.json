@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_daily_pb_data_contract",
+  "status": "frozen_before_entitlement_rows_full_history_or_factor_returns_observed",
+  "preregistered_at": "2026-07-16T09:48:42Z",
+  "purpose": "Ingest and capacity-screen one positive book-to-market mechanism from the Tushare daily_basic point-in-time PB field before observing any interface row or factor return.",
+  "freeze_evidence": {
+    "official_documentation_observed": true,
+    "provider_daily_basic_rows_observed": false,
+    "entitlement_observed": false,
+    "full_history_observed": false,
+    "factor_values_observed": false,
+    "factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_selection": {
+    "chosen_source": "Tushare Pro daily_basic PB",
+    "official_field_documentation": "https://tushare.pro/document/2?doc_id=32",
+    "official_permission_and_update_schedule": "https://tushare.pro/document/1?doc_id=108",
+    "documented_daily_update_window": "15:00-17:00 Asia/Shanghai on trading days",
+    "minimum_permission_points": 2000,
+    "provider_documented_maximum_rows_per_call": 6000,
+    "why_pb_only": "PB adds a daily valuation state that is absent from the accepted 44-mechanism research frontier. PE, market capitalization, turnover, volume ratio, prices, dividend yield, and provider limit status are excluded to keep one hypothesis and avoid a same-source field sweep."
+  },
+  "mechanism_identity": {
+    "economic_mechanism": "Positive book value relative to market value, represented by the reciprocal of the provider's same-session price-to-book ratio.",
+    "factor_family": "point_in_time_valuation",
+    "relationship_to_existing_size_proxy": "Book-to-market is not free-float size. A mandatory no-return rank-correlation screen must still reject it before return access if it is a near synonym of any existing close-known factor.",
+    "relationship_to_quarterly_quality": "Quarterly ROE, profit, and growth remain fixed eligibility gates only. They are not added to the score or tuned as weights.",
+    "independent_factor_count": 1
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "daily_basic",
+    "frequency": "daily_after_close",
+    "request_mode": "one completed local trading session per call",
+    "requested_fields": [
+      "ts_code",
+      "trade_date",
+      "pb"
+    ],
+    "explicitly_forbidden_fields": [
+      "close",
+      "turnover_rate",
+      "turnover_rate_f",
+      "volume_ratio",
+      "pe",
+      "pe_ttm",
+      "ps",
+      "ps_ttm",
+      "dv_ratio",
+      "dv_ttm",
+      "total_share",
+      "float_share",
+      "free_share",
+      "total_mv",
+      "circ_mv",
+      "limit_status",
+      "open",
+      "high",
+      "low",
+      "price",
+      "forward_return"
+    ],
+    "credentials": {
+      "environment_only": [
+        "TUSHARE_TOKEN"
+      ],
+      "values_may_be_logged_stored_or_committed": false
+    }
+  },
+  "point_in_time_policy": {
+    "source_time_field": "trade_date normalized to the local A-share trading session",
+    "documented_availability": "15:00-17:00 Asia/Shanghai after the signal session",
+    "conservative_availability": "17:00 Asia/Shanghai after the signal session",
+    "signal_assignment": "signal-session close for a following-local-session-open entry",
+    "same_session_trade_allowed": false,
+    "maximum_event_age_days": 0,
+    "historical_release_timestamp_available_per_row": false,
+    "residual_risk": "A provider delay beyond 17:00 can make a row unavailable for the next open; every immutable snapshot retains its retrieval timestamp."
+  },
+  "factor": {
+    "name": "tushare_positive_book_to_market",
+    "raw_column": "tushare_positive_book_to_market",
+    "direction": "higher_is_better",
+    "source_value": "pb",
+    "formula": "1 / pb",
+    "economic_direction": "lower positive PB means higher book-to-market and is frozen as better",
+    "missing_or_nonpositive_pb_policy": "exclude and count; never rank, clip, absolutize, offset, or impute a missing, zero, or negative PB",
+    "infinite_or_nonfinite_policy": "abort the partition",
+    "winsorization_clipping_imputation_or_absolute_value": null,
+    "score_formula_if_all_gates_pass": "cross_sectional_percentile_rank(tushare_positive_book_to_market)"
+  },
+  "snapshot_contract": {
+    "acceptance_dataset": "tushare_daily_pb_acceptance",
+    "full_dataset": "tushare_daily_pb",
+    "columns": [
+      "trade_date",
+      "instrument",
+      "pb",
+      "tushare_positive_book_to_market",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "trade_date"
+    ],
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+    "universe_membership": "retain only instruments inside their point-in-time holding interval on trade_date; STAR, BSE, funds, bonds, and absent names are excluded and counted",
+    "partition_policy": {
+      "partition": "one calendar year",
+      "provider_call_partition": "one local trading session",
+      "provider_documented_maximum_rows_per_call": 6000,
+      "minimum_seconds_between_calls": 0.32,
+      "maximum_attempts_per_session": 3,
+      "retry_backoff_seconds": [
+        2,
+        5
+      ],
+      "requests_are_sequential": true,
+      "partial_snapshot_accepted": false,
+      "immutable_partition_files_and_manifest": true
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_completed_session": "2026-07-13",
+    "minimum_all_market_source_rows": 4000,
+    "minimum_positive_pb_holding_universe_coverage": 0.9,
+    "required_checks_before_large_sync": [
+      "the environment supplies TUSHARE_TOKEN without logging its value",
+      "the all-market response contains exactly ts_code, trade_date, and pb",
+      "the response is below the documented 6000-row ceiling",
+      "returned stock-date keys are unique and inside the fixed completed session",
+      "PB is numeric when present; missing and nonpositive PB rows are excluded and counted",
+      "the local reciprocal is finite and positive for every retained row",
+      "at least 90 percent of point-in-time buyable main-board and ChiNext names have positive PB",
+      "no credential, price, turnover, market-cap, provider limit-status, or return field appears in the snapshot or manifest"
+    ],
+    "failed_acceptance_policy": "write a no-return rejection record and stop without a large sync, uniqueness screen, capacity audit, price access, another daily_basic field, or purchase recommendation"
+  },
+  "source_completeness_policy": {
+    "request_every_local_2019_2025_session": true,
+    "minimum_median_positive_pb_holding_universe_coverage": 0.95,
+    "minimum_p05_positive_pb_holding_universe_coverage": 0.9,
+    "minimum_sessions_with_fifty_positive_pb_names": 200,
+    "minimum_observed_source_years": 5,
+    "duplicate_event_keys_allowed": false,
+    "failed_gate_policy": "stop before uniqueness, factor capacity, or returns; do not fill missing PB, widen dates, mix a second provider, or add PE/size/turnover fields"
+  },
+  "no_return_uniqueness_policy": {
+    "required_before_factor_return_access": true,
+    "screen_start": "2025-01-01",
+    "screen_end": "2025-12-31",
+    "method": "For each session, rank positive book-to-market and every existing close-known comparison factor inside the same quality/listing-eligible universe; compute Spearman correlation, then take each comparison's median daily correlation.",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_sessions": 100,
+    "comparison_scope": "all existing raw technical and quarterly-quality rank fields available in the accepted market loader, including free_float_cap_proxy",
+    "failed_gate_policy": "stop without returns, inversion, PB transforms, industry neutralization, field substitution, or threshold relaxation"
+  },
+  "coverage_and_capacity_policy": {
+    "run_before_any_open_close_or_forward_return_read": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_distinct_factor_values": 2,
+    "minimum_observed_years": 5,
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "minimum_required_cohorts": 200,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "failed_gate_policy": "stop without reading returns, changing direction, adding ROE/PB as a tuned score, lowering coverage, or combining an old rejected factor",
+    "selection_or_promotion_allowed": false
+  },
+  "diagnostic_policy_if_uniqueness_and_capacity_pass": {
+    "separate_immutable_preregistration_required_before_price_access": true,
+    "single_factor_and_direction_only": true,
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "prospective_execution_policy_required": "docs/a_share_three_day_prospective_execution_policy.json",
+    "cny_200000_pilot_policy_required": "docs/a_share_three_day_pilot_execution_policy.json",
+    "full_default_stability_and_topk_viability_audits_required": true,
+    "same_history_inversion_subsetting_window_pb_transform_quality_weight_or_threshold_search_allowed": false
+  },
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
