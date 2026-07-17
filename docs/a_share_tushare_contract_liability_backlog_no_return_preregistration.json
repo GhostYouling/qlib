@@ -1,0 +1,339 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_contract_liability_backlog_no_return_preregistration",
+  "status": "frozen_after_source_acceptance_before_full_source_requests_capacity_comparison_fields_prices_or_returns",
+  "frozen_at": "2026-07-17T01:34:14Z",
+  "purpose": "Freeze the only allowed all-market source request, source-completeness gate, three-session no-return capacity audit, and dense near-neighbor uniqueness audit for the accepted contract-liability backlog factor before any additional provider request or any price or return access.",
+  "source_protocol": {
+    "data_contract": {
+      "path": "docs/a_share_tushare_contract_liability_backlog_data_contract.json",
+      "sha256": "4c6105188ce7246fd9069fdf3e547e612813998b6316ec332e42acdb0aecf611"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "2d8cc98378f7e2ffac7182f80a9fbb8c0288c769ca4de9f1c5d68abd1ded0729"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_contract_liability_backlog_source_acceptance_record.json",
+      "sha256": "5a06db91c904c38bf0415cbff7cec6987e72212d8349a3805ca4a7749911295b"
+    },
+    "source_acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260717T011835Z_tushare_contract_liability_backlog_acceptance_3d78a4ab.json",
+      "sha256": "d407969b0f508b388f94711051b6509527c05dfdf4451226bf1cf4a5ac6f5680"
+    },
+    "source_acceptance_frame": {
+      "path": "data/raw/a_share/rich/tushare_contract_liability_backlog_acceptance.parquet",
+      "filesystem_sha256": "a72c639252a92cddfbf12cdb4bbec5d3ffa55a038e7709983413bb1688688016",
+      "content_sha256": "0eccb77f5e9d32323e8b5c71ca92eea330873e62c0ee903d6346b4de11ca3cda",
+      "rows": 55,
+      "columns": [
+        "announcement_date",
+        "report_date",
+        "instrument",
+        "tushare_contract_liability_backlog_delta",
+        "provider"
+      ]
+    },
+    "provider": "tushare",
+    "endpoint": "balancesheet",
+    "interface_tier": "standard_one_stock_history",
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "f_ann_date",
+      "end_date",
+      "report_type",
+      "comp_type",
+      "contract_liab",
+      "total_assets",
+      "update_flag"
+    ],
+    "factor": "tushare_contract_liability_backlog_delta",
+    "formula": "(current_accepted_type1_contract_liab - same_fiscal_quarter_previous_year_accepted_type1_contract_liab) / current_accepted_type1_total_assets",
+    "direction": "higher_is_better",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2025-12-31",
+    "source_announcement_start": "2018-01-01",
+    "source_announcement_end": "2025-12-31",
+    "latest_allowed_actual_announcement_date": "2026-07-17",
+    "fixed_announcement_date_slices_in_order": [
+      [
+        "20180101",
+        "20191231"
+      ],
+      [
+        "20200101",
+        "20211231"
+      ],
+      [
+        "20220101",
+        "20231231"
+      ],
+      [
+        "20240101",
+        "20251231"
+      ]
+    ],
+    "source_universe_file_intervals": 5451,
+    "acceptance_symbols_reused_without_provider_rerequest": [
+      "600519.SH",
+      "000333.SZ",
+      "300750.SZ"
+    ],
+    "acceptance_symbol_count_reused": 3,
+    "provider_requested_instruments": 5448,
+    "provider_calls_per_requested_instrument": 4,
+    "planned_provider_calls": 21792,
+    "request_order": "factor_main_chinext_star file order after excluding the three accepted symbols, then fixed_announcement_date_slices_in_order",
+    "minimum_seconds_between_calls": 0.32,
+    "maximum_attempts_per_stock_slice": 3,
+    "retry_backoff_seconds": [
+      2,
+      5
+    ],
+    "requests_are_sequential": true,
+    "defensive_maximum_rows_per_response_strictly_below": 100,
+    "defensive_ceiling_is_not_claimed_as_an_official_documented_limit": true,
+    "raw_provider_frames_persisted": false,
+    "raw_contract_liab_or_total_assets_persisted": false,
+    "unrequested_balance_sheet_fields_requested_or_persisted": false,
+    "acceptance_reuse_reason": "The accepted factor frame is sufficient for the three accepted instruments and is reused verbatim so the consumed twelve-call acceptance is never repeated inside the full-source run.",
+    "acceptance_frame_required_locally_for_full_source_execution": true,
+    "provider_rerequest_of_acceptance_symbols_allowed": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "full_source_output": {
+    "dataset": "tushare_contract_liability_backlog_events",
+    "required_success_status": "full_source_completeness_passed_pending_combined_no_return_capacity_and_uniqueness",
+    "canonical_columns": [
+      "announcement_date",
+      "report_date",
+      "instrument",
+      "tushare_contract_liability_backlog_delta",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date",
+      "report_date"
+    ],
+    "signal_key": [
+      "instrument",
+      "announcement_date"
+    ],
+    "required_partition_signal_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "partition_policy": "one actual-announcement calendar year per immutable Parquet partition",
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "partial_snapshot_accepted": false,
+    "failure_cleanup": "delete the complete hidden temporary snapshot and publish no final snapshot or success manifest",
+    "successful_or_failed_full_source_attempt_consumes_this_protocol": true,
+    "partial_resume_or_single_stock_repair_allowed": false,
+    "raw_statement_levels_or_provider_frames_persisted": false,
+    "price_or_return_fields_persisted": false
+  },
+  "source_completeness_contract": {
+    "coverage_denominator": "factor_main_chinext_star instruments active at each fixed 2019Q1-2025Q3 report period and present in the frozen source universe",
+    "fixed_report_period_start": "2019-03-31",
+    "fixed_report_period_end": "2025-09-30",
+    "fixed_standard_quarter_ends_only": true,
+    "minimum_complete_derived_factor_events": 20000,
+    "minimum_median_report_period_coverage": 0.5,
+    "minimum_p05_report_period_coverage": 0.3,
+    "minimum_observed_signal_years": 5,
+    "maximum_duplicate_event_keys": 0,
+    "maximum_duplicate_signal_keys_after_same_date_latest_period_resolution": 0,
+    "acceptance_events_must_revalidate_and_be_included_without_provider_rerequest": true,
+    "every_partition_content_hash_row_count_formula_date_membership_and_provider_must_recompute": true,
+    "source_completeness_must_pass_before_capacity_or_comparison_fields": true,
+    "failed_gate_policy": "Stop before capacity, comparison fields, prices, or returns; do not retry the full source, re-request a failed stock, use partial output, lower coverage, change slices or version rules, fill missing values, mix providers, request another balance-sheet field, or alter the formula or direction."
+  },
+  "event_canonicalization": {
+    "availability": "first local trading session strictly after current accepted f_ann_date",
+    "maximum_event_age_calendar_days": 3,
+    "same_instrument_same_actual_announcement_date_multiple_report_period_policy": "keep only the latest report period after factor derivation and count every excluded older simultaneous event",
+    "overlapping_different_announcement_dates_policy": "on a target session keep the latest already-effective announcement; never use a future announcement or a return outcome",
+    "missing_event_policy": "missing; never zero-fill or forward-fill after age expiry",
+    "clipping_winsorization_log_absolute_value_sign_inversion_residualization_or_imputation": null
+  },
+  "capacity_contract": {
+    "must_run_before_comparison_fields_or_prices": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY under the existing next-session point-in-time policy",
+    "factor_availability": "strict next local session after actual announcement, maximum three calendar days",
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "uniqueness_contract": {
+    "allowed_only_after_capacity_passes": true,
+    "screen_start": "2019-01-01",
+    "screen_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_pairwise_names_per_session": 6,
+    "minimum_pairwise_sessions_per_dense_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "method": "On factor-active sessions, rank backlog delta higher-is-better inside the identical quality/listing/event-eligible cross-section, compute pairwise-complete Spearman correlation against each dense comparison field, and gate the absolute median daily correlation.",
+    "dense_comparison_factor_count": 48,
+    "dense_comparison_factors": [
+      "momentum_1",
+      "momentum_2",
+      "momentum_3",
+      "momentum_5",
+      "up_day_ratio_5",
+      "momentum_10",
+      "momentum_20",
+      "momentum_60",
+      "trend_ma_5",
+      "trend_ma_20",
+      "trend_ma_60",
+      "volume_surge_1",
+      "volume_surge",
+      "volume_surge_3",
+      "turnover_surge",
+      "turnover_surge_3",
+      "turnover_surge_1",
+      "liquidity_5",
+      "free_float_cap_proxy",
+      "volatility_5",
+      "volatility_10",
+      "volatility_20",
+      "amplitude_1",
+      "amplitude_5",
+      "gap_1",
+      "near_high_10",
+      "near_high_20",
+      "intraday_strength",
+      "intraday_return_sum_5",
+      "directional_serial_dependence_20",
+      "close_to_high",
+      "close_above_vwap_1",
+      "signed_efficiency_ratio_10",
+      "return_turnover_correlation_10",
+      "max_return_20",
+      "signed_volume_pressure_5",
+      "roe",
+      "revenue_yoy",
+      "profit_yoy",
+      "quality_age_days",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration",
+      "tushare_large_order_net_inflow_share",
+      "tushare_positive_book_to_market",
+      "sw1_three_session_leave_one_out_breadth",
+      "eastmoney_balance_sheet_resilience",
+      "eastmoney_core_profit_consistency"
+    ],
+    "required_named_near_neighbors": {
+      "eastmoney_balance_sheet_resilience": "numeric_dense_comparison_required",
+      "eastmoney_core_profit_consistency": "numeric_dense_comparison_required",
+      "tushare_positive_book_to_market": "numeric_dense_comparison_required",
+      "tushare_q_gross_margin_yoy_change_pp": "semantic_comparison_required_but_numeric_frame_forbidden_because_its_full_source_contract_is_terminal"
+    },
+    "gross_margin_semantic_check": "Gross-margin change measures current single-quarter earned-margin change; backlog delta measures customer-funded obligations relative to assets. The mechanisms are economically distinct, but the gross-margin full source failed atomically and no all-market numeric frame exists, so no correlation may be invented or inferred.",
+    "all_48_dense_fields_must_have_minimum_sessions_and_pass": true,
+    "gross_margin_terminal_record_must_revalidate": true,
+    "sparse_event_factors_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "point_in_time_context": {
+    "fingerprint_range_start": "2019-01-01",
+    "fingerprint_range_end": "2025-12-31",
+    "source_universe": {
+      "name": "factor_main_chinext_star",
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "file_sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762",
+      "file_intervals": 5451,
+      "range_clipped_sha256": "3569ef3aebf5db0b81a60701aa2a28445f12bced1ae86d0cad81dfec235e3869",
+      "range_clipped_intervals": 5396
+    },
+    "holding_universe": {
+      "name": "buyable_main_chinext",
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "file_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+      "range_clipped_sha256": "2b3a2fba2ebb6938853fe9c6e1f6649517bef844e0ee6347a032e2b74945394c",
+      "range_clipped_intervals": 4794
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "file_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "range_clipped_sha256": "c408af553ff2aa780f302eda8bc860d06d875a1a34c6bf37cd1341c6f890623c",
+      "range_clipped_sessions": 1699
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_fingerprinted_but_not_loaded_before_capacity": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "status": "passed"
+    }
+  },
+  "comparison_evidence": {
+    "eastmoney_balance_sheet_resilience_full_source_record": {
+      "path": "docs/a_share_eastmoney_balance_sheet_resilience_full_source_record.json",
+      "sha256": "8c523f2e5b2b14cb46b98a9becf114ef5efab582af2b84482524f6676caf6cc6"
+    },
+    "eastmoney_core_profit_consistency_full_source_record": {
+      "path": "docs/a_share_eastmoney_core_profit_consistency_full_source_record.json",
+      "sha256": "be6d43b7fb1e707898b88180c5d5a180bb4e28620fb8d9c646ef1c58cb7604fb"
+    },
+    "tushare_positive_book_to_market_research_record": {
+      "path": "docs/a_share_tushare_daily_pb_research_record.json",
+      "sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3"
+    },
+    "tushare_gross_margin_terminal_record": {
+      "path": "docs/a_share_tushare_gross_margin_research_record.json",
+      "sha256": "83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18"
+    }
+  },
+  "run_order": [
+    "revalidate the frozen mechanism, data contract, accepted manifest and factor frame, exact source universe, local calendar, quarterly quality, and this preregistration",
+    "require explicit --allow-large and verify no prior full-source attempt before credential or provider access",
+    "reuse the three accepted instruments from the accepted five-column factor frame and issue exactly 21792 planned calls for the other 5448 instruments",
+    "apply source canonicalization, annual atomic publication, and source-completeness gates without any comparison, price, or return field",
+    "in a separate command revalidate the full manifest and all annual partitions, then count three-session non-overlapping capacity without comparison, price, or return fields",
+    "only if capacity passes load the exact 48 dense comparison factors and revalidate the terminal gross-margin semantic evidence",
+    "run every dense rank-correlation comparison and write one immutable no-return audit",
+    "only if source, capacity, and uniqueness all pass freeze a separate single-factor return-diagnostic preregistration"
+  ],
+  "failure_policy": "Any failed source, capacity, pairwise-session, semantic-evidence, or correlation gate is terminal for this exact hypothesis and stops before future prices or returns. Do not retry, repair, alter version/date/formula/direction/age, lower gates, choose fiscal quarters or years, residualize, combine, score, select, size, order, or justify Level-2.",
+  "success_policy": "A complete no-return pass permits only a new immutable single-factor diagnostic preregistration bound to the full-source manifest and no-return audit hashes. It does not permit generic diagnostics, aggregation, current scoring, selection, sizing, orders, or Level-2 intake.",
+  "prospective_execution_policy_for_later_diagnostic": {
+    "path": "docs/a_share_three_day_prospective_execution_policy.json",
+    "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+  },
+  "cny_200000_pilot_policy_for_later_diagnostic": {
+    "path": "docs/a_share_three_day_pilot_execution_policy.json",
+    "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+  },
+  "price_fields_loaded_before_freeze": [],
+  "forward_return_fields_read_before_freeze": false,
+  "selection_or_promotion_allowed": false
+}

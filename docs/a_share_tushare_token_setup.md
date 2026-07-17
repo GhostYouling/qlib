@@ -125,7 +125,7 @@ ST 恢复速度的唯一全量来源尝试已经消费：完成 58 个历史会�
 
 合同负债需求积压候选已经按 [`a_share_tushare_contract_liability_backlog_data_contract.json`](a_share_tushare_contract_liability_backlog_data_contract.json)（SHA‑256 `4c6105188ce7246fd9069fdf3e547e612813998b6316ec332e42acdb0aecf611`）完成唯一 12 次来源验收：146 条来源行得到 69 个可用报告期和 55 个有限因子事件，三只股票分别为 19、17、19 个事件；原始响应、合同负债/总资产金额、价格和收益均未保存。跨克隆验收记录为 [`a_share_tushare_contract_liability_backlog_source_acceptance_record.json`](a_share_tushare_contract_liability_backlog_source_acceptance_record.json)（SHA‑256 `5a06db91c904c38bf0415cbff7cec6987e72212d8349a3805ca4a7749911295b`），入口会在合同、Token 和供应商访问前拒绝再次运行 `acceptance-tushare-contract-liability-backlog`。
 
-这个通过只证明固定样本的来源、版本与公式可用，不是因子收益或选股证据。尚未冻结新的全市场来源与无收益协议，因此不得直接运行全量、读取价格或收益、聚合、评分、选股或下单。必须先绑定已验收 manifest/Parquet、点时来源宇宙、日历、精确调用数/切片、原子性、覆盖、容量与稠密唯一性。本文的 Token 配置步骤本身不构成这些运行许可。
+这个通过只证明固定样本的来源、版本与公式可用，不是因子收益或选股证据。新的全市场来源与无收益协议已经冻结在 [`a_share_tushare_contract_liability_backlog_no_return_preregistration.json`](a_share_tushare_contract_liability_backlog_no_return_preregistration.json)（SHA‑256 `7528d5ab17c24b4c0904f6d213311a0a5132ab7a0c897fa572223e9de1455dc8`），但真实全量尚未运行。协议要求复用验收三股，不得重请求已消费的 12 次调用；其余 5,448 股四切片共 21,792 次，只能由 `sync-tushare-contract-liability-backlog --allow-large` 原子执行。任何失败删除完整临时快照并消耗协议；全量通过后仍须先做不读取价格/收益的 200-cohort 容量和 48 字段稠密唯一性门，之后还要另行冻结收益诊断。本文的 Token 配置步骤本身不构成运行全量、读取收益、聚合、评分、选股或下单的许可。
 
 `stk_managers` 管理层连续性分支也已在唯一一次来源验收的第一个股票请求上终止：`000001.SZ` 的 184 行中有 53 行完整离任日不等于公告日，不满足预先冻结的历史点时规则。其余两只验收股票未请求，姓名、身份哈希、原始响应、价格和收益均未持久化。终止记录是 [`a_share_tushare_management_continuity_source_acceptance_record.json`](a_share_tushare_management_continuity_source_acceptance_record.json)。不得重跑、请求剩余股票、改写离任日规则或继续全量与收益研究。
 
