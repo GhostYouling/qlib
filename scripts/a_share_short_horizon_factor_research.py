@@ -618,6 +618,28 @@ DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD = (
 EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD_SHA256 = (
     "970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f"
 )
+DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_contract_liability_backlog_data_contract.json"
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_DATA_CONTRACT_SHA256 = (
+    "4c6105188ce7246fd9069fdf3e547e612813998b6316ec332e42acdb0aecf611"
+)
+DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_contract_liability_backlog_source_acceptance_record.json"
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD_SHA256 = (
+    "5a06db91c904c38bf0415cbff7cec6987e72212d8349a3805ca4a7749911295b"
+)
+DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_contract_liability_backlog_no_return_preregistration.json"
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC_SHA256 = (
+    "7528d5ab17c24b4c0904f6d213311a0a5132ab7a0c897fa572223e9de1455dc8"
+)
 DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST = (
     DATA_ROOT
     / "metadata"
@@ -1155,9 +1177,7 @@ EASTMONEY_BALANCE_SHEET_RESILIENCE_DENSE_COMPARISON_FIELDS = tuple(
     for field in TUSHARE_FREE_FLOAT_SCARCITY_COMPARISON_FIELDS
     if field not in EASTMONEY_BALANCE_SHEET_RESILIENCE_SPARSE_COMPARISON_FIELDS
 )
-EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME = (
-    "eastmoney_core_profit_consistency"
-)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME = "eastmoney_core_profit_consistency"
 EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS = (
     "instrument",
     "report_date",
@@ -1173,6 +1193,23 @@ EASTMONEY_CORE_PROFIT_CONSISTENCY_SPARSE_COMPARISON_FIELDS = (
 EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS = (
     *EASTMONEY_BALANCE_SHEET_RESILIENCE_DENSE_COMPARISON_FIELDS,
     EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME,
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME = (
+    "tushare_contract_liability_backlog_delta"
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS = (
+    "announcement_date",
+    "report_date",
+    "instrument",
+    TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+    "provider",
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS = (
+    *EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS,
+    EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME,
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_SEMANTIC_COMPARISON_FIELD = (
+    "tushare_q_gross_margin_yoy_change_pp"
 )
 PLEDGE_EVENT_COLUMNS = (
     "instrument",
@@ -1253,6 +1290,7 @@ TUSHARE_AUDIT_OPINION_NO_RETURN_AUDIT_PURPOSE = "tushare_audit_opinion_source_ca
 TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_AUDIT_PURPOSE = "tushare_free_float_scarcity_source_capacity_then_54_field_uniqueness_gate_without_forward_returns"
 EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_AUDIT_PURPOSE = "eastmoney_balance_sheet_resilience_conservative_state_capacity_then_46_dense_field_uniqueness_without_forward_returns"
 EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_AUDIT_PURPOSE = "eastmoney_core_profit_consistency_conservative_state_capacity_then_47_dense_field_uniqueness_without_forward_returns"
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_AUDIT_PURPOSE = "tushare_contract_liability_backlog_source_capacity_then_48_dense_field_and_gross_margin_semantic_uniqueness_without_forward_returns"
 TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_PURPOSE = "development_only_preregistered_tushare_sw_industry_breadth_research_not_investment_advice"
 TUSHARE_DAILY_PB_DIAGNOSTIC_PURPOSE = "development_only_preregistered_tushare_positive_book_to_market_research_not_investment_advice"
 EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_PURPOSE = "development_only_preregistered_eastmoney_balance_sheet_resilience_research_not_investment_advice"
@@ -25613,18 +25651,17 @@ def load_eastmoney_core_profit_consistency_no_return_preregistration(
         or full.get("report_dates") != expected_dates
         or full.get("required_report_date_count") != 28
         or full.get("new_network_partitions") != 27
-        or full.get(
-            "minimum_complete_identity_active_holding_coverage_per_report_date"
-        )
+        or full.get("minimum_complete_identity_active_holding_coverage_per_report_date")
         != 0.85
-        or full.get("minimum_median_complete_identity_active_holding_coverage")
-        != 0.95
+        or full.get("minimum_median_complete_identity_active_holding_coverage") != 0.95
         or full.get("minimum_valid_factor_active_holding_coverage_per_report_date")
         != 0.45
         or full.get("minimum_median_valid_factor_active_holding_coverage") != 0.6
         or state.get("clear_all_older_values_at_global_partition_activation")
         is not True
-        or state.get("carry_older_value_when_new_partition_has_missing_or_invalid_instrument")
+        or state.get(
+            "carry_older_value_when_new_partition_has_missing_or_invalid_instrument"
+        )
         is not False
         or state.get("late_older_correction_can_supersede_newer_period") is not False
         or state.get("maximum_age_calendar_days") != 550
@@ -25664,9 +25701,7 @@ def load_eastmoney_core_profit_consistency_no_return_preregistration(
             continue
         linked_path = resolve_repository_record_path(str(link["path"]))
         if not linked_path.exists() or file_sha256(linked_path) != digest:
-            raise ValueError(
-                f"Eastmoney core-profit source evidence changed: {label}"
-            )
+            raise ValueError(f"Eastmoney core-profit source evidence changed: {label}")
     return spec
 
 
@@ -25676,10 +25711,7 @@ def load_eastmoney_core_profit_consistency_full_source_record(
     """Verify the cross-clone record for the consumed full income source."""
 
     path = path.expanduser().resolve()
-    if (
-        file_sha256(path)
-        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256
-    ):
+    if file_sha256(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256:
         raise ValueError(
             "Eastmoney core-profit full-source record fingerprint mismatch"
         )
@@ -25693,16 +25725,13 @@ def load_eastmoney_core_profit_consistency_full_source_record(
         != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST_SHA256
         or (record.get("published_snapshot") or {}).get("partition_count") != 28
         or (record.get("published_snapshot") or {}).get("total_rows") != 92764
-        or (record.get("coverage") or {}).get("source_coverage_gate_passed")
-        is not True
+        or (record.get("coverage") or {}).get("source_coverage_gate_passed") is not True
         or (record.get("source_request") or {}).get("tushare_token_read") is not False
         or record.get("price_fields_loaded") != []
         or record.get("forward_return_fields_read") is not False
         or record.get("selection_or_promotion_allowed") is not False
     ):
-        raise ValueError(
-            "Eastmoney core-profit full-source record is inconsistent"
-        )
+        raise ValueError("Eastmoney core-profit full-source record is inconsistent")
     return record
 
 
@@ -26252,8 +26281,7 @@ def require_unconsumed_eastmoney_core_profit_consistency_no_return_audit(
             and source.get("sha256") == source_manifest_sha256
         ):
             raise ValueError(
-                "Eastmoney core-profit no-return snapshot is already consumed: "
-                f"{path}"
+                f"Eastmoney core-profit no-return snapshot is already consumed: {path}"
             )
 
 
@@ -26524,6 +26552,1782 @@ def run_eastmoney_core_profit_consistency_no_return_audit(
     destination = (
         experiment_root
         / f"{run_id}_eastmoney_core_profit_consistency_no_return_audit.json"
+    )
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity,
+        "uniqueness": uniqueness,
+        "both_no_return_gates_passed": both_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
+def load_tushare_contract_liability_backlog_no_return_preregistration(
+    path: Path = DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Verify the sole full-source and no-return backlog protocol."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC_SHA256:
+        raise ValueError(
+            "Tushare contract-liability no-return preregistration fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind="a_share_tushare_contract_liability_backlog_no_return_preregistration",
+    )
+    source = spec.get("source_protocol") or {}
+    output = spec.get("full_source_output") or {}
+    completeness = spec.get("source_completeness_contract") or {}
+    event = spec.get("event_canonicalization") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    context = spec.get("point_in_time_context") or {}
+    named = uniqueness.get("required_named_near_neighbors") or {}
+    expected_fields = (
+        "ts_code",
+        "ann_date",
+        "f_ann_date",
+        "end_date",
+        "report_type",
+        "comp_type",
+        "contract_liab",
+        "total_assets",
+        "update_flag",
+    )
+    expected_slices = (
+        ("20180101", "20191231"),
+        ("20200101", "20211231"),
+        ("20220101", "20231231"),
+        ("20240101", "20251231"),
+    )
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_source_acceptance_before_full_source_requests_capacity_comparison_fields_prices_or_returns"
+        or spec.get("frozen_at") != "2026-07-17T01:34:14Z"
+        or (source.get("data_contract") or {}).get("sha256")
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_DATA_CONTRACT_SHA256
+        or (source.get("source_acceptance_record") or {}).get("sha256")
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD_SHA256
+        or source.get("provider") != "tushare"
+        or source.get("endpoint") != "balancesheet"
+        or tuple(source.get("requested_fields") or ()) != expected_fields
+        or source.get("factor") != TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME
+        or source.get("direction") != "higher_is_better"
+        or tuple(
+            tuple(values)
+            for values in source.get("fixed_announcement_date_slices_in_order") or ()
+        )
+        != expected_slices
+        or source.get("source_universe_file_intervals") != 5451
+        or source.get("acceptance_symbol_count_reused") != 3
+        or source.get("provider_requested_instruments") != 5448
+        or source.get("provider_calls_per_requested_instrument") != 4
+        or source.get("planned_provider_calls") != 21792
+        or source.get("minimum_seconds_between_calls") != 0.32
+        or source.get("maximum_attempts_per_stock_slice") != 3
+        or source.get("retry_backoff_seconds") != [2, 5]
+        or source.get("provider_rerequest_of_acceptance_symbols_allowed") is not False
+        or source.get("price_fields_loaded") != []
+        or source.get("forward_return_fields_read") is not False
+        or output.get("dataset") != "tushare_contract_liability_backlog_events"
+        or output.get("required_success_status")
+        != "full_source_completeness_passed_pending_combined_no_return_capacity_and_uniqueness"
+        or tuple(output.get("canonical_columns") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+        or tuple(output.get("required_partition_signal_years") or ())
+        != tuple(range(2019, 2026))
+        or output.get("successful_or_failed_full_source_attempt_consumes_this_protocol")
+        is not True
+        or output.get("partial_resume_or_single_stock_repair_allowed") is not False
+        or completeness.get("minimum_complete_derived_factor_events") != 20000
+        or completeness.get("minimum_median_report_period_coverage") != 0.5
+        or completeness.get("minimum_p05_report_period_coverage") != 0.3
+        or completeness.get("minimum_observed_signal_years") != 5
+        or completeness.get("maximum_duplicate_event_keys") != 0
+        or completeness.get(
+            "maximum_duplicate_signal_keys_after_same_date_latest_period_resolution"
+        )
+        != 0
+        or event.get("maximum_event_age_calendar_days") != 3
+        or capacity.get("development_start") != "2019-01-01"
+        or capacity.get("development_end") != "2025-12-31"
+        or capacity.get("holding_universe") != "buyable_main_chinext"
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_quality_age_calendar_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or capacity.get("price_fields_loaded") != []
+        or capacity.get("forward_return_fields_read") is not False
+        or uniqueness.get("allowed_only_after_capacity_passes") is not True
+        or uniqueness.get("screen_start") != "2019-01-01"
+        or uniqueness.get("screen_end") != "2025-12-31"
+        or uniqueness.get("minimum_pairwise_names_per_session") != 6
+        or uniqueness.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or uniqueness.get("dense_comparison_factor_count") != 48
+        or tuple(uniqueness.get("dense_comparison_factors") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+        or named
+        != {
+            EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: (
+                "numeric_dense_comparison_required"
+            ),
+            EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME: (
+                "numeric_dense_comparison_required"
+            ),
+            TUSHARE_DAILY_PB_FACTOR_NAME: "numeric_dense_comparison_required",
+            TUSHARE_CONTRACT_LIABILITY_BACKLOG_SEMANTIC_COMPARISON_FIELD: (
+                "semantic_comparison_required_but_numeric_frame_forbidden_because_its_full_source_contract_is_terminal"
+            ),
+        }
+        or uniqueness.get("all_48_dense_fields_must_have_minimum_sessions_and_pass")
+        is not True
+        or uniqueness.get("gross_margin_terminal_record_must_revalidate") is not True
+        or uniqueness.get("sparse_event_factors_loaded") != []
+        or uniqueness.get("forward_return_fields_read") is not False
+        or spec.get("price_fields_loaded_before_freeze") != []
+        or spec.get("forward_return_fields_read_before_freeze") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Tushare contract-liability no-return preregistration is inconsistent"
+        )
+
+    for label, link in (
+        ("data contract", source["data_contract"]),
+        ("mechanism overlap audit", source["mechanism_overlap_audit"]),
+        ("source acceptance record", source["source_acceptance_record"]),
+        ("source acceptance manifest", source["source_acceptance_manifest"]),
+        *tuple(
+            (label, link)
+            for label, link in (spec.get("comparison_evidence") or {}).items()
+        ),
+        (
+            "prospective execution policy",
+            spec["prospective_execution_policy_for_later_diagnostic"],
+        ),
+        (
+            "CNY 200000 pilot policy",
+            spec["cny_200000_pilot_policy_for_later_diagnostic"],
+        ),
+    ):
+        linked_path = resolve_repository_record_path(link["path"])
+        if not linked_path.exists() or file_sha256(linked_path) != link["sha256"]:
+            raise ValueError(
+                f"Tushare contract-liability frozen evidence changed: {label}"
+            )
+
+    accepted_link = source["source_acceptance_frame"]
+    accepted_path = resolve_repository_record_path(accepted_link["path"])
+    if (
+        not accepted_path.exists()
+        or file_sha256(accepted_path) != accepted_link["filesystem_sha256"]
+    ):
+        raise ValueError("Tushare contract-liability accepted frame changed")
+    accepted = pd.read_parquet(accepted_path)
+    if (
+        tuple(accepted.columns) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+        or len(accepted) != int(accepted_link["rows"])
+        or dataframe_content_sha256(accepted) != accepted_link["content_sha256"]
+    ):
+        raise ValueError("Tushare contract-liability accepted frame content changed")
+
+    for label, link, digest_key in (
+        ("source universe", context["source_universe"], "file_sha256"),
+        ("holding universe", context["holding_universe"], "file_sha256"),
+        ("local calendar", context["local_calendar"], "file_sha256"),
+        ("quarterly quality", context["quarterly_quality"], "sha256"),
+        (
+            "quarterly quality manifest",
+            {
+                "path": context["quarterly_quality"]["manifest_path"],
+                "manifest_sha256": context["quarterly_quality"]["manifest_sha256"],
+            },
+            "manifest_sha256",
+        ),
+        (
+            "accepted price basis",
+            context[
+                "accepted_price_basis_fingerprinted_but_not_loaded_before_capacity"
+            ],
+            "sha256",
+        ),
+    ):
+        linked_path = resolve_repository_record_path(link["path"])
+        if not linked_path.exists() or file_sha256(linked_path) != link[digest_key]:
+            raise ValueError(
+                f"Tushare contract-liability point-in-time evidence changed: {label}"
+            )
+    return spec
+
+
+def validate_tushare_contract_liability_backlog_full_snapshot(
+    manifest_path: Path,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Revalidate the seven derived event partitions without loading outcomes."""
+
+    manifest_path = manifest_path.expanduser().resolve()
+    manifest = load_json_record(manifest_path, kind="a_share_rich_data_snapshot")
+    source = spec["source_protocol"]
+    output = spec["full_source_output"]
+    completeness = spec["source_completeness_contract"]
+    request = manifest.get("source_request") or {}
+    source_gate = manifest.get("source_completeness") or {}
+    preregistration = manifest.get("no_return_preregistration") or {}
+    acceptance = manifest.get("source_acceptance") or {}
+    universe_link = manifest.get("point_in_time_source_universe") or {}
+    calendar_link = manifest.get("local_calendar") or {}
+    expected_slices = [
+        {"start": values[0], "end": values[1]}
+        for values in source["fixed_announcement_date_slices_in_order"]
+    ]
+    if (
+        manifest.get("schema_version") != 1
+        or manifest.get("dataset") != output["dataset"]
+        or manifest.get("provider") != "tushare"
+        or manifest.get("development_signal_start") != "2019-01-01"
+        or manifest.get("development_signal_end") != "2025-12-31"
+        or manifest.get("source_announcement_start") != "2018-01-01"
+        or manifest.get("source_announcement_end") != "2025-12-31"
+        or preregistration.get("sha256")
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC_SHA256
+        or (manifest.get("data_contract") or {}).get("sha256")
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_DATA_CONTRACT_SHA256
+        or request.get("api") != "balancesheet"
+        or request.get("announcement_date_slices") != expected_slices
+        or tuple(request.get("fields") or ()) != tuple(source["requested_fields"])
+        or request.get("source_universe_instruments") != 5451
+        or request.get("accepted_instruments_reused") != 3
+        or request.get("provider_requested_instruments") != 5448
+        or request.get("planned_provider_calls") != 21792
+        or request.get("completed_provider_calls") != 21792
+        or request.get("minimum_seconds_between_calls") != 0.32
+        or request.get("maximum_attempts_per_stock_slice") != 3
+        or request.get("retry_backoff_seconds") != [2.0, 5.0]
+        or request.get("strict_defensive_row_ceiling") != 100
+        or request.get("ceiling_claimed_as_official_limit") is not False
+        or request.get("raw_provider_frames_persisted") is not False
+        or request.get("raw_contract_liab_or_total_assets_persisted") is not False
+        or request.get("forbidden_fields_requested_or_stored") != []
+        or request.get("credentials_logged_or_stored") is not False
+        or acceptance.get("provider_rerequests_issued") != 0
+        or tuple(acceptance.get("reused_ts_codes") or ())
+        != tuple(source["acceptance_symbols_reused_without_provider_rerequest"])
+        or manifest.get("acceptance_status") != output["required_success_status"]
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("open_close_or_forward_return_fields_read") is not False
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or source_gate.get("gate_passed_before_capacity_comparison_fields_or_prices")
+        is not True
+    ):
+        raise ValueError(
+            "Tushare contract-liability full manifest failed its frozen source contract"
+        )
+
+    context = spec["point_in_time_context"]
+    source_context = context["source_universe"]
+    calendar_context = context["local_calendar"]
+    universe_path = resolve_repository_record_path(source_context["path"])
+    calendar_path = resolve_repository_record_path(calendar_context["path"])
+    if (
+        universe_link.get("sha256") != source_context["file_sha256"]
+        or calendar_link.get("sha256") != calendar_context["file_sha256"]
+        or file_sha256(universe_path) != source_context["file_sha256"]
+        or file_sha256(calendar_path) != calendar_context["file_sha256"]
+    ):
+        raise ValueError(
+            "Tushare contract-liability manifest universe or calendar changed"
+        )
+    source_fingerprint = point_in_time_interval_fingerprint(
+        universe_path, start="2019-01-01", end="2025-12-31"
+    )
+    calendar_fingerprint = local_calendar_range_fingerprint(
+        calendar_path, start="2019-01-01", end="2025-12-31"
+    )
+    if (
+        source_fingerprint["sha256"] != source_context["range_clipped_sha256"]
+        or source_fingerprint["intervals"] != source_context["range_clipped_intervals"]
+        or calendar_fingerprint["sha256"] != calendar_context["range_clipped_sha256"]
+        or calendar_fingerprint["sessions"]
+        != calendar_context["range_clipped_sessions"]
+    ):
+        raise ValueError("Tushare contract-liability normalized source context changed")
+    universe = pd.read_csv(
+        universe_path,
+        sep="\t",
+        header=None,
+        names=["instrument", "active_start", "active_end"],
+        dtype={"instrument": "string"},
+    )
+    universe["active_start"] = pd.to_datetime(universe["active_start"]).dt.normalize()
+    universe["active_end"] = pd.to_datetime(universe["active_end"]).dt.normalize()
+    universe_names = set(universe["instrument"].astype(str))
+
+    files = sorted(
+        list(manifest.get("files") or []),
+        key=lambda item: int(item.get("announcement_year", 0)),
+    )
+    expected_years = list(output["required_partition_signal_years"])
+    if [int(item.get("announcement_year", 0)) for item in files] != expected_years:
+        raise ValueError("Tushare contract-liability annual partitions changed")
+    frames: list[pd.DataFrame] = []
+    file_evidence: list[dict[str, Any]] = []
+    for item in files:
+        year = int(item["announcement_year"])
+        partition_path = resolve_repository_record_path(item["path"])
+        frame = pd.read_parquet(partition_path)
+        content_sha256 = dataframe_content_sha256(frame)
+        filesystem_sha256 = file_sha256(partition_path)
+        if (
+            tuple(frame.columns) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+            or len(frame) != int(item["rows"])
+            or content_sha256 != item["content_sha256"]
+            or filesystem_sha256 != item["filesystem_sha256"]
+        ):
+            raise ValueError(
+                f"Tushare contract-liability {year} partition fingerprint changed"
+            )
+        frame = frame.copy()
+        frame["announcement_date"] = pd.to_datetime(
+            frame["announcement_date"], errors="coerce"
+        ).dt.normalize()
+        frame["report_date"] = pd.to_datetime(
+            frame["report_date"], errors="coerce"
+        ).dt.normalize()
+        frame["instrument"] = frame["instrument"].astype("string")
+        frame[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME] = pd.to_numeric(
+            frame[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME], errors="coerce"
+        )
+        factor = frame[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME]
+        standard_quarters = (
+            frame["report_date"]
+            .dt.strftime("%m-%d")
+            .isin({"03-31", "06-30", "09-30", "12-31"})
+        )
+        if (
+            frame[["announcement_date", "report_date", "instrument"]].isna().any().any()
+            or not frame["announcement_date"].dt.year.eq(year).all()
+            or not frame["announcement_date"]
+            .between(pd.Timestamp("2019-01-01"), pd.Timestamp("2025-12-31"))
+            .all()
+            or not standard_quarters.all()
+            or not frame["report_date"].le(frame["announcement_date"]).all()
+            or not frame["instrument"].astype(str).isin(universe_names).all()
+            or not np.isfinite(factor).all()
+            or set(frame["provider"].astype(str)) != {"tushare"}
+            or frame.duplicated(
+                ["instrument", "announcement_date", "report_date"]
+            ).any()
+            or frame.duplicated(["instrument", "announcement_date"]).any()
+        ):
+            raise ValueError(
+                f"Tushare contract-liability {year} partition keys or values changed"
+            )
+        frames.append(frame)
+        file_evidence.append(
+            {
+                "announcement_year": year,
+                "path": str(partition_path),
+                "rows": int(len(frame)),
+                "content_sha256": content_sha256,
+                "filesystem_sha256": filesystem_sha256,
+            }
+        )
+    events = (
+        pd.concat(frames, ignore_index=True)
+        .sort_values(["announcement_date", "report_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    duplicate_event_keys = int(
+        events.duplicated(["instrument", "announcement_date", "report_date"]).sum()
+    )
+    duplicate_signal_keys = int(
+        events.duplicated(["instrument", "announcement_date"]).sum()
+    )
+
+    accepted_link = source["source_acceptance_frame"]
+    accepted = pd.read_parquet(resolve_repository_record_path(accepted_link["path"]))
+    accepted["announcement_date"] = pd.to_datetime(
+        accepted["announcement_date"]
+    ).dt.normalize()
+    accepted["report_date"] = pd.to_datetime(accepted["report_date"]).dt.normalize()
+    accepted = (
+        accepted.loc[
+            accepted["announcement_date"].between(
+                pd.Timestamp("2019-01-01"), pd.Timestamp("2025-12-31")
+            )
+        ]
+        .sort_values(["announcement_date", "report_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    reused_instruments = {
+        "SH600519",
+        "SZ000333",
+        "SZ300750",
+    }
+    observed_reuse = events.loc[
+        events["instrument"].astype(str).isin(reused_instruments)
+    ].reset_index(drop=True)
+    if (
+        len(observed_reuse) != len(accepted)
+        or dataframe_content_sha256(observed_reuse)
+        != dataframe_content_sha256(accepted)
+        or acceptance.get("reused_development_rows") != len(accepted)
+        or acceptance.get("reused_development_content_sha256")
+        != dataframe_content_sha256(accepted)
+    ):
+        raise ValueError(
+            "Tushare contract-liability accepted events were not reused exactly"
+        )
+
+    report_periods = pd.date_range("2019-03-31", "2025-09-30", freq="QE").normalize()
+    recomputed_coverage: list[dict[str, Any]] = []
+    for period in report_periods:
+        active = set(
+            universe.loc[
+                universe["active_start"].le(period) & universe["active_end"].ge(period),
+                "instrument",
+            ].astype(str)
+        )
+        period_events = events.loc[events["report_date"].eq(period)]
+        observed = set(period_events["instrument"].astype(str))
+        observed_active = observed & active
+        recomputed_coverage.append(
+            {
+                "report_period": period.date().isoformat(),
+                "expected_active_source_names": len(active),
+                "observed_active_factor_names": len(observed_active),
+                "observed_factor_rows": int(len(period_events)),
+                "observed_names_outside_period_active_universe": len(observed - active),
+                "coverage": len(observed_active) / len(active) if active else None,
+            }
+        )
+    coverage_values = pd.Series(
+        [item["coverage"] for item in recomputed_coverage], dtype="float64"
+    )
+    median_coverage = float(coverage_values.median())
+    p05_coverage = float(coverage_values.quantile(0.05))
+    source_gate_passed = bool(
+        len(events) >= int(completeness["minimum_complete_derived_factor_events"])
+        and len(files) == 7
+        and events["announcement_date"].dt.year.nunique()
+        >= int(completeness["minimum_observed_signal_years"])
+        and median_coverage
+        >= float(completeness["minimum_median_report_period_coverage"])
+        and p05_coverage >= float(completeness["minimum_p05_report_period_coverage"])
+        and duplicate_event_keys == 0
+        and duplicate_signal_keys == 0
+    )
+    stored_periods = source_gate.get("report_periods") or []
+    if (
+        not source_gate_passed
+        or len(events) != int(source_gate.get("complete_derived_factor_events") or 0)
+        or not math.isclose(
+            median_coverage,
+            float(source_gate.get("median_report_period_coverage") or -1.0),
+            rel_tol=0.0,
+            abs_tol=1e-12,
+        )
+        or not math.isclose(
+            p05_coverage,
+            float(source_gate.get("p05_report_period_coverage") or -1.0),
+            rel_tol=0.0,
+            abs_tol=1e-12,
+        )
+        or stored_periods != recomputed_coverage
+    ):
+        raise ValueError(
+            "Tushare contract-liability source completeness did not reproduce"
+        )
+    return events, {
+        "manifest": {
+            "path": str(manifest_path),
+            "sha256": file_sha256(manifest_path),
+            "run_id": manifest.get("run_id"),
+            "status": manifest.get("acceptance_status"),
+            "rows": int(len(events)),
+            "partitions": len(files),
+        },
+        "source_acceptance": {
+            "reused_rows": int(len(accepted)),
+            "reused_content_sha256": dataframe_content_sha256(accepted),
+            "provider_rerequests_issued": 0,
+        },
+        "source_universe": {
+            "path": str(universe_path),
+            "file_sha256": file_sha256(universe_path),
+            "range_clipped_sha256": source_fingerprint["sha256"],
+            "range_clipped_intervals": source_fingerprint["intervals"],
+        },
+        "local_calendar": {
+            "path": str(calendar_path),
+            "file_sha256": file_sha256(calendar_path),
+            "range_clipped_sha256": calendar_fingerprint["sha256"],
+            "range_clipped_sessions": calendar_fingerprint["sessions"],
+        },
+        "files": file_evidence,
+        "source_completeness": {
+            "complete_derived_factor_events": int(len(events)),
+            "median_report_period_coverage": median_coverage,
+            "p05_report_period_coverage": p05_coverage,
+            "report_periods": recomputed_coverage,
+            "duplicate_event_keys": duplicate_event_keys,
+            "duplicate_signal_keys": duplicate_signal_keys,
+            "gate_passed_before_capacity_comparison_fields_or_prices": True,
+        },
+        "stored_factor_formula": source["formula"],
+        "raw_statement_levels_available_for_independent_formula_recomputation": False,
+        "formula_validation_bound_to_atomic_source_derivation_and_partition_hashes": True,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def canonicalize_tushare_contract_liability_backlog_events(
+    factor_frame: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Map persisted announcements to the first strictly later local session."""
+
+    if tuple(factor_frame.columns) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS:
+        raise ValueError("Tushare contract-liability event columns changed")
+    sessions = pd.DatetimeIndex(full_calendar).normalize().unique().sort_values()
+    if sessions.empty:
+        raise ValueError("Tushare contract-liability calendar is empty")
+    events = factor_frame.copy()
+    events["announcement_date"] = pd.to_datetime(
+        events["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    events["report_date"] = pd.to_datetime(
+        events["report_date"], errors="coerce"
+    ).dt.normalize()
+    events["instrument"] = events["instrument"].astype("string")
+    events[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME] = pd.to_numeric(
+        events[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME], errors="coerce"
+    )
+    if (
+        events[["announcement_date", "report_date", "instrument"]].isna().any().any()
+        or not np.isfinite(events[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME]).all()
+        or not events["report_date"].le(events["announcement_date"]).all()
+        or set(events["provider"].astype(str)) != {"tushare"}
+        or events.duplicated(["instrument", "announcement_date", "report_date"]).any()
+        or events.duplicated(["instrument", "announcement_date"]).any()
+    ):
+        raise ValueError("Tushare contract-liability canonical event input is invalid")
+    positions = sessions.searchsorted(events["announcement_date"], side="right")
+    if (positions >= len(sessions)).any():
+        raise ValueError(
+            "Tushare contract-liability event lacks a strict-next-session mapping"
+        )
+    events["event_effective_date"] = pd.Series(
+        sessions.take(positions), index=events.index
+    )
+    return events.reset_index(drop=True), {
+        "source_event_rows": int(len(events)),
+        "duplicate_event_keys": 0,
+        "duplicate_signal_keys": 0,
+        "strictly_next_local_session_mapped_rows": int(len(events)),
+        "same_session_trade_allowed": False,
+        "future_event_or_return_used": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def expand_tushare_contract_liability_backlog_events_to_sessions(
+    canonical_events: pd.DataFrame,
+    target_sessions: pd.DatetimeIndex,
+    *,
+    maximum_event_age_days: int,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Expand events through announcement day plus three calendar days."""
+
+    if maximum_event_age_days != 3:
+        raise ValueError("Tushare contract-liability event age changed")
+    required = {
+        "instrument",
+        "announcement_date",
+        "report_date",
+        "event_effective_date",
+        TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+    }
+    if missing := sorted(required - set(canonical_events.columns)):
+        raise ValueError(
+            "Tushare contract-liability canonical events are missing: "
+            + ", ".join(missing)
+        )
+    sessions = pd.DatetimeIndex(target_sessions).normalize().unique().sort_values()
+    rows: list[dict[str, Any]] = []
+    for event in canonical_events.itertuples(index=False):
+        announcement = pd.Timestamp(event.announcement_date).normalize()
+        effective = pd.Timestamp(event.event_effective_date).normalize()
+        first = int(sessions.searchsorted(effective, side="left"))
+        last = int(
+            sessions.searchsorted(
+                announcement + pd.Timedelta(days=maximum_event_age_days),
+                side="right",
+            )
+        )
+        for session in sessions[first:last]:
+            age = int((pd.Timestamp(session) - announcement).days)
+            if age < 1 or age > maximum_event_age_days:
+                continue
+            rows.append(
+                {
+                    "datetime": pd.Timestamp(session),
+                    "instrument": str(event.instrument),
+                    "announcement_date": announcement,
+                    "report_date": pd.Timestamp(event.report_date).normalize(),
+                    "event_effective_date": effective,
+                    "event_age_days": age,
+                    TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME: float(
+                        getattr(
+                            event,
+                            TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+                        )
+                    ),
+                }
+            )
+    columns = [
+        "datetime",
+        "instrument",
+        "announcement_date",
+        "report_date",
+        "event_effective_date",
+        "event_age_days",
+        TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+    ]
+    expanded = pd.DataFrame(rows, columns=columns)
+    before_latest = int(len(expanded))
+    if not expanded.empty:
+        expanded = expanded.sort_values(
+            [
+                "instrument",
+                "datetime",
+                "event_effective_date",
+                "announcement_date",
+                "report_date",
+            ],
+            kind="stable",
+        ).drop_duplicates(["instrument", "datetime"], keep="last")
+    if (
+        expanded.duplicated(["instrument", "datetime"]).any()
+        or not expanded["event_age_days"].between(1, maximum_event_age_days).all()
+    ):
+        raise ValueError("Tushare contract-liability session expansion is invalid")
+    return expanded.reset_index(drop=True), {
+        "target_session_count": int(len(sessions)),
+        "expanded_rows_before_latest_effective_event_rule": before_latest,
+        "older_overlapping_event_rows_superseded": before_latest - int(len(expanded)),
+        "expanded_rows": int(len(expanded)),
+        "maximum_event_age_calendar_days_from_announcement": maximum_event_age_days,
+        "strict_next_session_and_announcement_age_rule_applied": True,
+        "future_event_or_return_used_for_overlap_resolution": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def prepare_tushare_contract_liability_backlog_sessions(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    target_sessions: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    maximum_event_age_days: int,
+    maximum_quality_age_days: int,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Apply event timing, holding membership, listing, and quality gates."""
+
+    canonical, canonical_audit = canonicalize_tushare_contract_liability_backlog_events(
+        factor_frame, full_calendar
+    )
+    expanded, expansion_audit = (
+        expand_tushare_contract_liability_backlog_events_to_sessions(
+            canonical,
+            target_sessions,
+            maximum_event_age_days=maximum_event_age_days,
+        )
+    )
+    if expanded.empty:
+        active = expanded.copy()
+    else:
+
+        def active_on_signal(row: Any) -> bool:
+            signal = pd.Timestamp(row.datetime).normalize()
+            return any(
+                pd.Timestamp(start).normalize()
+                <= signal
+                <= pd.Timestamp(end).normalize()
+                for start, end in instrument_intervals.get(str(row.instrument), [])
+            )
+
+        expanded["instrument_active"] = [
+            active_on_signal(row) for row in expanded.itertuples(index=False)
+        ]
+        active = expanded.loc[expanded["instrument_active"]].copy()
+    active = attach_listing_age_sessions(
+        active,
+        instrument_intervals,
+        pd.DatetimeIndex(full_calendar),
+    )
+    active = active.rename(
+        columns={
+            "announcement_date": "contract_liability_announcement_date",
+            "report_date": "contract_liability_report_date",
+        }
+    )
+    active = attach_quality_asof(
+        active,
+        fundamentals,
+        max_age_days=maximum_quality_age_days,
+        availability_calendar=pd.DatetimeIndex(full_calendar),
+    )
+    values = pd.to_numeric(
+        active[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME], errors="coerce"
+    )
+    eligible = active.loc[
+        active["quality_eligible"].fillna(False) & np.isfinite(values)
+    ].copy()
+    eligible[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME] = values.loc[
+        eligible.index
+    ]
+    return eligible.reset_index(drop=True), {
+        "event_canonicalization": canonical_audit,
+        "session_expansion": expansion_audit,
+        "active_holding_event_rows": int(len(active)),
+        "quality_listing_eligible_factor_rows": int(len(eligible)),
+        "eligible_factor_sessions": int(eligible["datetime"].nunique()),
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def tushare_contract_liability_backlog_capacity(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    research_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    capacity_contract: dict[str, Any],
+    event_contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Count fixed non-overlapping three-session event cohorts without prices."""
+
+    sessions = pd.DatetimeIndex(research_calendar).normalize().unique().sort_values()
+    hold_days = int(capacity_contract["holding_period_trading_days"])
+    if hold_days != 3 or len(sessions) <= hold_days:
+        raise ValueError("Tushare contract-liability capacity calendar is invalid")
+    rebalances = sessions[:-hold_days:hold_days]
+    eligible, preparation = prepare_tushare_contract_liability_backlog_sessions(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        rebalances,
+        instrument_intervals,
+        maximum_event_age_days=int(event_contract["maximum_event_age_calendar_days"]),
+        maximum_quality_age_days=int(
+            capacity_contract["maximum_quality_age_calendar_days"]
+        ),
+    )
+    cross_sections = eligible.groupby("datetime", sort=True).agg(
+        valid_names=("instrument", "nunique"),
+        distinct_factor_values=(
+            TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+            "nunique",
+        ),
+    )
+    complete = cross_sections.loc[
+        cross_sections["valid_names"].ge(
+            int(capacity_contract["minimum_eligible_names_per_cross_section"])
+        )
+        & cross_sections["distinct_factor_values"].ge(
+            int(capacity_contract["minimum_distinct_factor_values"])
+        )
+    ]
+    by_year = {
+        str(int(year)): int(count)
+        for year, count in complete.groupby(complete.index.year).size().items()
+    }
+    cohort_count = int(len(complete))
+    observed_years = len(by_year)
+    passed = bool(
+        cohort_count >= int(capacity_contract["minimum_required_cohorts"])
+        and observed_years >= int(capacity_contract["minimum_observed_years"])
+    )
+    return {
+        "factor": TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+        "source_rows": int(len(factor_frame)),
+        "event_session_preparation": preparation,
+        "non_overlapping_rebalance_capacity": int(len(rebalances)),
+        "quality_and_listing_eligible_event_rows": int(len(eligible)),
+        "dates_with_any_valid_name": int(len(cross_sections)),
+        "dates_with_at_least_minimum_names": int(
+            cross_sections["valid_names"]
+            .ge(int(capacity_contract["minimum_eligible_names_per_cross_section"]))
+            .sum()
+        ),
+        "dates_with_at_least_two_values": int(
+            cross_sections["distinct_factor_values"]
+            .ge(int(capacity_contract["minimum_distinct_factor_values"]))
+            .sum()
+        ),
+        "potential_complete_cohorts": cohort_count,
+        "potential_complete_cohorts_by_year": by_year,
+        "observed_calendar_years": observed_years,
+        "minimum_required_cohorts": int(capacity_contract["minimum_required_cohorts"]),
+        "minimum_observed_calendar_years": int(
+            capacity_contract["minimum_observed_years"]
+        ),
+        "minimum_valid_names_per_factor_cohort": int(
+            capacity_contract["minimum_eligible_names_per_cross_section"]
+        ),
+        "minimum_distinct_factor_values_per_cohort": int(
+            capacity_contract["minimum_distinct_factor_values"]
+        ),
+        "topk": int(capacity_contract["topk"]),
+        "holding_period_trading_days": hold_days,
+        "minimum_listing_sessions": int(capacity_contract["minimum_listing_sessions"]),
+        "maximum_quality_age_calendar_days": int(
+            capacity_contract["maximum_quality_age_calendar_days"]
+        ),
+        "capacity_gate_passed": passed,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def validate_tushare_contract_liability_gross_margin_semantic_evidence(
+    spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Bind the terminal gross-margin source without inventing numeric evidence."""
+
+    link = spec["comparison_evidence"]["tushare_gross_margin_terminal_record"]
+    path = resolve_repository_record_path(link["path"])
+    if file_sha256(path) != link["sha256"]:
+        raise ValueError("Tushare gross-margin terminal record changed")
+    record = load_json_record(path, kind="a_share_tushare_gross_margin_research_record")
+    scope = record.get("scope_and_safety") or {}
+    attempt = record.get("full_source_attempt") or {}
+    if (
+        record.get("status")
+        != "terminal_rejected_at_full_source_identity_date_or_version_gate_before_partitions_capacity_uniqueness_or_returns"
+        or attempt.get("partial_snapshot_deleted") is not True
+        or attempt.get("final_snapshot_published") is not False
+        or attempt.get("published_partition_count") != 0
+        or scope.get("price_fields_loaded") != []
+        or scope.get("forward_return_fields_read") is not False
+        or scope.get("capacity_run") is not False
+        or scope.get("uniqueness_run") is not False
+    ):
+        raise ValueError("Tushare gross-margin terminal evidence is inconsistent")
+    return {
+        "comparison_field": (
+            TUSHARE_CONTRACT_LIABILITY_BACKLOG_SEMANTIC_COMPARISON_FIELD
+        ),
+        "evidence": {"path": str(path), "sha256": file_sha256(path)},
+        "comparison_type": "mandatory_semantic_only",
+        "backlog_mechanism": (
+            "customer-funded contract-liability change relative to current assets"
+        ),
+        "gross_margin_mechanism": (
+            "single-quarter earned gross-margin year-over-year change"
+        ),
+        "economically_distinct": True,
+        "numeric_frame_exists": False,
+        "numeric_frame_loaded": False,
+        "correlation_computed_or_invented": False,
+        "terminal_record_revalidated": True,
+        "semantic_gate_passed": True,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def summarize_tushare_contract_liability_backlog_uniqueness(
+    factor_sessions: pd.DataFrame,
+    comparison_frame: pd.DataFrame,
+    *,
+    contract: dict[str, Any],
+    gross_margin_semantic_evidence: dict[str, Any],
+) -> dict[str, Any]:
+    """Gate backlog delta against all 48 dense fields and one semantic neighbor."""
+
+    factor_columns = [
+        "datetime",
+        "instrument",
+        TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+    ]
+    comparison_columns = [
+        "datetime",
+        "instrument",
+        "fundamental_quality_eligible",
+        "listing_seasoning_eligible",
+        "quality_eligible",
+        *TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS,
+    ]
+    if missing := sorted(set(factor_columns) - set(factor_sessions.columns)):
+        raise ValueError(
+            "Tushare contract-liability uniqueness factor frame is missing: "
+            + ", ".join(missing)
+        )
+    if missing := sorted(set(comparison_columns) - set(comparison_frame.columns)):
+        raise ValueError(
+            "Tushare contract-liability comparison frame is missing: "
+            + ", ".join(missing)
+        )
+    if (
+        contract.get("dense_comparison_factor_count") != 48
+        or tuple(contract.get("dense_comparison_factors") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+        or gross_margin_semantic_evidence.get("semantic_gate_passed") is not True
+        or gross_margin_semantic_evidence.get("numeric_frame_loaded") is not False
+        or gross_margin_semantic_evidence.get("correlation_computed_or_invented")
+        is not False
+    ):
+        raise ValueError("Tushare contract-liability uniqueness catalog changed")
+    start = pd.Timestamp(contract["screen_start"]).normalize()
+    end = pd.Timestamp(contract["screen_end"]).normalize()
+    minimum_names = int(contract["minimum_pairwise_names_per_session"])
+    minimum_sessions = int(contract["minimum_pairwise_sessions_per_dense_comparison"])
+    maximum_correlation = float(
+        contract["maximum_allowed_absolute_median_daily_rank_correlation"]
+    )
+    factor = factor_sessions.loc[:, factor_columns].copy()
+    factor["datetime"] = pd.to_datetime(
+        factor["datetime"], errors="coerce"
+    ).dt.normalize()
+    factor["instrument"] = factor["instrument"].astype("string")
+    factor[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME] = pd.to_numeric(
+        factor[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME], errors="coerce"
+    )
+    factor = factor.loc[factor["datetime"].between(start, end)].copy()
+    if (
+        factor[["datetime", "instrument"]].isna().any().any()
+        or factor.duplicated(["instrument", "datetime"]).any()
+        or not np.isfinite(factor[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME]).all()
+    ):
+        raise ValueError(
+            "Tushare contract-liability uniqueness factor keys are invalid"
+        )
+    comparison = comparison_frame.loc[:, comparison_columns].copy()
+    comparison["datetime"] = pd.to_datetime(
+        comparison["datetime"], errors="coerce"
+    ).dt.normalize()
+    comparison["instrument"] = comparison["instrument"].astype("string")
+    comparison = comparison.loc[comparison["datetime"].between(start, end)].copy()
+    if (
+        comparison[["datetime", "instrument"]].isna().any().any()
+        or comparison.duplicated(["instrument", "datetime"]).any()
+        or not (
+            comparison["quality_eligible"].fillna(False)
+            == (
+                comparison["fundamental_quality_eligible"].fillna(False)
+                & comparison["listing_seasoning_eligible"].fillna(False)
+            )
+        ).all()
+    ):
+        raise ValueError(
+            "Tushare contract-liability comparison quality or keys are invalid"
+        )
+    comparison = comparison.loc[comparison["quality_eligible"].fillna(False)].copy()
+    merged = comparison.merge(
+        factor,
+        on=["datetime", "instrument"],
+        how="inner",
+        validate="one_to_one",
+    )
+    if merged.empty:
+        raise ValueError("Tushare contract-liability uniqueness has no eligible rows")
+
+    field_results: list[dict[str, Any]] = []
+    for field in TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS:
+        pairwise = merged[
+            [
+                "datetime",
+                "instrument",
+                TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+                field,
+            ]
+        ].copy()
+        pairwise[field] = pd.to_numeric(pairwise[field], errors="coerce")
+        pairwise = pairwise.loc[
+            np.isfinite(pairwise[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME])
+            & np.isfinite(pairwise[field])
+        ]
+        correlations: list[float] = []
+        counts: list[int] = []
+        for _, daily in pairwise.groupby("datetime", sort=True):
+            count = int(daily["instrument"].nunique())
+            if count < minimum_names:
+                continue
+            counts.append(count)
+            if (
+                daily[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME].nunique() < 2
+                or daily[field].nunique() < 2
+            ):
+                continue
+            correlation = float(
+                daily[TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME]
+                .rank(method="average", pct=True)
+                .corr(daily[field].rank(method="average", pct=True))
+            )
+            if math.isfinite(correlation):
+                correlations.append(correlation)
+        series = pd.Series(correlations, dtype="float64")
+        median = float(series.median()) if len(series) else None
+        enough = len(series) >= minimum_sessions
+        independent = bool(median is not None and abs(median) < maximum_correlation)
+        field_results.append(
+            {
+                "comparison_field": field,
+                "pairwise_rows": int(len(pairwise)),
+                "valid_daily_rank_correlation_sessions": int(len(series)),
+                "minimum_pairwise_names_observed": int(min(counts)) if counts else 0,
+                "median_daily_rank_correlation": median,
+                "absolute_median_daily_rank_correlation": (
+                    abs(median) if median is not None else None
+                ),
+                "p05_daily_rank_correlation": (
+                    float(series.quantile(0.05)) if len(series) else None
+                ),
+                "p95_daily_rank_correlation": (
+                    float(series.quantile(0.95)) if len(series) else None
+                ),
+                "minimum_sessions_gate_passed": enough,
+                "absolute_median_correlation_gate_passed": independent,
+                "uniqueness_gate_passed": bool(enough and independent),
+            }
+        )
+    nearest = max(
+        field_results,
+        key=lambda item: float(
+            item["absolute_median_daily_rank_correlation"]
+            if item["absolute_median_daily_rank_correlation"] is not None
+            else -1.0
+        ),
+    )
+    numeric_named_fields = [
+        field
+        for field, requirement in contract["required_named_near_neighbors"].items()
+        if requirement == "numeric_dense_comparison_required"
+    ]
+    named = {
+        field: next(item for item in field_results if item["comparison_field"] == field)
+        for field in numeric_named_fields
+    }
+    dense_passed = all(item["uniqueness_gate_passed"] for item in field_results)
+    semantic_passed = bool(gross_margin_semantic_evidence["semantic_gate_passed"])
+    return {
+        "factor": TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+        "dense_comparison_field_count": len(field_results),
+        "eligible_factor_comparison_rows": int(len(merged)),
+        "eligible_factor_comparison_sessions": int(merged["datetime"].nunique()),
+        "minimum_pairwise_names_per_session": minimum_names,
+        "minimum_pairwise_sessions_per_dense_comparison": minimum_sessions,
+        "maximum_allowed_absolute_median_daily_rank_correlation": (maximum_correlation),
+        "fields_with_minimum_sessions": int(
+            sum(item["minimum_sessions_gate_passed"] for item in field_results)
+        ),
+        "fields_below_correlation_threshold": int(
+            sum(
+                item["absolute_median_correlation_gate_passed"]
+                for item in field_results
+            )
+        ),
+        "nearest_existing_field": nearest["comparison_field"],
+        "maximum_observed_absolute_median_daily_rank_correlation": nearest[
+            "absolute_median_daily_rank_correlation"
+        ],
+        "required_numeric_near_neighbors": named,
+        "gross_margin_semantic_neighbor": gross_margin_semantic_evidence,
+        "field_results": field_results,
+        "dense_uniqueness_gate_passed": dense_passed,
+        "gross_margin_semantic_gate_passed": semantic_passed,
+        "uniqueness_gate_passed": bool(dense_passed and semantic_passed),
+        "sparse_event_fields_loaded": [],
+        "future_open_close_or_return_fields_derived": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def load_tushare_contract_liability_backlog_dense_comparison_frame(
+    provider_uri: Path,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    factor_sessions: pd.DataFrame,
+    spec: dict[str, Any],
+    *,
+    batch_size: int = 128,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Materialize only factor-active rows for the exact 48-field catalog."""
+
+    uniqueness = spec["uniqueness_contract"]
+    start = pd.Timestamp(uniqueness["screen_start"]).normalize()
+    end = pd.Timestamp(uniqueness["screen_end"]).normalize()
+    if start != pd.Timestamp("2019-01-01") or end != pd.Timestamp("2025-12-31"):
+        raise ValueError("Tushare contract-liability uniqueness window changed")
+    if (
+        tuple(uniqueness["dense_comparison_factors"])
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+    ):
+        raise ValueError("Tushare contract-liability dense field order changed")
+    keys = factor_sessions.loc[:, ["datetime", "instrument"]].copy()
+    keys["datetime"] = pd.to_datetime(keys["datetime"]).dt.normalize()
+    keys["instrument"] = keys["instrument"].astype("string")
+    keys = keys.loc[keys["datetime"].between(start, end)].drop_duplicates()
+    if keys.empty or keys.duplicated(["instrument", "datetime"]).any():
+        raise ValueError("Tushare contract-liability comparison keys are invalid")
+    active_sessions = pd.DatetimeIndex(keys["datetime"].unique()).sort_values()
+
+    local_frames: list[pd.DataFrame] = []
+    for year in range(2019, 2026):
+        year_sessions = active_sessions[active_sessions.year == year]
+        if year_sessions.empty:
+            continue
+        chunk_start = (year_sessions.min() - pd.Timedelta(days=7)).date().isoformat()
+        chunk_end = year_sessions.max().date().isoformat()
+        market = load_market_data(
+            provider_uri,
+            start=chunk_start,
+            end=chunk_end,
+            batch_size=batch_size,
+        )
+        market = attach_quality_asof(
+            market,
+            fundamentals,
+            max_age_days=int(uniqueness["maximum_quality_age_calendar_days"]),
+            availability_calendar=full_calendar,
+        )
+        ranked = rank_factor_frame(market)
+        ranked["datetime"] = pd.to_datetime(ranked["datetime"]).dt.normalize()
+        ranked["instrument"] = ranked["instrument"].astype("string")
+        ranked = ranked.loc[ranked["datetime"].isin(year_sessions)].copy()
+        local_columns = [
+            "datetime",
+            "instrument",
+            "fundamental_quality_eligible",
+            "listing_seasoning_eligible",
+            "quality_eligible",
+            *TUSHARE_DAILY_PB_COMPARISON_FIELDS,
+        ]
+        year_keys = keys.loc[keys["datetime"].dt.year.eq(year)]
+        local_frames.append(
+            year_keys.merge(
+                ranked.loc[:, local_columns],
+                on=["datetime", "instrument"],
+                how="inner",
+                validate="one_to_one",
+            )
+        )
+        del market, ranked
+        gc.collect()
+    if not local_frames:
+        raise ValueError("Tushare contract-liability has no local dense comparisons")
+    comparison = pd.concat(local_frames, ignore_index=True)
+    if (
+        comparison.duplicated(["instrument", "datetime"]).any()
+        or not comparison["quality_eligible"].fillna(False).all()
+    ):
+        raise ValueError("Tushare contract-liability local comparison quality changed")
+
+    moneyflow_spec = load_tushare_moneyflow_capacity_preregistration()
+    moneyflow_full, moneyflow_evidence = validate_tushare_moneyflow_full_snapshot(
+        DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST,
+        moneyflow_spec,
+    )
+    moneyflow = moneyflow_full.loc[
+        :,
+        ["trade_date", "instrument", TUSHARE_MONEYFLOW_FACTOR_NAME],
+    ].rename(columns={"trade_date": "datetime"})
+    moneyflow["datetime"] = pd.to_datetime(moneyflow["datetime"]).dt.normalize()
+    moneyflow["instrument"] = moneyflow["instrument"].astype("string")
+    moneyflow = keys.merge(
+        moneyflow,
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    del moneyflow_full
+    gc.collect()
+
+    pb_link = spec["comparison_evidence"][
+        "tushare_positive_book_to_market_research_record"
+    ]
+    pb_record_path = resolve_repository_record_path(pb_link["path"])
+    if file_sha256(pb_record_path) != pb_link["sha256"]:
+        raise ValueError("Tushare PB terminal research record changed")
+    pb_record = load_json_record(pb_record_path)
+    pb_manifest_link = (pb_record.get("evidence_chain") or {}).get(
+        "source_manifest"
+    ) or {}
+    if (
+        pb_manifest_link.get("sha256") != TUSHARE_DAILY_PB_FULL_MANIFEST_SHA256
+        or pb_record.get("status")
+        != "terminal_rejected_after_capacity_uniqueness_association_and_execution_gates"
+        or pb_record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Tushare PB terminal evidence is inconsistent")
+    pb_spec = load_tushare_daily_pb_capacity_preregistration()
+    pb_full, pb_evidence = validate_tushare_daily_pb_full_snapshot(
+        DEFAULT_TUSHARE_DAILY_PB_FULL_MANIFEST,
+        pb_spec,
+    )
+    pb = pb_full.loc[
+        :, ["trade_date", "instrument", TUSHARE_DAILY_PB_FACTOR_NAME]
+    ].rename(columns={"trade_date": "datetime"})
+    pb["datetime"] = pd.to_datetime(pb["datetime"]).dt.normalize()
+    pb["instrument"] = pb["instrument"].astype("string")
+    pb = keys.merge(
+        pb,
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    del pb_full
+    gc.collect()
+
+    comparison_catalog = load_tushare_cash_conversion_no_return_preregistration()
+    sw_spec = load_tushare_sw_industry_breadth_capacity_preregistration()
+    sw_manifest = resolve_repository_record_path(
+        comparison_catalog["comparison_sources"]["terminal_tushare_sw_breadth"][
+            "full_manifest_path"
+        ]
+    )
+    membership_intervals, sw_context, sw_validation = (
+        validate_tushare_sw_industry_membership_snapshot(sw_manifest, sw_spec)
+    )
+    if not sw_validation["coverage"][
+        "membership_coverage_gate_passed_before_close_known_inputs"
+    ]:
+        raise ValueError(
+            "Tushare contract-liability SW comparison membership coverage failed"
+        )
+    sw_frames: list[pd.DataFrame] = []
+    sw_construction: list[dict[str, Any]] = []
+    for year in range(2019, 2026):
+        year_sessions = active_sessions[active_sessions.year == year]
+        if year_sessions.empty:
+            continue
+        sw_factor, construction = load_tushare_sw_industry_breadth_factor(
+            provider_uri,
+            membership_intervals,
+            sw_context,
+            sw_spec,
+            batch_size=256,
+            window_start=year_sessions.min().date().isoformat(),
+            window_end=year_sessions.max().date().isoformat(),
+        )
+        sw_factor["trade_date"] = pd.to_datetime(sw_factor["trade_date"]).dt.normalize()
+        sw_factor = sw_factor.loc[
+            sw_factor["trade_date"].isin(year_sessions),
+            [
+                "trade_date",
+                "instrument",
+                TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME,
+            ],
+        ].rename(columns={"trade_date": "datetime"})
+        sw_factor["instrument"] = sw_factor["instrument"].astype("string")
+        sw_frames.append(sw_factor)
+        sw_construction.append(construction)
+    sw = keys.merge(
+        pd.concat(sw_frames, ignore_index=True),
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+
+    for rich, factor_name in (
+        (moneyflow, TUSHARE_MONEYFLOW_FACTOR_NAME),
+        (pb, TUSHARE_DAILY_PB_FACTOR_NAME),
+        (sw, TUSHARE_SW_INDUSTRY_BREADTH_FACTOR_NAME),
+    ):
+        comparison = comparison.merge(
+            rich[["datetime", "instrument", factor_name]],
+            on=["datetime", "instrument"],
+            how="left",
+            validate="one_to_one",
+        )
+
+    balance_link = spec["comparison_evidence"][
+        "eastmoney_balance_sheet_resilience_full_source_record"
+    ]
+    core_link = spec["comparison_evidence"][
+        "eastmoney_core_profit_consistency_full_source_record"
+    ]
+    if (
+        file_sha256(resolve_repository_record_path(balance_link["path"]))
+        != balance_link["sha256"]
+        or file_sha256(resolve_repository_record_path(core_link["path"]))
+        != core_link["sha256"]
+    ):
+        raise ValueError(
+            "Tushare contract-liability accounting comparison evidence changed"
+        )
+    balance_spec = load_eastmoney_balance_sheet_resilience_no_return_preregistration()
+    balance_state_spec = load_eastmoney_balance_sheet_resilience_state_preregistration()
+    balance_events, balance_evidence = (
+        validate_eastmoney_balance_sheet_resilience_full_snapshot(
+            DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_MANIFEST,
+            balance_spec,
+        )
+    )
+    balance_states, balance_materialization = (
+        materialize_eastmoney_balance_sheet_resilience_states(
+            balance_events,
+            active_sessions,
+            full_calendar,
+            state_spec=balance_state_spec,
+        )
+    )
+    balance = balance_states.rename(columns={"trade_date": "datetime"})[
+        ["datetime", "instrument", EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME]
+    ]
+    comparison = comparison.merge(
+        balance,
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    del balance_events, balance_states
+    gc.collect()
+
+    core_spec = load_eastmoney_core_profit_consistency_no_return_preregistration()
+    core_events, core_evidence = (
+        validate_eastmoney_core_profit_consistency_full_snapshot(
+            DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST,
+            core_spec,
+        )
+    )
+    core_states, core_materialization = (
+        materialize_eastmoney_core_profit_consistency_states(
+            core_events,
+            active_sessions,
+            full_calendar,
+            state_contract=core_spec["conservative_state_contract"],
+        )
+    )
+    core = core_states.rename(columns={"trade_date": "datetime"})[
+        ["datetime", "instrument", EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME]
+    ]
+    comparison = comparison.merge(
+        core,
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    del core_events, core_states
+    gc.collect()
+
+    if (
+        comparison.duplicated(["instrument", "datetime"]).any()
+        or tuple(
+            field
+            for field in TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+            if field in comparison.columns
+        )
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+        or TUSHARE_CONTRACT_LIABILITY_BACKLOG_SEMANTIC_COMPARISON_FIELD
+        in comparison.columns
+    ):
+        raise ValueError(
+            "Tushare contract-liability comparison catalog or keys changed"
+        )
+    return comparison, {
+        "comparison_window_start": start.date().isoformat(),
+        "comparison_window_end": end.date().isoformat(),
+        "factor_active_sessions_requested": int(len(active_sessions)),
+        "factor_active_keys_requested": int(len(keys)),
+        "comparison_rows_materialized": int(len(comparison)),
+        "dense_comparison_field_count": 48,
+        "annual_local_market_chunks": len(local_frames),
+        "terminal_moneyflow": moneyflow_evidence,
+        "terminal_positive_book_to_market": pb_evidence,
+        "terminal_sw_breadth": {
+            "source_evidence": sw_validation["source_evidence"],
+            "membership_coverage": sw_validation["coverage"],
+            "annual_factor_construction": sw_construction,
+        },
+        "terminal_balance_sheet_resilience": {
+            "source_evidence": balance_evidence,
+            "state_materialization": balance_materialization,
+        },
+        "terminal_core_profit_consistency": {
+            "source_evidence": core_evidence,
+            "state_materialization": core_materialization,
+        },
+        "same_session_close_known_market_inputs_transiently_loaded": [
+            "$close",
+            "$open",
+            "$high",
+            "$low",
+            "$volume",
+            "$amount",
+            "$factor",
+            "$turnover",
+            "$vwap",
+        ],
+        "sparse_event_fields_loaded": [],
+        "gross_margin_numeric_frame_loaded": False,
+        "future_open_close_or_return_fields_read": False,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_tushare_contract_liability_backlog_no_return_audit(
+    experiment_root: Path,
+    *,
+    source_manifest_sha256: str,
+) -> None:
+    """Allow one completed combined audit per immutable full snapshot."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob(
+            "*_tushare_contract_liability_backlog_no_return_audit.json"
+        )
+    ):
+        record = load_json_record(path)
+        source = (
+            (record.get("preregistration") or {}).get("source_evidence") or {}
+        ).get("manifest") or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("purpose")
+            == TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_AUDIT_PURPOSE
+            and source.get("sha256") == source_manifest_sha256
+        ):
+            raise ValueError(
+                "Tushare contract-liability no-return snapshot is already consumed: "
+                f"{path}"
+            )
+
+
+def run_tushare_contract_liability_backlog_no_return_audit(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """Run event capacity, then conditional 48-field and semantic uniqueness."""
+
+    spec = load_tushare_contract_liability_backlog_no_return_preregistration()
+    manifest_path = Path(args.manifest).expanduser().resolve()
+    source_manifest_sha256 = file_sha256(manifest_path)
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_tushare_contract_liability_backlog_no_return_audit(
+        experiment_root,
+        source_manifest_sha256=source_manifest_sha256,
+    )
+    events, source_evidence = validate_tushare_contract_liability_backlog_full_snapshot(
+        manifest_path, spec
+    )
+    capacity_contract = spec["capacity_contract"]
+    event_contract = spec["event_canonicalization"]
+    uniqueness_contract = spec["uniqueness_contract"]
+    context = spec["point_in_time_context"]
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    holding_path = provider_uri / "instruments" / "buyable_main_chinext.txt"
+    price_basis_path = provider_uri / PRICE_BASIS_MANIFEST_NAME
+    expected_calendar = resolve_repository_record_path(
+        context["local_calendar"]["path"]
+    )
+    expected_holding = resolve_repository_record_path(
+        context["holding_universe"]["path"]
+    )
+    expected_price_basis = resolve_repository_record_path(
+        context["accepted_price_basis_fingerprinted_but_not_loaded_before_capacity"][
+            "path"
+        ]
+    )
+    if (
+        calendar_path != expected_calendar
+        or holding_path != expected_holding
+        or price_basis_path != expected_price_basis
+        or file_sha256(calendar_path) != context["local_calendar"]["file_sha256"]
+        or file_sha256(holding_path) != context["holding_universe"]["file_sha256"]
+        or file_sha256(price_basis_path)
+        != context["accepted_price_basis_fingerprinted_but_not_loaded_before_capacity"][
+            "sha256"
+        ]
+    ):
+        raise ValueError(
+            "Tushare contract-liability provider context is not the frozen local source"
+        )
+
+    calendar_values = pd.to_datetime(
+        calendar_path.read_text(encoding="utf-8").splitlines(), errors="coerce"
+    )
+    if pd.isna(calendar_values).any():
+        raise ValueError("Tushare contract-liability local calendar is invalid")
+    full_calendar = pd.DatetimeIndex(calendar_values).normalize().unique().sort_values()
+    research_calendar = full_calendar[
+        (full_calendar >= pd.Timestamp(capacity_contract["development_start"]))
+        & (full_calendar <= pd.Timestamp(capacity_contract["development_end"]))
+    ]
+    holdings = pd.read_csv(
+        holding_path,
+        sep="\t",
+        header=None,
+        names=["instrument", "active_start", "active_end"],
+        dtype={"instrument": "string"},
+    )
+    holdings["active_start"] = pd.to_datetime(
+        holdings["active_start"], errors="coerce"
+    ).dt.normalize()
+    holdings["active_end"] = pd.to_datetime(
+        holdings["active_end"], errors="coerce"
+    ).dt.normalize()
+    if (
+        holdings.isna().any().any()
+        or holdings["instrument"].duplicated().any()
+        or holdings["active_start"].gt(holdings["active_end"]).any()
+    ):
+        raise ValueError("Tushare contract-liability holding intervals are invalid")
+    intervals = {
+        str(row.instrument): [(row.active_start, row.active_end)]
+        for row in holdings.itertuples(index=False)
+    }
+
+    quality_link = context["quarterly_quality"]
+    quality_path = resolve_repository_record_path(quality_link["path"])
+    quality_manifest_path = resolve_repository_record_path(
+        quality_link["manifest_path"]
+    )
+    if (
+        file_sha256(quality_path) != quality_link["sha256"]
+        or file_sha256(quality_manifest_path) != quality_link["manifest_sha256"]
+    ):
+        raise ValueError("Tushare contract-liability quarterly quality changed")
+    fundamentals = load_fundamentals(quality_path)
+
+    capacity = tushare_contract_liability_backlog_capacity(
+        events,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        capacity_contract=capacity_contract,
+        event_contract=event_contract,
+    )
+    capacity_passed = bool(capacity["capacity_gate_passed"])
+    factor_sessions: pd.DataFrame | None = None
+    factor_session_evidence: dict[str, Any] | None = None
+    semantic_evidence: dict[str, Any] | None = None
+    comparison_frame_evidence: dict[str, Any] | None = None
+    uniqueness: dict[str, Any] | None = None
+    comparison_fields_loaded: list[str] = []
+    transient_close_known_inputs: list[str] = []
+    if capacity_passed:
+        factor_sessions, factor_session_evidence = (
+            prepare_tushare_contract_liability_backlog_sessions(
+                events,
+                fundamentals,
+                full_calendar,
+                research_calendar,
+                intervals,
+                maximum_event_age_days=int(
+                    event_contract["maximum_event_age_calendar_days"]
+                ),
+                maximum_quality_age_days=int(
+                    uniqueness_contract["maximum_quality_age_calendar_days"]
+                ),
+            )
+        )
+        semantic_evidence = (
+            validate_tushare_contract_liability_gross_margin_semantic_evidence(spec)
+        )
+        comparison_frame, comparison_frame_evidence = (
+            load_tushare_contract_liability_backlog_dense_comparison_frame(
+                provider_uri,
+                fundamentals,
+                full_calendar,
+                factor_sessions,
+                spec,
+            )
+        )
+        comparison_fields_loaded = list(
+            TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+        )
+        transient_close_known_inputs = list(
+            comparison_frame_evidence[
+                "same_session_close_known_market_inputs_transiently_loaded"
+            ]
+        )
+        uniqueness = summarize_tushare_contract_liability_backlog_uniqueness(
+            factor_sessions,
+            comparison_frame,
+            contract=uniqueness_contract,
+            gross_margin_semantic_evidence=semantic_evidence,
+        )
+        del comparison_frame
+        gc.collect()
+    del events
+    gc.collect()
+
+    uniqueness_passed = bool(
+        uniqueness is not None and uniqueness["uniqueness_gate_passed"]
+    )
+    both_passed = bool(capacity_passed and uniqueness_passed)
+    if not capacity_passed:
+        decision = (
+            "rejected_before_dense_or_semantic_comparison_and_return_diagnostic_"
+            "insufficient_three_session_event_capacity"
+        )
+    elif not uniqueness_passed:
+        decision = (
+            "rejected_before_return_diagnostic_near_synonym_or_insufficient_"
+            "dense_pairwise_or_semantic_uniqueness_evidence"
+        )
+    else:
+        decision = (
+            "eligible_only_for_separate_fingerprint_bound_single_factor_"
+            "return_and_execution_diagnostic_preregistration"
+        )
+    run_id = _timestamp()
+    audit = {
+        "kind": "a_share_tushare_contract_liability_backlog_no_return_audit",
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_AUDIT_PURPOSE,
+        "preregistration": {
+            "path": str(
+                DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC.resolve()
+            ),
+            "sha256": file_sha256(
+                DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC
+            ),
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME],
+        "factor_direction": "higher_is_better",
+        "capacity_contract": capacity_contract,
+        "uniqueness_contract": uniqueness_contract,
+        "event_canonicalization_contract": event_contract,
+        "run_sequence": [
+            {
+                "step": "full_snapshot_partition_keys_hashes_context_and_source_completeness_revalidation",
+                "completed": True,
+                "passed": True,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "quality_listing_and_non_overlapping_three_session_capacity",
+                "completed": True,
+                "passed": capacity_passed,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "terminal_gross_margin_semantic_evidence_revalidation",
+                "completed": semantic_evidence is not None,
+                "passed": (
+                    bool(semantic_evidence["semantic_gate_passed"])
+                    if semantic_evidence is not None
+                    else False
+                ),
+                "skipped_reason": (
+                    None
+                    if capacity_passed
+                    else "capacity_failed_before_semantic_or_numeric_comparison_load"
+                ),
+                "numeric_gross_margin_frame_loaded": False,
+                "correlation_invented": False,
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "exact_48_dense_factor_active_session_comparison_materialization",
+                "completed": comparison_frame_evidence is not None,
+                "skipped_reason": (
+                    None
+                    if capacity_passed
+                    else "capacity_failed_before_comparison_field_load"
+                ),
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "sparse_event_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "48_dense_field_daily_rank_correlation_and_semantic_uniqueness",
+                "completed": uniqueness is not None,
+                "passed": uniqueness_passed,
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "gross_margin_numeric_frame_loaded": False,
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "atomic_terminal_no_return_audit_record",
+                "completed": True,
+                "future_open_close_or_return_fields_read": False,
+            },
+        ],
+        "source_capacity": capacity,
+        "factor_session_materialization": factor_session_evidence,
+        "gross_margin_semantic_evidence": semantic_evidence,
+        "comparison_source_evidence": comparison_frame_evidence,
+        "uniqueness": uniqueness,
+        "source_completeness_gate_passed": True,
+        "capacity_gate_passed": capacity_passed,
+        "uniqueness_gate_passed": uniqueness_passed,
+        "both_no_return_gates_passed": both_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri),
+            "calendar_path": str(calendar_path),
+            "calendar_sha256": file_sha256(calendar_path),
+            "holding_universe_path": str(holding_path),
+            "holding_universe_sha256": file_sha256(holding_path),
+            "quarterly_quality_path": str(quality_path),
+            "quarterly_quality_sha256": file_sha256(quality_path),
+            "price_basis_path": str(price_basis_path),
+            "price_basis_sha256": file_sha256(price_basis_path),
+            "instrument_span_count": int(len(intervals)),
+            "capacity_completed_before_price_basis_record_or_comparison_field_load": True,
+            "capacity_price_fields_loaded": [],
+            "close_known_dense_comparison_fields_loaded": comparison_fields_loaded,
+            "gross_margin_numeric_comparison_fields_loaded": [],
+            "sparse_event_comparison_fields_loaded": [],
+            "same_session_close_known_market_inputs_transiently_loaded": (
+                transient_close_known_inputs
+            ),
+            "raw_market_columns_retained_in_audit": [],
+            "future_open_close_or_return_fields_read": False,
+            "forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "The source universe is a current listing snapshot with point-in-time intervals, not a historical delisting master.",
+            "Only five derived event columns persist, so raw contract-liability and total-asset levels are unavailable for a second independent formula reconstruction.",
+            "Terminal moneyflow, PB, SW breadth, balance-sheet resilience, and core-profit fields are loaded only as no-return uniqueness comparisons and remain forbidden for aggregation or selection.",
+            "Gross-margin change has no accepted all-market numeric frame; only its terminal record and economic distinction are checked, and no correlation is inferred.",
+            "Source, capacity, and uniqueness are no-outcome gates and imply no return association or tradable strategy.",
+            "No next-session open, future close, forward return, current score, selection, position size, or order field is read or derived.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = (
+        experiment_root
+        / f"{run_id}_tushare_contract_liability_backlog_no_return_audit.json"
     )
     _atomic_write_text(
         destination,
@@ -32271,6 +34075,72 @@ def load_tushare_daily_pb_no_return_audits(
     return audits
 
 
+def load_tushare_contract_liability_backlog_no_return_audits(
+    experiment_root: Path,
+) -> list[dict[str, Any]]:
+    """Read combined contract-liability capacity/uniqueness gates for the log."""
+
+    audits: list[dict[str, Any]] = []
+    for path in sorted(
+        experiment_root.expanduser().glob(
+            "*_tushare_contract_liability_backlog_no_return_audit.json"
+        )
+    ):
+        try:
+            audit = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if (
+            audit.get("status") != "completed"
+            or audit.get("purpose")
+            != TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_AUDIT_PURPOSE
+        ):
+            continue
+        capacity = audit.get("source_capacity") or {}
+        uniqueness = audit.get("uniqueness") or {}
+        semantic = audit.get("gross_margin_semantic_evidence") or {}
+        source = (
+            (audit.get("preregistration") or {}).get("source_evidence") or {}
+        ).get("manifest") or {}
+        audits.append(
+            {
+                "run_id": str(audit.get("run_id", path.stem)),
+                "source_run_id": str(source.get("run_id", "—")),
+                "source_sha256": str(source.get("sha256", "—")),
+                "complete_cohorts": int(
+                    capacity.get("potential_complete_cohorts") or 0
+                ),
+                "minimum_cohorts": int(capacity.get("minimum_required_cohorts") or 0),
+                "observed_years": int(capacity.get("observed_calendar_years") or 0),
+                "minimum_years": int(
+                    capacity.get("minimum_observed_calendar_years") or 0
+                ),
+                "capacity_passed": bool(audit.get("capacity_gate_passed", False)),
+                "comparison_field_count": int(
+                    uniqueness.get("comparison_field_count") or 0
+                ),
+                "fields_below_threshold": int(
+                    uniqueness.get("fields_below_correlation_threshold") or 0
+                ),
+                "nearest_existing_field": str(
+                    uniqueness.get("nearest_existing_field", "—")
+                ),
+                "maximum_absolute_median_correlation": uniqueness.get(
+                    "maximum_observed_absolute_median_daily_rank_correlation"
+                ),
+                "semantic_passed": bool(semantic.get("semantic_gate_passed", False)),
+                "uniqueness_passed": bool(audit.get("uniqueness_gate_passed", False)),
+                "both_passed": bool(audit.get("both_no_return_gates_passed", False)),
+                "forward_return_fields_read": bool(
+                    audit.get("forward_return_fields_read", True)
+                ),
+                "decision": str(audit.get("decision", "—")),
+                "path": str(path.resolve()),
+            }
+        )
+    return audits
+
+
 def load_sparse_announcement_capacity_audits(
     experiment_root: Path,
 ) -> list[dict[str, Any]]:
@@ -33325,6 +35195,8 @@ def render_three_day_research_report(
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
     jqdata_moneyflow_capacity_audits: list[dict[str, Any]] | None = None,
     tushare_daily_pb_no_return_audits: list[dict[str, Any]] | None = None,
+    tushare_contract_liability_backlog_no_return_audits: list[dict[str, Any]]
+    | None = None,
     sparse_announcement_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_timing_capacity_audits: list[dict[str, Any]] | None = None,
@@ -33962,6 +35834,54 @@ def render_three_day_research_report(
                         if audit["both_passed"]
                         else (
                             "唯一性失败，停止"
+                            if audit["capacity_passed"]
+                            else "容量不足，停止"
+                        )
+                    ),
+                    returns=(
+                        "是（无效）" if audit["forward_return_fields_read"] else "否"
+                    ),
+                )
+            )
+        lines.append("")
+    if tushare_contract_liability_backlog_no_return_audits:
+        lines.extend(
+            [
+                "",
+                "## 合同负债需求积压联合无收益门禁",
+                "",
+                "本节先按公告后下一会话、三自然日时效、季度质量、上市满 20 会话和非重叠三会话 Top-3 网格检查容量；只有容量通过才加载冻结的 48 个收盘已知稠密字段，并单独核验毛利率变化的终止语义证据。全过程不读取未来价格或收益；联合通过也只允许另行冻结单因子收益诊断。",
+                "",
+                "| 审计 | 来源快照 | Cohort / 门槛 | 年份 / 门槛 | 稠密字段通过 | 毛利率语义 | 最近既有字段（绝对中位相关） | 联合结论 | 读取未来收益 |",
+                "| --- | --- | ---: | ---: | ---: | --- | --- | --- | --- |",
+            ]
+        )
+        for audit in tushare_contract_liability_backlog_no_return_audits:
+            source_id = audit["source_run_id"]
+            if audit["source_sha256"] != "—":
+                source_id = f"{source_id} ({audit['source_sha256'][:12]})"
+            correlation = audit["maximum_absolute_median_correlation"]
+            correlation_text = (
+                f"{float(correlation):.4f}" if correlation is not None else "—"
+            )
+            lines.append(
+                "| {run_id} | {source} | {cohorts} / {minimum} | {years} / {minimum_years} | {unique} / {field_count} | {semantic} | {nearest} ({correlation}) | {result} | {returns} |".format(
+                    run_id=audit["run_id"],
+                    source=source_id,
+                    cohorts=audit["complete_cohorts"],
+                    minimum=audit["minimum_cohorts"],
+                    years=audit["observed_years"],
+                    minimum_years=audit["minimum_years"],
+                    unique=audit["fields_below_threshold"],
+                    field_count=audit["comparison_field_count"],
+                    semantic="通过" if audit["semantic_passed"] else "未运行/未通过",
+                    nearest=audit["nearest_existing_field"],
+                    correlation=correlation_text,
+                    result=(
+                        "允许另行冻结收益诊断"
+                        if audit["both_passed"]
+                        else (
+                            "唯一性或语义失败，停止"
                             if audit["capacity_passed"]
                             else "容量不足，停止"
                         )
@@ -34889,6 +36809,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     tushare_daily_pb_no_return_audits = load_tushare_daily_pb_no_return_audits(
         experiment_root
     )
+    tushare_contract_liability_backlog_no_return_audits = (
+        load_tushare_contract_liability_backlog_no_return_audits(experiment_root)
+    )
     sparse_announcement_capacity_audits = load_sparse_announcement_capacity_audits(
         experiment_root
     )
@@ -34959,6 +36882,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         quarterly_event_capacity_audits=quarterly_event_capacity_audits,
         jqdata_moneyflow_capacity_audits=jqdata_moneyflow_capacity_audits,
         tushare_daily_pb_no_return_audits=tushare_daily_pb_no_return_audits,
+        tushare_contract_liability_backlog_no_return_audits=(
+            tushare_contract_liability_backlog_no_return_audits
+        ),
         sparse_announcement_capacity_audits=sparse_announcement_capacity_audits,
         institutional_survey_capacity_audits=institutional_survey_capacity_audits,
         institutional_survey_timing_capacity_audits=institutional_survey_timing_capacity_audits,
@@ -35038,6 +36964,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "quarterly_event_capacity_audits": len(quarterly_event_capacity_audits),
         "jqdata_moneyflow_capacity_audits": len(jqdata_moneyflow_capacity_audits),
         "tushare_daily_pb_no_return_audits": len(tushare_daily_pb_no_return_audits),
+        "tushare_contract_liability_backlog_no_return_audits": len(
+            tushare_contract_liability_backlog_no_return_audits
+        ),
         "sparse_announcement_capacity_audits": len(sparse_announcement_capacity_audits),
         "institutional_survey_capacity_audits": len(
             institutional_survey_capacity_audits
@@ -37260,9 +39189,7 @@ def load_eastmoney_balance_sheet_resilience_diagnostic_record(
         != EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_MANIFEST_SHA256
         or (evidence.get("no_return_preregistration") or {}).get("sha256")
         != EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC_SHA256
-        or (
-            evidence.get("state_materialization_preregistration") or {}
-        ).get("sha256")
+        or (evidence.get("state_materialization_preregistration") or {}).get("sha256")
         != EASTMONEY_BALANCE_SHEET_RESILIENCE_STATE_SPEC_SHA256
         or (evidence.get("no_return_research_record") or {}).get("sha256")
         != EASTMONEY_BALANCE_SHEET_RESILIENCE_RESEARCH_RECORD_SHA256
@@ -37694,8 +39621,7 @@ def load_eastmoney_core_profit_consistency_research_record(
         or capacity.get("capacity_gate_passed") is not True
         or uniqueness.get("dense_comparison_field_count") != 47
         or uniqueness.get("fields_with_minimum_pairwise_sessions") != 47
-        or uniqueness.get("fields_below_absolute_median_correlation_threshold")
-        != 47
+        or uniqueness.get("fields_below_absolute_median_correlation_threshold") != 47
         or uniqueness.get("uniqueness_gate_passed") is not True
         or decision.get("both_no_return_gates_passed") is not True
         or decision.get("factor_return_diagnostic_allowed") is not True
@@ -37821,7 +39747,9 @@ def load_eastmoney_core_profit_consistency_diagnostic_preregistration(
             continue
         linked_path = resolve_repository_record_path(link["path"])
         if not linked_path.exists() or file_sha256(linked_path) != link["sha256"]:
-            raise ValueError(f"Eastmoney core-profit diagnostic source changed: {label}")
+            raise ValueError(
+                f"Eastmoney core-profit diagnostic source changed: {label}"
+            )
     for label, path_key, digest_key in (
         ("no-return audit", "path", "sha256"),
         ("research record", "research_record_path", "research_record_sha256"),
@@ -37976,7 +39904,10 @@ def require_unconsumed_eastmoney_core_profit_consistency_diagnostic(
 
     for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
         record = load_json_record(path)
-        if record.get("purpose") == EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_PURPOSE:
+        if (
+            record.get("purpose")
+            == EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_PURPOSE
+        ):
             raise ValueError(
                 f"Eastmoney core-profit diagnostic is already consumed: {path}"
             )
@@ -38132,7 +40063,9 @@ def run_eastmoney_core_profit_consistency_diagnostic(
         close_cost=float(contract["close_cost"]),
     )
     if len(summaries) != 1 or summaries[0].get("factor") != factor_name:
-        raise RuntimeError("Eastmoney core-profit diagnostic did not produce one factor")
+        raise RuntimeError(
+            "Eastmoney core-profit diagnostic did not produce one factor"
+        )
     summary = summaries[0]
     summary["execution_aware_topk"] = simulate_prospective_execution_topk(
         ranked,
@@ -43771,9 +45704,7 @@ def parse_args() -> argparse.Namespace:
     eastmoney_core_profit_diagnostic.add_argument(
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
-    eastmoney_core_profit_diagnostic.add_argument(
-        "--batch-size", type=int, default=500
-    )
+    eastmoney_core_profit_diagnostic.add_argument("--batch-size", type=int, default=500)
 
     tushare_sw_industry_breadth_diagnostic = subparsers.add_parser(
         "tushare-sw-industry-breadth-diagnostic",
@@ -44162,6 +46093,28 @@ def parse_args() -> argparse.Namespace:
         "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
     )
     eastmoney_core_profit_no_return_parser.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
+    tushare_contract_liability_no_return_parser = subparsers.add_parser(
+        "tushare-contract-liability-backlog-no-return-audit",
+        help=(
+            "run frozen backlog source revalidation and event capacity first, "
+            "then conditionally audit 48 dense fields plus gross-margin semantics"
+        ),
+    )
+    tushare_contract_liability_no_return_parser.add_argument(
+        "--manifest",
+        required=True,
+        help=(
+            "full_source_completeness_passed_pending_combined_no_return_"
+            "capacity_and_uniqueness snapshot manifest"
+        ),
+    )
+    tushare_contract_liability_no_return_parser.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    tushare_contract_liability_no_return_parser.add_argument(
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
@@ -45064,6 +47017,8 @@ def main() -> int:
         report = run_eastmoney_balance_sheet_resilience_no_return_audit(args)
     elif args.command == "eastmoney-core-profit-consistency-no-return-audit":
         report = run_eastmoney_core_profit_consistency_no_return_audit(args)
+    elif args.command == "tushare-contract-liability-backlog-no-return-audit":
+        report = run_tushare_contract_liability_backlog_no_return_audit(args)
     elif args.command == "tushare-cash-conversion-no-return-audit":
         report = run_tushare_cash_conversion_no_return_audit(args)
     elif args.command == "tushare-audit-opinion-no-return-audit":

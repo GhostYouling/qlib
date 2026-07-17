@@ -8859,17 +8859,16 @@ def test_eastmoney_balance_sheet_capacity_drops_overlapping_audit_dates(monkeypa
 def test_eastmoney_core_profit_no_return_source_chain_is_frozen():
     spec = RESEARCH.load_eastmoney_core_profit_consistency_no_return_preregistration()
     record = RESEARCH.load_eastmoney_core_profit_consistency_full_source_record()
-    events, evidence = RESEARCH.validate_eastmoney_core_profit_consistency_full_snapshot(
-        RESEARCH.DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST,
-        spec,
+    events, evidence = (
+        RESEARCH.validate_eastmoney_core_profit_consistency_full_snapshot(
+            RESEARCH.DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST,
+            spec,
+        )
     )
     assert spec["capacity_contract"]["holding_period_trading_days"] == 3
     assert spec["capacity_contract"]["minimum_required_cohorts"] == 200
     assert spec["uniqueness_contract"]["dense_comparison_factor_count"] == 47
-    assert (
-        len(RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS)
-        == 47
-    )
+    assert len(RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS) == 47
     assert (
         RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME
         in RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
@@ -8917,13 +8916,11 @@ def test_eastmoney_core_profit_state_reset_drops_missing_new_period_names():
             },
         ]
     )
-    materialized, audit = (
-        RESEARCH.materialize_eastmoney_core_profit_consistency_states(
-            events,
-            pd.DatetimeIndex([calendar[1], calendar[3], calendar[4]]),
-            calendar,
-            state_contract=spec["conservative_state_contract"],
-        )
+    materialized, audit = RESEARCH.materialize_eastmoney_core_profit_consistency_states(
+        events,
+        pd.DatetimeIndex([calendar[1], calendar[3], calendar[4]]),
+        calendar,
+        state_contract=spec["conservative_state_contract"],
     )
     first = materialized.loc[materialized["trade_date"].eq(calendar[1])]
     reset = materialized.loc[materialized["trade_date"].eq(calendar[3])]
@@ -9010,9 +9007,7 @@ def test_eastmoney_core_profit_dense_uniqueness_rejects_balance_synonym():
 
 def test_eastmoney_core_profit_diagnostic_is_frozen_after_no_return_pass():
     record = RESEARCH.load_eastmoney_core_profit_consistency_research_record()
-    spec = (
-        RESEARCH.load_eastmoney_core_profit_consistency_diagnostic_preregistration()
-    )
+    spec = RESEARCH.load_eastmoney_core_profit_consistency_diagnostic_preregistration()
     assert record["decision"]["both_no_return_gates_passed"] is True
     assert record["forward_return_fields_read"] is False
     assert spec["combined_no_return_audit"]["potential_complete_cohorts"] == 304
@@ -9044,9 +9039,7 @@ def test_eastmoney_core_profit_terminal_diagnostic_record_is_frozen():
     assert record["gate_decisions"]["topk_viability_gate_passed"] is False
     assert record["gate_decisions"]["dual_gate_qualified"] is False
     assert (
-        record["decision"][
-            "aggregation_scoring_selection_sizing_or_orders_allowed"
-        ]
+        record["decision"]["aggregation_scoring_selection_sizing_or_orders_allowed"]
         is False
     )
 
@@ -9120,15 +9113,11 @@ def test_eastmoney_balance_sheet_terminal_diagnostic_record_is_frozen():
     record = RESEARCH.load_eastmoney_balance_sheet_resilience_diagnostic_record()
     assert record["no_return_gate_summary"]["capacity_gate_passed"] is True
     assert record["no_return_gate_summary"]["uniqueness_gate_passed"] is True
-    assert (
-        record["gate_decisions"]["association_stability_gate_passed"] is False
-    )
+    assert record["gate_decisions"]["association_stability_gate_passed"] is False
     assert record["gate_decisions"]["topk_viability_gate_passed"] is False
     assert record["gate_decisions"]["dual_gate_qualified"] is False
     assert (
-        record["decision"][
-            "aggregation_scoring_selection_sizing_or_orders_allowed"
-        ]
+        record["decision"]["aggregation_scoring_selection_sizing_or_orders_allowed"]
         is False
     )
 
@@ -11490,3 +11479,576 @@ def test_board_lot_plan_skips_unaffordable_name_without_reallocating_cash():
     assert plan["summary"]["planned_candidates"] == 2
     assert plan["summary"]["actual_gross_exposure"] < 0.15
     assert plan["summary"]["unused_pilot_budget"] > 0
+
+
+def test_tushare_contract_liability_no_return_protocol_and_cli_are_frozen(
+    monkeypatch,
+):
+    assert (
+        RESEARCH.file_sha256(
+            RESEARCH.DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC
+        )
+        == RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC_SHA256
+    )
+    spec = RESEARCH.load_tushare_contract_liability_backlog_no_return_preregistration()
+    assert spec["source_protocol"]["planned_provider_calls"] == 21792
+    assert spec["capacity_contract"]["holding_period_trading_days"] == 3
+    assert spec["capacity_contract"]["minimum_required_cohorts"] == 200
+    assert spec["uniqueness_contract"]["dense_comparison_factor_count"] == 48
+    assert (
+        tuple(spec["uniqueness_contract"]["dense_comparison_factors"])
+        == RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+    )
+    assert (
+        RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_SEMANTIC_COMPARISON_FIELD
+        not in RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "research",
+            "tushare-contract-liability-backlog-no-return-audit",
+            "--manifest",
+            "full.json",
+        ],
+    )
+    args = RESEARCH.parse_args()
+    assert args.command == "tushare-contract-liability-backlog-no-return-audit"
+    assert args.manifest == "full.json"
+
+
+def test_tushare_contract_liability_expansion_is_strict_next_and_announcement_aged():
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(["2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30"])
+    )
+    frame = pd.DataFrame(
+        [
+            {
+                "announcement_date": pd.Timestamp("2025-04-25"),
+                "report_date": pd.Timestamp("2025-03-31"),
+                "instrument": "SZ000001",
+                RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME: 0.1,
+                "provider": "tushare",
+            }
+        ],
+        columns=RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS,
+    )
+    canonical, canonical_audit = (
+        RESEARCH.canonicalize_tushare_contract_liability_backlog_events(frame, calendar)
+    )
+    expanded, expansion_audit = (
+        RESEARCH.expand_tushare_contract_liability_backlog_events_to_sessions(
+            canonical,
+            calendar,
+            maximum_event_age_days=3,
+        )
+    )
+    assert canonical["event_effective_date"].tolist() == [pd.Timestamp("2025-04-28")]
+    assert expanded["datetime"].tolist() == [pd.Timestamp("2025-04-28")]
+    assert expanded["event_age_days"].tolist() == [3]
+    assert canonical_audit["same_session_trade_allowed"] is False
+    assert expansion_audit["strict_next_session_and_announcement_age_rule_applied"]
+    assert expansion_audit["forward_return_fields_read"] is False
+
+
+def test_tushare_contract_liability_full_snapshot_revalidates_all_partitions(
+    tmp_path,
+):
+    universe_path = tmp_path / "factor_main_chinext_star.txt"
+    calendar_path = tmp_path / "day.txt"
+    accepted_path = tmp_path / "accepted.parquet"
+    instruments = ["SH600519", "SZ000333", "SZ300750"]
+    universe_path.write_text(
+        "".join(
+            f"{instrument}\t2010-01-01\t2025-12-31\n" for instrument in instruments
+        ),
+        encoding="utf-8",
+    )
+    report_periods = pd.date_range("2019-03-31", "2025-09-30", freq="QE")
+    calendar_path.write_text(
+        "".join(f"{value.date().isoformat()}\n" for value in report_periods)
+        + "2025-12-31\n",
+        encoding="utf-8",
+    )
+    rows = []
+    for period_index, period in enumerate(report_periods):
+        for instrument_index, instrument in enumerate(instruments):
+            rows.append(
+                {
+                    "announcement_date": period,
+                    "report_date": period,
+                    "instrument": instrument,
+                    RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME: (
+                        period_index / 100.0 + instrument_index / 1000.0
+                    ),
+                    "provider": "tushare",
+                }
+            )
+    events = (
+        pd.DataFrame(rows, columns=RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS)
+        .sort_values(["announcement_date", "report_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    events.to_parquet(accepted_path, index=False)
+    snapshot_root = tmp_path / "snapshot"
+    snapshot_root.mkdir()
+    files = []
+    for year, frame in events.groupby(events["announcement_date"].dt.year, sort=True):
+        partition = frame.reset_index(drop=True)
+        path = snapshot_root / f"{year}.parquet"
+        partition.to_parquet(path, index=False)
+        files.append(
+            {
+                "announcement_year": int(year),
+                "path": str(path),
+                "rows": int(len(partition)),
+                "content_sha256": RESEARCH.dataframe_content_sha256(partition),
+                "filesystem_sha256": RESEARCH.file_sha256(path),
+            }
+        )
+    source_fingerprint = RESEARCH.point_in_time_interval_fingerprint(
+        universe_path, start="2019-01-01", end="2025-12-31"
+    )
+    calendar_fingerprint = RESEARCH.local_calendar_range_fingerprint(
+        calendar_path, start="2019-01-01", end="2025-12-31"
+    )
+    source = {
+        "requested_fields": [
+            "ts_code",
+            "ann_date",
+            "f_ann_date",
+            "end_date",
+            "report_type",
+            "comp_type",
+            "contract_liab",
+            "total_assets",
+            "update_flag",
+        ],
+        "fixed_announcement_date_slices_in_order": [
+            ["20180101", "20191231"],
+            ["20200101", "20211231"],
+            ["20220101", "20231231"],
+            ["20240101", "20251231"],
+        ],
+        "acceptance_symbols_reused_without_provider_rerequest": [
+            "600519.SH",
+            "000333.SZ",
+            "300750.SZ",
+        ],
+        "source_acceptance_frame": {"path": str(accepted_path)},
+        "formula": "frozen_formula",
+    }
+    output = {
+        "dataset": "tushare_contract_liability_backlog_events",
+        "required_success_status": (
+            "full_source_completeness_passed_pending_combined_no_return_"
+            "capacity_and_uniqueness"
+        ),
+        "required_partition_signal_years": list(range(2019, 2026)),
+    }
+    coverage = [
+        {
+            "report_period": period.date().isoformat(),
+            "expected_active_source_names": 3,
+            "observed_active_factor_names": 3,
+            "observed_factor_rows": 3,
+            "observed_names_outside_period_active_universe": 0,
+            "coverage": 1.0,
+        }
+        for period in report_periods
+    ]
+    manifest = {
+        "schema_version": 1,
+        "kind": "a_share_rich_data_snapshot",
+        "dataset": output["dataset"],
+        "provider": "tushare",
+        "run_id": "full-backlog-test",
+        "development_signal_start": "2019-01-01",
+        "development_signal_end": "2025-12-31",
+        "source_announcement_start": "2018-01-01",
+        "source_announcement_end": "2025-12-31",
+        "no_return_preregistration": {
+            "sha256": RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC_SHA256
+        },
+        "data_contract": {
+            "sha256": RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_DATA_CONTRACT_SHA256
+        },
+        "source_acceptance": {
+            "provider_rerequests_issued": 0,
+            "reused_ts_codes": source[
+                "acceptance_symbols_reused_without_provider_rerequest"
+            ],
+            "reused_development_rows": int(len(events)),
+            "reused_development_content_sha256": (
+                RESEARCH.dataframe_content_sha256(events)
+            ),
+        },
+        "point_in_time_source_universe": {
+            "sha256": RESEARCH.file_sha256(universe_path)
+        },
+        "local_calendar": {"sha256": RESEARCH.file_sha256(calendar_path)},
+        "source_request": {
+            "api": "balancesheet",
+            "announcement_date_slices": [
+                {"start": values[0], "end": values[1]}
+                for values in source["fixed_announcement_date_slices_in_order"]
+            ],
+            "fields": source["requested_fields"],
+            "source_universe_instruments": 5451,
+            "accepted_instruments_reused": 3,
+            "provider_requested_instruments": 5448,
+            "planned_provider_calls": 21792,
+            "completed_provider_calls": 21792,
+            "minimum_seconds_between_calls": 0.32,
+            "maximum_attempts_per_stock_slice": 3,
+            "retry_backoff_seconds": [2.0, 5.0],
+            "strict_defensive_row_ceiling": 100,
+            "ceiling_claimed_as_official_limit": False,
+            "raw_provider_frames_persisted": False,
+            "raw_contract_liab_or_total_assets_persisted": False,
+            "forbidden_fields_requested_or_stored": [],
+            "credentials_logged_or_stored": False,
+        },
+        "files": files,
+        "source_completeness": {
+            "complete_derived_factor_events": int(len(events)),
+            "median_report_period_coverage": 1.0,
+            "p05_report_period_coverage": 1.0,
+            "report_periods": coverage,
+            "gate_passed_before_capacity_comparison_fields_or_prices": True,
+        },
+        "acceptance_status": output["required_success_status"],
+        "price_fields_loaded": [],
+        "open_close_or_forward_return_fields_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+    }
+    manifest_path = tmp_path / "manifest.json"
+    write_json_record(manifest_path, manifest)
+    spec = {
+        "source_protocol": source,
+        "full_source_output": output,
+        "source_completeness_contract": {
+            "minimum_complete_derived_factor_events": 1,
+            "minimum_observed_signal_years": 5,
+            "minimum_median_report_period_coverage": 0.5,
+            "minimum_p05_report_period_coverage": 0.3,
+        },
+        "point_in_time_context": {
+            "source_universe": {
+                "path": str(universe_path),
+                "file_sha256": RESEARCH.file_sha256(universe_path),
+                "range_clipped_sha256": source_fingerprint["sha256"],
+                "range_clipped_intervals": source_fingerprint["intervals"],
+            },
+            "local_calendar": {
+                "path": str(calendar_path),
+                "file_sha256": RESEARCH.file_sha256(calendar_path),
+                "range_clipped_sha256": calendar_fingerprint["sha256"],
+                "range_clipped_sessions": calendar_fingerprint["sessions"],
+            },
+        },
+    }
+    restored, evidence = (
+        RESEARCH.validate_tushare_contract_liability_backlog_full_snapshot(
+            manifest_path, spec
+        )
+    )
+    assert len(restored) == len(events)
+    assert evidence["manifest"]["partitions"] == 7
+    assert evidence["source_completeness"]["duplicate_event_keys"] == 0
+    assert evidence["source_completeness"][
+        "gate_passed_before_capacity_comparison_fields_or_prices"
+    ]
+    assert evidence["price_fields_loaded"] == []
+    assert evidence["forward_return_fields_read"] is False
+
+
+def test_tushare_contract_liability_capacity_counts_six_name_three_day_cohorts():
+    full_calendar = pd.bdate_range("2023-10-02", periods=80)
+    research_calendar = full_calendar[-10:]
+    rebalances = research_calendar[:-3:3]
+    symbols = [f"SZ{index:06d}" for index in range(1, 7)]
+    intervals = {
+        symbol: [(full_calendar[0], research_calendar[-1])] for symbol in symbols
+    }
+    rows = []
+    for rebalance in rebalances:
+        announcement = full_calendar[int(full_calendar.get_loc(rebalance)) - 1]
+        for position, symbol in enumerate(symbols, start=1):
+            rows.append(
+                {
+                    "announcement_date": announcement,
+                    "report_date": pd.Timestamp("2023-09-30"),
+                    "instrument": symbol,
+                    RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME: (
+                        position / 100.0
+                    ),
+                    "provider": "tushare",
+                }
+            )
+    factor_frame = pd.DataFrame(
+        rows, columns=RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+    )
+    fundamentals = pd.DataFrame(
+        [
+            {
+                "instrument": symbol,
+                "report_date": pd.Timestamp("2023-09-30"),
+                "announcement_date": full_calendar[1],
+                "roe": 10.0,
+                "net_profit": 1.0,
+                "revenue_yoy": 10.0,
+                "profit_yoy": 10.0,
+            }
+            for symbol in symbols
+        ]
+    )
+    capacity = RESEARCH.tushare_contract_liability_backlog_capacity(
+        factor_frame,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        capacity_contract={
+            "holding_period_trading_days": 3,
+            "topk": 3,
+            "minimum_eligible_names_per_cross_section": 6,
+            "minimum_distinct_factor_values": 2,
+            "minimum_required_cohorts": 3,
+            "minimum_observed_years": 1,
+            "maximum_quality_age_calendar_days": 550,
+            "minimum_listing_sessions": 20,
+        },
+        event_contract={"maximum_event_age_calendar_days": 3},
+    )
+    assert capacity["potential_complete_cohorts"] == 3
+    assert capacity["observed_calendar_years"] == 1
+    assert capacity["capacity_gate_passed"] is True
+    assert capacity["price_fields_loaded"] == []
+    assert capacity["forward_return_fields_read"] is False
+
+
+def test_tushare_contract_liability_uniqueness_rejects_core_profit_synonym():
+    dates = pd.bdate_range("2025-01-02", periods=105)
+    symbols = [f"SZ{index:06d}" for index in range(1, 7)]
+    rng = np.random.default_rng(20260720)
+    factor_rows = []
+    comparison_rows = []
+    for date in dates:
+        random_values = {
+            field: rng.normal(size=len(symbols))
+            for field in RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+        }
+        for position, symbol in enumerate(symbols, start=1):
+            factor_rows.append(
+                {
+                    "datetime": date,
+                    "instrument": symbol,
+                    RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME: (
+                        position / 10.0
+                    ),
+                }
+            )
+            comparison_rows.append(
+                {
+                    "datetime": date,
+                    "instrument": symbol,
+                    "fundamental_quality_eligible": True,
+                    "listing_seasoning_eligible": True,
+                    "quality_eligible": True,
+                    **{
+                        field: random_values[field][position - 1]
+                        for field in RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+                    },
+                }
+            )
+    contract = {
+        "screen_start": dates[0].date().isoformat(),
+        "screen_end": dates[-1].date().isoformat(),
+        "dense_comparison_factor_count": 48,
+        "dense_comparison_factors": list(
+            RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_DENSE_COMPARISON_FIELDS
+        ),
+        "required_named_near_neighbors": {
+            RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: (
+                "numeric_dense_comparison_required"
+            ),
+            RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME: (
+                "numeric_dense_comparison_required"
+            ),
+            RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME: (
+                "numeric_dense_comparison_required"
+            ),
+            RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_SEMANTIC_COMPARISON_FIELD: (
+                "semantic_comparison_required_but_numeric_frame_forbidden_because_its_full_source_contract_is_terminal"
+            ),
+        },
+        "minimum_pairwise_names_per_session": 6,
+        "minimum_pairwise_sessions_per_dense_comparison": 100,
+        "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    }
+    semantic = {
+        "semantic_gate_passed": True,
+        "numeric_frame_loaded": False,
+        "correlation_computed_or_invented": False,
+    }
+    factors = pd.DataFrame(factor_rows)
+    comparisons = pd.DataFrame(comparison_rows)
+    independent = RESEARCH.summarize_tushare_contract_liability_backlog_uniqueness(
+        factors,
+        comparisons,
+        contract=contract,
+        gross_margin_semantic_evidence=semantic,
+    )
+    assert independent["dense_comparison_field_count"] == 48
+    assert independent["fields_with_minimum_sessions"] == 48
+    assert independent["uniqueness_gate_passed"] is True
+    assert (
+        independent["gross_margin_semantic_neighbor"]["numeric_frame_loaded"] is False
+    )
+
+    synonym = comparisons.copy()
+    synonym[RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME] = factors[
+        RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME
+    ].to_numpy()
+    rejected = RESEARCH.summarize_tushare_contract_liability_backlog_uniqueness(
+        factors,
+        synonym,
+        contract=contract,
+        gross_margin_semantic_evidence=semantic,
+    )
+    neighbor = rejected["required_numeric_near_neighbors"][
+        RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME
+    ]
+    assert neighbor["median_daily_rank_correlation"] == pytest.approx(1.0)
+    assert rejected["uniqueness_gate_passed"] is False
+    assert rejected["forward_return_fields_read"] is False
+
+
+def test_tushare_contract_liability_capacity_failure_stops_before_comparisons(
+    tmp_path, monkeypatch
+):
+    provider = tmp_path / "provider"
+    calendar_path = provider / "calendars" / "day.txt"
+    holding_path = provider / "instruments" / "buyable_main_chinext.txt"
+    price_basis_path = provider / RESEARCH.PRICE_BASIS_MANIFEST_NAME
+    calendar_path.parent.mkdir(parents=True)
+    holding_path.parent.mkdir(parents=True)
+    calendar_path.write_text("2019-01-02\n2025-12-31\n", encoding="utf-8")
+    holding_path.write_text("SZ000001\t2010-01-01\t2025-12-31\n", encoding="utf-8")
+    price_basis_path.write_text("{}\n", encoding="utf-8")
+    quality_path = tmp_path / "quality.parquet"
+    quality_manifest_path = tmp_path / "quality.json"
+    quality_path.write_bytes(b"quality")
+    quality_manifest_path.write_text("{}\n", encoding="utf-8")
+    manifest_path = tmp_path / "full.json"
+    manifest_path.write_text("{}\n", encoding="utf-8")
+    spec = {
+        "capacity_contract": {
+            "development_start": "2019-01-01",
+            "development_end": "2025-12-31",
+            "holding_period_trading_days": 3,
+        },
+        "event_canonicalization": {},
+        "uniqueness_contract": {},
+        "point_in_time_context": {
+            "local_calendar": {
+                "path": str(calendar_path),
+                "file_sha256": RESEARCH.file_sha256(calendar_path),
+            },
+            "holding_universe": {
+                "path": str(holding_path),
+                "file_sha256": RESEARCH.file_sha256(holding_path),
+            },
+            "accepted_price_basis_fingerprinted_but_not_loaded_before_capacity": {
+                "path": str(price_basis_path),
+                "sha256": RESEARCH.file_sha256(price_basis_path),
+            },
+            "quarterly_quality": {
+                "path": str(quality_path),
+                "sha256": RESEARCH.file_sha256(quality_path),
+                "manifest_path": str(quality_manifest_path),
+                "manifest_sha256": RESEARCH.file_sha256(quality_manifest_path),
+            },
+        },
+    }
+    source_evidence = {
+        "manifest": {
+            "run_id": "full-backlog-history",
+            "sha256": RESEARCH.file_sha256(manifest_path),
+            "path": str(manifest_path),
+        }
+    }
+    capacity = {
+        "factor": RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME,
+        "potential_complete_cohorts": 199,
+        "minimum_required_cohorts": 200,
+        "observed_calendar_years": 7,
+        "minimum_observed_calendar_years": 5,
+        "capacity_gate_passed": False,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_contract_liability_backlog_no_return_preregistration",
+        lambda: spec,
+    )
+    validation_calls = []
+
+    def validate(*args, **kwargs):
+        validation_calls.append(True)
+        return pd.DataFrame(), source_evidence
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "validate_tushare_contract_liability_backlog_full_snapshot",
+        validate,
+    )
+    monkeypatch.setattr(RESEARCH, "load_fundamentals", lambda path: pd.DataFrame())
+    monkeypatch.setattr(
+        RESEARCH,
+        "tushare_contract_liability_backlog_capacity",
+        lambda *args, **kwargs: capacity,
+    )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_contract_liability_backlog_dense_comparison_frame",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("comparison fields must not load after capacity failure")
+        ),
+    )
+    args = SimpleNamespace(
+        manifest=str(manifest_path),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(provider),
+    )
+    result = RESEARCH.run_tushare_contract_liability_backlog_no_return_audit(args)
+    audit = json.loads(Path(result["audit_path"]).read_text())
+    assert audit["capacity_gate_passed"] is False
+    assert audit["uniqueness"] is None
+    assert audit["gross_margin_semantic_evidence"] is None
+    assert audit["data"]["close_known_dense_comparison_fields_loaded"] == []
+    assert audit["forward_return_fields_read"] is False
+    assert audit["selection_or_promotion_allowed"] is False
+    assert validation_calls == [True]
+    audits = RESEARCH.load_tushare_contract_liability_backlog_no_return_audits(
+        Path(args.experiment_root)
+    )
+    assert len(audits) == 1
+    assert audits[0]["complete_cohorts"] == 199
+    assert audits[0]["comparison_field_count"] == 0
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        tushare_contract_liability_backlog_no_return_audits=audits,
+    )
+    assert "合同负债需求积压联合无收益门禁" in report
+    assert "199 / 200" in report
+    assert "容量不足，停止" in report
+    assert "| 否 |" in report
+    with pytest.raises(ValueError, match="already consumed"):
+        RESEARCH.run_tushare_contract_liability_backlog_no_return_audit(args)
+    assert validation_calls == [True]
