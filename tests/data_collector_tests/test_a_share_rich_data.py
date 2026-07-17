@@ -4104,6 +4104,16 @@ def test_eastmoney_core_profit_contract_is_fingerprint_frozen(tmp_path):
         "schema_formula_and_current_coverage_gate_passed"
     ]
 
+    full_record = RICH.load_eastmoney_core_profit_consistency_full_source_record()
+    assert full_record["status"] == (
+        "accepted_full_source_pending_no_return_capacity_and_uniqueness"
+    )
+    assert full_record["published_snapshot"]["partition_count"] == 28
+    assert full_record["published_snapshot"]["total_rows"] == 92764
+    assert full_record["source_request"]["tushare_token_read"] is False
+    assert full_record["coverage"]["source_coverage_gate_passed"] is True
+    assert full_record["forward_return_fields_read"] is False
+
     changed = RICH.json.loads(
         RICH.DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT.read_text()
     )
@@ -4363,6 +4373,23 @@ def test_eastmoney_core_profit_full_sync_is_atomic_and_reuses_acceptance(
         assert stored.columns.tolist() == list(
             RICH.EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
         )
+
+
+def test_eastmoney_core_profit_full_record_blocks_before_source_chain(monkeypatch):
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_core_profit_consistency_source_chain",
+        lambda: pytest.fail(
+            "tracked full record must block before source-chain loading"
+        ),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_eastmoney_core_profit_consistency_partition",
+        lambda *args, **kwargs: pytest.fail("provider must not be touched"),
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.sync_eastmoney_core_profit_consistency(allow_large=True)
 
 
 def test_eastmoney_balance_sheet_resilience_contract_is_fingerprint_frozen(

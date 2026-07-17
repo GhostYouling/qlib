@@ -554,6 +554,67 @@ DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_RECORD = (
 EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_RECORD_SHA256 = (
     "b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf"
 )
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DATA_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_eastmoney_core_profit_consistency_data_contract.json"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_DATA_CONTRACT_SHA256 = (
+    "2ae3be4b134e16681e702171157b48e8be5bc6c1f72aa9cecfc9a285518d7a45"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_SOURCE_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_source_acceptance_record.json"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_SOURCE_ACCEPTANCE_RECORD_SHA256 = (
+    "1372ee0af59cf45e4f46659ba05730d0cbaac99232f49464b014e578cd89bf34"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_no_return_preregistration.json"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256 = (
+    "47884d88736a19715bb3a615f9941611309322f9d6f1f1f4a0456ce924fb3943"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_full_source_record.json"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256 = (
+    "be6d43b7fb1e707898b88180c5d5a180bb4e28620fb8d9c646ef1c58cb7604fb"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST = (
+    DATA_ROOT
+    / "metadata"
+    / "rich_data"
+    / "runs"
+    / "20260716T235617Z_eastmoney_core_profit_consistency_760a3a16.json"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST_SHA256 = (
+    "8e3519727eec27163140c3265bcc37de05c61fe4e17aa1ca8cac7ba7fab81b11"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_RESEARCH_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_research_record.json"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_RESEARCH_RECORD_SHA256 = (
+    "753b20b657c5e233dc9948d46f9a29f5cea56b40a7163e757b9018303a4f4c9d"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_SPEC_SHA256 = (
+    "2ba3377fd1c91d470fb07e2ab815048f1331ee38392c4d148fd9c6eec758c289"
+)
+DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_core_profit_consistency_diagnostic_record.json"
+)
 DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST = (
     DATA_ROOT
     / "metadata"
@@ -1091,6 +1152,25 @@ EASTMONEY_BALANCE_SHEET_RESILIENCE_DENSE_COMPARISON_FIELDS = tuple(
     for field in TUSHARE_FREE_FLOAT_SCARCITY_COMPARISON_FIELDS
     if field not in EASTMONEY_BALANCE_SHEET_RESILIENCE_SPARSE_COMPARISON_FIELDS
 )
+EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME = (
+    "eastmoney_core_profit_consistency"
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS = (
+    "instrument",
+    "report_date",
+    "announcement_date",
+    "operating_profit",
+    "total_profit",
+    EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME,
+    "provider",
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_SPARSE_COMPARISON_FIELDS = (
+    *EASTMONEY_BALANCE_SHEET_RESILIENCE_SPARSE_COMPARISON_FIELDS,
+)
+EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS = (
+    *EASTMONEY_BALANCE_SHEET_RESILIENCE_DENSE_COMPARISON_FIELDS,
+    EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME,
+)
 PLEDGE_EVENT_COLUMNS = (
     "instrument",
     "announcement_date",
@@ -1169,9 +1249,11 @@ TUSHARE_CASH_CONVERSION_NO_RETURN_AUDIT_PURPOSE = "tushare_cash_conversion_sourc
 TUSHARE_AUDIT_OPINION_NO_RETURN_AUDIT_PURPOSE = "tushare_audit_opinion_source_capacity_then_54_field_uniqueness_gate_without_forward_returns"
 TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_AUDIT_PURPOSE = "tushare_free_float_scarcity_source_capacity_then_54_field_uniqueness_gate_without_forward_returns"
 EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_AUDIT_PURPOSE = "eastmoney_balance_sheet_resilience_conservative_state_capacity_then_46_dense_field_uniqueness_without_forward_returns"
+EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_AUDIT_PURPOSE = "eastmoney_core_profit_consistency_conservative_state_capacity_then_47_dense_field_uniqueness_without_forward_returns"
 TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_PURPOSE = "development_only_preregistered_tushare_sw_industry_breadth_research_not_investment_advice"
 TUSHARE_DAILY_PB_DIAGNOSTIC_PURPOSE = "development_only_preregistered_tushare_positive_book_to_market_research_not_investment_advice"
 EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_PURPOSE = "development_only_preregistered_eastmoney_balance_sheet_resilience_research_not_investment_advice"
+EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_PURPOSE = "development_only_preregistered_eastmoney_core_profit_consistency_research_not_investment_advice"
 TUSHARE_MONEYFLOW_DIAGNOSTIC_PURPOSE = (
     "development_only_preregistered_tushare_moneyflow_research_not_investment_advice"
 )
@@ -25492,6 +25574,970 @@ def run_eastmoney_balance_sheet_resilience_no_return_audit(
     }
 
 
+def load_eastmoney_core_profit_consistency_no_return_preregistration(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Verify the frozen public income-source and no-return gates."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256:
+        raise ValueError(
+            "Eastmoney core-profit no-return preregistration fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind="a_share_eastmoney_core_profit_consistency_no_return_preregistration",
+    )
+    source = spec.get("source_chain") or {}
+    full = spec.get("full_source_snapshot_contract") or {}
+    state = spec.get("conservative_state_contract") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    expected_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_source_acceptance_before_full_source_capacity_uniqueness_prices_or_returns"
+        or spec.get("preregistered_at") != "2026-07-16T23:46:00Z"
+        or (source.get("data_contract") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_DATA_CONTRACT_SHA256
+        or (source.get("acceptance_record") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_SOURCE_ACCEPTANCE_RECORD_SHA256
+        or full.get("report_dates") != expected_dates
+        or full.get("required_report_date_count") != 28
+        or full.get("new_network_partitions") != 27
+        or full.get(
+            "minimum_complete_identity_active_holding_coverage_per_report_date"
+        )
+        != 0.85
+        or full.get("minimum_median_complete_identity_active_holding_coverage")
+        != 0.95
+        or full.get("minimum_valid_factor_active_holding_coverage_per_report_date")
+        != 0.45
+        or full.get("minimum_median_valid_factor_active_holding_coverage") != 0.6
+        or state.get("clear_all_older_values_at_global_partition_activation")
+        is not True
+        or state.get("carry_older_value_when_new_partition_has_missing_or_invalid_instrument")
+        is not False
+        or state.get("late_older_correction_can_supersede_newer_period") is not False
+        or state.get("maximum_age_calendar_days") != 550
+        or state.get("same_announcement_session_trade_allowed") is not False
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 50
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_factor_age_calendar_days") != 550
+        or capacity.get("maximum_quality_age_calendar_days") != 550
+        or uniqueness.get("dense_comparison_factor_count") != 47
+        or tuple(uniqueness.get("dense_comparison_factors") or ())
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+        or uniqueness.get("minimum_pairwise_names_per_session") != 50
+        or uniqueness.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or tuple(uniqueness.get("sparse_event_factors_loaded") or ()) != ()
+        or tuple(
+            uniqueness.get("sparse_event_factors_excluded_from_statistical_pass_fail")
+            or ()
+        )
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_SPARSE_COMPARISON_FIELDS
+        or spec.get("price_fields_loaded") != []
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Eastmoney core-profit no-return preregistration is inconsistent"
+        )
+    for label, link in source.items():
+        if not isinstance(link, dict) or "path" not in link:
+            continue
+        digest = link.get("sha256") or link.get("file_sha256")
+        if digest is None:
+            continue
+        linked_path = resolve_repository_record_path(str(link["path"]))
+        if not linked_path.exists() or file_sha256(linked_path) != digest:
+            raise ValueError(
+                f"Eastmoney core-profit source evidence changed: {label}"
+            )
+    return spec
+
+
+def load_eastmoney_core_profit_consistency_full_source_record(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the cross-clone record for the consumed full income source."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_sha256(path)
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256
+    ):
+        raise ValueError(
+            "Eastmoney core-profit full-source record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path, kind="a_share_eastmoney_core_profit_consistency_full_source_record"
+    )
+    if (
+        record.get("status")
+        != "accepted_full_source_pending_no_return_capacity_and_uniqueness"
+        or (record.get("full_source_manifest") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST_SHA256
+        or (record.get("published_snapshot") or {}).get("partition_count") != 28
+        or (record.get("published_snapshot") or {}).get("total_rows") != 92764
+        or (record.get("coverage") or {}).get("source_coverage_gate_passed")
+        is not True
+        or (record.get("source_request") or {}).get("tushare_token_read") is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Eastmoney core-profit full-source record is inconsistent"
+        )
+    return record
+
+
+def validate_eastmoney_core_profit_consistency_full_snapshot(
+    manifest_path: Path,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Revalidate all quarterly core-profit rows without loading outcomes."""
+
+    manifest_path = manifest_path.expanduser().resolve()
+    full_record = load_eastmoney_core_profit_consistency_full_source_record()
+    if (
+        manifest_path
+        != DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST.resolve()
+        or file_sha256(manifest_path)
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST_SHA256
+        or file_sha256(manifest_path)
+        != (full_record.get("full_source_manifest") or {}).get("sha256")
+    ):
+        raise ValueError("Eastmoney core-profit full manifest fingerprint mismatch")
+    manifest = load_json_record(manifest_path, kind="a_share_rich_data_snapshot")
+    files = sorted(
+        list(manifest.get("files") or []), key=lambda item: item.get("report_date", "")
+    )
+    expected_dates = spec["full_source_snapshot_contract"]["report_dates"]
+    request = manifest.get("source_request") or {}
+    coverage = manifest.get("coverage") or {}
+    if (
+        manifest.get("dataset") != "eastmoney_core_profit_consistency"
+        or manifest.get("provider") != "eastmoney"
+        or manifest.get("status")
+        != "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+        or [item.get("report_date") for item in files] != expected_dates
+        or request.get("new_network_partitions") != 27
+        or request.get("accepted_partitions_reused_without_network") != 1
+        or request.get("new_provider_calls") != 283
+        or request.get("ordered_source_column_count") != 46
+        or request.get("ordered_source_columns_sha256")
+        != "81e5eff36c353c65bbb7728780a4e9663fbbad7b779e44c74921ce57d1f6656f"
+        or request.get("tushare_token_read") is not False
+        or request.get("unused_transported_fields_persisted") is not False
+        or coverage.get("source_coverage_gate_passed") is not True
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Eastmoney core-profit full snapshot failed the source gate")
+    contract = load_json_record(
+        DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DATA_CONTRACT,
+        kind="a_share_eastmoney_core_profit_consistency_data_contract",
+    )
+    universe_link = contract["local_context"]["holding_universe"]
+    universe_path = resolve_repository_record_path(universe_link["path"])
+    if file_sha256(universe_path) != universe_link["sha256"]:
+        raise ValueError("Eastmoney core-profit holding universe changed")
+    universe = pd.read_csv(
+        universe_path,
+        sep="\t",
+        header=None,
+        names=["instrument", "active_start", "active_end"],
+        dtype={"instrument": "string"},
+    )
+    universe["active_start"] = pd.to_datetime(universe["active_start"]).dt.normalize()
+    universe["active_end"] = pd.to_datetime(universe["active_end"]).dt.normalize()
+    factor_frames: list[pd.DataFrame] = []
+    file_evidence: list[dict[str, Any]] = []
+    for item in files:
+        report_date = pd.Timestamp(item["report_date"]).normalize()
+        partition_path = resolve_repository_record_path(item["path"])
+        frame = pd.read_parquet(partition_path)
+        if tuple(frame.columns) != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS:
+            raise ValueError("Eastmoney core-profit partition columns changed")
+        frame["report_date"] = pd.to_datetime(
+            frame["report_date"], errors="coerce"
+        ).dt.normalize()
+        frame["announcement_date"] = pd.to_datetime(
+            frame["announcement_date"], errors="coerce"
+        ).dt.normalize()
+        operating_profit = pd.to_numeric(frame["operating_profit"], errors="coerce")
+        total_profit = pd.to_numeric(frame["total_profit"], errors="coerce")
+        values = pd.to_numeric(
+            frame[EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME], errors="coerce"
+        )
+        expected = np.minimum(
+            operating_profit.to_numpy(dtype="float64"),
+            total_profit.to_numpy(dtype="float64"),
+        ) / np.maximum(
+            operating_profit.to_numpy(dtype="float64"),
+            total_profit.to_numpy(dtype="float64"),
+        )
+        if (
+            len(frame) != int(item["rows"])
+            or dataframe_content_sha256(frame) != item["sha256"]
+            or frame[["instrument", "report_date", "announcement_date"]]
+            .isna()
+            .any()
+            .any()
+            or not frame["report_date"].eq(report_date).all()
+            or frame.duplicated(["instrument", "report_date"]).any()
+            or not np.isfinite(operating_profit).all()
+            or not operating_profit.gt(0.0).all()
+            or not np.isfinite(total_profit).all()
+            or not total_profit.gt(0.0).all()
+            or not np.isfinite(values).all()
+            or not values.between(0.0, 1.0, inclusive="both").all()
+            or not np.allclose(
+                values.to_numpy(dtype="float64"),
+                expected,
+                rtol=0.0,
+                atol=1e-12,
+            )
+            or set(frame["provider"].astype(str)) != {"eastmoney"}
+        ):
+            raise ValueError(
+                "Eastmoney core-profit partition formula or keys changed: "
+                f"{item['report_date']}"
+            )
+        membership = frame[["instrument"]].merge(
+            universe, on="instrument", how="left", validate="many_to_one"
+        )
+        if (
+            membership[["active_start", "active_end"]].isna().any().any()
+            or not membership["active_start"].le(report_date).all()
+            or not membership["active_end"].ge(report_date).all()
+        ):
+            raise ValueError(
+                "Eastmoney core-profit row is outside the report-date universe"
+            )
+        frame[EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME] = values
+        factor_frames.append(frame)
+        file_evidence.append(
+            {
+                "report_date": item["report_date"],
+                "path": str(partition_path),
+                "rows": int(len(frame)),
+                "content_sha256": item["sha256"],
+            }
+        )
+    events = pd.concat(factor_frames, ignore_index=True)
+    if len(events) != 92764 or events.duplicated(["instrument", "report_date"]).any():
+        raise ValueError("Eastmoney core-profit full event aggregate changed")
+    return events, {
+        "manifest": {
+            "path": str(manifest_path),
+            "sha256": file_sha256(manifest_path),
+            "run_id": manifest.get("run_id"),
+            "status": manifest.get("status"),
+            "rows": int(len(events)),
+            "partitions": len(files),
+        },
+        "full_source_record": {
+            "path": str(
+                DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD.resolve()
+            ),
+            "sha256": file_sha256(
+                DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD
+            ),
+        },
+        "files": file_evidence,
+        "coverage": coverage,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def materialize_eastmoney_core_profit_consistency_states(
+    events: pd.DataFrame,
+    target_sessions: pd.DatetimeIndex,
+    full_calendar: pd.DatetimeIndex,
+    *,
+    state_contract: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Reuse the frozen conservative quarterly reset algorithm for this factor."""
+
+    if (
+        state_contract.get("clear_all_older_values_at_global_partition_activation")
+        is not True
+        or state_contract.get(
+            "carry_older_value_when_new_partition_has_missing_or_invalid_instrument"
+        )
+        is not False
+        or state_contract.get("late_older_correction_can_supersede_newer_period")
+        is not False
+        or state_contract.get("same_announcement_session_trade_allowed") is not False
+    ):
+        raise ValueError("Eastmoney core-profit conservative state contract changed")
+    adapted = events.rename(
+        columns={
+            EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME: (
+                EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME
+            )
+        }
+    )
+    materialized, evidence = materialize_eastmoney_balance_sheet_resilience_states(
+        adapted,
+        target_sessions,
+        full_calendar,
+        state_spec={
+            "conservative_state_algorithm": {
+                "maximum_factor_age_calendar_days": int(
+                    state_contract["maximum_age_calendar_days"]
+                )
+            }
+        },
+    )
+    materialized = materialized.rename(
+        columns={
+            EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME: (
+                EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME
+            )
+        }
+    )
+    evidence["factor"] = EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME
+    return materialized, evidence
+
+
+def eastmoney_core_profit_consistency_capacity(
+    factor_frame: pd.DataFrame,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    research_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Count quality/listing-ready conservative state cohorts without prices."""
+
+    generic = {
+        "holding_period_trading_days": int(contract["holding_period_trading_days"]),
+        "minimum_valid_names_per_factor_cohort": int(
+            contract["minimum_eligible_names_per_cross_section"]
+        ),
+        "minimum_distinct_factor_values_per_cohort": int(
+            contract["minimum_distinct_factor_values"]
+        ),
+        "minimum_required_cohorts": int(contract["minimum_required_cohorts"]),
+        "minimum_observed_calendar_years": int(contract["minimum_observed_years"]),
+        "maximum_quality_age_days": int(contract["maximum_quality_age_calendar_days"]),
+    }
+    capacity_input = factor_frame.loc[
+        :,
+        [
+            "trade_date",
+            "instrument",
+            EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME,
+        ],
+    ].copy()
+    result = jqdata_moneyflow_capacity(
+        capacity_input,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        instrument_intervals,
+        contract=generic,
+        factor_name=EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME,
+    )
+    result.update(
+        {
+            "holding_period_trading_days": int(contract["holding_period_trading_days"]),
+            "minimum_listing_sessions": int(contract["minimum_listing_sessions"]),
+            "maximum_factor_age_calendar_days": int(
+                contract["maximum_factor_age_calendar_days"]
+            ),
+            "maximum_quality_age_calendar_days": int(
+                contract["maximum_quality_age_calendar_days"]
+            ),
+        }
+    )
+    return result
+
+
+def summarize_eastmoney_core_profit_consistency_uniqueness(
+    factor_frame: pd.DataFrame,
+    comparison_frame: pd.DataFrame,
+    *,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Gate core-profit consistency against the frozen 47 dense fields."""
+
+    factor_columns = [
+        "trade_date",
+        "instrument",
+        EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME,
+    ]
+    comparison_columns = [
+        "datetime",
+        "instrument",
+        "fundamental_quality_eligible",
+        "listing_seasoning_eligible",
+        "quality_eligible",
+        *EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS,
+    ]
+    if missing := sorted(set(factor_columns) - set(factor_frame.columns)):
+        raise ValueError(
+            "Eastmoney core-profit factor frame is missing: " + ", ".join(missing)
+        )
+    if missing := sorted(set(comparison_columns) - set(comparison_frame.columns)):
+        raise ValueError(
+            "Eastmoney core-profit comparison frame is missing: " + ", ".join(missing)
+        )
+    if (
+        len(EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS) != 47
+        or len(EASTMONEY_CORE_PROFIT_CONSISTENCY_SPARSE_COMPARISON_FIELDS) != 8
+        or contract.get("dense_comparison_factor_count") != 47
+        or tuple(contract.get("dense_comparison_factors") or ())
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+    ):
+        raise ValueError("Eastmoney core-profit comparison catalogs changed")
+    start = pd.Timestamp(contract["screen_start"]).normalize()
+    end = pd.Timestamp(contract["screen_end"]).normalize()
+    minimum_names = int(contract["minimum_pairwise_names_per_session"])
+    minimum_sessions = int(contract["minimum_pairwise_sessions_per_dense_comparison"])
+    maximum_correlation = float(
+        contract["maximum_allowed_absolute_median_daily_rank_correlation"]
+    )
+    factor = factor_frame.loc[:, factor_columns].copy()
+    factor["trade_date"] = pd.to_datetime(factor["trade_date"]).dt.normalize()
+    factor = factor.loc[factor["trade_date"].between(start, end)]
+    comparison = comparison_frame.loc[:, comparison_columns].copy()
+    comparison["datetime"] = pd.to_datetime(comparison["datetime"]).dt.normalize()
+    comparison = comparison.loc[
+        comparison["datetime"].between(start, end)
+        & comparison["quality_eligible"].fillna(False)
+    ].copy()
+    merged = comparison.merge(
+        factor.rename(columns={"trade_date": "datetime"}),
+        on=["datetime", "instrument"],
+        how="inner",
+        validate="one_to_one",
+    )
+    if merged.empty:
+        raise ValueError("Eastmoney core-profit uniqueness has no eligible rows")
+    field_results: list[dict[str, Any]] = []
+    for field in EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS:
+        pairwise = merged[
+            [
+                "datetime",
+                "instrument",
+                EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME,
+                field,
+            ]
+        ].copy()
+        pairwise[field] = pd.to_numeric(pairwise[field], errors="coerce")
+        pairwise = pairwise.loc[
+            np.isfinite(pairwise[EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME])
+            & np.isfinite(pairwise[field])
+        ]
+        correlations: list[float] = []
+        counts: list[int] = []
+        for _, daily in pairwise.groupby("datetime", sort=True):
+            count = int(daily["instrument"].nunique())
+            if count < minimum_names:
+                continue
+            counts.append(count)
+            if (
+                daily[EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME].nunique() < 2
+                or daily[field].nunique() < 2
+            ):
+                continue
+            correlation = float(
+                daily[EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME]
+                .rank(method="average", pct=True)
+                .corr(daily[field].rank(method="average", pct=True))
+            )
+            if math.isfinite(correlation):
+                correlations.append(correlation)
+        series = pd.Series(correlations, dtype="float64")
+        median = float(series.median()) if len(series) else None
+        enough = len(series) >= minimum_sessions
+        independent = bool(median is not None and abs(median) < maximum_correlation)
+        field_results.append(
+            {
+                "comparison_field": field,
+                "pairwise_rows": int(len(pairwise)),
+                "valid_daily_rank_correlation_sessions": int(len(series)),
+                "minimum_pairwise_names_observed": int(min(counts)) if counts else 0,
+                "median_daily_rank_correlation": median,
+                "absolute_median_daily_rank_correlation": (
+                    abs(median) if median is not None else None
+                ),
+                "p05_daily_rank_correlation": (
+                    float(series.quantile(0.05)) if len(series) else None
+                ),
+                "p95_daily_rank_correlation": (
+                    float(series.quantile(0.95)) if len(series) else None
+                ),
+                "minimum_sessions_gate_passed": enough,
+                "absolute_median_correlation_gate_passed": independent,
+                "uniqueness_gate_passed": bool(enough and independent),
+            }
+        )
+    nearest = max(
+        field_results,
+        key=lambda item: float(
+            item["absolute_median_daily_rank_correlation"]
+            if item["absolute_median_daily_rank_correlation"] is not None
+            else -1.0
+        ),
+    )
+    named = {
+        field: next(item for item in field_results if item["comparison_field"] == field)
+        for field in contract["required_named_near_neighbors"]
+    }
+    passed = all(item["uniqueness_gate_passed"] for item in field_results)
+    return {
+        "factor": EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME,
+        "dense_comparison_field_count": len(field_results),
+        "sparse_event_fields_excluded_from_statistical_pass_fail": list(
+            EASTMONEY_CORE_PROFIT_CONSISTENCY_SPARSE_COMPARISON_FIELDS
+        ),
+        "eligible_factor_comparison_rows": int(len(merged)),
+        "eligible_factor_comparison_sessions": int(merged["datetime"].nunique()),
+        "minimum_pairwise_names_per_session": minimum_names,
+        "minimum_pairwise_sessions_per_dense_comparison": minimum_sessions,
+        "maximum_allowed_absolute_median_daily_rank_correlation": maximum_correlation,
+        "fields_with_minimum_sessions": int(
+            sum(item["minimum_sessions_gate_passed"] for item in field_results)
+        ),
+        "fields_below_correlation_threshold": int(
+            sum(
+                item["absolute_median_correlation_gate_passed"]
+                for item in field_results
+            )
+        ),
+        "nearest_existing_field": nearest["comparison_field"],
+        "maximum_observed_absolute_median_daily_rank_correlation": nearest[
+            "absolute_median_daily_rank_correlation"
+        ],
+        "required_named_near_neighbors": named,
+        "field_results": field_results,
+        "uniqueness_gate_passed": passed,
+        "sparse_event_fields_loaded": [],
+        "future_open_close_or_return_fields_derived": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def load_eastmoney_core_profit_consistency_dense_comparison_frame(
+    provider_uri: Path,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    *,
+    uniqueness_contract: dict[str, Any],
+    comparison_sources: dict[str, Any],
+    batch_size: int = 128,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Load 46 terminal dense fields plus terminal balance-sheet resilience."""
+
+    comparison, base_evidence = (
+        load_eastmoney_balance_sheet_resilience_dense_comparison_frame(
+            provider_uri,
+            fundamentals,
+            full_calendar,
+            uniqueness_contract=uniqueness_contract,
+            comparison_sources=comparison_sources,
+            batch_size=batch_size,
+        )
+    )
+    balance_spec = load_eastmoney_balance_sheet_resilience_no_return_preregistration()
+    balance_state_spec = load_eastmoney_balance_sheet_resilience_state_preregistration()
+    balance_events, balance_source_evidence = (
+        validate_eastmoney_balance_sheet_resilience_full_snapshot(
+            DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_MANIFEST,
+            balance_spec,
+        )
+    )
+    screen_start = str(uniqueness_contract["screen_start"])
+    screen_end = str(uniqueness_contract["screen_end"])
+    screen_sessions = full_calendar[
+        (full_calendar >= pd.Timestamp(screen_start))
+        & (full_calendar <= pd.Timestamp(screen_end))
+    ]
+    balance_states, balance_materialization = (
+        materialize_eastmoney_balance_sheet_resilience_states(
+            balance_events,
+            screen_sessions,
+            full_calendar,
+            state_spec=balance_state_spec,
+        )
+    )
+    balance = balance_states.rename(columns={"trade_date": "datetime"})[
+        ["datetime", "instrument", EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME]
+    ]
+    comparison = comparison.merge(
+        balance,
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    if (
+        comparison.duplicated(["instrument", "datetime"]).any()
+        or tuple(
+            field
+            for field in EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+            if field in comparison.columns
+        )
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+        or any(
+            field in comparison.columns
+            for field in EASTMONEY_CORE_PROFIT_CONSISTENCY_SPARSE_COMPARISON_FIELDS
+        )
+    ):
+        raise ValueError("Eastmoney core-profit dense comparison catalog changed")
+    return comparison, {
+        **base_evidence,
+        "dense_comparison_field_count": 47,
+        "terminal_balance_sheet_resilience": {
+            "terminal_diagnostic_record": {
+                "path": str(
+                    DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_RECORD.resolve()
+                ),
+                "sha256": file_sha256(
+                    DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_DIAGNOSTIC_RECORD
+                ),
+            },
+            "source_evidence": balance_source_evidence,
+            "state_materialization": balance_materialization,
+            "screen_rows": int(len(balance_states)),
+            "used_only_as_no_return_uniqueness_comparison": True,
+            "selection_or_promotion_allowed": False,
+        },
+        "future_open_close_or_return_fields_read": False,
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_eastmoney_core_profit_consistency_no_return_audit(
+    experiment_root: Path,
+    *,
+    source_manifest_sha256: str,
+) -> None:
+    """Allow one completed combined audit for the sole full snapshot."""
+
+    for path in sorted(
+        experiment_root.expanduser().glob(
+            "*_eastmoney_core_profit_consistency_no_return_audit.json"
+        )
+    ):
+        record = load_json_record(path)
+        source = (
+            (record.get("preregistration") or {}).get("source_evidence") or {}
+        ).get("manifest") or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("purpose")
+            == EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_AUDIT_PURPOSE
+            and source.get("sha256") == source_manifest_sha256
+        ):
+            raise ValueError(
+                "Eastmoney core-profit no-return snapshot is already consumed: "
+                f"{path}"
+            )
+
+
+def run_eastmoney_core_profit_consistency_no_return_audit(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """Run conservative state capacity, then conditional 47-field uniqueness."""
+
+    if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_RESEARCH_RECORD.exists():
+        raise ValueError(
+            "Eastmoney core-profit branch already has a terminal research record"
+        )
+    spec = load_eastmoney_core_profit_consistency_no_return_preregistration()
+    events, source_evidence = validate_eastmoney_core_profit_consistency_full_snapshot(
+        Path(args.manifest), spec
+    )
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_eastmoney_core_profit_consistency_no_return_audit(
+        experiment_root,
+        source_manifest_sha256=source_evidence["manifest"]["sha256"],
+    )
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    contract_record = load_json_record(
+        DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DATA_CONTRACT,
+        kind="a_share_eastmoney_core_profit_consistency_data_contract",
+    )
+    context = contract_record["local_context"]
+    capacity_contract = spec["capacity_contract"]
+    uniqueness_contract = spec["uniqueness_contract"]
+    state_contract = spec["conservative_state_contract"]
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    holding_path = provider_uri / "instruments" / "buyable_main_chinext.txt"
+    price_basis_path = provider_uri / "price_basis.json"
+    for label, path, digest in (
+        ("calendar", calendar_path, context["local_calendar"]["sha256"]),
+        ("holding universe", holding_path, context["holding_universe"]["sha256"]),
+        (
+            "price basis",
+            price_basis_path,
+            context["accepted_price_basis_for_future_gated_work_only"]["sha256"],
+        ),
+    ):
+        if not path.exists() or file_sha256(path) != digest:
+            raise ValueError(f"Eastmoney core-profit provider {label} changed")
+    price_basis = load_json_record(price_basis_path)
+    if (
+        price_basis.get("status") != "passed"
+        or price_basis.get("price_basis") != "close_known_raw_pct_chg_chain_v1"
+        or price_basis.get("future_corporate_actions_used") is not False
+    ):
+        raise ValueError("Eastmoney core-profit accepted price-basis context changed")
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market="buyable_main_chinext",
+        start="2019-01-01",
+        end="2025-12-31",
+    )
+    quality_link = context["quarterly_quality"]
+    quality_path = resolve_repository_record_path(quality_link["path"])
+    quality_manifest_path = resolve_repository_record_path(
+        quality_link["manifest_path"]
+    )
+    if (
+        file_sha256(quality_path) != quality_link["sha256"]
+        or file_sha256(quality_manifest_path) != quality_link["manifest_sha256"]
+    ):
+        raise ValueError("Eastmoney core-profit quarterly quality evidence changed")
+    fundamentals = load_fundamentals(quality_path)
+    hold_days = int(capacity_contract["holding_period_trading_days"])
+    capacity_targets = research_calendar[:-hold_days:hold_days]
+    capacity_states, capacity_materialization = (
+        materialize_eastmoney_core_profit_consistency_states(
+            events,
+            capacity_targets,
+            full_calendar,
+            state_contract=state_contract,
+        )
+    )
+    capacity = eastmoney_core_profit_consistency_capacity(
+        capacity_states,
+        fundamentals,
+        full_calendar,
+        research_calendar,
+        intervals,
+        contract=capacity_contract,
+    )
+    capacity["state_materialization"] = capacity_materialization
+    capacity_passed = bool(capacity["capacity_gate_passed"])
+    comparison_evidence: dict[str, Any] | None = None
+    uniqueness: dict[str, Any] | None = None
+    uniqueness_materialization: dict[str, Any] | None = None
+    comparison_fields_loaded: list[str] = []
+    transient_close_known_inputs: list[str] = []
+    if capacity_passed:
+        screen_sessions = research_calendar[
+            (research_calendar >= pd.Timestamp(uniqueness_contract["screen_start"]))
+            & (research_calendar <= pd.Timestamp(uniqueness_contract["screen_end"]))
+        ]
+        uniqueness_states, uniqueness_materialization = (
+            materialize_eastmoney_core_profit_consistency_states(
+                events,
+                screen_sessions,
+                full_calendar,
+                state_contract=state_contract,
+            )
+        )
+        comparison_catalog = load_tushare_cash_conversion_no_return_preregistration()
+        comparison_contract = {
+            **uniqueness_contract,
+            "maximum_quality_age_days": int(
+                capacity_contract["maximum_quality_age_calendar_days"]
+            ),
+        }
+        comparison_frame, comparison_evidence = (
+            load_eastmoney_core_profit_consistency_dense_comparison_frame(
+                provider_uri,
+                fundamentals,
+                full_calendar,
+                uniqueness_contract=comparison_contract,
+                comparison_sources=comparison_catalog["comparison_sources"],
+            )
+        )
+        comparison_fields_loaded = list(
+            EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+        )
+        transient_close_known_inputs = list(
+            comparison_evidence[
+                "same_session_close_known_market_inputs_transiently_loaded"
+            ]
+        )
+        uniqueness = summarize_eastmoney_core_profit_consistency_uniqueness(
+            uniqueness_states,
+            comparison_frame,
+            contract=uniqueness_contract,
+        )
+        del comparison_frame, uniqueness_states
+        gc.collect()
+    del capacity_states, events
+    gc.collect()
+
+    uniqueness_passed = bool(
+        uniqueness is not None and uniqueness["uniqueness_gate_passed"]
+    )
+    both_passed = bool(capacity_passed and uniqueness_passed)
+    if not capacity_passed:
+        decision = (
+            "rejected_before_dense_comparison_load_and_return_diagnostic_"
+            "insufficient_conservative_state_capacity"
+        )
+    elif not uniqueness_passed:
+        decision = (
+            "rejected_before_return_diagnostic_near_synonym_or_insufficient_"
+            "dense_pairwise_uniqueness_evidence"
+        )
+    else:
+        decision = (
+            "eligible_only_for_separate_fingerprint_bound_single_factor_"
+            "return_and_execution_diagnostic_preregistration"
+        )
+    run_id = _timestamp()
+    audit = {
+        "kind": "a_share_eastmoney_core_profit_consistency_no_return_audit",
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_AUDIT_PURPOSE,
+        "preregistration": {
+            "path": str(
+                DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC.resolve()
+            ),
+            "sha256": file_sha256(
+                DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC
+            ),
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME],
+        "factor_direction": "higher_is_better",
+        "capacity_contract": capacity_contract,
+        "uniqueness_contract": uniqueness_contract,
+        "conservative_state_contract": state_contract,
+        "run_sequence": [
+            {
+                "step": "full_source_formula_membership_coverage_and_fingerprint_revalidation",
+                "completed": True,
+                "passed": True,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "conservative_report_period_reset_and_capacity_grid_materialization",
+                "completed": True,
+                "passed": True,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "quality_listing_and_non_overlapping_three_session_capacity",
+                "completed": True,
+                "passed": capacity_passed,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "exact_47_dense_close_known_2025_comparison_materialization",
+                "completed": comparison_evidence is not None,
+                "skipped_reason": (
+                    None
+                    if capacity_passed
+                    else "capacity_failed_before_comparison_field_load"
+                ),
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "sparse_event_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "47_dense_field_daily_rank_correlation_uniqueness",
+                "completed": uniqueness is not None,
+                "passed": uniqueness_passed,
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "forward_return_fields_read": False,
+            },
+        ],
+        "source_capacity": capacity,
+        "uniqueness_state_materialization": uniqueness_materialization,
+        "comparison_source_evidence": comparison_evidence,
+        "uniqueness": uniqueness,
+        "source_completeness_gate_passed": True,
+        "capacity_gate_passed": capacity_passed,
+        "uniqueness_gate_passed": uniqueness_passed,
+        "both_no_return_gates_passed": both_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri),
+            "calendar_path": str(calendar_path),
+            "calendar_sha256": file_sha256(calendar_path),
+            "holding_universe_path": str(holding_path),
+            "holding_universe_sha256": file_sha256(holding_path),
+            "quarterly_quality_path": str(quality_path),
+            "quarterly_quality_sha256": file_sha256(quality_path),
+            "price_basis_path": str(price_basis_path),
+            "price_basis_sha256": file_sha256(price_basis_path),
+            "instrument_span_count": int(len(intervals)),
+            "capacity_price_fields_loaded": [],
+            "capacity_completed_before_close_known_comparison_fields": True,
+            "close_known_dense_comparison_fields_loaded": comparison_fields_loaded,
+            "sparse_event_comparison_fields_loaded": [],
+            "same_session_close_known_market_inputs_transiently_loaded": (
+                transient_close_known_inputs
+            ),
+            "raw_market_columns_retained_in_audit": [],
+            "future_open_close_or_return_fields_read": False,
+            "forward_return_fields_read": False,
+        },
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "This public source is a current historical snapshot, not an immutable point-in-time version stream.",
+            "The global partition reset deliberately discards older values early and can understate capacity; it cannot create an earlier factor value.",
+            "The terminal balance-sheet factor is loaded only as a no-return uniqueness comparison and remains forbidden for aggregation or selection.",
+            "Source, capacity, and uniqueness are no-outcome gates and imply no return association or tradable strategy.",
+            "No sparse event value, next-session open, future close, forward return, score, current selection, position size, or order field is read or derived.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = (
+        experiment_root
+        / f"{run_id}_eastmoney_core_profit_consistency_no_return_audit.json"
+    )
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity,
+        "uniqueness": uniqueness,
+        "both_no_return_gates_passed": both_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "forward_return_fields_read": False,
+    }
+
+
 def require_unconsumed_tushare_free_float_scarcity_no_return_audit(
     experiment_root: Path,
     *,
@@ -36609,6 +37655,489 @@ def run_eastmoney_balance_sheet_resilience_diagnostic(
     }
 
 
+def load_eastmoney_core_profit_consistency_research_record(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_RESEARCH_RECORD,
+) -> dict[str, Any]:
+    """Verify the no-return pass that alone authorizes one diagnostic."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_RESEARCH_RECORD_SHA256:
+        raise ValueError("Eastmoney core-profit research-record fingerprint mismatch")
+    record = load_json_record(
+        path, kind="a_share_eastmoney_core_profit_consistency_research_record"
+    )
+    source = record.get("source_chain") or {}
+    no_return = record.get("no_return_audit") or {}
+    capacity = record.get("capacity_result") or {}
+    uniqueness = record.get("uniqueness_result") or {}
+    decision = record.get("decision") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "no_return_gates_passed_pending_separate_single_factor_return_and_execution_diagnostic"
+        or source.get("data_contract_sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_DATA_CONTRACT_SHA256
+        or source.get("source_acceptance_record_sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_SOURCE_ACCEPTANCE_RECORD_SHA256
+        or source.get("no_return_preregistration_sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256
+        or source.get("full_source_record_sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256
+        or source.get("full_source_manifest_sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST_SHA256
+        or no_return.get("sha256")
+        != "26f9c4409b119b6ecc777ce09379c3383c8b17310488f4b7eb29ad719aa664a9"
+        or capacity.get("potential_complete_cohorts") != 304
+        or capacity.get("capacity_gate_passed") is not True
+        or uniqueness.get("dense_comparison_field_count") != 47
+        or uniqueness.get("fields_with_minimum_pairwise_sessions") != 47
+        or uniqueness.get("fields_below_absolute_median_correlation_threshold")
+        != 47
+        or uniqueness.get("uniqueness_gate_passed") is not True
+        or decision.get("both_no_return_gates_passed") is not True
+        or decision.get("factor_return_diagnostic_allowed") is not True
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Eastmoney core-profit research record is inconsistent")
+    audit_path = resolve_repository_record_path(no_return["path"])
+    if not audit_path.exists() or file_sha256(audit_path) != no_return["sha256"]:
+        raise ValueError("Eastmoney core-profit no-return audit changed")
+    return record
+
+
+def load_eastmoney_core_profit_consistency_diagnostic_preregistration(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_SPEC,
+) -> dict[str, Any]:
+    """Verify the sole return diagnostic frozen after both no-return gates."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_SPEC_SHA256:
+        raise ValueError(
+            "Eastmoney core-profit diagnostic preregistration fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind="a_share_eastmoney_core_profit_consistency_diagnostic_preregistration",
+    )
+    no_return = spec.get("combined_no_return_audit") or {}
+    snapshots = spec.get("source_snapshots") or {}
+    factor = spec.get("factor") or {}
+    contract = spec.get("run_contract") or {}
+    execution = spec.get("execution_policies") or {}
+    policy = spec.get("diagnostic_policy") or {}
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_combined_no_return_capacity_and_dense_uniqueness_pass_before_factor_returns_observed"
+        or spec.get("preregistered_at") != "2026-07-17T00:13:00Z"
+        or no_return.get("run_id") != "20260717T001138Z"
+        or no_return.get("sha256")
+        != "26f9c4409b119b6ecc777ce09379c3383c8b17310488f4b7eb29ad719aa664a9"
+        or no_return.get("research_record_sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_RESEARCH_RECORD_SHA256
+        or no_return.get("factor") != EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME
+        or no_return.get("potential_complete_cohorts") != 304
+        or no_return.get("observed_calendar_years") != 6
+        or no_return.get("dense_comparison_field_count") != 47
+        or no_return.get("fields_with_minimum_sessions") != 47
+        or no_return.get("fields_below_correlation_threshold") != 47
+        or no_return.get("capacity_gate_passed") is not True
+        or no_return.get("uniqueness_gate_passed") is not True
+        or no_return.get("both_no_return_gates_passed") is not True
+        or no_return.get("forward_return_fields_read") is not False
+        or no_return.get("source_admitted_for_return_diagnostic") is not True
+        or snapshots["full_source_manifest"].get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST_SHA256
+        or snapshots["full_source_manifest"].get("rows") != 92764
+        or snapshots["full_source_manifest"].get("partitions") != 28
+        or snapshots["data_contract"].get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_DATA_CONTRACT_SHA256
+        or snapshots["source_acceptance_record"].get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_SOURCE_ACCEPTANCE_RECORD_SHA256
+        or snapshots["no_return_preregistration"].get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256
+        or snapshots["full_source_record"].get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256
+        or factor.get("name") != EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME
+        or factor.get("raw_direction") != "higher_is_better"
+        or factor.get("score_formula")
+        != "cross_sectional_percentile_rank(eastmoney_core_profit_consistency)"
+        or factor.get("maximum_event_age_days") != 550
+        or factor.get("same_session_trade_allowed") is not False
+        or factor.get("older_report_carry_after_partition_activation_allowed")
+        is not False
+        or factor.get("late_older_correction_can_supersede_newer_report") is not False
+        or contract
+        != {
+            "start": "2019-01-01",
+            "end": "2025-12-31",
+            "development_end": "2025-12-31",
+            "holding_universe": "buyable_main_chinext",
+            "holding_period_trading_days": 3,
+            "non_overlapping_cohorts": True,
+            "topk": 3,
+            "open_cost": 0.00012,
+            "close_cost": 0.00062,
+            "maximum_quality_age_days": 550,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "minimum_valid_names_per_factor_cohort": 50,
+            "price_basis": REQUIRED_PRICE_BASIS,
+            "stability_minimum_calendar_years": FACTOR_STABILITY_MIN_CALENDAR_YEARS,
+            "stability_minimum_cohorts": FACTOR_STABILITY_MIN_COHORTS,
+        }
+        or execution
+        != {
+            "prospective_execution_policy_path": "docs/a_share_three_day_prospective_execution_policy.json",
+            "prospective_execution_policy_sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "pilot_execution_policy_path": "docs/a_share_three_day_pilot_execution_policy.json",
+            "pilot_execution_policy_sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "pilot_initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+        }
+        or policy.get("source_capacity_and_uniqueness_gates_passed_before_return_read")
+        is not True
+        or policy.get("single_factor_only") is not True
+        or policy.get("factor_returns_observed_before_registration") is not False
+        or policy.get("prior_core_profit_consistency_price_diagnostic_exists")
+        is not False
+        or policy.get("one_completed_diagnostic_only") is not True
+        or policy.get("selection_or_promotion_allowed") is not False
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Eastmoney core-profit diagnostic preregistration is inconsistent"
+        )
+    load_eastmoney_core_profit_consistency_research_record()
+    for label, link in snapshots.items():
+        if "path" not in link or "sha256" not in link:
+            continue
+        linked_path = resolve_repository_record_path(link["path"])
+        if not linked_path.exists() or file_sha256(linked_path) != link["sha256"]:
+            raise ValueError(f"Eastmoney core-profit diagnostic source changed: {label}")
+    for label, path_key, digest_key in (
+        ("no-return audit", "path", "sha256"),
+        ("research record", "research_record_path", "research_record_sha256"),
+    ):
+        linked_path = resolve_repository_record_path(no_return[path_key])
+        if (
+            not linked_path.exists()
+            or file_sha256(linked_path) != no_return[digest_key]
+        ):
+            raise ValueError(f"Eastmoney core-profit diagnostic {label} changed")
+    audit = load_json_record(resolve_repository_record_path(no_return["path"]))
+    if (
+        audit.get("both_no_return_gates_passed") is not True
+        or audit.get("forward_return_fields_read") is not False
+        or audit.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Eastmoney core-profit no-return evidence is invalid")
+    return spec
+
+
+def validate_eastmoney_core_profit_consistency_diagnostic_sources(
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Revalidate the complete no-return chain before the sole outcome read."""
+
+    no_return_spec = load_eastmoney_core_profit_consistency_no_return_preregistration()
+    return validate_eastmoney_core_profit_consistency_full_snapshot(
+        resolve_repository_record_path(
+            spec["source_snapshots"]["full_source_manifest"]["path"]
+        ),
+        no_return_spec,
+    )
+
+
+def require_unconsumed_eastmoney_core_profit_consistency_diagnostic(
+    experiment_root: Path,
+) -> None:
+    """Prevent a second accepted-price read for this frozen mechanism."""
+
+    for path in sorted(experiment_root.expanduser().glob("*_factor_diagnostic.json")):
+        record = load_json_record(path)
+        if record.get("purpose") == EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_PURPOSE:
+            raise ValueError(
+                f"Eastmoney core-profit diagnostic is already consumed: {path}"
+            )
+
+
+def run_eastmoney_core_profit_consistency_diagnostic(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """Run the dual-no-return-qualified core-profit factor exactly once."""
+
+    if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD.exists():
+        raise ValueError(
+            "Eastmoney core-profit branch already has a terminal diagnostic record"
+        )
+    provider_uri = Path(args.provider_uri).expanduser()
+    experiment_root = Path(args.experiment_root).expanduser()
+    spec = load_eastmoney_core_profit_consistency_diagnostic_preregistration()
+    events, source_evidence = (
+        validate_eastmoney_core_profit_consistency_diagnostic_sources(spec)
+    )
+    require_unconsumed_eastmoney_core_profit_consistency_diagnostic(experiment_root)
+    contract = spec["run_contract"]
+    snapshots = spec["source_snapshots"]
+    factor_name = spec["factor"]["name"]
+    state_contract = load_eastmoney_core_profit_consistency_no_return_preregistration()[
+        "conservative_state_contract"
+    ]
+    execution_policy = load_prospective_execution_policy()
+    require_prospective_execution_policy_compatibility(
+        execution_policy,
+        hold_days=int(contract["holding_period_trading_days"]),
+        topk=int(contract["topk"]),
+        open_cost=float(contract["open_cost"]),
+        close_cost=float(contract["close_cost"]),
+    )
+    pilot_policy = load_pilot_execution_policy()
+    price_basis_metadata = research_price_basis_metadata(provider_uri)
+    fundamental_path = resolve_repository_record_path(
+        snapshots["quarterly_quality"]["path"]
+    )
+    fundamentals = load_fundamentals(fundamental_path)
+    market = load_market_data(
+        provider_uri,
+        contract["start"],
+        contract["end"],
+        args.batch_size,
+    )
+    if pd.Timestamp(market["datetime"].max()) > pd.Timestamp(
+        contract["development_end"]
+    ):
+        raise ValueError("Eastmoney core-profit loaded rows after development end")
+    market = attach_quality_asof(
+        market,
+        fundamentals,
+        max_age_days=int(contract["maximum_quality_age_days"]),
+    )
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    calendar_values = pd.to_datetime(
+        calendar_path.read_text(encoding="utf-8").splitlines(), errors="coerce"
+    )
+    full_calendar = pd.DatetimeIndex(calendar_values).normalize().unique().sort_values()
+    full_calendar = full_calendar[
+        (full_calendar >= pd.Timestamp(contract["start"]))
+        & (full_calendar <= pd.Timestamp(contract["end"]))
+    ]
+    target_sessions = (
+        pd.DatetimeIndex(market["datetime"]).normalize().unique().sort_values()
+    )
+    factor_states, materialization = (
+        materialize_eastmoney_core_profit_consistency_states(
+            events,
+            target_sessions,
+            full_calendar,
+            state_contract=state_contract,
+        )
+    )
+    raw_column = f"_raw_{factor_name}"
+    factor_values = factor_states.rename(
+        columns={"trade_date": "datetime", factor_name: raw_column}
+    )
+    ranked = market.merge(
+        factor_values[["datetime", "instrument", raw_column]],
+        on=["datetime", "instrument"],
+        how="left",
+        validate="one_to_one",
+    )
+    ranked[raw_column] = pd.to_numeric(ranked[raw_column], errors="coerce")
+    ranked[raw_column] = ranked[raw_column].where(np.isfinite(ranked[raw_column]))
+    quality_eligible = ranked["quality_eligible"].fillna(False)
+    quality_counts = {
+        "fundamental_eligible_rows_before_listing_gate": int(
+            market["fundamental_quality_eligible"].fillna(False).sum()
+        ),
+        "eligible_rows_after_listing_gate": int(
+            market["quality_eligible"].fillna(False).sum()
+        ),
+        "fundamental_rows_excluded_by_listing_gate": int(
+            (
+                market["fundamental_quality_eligible"].fillna(False)
+                & ~market["listing_seasoning_eligible"].fillna(False)
+            ).sum()
+        ),
+    }
+    market_rows = int(len(market))
+    eligible_rows = int(quality_eligible.sum())
+    calendar_start = market["datetime"].min().date().isoformat()
+    calendar_end = market["datetime"].max().date().isoformat()
+    del market, factor_values, factor_states, events
+    gc.collect()
+    ranked = ranked.join(market_state_frame(ranked, quality_eligible), on="datetime")
+    for context_column in FACTOR_TAIL_ATTRIBUTION_COLUMNS:
+        if context_column not in ranked.columns:
+            continue
+        ranked[context_column] = pd.to_numeric(
+            ranked[context_column], errors="coerce"
+        ).astype("float64")
+        context_rank = (
+            ranked.loc[quality_eligible]
+            .groupby("datetime", sort=False)[context_column]
+            .rank(pct=True)
+        )
+        ranked.loc[quality_eligible, context_column] = context_rank
+    factor_eligible = quality_eligible & ranked[raw_column].notna()
+    ranked[factor_name] = np.nan
+    ranked.loc[factor_eligible, factor_name] = (
+        ranked.loc[factor_eligible]
+        .groupby("datetime", sort=False)[raw_column]
+        .rank(pct=True)
+    )
+    ranked.drop(columns=[raw_column], inplace=True)
+    valid_names_by_date = (
+        ranked.loc[factor_eligible].groupby("datetime")["instrument"].nunique()
+    )
+    dates_with_minimum_names = int(
+        valid_names_by_date.ge(
+            int(contract["minimum_valid_names_per_factor_cohort"])
+        ).sum()
+    )
+    if dates_with_minimum_names < FACTOR_STABILITY_MIN_COHORTS:
+        raise RuntimeError(
+            "Eastmoney core-profit coverage fell below the passed capacity gate"
+        )
+    forward_returns = forward_factor_return_frame(
+        ranked, int(contract["holding_period_trading_days"])
+    )
+    summaries = summarize_factor_diagnostics(
+        forward_returns,
+        [factor_name],
+        hold_days=int(contract["holding_period_trading_days"]),
+        topk=int(contract["topk"]),
+        open_cost=float(contract["open_cost"]),
+        close_cost=float(contract["close_cost"]),
+    )
+    if len(summaries) != 1 or summaries[0].get("factor") != factor_name:
+        raise RuntimeError("Eastmoney core-profit diagnostic did not produce one factor")
+    summary = summaries[0]
+    summary["execution_aware_topk"] = simulate_prospective_execution_topk(
+        ranked,
+        factor_name,
+        policy=execution_policy,
+    )
+    summary["pilot_execution_topk"] = simulate_pilot_execution_topk(
+        ranked,
+        factor_name,
+        execution_policy=execution_policy,
+        pilot_policy=pilot_policy,
+    )
+    run_id = _timestamp()
+    audit = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_PURPOSE,
+        "factor_catalog": [factor_name],
+        "factor_direction": "higher operating-to-total profit consistency is better",
+        "mechanism_identity": {
+            "provider": "eastmoney",
+            "source_report": "RPT_DMSK_FN_INCOME",
+            "formula": spec["factor"]["source_formula"],
+            "alternative_sign_policies_transforms_thresholds_or_residuals_allowed": False,
+        },
+        "strategy_timing": {
+            "universe": contract["holding_universe"],
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "holding_period_trading_days": int(contract["holding_period_trading_days"]),
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": spec["factor"]["signal_availability"],
+            "same_session_trade_allowed": False,
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "diagnostic_topk": int(contract["topk"]),
+            "open_cost": float(contract["open_cost"]),
+            "close_cost": float(contract["close_cost"]),
+            "parameters_read_from_preregistration": True,
+        },
+        "quality_gate": {
+            "source": str(fundamental_path.resolve()),
+            "sha256": file_sha256(fundamental_path),
+            "effective_date": "strictly next local trading day after announcement_date",
+            "max_quality_age_days": int(contract["maximum_quality_age_days"]),
+            **quality_counts,
+        },
+        "eastmoney_core_profit_consistency": {
+            "source_manifest": snapshots["full_source_manifest"]["path"],
+            "source_manifest_sha256": snapshots["full_source_manifest"]["sha256"],
+            "source_rows": int(source_evidence["manifest"]["rows"]),
+            "state_materialization": materialization,
+            "quality_and_factor_eligible_rows": int(factor_eligible.sum()),
+            "dates_with_at_least_fifty_factor_names": dates_with_minimum_names,
+            "score_formula": spec["factor"]["score_formula"],
+            "maximum_event_age_days": 550,
+            "selection_or_promotion_allowed": False,
+        },
+        "data": {
+            "provider_uri": str(provider_uri.resolve()),
+            **price_basis_metadata,
+            "calendar_start": calendar_start,
+            "calendar_end": calendar_end,
+            "development_start": contract["start"],
+            "development_end": contract["development_end"],
+            "market_rows": market_rows,
+            "eligible_rows": eligible_rows,
+            "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+            "complete_forward_name_observations": int(len(forward_returns)),
+            "test_period_used_for_factor_design": False,
+        },
+        "prospective_execution_policy": {
+            "path": str(DEFAULT_PROSPECTIVE_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": execution_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+        },
+        "pilot_execution_policy": {
+            "path": str(DEFAULT_PILOT_EXECUTION_POLICY.relative_to(REPO_ROOT)),
+            "sha256": PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+        },
+        "preregistration": {
+            "path": str(
+                DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_SPEC.resolve()
+            ),
+            "sha256": file_sha256(
+                DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_SPEC
+            ),
+            "preregistered_at": spec["preregistered_at"],
+            "factor_returns_observed_before_registration": False,
+            "source_evidence": source_evidence,
+            "selection_or_promotion_allowed": False,
+        },
+        "ranking_by_development_rank_ic": [summary],
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "This is the single direction and conservative state rule frozen before returns; it does not create a current stock list or order.",
+            "The source is a current historical snapshot with correction-date risk, not an immutable point-in-time version stream.",
+            "Passing both default gates would require a separately dated prospective protocol before current scoring; failure stops this historical version.",
+            "Daily bars and limit prices cannot reconstruct exact queue priority, partial fills, or realized market impact.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = experiment_root / f"{run_id}_factor_diagnostic.json"
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_count": 1,
+        "top_factors_by_development_rank_ic": [summary],
+    }
+
+
 def run_tushare_daily_pb_diagnostic(args: argparse.Namespace) -> dict[str, Any]:
     """Run the dual-no-return-qualified positive book-to-market factor once."""
 
@@ -42094,6 +43623,23 @@ def parse_args() -> argparse.Namespace:
         "--batch-size", type=int, default=500
     )
 
+    eastmoney_core_profit_diagnostic = subparsers.add_parser(
+        "eastmoney-core-profit-consistency-diagnostic",
+        help=(
+            "diagnose the source-, capacity-, and dense-uniqueness-qualified "
+            "core-profit consistency factor exactly once"
+        ),
+    )
+    eastmoney_core_profit_diagnostic.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    eastmoney_core_profit_diagnostic.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+    eastmoney_core_profit_diagnostic.add_argument(
+        "--batch-size", type=int, default=500
+    )
+
     tushare_sw_industry_breadth_diagnostic = subparsers.add_parser(
         "tushare-sw-industry-breadth-diagnostic",
         help=(
@@ -42462,6 +44008,25 @@ def parse_args() -> argparse.Namespace:
         "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
     )
     eastmoney_balance_sheet_no_return_parser.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
+    eastmoney_core_profit_no_return_parser = subparsers.add_parser(
+        "eastmoney-core-profit-consistency-no-return-audit",
+        help=(
+            "run frozen conservative core-profit state capacity first, then "
+            "conditionally audit exact 47-field dense uniqueness"
+        ),
+    )
+    eastmoney_core_profit_no_return_parser.add_argument(
+        "--manifest",
+        default=str(DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST),
+        help="the sole accepted 2019-2025 quarterly full source manifest",
+    )
+    eastmoney_core_profit_no_return_parser.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    eastmoney_core_profit_no_return_parser.add_argument(
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
@@ -43324,6 +44889,8 @@ def main() -> int:
         report = run_tushare_daily_pb_diagnostic(args)
     elif args.command == "eastmoney-balance-sheet-resilience-diagnostic":
         report = run_eastmoney_balance_sheet_resilience_diagnostic(args)
+    elif args.command == "eastmoney-core-profit-consistency-diagnostic":
+        report = run_eastmoney_core_profit_consistency_diagnostic(args)
     elif args.command == "tushare-sw-industry-breadth-diagnostic":
         report = run_tushare_sw_industry_breadth_diagnostic(args)
     elif args.command == "minute-factor-diagnostic":
@@ -43360,6 +44927,8 @@ def main() -> int:
         report = run_tushare_free_float_scarcity_no_return_audit(args)
     elif args.command == "eastmoney-balance-sheet-resilience-no-return-audit":
         report = run_eastmoney_balance_sheet_resilience_no_return_audit(args)
+    elif args.command == "eastmoney-core-profit-consistency-no-return-audit":
+        report = run_eastmoney_core_profit_consistency_no_return_audit(args)
     elif args.command == "tushare-cash-conversion-no-return-audit":
         report = run_tushare_cash_conversion_no_return_audit(args)
     elif args.command == "tushare-audit-opinion-no-return-audit":

@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_core_profit_consistency_full_source_record",
+  "status": "accepted_full_source_pending_no_return_capacity_and_uniqueness",
+  "created_at": "2026-07-16T23:59:33Z",
+  "purpose": "Permanently bind the sole complete 2019-2025 Eastmoney core-profit-consistency source snapshot so every clone rejects another source attempt before network access and downstream research remains gated on the frozen conservative-state, no-return capacity, and uniqueness protocol.",
+  "data_contract": {
+    "path": "docs/a_share_eastmoney_core_profit_consistency_data_contract.json",
+    "sha256": "2ae3be4b134e16681e702171157b48e8be5bc6c1f72aa9cecfc9a285518d7a45"
+  },
+  "source_acceptance_record": {
+    "path": "docs/a_share_eastmoney_core_profit_consistency_source_acceptance_record.json",
+    "sha256": "1372ee0af59cf45e4f46659ba05730d0cbaac99232f49464b014e578cd89bf34"
+  },
+  "no_return_preregistration": {
+    "path": "docs/a_share_eastmoney_core_profit_consistency_no_return_preregistration.json",
+    "sha256": "47884d88736a19715bb3a615f9941611309322f9d6f1f1f4a0456ce924fb3943"
+  },
+  "full_source_manifest": {
+    "path": "data/metadata/rich_data/runs/20260716T235617Z_eastmoney_core_profit_consistency_760a3a16.json",
+    "sha256": "8e3519727eec27163140c3265bcc37de05c61fe4e17aa1ca8cac7ba7fab81b11",
+    "run_id": "20260716T235617Z_eastmoney_core_profit_consistency_760a3a16",
+    "status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+  },
+  "published_snapshot": {
+    "root": "data/raw/a_share/rich/eastmoney/core_profit_consistency/snapshots/20260716T235617Z_eastmoney_core_profit_consistency_760a3a16",
+    "partition_count": 28,
+    "first_report_date": "2019-03-31",
+    "last_report_date": "2025-12-31",
+    "total_rows": 92764,
+    "minimum_partition_rows": 2444,
+    "maximum_partition_rows": 3573,
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "operating_profit",
+      "total_profit",
+      "eastmoney_core_profit_consistency",
+      "provider"
+    ],
+    "independent_formula_max_absolute_error": 0.0,
+    "canonical_partition_file_sha256_listing_algorithm": "SHA256 of report_date, one tab, parquet file SHA256, and one newline for all manifest partitions sorted by report_date",
+    "canonical_partition_file_sha256_listing_sha256": "ae6cdebb0d8c4e693762e919ac105e4fef306190ed33b164261146937ec01a15"
+  },
+  "source_request": {
+    "new_network_partitions": 27,
+    "accepted_partitions_reused_without_network": 1,
+    "new_provider_calls": 283,
+    "maximum_allowed_new_provider_calls": 540,
+    "ordered_source_column_count": 46,
+    "ordered_source_columns_sha256": "81e5eff36c353c65bbb7728780a4e9663fbbad7b779e44c74921ce57d1f6656f",
+    "every_new_partition_count_complete": true,
+    "every_historical_partition_matched_accepted_ordered_schema": true,
+    "credentials_required_logged_or_stored": false,
+    "tushare_token_read": false,
+    "cookies_proxy_or_retail_session_used": false,
+    "unused_transported_fields_persisted": false
+  },
+  "coverage": {
+    "complete_identity": {
+      "minimum": 0.9408168935815504,
+      "median": 0.9695685118854752,
+      "maximum": 0.9989056686364631,
+      "minimum_required_per_partition": 0.85,
+      "minimum_required_median": 0.95
+    },
+    "valid_factor": {
+      "minimum": 0.658050619278406,
+      "median": 0.7827672462837132,
+      "maximum": 0.8477032670105625,
+      "minimum_required_per_partition": 0.45,
+      "minimum_required_median": 0.6
+    },
+    "all_28_partitions_present": true,
+    "source_coverage_gate_passed": true
+  },
+  "atomicity": {
+    "all_partitions_shared_one_hidden_temporary_root": true,
+    "final_root_published_only_after_every_source_gate_passed": true,
+    "partial_or_mixed_snapshot_published": false
+  },
+  "next_gate": {
+    "allowed": "Materialize only the frozen conservative point-in-time state and run the single no-return capacity audit first. Only if at least 200 non-overlapping three-session cohorts across at least five years contain 50 eligible names and two factor values may exactly the frozen 47 dense comparison fields be loaded for the uniqueness audit.",
+    "forbidden": "Do not repeat or repair the source; do not change source, positions, report dates, formula, direction, timing, state, carry age, quality gate, capacity threshold, comparison catalog, or uniqueness threshold; do not read prices or returns; do not aggregate, score, select, size, or order."
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

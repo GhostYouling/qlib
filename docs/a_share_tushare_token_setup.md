@@ -99,11 +99,13 @@ Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_
 
 不得运行 `acceptance-eastmoney-balance-sheet-resilience`、`sync-eastmoney-balance-sheet-resilience --allow-large`、`eastmoney-balance-sheet-resilience-no-return-audit` 或 `eastmoney-balance-sheet-resilience-diagnostic`，也不得把已保存诊断重新交给通用稳定性/Top‑3 审计。CLI 的跟踪终止记录会拒绝这些重跑。`TUSHARE_TOKEN` 的配置、更新或轮换与该分支无关，不会恢复运行许可。
 
-#### 当前活动入口：Eastmoney 核心利润一致性全量来源
+#### 当前活动入口：Eastmoney 核心利润一致性唯一诊断
 
-当前候选 `eastmoney_core_profit_consistency` 使用 Eastmoney 公共利润表接口，不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分。唯一的 2025 年报来源验收已经完成并由 [`a_share_eastmoney_core_profit_consistency_source_acceptance_record.json`](a_share_eastmoney_core_profit_consistency_source_acceptance_record.json) 固定；不得再次运行 `acceptance-eastmoney-core-profit-consistency`。
+当前候选 `eastmoney_core_profit_consistency` 使用 Eastmoney 公共利润表接口，不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分。唯一来源验收和 2019Q1–2025Q4 全量同步均已永久消费；全量快照有 28 个季度分区、92,764 行。跨克隆来源记录是 [`a_share_eastmoney_core_profit_consistency_full_source_record.json`](a_share_eastmoney_core_profit_consistency_full_source_record.json)（SHA‑256 `be6d43b7fb1e707898b88180c5d5a180bb4e28620fb8d9c646ef1c58cb7604fb`）。不得再次运行 `acceptance-eastmoney-core-profit-consistency` 或 `sync-eastmoney-core-profit-consistency --allow-large`。
 
-下一阶段仅允许按 [`a_share_eastmoney_core_profit_consistency_no_return_preregistration.json`](a_share_eastmoney_core_profit_consistency_no_return_preregistration.json) 执行一次 `sync-eastmoney-core-profit-consistency --allow-large`。该命令不需要也不应使用第 4 节的 Token 包装器。它只发布 2019Q1–2025Q4 的季度来源快照，并在完整性通过后停在无收益容量与唯一性门之前；不能据此读取收益、聚合、评分、选股或下单。提交仓库只包含合同、跟踪记录、实现、测试和本文，不包含本机 Token 或 `launchctl` 环境值。
+唯一联合无收益审计已经通过：保守状态规则得到 304/200 个潜在完整三日非重叠 cohort，覆盖 2020–2025 六年；47 个稠密比较字段均有至少 100 个可比交易日且绝对中位日秩相关低于 0.8。通过记录是 [`a_share_eastmoney_core_profit_consistency_research_record.json`](a_share_eastmoney_core_profit_consistency_research_record.json)（SHA‑256 `753b20b657c5e233dc9948d46f9a29f5cea56b40a7163e757b9018303a4f4c9d`）。无收益审计入口也已消费，不能重跑。
+
+下一阶段只允许按 [`a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json`](a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json)（SHA‑256 `2ba3377fd1c91d470fb07e2ab815048f1331ee38392c4d148fd9c6eec758c289`）执行一次 `eastmoney-core-profit-consistency-diagnostic`。该命令同样不需要 Token；它只做冻结的单因子收益与执行诊断，不产生当前选股或订单。诊断完成后必须先运行默认稳定性与 Top‑3 可行性门禁并冻结终止或前瞻记录，不能直接聚合、评分、选股或下单。提交仓库只包含合同、跟踪记录、实现、测试和本文，不包含本机 Token 或 `launchctl` 环境值。
 
 ### 4.2 `stock_st` 分支已终止
 

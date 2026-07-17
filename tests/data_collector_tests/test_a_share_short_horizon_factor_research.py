@@ -8856,6 +8856,180 @@ def test_eastmoney_balance_sheet_capacity_drops_overlapping_audit_dates(monkeypa
     ]
 
 
+def test_eastmoney_core_profit_no_return_source_chain_is_frozen():
+    spec = RESEARCH.load_eastmoney_core_profit_consistency_no_return_preregistration()
+    record = RESEARCH.load_eastmoney_core_profit_consistency_full_source_record()
+    events, evidence = RESEARCH.validate_eastmoney_core_profit_consistency_full_snapshot(
+        RESEARCH.DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST,
+        spec,
+    )
+    assert spec["capacity_contract"]["holding_period_trading_days"] == 3
+    assert spec["capacity_contract"]["minimum_required_cohorts"] == 200
+    assert spec["uniqueness_contract"]["dense_comparison_factor_count"] == 47
+    assert (
+        len(RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS)
+        == 47
+    )
+    assert (
+        RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME
+        in RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+    )
+    assert record["published_snapshot"]["partition_count"] == 28
+    assert record["source_request"]["tushare_token_read"] is False
+    assert len(events) == 92764
+    assert evidence["manifest"]["partitions"] == 28
+    assert evidence["price_fields_loaded"] == []
+    assert evidence["forward_return_fields_read"] is False
+
+
+def test_eastmoney_core_profit_state_reset_drops_missing_new_period_names():
+    spec = RESEARCH.load_eastmoney_core_profit_consistency_no_return_preregistration()
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(
+            [
+                "2024-01-02",
+                "2024-01-03",
+                "2024-04-01",
+                "2024-04-02",
+                "2024-04-03",
+            ]
+        )
+    )
+    events = pd.DataFrame(
+        [
+            {
+                "instrument": "SH600519",
+                "report_date": "2023-12-31",
+                "announcement_date": "2024-01-02",
+                RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME: 0.7,
+            },
+            {
+                "instrument": "SZ000001",
+                "report_date": "2023-12-31",
+                "announcement_date": "2024-01-02",
+                RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME: 0.4,
+            },
+            {
+                "instrument": "SH600519",
+                "report_date": "2024-03-31",
+                "announcement_date": "2024-04-01",
+                RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME: 0.8,
+            },
+        ]
+    )
+    materialized, audit = (
+        RESEARCH.materialize_eastmoney_core_profit_consistency_states(
+            events,
+            pd.DatetimeIndex([calendar[1], calendar[3], calendar[4]]),
+            calendar,
+            state_contract=spec["conservative_state_contract"],
+        )
+    )
+    first = materialized.loc[materialized["trade_date"].eq(calendar[1])]
+    reset = materialized.loc[materialized["trade_date"].eq(calendar[3])]
+    assert set(first["instrument"]) == {"SH600519", "SZ000001"}
+    assert reset["instrument"].tolist() == ["SH600519"]
+    assert reset["report_date"].eq(pd.Timestamp("2024-03-31")).all()
+    assert audit["older_report_carry_after_partition_activation"] is False
+    assert audit["forward_return_fields_read"] is False
+
+
+def test_eastmoney_core_profit_dense_uniqueness_rejects_balance_synonym():
+    dates = pd.bdate_range("2025-01-02", periods=6)
+    symbols = [f"SZ{index:06d}" for index in range(1, 61)]
+    rng = np.random.default_rng(20260719)
+    factor_rows = []
+    comparison_rows = []
+    for date in dates:
+        random_values = {
+            field: rng.normal(size=len(symbols))
+            for field in RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+        }
+        for position, symbol in enumerate(symbols, start=1):
+            factor_rows.append(
+                {
+                    "trade_date": date,
+                    "instrument": symbol,
+                    RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME: (
+                        position / 100.0
+                    ),
+                }
+            )
+            comparison_rows.append(
+                {
+                    "datetime": date,
+                    "instrument": symbol,
+                    "fundamental_quality_eligible": True,
+                    "listing_seasoning_eligible": True,
+                    "quality_eligible": True,
+                    **{
+                        field: random_values[field][position - 1]
+                        for field in RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+                    },
+                }
+            )
+    contract = {
+        "screen_start": dates[0].date().isoformat(),
+        "screen_end": dates[-1].date().isoformat(),
+        "dense_comparison_factor_count": 47,
+        "dense_comparison_factors": list(
+            RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS
+        ),
+        "required_named_near_neighbors": [
+            "roe",
+            "profit_yoy",
+            RESEARCH.TUSHARE_DAILY_PB_FACTOR_NAME,
+            RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME,
+        ],
+        "minimum_pairwise_names_per_session": 50,
+        "minimum_pairwise_sessions_per_dense_comparison": 5,
+        "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    }
+    factor = pd.DataFrame(factor_rows)
+    comparison = pd.DataFrame(comparison_rows)
+    independent = RESEARCH.summarize_eastmoney_core_profit_consistency_uniqueness(
+        factor, comparison, contract=contract
+    )
+    assert independent["dense_comparison_field_count"] == 47
+    assert independent["fields_with_minimum_sessions"] == 47
+    assert independent["uniqueness_gate_passed"] is True
+    synonym = comparison.copy()
+    synonym[RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME] = factor[
+        RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME
+    ].to_numpy()
+    rejected = RESEARCH.summarize_eastmoney_core_profit_consistency_uniqueness(
+        factor, synonym, contract=contract
+    )
+    neighbor = rejected["required_named_near_neighbors"][
+        RESEARCH.EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME
+    ]
+    assert neighbor["median_daily_rank_correlation"] == pytest.approx(1.0)
+    assert rejected["uniqueness_gate_passed"] is False
+    assert rejected["forward_return_fields_read"] is False
+
+
+def test_eastmoney_core_profit_diagnostic_is_frozen_after_no_return_pass():
+    record = RESEARCH.load_eastmoney_core_profit_consistency_research_record()
+    spec = (
+        RESEARCH.load_eastmoney_core_profit_consistency_diagnostic_preregistration()
+    )
+    assert record["decision"]["both_no_return_gates_passed"] is True
+    assert record["forward_return_fields_read"] is False
+    assert spec["combined_no_return_audit"]["potential_complete_cohorts"] == 304
+    assert spec["combined_no_return_audit"]["dense_comparison_field_count"] == 47
+    assert spec["combined_no_return_audit"]["both_no_return_gates_passed"] is True
+    assert spec["factor"]["raw_direction"] == "higher_is_better"
+    assert spec["run_contract"]["holding_period_trading_days"] == 3
+    assert spec["run_contract"]["topk"] == 3
+    assert spec["run_contract"]["open_cost"] == 0.00012
+    assert spec["run_contract"]["close_cost"] == 0.00062
+    assert (
+        spec["diagnostic_policy"]["factor_returns_observed_before_registration"]
+        is False
+    )
+    assert spec["selection_or_promotion_allowed"] is False
+
+
 def test_eastmoney_balance_sheet_diagnostic_is_frozen_after_no_return_pass():
     spec = RESEARCH.load_eastmoney_balance_sheet_resilience_diagnostic_preregistration()
     events, evidence = (

@@ -390,6 +390,9 @@ EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256 = (
 EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256 = (
     "47884d88736a19715bb3a615f9941611309322f9d6f1f1f4a0456ce924fb3943"
 )
+EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256 = (
+    "be6d43b7fb1e707898b88180c5d5a180bb4e28620fb8d9c646ef1c58cb7604fb"
+)
 TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256 = (
     "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
 )
@@ -16450,6 +16453,221 @@ def sync_eastmoney_balance_sheet_resilience(
             raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
 
 
+def load_eastmoney_core_profit_consistency_full_source_record(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the cross-clone record for the consumed public income source."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency full-source-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind="a_share_eastmoney_core_profit_consistency_full_source_record",
+    )
+    contract = record.get("data_contract") or {}
+    acceptance = record.get("source_acceptance_record") or {}
+    spec = record.get("no_return_preregistration") or {}
+    manifest_link = record.get("full_source_manifest") or {}
+    snapshot = record.get("published_snapshot") or {}
+    request = record.get("source_request") or {}
+    coverage = record.get("coverage") or {}
+    identity_coverage = coverage.get("complete_identity") or {}
+    factor_coverage = coverage.get("valid_factor") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_full_source_pending_no_return_capacity_and_uniqueness"
+        or record.get("created_at") != "2026-07-16T23:59:33Z"
+        or contract.get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256
+        or acceptance.get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256
+        or spec.get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256
+        or manifest_link.get("path")
+        != "data/metadata/rich_data/runs/20260716T235617Z_eastmoney_core_profit_consistency_760a3a16.json"
+        or manifest_link.get("sha256")
+        != "8e3519727eec27163140c3265bcc37de05c61fe4e17aa1ca8cac7ba7fab81b11"
+        or manifest_link.get("run_id")
+        != "20260716T235617Z_eastmoney_core_profit_consistency_760a3a16"
+        or manifest_link.get("status")
+        != "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+        or snapshot.get("partition_count") != 28
+        or snapshot.get("total_rows") != 92764
+        or snapshot.get("minimum_partition_rows") != 2444
+        or snapshot.get("maximum_partition_rows") != 3573
+        or tuple(snapshot.get("columns") or ())
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+        or snapshot.get("independent_formula_max_absolute_error") != 0.0
+        or snapshot.get("canonical_partition_file_sha256_listing_sha256")
+        != "ae6cdebb0d8c4e693762e919ac105e4fef306190ed33b164261146937ec01a15"
+        or request.get("new_network_partitions") != 27
+        or request.get("accepted_partitions_reused_without_network") != 1
+        or request.get("new_provider_calls") != 283
+        or request.get("ordered_source_column_count") != 46
+        or request.get("ordered_source_columns_sha256")
+        != "81e5eff36c353c65bbb7728780a4e9663fbbad7b779e44c74921ce57d1f6656f"
+        or request.get("every_new_partition_count_complete") is not True
+        or request.get("every_historical_partition_matched_accepted_ordered_schema")
+        is not True
+        or request.get("tushare_token_read") is not False
+        or identity_coverage.get("minimum") != 0.9408168935815504
+        or identity_coverage.get("median") != 0.9695685118854752
+        or identity_coverage.get("maximum") != 0.9989056686364631
+        or factor_coverage.get("minimum") != 0.658050619278406
+        or factor_coverage.get("median") != 0.7827672462837132
+        or factor_coverage.get("maximum") != 0.8477032670105625
+        or coverage.get("all_28_partitions_present") is not True
+        or coverage.get("source_coverage_gate_passed") is not True
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency full-source record is incompatible"
+        )
+
+    manifest_file = resolve_record_path(str(manifest_link["path"]))
+    if (
+        not manifest_file.exists()
+        or file_digest(manifest_file) != manifest_link["sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency full-source manifest changed"
+        )
+    manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
+    files = sorted(
+        list(manifest.get("files") or []), key=lambda item: item.get("report_date", "")
+    )
+    expected_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    if (
+        manifest.get("dataset") != "eastmoney_core_profit_consistency"
+        or manifest.get("provider") != "eastmoney"
+        or manifest.get("run_id") != manifest_link["run_id"]
+        or manifest.get("status") != manifest_link["status"]
+        or manifest.get("coverage")
+        != {
+            "complete_identity": {
+                "maximum": 0.9989056686364631,
+                "median": 0.9695685118854752,
+                "minimum": 0.9408168935815504,
+                "minimum_required_median": 0.95,
+                "minimum_required_per_partition": 0.85,
+            },
+            "source_coverage_gate_passed": True,
+            "valid_factor": {
+                "maximum": 0.8477032670105625,
+                "median": 0.7827672462837132,
+                "minimum": 0.658050619278406,
+                "minimum_required_median": 0.6,
+                "minimum_required_per_partition": 0.45,
+            },
+        }
+        or [item.get("report_date") for item in files] != expected_dates
+        or manifest.get("source_request", {}).get("tushare_token_read") is not False
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency full-source manifest identity mismatch"
+        )
+
+    partition_quality = list(manifest.get("partition_quality") or [])
+    network_quality = [
+        item
+        for item in partition_quality
+        if item.get("source_mode") == "new_count_complete_public_partition"
+    ]
+    if (
+        len(partition_quality) != 28
+        or len(network_quality) != 27
+        or any(
+            item.get("request", {}).get("advertised_rows")
+            != item.get("request", {}).get("received_rows")
+            or item.get("request", {}).get("ordered_source_column_count") != 46
+            or item.get("request", {}).get("ordered_source_columns_sha256")
+            != "81e5eff36c353c65bbb7728780a4e9663fbbad7b779e44c74921ce57d1f6656f"
+            for item in network_quality
+        )
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency historical source completeness changed"
+        )
+
+    listing_lines: list[str] = []
+    total_rows = 0
+    for item in files:
+        frame_path = resolve_record_path(str(item.get("path") or ""))
+        if not frame_path.exists():
+            raise RichDataError(
+                f"Eastmoney core-profit-consistency partition is missing: {frame_path}"
+            )
+        listing_lines.append(f"{item['report_date']}\t{file_digest(frame_path)}\n")
+        frame = pd.read_parquet(frame_path)
+        operating_profit = pd.to_numeric(frame["operating_profit"], errors="coerce")
+        total_profit = pd.to_numeric(frame["total_profit"], errors="coerce")
+        factor = pd.to_numeric(
+            frame["eastmoney_core_profit_consistency"], errors="coerce"
+        )
+        expected = np.minimum(
+            operating_profit.to_numpy(dtype="float64"),
+            total_profit.to_numpy(dtype="float64"),
+        ) / np.maximum(
+            operating_profit.to_numpy(dtype="float64"),
+            total_profit.to_numpy(dtype="float64"),
+        )
+        if (
+            tuple(frame.columns) != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+            or len(frame) != int(item.get("rows") or -1)
+            or frame_digest(frame) != item.get("sha256")
+            or frame.duplicated(["instrument", "report_date"]).any()
+            or not pd.to_datetime(frame["report_date"], errors="coerce")
+            .dt.normalize()
+            .eq(pd.Timestamp(item["report_date"]))
+            .all()
+            or pd.to_datetime(frame["announcement_date"], errors="coerce").isna().any()
+            or not np.isfinite(operating_profit).all()
+            or not operating_profit.gt(0.0).all()
+            or not np.isfinite(total_profit).all()
+            or not total_profit.gt(0.0).all()
+            or not np.isfinite(factor).all()
+            or not factor.between(0.0, 1.0, inclusive="both").all()
+            or not np.allclose(
+                factor.to_numpy(dtype="float64"),
+                expected,
+                rtol=0.0,
+                atol=1e-12,
+            )
+            or not frame["provider"].eq("eastmoney").all()
+        ):
+            raise RichDataError(
+                "Eastmoney core-profit-consistency full partition integrity failed: "
+                f"{item['report_date']}"
+            )
+        total_rows += len(frame)
+    listing_digest = hashlib.sha256("".join(listing_lines).encode("utf-8")).hexdigest()
+    if (
+        total_rows != snapshot["total_rows"]
+        or listing_digest != snapshot["canonical_partition_file_sha256_listing_sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney core-profit-consistency full snapshot aggregate changed"
+        )
+    return record
+
+
 def eastmoney_core_profit_consistency_full_records() -> list[Path]:
     """Return prior local success or failure manifests for the full source."""
 
@@ -16476,6 +16694,7 @@ def sync_eastmoney_core_profit_consistency(
             "27-partition core-profit protocol"
         )
     if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD.exists():
+        load_eastmoney_core_profit_consistency_full_source_record()
         raise RichDataError(
             "Eastmoney core-profit-consistency full snapshot is permanently consumed; "
             "another provider request is forbidden"
@@ -16490,6 +16709,7 @@ def sync_eastmoney_core_profit_consistency(
         METADATA_ROOT / ".eastmoney_core_profit_consistency.lock"
     ):
         if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD.exists():
+            load_eastmoney_core_profit_consistency_full_source_record()
             raise RichDataError(
                 "Eastmoney core-profit-consistency full snapshot is permanently "
                 "consumed; another provider request is forbidden"

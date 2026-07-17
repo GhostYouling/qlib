@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_core_profit_consistency_research_record",
+  "status": "no_return_gates_passed_pending_separate_single_factor_return_and_execution_diagnostic",
+  "created_at": "2026-07-17T00:12:01Z",
+  "purpose": "Permanently bind the sole completed core-profit-consistency no-return capacity and 47-field dense-uniqueness audit before any factor outcome is read.",
+  "source_chain": {
+    "data_contract_sha256": "2ae3be4b134e16681e702171157b48e8be5bc6c1f72aa9cecfc9a285518d7a45",
+    "source_acceptance_record_sha256": "1372ee0af59cf45e4f46659ba05730d0cbaac99232f49464b014e578cd89bf34",
+    "no_return_preregistration_sha256": "47884d88736a19715bb3a615f9941611309322f9d6f1f1f4a0456ce924fb3943",
+    "full_source_record_sha256": "be6d43b7fb1e707898b88180c5d5a180bb4e28620fb8d9c646ef1c58cb7604fb",
+    "full_source_manifest_sha256": "8e3519727eec27163140c3265bcc37de05c61fe4e17aa1ca8cac7ba7fab81b11",
+    "conservative_state_contract_embedded_in_no_return_preregistration": true
+  },
+  "no_return_audit": {
+    "path": "data/experiments/short_horizon/20260717T001138Z_eastmoney_core_profit_consistency_no_return_audit.json",
+    "sha256": "26f9c4409b119b6ecc777ce09379c3383c8b17310488f4b7eb29ad719aa664a9",
+    "run_id": "20260717T001138Z",
+    "purpose": "eastmoney_core_profit_consistency_conservative_state_capacity_then_47_dense_field_uniqueness_without_forward_returns"
+  },
+  "capacity_result": {
+    "potential_complete_cohorts": 304,
+    "minimum_required_cohorts": 200,
+    "observed_calendar_years": 6,
+    "minimum_observed_years": 5,
+    "potential_complete_cohorts_by_year": {
+      "2020": 32,
+      "2021": 61,
+      "2022": 58,
+      "2023": 60,
+      "2024": 56,
+      "2025": 37
+    },
+    "conservative_global_partition_reset_applied": true,
+    "older_report_carry_after_partition_activation": false,
+    "capacity_gate_passed": true
+  },
+  "uniqueness_result": {
+    "dense_comparison_field_count": 47,
+    "fields_with_minimum_pairwise_sessions": 47,
+    "fields_below_absolute_median_correlation_threshold": 47,
+    "eligible_factor_comparison_rows": 84173,
+    "eligible_factor_comparison_sessions": 179,
+    "nearest_existing_field": "eastmoney_balance_sheet_resilience",
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.1458927654986846,
+    "roe_absolute_median_daily_rank_correlation": 0.12043208292970611,
+    "profit_yoy_absolute_median_daily_rank_correlation": 0.10309603852129108,
+    "positive_book_to_market_absolute_median_daily_rank_correlation": 0.05495103484685876,
+    "balance_sheet_resilience_absolute_median_daily_rank_correlation": 0.1458927654986846,
+    "sparse_event_fields_loaded": [],
+    "uniqueness_gate_passed": true
+  },
+  "decision": {
+    "both_no_return_gates_passed": true,
+    "factor_return_diagnostic_allowed": true,
+    "factor_promoted_or_selected": false,
+    "next_required_action": "Freeze one immutable single-factor return and execution diagnostic contract bound to this no-return audit fingerprint before reading any next-session open, future close, forward return, score, selection, size, or order field."
+  },
+  "limitations": [
+    "The Eastmoney history is a current snapshot with displayed correction dates, not an immutable point-in-time version stream.",
+    "The conservative global report-period reset can understate capacity but cannot create earlier factor availability.",
+    "The terminal balance-sheet factor was used only as a no-return uniqueness comparison and remains forbidden for aggregation or selection.",
+    "Capacity and uniqueness contain no factor outcome and do not imply return association, tradability, or an investable strategy."
+  ],
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
