@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_express_asset_growth_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_provider_rows",
+  "recorded_at": "2026-07-17T00:35:00Z",
+  "purpose": "Re-audit the exhausted three-session factor frontier after the Eastmoney core-profit-consistency terminal rejection and select at most one economically distinct mechanism available to the existing 3000-point Tushare authorization, without observing selected-candidate provider rows, factor values, prices, or returns.",
+  "frontier_revalidation": {
+    "base_frontier_path": "data/metadata/research_frontier_revalidation_20260717_after_disclosure.json",
+    "base_frontier_sha256": "1db406c556affa213a67a7ff6dc032109cc0e56a1146dd136c1c73ef47d99dee",
+    "base_historical_factor_count": 43,
+    "base_dual_gate_qualified_factor_count": 0,
+    "later_dense_no_return_comparison_field_count": 47,
+    "latest_terminal_record": "docs/a_share_eastmoney_core_profit_consistency_diagnostic_record.json",
+    "latest_terminal_record_sha256": "970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f",
+    "latest_terminal_stability_qualified_factor_count": 0,
+    "latest_terminal_topk_qualified_factor_count": 0,
+    "selected_candidate_provider_rows_observed": false,
+    "selected_candidate_factor_values_observed": false,
+    "selected_candidate_raw_prices_or_returns_read": false
+  },
+  "latest_terminal_mechanisms": [
+    {
+      "mechanism": "tushare_large_order_net_inflow_share",
+      "record": "docs/a_share_tushare_moneyflow_research_record.json",
+      "decision": "terminal_after_return_and_execution_gates"
+    },
+    {
+      "mechanism": "tushare_positive_book_to_market",
+      "record": "docs/a_share_tushare_daily_pb_research_record.json",
+      "decision": "terminal_after_return_and_execution_gates"
+    },
+    {
+      "mechanism": "sw1_three_session_leave_one_out_breadth",
+      "record": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+      "decision": "terminal_after_return_and_execution_gates"
+    },
+    {
+      "mechanism": "tushare_free_float_scarcity",
+      "record": "docs/a_share_tushare_free_float_scarcity_research_record.json",
+      "decision": "terminal_at_no_return_uniqueness_gate"
+    },
+    {
+      "mechanism": "eastmoney_balance_sheet_resilience",
+      "record": "docs/a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json",
+      "decision": "terminal_after_return_and_execution_gates"
+    },
+    {
+      "mechanism": "eastmoney_core_profit_consistency",
+      "record": "docs/a_share_eastmoney_core_profit_consistency_diagnostic_record.json",
+      "decision": "terminal_after_return_and_execution_gates"
+    }
+  ],
+  "official_permission_context": {
+    "current_account_points": 3000,
+    "express_documentation": "https://tushare.pro/document/2?doc_id=46",
+    "express_standard_minimum_points": 2000,
+    "express_standard_call_scope": "one stock history per request",
+    "express_vip_minimum_points": 5000,
+    "express_documented_identity_and_timing_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date"
+    ],
+    "express_documented_candidate_field": "growth_assets",
+    "express_documented_candidate_meaning": "total-assets growth rate versus the beginning of the year",
+    "fund_portfolio_documentation": "https://tushare.pro/document/2?doc_id=121",
+    "fund_portfolio_minimum_points": 5000,
+    "anns_d_documentation": "https://tushare.pro/document/2?doc_id=176",
+    "anns_d_requires_separate_permission": true,
+    "main_business_documentation": "https://tushare.pro/document/2?doc_id=81",
+    "selected_candidate_provider_rows_observed": false,
+    "entitlement_requests_issued": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "mutual_fund_holding_crowding_change",
+      "source": "Tushare fund_portfolio",
+      "decision": "rejected_before_rows_for_current_permission_and_mechanism_overlap",
+      "reason": "The standard documented permission requires 5000 points, above the current 3000-point account, and the ownership-crowding mechanism overlaps existing major-holder, holder-count, free-float and ownership-concentration branches. No additional purchase is justified."
+    },
+    {
+      "candidate": "announcement_text_or_count_intensity",
+      "source": "Tushare anns_d",
+      "decision": "rejected_before_rows_for_separate_permission_and_event_count_overlap",
+      "reason": "The interface requires separate permission and supplies PDF URLs. Mining titles, text categories or announcement counts after the existing event-count frontier would add identity and multiple-testing risk rather than one frozen independent factor."
+    },
+    {
+      "candidate": "main_business_concentration_change",
+      "source": "Tushare fina_mainbz",
+      "decision": "deferred_before_rows_for_unresolved_point_in_time_and_segment_dimension_identity",
+      "reason": "The documented output still lacks an announcement date, and segment labels do not expose a frozen cross-report identity or decomposition dimension. Joining a later financial-report date or interpreting segment text would not prove historical availability."
+    },
+    {
+      "candidate": "performance_express_earnings_growth_or_surprise",
+      "source": "Tushare express earnings and profit fields",
+      "decision": "rejected_before_rows_as_mechanism_overlap",
+      "reason": "Revenue/profit growth, earnings acceleration, forecast magnitude and profitability are already represented by terminal quarterly, forecast and formal-report mechanisms. A faster provider timestamp is not a new economic mechanism."
+    },
+    {
+      "candidate": "performance_express_asset_growth_restraint",
+      "source": "Tushare express growth_assets",
+      "decision": "selected_for_one_predeclared_no_return_source_acceptance",
+      "economic_mechanism": "A lower total-assets growth rate versus the beginning of the year, newly disclosed in a performance express, is hypothesized to represent more disciplined balance-sheet expansion and less near-term investment overextension.",
+      "independence_reason": "The candidate uses neither earnings growth nor margin, leverage level, book-to-market, free float, ownership, event count, order flow, industry breadth, cash conversion or OHLC path. It measures the pace of asset-base expansion rather than the balance-sheet liability ratio already rejected.",
+      "closest_existing_fields_requiring_no_return_synonym_checks": [
+        "eastmoney_balance_sheet_resilience",
+        "tushare_positive_book_to_market",
+        "roe",
+        "revenue_yoy",
+        "profit_yoy",
+        "size_small"
+      ],
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false
+    }
+  ],
+  "selected_mechanism": {
+    "source": "Tushare Pro express standard endpoint",
+    "factor_name": "tushare_express_asset_growth_restraint",
+    "raw_field": "growth_assets",
+    "raw_units": "percentage rate as documented by the provider",
+    "formula": "-growth_assets for finite provider values",
+    "direction": "higher_is_better_after_negation_equivalent_to_lower_raw_asset_growth",
+    "availability": "first local trading session strictly after the displayed ann_date",
+    "maximum_event_age_calendar_days": 3,
+    "duplicate_or_revision_policy": "The documented standard output has no revision identity field; any duplicate stock-report-period key is fatal rather than selected or deduplicated.",
+    "absent_event_policy": "missing; never zero, imputed or forward-filled beyond the frozen event age",
+    "independent_factor_count": 1,
+    "mandatory_no_return_capacity_and_dense_near_synonym_gates": true,
+    "provider_rows_observed": false,
+    "factor_values_observed": false,
+    "returns_observed": false
+  },
+  "decision": {
+    "historical_factor_combination_allowed": false,
+    "express_financial_field_sweep_allowed": false,
+    "same_history_inversion_or_parameter_search_allowed": false,
+    "data_contract_must_be_frozen_before_provider_rows": true,
+    "one_shot_three_symbol_source_acceptance_allowed_after_contract_and_offline_tests": true,
+    "full_history_capacity_uniqueness_or_return_work_allowed_before_acceptance": false,
+    "selection_scoring_sizing_or_orders_allowed": false,
+    "level2_purchase_justified": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

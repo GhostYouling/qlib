@@ -615,6 +615,9 @@ DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD = (
     / "docs"
     / "a_share_eastmoney_core_profit_consistency_diagnostic_record.json"
 )
+EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD_SHA256 = (
+    "970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f"
+)
 DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST = (
     DATA_ROOT
     / "metadata"
@@ -37853,6 +37856,119 @@ def validate_eastmoney_core_profit_consistency_diagnostic_sources(
     )
 
 
+def load_eastmoney_core_profit_consistency_diagnostic_record(
+    path: Path = DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD,
+) -> dict[str, Any]:
+    """Enforce the terminal core-profit rejection in every clone."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD_SHA256:
+        raise ValueError("Eastmoney core-profit diagnostic-record fingerprint mismatch")
+    record = load_json_record(
+        path, kind="a_share_eastmoney_core_profit_consistency_diagnostic_record"
+    )
+    evidence = record.get("evidence_chain") or {}
+    no_return = record.get("no_return_gate_summary") or {}
+    diagnostic = record.get("diagnostic_summary") or {}
+    execution = diagnostic.get("execution_aware_top3") or {}
+    pilot = diagnostic.get("cny_200000_board_lot_top3_at_ten_basis_points") or {}
+    gates = record.get("gate_decisions") or {}
+    decision = record.get("decision") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "terminal_rejected_after_return_stability_and_execution_gates"
+        or (record.get("factor") or {}).get("name")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FACTOR_NAME
+        or (evidence.get("data_contract") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_DATA_CONTRACT_SHA256
+        or (evidence.get("source_acceptance_record") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_SOURCE_ACCEPTANCE_RECORD_SHA256
+        or (evidence.get("full_source_record") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256
+        or (evidence.get("full_source_manifest") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_MANIFEST_SHA256
+        or (evidence.get("no_return_preregistration") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256
+        or (evidence.get("no_return_research_record") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_RESEARCH_RECORD_SHA256
+        or (evidence.get("diagnostic_preregistration") or {}).get("sha256")
+        != EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_SPEC_SHA256
+        or (evidence.get("diagnostic") or {}).get("sha256")
+        != "fac023aefe695a24a6b86c7f6b605e20f832639828e0dc6020b354a673310ef0"
+        or (evidence.get("stability_audit") or {}).get("sha256")
+        != "541ba737149cc53b8905fab4fa40fbbbb5c840ba39bf1e34c5bde3fc2b02a9cd"
+        or (evidence.get("topk_viability_audit") or {}).get("sha256")
+        != "1a65deb27529ba1034ab8a9b9aed1f46621ef8dd80338d4d970f0723cd2b7c6f"
+        or no_return.get("potential_complete_cohorts") != 304
+        or no_return.get("capacity_gate_passed") is not True
+        or no_return.get("uniqueness_gate_passed") is not True
+        or diagnostic.get("cohorts") != 360
+        or not math.isclose(
+            float(diagnostic.get("mean_rank_ic")),
+            -0.0027437233807437165,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or not math.isclose(
+            float(diagnostic.get("positive_rank_ic_rate")),
+            0.4888888888888889,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or not math.isclose(
+            float(execution.get("net_cumulative_return")),
+            -0.4375595923694089,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or execution.get("gate_passed") is not False
+        or not math.isclose(
+            float(pilot.get("board_lot_affordable_opportunity_rate")),
+            0.8324324324324325,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or pilot.get("gate_passed") is not False
+        or gates.get("association_stability_gate_passed") is not False
+        or gates.get("topk_viability_gate_passed") is not False
+        or gates.get("dual_gate_qualified") is not False
+        or decision.get("rerun_same_history_allowed") is not False
+        or decision.get("invert_factor_allowed") is not False
+        or decision.get("aggregation_scoring_selection_sizing_or_orders_allowed")
+        is not False
+        or record.get("source_uses_tushare_token") is not False
+        or record.get("forward_return_fields_read") is not True
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError("Eastmoney core-profit terminal diagnostic record changed")
+    mandatory_tracked_links = (
+        "data_contract",
+        "source_acceptance_record",
+        "full_source_record",
+        "no_return_preregistration",
+        "no_return_research_record",
+        "diagnostic_preregistration",
+    )
+    for label in mandatory_tracked_links:
+        link = evidence[label]
+        linked_path = resolve_repository_record_path(link["path"])
+        if not linked_path.exists() or file_sha256(linked_path) != link["sha256"]:
+            raise ValueError(f"Eastmoney core-profit terminal {label} changed")
+    for label in (
+        "full_source_manifest",
+        "combined_no_return_audit",
+        "diagnostic",
+        "stability_audit",
+        "topk_viability_audit",
+    ):
+        link = evidence[label]
+        linked_path = resolve_repository_record_path(link["path"])
+        if linked_path.exists() and file_sha256(linked_path) != link["sha256"]:
+            raise ValueError(f"Eastmoney core-profit terminal {label} changed")
+    return record
+
+
 def require_unconsumed_eastmoney_core_profit_consistency_diagnostic(
     experiment_root: Path,
 ) -> None:
@@ -37872,8 +37988,9 @@ def run_eastmoney_core_profit_consistency_diagnostic(
     """Run the dual-no-return-qualified core-profit factor exactly once."""
 
     if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD.exists():
+        load_eastmoney_core_profit_consistency_diagnostic_record()
         raise ValueError(
-            "Eastmoney core-profit branch already has a terminal diagnostic record"
+            "Eastmoney core-profit branch is terminal after return and execution gates"
         )
     provider_uri = Path(args.provider_uri).expanduser()
     experiment_root = Path(args.experiment_root).expanduser()
@@ -38989,6 +39106,15 @@ def run_factor_stability_audit(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError(
             "Eastmoney balance-sheet-resilience factor audits are already terminal"
         )
+    if (
+        diagnostic.get("purpose")
+        == EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_PURPOSE
+        and DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD.exists()
+    ):
+        load_eastmoney_core_profit_consistency_diagnostic_record()
+        raise ValueError(
+            "Eastmoney core-profit-consistency factor audits are already terminal"
+        )
     if diagnostic.get("status") != "completed":
         raise ValueError(
             "factor stability audit requires a completed factor diagnostic"
@@ -39084,6 +39210,15 @@ def run_factor_topk_viability_audit(args: argparse.Namespace) -> dict[str, Any]:
         load_eastmoney_balance_sheet_resilience_diagnostic_record()
         raise ValueError(
             "Eastmoney balance-sheet-resilience factor audits are already terminal"
+        )
+    if (
+        diagnostic.get("purpose")
+        == EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_PURPOSE
+        and DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD.exists()
+    ):
+        load_eastmoney_core_profit_consistency_diagnostic_record()
+        raise ValueError(
+            "Eastmoney core-profit-consistency factor audits are already terminal"
         )
     if diagnostic.get("status") != "completed":
         raise ValueError(

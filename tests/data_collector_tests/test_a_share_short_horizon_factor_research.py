@@ -9030,6 +9030,65 @@ def test_eastmoney_core_profit_diagnostic_is_frozen_after_no_return_pass():
     assert spec["selection_or_promotion_allowed"] is False
 
 
+def test_eastmoney_core_profit_terminal_diagnostic_record_is_frozen():
+    assert (
+        RESEARCH.file_sha256(
+            RESEARCH.DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD
+        )
+        == RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD_SHA256
+    )
+    record = RESEARCH.load_eastmoney_core_profit_consistency_diagnostic_record()
+    assert record["no_return_gate_summary"]["capacity_gate_passed"] is True
+    assert record["no_return_gate_summary"]["uniqueness_gate_passed"] is True
+    assert record["gate_decisions"]["association_stability_gate_passed"] is False
+    assert record["gate_decisions"]["topk_viability_gate_passed"] is False
+    assert record["gate_decisions"]["dual_gate_qualified"] is False
+    assert (
+        record["decision"][
+            "aggregation_scoring_selection_sizing_or_orders_allowed"
+        ]
+        is False
+    )
+
+
+def test_eastmoney_core_profit_terminal_record_stops_diagnostic_runner(tmp_path):
+    args = SimpleNamespace(
+        provider_uri=str(tmp_path / "provider"),
+        experiment_root=str(tmp_path / "experiments"),
+        batch_size=1,
+    )
+    with pytest.raises(ValueError, match="branch is terminal"):
+        RESEARCH.run_eastmoney_core_profit_consistency_diagnostic(args)
+
+
+def test_eastmoney_core_profit_terminal_record_stops_generic_gate_reruns(tmp_path):
+    diagnostic = tmp_path / "factor_diagnostic.json"
+    diagnostic.write_text(
+        json.dumps(
+            {
+                "status": "completed",
+                "purpose": RESEARCH.EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_PURPOSE,
+            }
+        )
+    )
+    stability_args = SimpleNamespace(
+        diagnostic=str(diagnostic),
+        experiment_root=str(tmp_path),
+        factor=None,
+        minimum_calendar_years=5,
+        minimum_cohorts=200,
+    )
+    topk_args = SimpleNamespace(
+        diagnostic=str(diagnostic),
+        experiment_root=str(tmp_path),
+        factor=None,
+    )
+    with pytest.raises(ValueError, match="audits are already terminal"):
+        RESEARCH.run_factor_stability_audit(stability_args)
+    with pytest.raises(ValueError, match="audits are already terminal"):
+        RESEARCH.run_factor_topk_viability_audit(topk_args)
+
+
 def test_eastmoney_balance_sheet_diagnostic_is_frozen_after_no_return_pass():
     spec = RESEARCH.load_eastmoney_balance_sheet_resilience_diagnostic_preregistration()
     events, evidence = (

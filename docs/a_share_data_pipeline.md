@@ -1901,7 +1901,7 @@ python scripts/a_share_rich_data.py \
 
 跨克隆终止记录为 [`a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json`](a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json)（SHA‑256 `b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf`）。不得重跑验收、全量、无收益审计、收益诊断或两道通用审计；不得反转成高负债偏好、改变状态规则/公式/年份/阈值/持有期/TopK/成本、只选表现好的年份，或与已经拒绝的因子组合。该因子不进入聚合、当前评分、选股、仓位或订单，也不构成采购 Level‑2 的理由。下一步必须回到不读取收益的机制前沿，先冻结另一条经济独立候选。
 
-### Eastmoney 核心利润一致性（无收益门禁通过，等待唯一收益与执行诊断）
+### Eastmoney 核心利润一致性（收益与执行门禁终止）
 
 资产负债表韧性在收益与执行门禁终止后，机制核重只推进 `eastmoney_core_profit_consistency = min(营业利润, 利润总额) / max(营业利润, 利润总额)`；营业利润和利润总额必须都为有限正数，高值代表主营经营结果与利润总额更一致、非经营性损益相对更小。Tushare 周转率候选因复用已经失败的 `fina_indicator` 来源路线而排除，现金流自给候选与已终止现金转换机制重叠，利润表费用率集合也不允许在同一响应上事后扫字段。核重记录为 [`a_share_three_day_core_profit_consistency_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_core_profit_consistency_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `ca5ac438068dbf8d1911658ec4fcd72e20196d748ba1cfda4d610a105e96ed82`）。
 
@@ -1913,11 +1913,18 @@ python scripts/a_share_rich_data.py \
 
 随后唯一联合无收益审计 `20260717T001138Z`（SHA‑256 `26f9c4409b119b6ecc777ce09379c3383c8b17310488f4b7eb29ad719aa664a9`）先按冻结的全局报告期重置规则物化状态，再检查容量与唯一性。得到 304/200 个潜在完整三日非重叠 cohort，覆盖 2020–2025 六年；47 个稠密比较字段全部具备至少 118 个合格相关会话且绝对中位日秩相关低于 0.8。最近字段为已终止的 `eastmoney_balance_sheet_resilience`，绝对中位相关 0.1459；ROE、利润同比和正账面市值比分别为 0.1204、0.1031 和 0.0550。通过记录为 [`a_share_eastmoney_core_profit_consistency_research_record.json`](a_share_eastmoney_core_profit_consistency_research_record.json)（SHA‑256 `753b20b657c5e233dc9948d46f9a29f5cea56b40a7163e757b9018303a4f4c9d`）。该审计没有加载价格或远期收益，也不构成因子有效或可交易的证据；无收益入口已永久消费。
 
-在任何收益读取前，唯一诊断已经冻结为 [`a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json`](a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json)（SHA‑256 `2ba3377fd1c91d470fb07e2ab815048f1331ee38392c4d148fd9c6eec758c289`）：2019–2025、三日非重叠、Top‑3、开/平成本 0.00012/0.00062、质量最大年龄 550 日、最少上市 20 个会话，并同时应用 20 万元、100 股整手、双边各 0.1% 滑点和 1% 日成交额参与上限。当前只批准一次：
+在任何收益读取前，唯一诊断冻结为 [`a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json`](a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json)（SHA‑256 `2ba3377fd1c91d470fb07e2ab815048f1331ee38392c4d148fd9c6eec758c289`）：2019–2025、三日非重叠、Top‑3、开/平成本 0.00012/0.00062、质量最大年龄 550 日、最少上市 20 个会话，并同时应用 20 万元、100 股整手、双边各 0.1% 滑点和 1% 日成交额参与上限。
 
-```bash
-python scripts/a_share_short_horizon_factor_research.py \
-  eastmoney-core-profit-consistency-diagnostic
-```
+唯一诊断 `20260717T002517Z`（SHA‑256 `fac023aefe695a24a6b86c7f6b605e20f832639828e0dc6020b354a673310ef0`）覆盖 360 个有效 cohort，平均/中位 Rank IC 为 −0.00274/−0.00099，正 IC 比例 48.89%，TopK-minus-BottomK 毛收益均值为 −0.2010%；2021、2022、2023、2025 年平均 IC 为负。固定 Top‑3 扣成本累计 −38.22%、最大回撤 −68.64%、胜率 48.61%，最差三日 cohort 为 −11.25%。执行账本有 370 个完整信号，累计 −43.76%、最大回撤 −68.67%，仅 2025 年为正。
 
-该入口不读取 `TUSHARE_TOKEN`，只产生冻结的单因子历史收益与执行诊断，不产生当前股票名单、仓位或订单。完成后必须对同一诊断执行默认稳定性和 Top‑3 可行性审计：任一门失败则冻结终止记录；两门都通过也只能先冻结另行定日的前瞻协议，不能直接聚合、评分、选股或下单。
+20 万元、每个席位 5%、100 股整手、双边各 0.1% 滑点和 1% 日成交额参与上限的方案只填到 922/1,110 个席位，整手可负担率 83.24%；累计 −6.14%、最大回撤 −13.59%，2020–2024 每年均为负，最大成交额参与率 1.344% 也超过上限。零滑点的 +2.21% 不能推翻冻结的 10bp 主门槛，且 5bp 已转为 −2.44%。
+
+默认稳定性审计 `20260717T002534Z`（SHA‑256 `541ba737149cc53b8905fab4fa40fbbbb5c840ba39bf1e34c5bde3fc2b02a9cd`）与 Top‑3 可行性审计 `20260717T002540Z`（SHA‑256 `1a65deb27529ba1034ab8a9b9aed1f46621ef8dd80338d4d970f0723cd2b7c6f`）均为 **0/1**。跨克隆终止记录为 [`a_share_eastmoney_core_profit_consistency_diagnostic_record.json`](a_share_eastmoney_core_profit_consistency_diagnostic_record.json)（SHA‑256 `970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f`）。不得重跑任何该分支入口或通用门禁，不得反向、挑年份、改公式/状态/阈值/持有期/TopK/成本，或与已拒绝因子组合；该因子不进入聚合、当前评分、选股、仓位、订单或 Level‑2 采购理由。下一步回到不读取收益的机制前沿。
+
+### Tushare 业绩快报资产扩张约束（仅冻结验收合同）
+
+核心利润一致性终止后，新的独立机制只选择 `tushare_express_asset_growth_restraint = -growth_assets`：较低的期初以来总资产增长率解释为更克制的资产负债表扩张。营业收入、利润、EPS、ROE、文本摘要及其增长字段全部禁止读取，避免在同一响应上事后筛选盈利类字段。无收益机制核重记录为 [`a_share_three_day_express_asset_growth_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_express_asset_growth_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `94c0c4655918976c3113055d94e573a1bbcaf9cff85ecfc409d3f74e5a593ba4`）。该记录没有观察供应商行、因子值、价格或收益。
+
+数据合同 [`a_share_tushare_express_asset_growth_data_contract.json`](a_share_tushare_express_asset_growth_data_contract.json)（SHA‑256 `517a9e402ecd77f4f09090414ff4e68a45a0af215ff9b200703a4f8ea6d3e177`）固定使用标准 `express` 接口，只请求 `ts_code,ann_date,end_date,growth_assets`，要求账户至少 2,000 积分；当前 3,000 积分不需要 5,000 积分的 VIP 接口。唯一验收固定按 `600000.SH`、`000001.SZ`、`300750.SZ` 顺序各请求一次 2019–2025 历史，任一失败立即停止且不得重试。验收帧只允许保存公告日、报告期、股票、负资产增长率因子和供应商五列，不保存原始响应或原始 `growth_assets`。
+
+目前只完成机制审计与合同冻结，尚未实现验收入口，也没有访问 `TUSHARE_TOKEN` 或供应商。下一步仅允许先实现并本地测试精确的三次请求、严格规范化、原子发布、失败也消费和访问 Token 前的一次性守卫；实现与测试通过后才能执行唯一一次真实验收。验收无论成功或失败都不能直接下载全历史、读取收益、聚合、评分、选股或下单；成功时仍需另行冻结全量来源与无收益协议。

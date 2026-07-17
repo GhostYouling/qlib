@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_core_profit_consistency_diagnostic_record",
+  "status": "terminal_rejected_after_return_stability_and_execution_gates",
+  "recorded_at": "2026-07-17T00:28:00Z",
+  "factor": {
+    "name": "eastmoney_core_profit_consistency",
+    "source_formula": "min(operating_profit, total_profit) / max(operating_profit, total_profit) when both source profits are finite and strictly positive",
+    "direction_tested": "higher_is_better",
+    "holding_period_trading_days": 3,
+    "topk": 3,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31"
+  },
+  "evidence_chain": {
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_core_profit_consistency_data_contract.json",
+      "sha256": "2ae3be4b134e16681e702171157b48e8be5bc6c1f72aa9cecfc9a285518d7a45"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_eastmoney_core_profit_consistency_source_acceptance_record.json",
+      "sha256": "1372ee0af59cf45e4f46659ba05730d0cbaac99232f49464b014e578cd89bf34"
+    },
+    "full_source_record": {
+      "path": "docs/a_share_eastmoney_core_profit_consistency_full_source_record.json",
+      "sha256": "be6d43b7fb1e707898b88180c5d5a180bb4e28620fb8d9c646ef1c58cb7604fb"
+    },
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T235617Z_eastmoney_core_profit_consistency_760a3a16.json",
+      "sha256": "8e3519727eec27163140c3265bcc37de05c61fe4e17aa1ca8cac7ba7fab81b11",
+      "partitions": 28,
+      "rows": 92764
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_core_profit_consistency_no_return_preregistration.json",
+      "sha256": "47884d88736a19715bb3a615f9941611309322f9d6f1f1f4a0456ce924fb3943"
+    },
+    "combined_no_return_audit": {
+      "run_id": "20260717T001138Z",
+      "path": "data/experiments/short_horizon/20260717T001138Z_eastmoney_core_profit_consistency_no_return_audit.json",
+      "sha256": "26f9c4409b119b6ecc777ce09379c3383c8b17310488f4b7eb29ad719aa664a9",
+      "capacity_gate_passed": true,
+      "uniqueness_gate_passed": true,
+      "forward_return_fields_read": false
+    },
+    "no_return_research_record": {
+      "path": "docs/a_share_eastmoney_core_profit_consistency_research_record.json",
+      "sha256": "753b20b657c5e233dc9948d46f9a29f5cea56b40a7163e757b9018303a4f4c9d"
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json",
+      "sha256": "2ba3377fd1c91d470fb07e2ab815048f1331ee38392c4d148fd9c6eec758c289",
+      "factor_returns_observed_before_registration": false
+    },
+    "diagnostic": {
+      "run_id": "20260717T002517Z",
+      "path": "data/experiments/short_horizon/20260717T002517Z_factor_diagnostic.json",
+      "sha256": "fac023aefe695a24a6b86c7f6b605e20f832639828e0dc6020b354a673310ef0"
+    },
+    "stability_audit": {
+      "run_id": "20260717T002534Z",
+      "path": "data/experiments/short_horizon/20260717T002534Z_factor_stability_audit.json",
+      "sha256": "541ba737149cc53b8905fab4fa40fbbbb5c840ba39bf1e34c5bde3fc2b02a9cd",
+      "qualified_factor_count": 0
+    },
+    "topk_viability_audit": {
+      "run_id": "20260717T002540Z",
+      "path": "data/experiments/short_horizon/20260717T002540Z_factor_topk_viability_audit.json",
+      "sha256": "1a65deb27529ba1034ab8a9b9aed1f46621ef8dd80338d4d970f0723cd2b7c6f",
+      "qualified_factor_count": 0
+    }
+  },
+  "no_return_gate_summary": {
+    "potential_complete_cohorts": 304,
+    "minimum_required_cohorts": 200,
+    "observed_calendar_years": 6,
+    "dense_comparison_field_count": 47,
+    "fields_with_minimum_sessions": 47,
+    "fields_below_absolute_median_correlation_threshold": 47,
+    "nearest_existing_field": "eastmoney_balance_sheet_resilience",
+    "maximum_absolute_median_daily_rank_correlation": 0.1458927654986846,
+    "capacity_gate_passed": true,
+    "uniqueness_gate_passed": true
+  },
+  "diagnostic_summary": {
+    "cohorts": 360,
+    "mean_rank_ic": -0.0027437233807437165,
+    "median_rank_ic": -0.0009944749579145645,
+    "positive_rank_ic_rate": 0.4888888888888889,
+    "mean_top_minus_bottom_gross_return": -0.0020103841479997045,
+    "annual_mean_rank_ic": {
+      "2020": 0.01773810115249719,
+      "2021": -0.01140664384544615,
+      "2022": -0.0029341555883045643,
+      "2023": -0.02210180968947799,
+      "2024": 0.03059563145444276,
+      "2025": -0.02301195214820037
+    },
+    "naive_fixed_horizon_top3": {
+      "rounds": 360,
+      "net_cumulative_return": -0.3822325393322906,
+      "maximum_drawdown": -0.6863543608995468,
+      "win_rate": 0.4861111111111111,
+      "gate_alone_is_sufficient": false
+    },
+    "execution_aware_top3": {
+      "complete_signal_count": 370,
+      "net_cumulative_return": -0.4375595923694089,
+      "maximum_drawdown": -0.6866835188810739,
+      "annual_net_cumulative_return_by_signal_year": {
+        "2020": -0.11922389399998323,
+        "2021": -0.0589800019901372,
+        "2022": -0.32814576967879594,
+        "2023": -0.038445429333253456,
+        "2024": -0.0957284804626275,
+        "2025": 0.16162056384962864
+      },
+      "gate_passed": false,
+      "failures": [
+        "non-positive execution-aware net cumulative return",
+        "execution-aware maximum drawdown worse than -20%",
+        "non-positive execution-aware signal-year return: 2020, 2021, 2022, 2023, 2024"
+      ]
+    },
+    "cny_200000_board_lot_top3_at_ten_basis_points": {
+      "filled_slot_count": 922,
+      "registered_slot_count": 1110,
+      "board_lot_affordable_opportunity_rate": 0.8324324324324325,
+      "net_cumulative_return": -0.06136555653674136,
+      "maximum_drawdown": -0.13592153357271408,
+      "maximum_filled_trade_daily_amount_participation": 0.013440074318456683,
+      "annual_net_cumulative_return_by_signal_year": {
+        "2020": -0.025809322057583794,
+        "2021": -0.017580915443279888,
+        "2022": -0.027505158326777468,
+        "2023": -0.0019137352857349077,
+        "2024": -0.003136501961804483,
+        "2025": 0.013595438637900026
+      },
+      "gate_passed": false,
+      "failures": [
+        "non-positive pilot return under ten-basis-point slippage",
+        "non-positive pilot signal-year return under ten-basis-point slippage: 2020, 2021, 2022, 2023, 2024",
+        "board-lot affordability opportunity rate is below 90%",
+        "a filled pilot trade exceeds one percent of daily amount"
+      ]
+    }
+  },
+  "gate_decisions": {
+    "association_stability_gate_passed": false,
+    "association_failures": [
+      "non-positive pooled mean Rank IC",
+      "positive Rank IC rate is not above 50%",
+      "non-positive mean TopK-minus-BottomK gross spread",
+      "non-positive annual mean Rank IC: 2021, 2022, 2023, 2025"
+    ],
+    "topk_viability_gate_passed": false,
+    "topk_failures": [
+      "association screen failed",
+      "pilot execution gate failed at ten-basis-point slippage",
+      "board-lot affordability opportunity rate is below 90%",
+      "a filled pilot trade exceeds one percent of daily amount",
+      "non-positive execution-aware TopK net cumulative return",
+      "execution-aware TopK maximum drawdown worse than -20%",
+      "non-positive annual execution-aware Top3 return: 2020, 2021, 2022, 2023, 2024"
+    ],
+    "dual_gate_qualified": false
+  },
+  "decision": {
+    "outcome": "stop_eastmoney_core_profit_consistency_without_aggregation_scoring_selection_or_orders",
+    "rerun_same_history_allowed": false,
+    "invert_factor_allowed": false,
+    "change_formula_state_rule_or_threshold_allowed": false,
+    "subset_years_allowed": false,
+    "change_holding_period_topk_cost_quality_or_listing_gate_allowed": false,
+    "combine_with_rejected_existing_factors_allowed": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "current_score_selection_position_or_order_allowed": false,
+    "level2_intake_justified_by_this_result": false
+  },
+  "source_uses_tushare_token": false,
+  "forward_return_fields_read": true,
+  "selection_or_promotion_allowed": false
+}

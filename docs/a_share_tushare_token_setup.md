@@ -99,13 +99,15 @@ Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_
 
 不得运行 `acceptance-eastmoney-balance-sheet-resilience`、`sync-eastmoney-balance-sheet-resilience --allow-large`、`eastmoney-balance-sheet-resilience-no-return-audit` 或 `eastmoney-balance-sheet-resilience-diagnostic`，也不得把已保存诊断重新交给通用稳定性/Top‑3 审计。CLI 的跟踪终止记录会拒绝这些重跑。`TUSHARE_TOKEN` 的配置、更新或轮换与该分支无关，不会恢复运行许可。
 
-#### 当前活动入口：Eastmoney 核心利润一致性唯一诊断
+#### Eastmoney 核心利润一致性分支已终止
 
 当前候选 `eastmoney_core_profit_consistency` 使用 Eastmoney 公共利润表接口，不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分。唯一来源验收和 2019Q1–2025Q4 全量同步均已永久消费；全量快照有 28 个季度分区、92,764 行。跨克隆来源记录是 [`a_share_eastmoney_core_profit_consistency_full_source_record.json`](a_share_eastmoney_core_profit_consistency_full_source_record.json)（SHA‑256 `be6d43b7fb1e707898b88180c5d5a180bb4e28620fb8d9c646ef1c58cb7604fb`）。不得再次运行 `acceptance-eastmoney-core-profit-consistency` 或 `sync-eastmoney-core-profit-consistency --allow-large`。
 
 唯一联合无收益审计已经通过：保守状态规则得到 304/200 个潜在完整三日非重叠 cohort，覆盖 2020–2025 六年；47 个稠密比较字段均有至少 100 个可比交易日且绝对中位日秩相关低于 0.8。通过记录是 [`a_share_eastmoney_core_profit_consistency_research_record.json`](a_share_eastmoney_core_profit_consistency_research_record.json)（SHA‑256 `753b20b657c5e233dc9948d46f9a29f5cea56b40a7163e757b9018303a4f4c9d`）。无收益审计入口也已消费，不能重跑。
 
-下一阶段只允许按 [`a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json`](a_share_eastmoney_core_profit_consistency_diagnostic_preregistration.json)（SHA‑256 `2ba3377fd1c91d470fb07e2ab815048f1331ee38392c4d148fd9c6eec758c289`）执行一次 `eastmoney-core-profit-consistency-diagnostic`。该命令同样不需要 Token；它只做冻结的单因子收益与执行诊断，不产生当前选股或订单。诊断完成后必须先运行默认稳定性与 Top‑3 可行性门禁并冻结终止或前瞻记录，不能直接聚合、评分、选股或下单。提交仓库只包含合同、跟踪记录、实现、测试和本文，不包含本机 Token 或 `launchctl` 环境值。
+唯一收益与执行诊断已经完成：360 个 cohort 的平均 Rank IC 为 −0.00274，正 IC 比例 48.89%，Top‑3 扣成本累计 −38.22%、最大回撤 −68.64%；执行账本累计 −43.76%。20 万元、100 股整手、双边各 0.1% 滑点的方案累计 −6.14%，整手可负担率 83.24%，2020–2024 每年均为负，且最大成交额参与率 1.344% 超过 1% 上限。默认稳定性和 Top‑3 门禁均为 **0/1**。
+
+跨克隆终止记录为 [`a_share_eastmoney_core_profit_consistency_diagnostic_record.json`](a_share_eastmoney_core_profit_consistency_diagnostic_record.json)（SHA‑256 `970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f`）。不得再次运行验收、全量、无收益审计、收益诊断或两道通用门禁，也不得反向、挑选年份、改变公式/状态/持有期/TopK/成本或与已拒绝因子组合。`TUSHARE_TOKEN` 的配置、更新或轮换不会恢复该分支；它不进入聚合、当前评分、选股、仓位或订单。提交仓库不包含本机 Token 或 `launchctl` 环境值。
 
 ### 4.2 `stock_st` 分支已终止
 
@@ -119,7 +121,7 @@ ST 恢复速度的唯一全量来源尝试已经消费：完成 58 个历史会�
 
 `fina_indicator` 单季度毛利率同比变化分支的一次性验收已经成功，但唯一一次全量来源同步在 `SH600638` 的第二个固定报告期切片遇到一条必需身份、日期或版本字段不完整的来源行。原子发布逻辑已删除全部临时分区且没有读取价格或收益。终止记录是 [`a_share_tushare_gross_margin_research_record.json`](a_share_tushare_gross_margin_research_record.json)。不要重请求该股票、丢弃或填补异常行、修改字段/切片/公式，或重跑验收和全量同步。
 
-这些结果说明的是固定研究合同已经消费或失败，不说明 Token 失效。下一项 Tushare 研究必须先完成一份新的、无收益的经济机制重叠审计，并在任何供应商请求之前冻结独立的数据合同；本文的凭据配置步骤本身不构成运行许可。
+这些结果说明的是固定研究合同已经消费或失败，不说明 Token 失效。下一候选 `tushare_express_asset_growth_restraint = -growth_assets` 已完成无收益机制审计并冻结 [`a_share_tushare_express_asset_growth_data_contract.json`](a_share_tushare_express_asset_growth_data_contract.json)（SHA‑256 `517a9e402ecd77f4f09090414ff4e68a45a0af215ff9b200703a4f8ea6d3e177`）。它使用至少 2,000 积分可调用的标准 `express` 接口；当前 3,000 积分不需要 VIP 接口。现在只允许先实现和本地测试固定三股票、每股一次的一次性无收益验收，尚未授权运行真实请求。实现与测试通过后，唯一验收仍必须使用第 4 节的单进程 Token 透传，而且无论成功或失败都会消费；不得重试或直接进入全量、收益、聚合、评分、选股和下单。本文的凭据配置步骤本身不构成运行许可。
 
 `stk_managers` 管理层连续性分支也已在唯一一次来源验收的第一个股票请求上终止：`000001.SZ` 的 184 行中有 53 行完整离任日不等于公告日，不满足预先冻结的历史点时规则。其余两只验收股票未请求，姓名、身份哈希、原始响应、价格和收益均未持久化。终止记录是 [`a_share_tushare_management_continuity_source_acceptance_record.json`](a_share_tushare_management_continuity_source_acceptance_record.json)。不得重跑、请求剩余股票、改写离任日规则或继续全量与收益研究。
 
