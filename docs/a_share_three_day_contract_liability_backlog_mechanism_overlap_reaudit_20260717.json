@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit",
+  "status": "frozen_no_return_frontier_selection_after_express_source_rejection_before_new_provider_rows_factor_values_prices_or_returns",
+  "frozen_at": "2026-07-17T00:59:00Z",
+  "purpose": "Select at most one economically independent, currently authorized source mechanism for the fixed three-local-session strategy after the Tushare express asset-growth source field failed acceptance.",
+  "prior_terminal_evidence": {
+    "path": "docs/a_share_tushare_express_asset_growth_source_acceptance_record.json",
+    "sha256": "71a61cdfb33359e07f74e101b7958258fce08a70974aee2be0aab16179e48b1e",
+    "result": "Three fixed express calls returned 17 rows but zero finite growth_assets values; the branch stopped before factor values, prices, or returns."
+  },
+  "research_scope": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "development_years_if_later_admitted": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "current_tushare_points": 3000,
+    "new_provider_rows_observed": false,
+    "new_factor_values_observed": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "frontier_candidates": [
+    {
+      "candidate": "tushare_daily_chip_cost_and_winner_rate",
+      "endpoint": "cyq_perf",
+      "decision": "rejected_before_rows",
+      "reason": "The official interface requires 5,000 points while the authorized account has 3,000; its cost quantiles and winner rate are also derived from historical prices and overlap the exhausted daily technical-price frontier.",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=293",
+      "documented_points": 5000
+    },
+    {
+      "candidate": "tushare_opening_auction_demand",
+      "endpoint": "stk_auction_o",
+      "decision": "deferred_unavailable_entitlement_before_rows",
+      "reason": "The official interface is separately permissioned rather than enabled by the current points. It is potentially relevant microstructure data but cannot be treated as authorized or made a prerequisite.",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=353",
+      "permission": "separate"
+    },
+    {
+      "candidate": "exchange_abnormal_volatility_or_alert_event",
+      "endpoints": [
+        "stk_shock",
+        "stk_high_shock",
+        "stk_alert"
+      ],
+      "decision": "rejected_unavailable_entitlement_before_rows",
+      "reason": "The official abnormal-volatility and exchange-alert interfaces require 6,000 points, above the authorized 3,000-point account.",
+      "official_documentation": [
+        "https://tushare.pro/document/2?doc_id=451",
+        "https://tushare.pro/document/2?doc_id=452",
+        "https://tushare.pro/document/2?doc_id=453"
+      ],
+      "documented_points": 6000
+    },
+    {
+      "candidate": "tushare_holder_trade_buy_share",
+      "endpoint": "stk_holdertrade",
+      "decision": "rejected_mechanism_overlap_before_rows",
+      "reason": "The repository already completed and rejected direct insider open-market and major-holder change mechanisms. A Tushare holder-trade field or provider substitution is not a new economic mechanism.",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=175",
+      "documented_points": 2000
+    },
+    {
+      "candidate": "tushare_contract_liability_backlog_delta",
+      "endpoint": "balancesheet",
+      "decision": "selected_for_pre_row_contract_only",
+      "reason": "Contract liabilities represent customer consideration received before revenue recognition. Their same-quarter year-over-year increase, scaled by current total assets, measures customer-funded demand backlog rather than earnings magnitude, total leverage, asset expansion, ownership, moneyflow, or price path.",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=36",
+      "documented_points": 2000,
+      "vip_endpoint_required": false
+    },
+    {
+      "candidate": "other_balance_sheet_field_or_ratio",
+      "endpoint": "balancesheet",
+      "decision": "forbidden_same_response_field_sweep",
+      "reason": "Goodwill, inventories, receivables, short-term debt, cash, lease liabilities and every other balance-sheet field are excluded from this branch. Only the preselected contract-liability backlog mechanism may be requested or derived."
+    }
+  ],
+  "selected_mechanism": {
+    "factor_name": "tushare_contract_liability_backlog_delta",
+    "economic_mechanism": "Customer-funded demand backlog disclosed through the year-over-year increase in contract liabilities relative to the issuer's current asset base.",
+    "formula": "(current_initial_type1_contract_liab - same_fiscal_quarter_previous_year_initial_type1_contract_liab) / current_initial_type1_total_assets",
+    "raw_direction": "higher_is_better",
+    "factor_family": "quarterly_customer_backlog_balance_sheet_event",
+    "candidate_report_type": "1 consolidated report",
+    "candidate_company_type": "1 general industrial and commercial",
+    "signal_date": "current accepted f_ann_date",
+    "availability": "first local trading session strictly after current accepted f_ann_date",
+    "maximum_event_age_calendar_days": 3,
+    "alternative_balance_sheet_field_factor_or_combination_allowed": false
+  },
+  "mechanism_independence": {
+    "versus_earnings_growth_and_margin": "Contract liabilities are obligations to deliver goods or services after customer consideration; the factor does not use revenue, profit, EPS, ROE, gross margin or their growth fields.",
+    "versus_cash_conversion": "The rejected cash-conversion factor used operating cash flow divided by attributable net income. This factor uses neither a cash-flow statement nor an income statement and measures a specific customer obligation balance.",
+    "versus_total_leverage": "The terminal balance-sheet-resilience factor used total liabilities divided by total assets. The selected factor uses the year-over-year change of one operating-liability component divided by current assets; the later uniqueness gate must still include balance-sheet resilience as a named near neighbor.",
+    "versus_asset_growth": "The rejected express factor used total-assets growth versus beginning of year. Current total assets appear only as a scale denominator; no asset-growth rate is used.",
+    "versus_ownership_orderflow_and_price": "No holder identity, ownership concentration, trade flow, OHLCV, technical indicator, auction, minute, Level-2 or return field is used.",
+    "required_named_near_neighbors_if_source_passes": [
+      "eastmoney_balance_sheet_resilience",
+      "eastmoney_core_profit_consistency",
+      "tushare_positive_book_to_market",
+      "tushare_q_gross_margin_yoy_change_pp"
+    ]
+  },
+  "pre_row_decision": {
+    "independent_factor_count": 1,
+    "data_contract_must_be_frozen_before_provider_access": true,
+    "only_small_fixed_symbol_source_acceptance_allowed_after_implementation_and_tests": true,
+    "full_history_allowed_before_acceptance": false,
+    "price_or_return_access_allowed": false,
+    "aggregation_scoring_selection_sizing_orders_or_level2_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

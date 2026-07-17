@@ -121,7 +121,9 @@ ST 恢复速度的唯一全量来源尝试已经消费：完成 58 个历史会�
 
 `fina_indicator` 单季度毛利率同比变化分支的一次性验收已经成功，但唯一一次全量来源同步在 `SH600638` 的第二个固定报告期切片遇到一条必需身份、日期或版本字段不完整的来源行。原子发布逻辑已删除全部临时分区且没有读取价格或收益。终止记录是 [`a_share_tushare_gross_margin_research_record.json`](a_share_tushare_gross_margin_research_record.json)。不要重请求该股票、丢弃或填补异常行、修改字段/切片/公式，或重跑验收和全量同步。
 
-这些结果说明的是固定研究合同已经消费或失败，不说明 Token 失效。下一候选 `tushare_express_asset_growth_restraint = -growth_assets` 已完成无收益机制审计并冻结 [`a_share_tushare_express_asset_growth_data_contract.json`](a_share_tushare_express_asset_growth_data_contract.json)（SHA‑256 `517a9e402ecd77f4f09090414ff4e68a45a0af215ff9b200703a4f8ea6d3e177`）。它使用至少 2,000 积分可调用的标准 `express` 接口；当前 3,000 积分不需要 VIP 接口。现在只允许先实现和本地测试固定三股票、每股一次的一次性无收益验收，尚未授权运行真实请求。实现与测试通过后，唯一验收仍必须使用第 4 节的单进程 Token 透传，而且无论成功或失败都会消费；不得重试或直接进入全量、收益、聚合、评分、选股和下单。本文的凭据配置步骤本身不构成运行许可。
+这些结果说明的是固定研究合同已经消费或失败，不说明 Token 失效。候选 `tushare_express_asset_growth_restraint = -growth_assets` 的唯一三股票验收也已经消费：三次固定请求共返回 17 行，但 `growth_assets` 全部缺失或非有限，得到 0 个有效事件，未发布 Parquet、未形成有限因子值，也未读取价格或收益。跨克隆终止记录为 [`a_share_tushare_express_asset_growth_source_acceptance_record.json`](a_share_tushare_express_asset_growth_source_acceptance_record.json)（SHA‑256 `71a61cdfb33359e07f74e101b7958258fce08a70974aee2be0aab16179e48b1e`）。不得再次运行 `acceptance-tushare-express-asset-growth`、换股票/日期/字段、在同一响应里寻找替代因子，或继续全量、收益、聚合、评分、选股和下单；入口会在合同、Token 和供应商访问前拒绝。
+
+下一候选的无收益机制审计已经冻结在 [`a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `2d8cc98378f7e2ffac7182f80a9fbb8c0288c769ca4de9f1c5d68abd1ded0729`），但它尚未冻结来源数据合同，也没有读取供应商行、因子值、价格或收益。必须先完成并校验合同与本地实现，之后才能判断是否存在唯一一次真实验收。本文的凭据配置步骤本身不构成运行许可。
 
 `stk_managers` 管理层连续性分支也已在唯一一次来源验收的第一个股票请求上终止：`000001.SZ` 的 184 行中有 53 行完整离任日不等于公告日，不满足预先冻结的历史点时规则。其余两只验收股票未请求，姓名、身份哈希、原始响应、价格和收益均未持久化。终止记录是 [`a_share_tushare_management_continuity_source_acceptance_record.json`](a_share_tushare_management_continuity_source_acceptance_record.json)。不得重跑、请求剩余股票、改写离任日规则或继续全量与收益研究。
 

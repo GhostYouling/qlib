@@ -124,6 +124,14 @@ DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD = (
     / "docs"
     / "a_share_tushare_management_continuity_source_acceptance_record.json"
 )
+DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_express_asset_growth_data_contract.json"
+)
+DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_express_asset_growth_source_acceptance_record.json"
+)
 DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_st_recovery_data_contract.json"
 )
@@ -332,6 +340,12 @@ TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT_SHA256 = (
 )
 TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_RECORD_SHA256 = (
     "e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8"
+)
+TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT_SHA256 = (
+    "517a9e402ecd77f4f09090414ff4e68a45a0af215ff9b200703a4f8ea6d3e177"
+)
+TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD_SHA256 = (
+    "71a61cdfb33359e07f74e101b7958258fce08a70974aee2be0aab16179e48b1e"
 )
 TUSHARE_ST_RECOVERY_CONTRACT_SHA256 = (
     "cae22e7c7f8bf8c6e14587d5e7f260664c8080c579c52561ef0253d7c8a7ca9e"
@@ -618,6 +632,26 @@ TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_TS_CODES = (
 )
 TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_START = "20190101"
 TUSHARE_MANAGEMENT_CONTINUITY_ACCEPTANCE_END = "20251231"
+TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS = (
+    "ts_code",
+    "ann_date",
+    "end_date",
+    "growth_assets",
+)
+TUSHARE_EXPRESS_ASSET_GROWTH_COLUMNS = (
+    "announcement_date",
+    "report_date",
+    "instrument",
+    "tushare_express_asset_growth_restraint",
+    "provider",
+)
+TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_TS_CODES = (
+    "600000.SH",
+    "000001.SZ",
+    "300750.SZ",
+)
+TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_START = "20190101"
+TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_END = "20251231"
 TUSHARE_ST_MEMBERSHIP_RAW_FIELDS = (
     "ts_code",
     "trade_date",
@@ -1774,6 +1808,31 @@ def fetch_tushare_management_continuity_rows(
         raise RichDataError(
             "Tushare stk_managers request failed for "
             f"{ts_code}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
+def fetch_tushare_express_asset_growth(
+    ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> pd.DataFrame:
+    """Fetch one stock's performance-express asset growth whitelist."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.express(
+            ts_code=ts_code,
+            start_date=announcement_start.strftime("%Y%m%d"),
+            end_date=announcement_end.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            f"Tushare express request failed for {ts_code}: {safe_exception_text(exc)}"
         ) from exc
     if result is None:
         return pd.DataFrame()
@@ -3356,6 +3415,167 @@ def canonicalize_tushare_management_continuity(
         "nondeparting_identity_rows": int((~identity_state["departing"]).sum()),
         "stock_announcement_events_written": int(len(result)),
         "distinct_factor_values": int(continuity.nunique()),
+    }
+
+
+def canonicalize_tushare_express_asset_growth(
+    frame: pd.DataFrame,
+    expected_ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Apply the frozen express schema, point-in-time, and negation policy."""
+
+    empty_quality: dict[str, Any] = {
+        "input_rows": 0,
+        "missing_or_nonfinite_growth_assets_rows_excluded": 0,
+        "valid_factor_events": 0,
+        "distinct_factor_values": 0,
+        "minimum_factor_value": None,
+        "maximum_factor_value": None,
+        "duplicate_stock_report_period_keys": 0,
+        "formula_maximum_absolute_error": 0.0,
+    }
+    if frame is None:
+        return (
+            pd.DataFrame(columns=TUSHARE_EXPRESS_ASSET_GROWTH_COLUMNS),
+            empty_quality,
+        )
+    raw = frame.copy()
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS)
+    )
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare express response contains fields outside the frozen whitelist: "
+            + ", ".join(unexpected_columns)
+        )
+    if raw.empty:
+        return (
+            pd.DataFrame(columns=TUSHARE_EXPRESS_ASSET_GROWTH_COLUMNS),
+            empty_quality,
+        )
+    missing_columns = [
+        field for field in TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS if field not in raw
+    ]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare express response lacks requested fields: "
+            + ", ".join(missing_columns)
+        )
+    expected_code = str(expected_ts_code).strip().upper()
+    expected_parts = pd.Series([expected_code], dtype="string").str.extract(
+        r"^(\d{6})\.(SH|SZ)$"
+    )
+    if expected_parts.isna().any(axis=None):
+        raise RichDataError(f"invalid frozen Tushare express stock: {expected_code}")
+    if announcement_start > announcement_end:
+        raise RichDataError("Tushare express announcement-date range is reversed")
+
+    source_code = (
+        raw["ts_code"].astype("string").str.strip().str.upper().replace("", pd.NA)
+    )
+    code_parts = source_code.str.extract(r"^(\d{6})\.(SH|SZ)$")
+    announcement_raw = raw["ann_date"].astype("string").str.strip().replace("", pd.NA)
+    report_raw = raw["end_date"].astype("string").str.strip().replace("", pd.NA)
+    announcement_date = pd.to_datetime(
+        announcement_raw, format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    report_date = pd.to_datetime(
+        report_raw, format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    invalid_key = (
+        source_code.isna()
+        | code_parts[0].isna()
+        | code_parts[1].isna()
+        | announcement_date.isna()
+        | report_date.isna()
+    )
+    if invalid_key.any():
+        raise RichDataError(
+            "Tushare express response contains "
+            f"{int(invalid_key.sum())} rows with invalid stock or date keys"
+        )
+    if not source_code.eq(expected_code).all():
+        raise RichDataError(
+            "Tushare express response contains a stock outside its frozen request"
+        )
+    start_ts = pd.Timestamp(announcement_start)
+    end_ts = pd.Timestamp(announcement_end)
+    if announcement_date.lt(start_ts).any() or announcement_date.gt(end_ts).any():
+        raise RichDataError(
+            "Tushare express response contains an announcement outside its request"
+        )
+    if not report_date.dt.strftime("%m%d").isin({"0331", "0630", "0930", "1231"}).all():
+        raise RichDataError(
+            "Tushare express response contains a non-standard report period"
+        )
+    if announcement_date.lt(report_date).any():
+        raise RichDataError(
+            "Tushare express response announces a report before its period end"
+        )
+
+    duplicate_key = pd.DataFrame(
+        {"source_code": source_code, "report_date": report_date}
+    ).duplicated(["source_code", "report_date"], keep=False)
+    duplicate_count = int(duplicate_key.sum())
+    if duplicate_count:
+        raise RichDataError(
+            "Tushare express response contains duplicate stock-report-period keys"
+        )
+    growth_assets = pd.to_numeric(raw["growth_assets"], errors="coerce")
+    growth_values = growth_assets.to_numpy(dtype=float, na_value=np.nan, copy=False)
+    finite_growth = np.isfinite(growth_values)
+
+    code = str(expected_parts.iloc[0, 0])
+    exchange = str(expected_parts.iloc[0, 1])
+    instrument = qlib_symbol(code)
+    if not instrument.startswith(exchange):
+        raise RichDataError(
+            f"Tushare express stock code and exchange suffix disagree: {expected_code}"
+        )
+    accepted_growth = growth_values[finite_growth]
+    accepted = pd.DataFrame(
+        {
+            "announcement_date": announcement_date.loc[finite_growth].to_numpy(),
+            "report_date": report_date.loc[finite_growth].to_numpy(),
+            "instrument": instrument,
+            "tushare_express_asset_growth_restraint": -accepted_growth,
+            "_growth_assets": accepted_growth,
+            "provider": "tushare",
+        }
+    )
+    formula_error = (
+        float(
+            np.max(
+                np.abs(
+                    accepted["tushare_express_asset_growth_restraint"].to_numpy(
+                        dtype=float
+                    )
+                    + accepted["_growth_assets"].to_numpy(dtype=float)
+                )
+            )
+        )
+        if len(accepted)
+        else 0.0
+    )
+    result = (
+        accepted.loc[:, list(TUSHARE_EXPRESS_ASSET_GROWTH_COLUMNS)]
+        .sort_values(["announcement_date", "report_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    factor = result["tushare_express_asset_growth_restraint"]
+    if not np.isfinite(factor.to_numpy(dtype=float, copy=False)).all():
+        raise RichDataError("derived Tushare express asset-growth factor is non-finite")
+    return result, {
+        "input_rows": int(len(raw)),
+        "missing_or_nonfinite_growth_assets_rows_excluded": int((~finite_growth).sum()),
+        "valid_factor_events": int(len(result)),
+        "distinct_factor_values": int(factor.nunique()),
+        "minimum_factor_value": float(factor.min()) if len(factor) else None,
+        "maximum_factor_value": float(factor.max()) if len(factor) else None,
+        "duplicate_stock_report_period_keys": duplicate_count,
+        "formula_maximum_absolute_error": formula_error,
     }
 
 
@@ -5785,6 +6005,250 @@ def load_tushare_gross_margin_contract(
     return contract
 
 
+def load_tushare_express_asset_growth_contract(
+    path: Path = DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT,
+) -> dict[str, Any]:
+    """Load and validate the immutable pre-row express asset-growth contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT_SHA256:
+        raise RichDataError(
+            "Tushare express asset-growth contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_tushare_express_asset_growth_data_contract"
+    )
+    mechanism = contract.get("mechanism_identity") or {}
+    overlap = mechanism.get("mechanism_overlap_audit") or {}
+    source = contract.get("source") or {}
+    acceptance = contract.get("acceptance_request") or {}
+    canonical = contract.get("canonicalization") or {}
+    factor = contract.get("factor") or {}
+    gates = contract.get("acceptance_gates") or {}
+    publication = contract.get("atomic_publication") or {}
+    post = contract.get("post_acceptance_policy") or {}
+    forbidden = tuple(source.get("forbidden_fields") or ())
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_provider_rows_factor_values_prices_or_returns"
+        or mechanism.get("factor_name") != "tushare_express_asset_growth_restraint"
+        or mechanism.get("independent_factor_count") != 1
+        or mechanism.get("alternative_express_field_factor_or_combination_allowed")
+        is not False
+        or overlap.get("path")
+        != "docs/a_share_three_day_express_asset_growth_mechanism_overlap_reaudit_20260717.json"
+        or overlap.get("sha256")
+        != "94c0c4655918976c3113055d94e573a1bbcaf9cff85ecfc409d3f74e5a593ba4"
+        or source.get("provider") != "tushare"
+        or source.get("endpoint") != "express"
+        or source.get("interface_tier") != "standard_one_stock_history"
+        or source.get("documented_minimum_points") != 2000
+        or source.get("current_authorized_account_points") != 3000
+        or source.get("vip_endpoint_or_5000_points_required") is not False
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS
+        or set(forbidden).intersection(TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS)
+        or source.get("credential_environment_variable") != "TUSHARE_TOKEN"
+        or source.get("credential_read_after_contract_and_consumption_guard_only")
+        is not True
+        or source.get("literal_credential_in_cli_source_manifest_log_or_git_allowed")
+        is not False
+        or source.get("provider_rows_observed_before_freeze") is not False
+        or source.get("factor_values_observed_before_freeze") is not False
+        or tuple(acceptance.get("fixed_symbols_in_order") or ())
+        != TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_TS_CODES
+        or acceptance.get("fixed_start_date")
+        != TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_START
+        or acceptance.get("fixed_end_date")
+        != TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_END
+        or acceptance.get("provider_call_count_if_source_is_available") != 3
+        or acceptance.get("one_call_per_symbol") is not True
+        or acceptance.get("maximum_attempts_per_symbol") != 1
+        or acceptance.get("minimum_seconds_between_calls") != 0.32
+        or acceptance.get("maximum_rows_per_symbol_acceptance_guard") != 100
+        or acceptance.get("stop_on_first_provider_or_canonical_failure") is not True
+        or acceptance.get("remaining_calls_after_failure_allowed") is not False
+        or canonical.get("announcement_not_before_report_period_end_required")
+        is not True
+        or canonical.get("requested_symbol_match_required") is not True
+        or canonical.get("duplicate_stock_report_period_key_allowed") is not False
+        or canonical.get("duplicate_resolution_or_first_last_version_selection_allowed")
+        is not False
+        or factor.get("name") != "tushare_express_asset_growth_restraint"
+        or factor.get("source_field") != "growth_assets"
+        or factor.get("formula") != "-1 * growth_assets for finite canonical rows"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("equivalent_raw_direction") != "lower_growth_assets_is_better"
+        or factor.get("availability")
+        != "first local trading session strictly after announcement_date"
+        or factor.get("same_session_trade_allowed") is not False
+        or factor.get("maximum_event_age_calendar_days") != 3
+        or gates.get("all_three_fixed_calls_complete_required") is not True
+        or gates.get("maximum_rows_per_response_strictly_below") != 100
+        or gates.get("minimum_symbols_with_at_least_one_valid_factor_event") != 2
+        or gates.get("minimum_total_valid_factor_events") != 6
+        or gates.get("minimum_distinct_factor_values") != 2
+        or gates.get("maximum_duplicate_stock_report_period_keys") != 0
+        or gates.get("maximum_formula_absolute_error") != 1e-12
+        or tuple(gates.get("required_output_columns") or ())
+        != TUSHARE_EXPRESS_ASSET_GROWTH_COLUMNS
+        or gates.get("raw_growth_assets_persisted") is not False
+        or gates.get("unrequested_express_fields_persisted") is not False
+        or gates.get("provider_raw_response_persisted") is not False
+        or gates.get("price_fields_loaded") != []
+        or gates.get("forward_return_fields_read") is not False
+        or gates.get("selection_or_promotion_allowed") is not False
+        or publication.get("derived_acceptance_path")
+        != "data/raw/a_share/rich/tushare_express_asset_growth_acceptance.parquet"
+        or publication.get("temporary_file_same_parent_and_atomic_replace_required")
+        is not True
+        or publication.get("successful_acceptance_may_complete_once") is not True
+        or publication.get(
+            "failed_or_successful_provider_attempt_consumes_the_frozen_acceptance"
+        )
+        is not True
+        or post.get("full_history_request_allowed_immediately") is not False
+        or post.get("new_full_source_and_no_return_preregistration_required")
+        is not True
+        or post.get("generic_factor_diagnostic_allowed") is not False
+        or post.get(
+            "aggregation_scoring_selection_sizing_orders_or_level2_purchase_allowed"
+        )
+        is not False
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare express asset-growth contract does not match the frozen protocol"
+        )
+    overlap_path = resolve_record_path(str(overlap["path"]))
+    if not overlap_path.exists() or file_digest(overlap_path) != str(overlap["sha256"]):
+        raise RichDataError(
+            "Tushare express asset-growth mechanism-overlap evidence changed"
+        )
+    return contract
+
+
+def tushare_express_asset_growth_acceptance_records() -> list[Path]:
+    """Return records that consumed the frozen express acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*tushare_express_asset_growth_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_express_asset_growth_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_express_asset_growth_acceptance_record(
+    path: Path = DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Validate the cross-clone terminal express source rejection."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError(
+            "Tushare express asset-growth acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path, kind="a_share_tushare_express_asset_growth_source_acceptance_record"
+    )
+    contract = record.get("data_contract") or {}
+    acceptance = record.get("acceptance") or {}
+    scope = record.get("privacy_and_scope") or {}
+    interpretation = record.get("interpretation") or {}
+    decision = record.get("terminal_decision") or {}
+    expected_rows = {"600000.SH": 11, "000001.SZ": 4, "300750.SZ": 2}
+    expected_zero_events = {"600000.SH": 0, "000001.SZ": 0, "300750.SZ": 0}
+    if (
+        record.get("status")
+        != "terminal_source_rejected_after_three_calls_before_factor_values_full_history_prices_or_returns"
+        or contract.get("sha256") != TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT_SHA256
+        or acceptance.get("manifest_sha256")
+        != "4c8b8fee687d42fc246532b4037657f754955248dd26f1e1bd7e531a30c29902"
+        or acceptance.get("acceptance_status")
+        != "source_acceptance_failed_stop_before_full_history_prices_or_returns"
+        or acceptance.get("api") != "express"
+        or acceptance.get("announcement_start") != "20190101"
+        or acceptance.get("announcement_end") != "20251231"
+        or tuple(acceptance.get("fixed_symbols_in_order") or ())
+        != TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_TS_CODES
+        or tuple(acceptance.get("requested_fields") or ())
+        != TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS
+        or acceptance.get("provider_calls_planned") != 3
+        or acceptance.get("provider_calls_issued") != 3
+        or acceptance.get("maximum_attempts_per_symbol") != 1
+        or acceptance.get("source_rows_by_stock") != expected_rows
+        or acceptance.get("source_rows_total") != 17
+        or acceptance.get("missing_or_nonfinite_growth_assets_rows_by_stock")
+        != expected_rows
+        or acceptance.get("missing_or_nonfinite_growth_assets_rows_total") != 17
+        or acceptance.get("valid_factor_events_by_stock") != expected_zero_events
+        or acceptance.get("symbols_with_valid_factor_events") != 0
+        or acceptance.get("valid_factor_events_total") != 0
+        or acceptance.get("distinct_factor_values") != 0
+        or acceptance.get("duplicate_stock_report_period_keys") != 0
+        or acceptance.get("formula_maximum_absolute_error") != 0.0
+        or acceptance.get("failure_code")
+        != "frozen_growth_assets_field_has_no_finite_values_in_three_symbol_acceptance"
+        or acceptance.get("raw_provider_frames_persisted") is not False
+        or acceptance.get("raw_growth_assets_persisted") is not False
+        or acceptance.get("factor_frame_published") is not False
+        or acceptance.get("published_file_count") != 0
+        or acceptance.get("partial_snapshot_deleted") is not True
+        or acceptance.get("final_snapshot_published") is not False
+        or scope.get("credential_value_logged_stored_or_committed") is not False
+        or scope.get("provider_raw_response_persisted") is not False
+        or scope.get("raw_growth_assets_value_persisted") is not False
+        or scope.get("finite_factor_value_observed_or_persisted") is not False
+        or scope.get("price_fields_loaded") != []
+        or scope.get("forward_return_fields_read") is not False
+        or interpretation.get("alternate_field_or_same_response_search_allowed")
+        is not False
+        or interpretation.get("direction_inversion_allowed") is not False
+        or decision.get("acceptance_consumed") is not True
+        or decision.get("acceptance_retry_allowed") is not False
+        or decision.get("remaining_or_replacement_symbols_may_be_requested")
+        is not False
+        or decision.get(
+            "alternative_express_field_factor_or_same_response_combination_allowed"
+        )
+        is not False
+        or decision.get("full_source_sync_allowed") is not False
+        or decision.get("capacity_uniqueness_or_return_work_allowed") is not False
+        or decision.get("aggregation_scoring_selection_sizing_or_orders_allowed")
+        is not False
+        or decision.get("level2_purchase_or_intake_justified") is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare express asset-growth terminal acceptance record changed"
+        )
+    for link in (record.get("mechanism_overlap_audit") or {}, contract):
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        linked_sha = str(link.get("sha256") or "")
+        if not linked_path.exists() or file_digest(linked_path) != linked_sha:
+            raise RichDataError(
+                f"Tushare express asset-growth terminal evidence changed: {linked_path}"
+            )
+    manifest_file = resolve_record_path(str(acceptance.get("manifest_path") or ""))
+    if manifest_file.exists() and file_digest(manifest_file) != str(
+        acceptance["manifest_sha256"]
+    ):
+        raise RichDataError(
+            "Tushare express asset-growth local rejection manifest changed"
+        )
+    return record
+
+
 def load_tushare_management_continuity_contract(
     path: Path = DEFAULT_TUSHARE_MANAGEMENT_CONTINUITY_CONTRACT,
 ) -> dict[str, Any]:
@@ -7811,8 +8275,7 @@ def load_eastmoney_core_profit_consistency_contract(
     }
     dense = list(uniqueness.get("dense_comparison_factors") or [])
     sparse = list(
-        uniqueness.get("sparse_event_factors_excluded_from_statistical_pass_fail")
-        or []
+        uniqueness.get("sparse_event_factors_excluded_from_statistical_pass_fail") or []
     )
     if (
         contract.get("version") != 1
@@ -7824,8 +8287,7 @@ def load_eastmoney_core_profit_consistency_contract(
         or mechanism.get("sha256_at_contract_freeze")
         != EASTMONEY_CORE_PROFIT_CONSISTENCY_MECHANISM_AUDIT_SHA256
         or adapter.get("commit") != "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28"
-        or adapter.get("source_path")
-        != "akshare/stock_feature/stock_report_em.py"
+        or adapter.get("source_path") != "akshare/stock_feature/stock_report_em.py"
         or adapter.get("source_file_sha256")
         != "2012492017222a405d5cd396d3a29a384bc79dd8c1dc4d3e8737f1d2361bd783"
         or adapter.get("function") != "stock_lrb_em"
@@ -7858,15 +8320,16 @@ def load_eastmoney_core_profit_consistency_contract(
         or factor.get("direction") != "higher_is_better"
         or factor.get("valid_range") != [0.0, 1.0]
         or point_in_time.get("same_announcement_session_trade_allowed") is not False
-        or point_in_time.get("older_report_carry_after_new_partition_activation_allowed")
+        or point_in_time.get(
+            "older_report_carry_after_new_partition_activation_allowed"
+        )
         is not False
         or point_in_time.get("late_older_correction_can_supersede_newer_report")
         is not False
         or point_in_time.get("maximum_age_calendar_days") != 550
         or tuple(normalized.get("columns") or ())
         != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
-        or tuple(normalized.get("event_key") or ())
-        != ("instrument", "report_date")
+        or tuple(normalized.get("event_key") or ()) != ("instrument", "report_date")
         or normalized.get("provider_value") != "eastmoney"
         or normalized.get("duplicate_event_keys_allowed") is not False
         or acceptance.get("fixed_report_date") != "2025-12-31"
@@ -12695,6 +13158,255 @@ def _fetch_tushare_stock_st_with_policy(
     raise AssertionError("unreachable Tushare stock_st retry state")
 
 
+def sync_tushare_express_asset_growth_acceptance() -> Path:
+    """Run the frozen three-call express asset-growth acceptance without prices."""
+
+    if DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD.exists():
+        load_tushare_express_asset_growth_acceptance_record(
+            DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD
+        )
+        raise RichDataError(
+            "Tushare express asset-growth branch is terminal after its consumed "
+            "source rejection; another acceptance is forbidden"
+        )
+    prior_records = tushare_express_asset_growth_acceptance_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare express asset-growth acceptance is one-shot and already "
+            "consumed: " + ", ".join(str(path) for path in prior_records)
+        )
+    contract = load_tushare_express_asset_growth_contract()
+    publication = contract["atomic_publication"]
+    destination = RAW_ROOT / Path(str(publication["derived_acceptance_path"])).name
+    if destination.exists():
+        raise RichDataError(
+            "Tushare express asset-growth acceptance output already exists without "
+            f"a consumable run record; refusing overwrite: {destination}"
+        )
+    require_provider("tushare")
+
+    acceptance = contract["acceptance_request"]
+    gates = contract["acceptance_gates"]
+    ts_codes = tuple(str(value) for value in acceptance["fixed_symbols_in_order"])
+    announcement_start = dt.datetime.strptime(
+        str(acceptance["fixed_start_date"]), "%Y%m%d"
+    ).date()
+    announcement_end = dt.datetime.strptime(
+        str(acceptance["fixed_end_date"]), "%Y%m%d"
+    ).date()
+    call_delay = float(acceptance["minimum_seconds_between_calls"])
+    run_id = new_run_id("tushare_express_asset_growth_acceptance")
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    calls_issued = 0
+    current_ts_code: str | None = None
+    source_rows_by_stock: dict[str, int] = {}
+    quality_by_stock: dict[str, dict[str, Any]] = {}
+    try:
+        frames: list[pd.DataFrame] = []
+        row_ceiling = int(acceptance["maximum_rows_per_symbol_acceptance_guard"])
+        for index, ts_code in enumerate(ts_codes):
+            if index:
+                time.sleep(call_delay)
+            current_ts_code = ts_code
+            calls_issued += 1
+            raw = fetch_tushare_express_asset_growth(
+                ts_code, announcement_start, announcement_end
+            )
+            source_rows_by_stock[ts_code] = int(len(raw))
+            if len(raw) >= row_ceiling:
+                raise RichDataError(
+                    "Tushare express asset-growth acceptance reached its strict "
+                    f"row ceiling for {ts_code}: {len(raw)}"
+                )
+            normalized, quality = canonicalize_tushare_express_asset_growth(
+                raw, ts_code, announcement_start, announcement_end
+            )
+            quality_by_stock[ts_code] = quality
+            frames.append(normalized)
+        if calls_issued != int(
+            acceptance["provider_call_count_if_source_is_available"]
+        ):
+            raise RichDataError(
+                "Tushare express asset-growth acceptance omitted a frozen request"
+            )
+        combined = pd.concat(frames, ignore_index=True)
+        if tuple(combined.columns) != TUSHARE_EXPRESS_ASSET_GROWTH_COLUMNS:
+            raise RichDataError(
+                "Tushare express asset-growth acceptance output columns changed"
+            )
+        event_key = ["instrument", "report_date"]
+        duplicate_keys = int(combined.duplicated(event_key, keep=False).sum())
+        if duplicate_keys > int(gates["maximum_duplicate_stock_report_period_keys"]):
+            raise RichDataError(
+                "Tushare express asset-growth acceptance contains duplicate event keys"
+            )
+        combined = combined.sort_values(
+            ["announcement_date", "report_date", "instrument"], kind="stable"
+        ).reset_index(drop=True)
+        symbols_with_values = int(combined["instrument"].nunique())
+        if symbols_with_values < int(
+            gates["minimum_symbols_with_at_least_one_valid_factor_event"]
+        ):
+            raise RichDataError(
+                "Tushare express asset-growth acceptance retained too few symbols "
+                f"with a valid event: {symbols_with_values}"
+            )
+        if len(combined) < int(gates["minimum_total_valid_factor_events"]):
+            raise RichDataError(
+                "Tushare express asset-growth acceptance retained too few valid "
+                f"factor events: {len(combined)}"
+            )
+        factor_name = "tushare_express_asset_growth_restraint"
+        distinct_values = int(combined[factor_name].nunique())
+        if distinct_values < int(gates["minimum_distinct_factor_values"]):
+            raise RichDataError(
+                "Tushare express asset-growth acceptance has too few distinct "
+                f"factor values: {distinct_values}"
+            )
+        formula_error = max(
+            (
+                float(value["formula_maximum_absolute_error"])
+                for value in quality_by_stock.values()
+            ),
+            default=0.0,
+        )
+        if formula_error > float(gates["maximum_formula_absolute_error"]):
+            raise RichDataError(
+                "Tushare express asset-growth formula error exceeds the frozen gate"
+            )
+
+        atomic_write_frame(combined, destination)
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_express_asset_growth_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT),
+                "frozen_at": contract["frozen_at"],
+            },
+            "source_request": {
+                "api": "express",
+                "request_mode": "one stock history per fixed call",
+                "ts_codes_in_order": list(ts_codes),
+                "announcement_start": acceptance["fixed_start_date"],
+                "announcement_end": acceptance["fixed_end_date"],
+                "provider_calls_planned": int(
+                    acceptance["provider_call_count_if_source_is_available"]
+                ),
+                "provider_calls_issued": calls_issued,
+                "maximum_attempts_per_symbol": int(
+                    acceptance["maximum_attempts_per_symbol"]
+                ),
+                "minimum_seconds_between_calls": call_delay,
+                "fields": list(TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS),
+                "source_rows_by_stock": source_rows_by_stock,
+                "strict_row_ceiling": row_ceiling,
+                "raw_frames_persisted": False,
+                "raw_growth_assets_persisted": False,
+                "unrequested_fields_requested_or_stored": [],
+                "credentials_logged_or_stored": False,
+            },
+            "files": [
+                {
+                    "path": manifest_path(destination),
+                    "rows": int(len(combined)),
+                    "sha256": frame_digest(combined),
+                }
+            ],
+            "source_quality": {
+                "source_rows": int(sum(source_rows_by_stock.values())),
+                "source_rows_by_stock": source_rows_by_stock,
+                "rows_written": int(len(combined)),
+                "symbols_with_valid_factor_events": symbols_with_values,
+                "quality_by_stock": quality_by_stock,
+                "duplicate_stock_report_period_keys": duplicate_keys,
+                "factor_distinct_values": distinct_values,
+                "factor_min": float(combined[factor_name].min()),
+                "factor_max": float(combined[factor_name].max()),
+                "formula_maximum_absolute_error": formula_error,
+            },
+            "factor_policy": {
+                "factor": factor_name,
+                "formula": "-1 * growth_assets for finite canonical rows",
+                "direction": "higher_is_better",
+                "equivalent_raw_direction": "lower_growth_assets_is_better",
+                "raw_growth_assets_persisted": False,
+            },
+            "availability_policy": {
+                "eligible_entry": (
+                    "first local trading session open strictly after announcement_date"
+                ),
+                "same_session_trade_allowed": False,
+                "maximum_event_age_calendar_days": 3,
+            },
+            "acceptance_status": publication["success_manifest_status"],
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        manifest_destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, manifest_destination)
+        except Exception:
+            destination.unlink(missing_ok=True)
+            raise
+        return manifest_destination
+    except Exception as exc:
+        destination.unlink(missing_ok=True)
+        error = safe_exception_text(exc)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_express_asset_growth_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "failed_ts_code": current_ts_code,
+            "data_contract": {
+                "path": manifest_path(DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT),
+                "sha256": file_digest(DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT),
+                "frozen_at": contract["frozen_at"],
+            },
+            "source_request": {
+                "api": "express",
+                "ts_codes_in_order": list(ts_codes),
+                "announcement_start": acceptance["fixed_start_date"],
+                "announcement_end": acceptance["fixed_end_date"],
+                "provider_calls_planned": int(
+                    acceptance["provider_call_count_if_source_is_available"]
+                ),
+                "provider_calls_issued": calls_issued,
+                "maximum_attempts_per_symbol": int(
+                    acceptance["maximum_attempts_per_symbol"]
+                ),
+                "fields": list(TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS),
+                "source_rows_by_stock": source_rows_by_stock,
+                "raw_frames_persisted": False,
+                "raw_growth_assets_persisted": False,
+                "credentials_logged_or_stored": False,
+            },
+            "completed_stock_quality": quality_by_stock,
+            "files": [],
+            "partial_snapshot_deleted": not destination.exists(),
+            "final_snapshot_published": False,
+            "acceptance_status": publication["failure_manifest_status"],
+            "error_type": type(exc).__name__,
+            "error": error,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
+
+
 def sync_tushare_stock_st_membership(
     *,
     allow_large: bool = False,
@@ -14689,9 +15401,7 @@ def canonicalize_eastmoney_core_profit_consistency(
     equivalent = 1.0 - (total_profit - operating_profit).abs() / denominator
     formula_error = (primary - equivalent).abs()
     maximum_error = float(
-        frozen["acceptance_protocol"][
-            "maximum_equivalent_formula_absolute_error"
-        ]
+        frozen["acceptance_protocol"]["maximum_equivalent_formula_absolute_error"]
     )
     formula_consistent = formula_error.le(maximum_error)
     complete_identity = supported_code & announcement.notna()
@@ -14711,9 +15421,7 @@ def canonicalize_eastmoney_core_profit_consistency(
             "announcement_date": announcement.loc[valid],
             "operating_profit": operating_profit.loc[valid].astype("float64"),
             "total_profit": total_profit.loc[valid].astype("float64"),
-            "eastmoney_core_profit_consistency": primary.loc[valid].astype(
-                "float64"
-            ),
+            "eastmoney_core_profit_consistency": primary.loc[valid].astype("float64"),
             "provider": "eastmoney",
         }
     )
@@ -14740,9 +15448,7 @@ def canonicalize_eastmoney_core_profit_consistency(
         "missing_or_malformed_stock_code_rows_excluded": int((~complete_code).sum()),
         "unsupported_board_rows_excluded": int((complete_code & ~supported_code).sum()),
         "missing_announcement_date_rows_excluded": int(announcement.isna().sum()),
-        "complete_identity_main_chinext_names": int(
-            len(complete_identity_instruments)
-        ),
+        "complete_identity_main_chinext_names": int(len(complete_identity_instruments)),
         "complete_identity_instruments_for_acceptance_only": (
             complete_identity_instruments
         ),
@@ -15424,10 +16130,7 @@ def load_eastmoney_core_profit_consistency_acceptance_record(
     """Verify the cross-clone record for the consumed public income probe."""
 
     path = path.expanduser().resolve()
-    if (
-        file_digest(path)
-        != EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256
-    ):
+    if file_digest(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256:
         raise RichDataError(
             "Eastmoney core-profit-consistency acceptance-record fingerprint mismatch"
         )
@@ -15445,8 +16148,7 @@ def load_eastmoney_core_profit_consistency_acceptance_record(
         record.get("version") != 1
         or record.get("status")
         != "accepted_pending_frozen_full_history_and_no_return_gates"
-        or contract.get("sha256")
-        != EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256
+        or contract.get("sha256") != EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256
         or mechanism.get("sha256")
         != EASTMONEY_CORE_PROFIT_CONSISTENCY_MECHANISM_AUDIT_SHA256
         or manifest_link.get("sha256")
@@ -15489,8 +16191,7 @@ def load_eastmoney_core_profit_consistency_acceptance_record(
             rel_tol=0.0,
             abs_tol=1e-15,
         )
-        or observed.get("schema_formula_and_current_coverage_gate_passed")
-        is not True
+        or observed.get("schema_formula_and_current_coverage_gate_passed") is not True
         or record.get("price_fields_loaded") != []
         or record.get("forward_return_fields_read") is not False
         or record.get("selection_or_promotion_allowed") is not False
@@ -15504,9 +16205,7 @@ def load_eastmoney_core_profit_consistency_acceptance_record(
     ):
         linked_path = resolve_record_path(str(link.get("path") or ""))
         if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
-            raise RichDataError(
-                f"Eastmoney core-profit-consistency {label} changed"
-            )
+            raise RichDataError(f"Eastmoney core-profit-consistency {label} changed")
     manifest_file = resolve_record_path(str(manifest_link.get("path") or ""))
     frame_file = resolve_record_path(str(frame_link.get("path") or ""))
     if (
@@ -15538,9 +16237,7 @@ def load_eastmoney_core_profit_consistency_acceptance_record(
     frame = pd.read_parquet(frame_file)
     operating = pd.to_numeric(frame["operating_profit"], errors="coerce")
     total = pd.to_numeric(frame["total_profit"], errors="coerce")
-    factor = pd.to_numeric(
-        frame["eastmoney_core_profit_consistency"], errors="coerce"
-    )
+    factor = pd.to_numeric(frame["eastmoney_core_profit_consistency"], errors="coerce")
     recomputed = np.minimum(operating, total) / np.maximum(operating, total)
     if (
         tuple(frame.columns) != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
@@ -15624,8 +16321,7 @@ def load_eastmoney_core_profit_consistency_source_chain(
         or full.get("maximum_new_provider_calls") != 540
         or full.get("minimum_complete_identity_active_holding_coverage_per_report_date")
         != 0.85
-        or full.get("minimum_median_complete_identity_active_holding_coverage")
-        != 0.95
+        or full.get("minimum_median_complete_identity_active_holding_coverage") != 0.95
         or full.get("minimum_valid_factor_active_holding_coverage_per_report_date")
         != 0.45
         or full.get("minimum_median_valid_factor_active_holding_coverage") != 0.6
@@ -15636,7 +16332,9 @@ def load_eastmoney_core_profit_consistency_source_chain(
         or normalization.get("maximum_formula_absolute_error") != 1e-12
         or state.get("clear_all_older_values_at_global_partition_activation")
         is not True
-        or state.get("carry_older_value_when_new_partition_has_missing_or_invalid_instrument")
+        or state.get(
+            "carry_older_value_when_new_partition_has_missing_or_invalid_instrument"
+        )
         is not False
         or state.get("late_older_correction_can_supersede_newer_period") is not False
         or state.get("maximum_age_calendar_days") != 550
@@ -15677,8 +16375,7 @@ def load_eastmoney_core_profit_consistency_source_chain(
         raise RichDataError("Eastmoney core-profit accepted frame changed")
     accepted_frame = pd.read_parquet(frame_path)
     if (
-        tuple(accepted_frame.columns)
-        != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+        tuple(accepted_frame.columns) != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
         or len(accepted_frame) != 3370
         or frame_digest(accepted_frame)
         != (chain.get("accepted_frame") or {}).get("content_sha256")
@@ -15740,11 +16437,7 @@ def sync_eastmoney_core_profit_consistency_acceptance(
         report_date = dt.date.fromisoformat(acceptance["fixed_report_date"])
         run_id = new_run_id("eastmoney_core_profit_consistency_acceptance")
         run_root = (
-            RAW_ROOT
-            / "eastmoney"
-            / "core_profit_consistency"
-            / "acceptance"
-            / run_id
+            RAW_ROOT / "eastmoney" / "core_profit_consistency" / "acceptance" / run_id
         )
         temporary_root = run_root.parent / f".{run_id}.tmp"
         if run_root.exists() or temporary_root.exists():
@@ -15832,8 +16525,7 @@ def sync_eastmoney_core_profit_consistency_acceptance(
                     "Eastmoney core-profit accepted formula audit exceeded tolerance"
                 )
             if (
-                tuple(accepted.columns)
-                != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
+                tuple(accepted.columns) != EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS
                 or accepted.duplicated(["instrument", "report_date"]).any()
             ):
                 raise RichDataError(
@@ -15890,9 +16582,7 @@ def sync_eastmoney_core_profit_consistency_acceptance(
                     ),
                     "expected_active_holding_names": expected_names,
                     "complete_identity_holding_names": complete_identity_names,
-                    "complete_identity_holding_coverage": (
-                        complete_identity_coverage
-                    ),
+                    "complete_identity_holding_coverage": (complete_identity_coverage),
                     "valid_factor_holding_names": valid_factor_names,
                     "valid_factor_holding_coverage": valid_factor_coverage,
                     "distinct_factor_values": distinct_values,
@@ -16459,10 +17149,7 @@ def load_eastmoney_core_profit_consistency_full_source_record(
     """Verify the cross-clone record for the consumed public income source."""
 
     path = path.expanduser().resolve()
-    if (
-        file_digest(path)
-        != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256
-    ):
+    if file_digest(path) != EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD_SHA256:
         raise RichDataError(
             "Eastmoney core-profit-consistency full-source-record fingerprint mismatch"
         )
@@ -16484,12 +17171,10 @@ def load_eastmoney_core_profit_consistency_full_source_record(
         or record.get("status")
         != "accepted_full_source_pending_no_return_capacity_and_uniqueness"
         or record.get("created_at") != "2026-07-16T23:59:33Z"
-        or contract.get("sha256")
-        != EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256
+        or contract.get("sha256") != EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256
         or acceptance.get("sha256")
         != EASTMONEY_CORE_PROFIT_CONSISTENCY_ACCEPTANCE_RECORD_SHA256
-        or spec.get("sha256")
-        != EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256
+        or spec.get("sha256") != EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_SPEC_SHA256
         or manifest_link.get("path")
         != "data/metadata/rich_data/runs/20260716T235617Z_eastmoney_core_profit_consistency_760a3a16.json"
         or manifest_link.get("sha256")
@@ -16705,9 +17390,7 @@ def sync_eastmoney_core_profit_consistency(
             "Eastmoney core-profit-consistency full snapshot is one-shot and already "
             f"consumed by {prior_records[-1]}"
         )
-    with RichDataProcessLock(
-        METADATA_ROOT / ".eastmoney_core_profit_consistency.lock"
-    ):
+    with RichDataProcessLock(METADATA_ROOT / ".eastmoney_core_profit_consistency.lock"):
         if DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_FULL_SOURCE_RECORD.exists():
             load_eastmoney_core_profit_consistency_full_source_record()
             raise RichDataError(
@@ -16800,9 +17483,7 @@ def sync_eastmoney_core_profit_consistency(
                         )
                     )
                     complete_identity_instruments = set(
-                        quality.pop(
-                            "complete_identity_instruments_for_acceptance_only"
-                        )
+                        quality.pop("complete_identity_instruments_for_acceptance_only")
                     )
                     completed_network_partitions += 1
                     provider_calls += int(request_quality["provider_calls"])
@@ -16840,18 +17521,14 @@ def sync_eastmoney_core_profit_consistency(
                         f"{report_date.isoformat()}: {complete_identity_coverage:.6f}"
                     )
                 if valid_factor_coverage < float(
-                    full[
-                        "minimum_valid_factor_active_holding_coverage_per_report_date"
-                    ]
+                    full["minimum_valid_factor_active_holding_coverage_per_report_date"]
                 ):
                     raise RichDataError(
                         "Eastmoney core-profit valid-factor coverage failed for "
                         f"{report_date.isoformat()}: {valid_factor_coverage:.6f}"
                     )
                 distinct_values = int(
-                    partition["eastmoney_core_profit_consistency"].nunique(
-                        dropna=True
-                    )
+                    partition["eastmoney_core_profit_consistency"].nunique(dropna=True)
                 )
                 if distinct_values < int(
                     full["minimum_distinct_factor_values_per_nonempty_partition"]
@@ -16934,8 +17611,7 @@ def sync_eastmoney_core_profit_consistency(
                 )
             if (
                 len(files) != int(full["required_report_date_count"])
-                or completed_network_partitions
-                != int(full["new_network_partitions"])
+                or completed_network_partitions != int(full["new_network_partitions"])
                 or provider_calls > int(full["maximum_new_provider_calls"])
             ):
                 raise RichDataError(
@@ -17024,16 +17700,12 @@ def sync_eastmoney_core_profit_consistency(
                             ]
                         ),
                         "minimum_required_median": float(
-                            full[
-                                "minimum_median_valid_factor_active_holding_coverage"
-                            ]
+                            full["minimum_median_valid_factor_active_holding_coverage"]
                         ),
                     },
                     "source_coverage_gate_passed": True,
                 },
-                "conservative_state_contract": spec[
-                    "conservative_state_contract"
-                ],
+                "conservative_state_contract": spec["conservative_state_contract"],
                 "status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness",
                 "price_fields_loaded": [],
                 "open_close_or_forward_return_fields_read": False,
@@ -20393,6 +21065,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the frozen privacy-minimized management-continuity acceptance",
     )
 
+    subparsers.add_parser(
+        "acceptance-tushare-express-asset-growth",
+        help="run the frozen three-stock performance-express asset-growth acceptance",
+    )
+
     ts_stock_st = subparsers.add_parser(
         "sync-tushare-stock-st-membership",
         help="download the frozen 2019-2025 daily ST-membership source snapshot",
@@ -20687,6 +21364,8 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_gross_margin_acceptance()
         elif args.command == "acceptance-tushare-management-continuity":
             manifest = sync_tushare_management_continuity_acceptance()
+        elif args.command == "acceptance-tushare-express-asset-growth":
+            manifest = sync_tushare_express_asset_growth_acceptance()
         elif args.command == "sync-tushare-stock-st-membership":
             manifest = sync_tushare_stock_st_membership(
                 allow_large=args.allow_large,
@@ -20828,6 +21507,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-tushare-management-continuity": (
             "stored_no_return_management_continuity_acceptance"
+        ),
+        "acceptance-tushare-express-asset-growth": (
+            "stored_no_return_express_asset_growth_acceptance"
         ),
         "sync-tushare-stock-st-membership": (
             "stored_pending_no_return_st_recovery_capacity_and_uniqueness"

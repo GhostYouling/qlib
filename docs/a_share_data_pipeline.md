@@ -1921,10 +1921,14 @@ python scripts/a_share_rich_data.py \
 
 默认稳定性审计 `20260717T002534Z`（SHA‑256 `541ba737149cc53b8905fab4fa40fbbbb5c840ba39bf1e34c5bde3fc2b02a9cd`）与 Top‑3 可行性审计 `20260717T002540Z`（SHA‑256 `1a65deb27529ba1034ab8a9b9aed1f46621ef8dd80338d4d970f0723cd2b7c6f`）均为 **0/1**。跨克隆终止记录为 [`a_share_eastmoney_core_profit_consistency_diagnostic_record.json`](a_share_eastmoney_core_profit_consistency_diagnostic_record.json)（SHA‑256 `970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f`）。不得重跑任何该分支入口或通用门禁，不得反向、挑年份、改公式/状态/阈值/持有期/TopK/成本，或与已拒绝因子组合；该因子不进入聚合、当前评分、选股、仓位、订单或 Level‑2 采购理由。下一步回到不读取收益的机制前沿。
 
-### Tushare 业绩快报资产扩张约束（仅冻结验收合同）
+### Tushare 业绩快报资产扩张约束（来源验收终止）
 
 核心利润一致性终止后，新的独立机制只选择 `tushare_express_asset_growth_restraint = -growth_assets`：较低的期初以来总资产增长率解释为更克制的资产负债表扩张。营业收入、利润、EPS、ROE、文本摘要及其增长字段全部禁止读取，避免在同一响应上事后筛选盈利类字段。无收益机制核重记录为 [`a_share_three_day_express_asset_growth_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_express_asset_growth_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `94c0c4655918976c3113055d94e573a1bbcaf9cff85ecfc409d3f74e5a593ba4`）。该记录没有观察供应商行、因子值、价格或收益。
 
 数据合同 [`a_share_tushare_express_asset_growth_data_contract.json`](a_share_tushare_express_asset_growth_data_contract.json)（SHA‑256 `517a9e402ecd77f4f09090414ff4e68a45a0af215ff9b200703a4f8ea6d3e177`）固定使用标准 `express` 接口，只请求 `ts_code,ann_date,end_date,growth_assets`，要求账户至少 2,000 积分；当前 3,000 积分不需要 5,000 积分的 VIP 接口。唯一验收固定按 `600000.SH`、`000001.SZ`、`300750.SZ` 顺序各请求一次 2019–2025 历史，任一失败立即停止且不得重试。验收帧只允许保存公告日、报告期、股票、负资产增长率因子和供应商五列，不保存原始响应或原始 `growth_assets`。
 
-目前只完成机制审计与合同冻结，尚未实现验收入口，也没有访问 `TUSHARE_TOKEN` 或供应商。下一步仅允许先实现并本地测试精确的三次请求、严格规范化、原子发布、失败也消费和访问 Token 前的一次性守卫；实现与测试通过后才能执行唯一一次真实验收。验收无论成功或失败都不能直接下载全历史、读取收益、聚合、评分、选股或下单；成功时仍需另行冻结全量来源与无收益协议。
+唯一真实验收在 463 项数据采集测试通过后执行了全部三次固定请求，`600000.SH`、`000001.SZ`、`300750.SZ` 分别返回 11、4、2 行，共 17 行；每一行的 `growth_assets` 都缺失或非有限，因此三个股票均为 0 个有效事件，未达到至少 2 个股票、6 个事件的冻结门槛。失败清单是 `20260717T005128Z_tushare_express_asset_growth_acceptance_6719f415.json`（SHA‑256 `4c8b8fee687d42fc246532b4037657f754955248dd26f1e1bd7e531a30c29902`）。它没有保存原始响应或 `growth_assets`，没有发布 Parquet，没有读取价格或收益，也没有形成有限因子值。
+
+跨克隆终止记录为 [`a_share_tushare_express_asset_growth_source_acceptance_record.json`](a_share_tushare_express_asset_growth_source_acceptance_record.json)（SHA‑256 `71a61cdfb33359e07f74e101b7958258fce08a70974aee2be0aab16179e48b1e`）。验收入口会在合同、Token 和供应商访问前拒绝重跑。不得换股票或日期、重请求明细、删除/填充缺失值、改用同一响应的盈利/资产/权益字段、反向或改变公式，也不得继续全量、容量、唯一性、收益、聚合、评分、选股、仓位、订单或 Level‑2。该结果只说明冻结样本的字段覆盖失败，不是因子收益证据，也不证明所有 `express` 记录都缺少该字段。
+
+下一轮不读取收益的机制前沿审计已经冻结在 [`a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `2d8cc98378f7e2ffac7182f80a9fbb8c0288c769ca4de9f1c5d68abd1ded0729`）。候选是合同负债相对上年同期的增量除以当期总资产，用于刻画由客户预付款支持的需求积压；它与已经研究的利润、资产扩张、杠杆、现金转换、持有人、订单流和价格机制分离。该记录只冻结机制、方向和允许的数据字段，尚未冻结来源数据合同，也没有读取供应商行、因子值、价格或收益。下一步只允许先冻结并校验精确数据合同；在合同和本地测试完成前，Token 已配置也不构成任何真实请求许可。

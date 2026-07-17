@@ -2522,6 +2522,304 @@ def test_tushare_gross_margin_acceptance_failure_is_terminal_before_prices(
     assert calls == ["600519.SH"]
 
 
+def express_asset_growth_row(
+    ts_code: str,
+    ann_date: str,
+    end_date: str,
+    growth_assets,
+) -> dict:
+    return {
+        "ts_code": ts_code,
+        "ann_date": ann_date,
+        "end_date": end_date,
+        "growth_assets": growth_assets,
+    }
+
+
+def complete_express_asset_growth_frame(ts_code: str) -> pd.DataFrame:
+    base = {
+        "600000.SH": 10.0,
+        "000001.SZ": 20.0,
+        "300750.SZ": 30.0,
+    }[ts_code]
+    rows = [
+        express_asset_growth_row(ts_code, "20200120", "20191231", base),
+        express_asset_growth_row(ts_code, "20210125", "20201231", base + 1.0),
+        express_asset_growth_row(ts_code, "20220125", "20211231", base + 2.0),
+    ]
+    return pd.DataFrame(rows, columns=RICH.TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS)
+
+
+def test_tushare_express_asset_growth_contract_request_and_cli_are_frozen(
+    monkeypatch,
+):
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT)
+        == RICH.TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT_SHA256
+    )
+    contract = RICH.load_tushare_express_asset_growth_contract()
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS
+    )
+    assert contract["source"]["provider_rows_observed_before_freeze"] is False
+    assert contract["factor"]["direction"] == "higher_is_better"
+    assert contract["factor"]["equivalent_raw_direction"] == (
+        "lower_growth_assets_is_better"
+    )
+    assert contract["forward_return_fields_read"] is False
+
+    captured = []
+
+    class Pro:
+        def express(self, **kwargs):
+            captured.append(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_express_asset_growth(
+        "600000.SH", dt.date(2019, 1, 1), dt.date(2025, 12, 31)
+    )
+    assert captured == [
+        {
+            "ts_code": "600000.SH",
+            "start_date": "20190101",
+            "end_date": "20251231",
+            "fields": ",".join(RICH.TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS),
+        }
+    ]
+    assert (
+        RICH.build_parser()
+        .parse_args(["acceptance-tushare-express-asset-growth"])
+        .command
+        == "acceptance-tushare-express-asset-growth"
+    )
+
+
+def test_tushare_express_asset_growth_terminal_record_and_guard_are_frozen(
+    monkeypatch,
+):
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD)
+        == RICH.TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD_SHA256
+    )
+    record = RICH.load_tushare_express_asset_growth_acceptance_record()
+    assert record["acceptance"]["provider_calls_issued"] == 3
+    assert record["acceptance"]["source_rows_total"] == 17
+    assert record["acceptance"]["valid_factor_events_total"] == 0
+    assert record["privacy_and_scope"]["price_fields_loaded"] == []
+    assert record["privacy_and_scope"]["forward_return_fields_read"] is False
+    assert record["terminal_decision"]["acceptance_retry_allowed"] is False
+
+    touched = []
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_express_asset_growth_contract",
+        lambda: touched.append("contract"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "tushare_express_asset_growth_acceptance_records",
+        lambda: touched.append("local_records"),
+    )
+    monkeypatch.setattr(
+        RICH, "require_provider", lambda provider: touched.append("provider")
+    )
+    with pytest.raises(RICH.RichDataError, match="branch is terminal"):
+        RICH.sync_tushare_express_asset_growth_acceptance()
+    assert touched == []
+
+
+def test_tushare_express_asset_growth_canonicalization_is_strict():
+    rows = [
+        express_asset_growth_row("600000.SH", "20200120", "20191231", 10.0),
+        express_asset_growth_row("600000.SH", "20210125", "20201231", None),
+        express_asset_growth_row("600000.SH", "20220125", "20211231", -5.0),
+    ]
+    frame = pd.DataFrame(rows, columns=RICH.TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS)
+    accepted, quality = RICH.canonicalize_tushare_express_asset_growth(
+        frame,
+        expected_ts_code="600000.SH",
+        announcement_start=dt.date(2019, 1, 1),
+        announcement_end=dt.date(2025, 12, 31),
+    )
+    assert accepted.columns.tolist() == list(RICH.TUSHARE_EXPRESS_ASSET_GROWTH_COLUMNS)
+    assert accepted["tushare_express_asset_growth_restraint"].tolist() == [
+        -10.0,
+        5.0,
+    ]
+    assert "growth_assets" not in accepted
+    assert quality["missing_or_nonfinite_growth_assets_rows_excluded"] == 1
+    assert quality["valid_factor_events"] == 2
+    assert quality["distinct_factor_values"] == 2
+    assert quality["formula_maximum_absolute_error"] == 0.0
+
+    prior_period = frame.iloc[[0]].copy()
+    prior_period.loc[:, "ann_date"] = "20190120"
+    prior_period.loc[:, "end_date"] = "20181231"
+    prior_accepted, _ = RICH.canonicalize_tushare_express_asset_growth(
+        prior_period,
+        expected_ts_code="600000.SH",
+        announcement_start=dt.date(2019, 1, 1),
+        announcement_end=dt.date(2025, 12, 31),
+    )
+    assert prior_accepted["report_date"].tolist() == [pd.Timestamp("2018-12-31")]
+
+    duplicated = pd.concat([frame.iloc[[0]], frame.iloc[[0]]], ignore_index=True)
+    with pytest.raises(RICH.RichDataError, match="duplicate stock-report-period"):
+        RICH.canonicalize_tushare_express_asset_growth(
+            duplicated,
+            expected_ts_code="600000.SH",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+    early = frame.iloc[[0]].copy()
+    early.loc[:, "ann_date"] = "20191201"
+    with pytest.raises(RICH.RichDataError, match="before its period end"):
+        RICH.canonicalize_tushare_express_asset_growth(
+            early,
+            expected_ts_code="600000.SH",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+    extra = frame.iloc[[0]].assign(revenue=1.0)
+    with pytest.raises(RICH.RichDataError, match="outside the frozen whitelist"):
+        RICH.canonicalize_tushare_express_asset_growth(
+            extra,
+            expected_ts_code="600000.SH",
+            announcement_start=dt.date(2019, 1, 1),
+            announcement_end=dt.date(2025, 12, 31),
+        )
+
+
+def test_tushare_express_asset_growth_acceptance_is_atomic_and_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_express_asset_growth_contract())
+    monkeypatch.setattr(
+        RICH, "load_tushare_express_asset_growth_contract", lambda: contract
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    sleeps = []
+    monkeypatch.setattr(RICH.time, "sleep", lambda seconds: sleeps.append(seconds))
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append((ts_code, announcement_start, announcement_end))
+        return complete_express_asset_growth_frame(ts_code)
+
+    monkeypatch.setattr(RICH, "fetch_tushare_express_asset_growth", fake_fetch)
+    manifest_path = RICH.sync_tushare_express_asset_growth_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["acceptance_status"] == (
+        "accepted_source_schema_formula_and_sample_coverage_pending_separate_full_source_and_no_return_protocol"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 3
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS
+    )
+    assert manifest["source_request"]["raw_growth_assets_persisted"] is False
+    assert manifest["source_quality"]["rows_written"] == 9
+    assert manifest["source_quality"]["symbols_with_valid_factor_events"] == 3
+    assert manifest["source_quality"]["formula_maximum_absolute_error"] == 0.0
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    output = tmp_path / "raw" / "tushare_express_asset_growth_acceptance.parquet"
+    assert output.exists()
+    stored = pd.read_parquet(output)
+    assert stored.columns.tolist() == list(RICH.TUSHARE_EXPRESS_ASSET_GROWTH_COLUMNS)
+    assert "growth_assets" not in stored
+    assert [value[0] for value in calls] == list(
+        RICH.TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_TS_CODES
+    )
+    assert sleeps == [0.32, 0.32]
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_express_asset_growth_acceptance()
+    assert len(calls) == 3
+
+
+def test_tushare_express_asset_growth_failure_consumes_and_stops(tmp_path, monkeypatch):
+    contract = copy.deepcopy(RICH.load_tushare_express_asset_growth_contract())
+    monkeypatch.setattr(
+        RICH, "load_tushare_express_asset_growth_contract", lambda: contract
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append(ts_code)
+        row = express_asset_growth_row(ts_code, "20200120", "20191231", 10.0)
+        return pd.DataFrame(
+            [row] * 100, columns=RICH.TUSHARE_EXPRESS_ASSET_GROWTH_RAW_FIELDS
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_express_asset_growth", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="strict row ceiling"):
+        RICH.sync_tushare_express_asset_growth_acceptance()
+    assert calls == ["600000.SH"]
+    records = RICH.tushare_express_asset_growth_acceptance_records()
+    assert len(records) == 1
+    failure = RICH.json.loads(records[0].read_text())
+    assert failure["source_request"]["provider_calls_issued"] == 1
+    assert failure["files"] == []
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+    assert not (
+        tmp_path / "raw" / "tushare_express_asset_growth_acceptance.parquet"
+    ).exists()
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_express_asset_growth_acceptance()
+    assert calls == ["600000.SH"]
+
+
+def test_tushare_express_asset_growth_consumption_guard_precedes_contract_and_provider(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    RICH.atomic_write_json(
+        {
+            "dataset": "tushare_express_asset_growth_acceptance",
+            "acceptance_status": "source_acceptance_failed_stop_before_full_history_prices_or_returns",
+        },
+        RICH.RUNS_ROOT / "prior_tushare_express_asset_growth_acceptance.json",
+    )
+    touched = []
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_express_asset_growth_contract",
+        lambda: touched.append("contract"),
+    )
+    monkeypatch.setattr(
+        RICH, "require_provider", lambda provider: touched.append("provider")
+    )
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_express_asset_growth_acceptance()
+    assert touched == []
+
+
 def management_continuity_row(
     ts_code: str,
     ann_date: str,
@@ -4100,9 +4398,7 @@ def test_eastmoney_core_profit_contract_is_fingerprint_frozen(tmp_path):
     assert record["source_request"]["received_rows"] == 5218
     assert record["observed_result"]["complete_identity_holding_names"] == 4574
     assert record["observed_result"]["valid_factor_holding_names"] == 3370
-    assert record["observed_result"][
-        "schema_formula_and_current_coverage_gate_passed"
-    ]
+    assert record["observed_result"]["schema_formula_and_current_coverage_gate_passed"]
 
     full_record = RICH.load_eastmoney_core_profit_consistency_full_source_record()
     assert full_record["status"] == (
@@ -4200,8 +4496,7 @@ def test_eastmoney_core_profit_acceptance_writes_only_frozen_columns(
     acceptance["minimum_distinct_factor_values"] = 2
     universe = tmp_path / "buyable.txt"
     universe.write_text(
-        "SH600519\t2020-01-01\t2026-12-31\n"
-        "SZ000001\t2020-01-01\t2026-12-31\n",
+        "SH600519\t2020-01-01\t2026-12-31\nSZ000001\t2020-01-01\t2026-12-31\n",
         encoding="utf-8",
     )
     rows = [
@@ -4298,25 +4593,20 @@ def test_eastmoney_core_profit_full_sync_is_atomic_and_reuses_acceptance(
         accepted_rows, dt.date(2025, 12, 31), contract=contract
     )
     chain["accepted_frame"] = accepted
-    chain["acceptance_record"]["observed_result"][
-        "complete_identity_holding_names"
-    ] = 2
+    chain["acceptance_record"]["observed_result"]["complete_identity_holding_names"] = 2
     full = chain["spec"]["full_source_snapshot_contract"]
     full["report_dates"] = ["2025-09-30", "2025-12-31"]
     full["required_report_date_count"] = 2
     full["new_network_partitions"] = 1
     full["maximum_new_provider_calls"] = 20
-    full[
-        "minimum_complete_identity_active_holding_coverage_per_report_date"
-    ] = 1.0
+    full["minimum_complete_identity_active_holding_coverage_per_report_date"] = 1.0
     full["minimum_median_complete_identity_active_holding_coverage"] = 1.0
     full["minimum_valid_factor_active_holding_coverage_per_report_date"] = 1.0
     full["minimum_median_valid_factor_active_holding_coverage"] = 1.0
     full["minimum_distinct_factor_values_per_nonempty_partition"] = 2
     universe = tmp_path / "buyable.txt"
     universe.write_text(
-        "SH600519\t2020-01-01\t2026-12-31\n"
-        "SZ000001\t2020-01-01\t2026-12-31\n",
+        "SH600519\t2020-01-01\t2026-12-31\nSZ000001\t2020-01-01\t2026-12-31\n",
         encoding="utf-8",
     )
     calls = []
@@ -4355,9 +4645,7 @@ def test_eastmoney_core_profit_full_sync_is_atomic_and_reuses_acceptance(
     assert calls == [dt.date(2025, 9, 30)]
     assert manifest["dataset"] == "eastmoney_core_profit_consistency"
     assert manifest["source_request"]["new_network_partitions"] == 1
-    assert manifest["source_request"][
-        "accepted_partitions_reused_without_network"
-    ] == 1
+    assert manifest["source_request"]["accepted_partitions_reused_without_network"] == 1
     assert manifest["source_request"]["new_provider_calls"] == 1
     assert manifest["source_request"]["tushare_token_read"] is False
     assert manifest["coverage"]["source_coverage_gate_passed"] is True

@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_express_asset_growth_source_acceptance_record",
+  "status": "terminal_source_rejected_after_three_calls_before_factor_values_full_history_prices_or_returns",
+  "frozen_at": "2026-07-17T00:55:00Z",
+  "purpose": "Freeze the consumed one-shot Tushare express asset-growth source rejection across clones without persisting provider rows, raw growth values, credentials, prices, or returns.",
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_express_asset_growth_mechanism_overlap_reaudit_20260717.json",
+    "sha256": "94c0c4655918976c3113055d94e573a1bbcaf9cff85ecfc409d3f74e5a593ba4"
+  },
+  "data_contract": {
+    "path": "docs/a_share_tushare_express_asset_growth_data_contract.json",
+    "sha256": "517a9e402ecd77f4f09090414ff4e68a45a0af215ff9b200703a4f8ea6d3e177"
+  },
+  "acceptance": {
+    "manifest_path": "data/metadata/rich_data/runs/20260717T005128Z_tushare_express_asset_growth_acceptance_6719f415.json",
+    "manifest_sha256": "4c8b8fee687d42fc246532b4037657f754955248dd26f1e1bd7e531a30c29902",
+    "acceptance_status": "source_acceptance_failed_stop_before_full_history_prices_or_returns",
+    "api": "express",
+    "announcement_start": "20190101",
+    "announcement_end": "20251231",
+    "fixed_symbols_in_order": [
+      "600000.SH",
+      "000001.SZ",
+      "300750.SZ"
+    ],
+    "requested_fields": [
+      "ts_code",
+      "ann_date",
+      "end_date",
+      "growth_assets"
+    ],
+    "provider_calls_planned": 3,
+    "provider_calls_issued": 3,
+    "maximum_attempts_per_symbol": 1,
+    "source_rows_by_stock": {
+      "600000.SH": 11,
+      "000001.SZ": 4,
+      "300750.SZ": 2
+    },
+    "source_rows_total": 17,
+    "missing_or_nonfinite_growth_assets_rows_by_stock": {
+      "600000.SH": 11,
+      "000001.SZ": 4,
+      "300750.SZ": 2
+    },
+    "missing_or_nonfinite_growth_assets_rows_total": 17,
+    "valid_factor_events_by_stock": {
+      "600000.SH": 0,
+      "000001.SZ": 0,
+      "300750.SZ": 0
+    },
+    "symbols_with_valid_factor_events": 0,
+    "valid_factor_events_total": 0,
+    "distinct_factor_values": 0,
+    "duplicate_stock_report_period_keys": 0,
+    "formula_maximum_absolute_error": 0.0,
+    "minimum_required_symbols_with_valid_events": 2,
+    "minimum_required_valid_factor_events": 6,
+    "failure_code": "frozen_growth_assets_field_has_no_finite_values_in_three_symbol_acceptance",
+    "raw_provider_frames_persisted": false,
+    "raw_growth_assets_persisted": false,
+    "factor_frame_published": false,
+    "published_file_count": 0,
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false
+  },
+  "privacy_and_scope": {
+    "credential_value_logged_stored_or_committed": false,
+    "provider_raw_response_persisted": false,
+    "raw_growth_assets_value_persisted": false,
+    "finite_factor_value_observed_or_persisted": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false
+  },
+  "interpretation": {
+    "what_failed": "All 17 returned rows had missing or non-finite growth_assets, so the frozen source field could not produce one valid factor event for any acceptance stock.",
+    "what_this_does_not_mean": "This is a source-field coverage rejection for the exact frozen sample and request, not evidence about factor returns and not proof that every Tushare express row globally lacks growth_assets.",
+    "alternate_field_or_same_response_search_allowed": false,
+    "direction_inversion_allowed": false
+  },
+  "terminal_decision": {
+    "acceptance_consumed": true,
+    "acceptance_retry_allowed": false,
+    "remaining_or_replacement_symbols_may_be_requested": false,
+    "date_range_field_formula_direction_or_threshold_change_allowed": false,
+    "alternative_express_field_factor_or_same_response_combination_allowed": false,
+    "full_source_sync_allowed": false,
+    "capacity_uniqueness_or_return_work_allowed": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_purchase_or_intake_justified": false,
+    "required_next_step": "Return to a no-return mechanism-frontier audit and freeze a genuinely independent candidate before any new provider row or factor value is observed."
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
