@@ -2820,6 +2820,406 @@ def test_tushare_express_asset_growth_consumption_guard_precedes_contract_and_pr
     assert touched == []
 
 
+def contract_liability_row(
+    ts_code: str,
+    ann_date: str,
+    f_ann_date: str,
+    end_date: str,
+    contract_liab,
+    total_assets,
+    *,
+    report_type="1",
+    comp_type="1",
+    update_flag="0",
+) -> dict:
+    return {
+        "ts_code": ts_code,
+        "ann_date": ann_date,
+        "f_ann_date": f_ann_date,
+        "end_date": end_date,
+        "report_type": report_type,
+        "comp_type": comp_type,
+        "contract_liab": contract_liab,
+        "total_assets": total_assets,
+        "update_flag": update_flag,
+    }
+
+
+def complete_contract_liability_frame(
+    ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> pd.DataFrame:
+    base = {
+        "600519.SH": 100.0,
+        "000333.SZ": 200.0,
+        "300750.SZ": 300.0,
+    }[ts_code]
+    rows = []
+    for index, year in enumerate(range(2018, 2026)):
+        ann_date = dt.date(year, 10, 30)
+        if announcement_start <= ann_date <= announcement_end:
+            rows.append(
+                contract_liability_row(
+                    ts_code,
+                    ann_date.strftime("%Y%m%d"),
+                    ann_date.strftime("%Y%m%d"),
+                    f"{year}0930",
+                    base + 13.0 * index,
+                    1000.0 + base + 17.0 * index,
+                )
+            )
+    return pd.DataFrame(
+        rows, columns=RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS
+    )
+
+
+def test_tushare_contract_liability_contract_request_and_cli_are_frozen(monkeypatch):
+    assert (
+        RICH.file_digest(RICH.DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT)
+        == RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT_SHA256
+    )
+    contract = RICH.load_tushare_contract_liability_backlog_contract()
+    assert contract["source"]["requested_fields"] == list(
+        RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS
+    )
+    assert contract["source"]["provider_rows_observed_before_freeze"] is False
+    assert contract["factor"]["direction"] == "higher_is_better"
+    assert (
+        contract["acceptance_request"]["provider_call_count_if_source_is_available"]
+        == 12
+    )
+    assert contract["forward_return_fields_read"] is False
+
+    captured = []
+
+    class Pro:
+        def balancesheet(self, **kwargs):
+            captured.append(kwargs)
+            return pd.DataFrame()
+
+    monkeypatch.setattr(
+        RICH,
+        "_import_tushare",
+        lambda: SimpleNamespace(pro_api=lambda: Pro()),
+    )
+    RICH.fetch_tushare_contract_liability_backlog(
+        "600519.SH", dt.date(2018, 1, 1), dt.date(2019, 12, 31)
+    )
+    assert captured == [
+        {
+            "ts_code": "600519.SH",
+            "start_date": "20180101",
+            "end_date": "20191231",
+            "fields": ",".join(RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS),
+        }
+    ]
+    assert (
+        RICH.build_parser()
+        .parse_args(["acceptance-tushare-contract-liability-backlog"])
+        .command
+        == "acceptance-tushare-contract-liability-backlog"
+    )
+
+
+def test_tushare_contract_liability_tracked_acceptance_and_guard_are_frozen(
+    monkeypatch,
+):
+    assert (
+        RICH.file_digest(
+            RICH.DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD
+        )
+        == RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD_SHA256
+    )
+    record = RICH.load_tushare_contract_liability_backlog_acceptance_record()
+    assert record["acceptance"]["provider_calls_issued"] == 12
+    assert record["acceptance"]["source_rows_total"] == 146
+    assert record["acceptance"]["valid_factor_events_total"] == 55
+    assert record["derived_frame"]["rows"] == 55
+    assert record["privacy_and_scope"]["price_fields_loaded"] == []
+    assert record["privacy_and_scope"]["forward_return_fields_read"] is False
+    assert record["next_stage_decision"]["acceptance_retry_allowed"] is False
+
+    touched = []
+    monkeypatch.setattr(
+        RICH,
+        "tushare_contract_liability_backlog_acceptance_records",
+        lambda: touched.append("local_records"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_contract_liability_backlog_contract",
+        lambda: touched.append("contract"),
+    )
+    monkeypatch.setattr(
+        RICH, "require_provider", lambda provider: touched.append("provider")
+    )
+    with pytest.raises(RICH.RichDataError, match="already consumed"):
+        RICH.sync_tushare_contract_liability_backlog_acceptance()
+    assert touched == []
+
+
+def test_tushare_contract_liability_version_policy_and_formula_are_strict():
+    rows = [
+        contract_liability_row(
+            "600519.SH", "20181030", "20181030", "20180930", 100.0, 1000.0
+        ),
+        contract_liability_row(
+            "600519.SH", "20191030", "20191030", "20190930", 120.0, 1100.0
+        ),
+        contract_liability_row(
+            "600519.SH",
+            "20191030",
+            "20191030",
+            "20190930",
+            120.0,
+            1100.0,
+            update_flag="1",
+        ),
+        contract_liability_row(
+            "600519.SH", "20201030", "20201030", "20200930", 150.0, 1200.0
+        ),
+        contract_liability_row(
+            "600519.SH",
+            "20201030",
+            "20201030",
+            "20200930",
+            150.0,
+            1200.0,
+            report_type="2",
+        ),
+        contract_liability_row(
+            "600519.SH", "20211030", "20211030", "20210930", 190.0, 1300.0
+        ),
+        contract_liability_row(
+            "600519.SH", "20221030", "20221030", "20220930", 250.0, 1400.0
+        ),
+        contract_liability_row(
+            "600519.SH",
+            "20221115",
+            "20221115",
+            "20220930",
+            251.0,
+            1400.0,
+            report_type="4",
+            update_flag="1",
+        ),
+        contract_liability_row(
+            "600519.SH",
+            "20231030",
+            "20231030",
+            "20230930",
+            300.0,
+            1500.0,
+            comp_type="2",
+        ),
+    ]
+    raw = pd.DataFrame(rows, columns=RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS)
+    periods, period_quality = RICH.canonicalize_tushare_contract_liability_periods(
+        raw,
+        expected_ts_code="600519.SH",
+        announcement_start=dt.date(2018, 1, 1),
+        announcement_end=dt.date(2025, 12, 31),
+        latest_actual_announcement_date=dt.date(2026, 7, 17),
+    )
+    assert periods.columns.tolist() == list(
+        RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_PERIOD_COLUMNS
+    )
+    assert periods["report_period"].tolist() == [
+        pd.Timestamp("2018-09-30"),
+        pd.Timestamp("2019-09-30"),
+        pd.Timestamp("2020-09-30"),
+        pd.Timestamp("2021-09-30"),
+    ]
+    assert period_quality["semantic_duplicate_rows_collapsed"] == 1
+    assert period_quality["adjustment_periods_excluded"] == 1
+    assert period_quality["non_target_company_rows_excluded"] == 1
+    factors, factor_quality = RICH.derive_tushare_contract_liability_backlog(periods)
+    assert factors.columns.tolist() == list(
+        RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+    )
+    assert factors[
+        "tushare_contract_liability_backlog_delta"
+    ].tolist() == pytest.approx([20.0 / 1100.0, 30.0 / 1200.0, 40.0 / 1300.0])
+    assert "contract_liab" not in factors
+    assert "total_assets" not in factors
+    assert factor_quality["factor_events_written"] == 3
+    assert factor_quality["formula_maximum_absolute_error"] == 0.0
+
+    extra = raw.iloc[[0]].assign(total_liab=1.0)
+    with pytest.raises(RICH.RichDataError, match="outside the frozen"):
+        RICH.canonicalize_tushare_contract_liability_periods(
+            extra,
+            "600519.SH",
+            dt.date(2018, 1, 1),
+            dt.date(2025, 12, 31),
+            dt.date(2026, 7, 17),
+        )
+    unknown_type = raw.iloc[[0]].copy()
+    unknown_type.loc[:, "report_type"] = "13"
+    with pytest.raises(RICH.RichDataError, match="unknown report types"):
+        RICH.canonicalize_tushare_contract_liability_periods(
+            unknown_type,
+            "600519.SH",
+            dt.date(2018, 1, 1),
+            dt.date(2025, 12, 31),
+            dt.date(2026, 7, 17),
+        )
+    early_actual = raw.iloc[[0]].copy()
+    early_actual.loc[:, "f_ann_date"] = "20181029"
+    with pytest.raises(RICH.RichDataError, match="actual announcement before"):
+        RICH.canonicalize_tushare_contract_liability_periods(
+            early_actual,
+            "600519.SH",
+            dt.date(2018, 1, 1),
+            dt.date(2025, 12, 31),
+            dt.date(2026, 7, 17),
+        )
+
+
+def test_tushare_contract_liability_acceptance_is_atomic_and_one_shot(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_tushare_contract_liability_backlog_contract())
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_contract_liability_backlog_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    sleeps = []
+    monkeypatch.setattr(RICH.time, "sleep", lambda seconds: sleeps.append(seconds))
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append((ts_code, announcement_start, announcement_end))
+        return complete_contract_liability_frame(
+            ts_code, announcement_start, announcement_end
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_contract_liability_backlog", fake_fetch)
+    manifest_path = RICH.sync_tushare_contract_liability_backlog_acceptance()
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["acceptance_status"] == (
+        "accepted_source_schema_version_formula_and_sample_coverage_pending_separate_full_source_and_no_return_protocol"
+    )
+    assert manifest["source_request"]["provider_calls_issued"] == 12
+    assert manifest["source_request"]["fields"] == list(
+        RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS
+    )
+    assert (
+        manifest["source_request"]["raw_contract_liab_or_total_assets_persisted"]
+        is False
+    )
+    assert manifest["source_quality"]["rows_written"] == 21
+    assert manifest["source_quality"]["symbols_with_at_least_four_valid_events"] == 3
+    assert manifest["source_quality"]["formula_maximum_absolute_error"] == 0.0
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    output = tmp_path / "raw" / "tushare_contract_liability_backlog_acceptance.parquet"
+    assert output.exists()
+    stored = pd.read_parquet(output)
+    assert stored.columns.tolist() == list(
+        RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+    )
+    assert "contract_liab" not in stored
+    assert "total_assets" not in stored
+    assert len(calls) == 12
+    assert [value[0] for value in calls] == [
+        symbol
+        for symbol in RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_SYMBOLS
+        for _ in RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_SLICES
+    ]
+    assert sleeps == [0.32] * 11
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_contract_liability_backlog_acceptance()
+    assert len(calls) == 12
+
+
+def test_tushare_contract_liability_failure_consumes_and_stops(tmp_path, monkeypatch):
+    contract = copy.deepcopy(RICH.load_tushare_contract_liability_backlog_contract())
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_contract_liability_backlog_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    calls = []
+
+    def fake_fetch(ts_code, announcement_start, announcement_end):
+        calls.append((ts_code, announcement_start, announcement_end))
+        row = contract_liability_row(
+            ts_code, "20181030", "20181030", "20180930", 100.0, 1000.0
+        )
+        return pd.DataFrame(
+            [row] * 100,
+            columns=RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS,
+        )
+
+    monkeypatch.setattr(RICH, "fetch_tushare_contract_liability_backlog", fake_fetch)
+    with pytest.raises(RICH.RichDataError, match="defensive row ceiling"):
+        RICH.sync_tushare_contract_liability_backlog_acceptance()
+    assert len(calls) == 1
+    records = RICH.tushare_contract_liability_backlog_acceptance_records()
+    assert len(records) == 1
+    failure = RICH.json.loads(records[0].read_text())
+    assert failure["source_request"]["provider_calls_issued"] == 1
+    assert failure["files"] == []
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+    assert not (
+        tmp_path / "raw" / "tushare_contract_liability_backlog_acceptance.parquet"
+    ).exists()
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_contract_liability_backlog_acceptance()
+    assert len(calls) == 1
+
+
+def test_tushare_contract_liability_consumption_guard_precedes_contract_and_provider(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD",
+        tmp_path / "missing_acceptance_record.json",
+    )
+    RICH.atomic_write_json(
+        {
+            "dataset": "tushare_contract_liability_backlog_acceptance",
+            "acceptance_status": "source_acceptance_failed_stop_before_full_history_prices_or_returns",
+        },
+        RICH.RUNS_ROOT / "prior_tushare_contract_liability_backlog_acceptance.json",
+    )
+    touched = []
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_contract_liability_backlog_contract",
+        lambda: touched.append("contract"),
+    )
+    monkeypatch.setattr(
+        RICH, "require_provider", lambda provider: touched.append("provider")
+    )
+    with pytest.raises(RICH.RichDataError, match="one-shot.*already consumed"):
+        RICH.sync_tushare_contract_liability_backlog_acceptance()
+    assert touched == []
+
+
 def management_continuity_row(
     ts_code: str,
     ann_date: str,

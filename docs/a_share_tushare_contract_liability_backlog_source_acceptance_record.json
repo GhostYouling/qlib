@@ -1,0 +1,140 @@
+{
+    "version": 1,
+    "kind": "a_share_tushare_contract_liability_backlog_source_acceptance_record",
+    "status": "accepted_source_schema_version_formula_and_sample_coverage_pending_separate_full_source_and_no_return_protocol",
+    "frozen_at": "2026-07-17T01:19:26Z",
+    "purpose": "Freeze the sole successful no-return source acceptance for the contract-liability backlog mechanism and permanently consume the exact twelve-call probe across clones.",
+    "mechanism_overlap_audit": {
+        "path": "docs/a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json",
+        "sha256": "2d8cc98378f7e2ffac7182f80a9fbb8c0288c769ca4de9f1c5d68abd1ded0729"
+    },
+    "data_contract": {
+        "path": "docs/a_share_tushare_contract_liability_backlog_data_contract.json",
+        "sha256": "4c6105188ce7246fd9069fdf3e547e612813998b6316ec332e42acdb0aecf611",
+        "frozen_at": "2026-07-17T01:07:13Z"
+    },
+    "acceptance": {
+        "manifest_path": "data/metadata/rich_data/runs/20260717T011835Z_tushare_contract_liability_backlog_acceptance_3d78a4ab.json",
+        "manifest_sha256": "d407969b0f508b388f94711051b6509527c05dfdf4451226bf1cf4a5ac6f5680",
+        "run_id": "20260717T011835Z_tushare_contract_liability_backlog_acceptance_3d78a4ab",
+        "acceptance_status": "accepted_source_schema_version_formula_and_sample_coverage_pending_separate_full_source_and_no_return_protocol",
+        "api": "balancesheet",
+        "fixed_symbols_in_order": [
+            "600519.SH",
+            "000333.SZ",
+            "300750.SZ"
+        ],
+        "fixed_announcement_date_slices_in_order": [
+            [
+                "20180101",
+                "20191231"
+            ],
+            [
+                "20200101",
+                "20211231"
+            ],
+            [
+                "20220101",
+                "20231231"
+            ],
+            [
+                "20240101",
+                "20251231"
+            ]
+        ],
+        "requested_fields": [
+            "ts_code",
+            "ann_date",
+            "f_ann_date",
+            "end_date",
+            "report_type",
+            "comp_type",
+            "contract_liab",
+            "total_assets",
+            "update_flag"
+        ],
+        "provider_calls_planned": 12,
+        "provider_calls_issued": 12,
+        "maximum_attempts_per_call": 1,
+        "minimum_seconds_between_calls": 0.32,
+        "source_rows_by_symbol": {
+            "600519.SH": 45,
+            "000333.SZ": 48,
+            "300750.SZ": 53
+        },
+        "source_rows_total": 146,
+        "target_company_periods_observed": 98,
+        "accepted_periods": 69,
+        "missing_or_nonfinite_metric_periods_excluded": 29,
+        "semantic_duplicate_rows_collapsed": 28,
+        "adjustment_periods_excluded": 0,
+        "ambiguous_type_one_periods_excluded": 0,
+        "non_target_company_rows_excluded": 0,
+        "negative_contract_liability_periods_excluded": 0,
+        "nonpositive_total_assets_periods_excluded": 0,
+        "update_flag_counts": {
+            "0": 83,
+            "1": 63
+        },
+        "periods_without_prior_year_pair": 12,
+        "pairs_with_nonprior_actual_announcement_excluded": 0,
+        "simultaneous_older_report_period_events_excluded": 2,
+        "events_by_instrument": {
+            "SH600519": 19,
+            "SZ000333": 17,
+            "SZ300750": 19
+        },
+        "valid_factor_events_total": 55,
+        "distinct_factor_values": 55,
+        "factor_min": -0.015350021118731993,
+        "factor_max": 0.03122533639889092,
+        "duplicate_full_event_keys": 0,
+        "duplicate_signal_keys": 0,
+        "formula_maximum_absolute_error": 0.0
+    },
+    "derived_frame": {
+        "path": "data/raw/a_share/rich/tushare_contract_liability_backlog_acceptance.parquet",
+        "filesystem_sha256": "a72c639252a92cddfbf12cdb4bbec5d3ffa55a038e7709983413bb1688688016",
+        "content_sha256": "0eccb77f5e9d32323e8b5c71ca92eea330873e62c0ee903d6346b4de11ca3cda",
+        "rows": 55,
+        "columns": [
+            "announcement_date",
+            "report_date",
+            "instrument",
+            "tushare_contract_liability_backlog_delta",
+            "provider"
+        ],
+        "raw_contract_liab_or_total_assets_persisted": false,
+        "provider_raw_response_persisted": false
+    },
+    "privacy_and_scope": {
+        "credential_value_logged_stored_or_committed": false,
+        "unrequested_balance_sheet_field_requested_or_persisted": false,
+        "raw_provider_frame_persisted": false,
+        "raw_contract_liab_or_total_assets_persisted": false,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": false,
+        "aggregation_scoring_selection_sizing_orders_or_level2_performed": false
+    },
+    "interpretation": {
+        "what_passed": "The fixed three-symbol sample passed entitlement, exact schema, point-in-time key, conservative version, formula, finite-value, uniqueness, and minimum sample-coverage gates.",
+        "what_did_not_pass": "No all-market history, point-in-time source coverage, no-return cohort capacity, dense near-neighbor uniqueness, price association, execution, aggregation, current scoring, or selection gate has run.",
+        "factor_return_evidence": false,
+        "current_selection_evidence": false
+    },
+    "next_stage_decision": {
+        "acceptance_consumed": true,
+        "acceptance_retry_allowed": false,
+        "symbol_slice_field_formula_direction_or_version_change_allowed": false,
+        "full_source_sync_allowed_immediately": false,
+        "separate_full_source_and_no_return_preregistration_required": true,
+        "preregistration_must_bind_acceptance_manifest_and_frame_fingerprints": true,
+        "preregistration_must_freeze_point_in_time_source_universe_calendar_exact_call_count_slices_atomicity_coverage_capacity_and_dense_uniqueness": true,
+        "price_or_return_access_allowed_before_all_no_return_gates_pass": false,
+        "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+        "level2_purchase_or_intake_justified": false
+    },
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false
+}

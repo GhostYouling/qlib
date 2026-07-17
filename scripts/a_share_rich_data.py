@@ -132,6 +132,14 @@ DEFAULT_TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD = (
     / "docs"
     / "a_share_tushare_express_asset_growth_source_acceptance_record.json"
 )
+DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_contract_liability_backlog_data_contract.json"
+)
+DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_contract_liability_backlog_source_acceptance_record.json"
+)
 DEFAULT_TUSHARE_ST_RECOVERY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_st_recovery_data_contract.json"
 )
@@ -346,6 +354,12 @@ TUSHARE_EXPRESS_ASSET_GROWTH_CONTRACT_SHA256 = (
 )
 TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_RECORD_SHA256 = (
     "71a61cdfb33359e07f74e101b7958258fce08a70974aee2be0aab16179e48b1e"
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT_SHA256 = (
+    "4c6105188ce7246fd9069fdf3e547e612813998b6316ec332e42acdb0aecf611"
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD_SHA256 = (
+    "5a06db91c904c38bf0415cbff7cec6987e72212d8349a3805ca4a7749911295b"
 )
 TUSHARE_ST_RECOVERY_CONTRACT_SHA256 = (
     "cae22e7c7f8bf8c6e14587d5e7f260664c8080c579c52561ef0253d7c8a7ca9e"
@@ -652,6 +666,56 @@ TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_TS_CODES = (
 )
 TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_START = "20190101"
 TUSHARE_EXPRESS_ASSET_GROWTH_ACCEPTANCE_END = "20251231"
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS = (
+    "ts_code",
+    "ann_date",
+    "f_ann_date",
+    "end_date",
+    "report_type",
+    "comp_type",
+    "contract_liab",
+    "total_assets",
+    "update_flag",
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_PERIOD_COLUMNS = (
+    "announcement_date",
+    "actual_announcement_date",
+    "report_period",
+    "instrument",
+    "contract_liab",
+    "total_assets",
+    "provider",
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS = (
+    "announcement_date",
+    "report_date",
+    "instrument",
+    "tushare_contract_liability_backlog_delta",
+    "provider",
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_SYMBOLS = (
+    "600519.SH",
+    "000333.SZ",
+    "300750.SZ",
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_SLICES = (
+    ("20180101", "20191231"),
+    ("20200101", "20211231"),
+    ("20220101", "20231231"),
+    ("20240101", "20251231"),
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_KNOWN_REPORT_TYPES = set(range(1, 13))
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTEXT_REPORT_TYPES = {2, 6, 7}
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_ADJUSTMENT_REPORT_TYPES = {
+    3,
+    4,
+    5,
+    8,
+    9,
+    10,
+    11,
+    12,
+}
 TUSHARE_ST_MEMBERSHIP_RAW_FIELDS = (
     "ts_code",
     "trade_date",
@@ -1833,6 +1897,32 @@ def fetch_tushare_express_asset_growth(
     except Exception as exc:
         raise RichDataError(
             f"Tushare express request failed for {ts_code}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
+
+
+def fetch_tushare_contract_liability_backlog(
+    ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+) -> pd.DataFrame:
+    """Fetch one stock announcement slice using only the frozen backlog fields."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.balancesheet(
+            ts_code=ts_code,
+            start_date=announcement_start.strftime("%Y%m%d"),
+            end_date=announcement_end.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare balancesheet contract-liability request failed for "
+            f"{ts_code}: {safe_exception_text(exc)}"
         ) from exc
     if result is None:
         return pd.DataFrame()
@@ -3575,6 +3665,429 @@ def canonicalize_tushare_express_asset_growth(
         "minimum_factor_value": float(factor.min()) if len(factor) else None,
         "maximum_factor_value": float(factor.max()) if len(factor) else None,
         "duplicate_stock_report_period_keys": duplicate_count,
+        "formula_maximum_absolute_error": formula_error,
+    }
+
+
+def _normalize_tushare_contract_liability_response(
+    frame: pd.DataFrame,
+    expected_ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+    latest_actual_announcement_date: dt.date,
+) -> pd.DataFrame:
+    """Validate one exact balancesheet response before period version selection."""
+
+    if frame is None:
+        return pd.DataFrame()
+    raw = frame.copy()
+    unexpected_columns = sorted(
+        set(raw.columns) - set(TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS)
+    )
+    if unexpected_columns:
+        raise RichDataError(
+            "Tushare balancesheet response contains fields outside the frozen "
+            "contract-liability whitelist: " + ", ".join(unexpected_columns)
+        )
+    if raw.empty:
+        return pd.DataFrame()
+    missing_columns = [
+        field
+        for field in TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS
+        if field not in raw
+    ]
+    if missing_columns:
+        raise RichDataError(
+            "Tushare balancesheet response lacks requested contract-liability "
+            "fields: " + ", ".join(missing_columns)
+        )
+    expected_code = str(expected_ts_code).strip().upper()
+    expected_parts = pd.Series([expected_code], dtype="string").str.extract(
+        r"^(\d{6})\.(SH|SZ)$"
+    )
+    if expected_parts.isna().any(axis=None):
+        raise RichDataError(
+            f"invalid frozen Tushare balancesheet stock: {expected_code}"
+        )
+    if announcement_start > announcement_end:
+        raise RichDataError(
+            "Tushare contract-liability announcement-date range is reversed"
+        )
+
+    source_code = (
+        raw["ts_code"].astype("string").str.strip().str.upper().replace("", pd.NA)
+    )
+    code_parts = source_code.str.extract(r"^(\d{6})\.(SH|SZ)$")
+    announcement_raw = raw["ann_date"].astype("string").str.strip().replace("", pd.NA)
+    actual_raw = raw["f_ann_date"].astype("string").str.strip().replace("", pd.NA)
+    report_raw = raw["end_date"].astype("string").str.strip().replace("", pd.NA)
+    announcement_shape = announcement_raw.str.fullmatch(r"\d{8}", na=False)
+    actual_shape = actual_raw.str.fullmatch(r"\d{8}", na=False)
+    report_shape = report_raw.str.fullmatch(r"\d{8}", na=False)
+    announcement_date = pd.to_datetime(
+        announcement_raw, format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    actual_announcement_date = pd.to_datetime(
+        actual_raw, format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    report_period = pd.to_datetime(
+        report_raw, format="%Y%m%d", errors="coerce"
+    ).dt.normalize()
+    report_type_number = pd.to_numeric(raw["report_type"], errors="coerce")
+    company_type_number = pd.to_numeric(raw["comp_type"], errors="coerce")
+    update_flag = raw["update_flag"].astype("string").str.strip().replace("", pd.NA)
+    report_type_integer = (
+        report_type_number.notna()
+        & pd.Series(np.isfinite(report_type_number), index=raw.index)
+        & report_type_number.mod(1).eq(0)
+    )
+    company_type_integer = (
+        company_type_number.notna()
+        & pd.Series(np.isfinite(company_type_number), index=raw.index)
+        & company_type_number.mod(1).eq(0)
+    )
+    invalid_key = (
+        source_code.isna()
+        | code_parts[0].isna()
+        | code_parts[1].isna()
+        | ~announcement_shape
+        | ~actual_shape
+        | ~report_shape
+        | announcement_date.isna()
+        | actual_announcement_date.isna()
+        | report_period.isna()
+        | ~report_type_integer
+        | ~company_type_integer
+        | update_flag.isna()
+    )
+    if invalid_key.any():
+        raise RichDataError(
+            "Tushare balancesheet response contains "
+            f"{int(invalid_key.sum())} rows with incomplete or invalid statement keys"
+        )
+    if not source_code.eq(expected_code).all():
+        raise RichDataError(
+            "Tushare balancesheet response contains a stock outside its frozen request"
+        )
+
+    report_type = report_type_number.astype(int)
+    company_type = company_type_number.astype(int)
+    unknown_report_types = sorted(
+        set(report_type) - TUSHARE_CONTRACT_LIABILITY_BACKLOG_KNOWN_REPORT_TYPES
+    )
+    if unknown_report_types:
+        raise RichDataError(
+            "Tushare balancesheet response contains unknown report types: "
+            f"{unknown_report_types}"
+        )
+    start_ts = pd.Timestamp(announcement_start)
+    end_ts = pd.Timestamp(announcement_end)
+    latest_ts = pd.Timestamp(latest_actual_announcement_date)
+    if announcement_date.lt(start_ts).any() or announcement_date.gt(end_ts).any():
+        raise RichDataError(
+            "Tushare balancesheet response contains an announcement outside its request"
+        )
+    if actual_announcement_date.lt(announcement_date).any():
+        raise RichDataError(
+            "Tushare balancesheet response contains an actual announcement before ann_date"
+        )
+    if actual_announcement_date.gt(latest_ts).any():
+        raise RichDataError(
+            "Tushare balancesheet response contains an actual announcement after "
+            "the frozen observation date"
+        )
+    if report_period.gt(announcement_date).any():
+        raise RichDataError(
+            "Tushare balancesheet response contains a report period after ann_date"
+        )
+    if (
+        not report_period.dt.strftime("%m%d")
+        .isin({"0331", "0630", "0930", "1231"})
+        .all()
+    ):
+        raise RichDataError(
+            "Tushare balancesheet response contains a non-standard quarter end"
+        )
+
+    code = str(expected_parts.iloc[0, 0])
+    exchange = str(expected_parts.iloc[0, 1])
+    instrument = qlib_symbol(code)
+    if not instrument.startswith(exchange):
+        raise RichDataError(
+            "Tushare balancesheet stock code and exchange suffix disagree: "
+            f"{expected_code}"
+        )
+    return pd.DataFrame(
+        {
+            "announcement_date": announcement_date,
+            "actual_announcement_date": actual_announcement_date,
+            "report_period": report_period,
+            "instrument": instrument,
+            "report_type": report_type,
+            "company_type": company_type,
+            "contract_liab": pd.to_numeric(raw["contract_liab"], errors="coerce"),
+            "total_assets": pd.to_numeric(raw["total_assets"], errors="coerce"),
+            "update_flag": update_flag,
+        }
+    )
+
+
+def canonicalize_tushare_contract_liability_periods(
+    frame: pd.DataFrame,
+    expected_ts_code: str,
+    announcement_start: dt.date,
+    announcement_end: dt.date,
+    latest_actual_announcement_date: dt.date,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Apply the frozen company/report/version policy to one stock's slices."""
+
+    empty_quality: dict[str, Any] = {
+        "input_rows": 0,
+        "non_target_company_rows_excluded": 0,
+        "non_target_company_type_counts": {},
+        "target_company_periods_observed": 0,
+        "adjustment_periods_excluded": 0,
+        "no_type_one_periods_excluded": 0,
+        "missing_or_nonfinite_metric_periods_excluded": 0,
+        "negative_contract_liability_periods_excluded": 0,
+        "nonpositive_total_assets_periods_excluded": 0,
+        "ambiguous_type_one_periods_excluded": 0,
+        "semantic_duplicate_rows_collapsed": 0,
+        "simultaneous_update_flag_counts": {},
+        "accepted_periods": 0,
+    }
+    normalized = _normalize_tushare_contract_liability_response(
+        frame,
+        expected_ts_code,
+        announcement_start,
+        announcement_end,
+        latest_actual_announcement_date,
+    )
+    if normalized.empty:
+        return (
+            pd.DataFrame(columns=TUSHARE_CONTRACT_LIABILITY_BACKLOG_PERIOD_COLUMNS),
+            empty_quality,
+        )
+    update_flag_counts = {
+        str(key): int(value)
+        for key, value in normalized["update_flag"]
+        .value_counts(dropna=False)
+        .sort_index()
+        .items()
+    }
+    non_target_counts = {
+        str(int(key)): int(value)
+        for key, value in normalized.loc[
+            normalized["company_type"].ne(1), "company_type"
+        ]
+        .value_counts()
+        .sort_index()
+        .items()
+    }
+    target = normalized.loc[normalized["company_type"].eq(1)].copy()
+    quality = dict(empty_quality)
+    quality.update(
+        {
+            "input_rows": int(len(normalized)),
+            "non_target_company_rows_excluded": int(
+                normalized["company_type"].ne(1).sum()
+            ),
+            "non_target_company_type_counts": non_target_counts,
+            "target_company_periods_observed": int(target["report_period"].nunique()),
+            "simultaneous_update_flag_counts": update_flag_counts,
+        }
+    )
+    accepted_rows: list[dict[str, Any]] = []
+    for period, group in target.groupby("report_period", sort=True, observed=True):
+        observed_types = set(group["report_type"].astype(int))
+        if observed_types & TUSHARE_CONTRACT_LIABILITY_BACKLOG_ADJUSTMENT_REPORT_TYPES:
+            quality["adjustment_periods_excluded"] += 1
+            continue
+        type_one = group.loc[group["report_type"].eq(1)].copy()
+        if type_one.empty:
+            quality["no_type_one_periods_excluded"] += 1
+            continue
+        contract_values = type_one["contract_liab"].to_numpy(
+            dtype=float, na_value=np.nan, copy=False
+        )
+        asset_values = type_one["total_assets"].to_numpy(
+            dtype=float, na_value=np.nan, copy=False
+        )
+        finite_values = np.isfinite(contract_values) & np.isfinite(asset_values)
+        if not finite_values.all():
+            quality["missing_or_nonfinite_metric_periods_excluded"] += 1
+            continue
+        if (contract_values < 0.0).any():
+            quality["negative_contract_liability_periods_excluded"] += 1
+            continue
+        if (asset_values <= 0.0).any():
+            quality["nonpositive_total_assets_periods_excluded"] += 1
+            continue
+        semantic = type_one.drop_duplicates(
+            [
+                "announcement_date",
+                "actual_announcement_date",
+                "contract_liab",
+                "total_assets",
+            ]
+        )
+        if len(semantic) != 1:
+            quality["ambiguous_type_one_periods_excluded"] += 1
+            continue
+        quality["semantic_duplicate_rows_collapsed"] += int(len(type_one) - 1)
+        row = semantic.iloc[0]
+        accepted_rows.append(
+            {
+                "announcement_date": pd.Timestamp(row["announcement_date"]),
+                "actual_announcement_date": pd.Timestamp(
+                    row["actual_announcement_date"]
+                ),
+                "report_period": pd.Timestamp(period),
+                "instrument": str(row["instrument"]),
+                "contract_liab": float(row["contract_liab"]),
+                "total_assets": float(row["total_assets"]),
+                "provider": "tushare",
+            }
+        )
+    accepted = pd.DataFrame(
+        accepted_rows, columns=TUSHARE_CONTRACT_LIABILITY_BACKLOG_PERIOD_COLUMNS
+    )
+    if not accepted.empty:
+        accepted = accepted.sort_values(
+            ["instrument", "report_period"], kind="stable"
+        ).reset_index(drop=True)
+        if accepted.duplicated(["instrument", "report_period"]).any():
+            raise RichDataError(
+                "canonical Tushare contract-liability periods contain duplicate keys"
+            )
+    quality["accepted_periods"] = int(len(accepted))
+    return accepted, quality
+
+
+def derive_tushare_contract_liability_backlog(
+    periods: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Derive the frozen same-quarter backlog delta without persisting raw levels."""
+
+    empty_quality: dict[str, Any] = {
+        "accepted_periods": 0,
+        "periods_without_prior_year_pair": 0,
+        "pairs_with_nonprior_actual_announcement_excluded": 0,
+        "simultaneous_older_report_period_events_excluded": 0,
+        "factor_events_written": 0,
+        "distinct_factor_values": 0,
+        "minimum_factor_value": None,
+        "maximum_factor_value": None,
+        "formula_maximum_absolute_error": 0.0,
+    }
+    if tuple(periods.columns) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_PERIOD_COLUMNS:
+        raise RichDataError("Tushare contract-liability period columns changed")
+    if periods.empty:
+        return (
+            pd.DataFrame(columns=TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS),
+            empty_quality,
+        )
+    if periods.duplicated(["instrument", "report_period"]).any():
+        raise RichDataError(
+            "Tushare contract-liability period input contains duplicate keys"
+        )
+    current = periods.copy()
+    current["prior_report_period"] = current["report_period"] - pd.DateOffset(years=1)
+    prior = periods.loc[
+        :,
+        [
+            "instrument",
+            "report_period",
+            "actual_announcement_date",
+            "contract_liab",
+        ],
+    ].rename(
+        columns={
+            "report_period": "prior_report_period",
+            "actual_announcement_date": "prior_actual_announcement_date",
+            "contract_liab": "prior_contract_liab",
+        }
+    )
+    paired = current.merge(
+        prior,
+        on=["instrument", "prior_report_period"],
+        how="left",
+        validate="many_to_one",
+    )
+    has_prior = paired["prior_actual_announcement_date"].notna()
+    periods_without_prior = int((~has_prior).sum())
+    paired = paired.loc[has_prior].copy()
+    prior_is_earlier = paired["prior_actual_announcement_date"].lt(
+        paired["actual_announcement_date"]
+    )
+    unavailable_pairs = int((~prior_is_earlier).sum())
+    paired = paired.loc[prior_is_earlier].copy()
+    factor_values = (
+        paired["contract_liab"].astype(float)
+        - paired["prior_contract_liab"].astype(float)
+    ) / paired["total_assets"].astype(float)
+    finite_factor = np.isfinite(factor_values.to_numpy(dtype=float, copy=False))
+    if not finite_factor.all():
+        raise RichDataError(
+            "derived Tushare contract-liability backlog factor is non-finite"
+        )
+    paired["tushare_contract_liability_backlog_delta"] = factor_values
+    recomputed = (
+        paired["contract_liab"].to_numpy(dtype=float, copy=False)
+        - paired["prior_contract_liab"].to_numpy(dtype=float, copy=False)
+    ) / paired["total_assets"].to_numpy(dtype=float, copy=False)
+    formula_error = (
+        float(
+            np.max(
+                np.abs(
+                    paired["tushare_contract_liability_backlog_delta"].to_numpy(
+                        dtype=float, copy=False
+                    )
+                    - recomputed
+                )
+            )
+        )
+        if len(paired)
+        else 0.0
+    )
+    paired = paired.sort_values(
+        ["instrument", "actual_announcement_date", "report_period"], kind="stable"
+    )
+    simultaneous = paired.duplicated(
+        ["instrument", "actual_announcement_date"], keep="last"
+    )
+    simultaneous_excluded = int(simultaneous.sum())
+    paired = paired.loc[~simultaneous].copy()
+    result = pd.DataFrame(
+        {
+            "announcement_date": paired["actual_announcement_date"],
+            "report_date": paired["report_period"],
+            "instrument": paired["instrument"],
+            "tushare_contract_liability_backlog_delta": paired[
+                "tushare_contract_liability_backlog_delta"
+            ].astype(float),
+            "provider": "tushare",
+        }
+    )
+    result = (
+        result.loc[:, list(TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS)]
+        .sort_values(["announcement_date", "report_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if result.duplicated(["instrument", "announcement_date"]).any():
+        raise RichDataError(
+            "Tushare contract-liability backlog has duplicate stock-signal keys"
+        )
+    factor = result["tushare_contract_liability_backlog_delta"]
+    return result, {
+        "accepted_periods": int(len(periods)),
+        "periods_without_prior_year_pair": periods_without_prior,
+        "pairs_with_nonprior_actual_announcement_excluded": unavailable_pairs,
+        "simultaneous_older_report_period_events_excluded": simultaneous_excluded,
+        "factor_events_written": int(len(result)),
+        "distinct_factor_values": int(factor.nunique()),
+        "minimum_factor_value": float(factor.min()) if len(factor) else None,
+        "maximum_factor_value": float(factor.max()) if len(factor) else None,
         "formula_maximum_absolute_error": formula_error,
     }
 
@@ -6129,6 +6642,347 @@ def load_tushare_express_asset_growth_contract(
             "Tushare express asset-growth mechanism-overlap evidence changed"
         )
     return contract
+
+
+def load_tushare_contract_liability_backlog_contract(
+    path: Path = DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT,
+) -> dict[str, Any]:
+    """Load and revalidate the immutable pre-row backlog source contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT_SHA256:
+        raise RichDataError(
+            "Tushare contract-liability backlog contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_tushare_contract_liability_backlog_data_contract"
+    )
+    mechanism = contract.get("mechanism_identity") or {}
+    overlap = mechanism.get("mechanism_overlap_audit") or {}
+    source = contract.get("source") or {}
+    version = contract.get("point_in_time_and_version_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_request") or {}
+    gates = contract.get("acceptance_gates") or {}
+    publication = contract.get("atomic_publication") or {}
+    post = contract.get("post_acceptance_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_after_no_return_mechanism_audit_before_provider_rows_factor_values_prices_or_returns"
+        or contract.get("frozen_at") != "2026-07-17T01:07:13Z"
+        or mechanism.get("factor_name") != "tushare_contract_liability_backlog_delta"
+        or mechanism.get("independent_factor_count") != 1
+        or mechanism.get(
+            "alternative_balance_sheet_field_factor_or_combination_allowed"
+        )
+        is not False
+        or overlap.get("path")
+        != "docs/a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json"
+        or overlap.get("sha256")
+        != "2d8cc98378f7e2ffac7182f80a9fbb8c0288c769ca4de9f1c5d68abd1ded0729"
+        or source.get("provider") != "tushare"
+        or source.get("endpoint") != "balancesheet"
+        or source.get("interface_tier") != "standard_one_stock_history"
+        or source.get("documented_minimum_points") != 2000
+        or source.get("current_authorized_account_points") != 3000
+        or source.get("vip_endpoint_minimum_points") != 5000
+        or source.get("vip_endpoint_requested") is not False
+        or tuple(source.get("requested_fields") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS
+        or not isinstance(source.get("forbidden_fields"), str)
+        or source.get("credential_environment_variable") != "TUSHARE_TOKEN"
+        or source.get("credential_read_after_contract_and_consumption_guard_only")
+        is not True
+        or source.get("literal_credential_in_cli_source_manifest_log_or_git_allowed")
+        is not False
+        or source.get("provider_rows_observed_before_freeze") is not False
+        or source.get("factor_values_observed_before_freeze") is not False
+        or version.get("candidate_company_type")
+        != "1 general industrial and commercial"
+        or version.get("candidate_report_type") != "1 consolidated report"
+        or tuple(version.get("context_only_report_types") or ())
+        != tuple(
+            str(value)
+            for value in sorted(TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTEXT_REPORT_TYPES)
+        )
+        or tuple(
+            version.get("adjustment_report_types_that_exclude_the_whole_period") or ()
+        )
+        != tuple(
+            str(value)
+            for value in sorted(
+                TUSHARE_CONTRACT_LIABILITY_BACKLOG_ADJUSTMENT_REPORT_TYPES
+            )
+        )
+        or version.get("signal_source_date") != "the current accepted f_ann_date"
+        or version.get("conservative_availability")
+        != "first local trading session strictly after the current accepted f_ann_date"
+        or version.get("same_announcement_session_trade_allowed") is not False
+        or version.get("maximum_event_age_calendar_days") != 3
+        or version.get("forward_fill_beyond_event_age_allowed") is not False
+        or factor.get("name") != "tushare_contract_liability_backlog_delta"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("formula")
+        != "(current_accepted_type1_contract_liab - same_fiscal_quarter_previous_year_accepted_type1_contract_liab) / current_accepted_type1_total_assets"
+        or factor.get(
+            "clipping_winsorization_log_absolute_value_sign_inversion_residualization_or_imputation"
+        )
+        is not None
+        or tuple(acceptance.get("fixed_symbols_in_order") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_SYMBOLS
+        or tuple(
+            tuple(str(value) for value in item)
+            for item in acceptance.get("fixed_announcement_date_slices_in_order") or ()
+        )
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_SLICES
+        or acceptance.get("provider_call_count_if_source_is_available") != 12
+        or acceptance.get("maximum_attempts_per_call") != 1
+        or acceptance.get("minimum_seconds_between_calls") != 0.32
+        or acceptance.get("defensive_maximum_rows_per_response_strictly_below") != 100
+        or acceptance.get(
+            "defensive_ceiling_is_not_claimed_as_an_official_documented_limit"
+        )
+        is not True
+        or acceptance.get("latest_allowed_actual_announcement_date") != "20260717"
+        or acceptance.get("stop_on_first_provider_or_canonical_failure") is not True
+        or acceptance.get("remaining_calls_after_failure_allowed") is not False
+        or gates.get("all_twelve_fixed_calls_complete_required") is not True
+        or gates.get("minimum_symbols_with_at_least_four_valid_factor_events") != 2
+        or gates.get("minimum_valid_factor_events_per_qualifying_symbol") != 4
+        or gates.get("minimum_total_valid_factor_events") != 12
+        or gates.get("minimum_distinct_factor_values") != 6
+        or gates.get("maximum_duplicate_instrument_announcement_report_period_keys")
+        != 0
+        or gates.get(
+            "maximum_duplicate_instrument_announcement_keys_after_simultaneous_period_resolution"
+        )
+        != 0
+        or gates.get("maximum_formula_absolute_error") != 1e-12
+        or tuple(gates.get("required_output_columns") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+        or gates.get("raw_contract_liab_or_total_assets_persisted") is not False
+        or gates.get("unrequested_balance_sheet_fields_persisted") is not False
+        or gates.get("provider_raw_response_persisted") is not False
+        or gates.get("price_fields_loaded") != []
+        or gates.get("forward_return_fields_read") is not False
+        or gates.get("selection_or_promotion_allowed") is not False
+        or publication.get("derived_acceptance_path")
+        != "data/raw/a_share/rich/tushare_contract_liability_backlog_acceptance.parquet"
+        or publication.get("temporary_file_same_parent_and_atomic_replace_required")
+        is not True
+        or publication.get("successful_acceptance_may_complete_once") is not True
+        or publication.get(
+            "failed_or_successful_provider_attempt_consumes_the_frozen_acceptance"
+        )
+        is not True
+        or post.get("full_history_request_allowed_immediately") is not False
+        or post.get("new_full_source_and_no_return_preregistration_required")
+        is not True
+        or tuple(post.get("required_named_no_return_near_neighbors") or ())
+        != (
+            "eastmoney_balance_sheet_resilience",
+            "eastmoney_core_profit_consistency",
+            "tushare_positive_book_to_market",
+            "tushare_q_gross_margin_yoy_change_pp",
+        )
+        or post.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or post.get("maximum_allowed_absolute_median_daily_rank_correlation") != 0.8
+        or post.get("generic_factor_diagnostic_allowed") is not False
+        or post.get(
+            "aggregation_scoring_selection_sizing_orders_or_level2_purchase_allowed"
+        )
+        is not False
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare contract-liability backlog contract does not match the frozen protocol"
+        )
+    overlap_path = resolve_record_path(str(overlap["path"]))
+    if not overlap_path.exists() or file_digest(overlap_path) != str(overlap["sha256"]):
+        raise RichDataError(
+            "Tushare contract-liability backlog mechanism-overlap evidence changed"
+        )
+    for label, evidence in (contract.get("local_context") or {}).items():
+        linked_path = resolve_record_path(str(evidence.get("path") or ""))
+        linked_sha = str(evidence.get("sha256") or "")
+        if not linked_path.exists() or file_digest(linked_path) != linked_sha:
+            raise RichDataError(
+                f"Tushare contract-liability backlog local context changed: {label}"
+            )
+        manifest_value = evidence.get("manifest_path")
+        manifest_sha = evidence.get("manifest_sha256")
+        if manifest_value is not None or manifest_sha is not None:
+            manifest_file = resolve_record_path(str(manifest_value or ""))
+            if (
+                not manifest_value
+                or not manifest_sha
+                or not manifest_file.exists()
+                or file_digest(manifest_file) != str(manifest_sha)
+            ):
+                raise RichDataError(
+                    "Tushare contract-liability backlog manifest context changed: "
+                    f"{label}"
+                )
+    return contract
+
+
+def tushare_contract_liability_backlog_acceptance_records() -> list[Path]:
+    """Return local records that consumed the frozen backlog acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*tushare_contract_liability_backlog_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_contract_liability_backlog_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_contract_liability_backlog_acceptance_record(
+    path: Path = DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Validate the cross-clone successful backlog source acceptance."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError(
+            "Tushare contract-liability acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind="a_share_tushare_contract_liability_backlog_source_acceptance_record",
+    )
+    contract = record.get("data_contract") or {}
+    acceptance = record.get("acceptance") or {}
+    frame = record.get("derived_frame") or {}
+    scope = record.get("privacy_and_scope") or {}
+    interpretation = record.get("interpretation") or {}
+    decision = record.get("next_stage_decision") or {}
+    expected_source_rows = {
+        "600519.SH": 45,
+        "000333.SZ": 48,
+        "300750.SZ": 53,
+    }
+    expected_events = {"SH600519": 19, "SZ000333": 17, "SZ300750": 19}
+    if (
+        record.get("status")
+        != "accepted_source_schema_version_formula_and_sample_coverage_pending_separate_full_source_and_no_return_protocol"
+        or contract.get("sha256") != TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT_SHA256
+        or acceptance.get("manifest_sha256")
+        != "d407969b0f508b388f94711051b6509527c05dfdf4451226bf1cf4a5ac6f5680"
+        or acceptance.get("run_id")
+        != "20260717T011835Z_tushare_contract_liability_backlog_acceptance_3d78a4ab"
+        or acceptance.get("acceptance_status") != record.get("status")
+        or acceptance.get("api") != "balancesheet"
+        or tuple(acceptance.get("fixed_symbols_in_order") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_SYMBOLS
+        or tuple(
+            tuple(str(value) for value in item)
+            for item in acceptance.get("fixed_announcement_date_slices_in_order") or ()
+        )
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_SLICES
+        or tuple(acceptance.get("requested_fields") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS
+        or acceptance.get("provider_calls_planned") != 12
+        or acceptance.get("provider_calls_issued") != 12
+        or acceptance.get("maximum_attempts_per_call") != 1
+        or acceptance.get("minimum_seconds_between_calls") != 0.32
+        or acceptance.get("source_rows_by_symbol") != expected_source_rows
+        or acceptance.get("source_rows_total") != 146
+        or acceptance.get("target_company_periods_observed") != 98
+        or acceptance.get("accepted_periods") != 69
+        or acceptance.get("missing_or_nonfinite_metric_periods_excluded") != 29
+        or acceptance.get("semantic_duplicate_rows_collapsed") != 28
+        or acceptance.get("adjustment_periods_excluded") != 0
+        or acceptance.get("ambiguous_type_one_periods_excluded") != 0
+        or acceptance.get("non_target_company_rows_excluded") != 0
+        or acceptance.get("negative_contract_liability_periods_excluded") != 0
+        or acceptance.get("nonpositive_total_assets_periods_excluded") != 0
+        or acceptance.get("update_flag_counts") != {"0": 83, "1": 63}
+        or acceptance.get("periods_without_prior_year_pair") != 12
+        or acceptance.get("pairs_with_nonprior_actual_announcement_excluded") != 0
+        or acceptance.get("simultaneous_older_report_period_events_excluded") != 2
+        or acceptance.get("events_by_instrument") != expected_events
+        or acceptance.get("valid_factor_events_total") != 55
+        or acceptance.get("distinct_factor_values") != 55
+        or acceptance.get("duplicate_full_event_keys") != 0
+        or acceptance.get("duplicate_signal_keys") != 0
+        or acceptance.get("formula_maximum_absolute_error") != 0.0
+        or frame.get("filesystem_sha256")
+        != "a72c639252a92cddfbf12cdb4bbec5d3ffa55a038e7709983413bb1688688016"
+        or frame.get("content_sha256")
+        != "0eccb77f5e9d32323e8b5c71ca92eea330873e62c0ee903d6346b4de11ca3cda"
+        or frame.get("rows") != 55
+        or tuple(frame.get("columns") or ())
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+        or frame.get("raw_contract_liab_or_total_assets_persisted") is not False
+        or frame.get("provider_raw_response_persisted") is not False
+        or scope.get("credential_value_logged_stored_or_committed") is not False
+        or scope.get("unrequested_balance_sheet_field_requested_or_persisted")
+        is not False
+        or scope.get("raw_provider_frame_persisted") is not False
+        or scope.get("raw_contract_liab_or_total_assets_persisted") is not False
+        or scope.get("price_fields_loaded") != []
+        or scope.get("forward_return_fields_read") is not False
+        or scope.get("aggregation_scoring_selection_sizing_orders_or_level2_performed")
+        is not False
+        or interpretation.get("factor_return_evidence") is not False
+        or interpretation.get("current_selection_evidence") is not False
+        or decision.get("acceptance_consumed") is not True
+        or decision.get("acceptance_retry_allowed") is not False
+        or decision.get("full_source_sync_allowed_immediately") is not False
+        or decision.get("separate_full_source_and_no_return_preregistration_required")
+        is not True
+        or decision.get(
+            "price_or_return_access_allowed_before_all_no_return_gates_pass"
+        )
+        is not False
+        or decision.get("aggregation_scoring_selection_sizing_or_orders_allowed")
+        is not False
+        or decision.get("level2_purchase_or_intake_justified") is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare contract-liability source acceptance record changed"
+        )
+    for link in (record.get("mechanism_overlap_audit") or {}, contract):
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        linked_sha = str(link.get("sha256") or "")
+        if not linked_path.exists() or file_digest(linked_path) != linked_sha:
+            raise RichDataError(
+                f"Tushare contract-liability tracked evidence changed: {linked_path}"
+            )
+    manifest_file = resolve_record_path(str(acceptance.get("manifest_path") or ""))
+    if manifest_file.exists() and file_digest(manifest_file) != str(
+        acceptance["manifest_sha256"]
+    ):
+        raise RichDataError(
+            "Tushare contract-liability local acceptance manifest changed"
+        )
+    frame_file = resolve_record_path(str(frame.get("path") or ""))
+    if frame_file.exists():
+        if file_digest(frame_file) != str(frame["filesystem_sha256"]):
+            raise RichDataError(
+                "Tushare contract-liability local acceptance frame changed"
+            )
+        stored = pd.read_parquet(frame_file)
+        if (
+            tuple(stored.columns) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS
+            or len(stored) != int(frame["rows"])
+            or frame_digest(stored) != str(frame["content_sha256"])
+        ):
+            raise RichDataError(
+                "Tushare contract-liability local acceptance frame content changed"
+            )
+    return record
 
 
 def tushare_express_asset_growth_acceptance_records() -> list[Path]:
@@ -13388,6 +14242,325 @@ def sync_tushare_express_asset_growth_acceptance() -> Path:
                 "source_rows_by_stock": source_rows_by_stock,
                 "raw_frames_persisted": False,
                 "raw_growth_assets_persisted": False,
+                "credentials_logged_or_stored": False,
+            },
+            "completed_stock_quality": quality_by_stock,
+            "files": [],
+            "partial_snapshot_deleted": not destination.exists(),
+            "final_snapshot_published": False,
+            "acceptance_status": publication["failure_manifest_status"],
+            "error_type": type(exc).__name__,
+            "error": error,
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        failure_path = RUNS_ROOT / f"{run_id}.json"
+        atomic_write_json(failure, failure_path)
+        raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
+
+
+def sync_tushare_contract_liability_backlog_acceptance() -> Path:
+    """Run the frozen twelve-call contract-liability acceptance without prices."""
+
+    if DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD.exists():
+        load_tushare_contract_liability_backlog_acceptance_record(
+            DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_ACCEPTANCE_RECORD
+        )
+        raise RichDataError(
+            "Tushare contract-liability backlog source acceptance is already "
+            "consumed; another acceptance is forbidden"
+        )
+    prior_records = tushare_contract_liability_backlog_acceptance_records()
+    if prior_records:
+        raise RichDataError(
+            "Tushare contract-liability backlog acceptance is one-shot and already "
+            "consumed: " + ", ".join(str(path) for path in prior_records)
+        )
+    contract = load_tushare_contract_liability_backlog_contract()
+    publication = contract["atomic_publication"]
+    destination = RAW_ROOT / Path(str(publication["derived_acceptance_path"])).name
+    if destination.exists():
+        raise RichDataError(
+            "Tushare contract-liability backlog acceptance output already exists "
+            f"without a consumable run record; refusing overwrite: {destination}"
+        )
+    require_provider("tushare")
+
+    acceptance = contract["acceptance_request"]
+    gates = contract["acceptance_gates"]
+    ts_codes = tuple(str(value) for value in acceptance["fixed_symbols_in_order"])
+    slices = tuple(
+        (
+            dt.datetime.strptime(str(values[0]), "%Y%m%d").date(),
+            dt.datetime.strptime(str(values[1]), "%Y%m%d").date(),
+        )
+        for values in acceptance["fixed_announcement_date_slices_in_order"]
+    )
+    latest_actual_date = dt.datetime.strptime(
+        str(acceptance["latest_allowed_actual_announcement_date"]), "%Y%m%d"
+    ).date()
+    call_delay = float(acceptance["minimum_seconds_between_calls"])
+    row_ceiling = int(acceptance["defensive_maximum_rows_per_response_strictly_below"])
+    run_id = new_run_id("tushare_contract_liability_backlog_acceptance")
+    retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+    calls_issued = 0
+    current_ts_code: str | None = None
+    current_slice: tuple[str, str] | None = None
+    source_rows_by_call: dict[str, int] = {}
+    quality_by_stock: dict[str, dict[str, Any]] = {}
+    try:
+        factor_frames: list[pd.DataFrame] = []
+        for ts_code in ts_codes:
+            stock_raw_frames: list[pd.DataFrame] = []
+            for announcement_start, announcement_end in slices:
+                if calls_issued:
+                    time.sleep(call_delay)
+                current_ts_code = ts_code
+                current_slice = (
+                    announcement_start.strftime("%Y%m%d"),
+                    announcement_end.strftime("%Y%m%d"),
+                )
+                calls_issued += 1
+                raw = fetch_tushare_contract_liability_backlog(
+                    ts_code, announcement_start, announcement_end
+                )
+                call_key = f"{ts_code}:{current_slice[0]}-{current_slice[1]}"
+                source_rows_by_call[call_key] = int(len(raw))
+                if len(raw) >= row_ceiling:
+                    raise RichDataError(
+                        "Tushare contract-liability acceptance reached its strict "
+                        f"defensive row ceiling for {call_key}: {len(raw)}"
+                    )
+                _normalize_tushare_contract_liability_response(
+                    raw,
+                    ts_code,
+                    announcement_start,
+                    announcement_end,
+                    latest_actual_date,
+                )
+                stock_raw_frames.append(raw)
+            stock_raw = pd.DataFrame(
+                [
+                    row
+                    for source_frame in stock_raw_frames
+                    for row in source_frame.to_dict(orient="records")
+                ],
+                columns=TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS,
+            )
+            periods, period_quality = canonicalize_tushare_contract_liability_periods(
+                stock_raw,
+                ts_code,
+                slices[0][0],
+                slices[-1][1],
+                latest_actual_date,
+            )
+            factors, factor_quality = derive_tushare_contract_liability_backlog(periods)
+            quality_by_stock[ts_code] = {
+                "period_policy": period_quality,
+                "factor_derivation": factor_quality,
+            }
+            factor_frames.append(factors)
+        planned_calls = int(acceptance["provider_call_count_if_source_is_available"])
+        if calls_issued != planned_calls:
+            raise RichDataError(
+                "Tushare contract-liability acceptance omitted a frozen request"
+            )
+        combined = pd.concat(factor_frames, ignore_index=True)
+        if tuple(combined.columns) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_COLUMNS:
+            raise RichDataError(
+                "Tushare contract-liability acceptance output columns changed"
+            )
+        full_event_key = ["instrument", "announcement_date", "report_date"]
+        duplicate_full_keys = int(combined.duplicated(full_event_key, keep=False).sum())
+        if duplicate_full_keys > int(
+            gates["maximum_duplicate_instrument_announcement_report_period_keys"]
+        ):
+            raise RichDataError(
+                "Tushare contract-liability acceptance has duplicate full event keys"
+            )
+        signal_key = ["instrument", "announcement_date"]
+        duplicate_signal_keys = int(combined.duplicated(signal_key, keep=False).sum())
+        if duplicate_signal_keys > int(
+            gates[
+                "maximum_duplicate_instrument_announcement_keys_after_simultaneous_period_resolution"
+            ]
+        ):
+            raise RichDataError(
+                "Tushare contract-liability acceptance has duplicate signal keys"
+            )
+        combined = combined.sort_values(
+            ["announcement_date", "report_date", "instrument"], kind="stable"
+        ).reset_index(drop=True)
+        events_by_instrument = {
+            str(key): int(value)
+            for key, value in combined["instrument"].value_counts().sort_index().items()
+        }
+        minimum_events = int(gates["minimum_valid_factor_events_per_qualifying_symbol"])
+        qualifying_symbols = int(
+            sum(value >= minimum_events for value in events_by_instrument.values())
+        )
+        if qualifying_symbols < int(
+            gates["minimum_symbols_with_at_least_four_valid_factor_events"]
+        ):
+            raise RichDataError(
+                "Tushare contract-liability acceptance retained too few symbols "
+                f"with at least {minimum_events} events: {qualifying_symbols}"
+            )
+        if len(combined) < int(gates["minimum_total_valid_factor_events"]):
+            raise RichDataError(
+                "Tushare contract-liability acceptance retained too few valid "
+                f"factor events: {len(combined)}"
+            )
+        factor_name = "tushare_contract_liability_backlog_delta"
+        distinct_values = int(combined[factor_name].nunique())
+        if distinct_values < int(gates["minimum_distinct_factor_values"]):
+            raise RichDataError(
+                "Tushare contract-liability acceptance has too few distinct "
+                f"factor values: {distinct_values}"
+            )
+        formula_error = max(
+            (
+                float(value["factor_derivation"]["formula_maximum_absolute_error"])
+                for value in quality_by_stock.values()
+            ),
+            default=0.0,
+        )
+        if formula_error > float(gates["maximum_formula_absolute_error"]):
+            raise RichDataError(
+                "Tushare contract-liability formula error exceeds the frozen gate"
+            )
+
+        atomic_write_frame(combined, destination)
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_contract_liability_backlog_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "data_contract": {
+                "path": manifest_path(
+                    DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT
+                ),
+                "sha256": file_digest(
+                    DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT
+                ),
+                "frozen_at": contract["frozen_at"],
+            },
+            "source_request": {
+                "api": "balancesheet",
+                "request_mode": "one stock and fixed announcement-date slice per call",
+                "ts_codes_in_order": list(ts_codes),
+                "announcement_date_slices_in_order": [
+                    [start.strftime("%Y%m%d"), end.strftime("%Y%m%d")]
+                    for start, end in slices
+                ],
+                "provider_calls_planned": planned_calls,
+                "provider_calls_issued": calls_issued,
+                "maximum_attempts_per_call": int(
+                    acceptance["maximum_attempts_per_call"]
+                ),
+                "minimum_seconds_between_calls": call_delay,
+                "fields": list(TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS),
+                "source_rows_by_call": source_rows_by_call,
+                "source_rows_total": int(sum(source_rows_by_call.values())),
+                "strict_defensive_row_ceiling": row_ceiling,
+                "ceiling_claimed_as_official_limit": False,
+                "raw_frames_persisted": False,
+                "raw_contract_liab_or_total_assets_persisted": False,
+                "unrequested_fields_requested_or_stored": [],
+                "credentials_logged_or_stored": False,
+            },
+            "files": [
+                {
+                    "path": manifest_path(destination),
+                    "rows": int(len(combined)),
+                    "sha256": frame_digest(combined),
+                }
+            ],
+            "source_quality": {
+                "source_rows": int(sum(source_rows_by_call.values())),
+                "source_rows_by_call": source_rows_by_call,
+                "rows_written": int(len(combined)),
+                "events_by_instrument": events_by_instrument,
+                "symbols_with_at_least_four_valid_events": qualifying_symbols,
+                "quality_by_stock": quality_by_stock,
+                "duplicate_full_event_keys": duplicate_full_keys,
+                "duplicate_signal_keys": duplicate_signal_keys,
+                "factor_distinct_values": distinct_values,
+                "factor_min": float(combined[factor_name].min()),
+                "factor_max": float(combined[factor_name].max()),
+                "formula_maximum_absolute_error": formula_error,
+            },
+            "factor_policy": {
+                "factor": factor_name,
+                "formula": contract["factor"]["formula"],
+                "direction": "higher_is_better",
+                "raw_contract_liab_or_total_assets_persisted": False,
+            },
+            "availability_policy": {
+                "event_date": "current accepted f_ann_date",
+                "eligible_entry": (
+                    "first local trading session open strictly after announcement_date"
+                ),
+                "same_session_trade_allowed": False,
+                "maximum_event_age_calendar_days": 3,
+            },
+            "acceptance_status": publication["success_manifest_status"],
+            "price_fields_loaded": [],
+            "open_close_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        manifest_destination = RUNS_ROOT / f"{run_id}.json"
+        try:
+            atomic_write_json(manifest, manifest_destination)
+        except Exception:
+            destination.unlink(missing_ok=True)
+            raise
+        return manifest_destination
+    except Exception as exc:
+        destination.unlink(missing_ok=True)
+        error = safe_exception_text(exc)
+        failure = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_contract_liability_backlog_acceptance",
+            "provider": "tushare",
+            "run_id": run_id,
+            "retrieved_at": retrieved_at,
+            "failed_ts_code": current_ts_code,
+            "failed_announcement_slice": list(current_slice) if current_slice else None,
+            "data_contract": {
+                "path": manifest_path(
+                    DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT
+                ),
+                "sha256": file_digest(
+                    DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_CONTRACT
+                ),
+                "frozen_at": contract["frozen_at"],
+            },
+            "source_request": {
+                "api": "balancesheet",
+                "ts_codes_in_order": list(ts_codes),
+                "announcement_date_slices_in_order": [
+                    [start.strftime("%Y%m%d"), end.strftime("%Y%m%d")]
+                    for start, end in slices
+                ],
+                "provider_calls_planned": int(
+                    acceptance["provider_call_count_if_source_is_available"]
+                ),
+                "provider_calls_issued": calls_issued,
+                "maximum_attempts_per_call": int(
+                    acceptance["maximum_attempts_per_call"]
+                ),
+                "fields": list(TUSHARE_CONTRACT_LIABILITY_BACKLOG_RAW_FIELDS),
+                "source_rows_by_call": source_rows_by_call,
+                "source_rows_total": int(sum(source_rows_by_call.values())),
+                "raw_frames_persisted": False,
+                "raw_contract_liab_or_total_assets_persisted": False,
                 "credentials_logged_or_stored": False,
             },
             "completed_stock_quality": quality_by_stock,
@@ -21070,6 +22243,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the frozen three-stock performance-express asset-growth acceptance",
     )
 
+    subparsers.add_parser(
+        "acceptance-tushare-contract-liability-backlog",
+        help="run the frozen three-stock contract-liability backlog acceptance",
+    )
+
     ts_stock_st = subparsers.add_parser(
         "sync-tushare-stock-st-membership",
         help="download the frozen 2019-2025 daily ST-membership source snapshot",
@@ -21366,6 +22544,8 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_tushare_management_continuity_acceptance()
         elif args.command == "acceptance-tushare-express-asset-growth":
             manifest = sync_tushare_express_asset_growth_acceptance()
+        elif args.command == "acceptance-tushare-contract-liability-backlog":
+            manifest = sync_tushare_contract_liability_backlog_acceptance()
         elif args.command == "sync-tushare-stock-st-membership":
             manifest = sync_tushare_stock_st_membership(
                 allow_large=args.allow_large,
@@ -21510,6 +22690,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-tushare-express-asset-growth": (
             "stored_no_return_express_asset_growth_acceptance"
+        ),
+        "acceptance-tushare-contract-liability-backlog": (
+            "stored_no_return_contract_liability_backlog_acceptance"
         ),
         "sync-tushare-stock-st-membership": (
             "stored_pending_no_return_st_recovery_capacity_and_uniqueness"
