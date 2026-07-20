@@ -33,6 +33,8 @@ python -m pip install pandas numpy pyarrow requests
 
 默认数据目录仍是仓库内的 `data`。如果数据盘、容器挂载点或 Windows 任务账户不同，
 可通过 `QLIB_A_SHARE_DATA_ROOT` 同时配置日频和富数据脚本，无需复制代码或创建链接。
+纸面监控与短周期研究脚本也会使用同一目录中的管线锁、Qlib 数据和实验注册表，
+避免在数据同步尚未完成时读取另一套目录。
 
 Windows PowerShell：
 

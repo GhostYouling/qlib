@@ -18,15 +18,21 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
+from _a_share_runtime import resolve_data_root
 from _interprocess_lock import InterProcessFileLock, file_lock_is_held
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+DATA_ROOT = resolve_data_root(REPO_ROOT)
 RESEARCH = REPO_ROOT / "scripts" / "a_share_short_horizon_factor_research.py"
-PIPELINE_LOCK = REPO_ROOT / "data" / ".a_share_pipeline.lock"
-PROSPECTIVE_FACTOR_REGISTRY = REPO_ROOT / "data" / "experiments" / "short_horizon" / "prospective_factor_registry.json"
-STRATEGY_REGISTRY = REPO_ROOT / "data" / "experiments" / "short_horizon" / "strategy_registry.json"
+PIPELINE_LOCK = DATA_ROOT / ".a_share_pipeline.lock"
+PROSPECTIVE_FACTOR_REGISTRY = (
+    DATA_ROOT / "experiments" / "short_horizon" / "prospective_factor_registry.json"
+)
+STRATEGY_REGISTRY = (
+    DATA_ROOT / "experiments" / "short_horizon" / "strategy_registry.json"
+)
 SHADOW_OBSERVATION_REGISTRY = (
-    REPO_ROOT / "data" / "experiments" / "short_horizon" / "shadow_observation_registry.json"
+    DATA_ROOT / "experiments" / "short_horizon" / "shadow_observation_registry.json"
 )
 FORWARD_NOT_BEFORE = "2026-07-14"
 REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"

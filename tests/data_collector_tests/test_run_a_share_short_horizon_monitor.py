@@ -24,6 +24,27 @@ def test_monitor_waits_for_the_pipeline_lock_before_reading_daily_data(tmp_path)
     assert MONITOR.wait_for_pipeline_idle(lock_path, timeout_seconds=0)
 
 
+def test_monitor_uses_configured_data_root(tmp_path, monkeypatch):
+    configured_root = tmp_path / "portable data"
+    monkeypatch.setenv("QLIB_A_SHARE_DATA_ROOT", str(configured_root))
+    module_name = "run_a_share_short_horizon_monitor_with_configured_root"
+    spec = importlib.util.spec_from_file_location(module_name, SCRIPT_PATH)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    sys.modules[module_name] = module
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.modules.pop(module_name, None)
+
+    expected_root = configured_root.resolve()
+    assert module.DATA_ROOT == expected_root
+    assert module.PIPELINE_LOCK == expected_root / ".a_share_pipeline.lock"
+    assert module.STRATEGY_REGISTRY == (
+        expected_root / "experiments" / "short_horizon" / "strategy_registry.json"
+    )
+
+
 def test_monitor_wait_configuration_rejects_invalid_values(tmp_path):
     with pytest.raises(ValueError, match="non-negative"):
         MONITOR.wait_for_pipeline_idle(tmp_path / "lock", timeout_seconds=-1)

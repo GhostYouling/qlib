@@ -26,6 +26,27 @@ sys.modules[SPEC.name] = RESEARCH
 SPEC.loader.exec_module(RESEARCH)
 
 
+def test_research_uses_configured_data_root(tmp_path, monkeypatch):
+    configured_root = tmp_path / "portable data"
+    monkeypatch.setenv("QLIB_A_SHARE_DATA_ROOT", str(configured_root))
+    module_name = "a_share_short_horizon_factor_research_with_configured_root"
+    spec = importlib.util.spec_from_file_location(module_name, SCRIPT_PATH)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    sys.modules[module_name] = module
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.modules.pop(module_name, None)
+
+    expected_root = configured_root.resolve()
+    assert module.DATA_ROOT == expected_root
+    assert module.DEFAULT_PROVIDER_URI == expected_root / "qlib" / "cn_a_share"
+    assert module.DEFAULT_EXPERIMENT_ROOT == (
+        expected_root / "experiments" / "short_horizon"
+    )
+
+
 def write_json_record(path: Path, payload: dict) -> None:
     path.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
