@@ -645,6 +645,14 @@ DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC = (
 TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC_SHA256 = (
     "7528d5ab17c24b4c0904f6d213311a0a5132ab7a0c897fa572223e9de1455dc8"
 )
+DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_contract_liability_backlog_research_record.json"
+)
+TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD_SHA256 = (
+    "982d3014b82b13ef85017e68ed8e4a2fa2e23336b752d3d488169b1a2daf2519"
+)
 DEFAULT_TUSHARE_MONEYFLOW_FULL_MANIFEST = (
     DATA_ROOT
     / "metadata"
@@ -26574,6 +26582,72 @@ def run_eastmoney_core_profit_consistency_no_return_audit(
     }
 
 
+def load_tushare_contract_liability_backlog_research_record(
+    path: Path = DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD,
+) -> dict[str, Any]:
+    """Validate the terminal full-source coverage rejection."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_sha256(path)
+        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD_SHA256
+    ):
+        raise ValueError(
+            "Tushare contract-liability research-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path, kind="a_share_tushare_contract_liability_backlog_research_record"
+    )
+    attempt = record.get("full_source_attempt") or {}
+    gate = record.get("source_completeness_gate") or {}
+    downstream = record.get("downstream_gates") or {}
+    scope = record.get("scope_and_safety") or {}
+    decision = record.get("terminal_decision") or {}
+    evidence = record.get("frozen_evidence") or {}
+    failure = evidence.get("terminal_full_source_failure") or {}
+    if (
+        record.get("status")
+        != "terminal_rejected_at_full_source_report_period_p05_coverage_gate_before_no_return_capacity_uniqueness_or_returns"
+        or failure.get("sha256")
+        != "ab980476d67f3501c8686775425907158f544659028f5e5b8b013d35ac40a4f0"
+        or attempt.get("planned_provider_calls") != 21792
+        or attempt.get("completed_provider_calls") != 21792
+        or attempt.get("source_rows") != 217539
+        or attempt.get("complete_development_factor_events") != 76511
+        or attempt.get("partial_snapshot_deleted") is not True
+        or attempt.get("final_snapshot_published") is not False
+        or attempt.get("published_partition_count") != 0
+        or gate.get("gate_passed") is not False
+        or gate.get("p05_report_period_coverage")
+        != 0.02118054155748169
+        or gate.get("minimum_p05_report_period_coverage") != 0.3
+        or gate.get("p05_coverage_gate_passed") is not False
+        or len(gate.get("low_coverage_report_periods_below_0_3") or []) != 8
+        or downstream.get("no_return_capacity_audit_run") is not False
+        or downstream.get("dense_48_field_uniqueness_run") is not False
+        or downstream.get("forward_return_diagnostic_run") is not False
+        or scope.get("credentials_logged_or_stored") is not False
+        or scope.get("price_fields_loaded") != []
+        or scope.get("forward_return_fields_read") is not False
+        or decision.get("full_source_retry_allowed") is not False
+        or decision.get("no_return_capacity_uniqueness_or_semantic_work_allowed")
+        is not False
+        or decision.get("forward_return_work_allowed") is not False
+    ):
+        raise ValueError(
+            "Tushare contract-liability terminal research record changed"
+        )
+    for link in evidence.values():
+        linked_path = resolve_repository_record_path(str(link.get("path") or ""))
+        linked_sha = str(link.get("sha256") or "")
+        if linked_path.exists() and file_sha256(linked_path) != linked_sha:
+            raise ValueError(
+                "Tushare contract-liability terminal evidence changed: "
+                f"{linked_path}"
+            )
+    return record
+
+
 def load_tushare_contract_liability_backlog_no_return_preregistration(
     path: Path = DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_SPEC,
 ) -> dict[str, Any]:
@@ -28030,6 +28104,14 @@ def run_tushare_contract_liability_backlog_no_return_audit(
 ) -> dict[str, Any]:
     """Run event capacity, then conditional 48-field and semantic uniqueness."""
 
+    terminal_path = DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD
+    if terminal_path.exists():
+        load_tushare_contract_liability_backlog_research_record(terminal_path)
+        raise ValueError(
+            "Tushare contract-liability branch is terminal after the frozen "
+            "full-source report-period P05 coverage rejection; no-return, "
+            "comparison, return, and selection work are forbidden"
+        )
     spec = load_tushare_contract_liability_backlog_no_return_preregistration()
     manifest_path = Path(args.manifest).expanduser().resolve()
     source_manifest_sha256 = file_sha256(manifest_path)

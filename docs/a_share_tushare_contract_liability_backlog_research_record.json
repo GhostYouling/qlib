@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_contract_liability_backlog_research_record",
+  "status": "terminal_rejected_at_full_source_report_period_p05_coverage_gate_before_no_return_capacity_uniqueness_or_returns",
+  "recorded_at": "2026-07-20T12:05:42Z",
+  "purpose": "Preserve the terminal outcome of the sole atomic Tushare contract-liability backlog full-source protocol after every frozen provider call completed but early-history report-period coverage failed the preregistered P05 gate.",
+  "factor": {
+    "name": "tushare_contract_liability_backlog_delta",
+    "formula": "(current accepted type-1 contract_liab - same-fiscal-quarter prior-year accepted type-1 contract_liab) / current accepted type-1 total_assets",
+    "direction": "higher_is_better",
+    "availability": "first local trading session open strictly after current accepted f_ann_date",
+    "maximum_event_age_calendar_days": 3,
+    "holding_period_trading_days": 3,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31"
+  },
+  "frozen_evidence": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "2d8cc98378f7e2ffac7182f80a9fbb8c0288c769ca4de9f1c5d68abd1ded0729"
+    },
+    "data_contract": {
+      "path": "docs/a_share_tushare_contract_liability_backlog_data_contract.json",
+      "sha256": "4c6105188ce7246fd9069fdf3e547e612813998b6316ec332e42acdb0aecf611"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_contract_liability_backlog_source_acceptance_record.json",
+      "sha256": "5a06db91c904c38bf0415cbff7cec6987e72212d8349a3805ca4a7749911295b"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_contract_liability_backlog_no_return_preregistration.json",
+      "sha256": "7528d5ab17c24b4c0904f6d213311a0a5132ab7a0c897fa572223e9de1455dc8"
+    },
+    "terminal_full_source_failure": {
+      "path": "data/metadata/rich_data/runs/20260720T095129Z_tushare_contract_liability_backlog_full_ba447c5b_source_failure.json",
+      "sha256": "ab980476d67f3501c8686775425907158f544659028f5e5b8b013d35ac40a4f0"
+    }
+  },
+  "accepted_probe_context": {
+    "provider_calls": 12,
+    "source_rows": 146,
+    "accepted_periods": 69,
+    "derived_factor_events": 55,
+    "distinct_factor_values": 55,
+    "duplicate_event_keys": 0,
+    "duplicate_signal_keys": 0,
+    "interpretation": "The three-stock probe proved entitlement, the exact nine-field source schema, statement-version handling, the local formula, and sample coverage only; it did not waive the independent all-market report-period coverage gate."
+  },
+  "full_source_attempt": {
+    "run_id": "20260720T095129Z_tushare_contract_liability_backlog_full_ba447c5b",
+    "source_universe_intervals": 5451,
+    "accepted_instruments_reused_without_provider_rerequest": 3,
+    "provider_requested_instruments": 5448,
+    "planned_provider_calls": 21792,
+    "completed_provider_calls": 21792,
+    "completed_provider_requested_instruments": 5448,
+    "source_rows": 217539,
+    "source_rows_by_slice": {
+      "20180101-20191231": 49928,
+      "20200101-20211231": 60628,
+      "20220101-20231231": 57145,
+      "20240101-20251231": 49838
+    },
+    "derived_factor_events_before_development_filter": 76457,
+    "complete_development_factor_events": 76511,
+    "last_completed_instrument": "SZ301696",
+    "last_completed_slice": "20240101-20251231",
+    "failure_stage": "post_request_all_partition_and_report_period_source_completeness_gate",
+    "partial_snapshot_deleted": true,
+    "final_snapshot_published": false,
+    "published_partition_count": 0,
+    "published_files": []
+  },
+  "source_completeness_gate": {
+    "gate_passed": false,
+    "complete_derived_factor_events": 76511,
+    "minimum_complete_derived_factor_events": 20000,
+    "event_count_gate_passed": true,
+    "observed_signal_years": 7,
+    "minimum_observed_signal_years": 5,
+    "signal_year_gate_passed": true,
+    "median_report_period_coverage": 0.7809926552414868,
+    "minimum_median_report_period_coverage": 0.5,
+    "median_coverage_gate_passed": true,
+    "p05_report_period_coverage": 0.02118054155748169,
+    "minimum_p05_report_period_coverage": 0.3,
+    "p05_coverage_gate_passed": false,
+    "minimum_observed_report_period_coverage": 0.001944984717977216,
+    "low_coverage_report_periods_below_0_3": [
+      {
+        "report_period": "2019-03-31",
+        "observed_active_factor_names": 7,
+        "expected_active_source_names": 3599,
+        "coverage": 0.001944984717977216
+      },
+      {
+        "report_period": "2019-06-30",
+        "observed_active_factor_names": 74,
+        "expected_active_source_names": 3630,
+        "coverage": 0.020385674931129475
+      },
+      {
+        "report_period": "2019-09-30",
+        "observed_active_factor_names": 85,
+        "expected_active_source_names": 3690,
+        "coverage": 0.023035230352303523
+      },
+      {
+        "report_period": "2019-12-31",
+        "observed_active_factor_names": 109,
+        "expected_active_source_names": 3759,
+        "coverage": 0.02899707368981112
+      },
+      {
+        "report_period": "2020-03-31",
+        "observed_active_factor_names": 144,
+        "expected_active_source_names": 3808,
+        "coverage": 0.037815126050420166
+      },
+      {
+        "report_period": "2020-06-30",
+        "observed_active_factor_names": 156,
+        "expected_active_source_names": 3875,
+        "coverage": 0.04025806451612903
+      },
+      {
+        "report_period": "2020-09-30",
+        "observed_active_factor_names": 155,
+        "expected_active_source_names": 4040,
+        "coverage": 0.038366336633663366
+      },
+      {
+        "report_period": "2020-12-31",
+        "observed_active_factor_names": 160,
+        "expected_active_source_names": 4139,
+        "coverage": 0.038656680357574295
+      }
+    ],
+    "failure_reason": "The 27-report-period P05 coverage was 2.1181%, below the frozen 30% minimum, driven by near-absent 2019-2020 contract-liability factor coverage."
+  },
+  "downstream_gates": {
+    "no_return_capacity_audit_run": false,
+    "dense_48_field_uniqueness_run": false,
+    "gross_margin_semantic_gate_run": false,
+    "comparison_fields_loaded": [],
+    "forward_return_diagnostic_preregistered": false,
+    "forward_return_diagnostic_run": false,
+    "historical_factor_return_observed": false
+  },
+  "scope_and_safety": {
+    "raw_provider_frames_persisted": false,
+    "raw_contract_liability_or_total_assets_persisted": false,
+    "credentials_logged_or_stored": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_performed": false
+  },
+  "interpretation": {
+    "proven": [
+      "All 21,792 frozen provider calls completed for the 5,448 non-acceptance instruments while the three accepted instruments were reused without provider re-request.",
+      "The event-count, signal-year, and median report-period coverage components passed, but the independently frozen P05 report-period coverage component failed.",
+      "The temporary snapshot was deleted and no annual Parquet partition or successful full manifest was published.",
+      "No price, forward return, comparison factor, score, selection, sizing, order, or credential value was read or persisted."
+    ],
+    "not_proven": [
+      "three-session cross-sectional cohort capacity",
+      "distinctness from the 48 dense comparison fields or the gross-margin semantic neighbor",
+      "historical association or execution-aware return",
+      "aggregation, current scoring, selection, sizing, or trading performance"
+    ],
+    "economic_classification": "The mechanism remains economically interpretable, but this exact source and 2019-2025 contract lacks the preregistered early-history continuity and contributes no admitted factor."
+  },
+  "terminal_decision": {
+    "source_acceptance_retry_allowed": false,
+    "full_source_retry_allowed": false,
+    "partial_resume_or_single_stock_repair_allowed": false,
+    "shorten_history_drop_early_periods_or_lower_coverage_gate_allowed": false,
+    "change_fields_slices_statement_rules_formula_direction_or_event_age_allowed": false,
+    "no_return_capacity_uniqueness_or_semantic_work_allowed": false,
+    "forward_return_work_allowed": false,
+    "combine_aggregate_score_select_size_order_or_level2_justification_allowed": false,
+    "next_authorized_action": "Re-audit the no-return mechanism frontier and freeze a newly economically independent candidate before provider rows or factor values."
+  }
+}

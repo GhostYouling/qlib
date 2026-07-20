@@ -1938,7 +1938,7 @@ python scripts/a_share_rich_data.py \
 
 跨克隆终止记录为 [`a_share_tushare_express_asset_growth_source_acceptance_record.json`](a_share_tushare_express_asset_growth_source_acceptance_record.json)（SHA‑256 `71a61cdfb33359e07f74e101b7958258fce08a70974aee2be0aab16179e48b1e`）。验收入口会在合同、Token 和供应商访问前拒绝重跑。不得换股票或日期、重请求明细、删除/填充缺失值、改用同一响应的盈利/资产/权益字段、反向或改变公式，也不得继续全量、容量、唯一性、收益、聚合、评分、选股、仓位、订单或 Level‑2。该结果只说明冻结样本的字段覆盖失败，不是因子收益证据，也不证明所有 `express` 记录都缺少该字段。
 
-### Tushare 合同负债需求积压（来源验收通过）
+### Tushare 合同负债需求积压（全量来源覆盖终止）
 
 下一轮不读取收益的机制前沿审计冻结在 [`a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json`](a_share_three_day_contract_liability_backlog_mechanism_overlap_reaudit_20260717.json)（SHA‑256 `2d8cc98378f7e2ffac7182f80a9fbb8c0288c769ca4de9f1c5d68abd1ded0729`）。唯一候选 `tushare_contract_liability_backlog_delta = (当期合同负债 - 上年同季度合同负债) / 当期总资产` 用于刻画由客户预付款支持的需求积压；它与已经研究的利润、资产扩张、总杠杆、现金转换、持有人、订单流和价格机制分离，高值方向固定为更好。
 
@@ -1948,10 +1948,10 @@ python scripts/a_share_rich_data.py \
 
 跨克隆验收记录为 [`a_share_tushare_contract_liability_backlog_source_acceptance_record.json`](a_share_tushare_contract_liability_backlog_source_acceptance_record.json)（SHA‑256 `5a06db91c904c38bf0415cbff7cec6987e72212d8349a3805ca4a7749911295b`）。验收入口会在合同、Token 和供应商访问前拒绝重跑；不得换股票、切片、字段、版本规则、公式或方向。该结果只证明固定样本的来源、版本和公式可用，不是收益、执行或当前选股证据。
 
-后续全市场来源与无收益协议现已在 [`a_share_tushare_contract_liability_backlog_no_return_preregistration.json`](a_share_tushare_contract_liability_backlog_no_return_preregistration.json)（SHA‑256 `7528d5ab17c24b4c0904f6d213311a0a5132ab7a0c897fa572223e9de1455dc8`）冻结，但尚未运行真实全量。固定来源宇宙有 5,451 个区间；程序必须直接复用验收三股的五列派生帧，禁止在全量中重请求这 12 个已消费调用，只能对其余 5,448 股按四个固定两年公告切片顺序发出精确 21,792 次调用。调用顺序串行、最小间隔 0.32 秒，单切片最多三次瞬时错误尝试并固定退避 2/5 秒；任何来源、键、版本、行数上限、覆盖或本地发布失败都删除整个隐藏临时快照，发布零年度文件，并消耗这一全量协议，不能局部续传、单股修补或重跑。
+后续全市场来源与无收益协议冻结在 [`a_share_tushare_contract_liability_backlog_no_return_preregistration.json`](a_share_tushare_contract_liability_backlog_no_return_preregistration.json)（SHA‑256 `7528d5ab17c24b4c0904f6d213311a0a5132ab7a0c897fa572223e9de1455dc8`）。唯一全量于 2026‑07‑20 完成协议规定的全部请求：固定来源宇宙 5,451 个区间，直接复用验收三股，对其余 5,448 股四个固定切片完成 21,792 / 21,792 次调用，取得 217,539 条来源行和 76,511 个开发期完整派生事件。完整事件数、七个信号年份和报告期覆盖中位数 78.10% 均通过；27 个报告期的 P05 覆盖只有 2.12%，低于冻结的 30% 门槛，因此全量来源被拒绝。主要缺口集中在本次冻结快照的 2019Q1–2020Q4，单期覆盖仅 0.19%–4.03%，不能通过删除早期历史或降低门槛修复。
 
-只有全量形成 2019–2025 七个年度五列表、至少 20,000 个事件、27 个固定报告期中位覆盖不低于 50%、P05 不低于 30%、至少五个信号年且零完整键/信号键重复时，才允许单独运行无收益审计。无收益顺序固定为先用 `buyable_main_chinext`、550 天质量时效、20 会话上市熟化、三自然日事件时效、三会话非重叠 Top‑3 网格检验至少 200 个 cohort 和五个年份；容量通过后，才能加载 48 个可物化稠密字段做至少 100 个可比会话、绝对中位日秩相关低于 0.8 的唯一性门。资产负债表韧性、核心利润一致性和正账面市值比必须数值比较；毛利率同比变化的全量来源已经终止，因此只允许绑定其终止记录做强制语义检查，绝不能虚构相关系数。即使全量和两道无收益门都通过，也只能先冻结单因子收益诊断协议；不得直接读取收益、聚合、评分、选股、定仓、下单或采购 Level‑2。
+来源 P05 门失败后，隐藏临时快照已删除，没有发布年度 Parquet 分区或成功全量清单。本机失败清单为 `data/metadata/rich_data/runs/20260720T095129Z_tushare_contract_liability_backlog_full_ba447c5b_source_failure.json`（SHA‑256 `ab980476d67f3501c8686775425907158f544659028f5e5b8b013d35ac40a4f0`）。原始响应、合同负债/总资产金额、Token、价格和收益均未保存或读取。
 
-全量来源入口是 `python scripts/a_share_rich_data.py sync-tushare-contract-liability-backlog --allow-large`。该命令目前只完成了合同加载、验收复用、精确请求计数、原子发布和消费守卫的本地实现与测试；本文记录它不等于授权立即运行，实际请求前还必须确认完整测试、磁盘/进程状态和当前研究决定。`TUSHARE_TOKEN` 只从进程环境读取，不能写入命令、文档或清单。
+跨克隆终止记录为 [`a_share_tushare_contract_liability_backlog_research_record.json`](a_share_tushare_contract_liability_backlog_research_record.json)（SHA‑256 `982d3014b82b13ef85017e68ed8e4a2fa2e23336b752d3d488169b1a2daf2519`）。`sync-tushare-contract-liability-backlog --allow-large` 现在会在无收益协议、合同、Token 和供应商访问之前拒绝重跑。不得局部续传、单股修补、缩短到 2021 年以后、改切片/字段/版本规则/公式/方向或降低覆盖门槛。
 
-成功的全量清单只能交给 `python scripts/a_share_short_horizon_factor_research.py tushare-contract-liability-backlog-no-return-audit --manifest <全量清单路径>`。这个无收益入口也已完成本地实现与测试，但尚未有真实全量清单，因此从未真实运行。它不读取 `TUSHARE_TOKEN` 或访问供应商：先重验七个年度分区、覆盖率和不可变哈希，再只用本地日历、持有区间和质量数据执行容量门；容量通过后才按因子活跃会话分年度物化精确 48 个稠密比较字段，并核验毛利率终止记录的语义门。每个全量清单哈希只允许产生一份完成审计。缺少清单、容量失败或唯一性失败都不能继续收益、聚合、评分或选股。
+因为没有成功全量清单，`tushare-contract-liability-backlog-no-return-audit` 从未真实运行；入口现在也会在读取清单、本地价格基座、质量数据或 48 个比较字段前按终止记录拒绝。因此容量门、唯一性门和毛利率语义门均未运行，更没有收益诊断、聚合、评分、选股、仓位或订单结果。此机制不进入当前因子库；下一步只能重新审计机制前沿并在读取新供应商行或因子值前冻结一个经济上独立的新候选。

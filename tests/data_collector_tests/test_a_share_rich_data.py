@@ -3289,6 +3289,52 @@ def test_tushare_contract_liability_full_and_no_return_protocol_is_frozen():
     assert parsed.allow_large is True
 
 
+def test_tushare_contract_liability_terminal_record_and_guard_are_frozen(
+    tmp_path, monkeypatch
+):
+    assert (
+        RICH.file_digest(
+            RICH.DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD
+        )
+        == RICH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD_SHA256
+    )
+    record = RICH.load_tushare_contract_liability_backlog_research_record()
+    attempt = record["full_source_attempt"]
+    gate = record["source_completeness_gate"]
+    assert attempt["completed_provider_calls"] == 21792
+    assert attempt["source_rows"] == 217539
+    assert attempt["partial_snapshot_deleted"] is True
+    assert attempt["final_snapshot_published"] is False
+    assert gate["event_count_gate_passed"] is True
+    assert gate["signal_year_gate_passed"] is True
+    assert gate["median_coverage_gate_passed"] is True
+    assert gate["p05_report_period_coverage"] == pytest.approx(
+        0.02118054155748169
+    )
+    assert gate["p05_coverage_gate_passed"] is False
+    assert record["scope_and_safety"]["price_fields_loaded"] == []
+    assert record["scope_and_safety"]["forward_return_fields_read"] is False
+
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    touched = []
+    monkeypatch.setattr(
+        RICH,
+        "tushare_contract_liability_backlog_full_snapshot_records",
+        lambda: touched.append("local_records"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_contract_liability_backlog_full_source_chain",
+        lambda: touched.append("source_chain"),
+    )
+    monkeypatch.setattr(
+        RICH, "require_provider", lambda provider: touched.append("provider")
+    )
+    with pytest.raises(RICH.RichDataError, match="branch is terminal"):
+        RICH.sync_tushare_contract_liability_backlog(allow_large=True)
+    assert touched == []
+
+
 def complete_contract_liability_full_source_frame(ts_code: str) -> pd.DataFrame:
     rows = []
     base = 200.0
@@ -3385,6 +3431,11 @@ def configure_contract_liability_full_test(tmp_path, monkeypatch):
     monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
     monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
     monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD",
+        tmp_path / "missing_terminal_record.json",
+    )
     return instruments, universe_path, calendar_path
 
 
@@ -3510,6 +3561,11 @@ def test_tushare_contract_liability_full_guard_precedes_source_chain_and_provide
 ):
     monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
     monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD",
+        tmp_path / "missing_terminal_record.json",
+    )
     RICH.atomic_write_json(
         {
             "dataset": "tushare_contract_liability_backlog_events",

@@ -11539,6 +11539,54 @@ def test_tushare_contract_liability_no_return_protocol_and_cli_are_frozen(
     assert args.manifest == "full.json"
 
 
+def test_tushare_contract_liability_terminal_record_stops_before_manifest_or_prices(
+    tmp_path, monkeypatch
+):
+    assert (
+        RESEARCH.file_sha256(
+            RESEARCH.DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD
+        )
+        == RESEARCH.TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD_SHA256
+    )
+    record = RESEARCH.load_tushare_contract_liability_backlog_research_record()
+    assert record["full_source_attempt"]["completed_provider_calls"] == 21792
+    assert record["source_completeness_gate"]["gate_passed"] is False
+    assert record["source_completeness_gate"][
+        "p05_report_period_coverage"
+    ] == pytest.approx(0.02118054155748169)
+    assert record["downstream_gates"]["no_return_capacity_audit_run"] is False
+    assert record["scope_and_safety"]["price_fields_loaded"] == []
+    assert record["scope_and_safety"]["forward_return_fields_read"] is False
+
+    touched = []
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_tushare_contract_liability_backlog_no_return_preregistration",
+        lambda: touched.append("spec"),
+    )
+    original_file_sha256 = RESEARCH.file_sha256
+
+    def guarded_file_sha256(path):
+        if Path(path) == tmp_path / "missing-full-manifest.json":
+            touched.append("manifest")
+            return "unexpected"
+        return original_file_sha256(path)
+
+    monkeypatch.setattr(
+        RESEARCH,
+        "file_sha256",
+        guarded_file_sha256,
+    )
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "missing-full-manifest.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(tmp_path / "provider"),
+    )
+    with pytest.raises(ValueError, match="branch is terminal"):
+        RESEARCH.run_tushare_contract_liability_backlog_no_return_audit(args)
+    assert touched == []
+
+
 def test_tushare_contract_liability_expansion_is_strict_next_and_announcement_aged():
     calendar = pd.DatetimeIndex(
         pd.to_datetime(["2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30"])
@@ -11966,6 +12014,11 @@ def test_tushare_contract_liability_capacity_failure_stops_before_comparisons(
     quality_manifest_path.write_text("{}\n", encoding="utf-8")
     manifest_path = tmp_path / "full.json"
     manifest_path.write_text("{}\n", encoding="utf-8")
+    monkeypatch.setattr(
+        RESEARCH,
+        "DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD",
+        tmp_path / "missing-terminal-record.json",
+    )
     spec = {
         "capacity_contract": {
             "development_start": "2019-01-01",
