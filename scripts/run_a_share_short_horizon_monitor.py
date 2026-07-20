@@ -7,7 +7,6 @@ new factor combinations, change the approved candidate, or place trades.
 
 from __future__ import annotations
 
-import fcntl
 import json
 import subprocess
 import sys
@@ -15,6 +14,11 @@ import time
 from collections.abc import Callable
 from pathlib import Path
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from _interprocess_lock import InterProcessFileLock, file_lock_is_held
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = REPO_ROOT / "scripts" / "a_share_short_horizon_factor_research.py"
@@ -31,14 +35,7 @@ REQUIRED_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 def pipeline_is_busy(lock_path: Path = PIPELINE_LOCK) -> bool:
     """Return whether the data pipeline currently holds its advisory lock."""
 
-    lock_path.parent.mkdir(parents=True, exist_ok=True)
-    with lock_path.open("a+") as handle:
-        try:
-            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
-            return True
-        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
-        return False
+    return file_lock_is_held(lock_path)
 
 
 def wait_for_pipeline_idle(

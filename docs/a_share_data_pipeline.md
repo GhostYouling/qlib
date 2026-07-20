@@ -1331,6 +1331,13 @@ python scripts/audit_a_share_dataset.py
 python scripts/audit_a_share_dataset.py --require-restoration-factor
 ```
 
+## Windows、macOS 与 Linux
+
+日频管线、丰富数据接入和纸面监控现在共用跨平台进程锁，并按中国标准时间判断
+已完成交易日。Windows 虚拟环境、凭据注入与任务计划程序配置见
+[a_share_cross_platform_usage.md](a_share_cross_platform_usage.md)。各平台使用相同 CLI，
+不维护独立的 Windows 脚本副本。
+
 ## 定时自动运行（macOS）
 
 本机时区与中国大陆一致。默认命令安装两个 `launchd` 用户任务：工作日 18:30 增量更新，以及周五 20:00 的全量复权校正。若要在数据更新后自动追加三日纸面观察，可显式加入工作日 19:30 的观察任务：

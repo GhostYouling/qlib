@@ -26,7 +26,6 @@ import argparse
 import atexit
 import concurrent.futures
 import datetime as dt
-import fcntl
 import hashlib
 import importlib.metadata
 import importlib.util
@@ -34,6 +33,7 @@ import json
 import math
 import os
 import shutil
+import sys
 import tempfile
 import time
 import unicodedata
@@ -45,9 +45,19 @@ from typing import Any, Callable, Iterable
 import numpy as np
 import pandas as pd
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from _interprocess_lock import (
+    InterProcessFileLock,
+    LockUnavailableError,
+    inspect_file_lock,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_ROOT = REPO_ROOT / "data"
+CHINA_STANDARD_TIME = dt.timezone(dt.timedelta(hours=8), name="Asia/Shanghai")
 RAW_ROOT = DATA_ROOT / "raw" / "a_share" / "rich"
 METADATA_ROOT = DATA_ROOT / "metadata" / "rich_data"
 RUNS_ROOT = METADATA_ROOT / "runs"
@@ -915,32 +925,25 @@ class RichDataProcessLock:
 
     def __init__(self, path: Path):
         self.path = path
-        self._handle: Any | None = None
+        self._lock: InterProcessFileLock | None = None
 
     def __enter__(self) -> "RichDataProcessLock":
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._handle = self.path.open("a+", encoding="utf-8")
+        self._lock = InterProcessFileLock(self.path, owner=str(os.getpid()))
         try:
-            fcntl.flock(self._handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError as exc:
-            self._handle.seek(0)
-            owner = self._handle.read().strip() or "unknown"
-            self._handle.close()
-            self._handle = None
+            self._lock.acquire()
+        except LockUnavailableError as exc:
+            snapshot = inspect_file_lock(self.path)
+            self._lock = None
             raise RichDataError(
-                f"another rich-data synchronization holds {self.path}; owner={owner}"
+                "another rich-data synchronization holds "
+                f"{self.path}; owner={snapshot.owner or 'unknown'}"
             ) from exc
-        self._handle.seek(0)
-        self._handle.truncate()
-        self._handle.write(str(os.getpid()))
-        self._handle.flush()
         return self
 
     def __exit__(self, exc_type: Any, exc: Any, traceback: Any) -> None:
-        if self._handle is not None:
-            fcntl.flock(self._handle.fileno(), fcntl.LOCK_UN)
-            self._handle.close()
-            self._handle = None
+        if self._lock is not None:
+            self._lock.release()
+            self._lock = None
 
 
 @dataclass(frozen=True)
@@ -970,12 +973,18 @@ def parse_date(value: str) -> dt.date:
 def latest_completed_session_date(now: dt.datetime | None = None) -> dt.date:
     """Conservatively avoid requesting a still-forming A-share session.
 
-    The workspace time zone is China/Singapore.  The function intentionally
-    only knows weekends; an exchange holiday will naturally return no rows and
-    be recorded as such in the manifest rather than treated as a data error.
+    A timezone-aware now is converted to UTC+8; a naive value is interpreted
+    as UTC+8 for backward-compatible callers. The function intentionally only
+    knows weekends; exchange holidays naturally return no rows and are recorded
+    in the manifest rather than treated as data errors.
     """
 
-    local_now = now or dt.datetime.now()
+    if now is None:
+        local_now = dt.datetime.now(CHINA_STANDARD_TIME)
+    elif now.tzinfo is None:
+        local_now = now
+    else:
+        local_now = now.astimezone(CHINA_STANDARD_TIME)
     cutoff = local_now.date()
     if local_now.weekday() < 5 and local_now.time() < dt.time(15, 30):
         cutoff -= dt.timedelta(days=1)
@@ -5367,8 +5376,23 @@ def frame_digest(frame: pd.DataFrame) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
+TEXT_DIGEST_SUFFIXES = frozenset(
+    {".csv", ".json", ".md", ".rst", ".tsv", ".txt", ".yaml", ".yml"}
+)
+
+
 def file_digest(path: Path) -> str:
-    """Return a SHA-256 digest for an immutable manifest or specification."""
+    """Return a stable SHA-256 digest for a manifest, spec, or data file.
+
+    Git may check text files out with CRLF on Windows.  Repository contracts
+    are fingerprinted with canonical LF bytes so an unchanged contract has the
+    same digest on every platform.  Binary data keeps byte-exact hashing.
+    """
+
+    path = Path(path)
+    if path.suffix.lower() in TEXT_DIGEST_SUFFIXES:
+        content = path.read_bytes().replace(b"\r\n", b"\n")
+        return hashlib.sha256(content).hexdigest()
 
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -23008,38 +23032,14 @@ def sync_jqdata_moneyflow(
 
 
 def advisory_lock_status(path: Path) -> dict[str, Any]:
-    """Inspect an advisory lock without deleting, truncating, or acquiring it long-term."""
+    """Inspect an advisory lock without deleting, truncating, or holding it."""
 
-    path = path.expanduser().resolve()
-    if not path.exists():
-        return {
-            "path": str(path),
-            "exists": False,
-            "recorded_owner_pid": None,
-            "advisory_lock_currently_held": False,
-        }
-    try:
-        with path.open("r", encoding="utf-8") as handle:
-            owner = handle.read().strip() or None
-            try:
-                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except BlockingIOError:
-                held = True
-            else:
-                held = False
-                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
-    except FileNotFoundError:  # The owner may exit between exists() and open().
-        return {
-            "path": str(path),
-            "exists": False,
-            "recorded_owner_pid": None,
-            "advisory_lock_currently_held": False,
-        }
+    snapshot = inspect_file_lock(path)
     return {
-        "path": str(path),
-        "exists": True,
-        "recorded_owner_pid": owner,
-        "advisory_lock_currently_held": held,
+        "path": str(snapshot.path),
+        "exists": snapshot.exists,
+        "recorded_owner_pid": snapshot.owner,
+        "advisory_lock_currently_held": snapshot.held,
     }
 
 

@@ -1,6 +1,5 @@
 """Offline checks for the paper-monitor schedule's data-refresh barrier."""
 
-import fcntl
 import importlib.util
 import sys
 from pathlib import Path
@@ -18,11 +17,9 @@ SPEC.loader.exec_module(MONITOR)
 
 def test_monitor_waits_for_the_pipeline_lock_before_reading_daily_data(tmp_path):
     lock_path = tmp_path / ".a_share_pipeline.lock"
-    with lock_path.open("a+") as handle:
-        fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    with MONITOR.InterProcessFileLock(lock_path, owner="test"):
         assert MONITOR.pipeline_is_busy(lock_path)
         assert not MONITOR.wait_for_pipeline_idle(lock_path, timeout_seconds=0)
-        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
     assert not MONITOR.pipeline_is_busy(lock_path)
     assert MONITOR.wait_for_pipeline_idle(lock_path, timeout_seconds=0)
 

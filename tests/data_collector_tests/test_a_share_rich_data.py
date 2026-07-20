@@ -139,6 +139,31 @@ def test_vendor_symbol_mapping_and_symbol_validation():
         RICH.parse_symbols("430047")
 
 
+def test_file_digest_is_cross_platform_for_text_but_byte_exact_for_binary(tmp_path):
+    lf_text = tmp_path / "lf.json"
+    crlf_text = tmp_path / "crlf.json"
+    lf_text.write_bytes(b'{\n  "value": 1\n}\n')
+    crlf_text.write_bytes(b'{\r\n  "value": 1\r\n}\r\n')
+    assert RICH.file_digest(lf_text) == RICH.file_digest(crlf_text)
+
+    lf_binary = tmp_path / "lf.parquet"
+    crlf_binary = tmp_path / "crlf.parquet"
+    lf_binary.write_bytes(b"binary\ncontent")
+    crlf_binary.write_bytes(b"binary\r\ncontent")
+    assert RICH.file_digest(lf_binary) != RICH.file_digest(crlf_binary)
+
+
+def test_completed_session_uses_china_time_for_aware_datetimes():
+    utc_before_close = dt.datetime(
+        2026, 7, 13, 7, 29, tzinfo=dt.timezone.utc
+    )
+    utc_at_close = dt.datetime(
+        2026, 7, 13, 7, 30, tzinfo=dt.timezone.utc
+    )
+    assert RICH.latest_completed_session_date(utc_before_close).isoformat() == "2026-07-10"
+    assert RICH.latest_completed_session_date(utc_at_close).isoformat() == "2026-07-13"
+
+
 def test_provider_status_never_returns_credential_values(monkeypatch):
     monkeypatch.setenv("TUSHARE_TOKEN", "this-is-a-secret")
     availability = RICH.provider_availability("tushare")

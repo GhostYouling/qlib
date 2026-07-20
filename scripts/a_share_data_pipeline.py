@@ -19,7 +19,6 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import datetime as dt
-import fcntl
 import json
 import logging
 import os
@@ -34,6 +33,11 @@ from typing import Any, Iterable
 import pandas as pd
 import requests
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from _interprocess_lock import InterProcessFileLock, LockUnavailableError
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_ROOT = REPO_ROOT / "data"
@@ -51,6 +55,7 @@ PRICE_BASIS_MANIFEST = QLIB_DIR / "price_basis.json"
 DEFAULT_START_DATE = "2015-01-01"
 DEFAULT_REFRESH_DAYS = 45
 DEFAULT_WORKERS = 3
+CHINA_STANDARD_TIME = dt.timezone(dt.timedelta(hours=8), name="Asia/Shanghai")
 
 POINT_IN_TIME_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 POINT_IN_TIME_RAW_COLUMNS = (
@@ -125,25 +130,27 @@ class PipelineLock:
 
     def __init__(self, path: Path):
         self.path = path
-        self._file: Any | None = None
+        self._lock: InterProcessFileLock | None = None
 
     def __enter__(self) -> "PipelineLock":
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._file = self.path.open("a+")
+        owner = (
+            f"pid={os.getpid()} "
+            f"started_at={dt.datetime.now(dt.timezone.utc).isoformat()}"
+        )
+        self._lock = InterProcessFileLock(self.path, owner=owner)
         try:
-            fcntl.flock(self._file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError as exc:
+            self._lock.acquire()
+        except LockUnavailableError as exc:
+            self._lock = None
             raise PipelineError(
                 f"another A-share pipeline run holds {self.path}; refusing to overlap"
             ) from exc
-        self._file.write(f"pid={os.getpid()} started_at={dt.datetime.now(dt.timezone.utc).isoformat()}\n")
-        self._file.flush()
         return self
 
     def __exit__(self, exc_type: Any, exc: Any, traceback: Any) -> None:
-        if self._file is not None:
-            fcntl.flock(self._file.fileno(), fcntl.LOCK_UN)
-            self._file.close()
+        if self._lock is not None:
+            self._lock.release()
+            self._lock = None
 
 
 def parse_date(value: str) -> dt.date:
@@ -153,15 +160,20 @@ def parse_date(value: str) -> dt.date:
 
 
 def latest_completed_session_date(now: dt.datetime | None = None) -> dt.date:
-    """Return a conservative daily-data cutoff in the local China/Singapore time zone.
+    """Return a conservative daily-data cutoff in China Standard Time.
 
-    A-share daily bars are provisional before the close. The workspace time
-    zone matches China Standard Time, so before 15:30 on a weekday the most
-    recent safe date is the preceding weekday. Exchange holidays simply leave
-    the existing calendar unchanged, which is safer than ingesting a live bar.
+    A timezone-aware now is converted to UTC+8; a naive value is interpreted
+    as UTC+8 for backward-compatible tests and callers. Before 15:30 on a
+    weekday, the most recent safe date is the preceding weekday. Exchange
+    holidays simply leave the existing calendar unchanged.
     """
 
-    local_now = now or dt.datetime.now()
+    if now is None:
+        local_now = dt.datetime.now(CHINA_STANDARD_TIME)
+    elif now.tzinfo is None:
+        local_now = now
+    else:
+        local_now = now.astimezone(CHINA_STANDARD_TIME)
     cutoff = local_now.date()
     if local_now.weekday() < 5 and local_now.time() < dt.time(15, 30):
         cutoff -= dt.timedelta(days=1)

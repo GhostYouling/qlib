@@ -110,6 +110,10 @@ def test_latest_completed_session_date_avoids_live_and_weekend_bars():
     assert PIPELINE.latest_completed_session_date(pd.Timestamp("2026-07-13 15:29").to_pydatetime()).isoformat() == "2026-07-10"
     assert PIPELINE.latest_completed_session_date(pd.Timestamp("2026-07-13 15:30").to_pydatetime()).isoformat() == "2026-07-13"
     assert PIPELINE.latest_completed_session_date(pd.Timestamp("2026-07-12 17:00").to_pydatetime()).isoformat() == "2026-07-10"
+    utc_before_close = pd.Timestamp("2026-07-13 07:29", tz="UTC").to_pydatetime()
+    utc_at_close = pd.Timestamp("2026-07-13 07:30", tz="UTC").to_pydatetime()
+    assert PIPELINE.latest_completed_session_date(utc_before_close).isoformat() == "2026-07-10"
+    assert PIPELINE.latest_completed_session_date(utc_at_close).isoformat() == "2026-07-13"
 
 
 def test_merge_and_save_bars_prunes_provisional_tail(tmp_path):
