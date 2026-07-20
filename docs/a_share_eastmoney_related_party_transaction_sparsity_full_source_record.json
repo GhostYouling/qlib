@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_related_party_transaction_sparsity_full_source_record",
+  "status": "accepted_full_source_pending_no_return_capacity_and_uniqueness",
+  "created_at": "2026-07-20T13:11:02Z",
+  "purpose": "Permanently bind the sole atomic 2019-2025 related-party disclosure-sparsity source snapshot so every clone rejects another full-source attempt and no price or return work can begin before the frozen capacity and uniqueness gates.",
+  "source_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit_20260720.json",
+      "sha256": "697def3023b93b639363b05c262293dda75cb515fa58d8124ea5e96384d61190"
+    },
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_data_contract.json",
+      "sha256": "242baad268f11c56b0c3ccb14b9726f653b908e553d0b1d39faed36e6069c277"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_source_acceptance_record.json",
+      "sha256": "054728119ccfd39858e4eb391a16097a3b63f9f2ef8cfebf9f928f9dfa29c582"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_no_return_preregistration.json",
+      "sha256": "51447a3647ad461480b98a01c7d55f094c0dbd139c81fa8abfb378f4167e20d8"
+    }
+  },
+  "full_manifest": {
+    "path": "data/metadata/rich_data/runs/20260720T130538Z_eastmoney_related_party_transaction_sparsity_full_53f2347e.json",
+    "sha256": "e8a668ffda6668040f1129c60d402aa9731560801475fe2644f7fb7146b089e9",
+    "run_id": "20260720T130538Z_eastmoney_related_party_transaction_sparsity_full_53f2347e",
+    "acceptance_status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness",
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31"
+  },
+  "source_request": {
+    "provider": "eastmoney",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_RELATED_TRADE",
+    "requested_fields": [
+      "SECURITY_CODE",
+      "NOTICE_DATE",
+      "EID"
+    ],
+    "accepted_months_reused_without_provider_rerequest": 9,
+    "new_network_months": 75,
+    "new_count_complete_ranges": 76,
+    "new_provider_calls_including_bisection_probe": 933,
+    "source_rows_reused_from_acceptance": 50597,
+    "new_source_rows": 447536,
+    "source_rows_total": 498133,
+    "minimum_page_pause_seconds": 0.05,
+    "requests_were_sequential": true,
+    "credentials_required_logged_or_stored": false,
+    "cookies_proxy_or_retail_session_used": false,
+    "forbidden_fields_requested_or_persisted": [],
+    "raw_identity_rows_or_eid_persisted": false
+  },
+  "bisection_audit": {
+    "bisection_count": 1,
+    "month": "2024-04",
+    "parent_range": {
+      "start": "2024-04-01",
+      "end": "2024-04-30",
+      "advertised_pages": 84,
+      "advertised_rows": 41911,
+      "page_ceiling": 80,
+      "provider_probe_calls": 1
+    },
+    "final_count_complete_ranges": [
+      {
+        "start": "2024-04-01",
+        "end": "2024-04-15",
+        "advertised_pages": 13,
+        "advertised_rows": 6052,
+        "received_rows": 6052
+      },
+      {
+        "start": "2024-04-16",
+        "end": "2024-04-30",
+        "advertised_pages": 72,
+        "advertised_rows": 35859,
+        "received_rows": 35859
+      }
+    ],
+    "parent_later_pages_requested": false,
+    "bisection_followed_frozen_rule": true
+  },
+  "published_snapshot": {
+    "month_partition_count": 84,
+    "first_month": "2019-01",
+    "last_month": "2025-12",
+    "point_in_time_holding_events_total": 51401,
+    "minimum_month_events": 131,
+    "median_month_events": 293,
+    "maximum_month_events": 2427,
+    "events_by_year": {
+      "2019": 7011,
+      "2020": 7365,
+      "2021": 7104,
+      "2022": 7446,
+      "2023": 7673,
+      "2024": 7738,
+      "2025": 7064
+    },
+    "distinct_factor_values": 223,
+    "source_upper_bound_candidate_cross_sections": 1598,
+    "duplicate_event_keys": 0,
+    "missing_or_nonpositive_counts": 0,
+    "nonfinite_factor_values": 0,
+    "formula_maximum_absolute_error": 0.0,
+    "provider_values": [
+      "eastmoney"
+    ],
+    "columns": [
+      "announcement_date",
+      "instrument",
+      "related_party_transaction_count",
+      "eastmoney_related_party_transaction_sparsity",
+      "provider"
+    ],
+    "eid_column_present": false,
+    "forbidden_columns_present": [],
+    "source_coverage_gate_passed": true
+  },
+  "independent_revalidation": {
+    "all_84_partitions_reloaded": true,
+    "all_84_manifest_content_hashes_reproduced": true,
+    "content_hash_mismatch_months": [],
+    "first_partition_file_sha256": "074c89f43c77cd47997a8856689c3e04c44f5799c0fdf0acaa1e84d0549fb0b8",
+    "last_partition_file_sha256": "1ffac586b003c8dbb6ef40a96586dc47cd3dd36457ca0cc6c67a93204422e9a1",
+    "global_rows_reproduced": 51401,
+    "global_event_uniqueness_reproduced": true,
+    "year_coverage_reproduced": true,
+    "source_upper_bound_candidate_cross_sections_reproduced": 1598,
+    "reciprocal_formula_maximum_absolute_error": 0.0,
+    "price_or_return_field_read": false
+  },
+  "interpretation": {
+    "what_passed": "The exact source completed every 2019-2025 month, reused the nine accepted months without another request, count-verified every new safe range, bisected one unsafe month before later pages, published all 84 partitions atomically, and passed the frozen year, event-count, variation, and pre-quality candidate-date source gates.",
+    "what_did_not_pass": "The 1,598 source-upper-bound dates do not prove the fixed 200 quality/listing-seasoned non-overlapping cohorts. No comparison field, sparse semantic/statistical uniqueness result, size-liquidity confounder result, price, return, execution, aggregation, current score, or selection exists.",
+    "factor_return_evidence": false,
+    "current_selection_evidence": false
+  },
+  "next_stage_decision": {
+    "full_source_attempt_consumed": true,
+    "full_source_retry_allowed": false,
+    "partial_resume_or_partition_repair_allowed": false,
+    "capacity_audit_required_before_comparison_fields": true,
+    "capacity_and_uniqueness_must_use_the_frozen_no_return_preregistration": true,
+    "price_or_return_access_allowed_before_both_no_return_gates_pass": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_purchase_or_intake_justified": false
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

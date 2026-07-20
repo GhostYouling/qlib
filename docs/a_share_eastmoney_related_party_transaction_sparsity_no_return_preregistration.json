@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_related_party_transaction_sparsity_no_return_preregistration",
+  "status": "frozen_after_unique_source_acceptance_before_full_history_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-20T12:54:30Z",
+  "purpose": "Bind the accepted related-party disclosure-sparsity source to one atomic 2019-2025 full snapshot and ordered no-return capacity and uniqueness gates before any price or factor-return field is read.",
+  "source_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit_20260720.json",
+      "sha256": "697def3023b93b639363b05c262293dda75cb515fa58d8124ea5e96384d61190"
+    },
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_data_contract.json",
+      "sha256": "242baad268f11c56b0c3ccb14b9726f653b908e553d0b1d39faed36e6069c277",
+      "preregistered_at": "2026-07-20T12:40:00Z"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_source_acceptance_record.json",
+      "sha256": "054728119ccfd39858e4eb391a16097a3b63f9f2ef8cfebf9f928f9dfa29c582"
+    },
+    "source_acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260720T125250Z_eastmoney_related_party_transaction_sparsity_acceptance_db9e2dde.json",
+      "sha256": "c61e47b05354e11119b4bf80f335dc334cc1042c6fc30c4d9bdd16d58e31fd70",
+      "run_id": "20260720T125250Z_eastmoney_related_party_transaction_sparsity_acceptance_db9e2dde"
+    },
+    "source_acceptance_frame": {
+      "path": "data/raw/a_share/rich/eastmoney/related_party_transaction_sparsity/acceptance/20260720T125250Z_eastmoney_related_party_transaction_sparsity_acceptance_db9e2dde/related_party_transaction_sparsity.parquet",
+      "content_sha256": "99c61dc01d56c50a4dd99049da0d85840197e71396e13faa70a5f90dc43344bd",
+      "file_sha256": "a47acb785956117946eff706922fc2edf6624ace0bec598fce192192db2f02ea",
+      "rows": 4040
+    }
+  },
+  "factor_protocol": {
+    "factor_name": "eastmoney_related_party_transaction_sparsity",
+    "raw_context_name": "related_party_transaction_count",
+    "formula": "1 / related_party_transaction_count",
+    "direction": "higher_is_better",
+    "availability": "first local trading session strictly after announcement_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "absent_event_policy": "missing",
+    "normalized_columns": [
+      "announcement_date",
+      "instrument",
+      "related_party_transaction_count",
+      "eastmoney_related_party_transaction_sparsity",
+      "provider"
+    ]
+  },
+  "full_source_snapshot_contract": {
+    "dataset": "eastmoney_related_party_transaction_sparsity",
+    "provider": "eastmoney",
+    "required_success_status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "required_partition_month_start": "2019-01",
+    "required_partition_month_end": "2025-12",
+    "required_final_month_partition_count": 84,
+    "acceptance_reuse_months": [
+      "2019-01",
+      "2019-02",
+      "2019-03",
+      "2024-01",
+      "2024-02",
+      "2024-03",
+      "2025-01",
+      "2025-02",
+      "2025-03"
+    ],
+    "acceptance_reuse_month_count": 9,
+    "new_network_month_count": 75,
+    "acceptance_rows_reused_without_provider_rerequest": true,
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_RELATED_TRADE",
+    "requested_fields": [
+      "SECURITY_CODE",
+      "NOTICE_DATE",
+      "EID"
+    ],
+    "page_size": 500,
+    "maximum_pages_per_partition": 80,
+    "maximum_attempts_per_page": 4,
+    "minimum_page_pause_seconds": 0.05,
+    "requests_are_sequential": true,
+    "recursive_bisection_before_later_pages_when_month_exceeds_ceiling": true,
+    "single_date_above_page_ceiling_is_fatal": true,
+    "every_final_partition_advertised_count_must_equal_received_rows": true,
+    "every_final_partition_must_be_nonempty": true,
+    "every_year_required": true,
+    "minimum_point_in_time_holding_events_total": 25000,
+    "minimum_point_in_time_holding_events_per_year": 1000,
+    "minimum_distinct_factor_values": 100,
+    "source_upper_bound_candidate_cross_section_definition": "one announcement_date with at least six point-in-time holding instruments and at least two distinct factor values, before quality and listing gates",
+    "source_upper_bound_minimum_names_per_cross_section": 6,
+    "source_upper_bound_minimum_distinct_factor_values": 2,
+    "minimum_source_upper_bound_candidate_cross_sections": 500,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "partial_snapshot_accepted": false,
+    "one_full_snapshot_attempt_after_acceptance": true,
+    "immutable_partition_files_and_manifest": true,
+    "raw_source_rows_or_eid_persisted": false,
+    "failure_policy": "delete the entire hidden temporary snapshot, publish no final monthly partition or success manifest, write one terminal no-return full-source record, and stop without retry, partial resume, another provider, altered window, field, formula, direction, timing, threshold, price, or return",
+    "tracked_record_path": "docs/a_share_eastmoney_related_party_transaction_sparsity_full_source_record.json"
+  },
+  "capacity_contract": {
+    "must_run_before_any_comparison_field": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_factor_age_calendar_days": 3,
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "price_open_close_market_state_or_forward_return_fields_allowed": false,
+    "failure_policy": "write one terminal no-return capacity record and stop without comparison fields, prices, returns, altered event age, overlapping cohorts, lower name/value/cohort/year thresholds, aggregation, scoring, or selection"
+  },
+  "uniqueness_contract_after_capacity_only": {
+    "screen_start": "2019-01-01",
+    "screen_end": "2025-12-31",
+    "candidate_value": "eastmoney_related_party_transaction_sparsity",
+    "required_sparse_near_neighbors": [
+      "pledge_event_count",
+      "major_holder_event_count",
+      "institutional_survey_event_count",
+      "analyst_valid_rating_report_count",
+      "insider_open_market_event_count",
+      "block_trade_event_count"
+    ],
+    "required_size_liquidity_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ],
+    "sparse_minimum_pairwise_names_per_session": 6,
+    "dense_minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_for_statistical_gate": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "semantic_review_required_for_every_sparse_neighbor": true,
+    "semantic_rejection_question": "Does the candidate reduce to generic disclosure count or attention intensity rather than related-party governance complexity after source timing and aggregation are aligned?",
+    "sparse_insufficient_overlap_policy": "record overlap and descriptive correlation without statistical pass or fail; semantic independence remains mandatory",
+    "all_dense_confounders_must_have_minimum_sessions_and_pass": true,
+    "catalog_or_threshold_change_after_acceptance_allowed": false,
+    "failure_policy": "stop without dropping a near neighbor or confounder, changing the sparse framework, reading returns, or combining with another factor"
+  },
+  "gate_order": [
+    "validate this preregistration, the tracked acceptance record, local acceptance manifest and frame, data contract, mechanism audit, universe, calendar, quarterly quality, price-basis context, frontier, terminal predecessor, and pilot execution policy fingerprints",
+    "run one atomic full-source snapshot using nine accepted months and exactly seventy-five new monthly ranges, recursively bisecting only before unsafe page offsets",
+    "if the full source passes, freeze its tracked cross-clone record before another source command",
+    "run the fixed no-price capacity gate before loading any comparison field",
+    "only after capacity passes, load exactly six sparse near neighbors and three dense confounders for the frozen no-return uniqueness audit",
+    "only if every no-return gate passes, freeze a separate one-time return and execution diagnostic before price access"
+  ],
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1"
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "latest_terminal_mechanism": {
+      "path": "docs/a_share_tushare_contract_liability_backlog_research_record.json",
+      "sha256": "982d3014b82b13ef85017e68ed8e4a2fa2e23336b752d3d488169b1a2daf2519"
+    },
+    "pilot_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    }
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

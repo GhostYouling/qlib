@@ -8877,6 +8877,263 @@ def test_eastmoney_balance_sheet_capacity_drops_overlapping_audit_dates(monkeypa
     ]
 
 
+def test_eastmoney_related_party_sparsity_no_return_source_chain_is_frozen():
+    spec = RESEARCH.load_eastmoney_related_party_transaction_sparsity_no_return_preregistration()
+    events, evidence = (
+        RESEARCH.validate_eastmoney_related_party_transaction_sparsity_full_snapshot(
+            RESEARCH.DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST,
+            spec,
+        )
+    )
+    assert spec["capacity_contract"]["minimum_required_cohorts"] == 200
+    assert spec["capacity_contract"]["minimum_observed_years"] == 5
+    assert (
+        tuple(
+            spec["uniqueness_contract_after_capacity_only"][
+                "required_sparse_near_neighbors"
+            ]
+        )
+        == RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_SPARSE_COMPARISON_FIELDS
+    )
+    assert (
+        tuple(
+            spec["uniqueness_contract_after_capacity_only"][
+                "required_size_liquidity_confounders"
+            ]
+        )
+        == RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_DENSE_COMPARISON_FIELDS
+    )
+    assert len(events) == 51401
+    assert evidence["manifest"]["partitions"] == 84
+    assert evidence["all_partition_content_hashes_reproduced"] is True
+    assert evidence["price_fields_loaded"] == []
+    assert evidence["forward_return_fields_read"] is False
+    assert (
+        RESEARCH.file_sha256(
+            RESEARCH.DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_RECORD
+        )
+        == RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_RECORD_SHA256
+    )
+    record = RESEARCH.load_json_record(
+        RESEARCH.DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_RECORD,
+        kind="a_share_eastmoney_related_party_transaction_sparsity_no_return_record",
+    )
+    assert record["gate_decision"]["both_no_return_gates_passed"] is True
+    assert record["gate_decision"]["factor_return_evidence_exists"] is False
+
+
+def test_eastmoney_related_party_sparsity_is_strictly_after_and_age_bounded():
+    calendar = pd.bdate_range("2025-01-02", periods=6)
+    factor = RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME
+    events = pd.DataFrame(
+        [
+            {
+                "announcement_date": calendar[0],
+                "instrument": "SZ000001",
+                "related_party_transaction_count": 2,
+                factor: 0.5,
+                "provider": "eastmoney",
+            },
+            {
+                "announcement_date": calendar[1],
+                "instrument": "SZ000002",
+                "related_party_transaction_count": 4,
+                factor: 0.25,
+                "provider": "eastmoney",
+            },
+        ]
+    )
+    expanded, audit = (
+        RESEARCH.materialize_eastmoney_related_party_transaction_sparsity_sessions(
+            events,
+            calendar,
+            calendar,
+            maximum_event_age_days=3,
+        )
+    )
+    assert not (
+        (expanded["instrument"] == "SZ000001") & (expanded["datetime"] == calendar[0])
+    ).any()
+    assert (
+        (expanded["instrument"] == "SZ000001") & (expanded["datetime"] == calendar[1])
+    ).any()
+    assert expanded["event_age_days"].between(0, 3).all()
+    assert audit["availability"].endswith("strictly_after_announcement_date")
+    assert audit["price_fields_loaded"] == []
+
+
+def test_eastmoney_related_party_sparsity_quality_join_keeps_both_announcement_dates():
+    calendar = pd.bdate_range("2025-01-02", periods=30)
+    factor = RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME
+    events = pd.DataFrame(
+        [
+            {
+                "announcement_date": calendar[20],
+                "instrument": "SZ000001",
+                "related_party_transaction_count": 2,
+                factor: 0.5,
+                "provider": "eastmoney",
+            }
+        ]
+    )
+    fundamentals = pd.DataFrame(
+        [
+            {
+                "instrument": "SZ000001",
+                "report_date": "2024-12-31",
+                "announcement_date": calendar[1],
+                "roe": 10.0,
+                "net_profit": 1.0,
+                "revenue_yoy": 1.0,
+                "profit_yoy": 1.0,
+            }
+        ]
+    )
+    intervals = {"SZ000001": [(calendar[0], calendar[-1])]}
+    eligible, audit = (
+        RESEARCH.prepare_eastmoney_related_party_transaction_sparsity_eligible_sessions(
+            events,
+            calendar[21:25],
+            fundamentals,
+            calendar,
+            intervals,
+            maximum_event_age_days=3,
+            maximum_quality_age_days=550,
+        )
+    )
+    assert len(eligible) >= 1
+    assert eligible["related_party_announcement_date"].eq(calendar[20]).all()
+    assert eligible["announcement_date"].eq(calendar[1]).all()
+    assert audit["quality_and_listing_eligible_rows"] == len(eligible)
+    assert audit["price_fields_loaded"] == []
+
+
+def test_eastmoney_related_party_sparsity_capacity_requires_cohorts_and_years():
+    factor = RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME
+    calendar = pd.bdate_range("2019-01-02", "2021-01-12")
+    fixed_grid = calendar[:-3:3]
+    dates = pd.DatetimeIndex(
+        pd.Series(fixed_grid, index=fixed_grid)
+        .groupby(fixed_grid.year, sort=True)
+        .head(2)
+        .to_numpy()
+    )
+    rows = [
+        {
+            "datetime": date,
+            "instrument": f"SZ{position:06d}",
+            factor: 1.0 / (1 + position % 2),
+        }
+        for date in dates
+        for position in range(1, 7)
+    ]
+    contract = {
+        "holding_period_trading_days": 3,
+        "minimum_eligible_names_per_cross_section": 6,
+        "minimum_distinct_factor_values": 2,
+        "minimum_required_cohorts": len(dates),
+        "minimum_observed_years": len(set(dates.year)),
+    }
+    passed = RESEARCH.eastmoney_related_party_transaction_sparsity_capacity(
+        pd.DataFrame(rows), calendar, contract=contract
+    )
+    assert passed["capacity_gate_passed"] is True
+    contract["minimum_observed_years"] += 1
+    failed = RESEARCH.eastmoney_related_party_transaction_sparsity_capacity(
+        pd.DataFrame(rows), calendar, contract=contract
+    )
+    assert failed["capacity_gate_passed"] is False
+    assert failed["forward_return_fields_read"] is False
+
+
+def test_eastmoney_related_party_sparsity_uniqueness_handles_sparse_overlap_and_dense_synonym():
+    rng = np.random.default_rng(20260720)
+    dates = pd.bdate_range("2025-01-02", periods=6)
+    symbols = [f"SZ{index:06d}" for index in range(1, 61)]
+    factor = RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME
+    candidate = pd.DataFrame(
+        [
+            {
+                "datetime": date,
+                "instrument": symbol,
+                factor: float((position % 7) + 1),
+            }
+            for date in dates
+            for position, symbol in enumerate(symbols)
+        ]
+    )
+    sparse = {
+        field: pd.DataFrame(columns=["datetime", "instrument", field])
+        for field in RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_SPARSE_COMPARISON_FIELDS
+    }
+    dense = candidate.loc[:, ["datetime", "instrument"]].copy()
+    for (
+        field
+    ) in RESEARCH.EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_DENSE_COMPARISON_FIELDS:
+        dense[field] = rng.normal(size=len(dense))
+    contract = {
+        "sparse_minimum_pairwise_names_per_session": 6,
+        "dense_minimum_pairwise_names_per_session": 50,
+        "minimum_pairwise_sessions_for_statistical_gate": 5,
+        "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    }
+    independent = (
+        RESEARCH.summarize_eastmoney_related_party_transaction_sparsity_uniqueness(
+            candidate, sparse, dense, contract=contract
+        )
+    )
+    assert (
+        independent["sparse_semantic_and_conditional_statistical_gate_passed"] is True
+    )
+    assert all(
+        item["minimum_sessions_gate_status"] == "not_applicable_insufficient_overlap"
+        for item in independent["sparse_results"]
+    )
+    assert independent["uniqueness_gate_passed"] is True
+    synonym = dense.copy()
+    synonym["free_float_cap_proxy"] = candidate[factor].to_numpy()
+    rejected = (
+        RESEARCH.summarize_eastmoney_related_party_transaction_sparsity_uniqueness(
+            candidate, sparse, synonym, contract=contract
+        )
+    )
+    assert rejected["dense_results"][0][
+        "absolute_median_daily_rank_correlation"
+    ] == pytest.approx(1.0)
+    assert rejected["uniqueness_gate_passed"] is False
+    assert rejected["forward_return_fields_read"] is False
+
+
+def test_eastmoney_related_party_sparsity_guard_runs_before_source_reuse(
+    tmp_path, monkeypatch
+):
+    tracked = tmp_path / "tracked.json"
+    tracked.write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(
+        RESEARCH,
+        "DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_RECORD",
+        tracked,
+    )
+    with pytest.raises(ValueError, match="tracked no-return record"):
+        RESEARCH.require_unconsumed_eastmoney_related_party_transaction_sparsity_no_return_audit(
+            tmp_path, source_manifest_sha256="manifest"
+        )
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_eastmoney_related_party_transaction_sparsity_no_return_preregistration",
+        lambda: (_ for _ in ()).throw(
+            AssertionError("guard must run before the source contract")
+        ),
+    )
+    args = SimpleNamespace(
+        experiment_root=str(tmp_path),
+        manifest=str(tmp_path / "manifest.json"),
+        provider_uri=str(tmp_path / "provider"),
+    )
+    with pytest.raises(ValueError, match="tracked no-return record"):
+        RESEARCH.run_eastmoney_related_party_transaction_sparsity_no_return_audit(args)
+
+
 def test_eastmoney_core_profit_no_return_source_chain_is_frozen():
     spec = RESEARCH.load_eastmoney_core_profit_consistency_no_return_preregistration()
     record = RESEARCH.load_eastmoney_core_profit_consistency_full_source_record()

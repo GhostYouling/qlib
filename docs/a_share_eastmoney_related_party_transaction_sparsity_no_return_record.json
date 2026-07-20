@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_related_party_transaction_sparsity_no_return_record",
+  "status": "passed_no_return_capacity_and_uniqueness_pending_separate_return_preregistration",
+  "created_at": "2026-07-20T13:35:00Z",
+  "purpose": "Permanently bind the fixed related-party disclosure-sparsity capacity and uniqueness result so every clone refuses another no-return audit and any later price or return access requires a separate immutable diagnostic preregistration.",
+  "source_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit_20260720.json",
+      "sha256": "697def3023b93b639363b05c262293dda75cb515fa58d8124ea5e96384d61190"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_no_return_preregistration.json",
+      "sha256": "51447a3647ad461480b98a01c7d55f094c0dbd139c81fa8abfb378f4167e20d8"
+    },
+    "full_source_record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_full_source_record.json",
+      "sha256": "45f39cfd550728c2b5d2260930cf1758a4aee924ca4d35d43cf457b2531c2aac"
+    },
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260720T130538Z_eastmoney_related_party_transaction_sparsity_full_53f2347e.json",
+      "sha256": "e8a668ffda6668040f1129c60d402aa9731560801475fe2644f7fb7146b089e9",
+      "partitions": 84,
+      "rows": 51401
+    }
+  },
+  "completed_audit": {
+    "path": "data/experiments/short_horizon/20260720T132935Z_eastmoney_related_party_transaction_sparsity_no_return_audit.json",
+    "sha256": "277d6c4ca1f25b275cc1cf94f8a4a1b761f084808472fb9d2c83d25389cd40b2",
+    "run_id": "20260720T132935Z",
+    "purpose": "eastmoney_related_party_transaction_sparsity_capacity_then_six_sparse_and_three_dense_uniqueness_without_prices_or_forward_returns",
+    "status": "completed"
+  },
+  "safe_recovery_audit": {
+    "aborted_invocation_at": "2026-07-20T13:27:54Z",
+    "failure": "The first invocation stopped before capacity calculation because the candidate and quarterly-quality frames both exposed announcement_date; pandas rejected the overlapping join.",
+    "repair": "The candidate disclosure date was renamed related_party_announcement_date before the unchanged quarterly-quality as-of join, and a dedicated offline regression test was added before the completed audit.",
+    "audit_record_written": false,
+    "comparison_fields_loaded": [],
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "threshold_formula_direction_timing_or_catalog_changed": false
+  },
+  "capacity_result": {
+    "non_overlapping_rebalance_capacity": 566,
+    "quality_and_listing_eligible_factor_rows": 10521,
+    "dates_with_any_valid_name": 515,
+    "potential_complete_cohorts": 352,
+    "minimum_required_cohorts": 200,
+    "potential_complete_cohorts_by_year": {
+      "2019": 38,
+      "2020": 53,
+      "2021": 62,
+      "2022": 57,
+      "2023": 52,
+      "2024": 47,
+      "2025": 43
+    },
+    "observed_calendar_years": 7,
+    "minimum_observed_calendar_years": 5,
+    "minimum_valid_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "maximum_event_age_calendar_days": 3,
+    "minimum_listing_sessions": 20,
+    "maximum_quality_age_calendar_days": 550,
+    "capacity_gate_passed": true
+  },
+  "sparse_uniqueness_result": {
+    "semantic_review_count": 6,
+    "semantic_reviews_passed": 6,
+    "minimum_pairwise_sessions_for_statistical_gate": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "statistically_gated_neighbors": {
+      "analyst_valid_rating_report_count": {
+        "valid_daily_rank_correlation_sessions": 358,
+        "median_daily_rank_correlation": -0.03497979329804814,
+        "absolute_median_correlation_gate_passed": true
+      }
+    },
+    "descriptive_only_insufficient_overlap": {
+      "pledge_event_count": {
+        "valid_daily_rank_correlation_sessions": 4,
+        "median_daily_rank_correlation": 0.2386316869793967
+      },
+      "major_holder_event_count": {
+        "valid_daily_rank_correlation_sessions": 0,
+        "median_daily_rank_correlation": null
+      },
+      "institutional_survey_event_count": {
+        "valid_daily_rank_correlation_sessions": 62,
+        "median_daily_rank_correlation": 0.0911394388600866
+      },
+      "insider_open_market_event_count": {
+        "valid_daily_rank_correlation_sessions": 0,
+        "median_daily_rank_correlation": null
+      },
+      "block_trade_event_count": {
+        "valid_daily_rank_correlation_sessions": 36,
+        "median_daily_rank_correlation": 0.11876988966258645
+      }
+    },
+    "sparse_semantic_and_conditional_statistical_gate_passed": true
+  },
+  "dense_uniqueness_result": {
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_for_statistical_gate": 100,
+    "comparison_results": {
+      "free_float_cap_proxy": {
+        "valid_daily_rank_correlation_sessions": 166,
+        "median_daily_rank_correlation": -0.22119161391996436,
+        "gate_passed": true
+      },
+      "liquidity_5": {
+        "valid_daily_rank_correlation_sessions": 166,
+        "median_daily_rank_correlation": 0.15864443868873804,
+        "gate_passed": true
+      },
+      "turnover_surge_1": {
+        "valid_daily_rank_correlation_sessions": 166,
+        "median_daily_rank_correlation": -0.0387614404890403,
+        "gate_passed": true
+      }
+    },
+    "dense_size_liquidity_gate_passed": true
+  },
+  "gate_decision": {
+    "source_completeness_gate_passed": true,
+    "capacity_gate_passed": true,
+    "uniqueness_gate_passed": true,
+    "both_no_return_gates_passed": true,
+    "source_admitted_for_separate_return_diagnostic_preregistration": true,
+    "return_diagnostic_already_preregistered_or_run": false,
+    "factor_return_evidence_exists": false,
+    "current_selection_evidence_exists": false,
+    "no_return_audit_retry_allowed": false,
+    "next_required_action": "Freeze one fingerprint-bound single-factor return and execution diagnostic before requesting any price or forward-return field."
+  },
+  "data_safety": {
+    "comparison_fields_loaded_only_after_capacity_passed": true,
+    "sparse_comparison_fields_loaded": [
+      "pledge_event_count",
+      "major_holder_event_count",
+      "institutional_survey_event_count",
+      "analyst_valid_rating_report_count",
+      "insider_open_market_event_count",
+      "block_trade_event_count"
+    ],
+    "dense_comparison_fields_loaded": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ],
+    "raw_open_high_low_close_volume_amount_turnover_columns_returned": [],
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false
+  },
+  "selection_or_promotion_allowed": false
+}

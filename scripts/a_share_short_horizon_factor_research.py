@@ -623,6 +623,40 @@ DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD = (
 EASTMONEY_CORE_PROFIT_CONSISTENCY_DIAGNOSTIC_RECORD_SHA256 = (
     "970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f"
 )
+DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_related_party_transaction_sparsity_no_return_preregistration.json"
+)
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_SPEC_SHA256 = (
+    "51447a3647ad461480b98a01c7d55f094c0dbd139c81fa8abfb378f4167e20d8"
+)
+DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_SOURCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_related_party_transaction_sparsity_full_source_record.json"
+)
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_SOURCE_RECORD_SHA256 = (
+    "45f39cfd550728c2b5d2260930cf1758a4aee924ca4d35d43cf457b2531c2aac"
+)
+DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST = (
+    DATA_ROOT
+    / "metadata"
+    / "rich_data"
+    / "runs"
+    / "20260720T130538Z_eastmoney_related_party_transaction_sparsity_full_53f2347e.json"
+)
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST_SHA256 = (
+    "e8a668ffda6668040f1129c60d402aa9731560801475fe2644f7fb7146b089e9"
+)
+DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json"
+)
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_RECORD_SHA256 = (
+    "827aacdfc661c280cd22dbc3f97b3e6fc3ad7b91489861bd45c1d6a65c581cc8"
+)
 DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_DATA_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_contract_liability_backlog_data_contract.json"
 )
@@ -1207,6 +1241,29 @@ EASTMONEY_CORE_PROFIT_CONSISTENCY_DENSE_COMPARISON_FIELDS = (
     *EASTMONEY_BALANCE_SHEET_RESILIENCE_DENSE_COMPARISON_FIELDS,
     EASTMONEY_BALANCE_SHEET_RESILIENCE_FACTOR_NAME,
 )
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME = (
+    "eastmoney_related_party_transaction_sparsity"
+)
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_COLUMNS = (
+    "announcement_date",
+    "instrument",
+    "related_party_transaction_count",
+    EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME,
+    "provider",
+)
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_SPARSE_COMPARISON_FIELDS = (
+    "pledge_event_count",
+    "major_holder_event_count",
+    "institutional_survey_event_count",
+    "analyst_valid_rating_report_count",
+    "insider_open_market_event_count",
+    "block_trade_event_count",
+)
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_DENSE_COMPARISON_FIELDS = (
+    "free_float_cap_proxy",
+    "liquidity_5",
+    "turnover_surge_1",
+)
 TUSHARE_CONTRACT_LIABILITY_BACKLOG_FACTOR_NAME = (
     "tushare_contract_liability_backlog_delta"
 )
@@ -1303,6 +1360,7 @@ TUSHARE_AUDIT_OPINION_NO_RETURN_AUDIT_PURPOSE = "tushare_audit_opinion_source_ca
 TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_AUDIT_PURPOSE = "tushare_free_float_scarcity_source_capacity_then_54_field_uniqueness_gate_without_forward_returns"
 EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_AUDIT_PURPOSE = "eastmoney_balance_sheet_resilience_conservative_state_capacity_then_46_dense_field_uniqueness_without_forward_returns"
 EASTMONEY_CORE_PROFIT_CONSISTENCY_NO_RETURN_AUDIT_PURPOSE = "eastmoney_core_profit_consistency_conservative_state_capacity_then_47_dense_field_uniqueness_without_forward_returns"
+EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_AUDIT_PURPOSE = "eastmoney_related_party_transaction_sparsity_capacity_then_six_sparse_and_three_dense_uniqueness_without_prices_or_forward_returns"
 TUSHARE_CONTRACT_LIABILITY_BACKLOG_NO_RETURN_AUDIT_PURPOSE = "tushare_contract_liability_backlog_source_capacity_then_48_dense_field_and_gross_margin_semantic_uniqueness_without_forward_returns"
 TUSHARE_SW_INDUSTRY_BREADTH_DIAGNOSTIC_PURPOSE = "development_only_preregistered_tushare_sw_industry_breadth_research_not_investment_advice"
 TUSHARE_DAILY_PB_DIAGNOSTIC_PURPOSE = "development_only_preregistered_tushare_positive_book_to_market_research_not_investment_advice"
@@ -26582,16 +26640,1145 @@ def run_eastmoney_core_profit_consistency_no_return_audit(
     }
 
 
+def load_eastmoney_related_party_transaction_sparsity_no_return_preregistration(
+    path: Path = DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Verify the frozen related-party source, capacity, and uniqueness gates."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_sha256(path)
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_SPEC_SHA256
+    ):
+        raise ValueError(
+            "Eastmoney related-party sparsity no-return preregistration "
+            "fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind=(
+            "a_share_eastmoney_related_party_transaction_sparsity_"
+            "no_return_preregistration"
+        ),
+    )
+    source = spec.get("source_chain") or {}
+    factor = spec.get("factor_protocol") or {}
+    full = spec.get("full_source_snapshot_contract") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract_after_capacity_only") or {}
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_unique_source_acceptance_before_full_history_capacity_uniqueness_prices_or_returns"
+        or spec.get("preregistered_at") != "2026-07-20T12:54:30Z"
+        or factor.get("factor_name")
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME
+        or factor.get("formula") != "1 / related_party_transaction_count"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("maximum_event_age_calendar_days") != 3
+        or factor.get("absent_event_policy") != "missing"
+        or full.get("required_final_month_partition_count") != 84
+        or full.get("minimum_point_in_time_holding_events_total") != 25000
+        or full.get("minimum_distinct_factor_values") != 100
+        or capacity.get("must_run_before_any_comparison_field") is not True
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_factor_age_calendar_days") != 3
+        or capacity.get("maximum_quality_age_calendar_days") != 550
+        or capacity.get("minimum_listing_sessions") != MIN_LISTING_SESSIONS
+        or tuple(uniqueness.get("required_sparse_near_neighbors") or ())
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_SPARSE_COMPARISON_FIELDS
+        or tuple(uniqueness.get("required_size_liquidity_confounders") or ())
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_DENSE_COMPARISON_FIELDS
+        or uniqueness.get("sparse_minimum_pairwise_names_per_session") != 6
+        or uniqueness.get("dense_minimum_pairwise_names_per_session") != 50
+        or uniqueness.get("minimum_pairwise_sessions_for_statistical_gate") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or uniqueness.get("semantic_review_required_for_every_sparse_neighbor")
+        is not True
+        or spec.get("price_fields_loaded") != []
+        or spec.get("open_close_or_forward_return_fields_read") is not False
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Eastmoney related-party sparsity no-return preregistration is inconsistent"
+        )
+
+    direct_links = (
+        "mechanism_audit",
+        "data_contract",
+        "source_acceptance_record",
+        "source_acceptance_manifest",
+    )
+    for label in direct_links:
+        link = source.get(label) or {}
+        linked_path = resolve_repository_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_sha256(linked_path) != link.get("sha256"):
+            raise ValueError(
+                "Eastmoney related-party sparsity source evidence changed: " + label
+            )
+    accepted_frame = source.get("source_acceptance_frame") or {}
+    accepted_path = resolve_repository_record_path(
+        str(accepted_frame.get("path") or "")
+    )
+    if not accepted_path.exists() or file_sha256(accepted_path) != accepted_frame.get(
+        "file_sha256"
+    ):
+        raise ValueError(
+            "Eastmoney related-party sparsity accepted frame fingerprint changed"
+        )
+    for label, link in (spec.get("local_context") or {}).items():
+        if label == "quarterly_quality":
+            continue
+        linked_path = resolve_repository_record_path(
+            str((link or {}).get("path") or "")
+        )
+        if not linked_path.exists() or file_sha256(linked_path) != link.get("sha256"):
+            raise ValueError(
+                "Eastmoney related-party sparsity local context changed: " + label
+            )
+    quality = spec["local_context"]["quarterly_quality"]
+    for path_key, digest_key in (
+        ("path", "sha256"),
+        ("manifest_path", "manifest_sha256"),
+    ):
+        linked_path = resolve_repository_record_path(str(quality[path_key]))
+        if file_sha256(linked_path) != quality[digest_key]:
+            raise ValueError(
+                "Eastmoney related-party sparsity quarterly-quality evidence changed"
+            )
+    return spec
+
+
+def validate_eastmoney_related_party_transaction_sparsity_full_snapshot(
+    manifest_path: Path,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Reload and validate all 84 immutable event partitions without outcomes."""
+
+    record_path = (
+        DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_SOURCE_RECORD
+    )
+    if (
+        file_sha256(record_path)
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_SOURCE_RECORD_SHA256
+    ):
+        raise ValueError(
+            "Eastmoney related-party sparsity full-source record fingerprint mismatch"
+        )
+    record = load_json_record(
+        record_path,
+        kind=(
+            "a_share_eastmoney_related_party_transaction_sparsity_full_source_record"
+        ),
+    )
+    record_manifest = record.get("full_manifest") or {}
+    snapshot = record.get("published_snapshot") or {}
+    if (
+        record.get("status")
+        != "accepted_full_source_pending_no_return_capacity_and_uniqueness"
+        or record_manifest.get("sha256")
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST_SHA256
+        or snapshot.get("month_partition_count") != 84
+        or snapshot.get("point_in_time_holding_events_total") != 51401
+        or snapshot.get("distinct_factor_values") != 223
+        or snapshot.get("source_coverage_gate_passed") is not True
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+    ):
+        raise ValueError(
+            "Eastmoney related-party sparsity full-source record is inconsistent"
+        )
+
+    manifest_path = manifest_path.expanduser().resolve()
+    if (
+        manifest_path
+        != DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST.resolve()
+        or file_sha256(manifest_path)
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST_SHA256
+    ):
+        raise ValueError(
+            "Eastmoney related-party sparsity full manifest fingerprint mismatch"
+        )
+    manifest = load_json_record(manifest_path, kind="a_share_rich_data_snapshot")
+    files = sorted(manifest.get("files") or [], key=lambda item: item.get("month", ""))
+    expected_months = [
+        f"{year:04d}-{month:02d}"
+        for year in range(2019, 2026)
+        for month in range(1, 13)
+    ]
+    source_quality = manifest.get("source_quality") or {}
+    if (
+        manifest.get("dataset") != "eastmoney_related_party_transaction_sparsity"
+        or manifest.get("provider") != "eastmoney"
+        or manifest.get("acceptance_status")
+        != spec["full_source_snapshot_contract"]["required_success_status"]
+        or manifest.get("requested_start") != "2019-01-01"
+        or manifest.get("requested_end") != "2025-12-31"
+        or [item.get("month") for item in files] != expected_months
+        or source_quality.get("source_coverage_gate_passed") is not True
+        or source_quality.get("point_in_time_holding_events_total") != 51401
+        or source_quality.get("distinct_factor_values") != 223
+        or source_quality.get("duplicate_event_keys") != 0
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("open_close_or_forward_return_fields_read") is not False
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Eastmoney related-party sparsity full snapshot failed its frozen source gate"
+        )
+
+    frames: list[pd.DataFrame] = []
+    content_hashes: list[str] = []
+    for item in files:
+        partition_path = resolve_repository_record_path(str(item.get("path") or ""))
+        frame = pd.read_parquet(partition_path)
+        month = str(item["month"])
+        dates = pd.to_datetime(
+            frame.get("announcement_date"), errors="coerce"
+        ).dt.normalize()
+        counts = pd.to_numeric(
+            frame.get("related_party_transaction_count"), errors="coerce"
+        )
+        values = pd.to_numeric(
+            frame.get(EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME),
+            errors="coerce",
+        )
+        if (
+            tuple(frame.columns) != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_COLUMNS
+            or len(frame) != int(item["rows"])
+            or dataframe_content_sha256(frame) != item["sha256"]
+            or frame[["announcement_date", "instrument"]].isna().any().any()
+            or not dates.dt.strftime("%Y-%m").eq(month).all()
+            or frame.duplicated(["instrument", "announcement_date"]).any()
+            or not np.isfinite(counts).all()
+            or not counts.gt(0).all()
+            or not np.equal(counts, np.floor(counts)).all()
+            or not np.isfinite(values).all()
+            or not np.allclose(
+                values.to_numpy(dtype="float64"),
+                1.0 / counts.to_numpy(dtype="float64"),
+                rtol=0.0,
+                atol=1e-12,
+            )
+            or set(frame["provider"].astype(str)) != {"eastmoney"}
+        ):
+            raise ValueError(
+                "Eastmoney related-party sparsity partition changed: " + month
+            )
+        frame = frame.copy()
+        frame["announcement_date"] = dates
+        frame["related_party_transaction_count"] = counts.astype(int)
+        frame[EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME] = values
+        frames.append(frame)
+        content_hashes.append(str(item["sha256"]))
+    events = pd.concat(frames, ignore_index=True)
+    if (
+        len(events) != 51401
+        or events.duplicated(["instrument", "announcement_date"]).any()
+        or events[EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME].nunique()
+        != 223
+    ):
+        raise ValueError("Eastmoney related-party sparsity full aggregate changed")
+    return events, {
+        "manifest": {
+            "path": str(manifest_path),
+            "sha256": file_sha256(manifest_path),
+            "run_id": manifest.get("run_id"),
+            "status": manifest.get("acceptance_status"),
+            "rows": int(len(events)),
+            "partitions": len(files),
+        },
+        "full_source_record": {
+            "path": str(record_path.resolve()),
+            "sha256": file_sha256(record_path),
+        },
+        "partition_content_hash_chain_sha256": hashlib.sha256(
+            "\n".join(content_hashes).encode("utf-8")
+        ).hexdigest(),
+        "all_partition_content_hashes_reproduced": True,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def materialize_eastmoney_related_party_transaction_sparsity_sessions(
+    events: pd.DataFrame,
+    target_sessions: pd.DatetimeIndex,
+    full_calendar: pd.DatetimeIndex,
+    *,
+    maximum_event_age_days: int,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Map notices strictly after publication and expand only through age three."""
+
+    sessions = pd.DatetimeIndex(target_sessions).normalize().unique().sort_values()
+    calendar = pd.DatetimeIndex(full_calendar).normalize().unique().sort_values()
+    if sessions.empty or not sessions.isin(calendar).all():
+        raise ValueError("related-party sparsity target sessions are invalid")
+    source = events.loc[
+        :,
+        [
+            "instrument",
+            "announcement_date",
+            "related_party_transaction_count",
+            EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME,
+        ],
+    ].copy()
+    source["announcement_date"] = pd.to_datetime(
+        source["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    source["event_effective_date"] = _first_trading_day_after(
+        calendar, source["announcement_date"]
+    )
+    source = source.dropna(subset=["event_effective_date"])
+    rows: list[dict[str, Any]] = []
+    for event in source.itertuples(index=False):
+        effective = pd.Timestamp(event.event_effective_date).normalize()
+        first = int(sessions.searchsorted(effective, side="left"))
+        last = int(
+            sessions.searchsorted(
+                effective + pd.Timedelta(days=maximum_event_age_days), side="right"
+            )
+        )
+        for session in sessions[first:last]:
+            rows.append(
+                {
+                    "datetime": pd.Timestamp(session),
+                    "instrument": str(event.instrument),
+                    "announcement_date": pd.Timestamp(event.announcement_date),
+                    "event_effective_date": effective,
+                    "event_age_days": int((pd.Timestamp(session) - effective).days),
+                    "related_party_transaction_count": int(
+                        event.related_party_transaction_count
+                    ),
+                    EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME: float(
+                        getattr(
+                            event,
+                            EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME,
+                        )
+                    ),
+                }
+            )
+    columns = [
+        "datetime",
+        "instrument",
+        "announcement_date",
+        "event_effective_date",
+        "event_age_days",
+        "related_party_transaction_count",
+        EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME,
+    ]
+    expanded = pd.DataFrame(rows, columns=columns)
+    before_latest = int(len(expanded))
+    if not expanded.empty:
+        expanded = expanded.sort_values(
+            ["instrument", "datetime", "event_effective_date", "announcement_date"],
+            kind="stable",
+        ).drop_duplicates(["instrument", "datetime"], keep="last")
+    if (
+        expanded.duplicated(["instrument", "datetime"]).any()
+        or not expanded["event_age_days"].between(0, maximum_event_age_days).all()
+    ):
+        raise ValueError("related-party sparsity session expansion is invalid")
+    return expanded.reset_index(drop=True), {
+        "source_events": int(len(events)),
+        "target_sessions": int(len(sessions)),
+        "expanded_rows_before_latest_event_rule": before_latest,
+        "older_overlapping_event_rows_superseded": before_latest - int(len(expanded)),
+        "expanded_rows": int(len(expanded)),
+        "availability": "first_local_trading_session_strictly_after_announcement_date",
+        "maximum_event_age_calendar_days": maximum_event_age_days,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def prepare_eastmoney_related_party_transaction_sparsity_eligible_sessions(
+    events: pd.DataFrame,
+    target_sessions: pd.DatetimeIndex,
+    fundamentals: pd.DataFrame,
+    full_calendar: pd.DatetimeIndex,
+    instrument_intervals: dict[str, list[tuple[pd.Timestamp, pd.Timestamp]]],
+    *,
+    maximum_event_age_days: int,
+    maximum_quality_age_days: int,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Apply point-in-time holding, listing, and quality gates without prices."""
+
+    expanded, materialization = (
+        materialize_eastmoney_related_party_transaction_sparsity_sessions(
+            events,
+            target_sessions,
+            full_calendar,
+            maximum_event_age_days=maximum_event_age_days,
+        )
+    )
+
+    def active_on_signal(row: Any) -> bool:
+        signal = pd.Timestamp(row.datetime).normalize()
+        return any(
+            pd.Timestamp(start).normalize() <= signal <= pd.Timestamp(end).normalize()
+            for start, end in instrument_intervals.get(str(row.instrument), [])
+        )
+
+    expanded["instrument_active"] = [
+        active_on_signal(row) for row in expanded.itertuples(index=False)
+    ]
+    active = expanded.loc[expanded["instrument_active"]].copy()
+    active = attach_listing_age_sessions(active, instrument_intervals, full_calendar)
+    active = active.rename(
+        columns={"announcement_date": "related_party_announcement_date"}
+    )
+    active = attach_quality_asof(
+        active,
+        fundamentals,
+        max_age_days=maximum_quality_age_days,
+        availability_calendar=full_calendar,
+    )
+    eligible = active.loc[active["quality_eligible"].fillna(False)].copy()
+    if eligible.duplicated(["instrument", "datetime"]).any():
+        raise ValueError("related-party sparsity eligible sessions contain duplicates")
+    return eligible.reset_index(drop=True), {
+        **materialization,
+        "active_holding_rows": int(len(active)),
+        "fundamental_quality_eligible_rows": int(
+            active["fundamental_quality_eligible"].fillna(False).sum()
+        ),
+        "listing_seasoning_eligible_rows": int(
+            active["listing_seasoning_eligible"].fillna(False).sum()
+        ),
+        "quality_and_listing_eligible_rows": int(len(eligible)),
+        "minimum_listing_sessions": MIN_LISTING_SESSIONS,
+        "maximum_quality_age_calendar_days": maximum_quality_age_days,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def eastmoney_related_party_transaction_sparsity_capacity(
+    eligible: pd.DataFrame,
+    research_calendar: pd.DatetimeIndex,
+    *,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Count fixed non-overlapping three-session cohorts without outcomes."""
+
+    hold_days = int(contract["holding_period_trading_days"])
+    rebalances = (
+        pd.DatetimeIndex(research_calendar).normalize().unique().sort_values()
+    )[:-hold_days:hold_days]
+    if not set(pd.to_datetime(eligible["datetime"]).dt.normalize()).issubset(
+        set(rebalances)
+    ):
+        raise ValueError("related-party sparsity capacity rows left the fixed grid")
+    factor = EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME
+    values = pd.to_numeric(eligible[factor], errors="coerce")
+    valid = eligible.loc[np.isfinite(values)].copy()
+    valid[factor] = values.loc[valid.index]
+    cross_sections = valid.groupby("datetime", sort=True).agg(
+        valid_names=("instrument", "nunique"),
+        distinct_factor_values=(factor, "nunique"),
+    )
+    complete = cross_sections.loc[
+        cross_sections["valid_names"].ge(
+            int(contract["minimum_eligible_names_per_cross_section"])
+        )
+        & cross_sections["distinct_factor_values"].ge(
+            int(contract["minimum_distinct_factor_values"])
+        )
+    ]
+    by_year = {
+        str(int(year)): int(count)
+        for year, count in complete.groupby(complete.index.year).size().items()
+    }
+    cohort_count = int(len(complete))
+    observed_years = len(by_year)
+    passed = bool(
+        cohort_count >= int(contract["minimum_required_cohorts"])
+        and observed_years >= int(contract["minimum_observed_years"])
+    )
+    return {
+        "factor": factor,
+        "non_overlapping_rebalance_capacity": int(len(rebalances)),
+        "quality_and_listing_eligible_factor_rows": int(len(valid)),
+        "dates_with_any_valid_name": int(len(cross_sections)),
+        "potential_complete_cohorts": cohort_count,
+        "potential_complete_cohorts_by_year": by_year,
+        "observed_calendar_years": observed_years,
+        "minimum_required_cohorts": int(contract["minimum_required_cohorts"]),
+        "minimum_observed_calendar_years": int(contract["minimum_observed_years"]),
+        "minimum_valid_names_per_cohort": int(
+            contract["minimum_eligible_names_per_cross_section"]
+        ),
+        "minimum_distinct_factor_values_per_cohort": int(
+            contract["minimum_distinct_factor_values"]
+        ),
+        "capacity_gate_passed": passed,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def _materialize_sparse_event_count_comparison(
+    events: pd.DataFrame,
+    target_sessions: pd.DatetimeIndex,
+    full_calendar: pd.DatetimeIndex,
+    *,
+    event_date_column: str,
+    factor_name: str,
+    availability: str,
+    maximum_event_age_days: int = 3,
+) -> pd.DataFrame:
+    """Expand one frozen sparse event count to its conservative live sessions."""
+
+    sessions = pd.DatetimeIndex(target_sessions).normalize().unique().sort_values()
+    calendar = pd.DatetimeIndex(full_calendar).normalize().unique().sort_values()
+    source = events.loc[:, ["instrument", event_date_column, factor_name]].copy()
+    source[event_date_column] = pd.to_datetime(
+        source[event_date_column], errors="coerce"
+    ).dt.normalize()
+    source[factor_name] = pd.to_numeric(source[factor_name], errors="coerce")
+    if (
+        source.isna().any().any()
+        or not np.isfinite(source[factor_name]).all()
+        or not source[factor_name].gt(0).all()
+        or source.duplicated(["instrument", event_date_column]).any()
+    ):
+        raise ValueError(f"sparse comparison source is invalid: {factor_name}")
+    if availability == "strictly_after":
+        effective = _first_trading_day_after(calendar, source[event_date_column])
+    elif availability == "on_or_after":
+        effective = _first_trading_day_on_or_after(calendar, source[event_date_column])
+    else:
+        raise ValueError(f"unknown sparse event availability: {availability}")
+    source["event_effective_date"] = effective
+    source = source.dropna(subset=["event_effective_date"])
+    rows: list[dict[str, Any]] = []
+    for event in source.itertuples(index=False):
+        effective_date = pd.Timestamp(event.event_effective_date).normalize()
+        first = int(sessions.searchsorted(effective_date, side="left"))
+        last = int(
+            sessions.searchsorted(
+                effective_date + pd.Timedelta(days=maximum_event_age_days),
+                side="right",
+            )
+        )
+        for session in sessions[first:last]:
+            rows.append(
+                {
+                    "datetime": pd.Timestamp(session),
+                    "instrument": str(event.instrument),
+                    "event_effective_date": effective_date,
+                    factor_name: float(getattr(event, factor_name)),
+                }
+            )
+    frame = pd.DataFrame(
+        rows, columns=["datetime", "instrument", "event_effective_date", factor_name]
+    )
+    if not frame.empty:
+        frame = frame.sort_values(
+            ["instrument", "datetime", "event_effective_date"], kind="stable"
+        ).drop_duplicates(["instrument", "datetime"], keep="last")
+    return frame.drop(columns="event_effective_date").reset_index(drop=True)
+
+
+def load_eastmoney_related_party_transaction_sparsity_sparse_comparisons(
+    target_sessions: pd.DatetimeIndex,
+    full_calendar: pd.DatetimeIndex,
+) -> tuple[dict[str, pd.DataFrame], dict[str, Any]]:
+    """Load exactly the six frozen event-count neighbors after capacity passes."""
+
+    catalog = {
+        "pledge_event_count": (
+            DEFAULT_PLEDGE_EVENTS,
+            DEFAULT_PLEDGE_EVENT_MANIFEST,
+            "announcement_date",
+            "strictly_after",
+        ),
+        "major_holder_event_count": (
+            DEFAULT_MAJOR_HOLDER_EVENTS,
+            DEFAULT_MAJOR_HOLDER_EVENT_MANIFEST,
+            "announcement_date",
+            "strictly_after",
+        ),
+        "institutional_survey_event_count": (
+            DEFAULT_INSTITUTIONAL_SURVEY_EVENTS,
+            DEFAULT_INSTITUTIONAL_SURVEY_EVENT_MANIFEST,
+            "announcement_date",
+            "strictly_after",
+        ),
+        "analyst_valid_rating_report_count": (
+            DEFAULT_ANALYST_RATING_EVENTS,
+            DEFAULT_ANALYST_RATING_EVENT_MANIFEST,
+            "announcement_date",
+            "strictly_after",
+        ),
+        "insider_open_market_event_count": (
+            DEFAULT_INSIDER_OPEN_MARKET_EVENTS,
+            DEFAULT_INSIDER_OPEN_MARKET_EVENT_MANIFEST,
+            "event_date",
+            "on_or_after",
+        ),
+        "block_trade_event_count": (
+            DEFAULT_BLOCK_TRADE_EVENTS,
+            DEFAULT_BLOCK_TRADE_EVENT_MANIFEST,
+            "trade_date",
+            "on_or_after",
+        ),
+    }
+    if (
+        tuple(catalog)
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_SPARSE_COMPARISON_FIELDS
+    ):
+        raise ValueError("related-party sparsity sparse comparison catalog changed")
+    frames: dict[str, pd.DataFrame] = {}
+    evidence: dict[str, Any] = {}
+    for factor, (path, manifest_path, date_column, availability) in catalog.items():
+        if not path.exists() or not manifest_path.exists():
+            raise FileNotFoundError(f"sparse comparison snapshot is missing: {factor}")
+        events = pd.read_parquet(path, columns=["instrument", date_column, factor])
+        frames[factor] = _materialize_sparse_event_count_comparison(
+            events,
+            target_sessions,
+            full_calendar,
+            event_date_column=date_column,
+            factor_name=factor,
+            availability=availability,
+        )
+        evidence[factor] = {
+            "snapshot_path": str(path.resolve()),
+            "snapshot_sha256": file_sha256(path),
+            "manifest_path": str(manifest_path.resolve()),
+            "manifest_sha256": file_sha256(manifest_path),
+            "source_rows": int(len(events)),
+            "materialized_rows": int(len(frames[factor])),
+            "availability": availability,
+            "maximum_event_age_calendar_days": 3,
+        }
+    return frames, {
+        "fields_loaded": list(catalog),
+        "sources": evidence,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def load_eastmoney_related_party_transaction_sparsity_dense_comparisons(
+    provider_uri: Path,
+    candidate_sessions: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Return only the three frozen same-close confounders, never raw OHLCV."""
+
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    import qlib
+    from qlib.data import D
+
+    provider_uri = provider_uri.expanduser().resolve()
+    require_research_price_basis(provider_uri)
+    qlib.init(provider_uri=str(provider_uri), region="cn", kernels=1)
+    expressions = {
+        "free_float_cap_proxy": "$amount/$turnover",
+        "liquidity_5": complete_rolling_window_expression("Mean($turnover, 5)", 4),
+        "turnover_surge_1": complete_rolling_window_expression(
+            "$turnover/Mean($turnover, 20) - 1", 19
+        ),
+    }
+    if (
+        tuple(expressions)
+        != EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_DENSE_COMPARISON_FIELDS
+    ):
+        raise ValueError("related-party sparsity dense comparison catalog changed")
+    keys = candidate_sessions.loc[:, ["datetime", "instrument"]].drop_duplicates()
+    instruments = sorted(keys["instrument"].astype(str).unique())
+    start = pd.to_datetime(keys["datetime"]).min()
+    end = pd.to_datetime(keys["datetime"]).max()
+    frame = D.features(
+        instruments,
+        list(expressions.values()),
+        start_time=start,
+        end_time=end,
+        freq="day",
+    )
+    frame = frame.rename(
+        columns={expression: name for name, expression in expressions.items()}
+    ).reset_index()
+    frame["datetime"] = pd.to_datetime(frame["datetime"]).dt.normalize()
+    frame["instrument"] = frame["instrument"].astype(str)
+    frame = keys.merge(
+        frame, on=["datetime", "instrument"], how="left", validate="one_to_one"
+    )
+    frame = frame.loc[:, ["datetime", "instrument", *expressions]].copy()
+    return frame, {
+        "fields_loaded": list(expressions),
+        "qlib_expressions": expressions,
+        "candidate_instruments_requested": len(instruments),
+        "candidate_keys": int(len(keys)),
+        "raw_open_high_low_close_volume_amount_turnover_columns_returned": [],
+        "price_fields_loaded": [],
+        "future_open_close_or_return_fields_read": False,
+        "forward_return_fields_read": False,
+    }
+
+
+def _related_party_daily_rank_correlation(
+    candidate_sessions: pd.DataFrame,
+    comparison: pd.DataFrame,
+    *,
+    comparison_field: str,
+    minimum_names: int,
+) -> dict[str, Any]:
+    """Describe same-session pairwise rank correlation for one no-return field."""
+
+    factor = EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME
+    left = candidate_sessions.loc[:, ["datetime", "instrument", factor]].copy()
+    right = comparison.loc[:, ["datetime", "instrument", comparison_field]].copy()
+    merged = left.merge(
+        right, on=["datetime", "instrument"], how="inner", validate="one_to_one"
+    )
+    merged[factor] = pd.to_numeric(merged[factor], errors="coerce")
+    merged[comparison_field] = pd.to_numeric(merged[comparison_field], errors="coerce")
+    merged = merged.loc[
+        np.isfinite(merged[factor]) & np.isfinite(merged[comparison_field])
+    ]
+    correlations: list[float] = []
+    pairwise_counts: list[int] = []
+    sessions_with_minimum_names = 0
+    for _, daily in merged.groupby("datetime", sort=True):
+        count = int(daily["instrument"].nunique())
+        if count < minimum_names:
+            continue
+        sessions_with_minimum_names += 1
+        pairwise_counts.append(count)
+        if daily[factor].nunique() < 2 or daily[comparison_field].nunique() < 2:
+            continue
+        correlation = float(
+            daily[factor]
+            .rank(method="average", pct=True)
+            .corr(daily[comparison_field].rank(method="average", pct=True))
+        )
+        if math.isfinite(correlation):
+            correlations.append(correlation)
+    series = pd.Series(correlations, dtype="float64")
+    median = float(series.median()) if len(series) else None
+    return {
+        "comparison_field": comparison_field,
+        "pairwise_rows": int(len(merged)),
+        "pairwise_sessions": int(merged["datetime"].nunique()) if len(merged) else 0,
+        "sessions_with_minimum_pairwise_names": sessions_with_minimum_names,
+        "valid_daily_rank_correlation_sessions": int(len(series)),
+        "minimum_pairwise_names_observed_after_gate": (
+            int(min(pairwise_counts)) if pairwise_counts else 0
+        ),
+        "median_daily_rank_correlation": median,
+        "absolute_median_daily_rank_correlation": (
+            abs(median) if median is not None else None
+        ),
+        "p05_daily_rank_correlation": (
+            float(series.quantile(0.05)) if len(series) else None
+        ),
+        "p95_daily_rank_correlation": (
+            float(series.quantile(0.95)) if len(series) else None
+        ),
+    }
+
+
+def summarize_eastmoney_related_party_transaction_sparsity_uniqueness(
+    candidate_sessions: pd.DataFrame,
+    sparse_frames: dict[str, pd.DataFrame],
+    dense_frame: pd.DataFrame,
+    *,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Apply six semantic/sparse gates and all three dense confounder gates."""
+
+    sparse_fields = (
+        EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_SPARSE_COMPARISON_FIELDS
+    )
+    dense_fields = EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_DENSE_COMPARISON_FIELDS
+    if (
+        tuple(sparse_frames) != sparse_fields
+        or tuple(field for field in dense_fields if field in dense_frame.columns)
+        != dense_fields
+    ):
+        raise ValueError("related-party sparsity uniqueness inputs changed")
+    minimum_sessions = int(contract["minimum_pairwise_sessions_for_statistical_gate"])
+    maximum_correlation = float(
+        contract["maximum_allowed_absolute_median_daily_rank_correlation"]
+    )
+    semantic_reviews = {
+        "pledge_event_count": "Pledge counts measure financing collateral disclosures; the candidate counts only related-party transaction identities.",
+        "major_holder_event_count": "Major-holder counts measure disclosed ownership changes; the candidate measures affiliated-party transaction complexity.",
+        "institutional_survey_event_count": "Survey counts measure external institutional attention; the candidate contains no participant or attention field.",
+        "analyst_valid_rating_report_count": "Rating-report counts measure analyst attention; the candidate contains no broker, forecast, or rating field.",
+        "insider_open_market_event_count": "Insider counts measure actual security transactions; the candidate excludes security trades, prices, holdings, and direction.",
+        "block_trade_event_count": "Block-trade counts measure actual secondary-market transactions; the candidate counts issuer related-party disclosure identities.",
+    }
+    sparse_results: list[dict[str, Any]] = []
+    for field in sparse_fields:
+        result = _related_party_daily_rank_correlation(
+            candidate_sessions,
+            sparse_frames[field],
+            comparison_field=field,
+            minimum_names=int(contract["sparse_minimum_pairwise_names_per_session"]),
+        )
+        enough = result["valid_daily_rank_correlation_sessions"] >= minimum_sessions
+        below = bool(
+            result["absolute_median_daily_rank_correlation"] is not None
+            and result["absolute_median_daily_rank_correlation"] < maximum_correlation
+        )
+        result.update(
+            {
+                "semantic_review": semantic_reviews[field],
+                "semantic_independence_gate_passed": True,
+                "minimum_sessions_gate_applicable": enough,
+                "minimum_sessions_gate_status": (
+                    "passed" if enough else "not_applicable_insufficient_overlap"
+                ),
+                "absolute_median_correlation_gate_status": (
+                    "passed"
+                    if enough and below
+                    else "failed"
+                    if enough
+                    else "not_applicable_insufficient_overlap"
+                ),
+                "sparse_uniqueness_gate_passed": bool(not enough or below),
+            }
+        )
+        sparse_results.append(result)
+    dense_results: list[dict[str, Any]] = []
+    for field in dense_fields:
+        result = _related_party_daily_rank_correlation(
+            candidate_sessions,
+            dense_frame,
+            comparison_field=field,
+            minimum_names=int(contract["dense_minimum_pairwise_names_per_session"]),
+        )
+        enough = result["valid_daily_rank_correlation_sessions"] >= minimum_sessions
+        below = bool(
+            result["absolute_median_daily_rank_correlation"] is not None
+            and result["absolute_median_daily_rank_correlation"] < maximum_correlation
+        )
+        result.update(
+            {
+                "minimum_sessions_gate_passed": enough,
+                "absolute_median_correlation_gate_passed": below,
+                "dense_uniqueness_gate_passed": bool(enough and below),
+            }
+        )
+        dense_results.append(result)
+    sparse_passed = all(
+        item["semantic_independence_gate_passed"]
+        and item["sparse_uniqueness_gate_passed"]
+        for item in sparse_results
+    )
+    dense_passed = all(item["dense_uniqueness_gate_passed"] for item in dense_results)
+    return {
+        "factor": EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME,
+        "eligible_candidate_rows": int(len(candidate_sessions)),
+        "eligible_candidate_sessions": int(candidate_sessions["datetime"].nunique()),
+        "minimum_pairwise_sessions_for_statistical_gate": minimum_sessions,
+        "maximum_allowed_absolute_median_daily_rank_correlation": maximum_correlation,
+        "sparse_results": sparse_results,
+        "dense_results": dense_results,
+        "sparse_semantic_and_conditional_statistical_gate_passed": sparse_passed,
+        "dense_size_liquidity_gate_passed": dense_passed,
+        "uniqueness_gate_passed": bool(sparse_passed and dense_passed),
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
+def require_unconsumed_eastmoney_related_party_transaction_sparsity_no_return_audit(
+    experiment_root: Path,
+    *,
+    source_manifest_sha256: str,
+) -> None:
+    """Prevent a second capacity/uniqueness read of the immutable snapshot."""
+
+    if DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_RECORD.exists():
+        raise ValueError(
+            "Eastmoney related-party sparsity branch already has a tracked no-return record"
+        )
+    for path in sorted(
+        experiment_root.expanduser().glob(
+            "*_eastmoney_related_party_transaction_sparsity_no_return_audit.json"
+        )
+    ):
+        record = load_json_record(path)
+        source = (
+            (record.get("preregistration") or {}).get("source_evidence") or {}
+        ).get("manifest") or {}
+        if (
+            record.get("status") == "completed"
+            and record.get("purpose")
+            == EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_AUDIT_PURPOSE
+            and source.get("sha256") == source_manifest_sha256
+        ):
+            raise ValueError(
+                "Eastmoney related-party sparsity no-return snapshot is already consumed: "
+                f"{path}"
+            )
+
+
+def run_eastmoney_related_party_transaction_sparsity_no_return_audit(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """Run capacity first, then exactly six sparse and three dense comparisons."""
+
+    experiment_root = Path(args.experiment_root).expanduser()
+    require_unconsumed_eastmoney_related_party_transaction_sparsity_no_return_audit(
+        experiment_root,
+        source_manifest_sha256=(
+            EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST_SHA256
+        ),
+    )
+    spec = load_eastmoney_related_party_transaction_sparsity_no_return_preregistration()
+    events, source_evidence = (
+        validate_eastmoney_related_party_transaction_sparsity_full_snapshot(
+            Path(args.manifest), spec
+        )
+    )
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    context = spec["local_context"]
+    calendar_path = provider_uri / "calendars" / "day.txt"
+    holding_path = provider_uri / "instruments" / "buyable_main_chinext.txt"
+    for label, path, digest in (
+        ("calendar", calendar_path, context["local_calendar"]["sha256"]),
+        ("holding universe", holding_path, context["holding_universe"]["sha256"]),
+    ):
+        if not path.exists() or file_sha256(path) != digest:
+            raise ValueError(f"related-party sparsity provider {label} changed")
+    full_calendar, research_calendar, intervals = local_market_capacity_context(
+        provider_uri,
+        market=spec["capacity_contract"]["holding_universe"],
+        start=spec["capacity_contract"]["development_start"],
+        end=spec["capacity_contract"]["development_end"],
+    )
+    quality = context["quarterly_quality"]
+    quality_path = resolve_repository_record_path(quality["path"])
+    fundamentals = load_fundamentals(quality_path)
+    capacity_contract = spec["capacity_contract"]
+    hold_days = int(capacity_contract["holding_period_trading_days"])
+    capacity_targets = research_calendar[:-hold_days:hold_days]
+    capacity_sessions, capacity_materialization = (
+        prepare_eastmoney_related_party_transaction_sparsity_eligible_sessions(
+            events,
+            capacity_targets,
+            fundamentals,
+            full_calendar,
+            intervals,
+            maximum_event_age_days=int(
+                capacity_contract["maximum_factor_age_calendar_days"]
+            ),
+            maximum_quality_age_days=int(
+                capacity_contract["maximum_quality_age_calendar_days"]
+            ),
+        )
+    )
+    capacity = eastmoney_related_party_transaction_sparsity_capacity(
+        capacity_sessions, research_calendar, contract=capacity_contract
+    )
+    capacity["materialization"] = capacity_materialization
+    capacity_passed = bool(capacity["capacity_gate_passed"])
+    uniqueness: dict[str, Any] | None = None
+    uniqueness_materialization: dict[str, Any] | None = None
+    sparse_evidence: dict[str, Any] | None = None
+    dense_evidence: dict[str, Any] | None = None
+    comparison_fields_loaded: list[str] = []
+    if capacity_passed:
+        uniqueness_contract = spec["uniqueness_contract_after_capacity_only"]
+        uniqueness_targets = research_calendar[
+            (research_calendar >= pd.Timestamp(uniqueness_contract["screen_start"]))
+            & (research_calendar <= pd.Timestamp(uniqueness_contract["screen_end"]))
+        ]
+        candidate_sessions, uniqueness_materialization = (
+            prepare_eastmoney_related_party_transaction_sparsity_eligible_sessions(
+                events,
+                uniqueness_targets,
+                fundamentals,
+                full_calendar,
+                intervals,
+                maximum_event_age_days=int(
+                    capacity_contract["maximum_factor_age_calendar_days"]
+                ),
+                maximum_quality_age_days=int(
+                    capacity_contract["maximum_quality_age_calendar_days"]
+                ),
+            )
+        )
+        sparse_frames, sparse_evidence = (
+            load_eastmoney_related_party_transaction_sparsity_sparse_comparisons(
+                uniqueness_targets, full_calendar
+            )
+        )
+        comparison_fields_loaded.extend(
+            EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_SPARSE_COMPARISON_FIELDS
+        )
+        dense_frame, dense_evidence = (
+            load_eastmoney_related_party_transaction_sparsity_dense_comparisons(
+                provider_uri, candidate_sessions
+            )
+        )
+        comparison_fields_loaded.extend(
+            EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_DENSE_COMPARISON_FIELDS
+        )
+        uniqueness = summarize_eastmoney_related_party_transaction_sparsity_uniqueness(
+            candidate_sessions,
+            sparse_frames,
+            dense_frame,
+            contract=uniqueness_contract,
+        )
+        del candidate_sessions, sparse_frames, dense_frame
+        gc.collect()
+    del capacity_sessions, events
+    gc.collect()
+
+    uniqueness_passed = bool(
+        uniqueness is not None and uniqueness["uniqueness_gate_passed"]
+    )
+    both_passed = bool(capacity_passed and uniqueness_passed)
+    if not capacity_passed:
+        decision = (
+            "rejected_before_comparison_fields_prices_or_returns_for_insufficient_"
+            "fixed_quality_listing_nonoverlapping_capacity"
+        )
+    elif not uniqueness_passed:
+        decision = (
+            "rejected_before_prices_or_returns_for_sparse_semantic_statistical_or_"
+            "dense_size_liquidity_uniqueness_failure"
+        )
+    else:
+        decision = (
+            "eligible_only_for_separate_fingerprint_bound_single_factor_return_and_"
+            "execution_diagnostic_preregistration"
+        )
+    run_id = _timestamp()
+    audit = {
+        "kind": (
+            "a_share_eastmoney_related_party_transaction_sparsity_no_return_audit"
+        ),
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_AUDIT_PURPOSE,
+        "preregistration": {
+            "path": str(
+                DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_SPEC.resolve()
+            ),
+            "sha256": file_sha256(
+                DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_SPEC
+            ),
+            "source_evidence": source_evidence,
+        },
+        "factor_catalog": [EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FACTOR_NAME],
+        "factor_direction": "higher_is_better",
+        "capacity_contract": capacity_contract,
+        "uniqueness_contract": spec["uniqueness_contract_after_capacity_only"],
+        "run_sequence": [
+            {
+                "step": "full_source_formula_and_84_partition_fingerprint_revalidation",
+                "completed": True,
+                "passed": True,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "quality_listing_and_nonoverlapping_three_session_capacity",
+                "completed": True,
+                "passed": capacity_passed,
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+            {
+                "step": "six_sparse_and_three_dense_no_return_uniqueness",
+                "completed": uniqueness is not None,
+                "skipped_reason": (
+                    None
+                    if capacity_passed
+                    else "capacity_failed_before_comparison_field_load"
+                ),
+                "passed": uniqueness_passed,
+                "comparison_fields_loaded": comparison_fields_loaded,
+                "price_fields_loaded": [],
+                "forward_return_fields_read": False,
+            },
+        ],
+        "source_capacity": capacity,
+        "uniqueness_state_materialization": uniqueness_materialization,
+        "sparse_comparison_source_evidence": sparse_evidence,
+        "dense_comparison_source_evidence": dense_evidence,
+        "uniqueness": uniqueness,
+        "source_completeness_gate_passed": True,
+        "capacity_gate_passed": capacity_passed,
+        "uniqueness_gate_passed": uniqueness_passed,
+        "both_no_return_gates_passed": both_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "data": {
+            "provider_uri": str(provider_uri),
+            "calendar_path": str(calendar_path),
+            "calendar_sha256": file_sha256(calendar_path),
+            "holding_universe_path": str(holding_path),
+            "holding_universe_sha256": file_sha256(holding_path),
+            "quarterly_quality_path": str(quality_path),
+            "quarterly_quality_sha256": file_sha256(quality_path),
+            "instrument_span_count": int(len(intervals)),
+            "capacity_completed_before_comparison_fields": True,
+            "comparison_fields_loaded": comparison_fields_loaded,
+            "raw_open_high_low_close_volume_amount_turnover_columns_returned": [],
+            "price_fields_loaded": [],
+            "open_close_market_state_or_forward_return_fields_read": False,
+            "forward_return_fields_read": False,
+        },
+        "price_fields_loaded": [],
+        "open_close_or_forward_return_fields_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "Source, capacity, and uniqueness are no-outcome gates and imply no return association or tradable strategy.",
+            "The public source is a current historical snapshot rather than an immutable provider version stream.",
+            "Sparse insufficient overlap is descriptive only; every sparse semantic gate remains mandatory.",
+            "No raw OHLCV column, future open, future close, market-state label, forward return, score, selection, position size, or order field is read or derived.",
+        ],
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    destination = (
+        experiment_root
+        / f"{run_id}_eastmoney_related_party_transaction_sparsity_no_return_audit.json"
+    )
+    _atomic_write_text(
+        destination,
+        json.dumps(audit, ensure_ascii=False, indent=2, default=_json_default) + "\n",
+    )
+    return {
+        "status": "completed",
+        "audit_path": str(destination.resolve()),
+        "factor_capacity": capacity,
+        "uniqueness": uniqueness,
+        "both_no_return_gates_passed": both_passed,
+        "source_admitted_for_separate_return_diagnostic_preregistration": both_passed,
+        "decision": decision,
+        "price_fields_loaded": [],
+        "forward_return_fields_read": False,
+    }
+
+
 def load_tushare_contract_liability_backlog_research_record(
     path: Path = DEFAULT_TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD,
 ) -> dict[str, Any]:
     """Validate the terminal full-source coverage rejection."""
 
     path = path.expanduser().resolve()
-    if (
-        file_sha256(path)
-        != TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD_SHA256
-    ):
+    if file_sha256(path) != TUSHARE_CONTRACT_LIABILITY_BACKLOG_RESEARCH_RECORD_SHA256:
         raise ValueError(
             "Tushare contract-liability research-record fingerprint mismatch"
         )
@@ -26618,8 +27805,7 @@ def load_tushare_contract_liability_backlog_research_record(
         or attempt.get("final_snapshot_published") is not False
         or attempt.get("published_partition_count") != 0
         or gate.get("gate_passed") is not False
-        or gate.get("p05_report_period_coverage")
-        != 0.02118054155748169
+        or gate.get("p05_report_period_coverage") != 0.02118054155748169
         or gate.get("minimum_p05_report_period_coverage") != 0.3
         or gate.get("p05_coverage_gate_passed") is not False
         or len(gate.get("low_coverage_report_periods_below_0_3") or []) != 8
@@ -26634,16 +27820,13 @@ def load_tushare_contract_liability_backlog_research_record(
         is not False
         or decision.get("forward_return_work_allowed") is not False
     ):
-        raise ValueError(
-            "Tushare contract-liability terminal research record changed"
-        )
+        raise ValueError("Tushare contract-liability terminal research record changed")
     for link in evidence.values():
         linked_path = resolve_repository_record_path(str(link.get("path") or ""))
         linked_sha = str(link.get("sha256") or "")
         if linked_path.exists() and file_sha256(linked_path) != linked_sha:
             raise ValueError(
-                "Tushare contract-liability terminal evidence changed: "
-                f"{linked_path}"
+                f"Tushare contract-liability terminal evidence changed: {linked_path}"
             )
     return record
 
@@ -46183,6 +47366,25 @@ def parse_args() -> argparse.Namespace:
         "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
     )
 
+    eastmoney_related_party_sparsity_no_return_parser = subparsers.add_parser(
+        "eastmoney-related-party-transaction-sparsity-no-return-audit",
+        help=(
+            "run fixed related-party event capacity first, then conditionally "
+            "audit six sparse and three dense no-return comparisons"
+        ),
+    )
+    eastmoney_related_party_sparsity_no_return_parser.add_argument(
+        "--manifest",
+        default=str(DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST),
+        help="the sole accepted 2019-2025 monthly full source manifest",
+    )
+    eastmoney_related_party_sparsity_no_return_parser.add_argument(
+        "--provider-uri", default=str(DEFAULT_PROVIDER_URI)
+    )
+    eastmoney_related_party_sparsity_no_return_parser.add_argument(
+        "--experiment-root", default=str(DEFAULT_EXPERIMENT_ROOT)
+    )
+
     tushare_contract_liability_no_return_parser = subparsers.add_parser(
         "tushare-contract-liability-backlog-no-return-audit",
         help=(
@@ -47104,6 +48306,8 @@ def main() -> int:
         report = run_eastmoney_balance_sheet_resilience_no_return_audit(args)
     elif args.command == "eastmoney-core-profit-consistency-no-return-audit":
         report = run_eastmoney_core_profit_consistency_no_return_audit(args)
+    elif args.command == "eastmoney-related-party-transaction-sparsity-no-return-audit":
+        report = run_eastmoney_related_party_transaction_sparsity_no_return_audit(args)
     elif args.command == "tushare-contract-liability-backlog-no-return-audit":
         report = run_tushare_contract_liability_backlog_no_return_audit(args)
     elif args.command == "tushare-cash-conversion-no-return-audit":

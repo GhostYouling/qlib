@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_related_party_provider_rows_factor_values_prices_or_returns",
+  "frozen_at": "2026-07-20T12:40:00Z",
+  "purpose": "Re-audit the fixed three-local-session research frontier after the terminal contract-liability full-source coverage failure and select at most one economically independent public-data mechanism without inspecting a new provider row, factor value, price, or return.",
+  "research_scope": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "development_years_if_later_admitted": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "holding_universe": "buyable_main_chinext",
+    "quality_gate": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY under the existing point-in-time quarterly-quality policy",
+    "new_provider_rows_observed": false,
+    "new_factor_values_observed": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "prior_terminal_evidence": {
+    "path": "docs/a_share_tushare_contract_liability_backlog_research_record.json",
+    "sha256": "982d3014b82b13ef85017e68ed8e4a2fa2e23336b752d3d488169b1a2daf2519",
+    "result": "The sole 21,792-call full-source attempt completed but failed the frozen P05 report-period coverage gate at 2.1181 percent versus 30 percent. No final full snapshot, capacity audit, comparison field, price, or return was produced."
+  },
+  "source_selection_evidence": {
+    "provider": "Eastmoney public datacenter",
+    "page": "https://data.eastmoney.com/gljy/",
+    "inspected_static_bundle": "https://data.eastmoney.com/newstatic/js/gljy/default.js",
+    "inspected_static_bundle_sha256": "0fa964b746b96ba411bcbd0098dcd4ea3db8231c0c8286310d81a092c1a1a8cb",
+    "provider_endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "provider_report_name": "RPT_RELATED_TRADE",
+    "homepage_columns_observed": [
+      "SECURITY_CODE",
+      "SECURITY_NAME_ABBR",
+      "RELATED_PARTY",
+      "TRADESECURITY_CODE",
+      "TRADESECURITY_NAME_ABBR",
+      "RELATED_RELATION",
+      "TRADE_AMT",
+      "CURRENCY",
+      "CURRENCY_NAME",
+      "TRADE_PROFILE",
+      "TRADE_WAY",
+      "NETPROFIT",
+      "DATE_TYPE_CODE",
+      "NOTICE_DATE",
+      "PAY_WAY",
+      "OPERATE_INCOME",
+      "EID",
+      "IS_CONTROL"
+    ],
+    "fields_selected_before_rows": [
+      "SECURITY_CODE",
+      "NOTICE_DATE",
+      "EID"
+    ],
+    "provider_rows_observed_by_this_audit": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "eastmoney_major_contract_prior_revenue_share",
+      "decision": "rejected_before_rows_as_already_source_rejected",
+      "reason": "The existing restricted-share-unlock contract records that 2024-Q1 and 2025-Q1 prior-revenue normalization fields were nearly absent and the displayed latest revenue was revision-prone. Reopening that field family would violate the recorded no-return rejection."
+    },
+    {
+      "candidate": "eastmoney_related_party_amount_scaled_by_financials",
+      "decision": "rejected_before_rows",
+      "reason": "Transaction amounts can use different currencies and the page pairs them with latest revenue and net profit rather than an immutable announcement-time denominator. Amount normalization would introduce currency and later-revision leakage."
+    },
+    {
+      "candidate": "eastmoney_entrusted_wealth_management",
+      "decision": "rejected_before_rows",
+      "reason": "The economic direction is ambiguous and the summary page uses latest net assets and profit. A larger subscription can indicate idle-cash strength or capital-allocation risk, so no single direction is justified before a separate mechanism."
+    },
+    {
+      "candidate": "eastmoney_company_investment_holdings",
+      "decision": "rejected_before_rows",
+      "reason": "The report is an accounting investment state by reporting period, overlaps existing financial-state mechanisms, and has no predeclared short-horizon direction independent of valuation and market conditions."
+    },
+    {
+      "candidate": "eastmoney_merger_and_restructuring_activity",
+      "decision": "deferred_before_rows",
+      "reason": "The public page exposes both first-disclosure and latest-announcement fields in a current latest-state snapshot. Positive and negative deal states cannot be separated without a point-in-time version contract, and a generic activity direction is ambiguous."
+    },
+    {
+      "candidate": "public_structured_corporate_guarantee_pressure",
+      "decision": "deferred_source_unavailable_before_rows",
+      "reason": "No count-complete, structured, common Shanghai-Shenzhen historical source with uniform disclosure timing was located in the inspected public datacenter pages. Notice text scraping is not accepted as a substitute."
+    },
+    {
+      "candidate": "eastmoney_related_party_transaction_sparsity",
+      "decision": "selected_as_the_only_independent_no_return_candidate",
+      "reason": "Same-issuer same-notice-date clustering of unique related-party transaction records measures governance and related-party disclosure complexity without transaction amounts, counterparties, current financial denominators, prices, or returns. The lower-clustering direction is specified before provider rows and must later survive explicit generic-event-count overlap gates."
+    }
+  ],
+  "selected_mechanism": {
+    "factor_name": "eastmoney_related_party_transaction_sparsity",
+    "economic_mechanism": "Among quality-eligible issuers, fewer distinct related-party transaction records disclosed on the same announcement date may indicate lower related-party governance complexity and less concentrated disclosure overhang during the next three sessions.",
+    "raw_measure": "related_party_transaction_count = count of unique complete EID values for one supported instrument and one NOTICE_DATE",
+    "formula": "1 / related_party_transaction_count",
+    "direction": "higher_is_better",
+    "units": "inverse unique related-party transaction records per issuer notice date",
+    "valid_event": "SECURITY_CODE is a supported complete six-digit main-board or ChiNext code, NOTICE_DATE is a strict date inside the requested partition, and EID is complete; duplicate instrument/NOTICE_DATE/EID keys abort rather than deduplicate",
+    "invalid_event_policy": "exclude complete unsupported-board codes and count them; abort on missing or malformed keys, duplicate event identities, out-of-partition dates, pagination mismatch, or schema change; never fill, infer, clip, or substitute another field",
+    "availability": "first local trading session strictly after NOTICE_DATE",
+    "same_notice_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "absent_event_policy": "missing; never zero activity, infinite sparsity, or a favorable score",
+    "selection_or_promotion_allowed": false
+  },
+  "mechanism_independence": {
+    "versus_pledge_and_holder_events": "Share-pledge and major-holder mechanisms measure financing collateral or disclosed ownership changes. The candidate counts only related-party transaction records and uses the predeclared lower-clustering direction, but their event-count fields remain mandatory semantic near neighbors.",
+    "versus_institutional_surveys_and_analyst_reports": "Survey and rating counts measure external attention. Related-party disclosures concern issuer transactions with affiliated parties; no participant, analyst, broker, or forecast field is used.",
+    "versus_insider_and_block_trades": "Insider open-market and block-trade factors measure actual security transactions. This candidate excludes trade prices, amounts, holdings, security-market directions, and counterparties.",
+    "versus_financial_state_and_quality": "No revenue, profit, ROE, asset, liability, valuation, market capitalization, or growth value enters the factor. Quarterly quality remains eligibility only.",
+    "versus_price_volume_and_level2": "No OHLCV, VWAP, turnover, order classification, queue, depth, price, or return field enters source acceptance or factor construction.",
+    "required_sparse_near_neighbors": [
+      "pledge_event_count",
+      "major_holder_event_count",
+      "institutional_survey_event_count",
+      "analyst_valid_rating_report_count",
+      "insider_open_market_event_count",
+      "block_trade_event_count"
+    ],
+    "required_size_liquidity_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ]
+  },
+  "fixed_sparse_uniqueness_framework": {
+    "scope": "This framework is frozen only for this new independent sparse hypothesis and cannot reopen or reinterpret any terminal branch.",
+    "semantic_gate": "Every named sparse event near neighbor must receive an explicit mechanism comparison and source-overlap accounting before any return access.",
+    "statistical_gate_when_overlap_is_sufficient": "For every named sparse near neighbor with at least 100 eligible pairwise sessions and at least 6 pairwise names per session, require absolute median daily Spearman rank correlation below 0.8.",
+    "insufficient_overlap_policy": "Report descriptive overlap and correlation when calculable; insufficient overlap is not statistical synonym evidence, but the semantic gate remains mandatory and may reject a generic event-count clone.",
+    "size_liquidity_gate": "Each dense size or liquidity confounder must provide at least 100 eligible pairwise sessions with at least 50 names and absolute median daily Spearman rank correlation below 0.8.",
+    "anti_cherry_pick_rule": "The catalogs, thresholds, direction, formula, event age, universe, and quality rule cannot change after any related-party provider row or factor value is observed."
+  },
+  "required_gate_order": [
+    "freeze the exact source report, three-field request whitelist, fixed sample windows, pagination and schema rules, formula, direction, timing, invalid-row policy, acceptance thresholds, future capacity, and uniqueness framework before any provider row",
+    "implement and locally test count-complete pagination, exact-field normalization, duplicate rejection, universe filtering, cross-section variation checks, one-shot guards, and atomic publication",
+    "run exactly one no-price source acceptance over the three frozen historical sample windows and permanently consume it",
+    "if and only if acceptance passes, freeze a separate full-source and no-return audit preregistration before a 2019-2025 snapshot",
+    "run a no-price 200-cohort, five-year capacity gate before loading any comparison field",
+    "only after capacity passes, run the predeclared sparse semantic/statistical and size-liquidity uniqueness gates without forward returns",
+    "freeze a separate one-time return and execution diagnostic only if every no-return gate passes"
+  ],
+  "prohibited_actions": [
+    "request or persist security names, counterparties, relationships, transaction amount, currency, transaction text, payment method, control flag, current revenue, current net profit, price, market cap, valuation, return, credential, cookie, or retail-session data",
+    "derive amount ratios, relationship categories, text sentiment, counterparty concentration, control-party flags, another aggregation, an industry residual, or a combined score after seeing rows",
+    "invert to prefer denser disclosure, widen the three-calendar-day age, alter sample windows, lower coverage or variation thresholds, treat absence as zero, or rescue failure with another field",
+    "deduplicate repeated EID keys silently, accept incomplete pagination, mix providers, or keep a partial snapshot",
+    "read prices or returns, aggregate with terminal factors, current-score, select, size, order, or justify Level-2 before all later no-return gates pass"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

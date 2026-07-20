@@ -109,6 +109,12 @@ Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_
 
 跨克隆终止记录为 [`a_share_eastmoney_core_profit_consistency_diagnostic_record.json`](a_share_eastmoney_core_profit_consistency_diagnostic_record.json)（SHA‑256 `970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f`）。不得再次运行验收、全量、无收益审计、收益诊断或两道通用门禁，也不得反向、挑选年份、改变公式/状态/持有期/TopK/成本或与已拒绝因子组合。`TUSHARE_TOKEN` 的配置、更新或轮换不会恢复该分支；它不进入聚合、当前评分、选股、仓位或订单。提交仓库不包含本机 Token 或 `launchctl` 环境值。
 
+#### Eastmoney 关联交易披露稀疏度分支等待收益诊断预注册
+
+这个来源同样不读取 `TUSHARE_TOKEN`，不使用 Tushare 账号或积分。唯一来源验收、2019–2025 全量快照以及容量优先的无收益审计都已消费；无收益容量为 352/200 个三日非重叠 cohort，六个稀疏语义近邻和三个规模/流动性混淆项的固定门禁均通过。跨克隆记录是 [`a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json`](a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json)（SHA‑256 `827aacdfc661c280cd22dbc3f97b3e6fc3ad7b91489861bd45c1d6a65c581cc8`）。
+
+通过仅允许先冻结一个绑定审计指纹的单因子收益/执行诊断，并不允许立即读取收益或选股。不得重跑 `acceptance-eastmoney-related-party-transaction-sparsity`、`sync-eastmoney-related-party-transaction-sparsity --allow-large` 或 `eastmoney-related-party-transaction-sparsity-no-return-audit`；配置、更新或轮换 Token 也不会恢复这些一次性入口。下一阶段若将来明确预注册为 Tushare 数据命令，仍按第 4 节只向单个子进程透传，仓库永远只保存变量名和安全命令模板，不保存真实 Token。
+
 ### 4.2 `stock_st` 分支已终止
 
 ST 恢复速度的唯一全量来源尝试已经消费：完成 58 个历史会话后，2019‑04‑01 返回空表。冻结合同不允许把空表当作“当天没有 ST 股票”，因此程序停止、删除完整临时快照且没有发布年度分区；转换、因子、价格和收益均未读取。终止记录是 [`a_share_tushare_st_recovery_research_record.json`](a_share_tushare_st_recovery_research_record.json)。

@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_related_party_transaction_sparsity_source_acceptance_record",
+  "status": "accepted_schema_identity_formula_and_historical_sample_variation_pending_separate_full_source_and_no_return_protocol",
+  "created_at": "2026-07-20T12:53:41Z",
+  "purpose": "Permanently bind the sole frozen Eastmoney related-party disclosure-sparsity acceptance so every clone rejects another provider request and downstream work remains gated on a separately frozen full-source and no-return protocol.",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit_20260720.json",
+    "sha256": "697def3023b93b639363b05c262293dda75cb515fa58d8124ea5e96384d61190",
+    "provider_rows_observed_before_freeze": false,
+    "factor_values_observed_before_freeze": false
+  },
+  "data_contract": {
+    "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_data_contract.json",
+    "sha256": "242baad268f11c56b0c3ccb14b9726f653b908e553d0b1d39faed36e6069c277",
+    "preregistered_at": "2026-07-20T12:40:00Z"
+  },
+  "acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260720T125250Z_eastmoney_related_party_transaction_sparsity_acceptance_db9e2dde.json",
+    "sha256": "c61e47b05354e11119b4bf80f335dc334cc1042c6fc30c4d9bdd16d58e31fd70",
+    "run_id": "20260720T125250Z_eastmoney_related_party_transaction_sparsity_acceptance_db9e2dde",
+    "retrieved_at": "2026-07-20T12:52:50.035914+00:00",
+    "acceptance_status": "accepted_schema_identity_formula_and_historical_sample_variation_pending_frozen_full_source_and_no_return_gates"
+  },
+  "accepted_frame": {
+    "path": "data/raw/a_share/rich/eastmoney/related_party_transaction_sparsity/acceptance/20260720T125250Z_eastmoney_related_party_transaction_sparsity_acceptance_db9e2dde/related_party_transaction_sparsity.parquet",
+    "content_sha256": "99c61dc01d56c50a4dd99049da0d85840197e71396e13faa70a5f90dc43344bd",
+    "file_sha256": "a47acb785956117946eff706922fc2edf6624ace0bec598fce192192db2f02ea",
+    "rows": 4040,
+    "columns": [
+      "announcement_date",
+      "instrument",
+      "related_party_transaction_count",
+      "eastmoney_related_party_transaction_sparsity",
+      "provider"
+    ],
+    "eid_or_raw_identity_persisted": false,
+    "forbidden_field_persisted": false
+  },
+  "source_request": {
+    "provider": "eastmoney",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_RELATED_TRADE",
+    "requested_fields": [
+      "SECURITY_CODE",
+      "NOTICE_DATE",
+      "EID"
+    ],
+    "fixed_sample_windows": [
+      {
+        "label": "2019Q1",
+        "start": "2019-01-01",
+        "end": "2019-03-31",
+        "advertised_pages": 29,
+        "advertised_rows": 14483,
+        "received_rows": 14483
+      },
+      {
+        "label": "2024Q1",
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "advertised_pages": 42,
+        "advertised_rows": 20680,
+        "received_rows": 20680
+      },
+      {
+        "label": "2025Q1",
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "advertised_pages": 31,
+        "advertised_rows": 15434,
+        "received_rows": 15434
+      }
+    ],
+    "provider_calls": 102,
+    "advertised_rows_total": 50597,
+    "received_rows_total": 50597,
+    "every_page_and_window_count_verified": true,
+    "credentials_required_logged_or_stored": false,
+    "cookies_proxy_or_retail_session_used": false,
+    "forbidden_fields_requested_or_persisted": [],
+    "raw_identity_rows_persisted": false
+  },
+  "observed_result": {
+    "supported_unique_source_rows_total": 47654,
+    "unsupported_board_rows_excluded_total": 2943,
+    "point_in_time_holding_events_written": 4040,
+    "events_by_sample_year": {
+      "2019": 1388,
+      "2024": 1414,
+      "2025": 1238
+    },
+    "candidate_cross_sections_by_window": {
+      "2019Q1": 54,
+      "2024Q1": 58,
+      "2025Q1": 57
+    },
+    "candidate_cross_sections_total": 169,
+    "distinct_factor_values": 130,
+    "maximum_formula_absolute_error": 0.0,
+    "duplicate_source_identity_rows": 0,
+    "duplicate_normalized_event_keys": 0,
+    "missing_or_malformed_key_rows": 0,
+    "missing_next_session_dates": 0,
+    "schema_identity_formula_and_historical_sample_variation_gate_passed": true
+  },
+  "independent_revalidation": {
+    "frame_reloaded_after_publication": true,
+    "rows_reproduced": 4040,
+    "columns_reproduced": true,
+    "positive_integer_counts_reproduced": true,
+    "reciprocal_formula_maximum_absolute_error": 0.0,
+    "provider_values": [
+      "eastmoney"
+    ],
+    "eid_column_present": false,
+    "forbidden_columns_present": [],
+    "price_or_return_field_read": false
+  },
+  "interpretation": {
+    "what_passed": "The frozen three-window sample passed exact-field schema, count-complete pagination, identity uniqueness, supported-board normalization, point-in-time holding membership, reciprocal formula, next-session mapping, historical source depth, and sample cross-sectional variation gates.",
+    "what_did_not_pass": "No 2019-2025 full source, fixed three-session cohort capacity, sparse semantic/statistical uniqueness, size-liquidity confounder, price association, execution, aggregation, current scoring, or selection gate has run.",
+    "factor_return_evidence": false,
+    "current_selection_evidence": false
+  },
+  "next_stage_decision": {
+    "acceptance_consumed": true,
+    "acceptance_retry_allowed": false,
+    "window_field_formula_direction_timing_age_threshold_or_universe_change_allowed": false,
+    "full_source_sync_allowed_immediately": false,
+    "separate_full_source_and_no_return_preregistration_required": true,
+    "preregistration_must_bind_acceptance_manifest_frame_contract_mechanism_and_local_context_fingerprints": true,
+    "preregistration_must_freeze_2019_2025_partitioning_recursive_bisection_atomicity_coverage_capacity_sparse_near_neighbors_dense_confounders_and_one_shot_failure_rules": true,
+    "price_or_return_access_allowed_before_all_no_return_gates_pass": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_purchase_or_intake_justified": false
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
