@@ -9,9 +9,10 @@ The pipeline deliberately keeps two universes:
 The latter is useful when STAR Market prices are used as explanatory variables,
 while the former remains the universe that a stock-selection strategy may hold.
 
-All generated data lives under ``<repository>/data``.  The script uses public
-Eastmoney endpoints directly, so no username, password, or API token is
-required.  It is intentionally a data-ingestion tool, not investment advice.
+Generated data defaults to ``<repository>/data`` and can be relocated with
+``QLIB_A_SHARE_DATA_ROOT``.  The script uses public Eastmoney endpoints
+directly, so no username, password, or API token is required.  It is
+intentionally a data-ingestion tool, not investment advice.
 """
 
 from __future__ import annotations
@@ -37,10 +38,14 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
+from _a_share_runtime import (
+    latest_completed_session_date,
+    resolve_data_root,
+)
 from _interprocess_lock import InterProcessFileLock, LockUnavailableError
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = REPO_ROOT / "data"
+DATA_ROOT = resolve_data_root(REPO_ROOT)
 RAW_DIR = DATA_ROOT / "raw" / "a_share" / "daily"
 METADATA_DIR = DATA_ROOT / "metadata"
 RUNS_DIR = METADATA_DIR / "runs"
@@ -55,7 +60,6 @@ PRICE_BASIS_MANIFEST = QLIB_DIR / "price_basis.json"
 DEFAULT_START_DATE = "2015-01-01"
 DEFAULT_REFRESH_DAYS = 45
 DEFAULT_WORKERS = 3
-CHINA_STANDARD_TIME = dt.timezone(dt.timedelta(hours=8), name="Asia/Shanghai")
 
 POINT_IN_TIME_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
 POINT_IN_TIME_RAW_COLUMNS = (
@@ -157,29 +161,6 @@ def parse_date(value: str) -> dt.date:
     """Parse a CLI ISO date into a date, with a useful argparse error upstream."""
 
     return dt.date.fromisoformat(value)
-
-
-def latest_completed_session_date(now: dt.datetime | None = None) -> dt.date:
-    """Return a conservative daily-data cutoff in China Standard Time.
-
-    A timezone-aware now is converted to UTC+8; a naive value is interpreted
-    as UTC+8 for backward-compatible tests and callers. Before 15:30 on a
-    weekday, the most recent safe date is the preceding weekday. Exchange
-    holidays simply leave the existing calendar unchanged.
-    """
-
-    if now is None:
-        local_now = dt.datetime.now(CHINA_STANDARD_TIME)
-    elif now.tzinfo is None:
-        local_now = now
-    else:
-        local_now = now.astimezone(CHINA_STANDARD_TIME)
-    cutoff = local_now.date()
-    if local_now.weekday() < 5 and local_now.time() < dt.time(15, 30):
-        cutoff -= dt.timedelta(days=1)
-    while cutoff.weekday() >= 5:
-        cutoff -= dt.timedelta(days=1)
-    return cutoff
 
 
 def qlib_symbol(code: str) -> str:

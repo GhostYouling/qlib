@@ -29,6 +29,36 @@ python -m pip install pandas numpy pyarrow requests
 `scripts/data_collector/a_share_rich/requirements.txt`，但不必为了运行日频管线安装全部
 供应商 SDK。
 
+## 数据目录
+
+默认数据目录仍是仓库内的 `data`。如果数据盘、容器挂载点或 Windows 任务账户不同，
+可通过 `QLIB_A_SHARE_DATA_ROOT` 同时配置日频和富数据脚本，无需复制代码或创建链接。
+
+Windows PowerShell：
+
+```powershell
+$env:QLIB_A_SHARE_DATA_ROOT = 'D:\MarketData\qlib-a-share'
+python scripts/a_share_data_pipeline.py status
+python scripts/a_share_rich_data.py status
+```
+
+Windows CMD：
+
+```batch
+set QLIB_A_SHARE_DATA_ROOT=D:\MarketData\qlib-a-share
+python scripts\a_share_data_pipeline.py status
+```
+
+macOS/Linux：
+
+```bash
+export QLIB_A_SHARE_DATA_ROOT=/mnt/market-data/qlib-a-share
+python scripts/a_share_data_pipeline.py status
+```
+
+相对路径会相对于仓库根目录解析，而不是相对于当前工作目录；这能避免 `cron`、
+`launchd` 和 Windows 任务计划程序从不同目录启动时写入意外位置。
+
 ## 验证
 
 以下命令不会下载行情，可用于确认解释器、依赖、路径和锁实现正常：

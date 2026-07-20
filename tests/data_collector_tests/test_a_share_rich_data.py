@@ -213,6 +213,7 @@ def test_status_reports_external_baostock_storage_without_mutation(tmp_path):
     before_lock = lock_path.read_bytes()
 
     payload = RICH.status_payload(data_root)
+    assert payload["data_root"] == str(data_root.resolve())
     storage = payload["baostock_five_minute_storage"]
     assert storage["data_root"] == str(data_root.resolve())
     assert storage["network_request_issued"] is False

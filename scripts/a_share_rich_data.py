@@ -49,6 +49,11 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
+from _a_share_runtime import (
+    count_and_latest_path,
+    latest_completed_session_date,
+    resolve_data_root,
+)
 from _interprocess_lock import (
     InterProcessFileLock,
     LockUnavailableError,
@@ -56,8 +61,7 @@ from _interprocess_lock import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = REPO_ROOT / "data"
-CHINA_STANDARD_TIME = dt.timezone(dt.timedelta(hours=8), name="Asia/Shanghai")
+DATA_ROOT = resolve_data_root(REPO_ROOT)
 RAW_ROOT = DATA_ROOT / "raw" / "a_share" / "rich"
 METADATA_ROOT = DATA_ROOT / "metadata" / "rich_data"
 RUNS_ROOT = METADATA_ROOT / "runs"
@@ -968,29 +972,6 @@ def parse_date(value: str) -> dt.date:
         return dt.date.fromisoformat(value)
     except ValueError as exc:
         raise argparse.ArgumentTypeError(f"invalid ISO date: {value}") from exc
-
-
-def latest_completed_session_date(now: dt.datetime | None = None) -> dt.date:
-    """Conservatively avoid requesting a still-forming A-share session.
-
-    A timezone-aware now is converted to UTC+8; a naive value is interpreted
-    as UTC+8 for backward-compatible callers. The function intentionally only
-    knows weekends; exchange holidays naturally return no rows and are recorded
-    in the manifest rather than treated as data errors.
-    """
-
-    if now is None:
-        local_now = dt.datetime.now(CHINA_STANDARD_TIME)
-    elif now.tzinfo is None:
-        local_now = now
-    else:
-        local_now = now.astimezone(CHINA_STANDARD_TIME)
-    cutoff = local_now.date()
-    if local_now.weekday() < 5 and local_now.time() < dt.time(15, 30):
-        cutoff -= dt.timedelta(days=1)
-    while cutoff.weekday() >= 5:
-        cutoff -= dt.timedelta(days=1)
-    return cutoff
 
 
 def qlib_symbol(code: str) -> str:
@@ -23051,23 +23032,30 @@ def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
     runs_root = resolved / "metadata" / "rich_data" / "runs"
     availability_root = resolved / "metadata" / "rich_data" / "availability"
     preflight_root = resolved / "metadata" / "rich_data" / "preflights"
-    raw_files = sorted(raw_root.rglob("*.parquet")) if raw_root.exists() else []
-    run_paths = sorted(runs_root.glob("*.json")) if runs_root.exists() else []
-    history_manifests: list[Path] = []
+    raw_file_count = (
+        sum(1 for _ in raw_root.rglob("*.parquet")) if raw_root.exists() else 0
+    )
+    history_manifest_count = 0
+    latest_history_manifest: Path | None = None
+    latest_history_key = ""
+    run_paths = runs_root.glob("*.json") if runs_root.exists() else ()
     for path in run_paths:
         try:
             record = json.loads(path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             continue
         if record.get("dataset") == "baostock_five_minute_history":
-            history_manifests.append(path)
+            history_manifest_count += 1
+            if latest_history_manifest is None or path.name > latest_history_key:
+                latest_history_manifest = path
+                latest_history_key = path.name
 
-    availability_paths = (
-        sorted(availability_root.glob("*.json")) if availability_root.exists() else []
+    _, latest_availability_path = count_and_latest_path(
+        availability_root.glob("*.json") if availability_root.exists() else ()
     )
     latest_probe: dict[str, Any] | None = None
-    if availability_paths:
-        latest_path = availability_paths[-1]
+    if latest_availability_path is not None:
+        latest_path = latest_availability_path
         try:
             record = load_json_record(
                 latest_path, kind="a_share_baostock_5m_restoration_probe"
@@ -23093,12 +23081,12 @@ def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
                 "rows": int(record.get("rows") or 0),
             }
 
-    preflight_paths = (
-        sorted(preflight_root.glob("*.json")) if preflight_root.exists() else []
+    _, latest_preflight_path = count_and_latest_path(
+        preflight_root.glob("*.json") if preflight_root.exists() else ()
     )
     latest_preflight: dict[str, Any] | None = None
-    if preflight_paths:
-        latest_path = preflight_paths[-1]
+    if latest_preflight_path is not None:
+        latest_path = latest_preflight_path
         try:
             record = load_json_record(latest_path, kind="a_share_baostock_5m_preflight")
         except (RichDataError, ValueError, OSError, json.JSONDecodeError):
@@ -23121,10 +23109,10 @@ def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
     return {
         "data_root": str(resolved),
         "network_request_issued": False,
-        "raw_parquet_file_count": len(raw_files),
-        "history_manifest_count": len(history_manifests),
+        "raw_parquet_file_count": raw_file_count,
+        "history_manifest_count": history_manifest_count,
         "latest_history_manifest": (
-            str(history_manifests[-1].resolve()) if history_manifests else None
+            str(latest_history_manifest.resolve()) if latest_history_manifest else None
         ),
         "latest_restoration_probe": latest_probe,
         "latest_preflight": latest_preflight,
@@ -23135,28 +23123,39 @@ def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
 def status_payload(data_root: Path = DATA_ROOT) -> dict[str, Any]:
     """Return safe machine-readable readiness information."""
 
-    manifests = sorted(RUNS_ROOT.glob("*.json")) if RUNS_ROOT.exists() else []
-    alignments = (
-        sorted(ALIGNMENTS_ROOT.glob("*.json")) if ALIGNMENTS_ROOT.exists() else []
+    resolved_data_root = data_root.expanduser().resolve()
+    metadata_root = resolved_data_root / "metadata" / "rich_data"
+    runs_root = metadata_root / "runs"
+    alignments_root = metadata_root / "alignments"
+    feature_runs_root = metadata_root / "feature_runs"
+    manifest_count, latest_manifest = count_and_latest_path(
+        runs_root.glob("*.json") if runs_root.exists() else ()
     )
-    feature_runs = (
-        sorted(FEATURE_RUNS_ROOT.glob("*.json")) if FEATURE_RUNS_ROOT.exists() else []
+    alignment_count, latest_alignment = count_and_latest_path(
+        alignments_root.glob("*.json") if alignments_root.exists() else ()
     )
+    feature_run_count, latest_feature_run = count_and_latest_path(
+        feature_runs_root.glob("*.json") if feature_runs_root.exists() else ()
+    )
+    providers: list[dict[str, Any]] = []
+    for provider in PROVIDER_REQUIREMENTS:
+        availability = provider_availability(provider)
+        providers.append(asdict(availability) | {"ready": availability.ready})
     return {
         "repository": str(REPO_ROOT),
-        "data_root": str(DATA_ROOT),
-        "providers": [
-            asdict(provider_availability(provider))
-            | {"ready": provider_availability(provider).ready}
-            for provider in PROVIDER_REQUIREMENTS
-        ],
-        "snapshot_manifest_count": len(manifests),
-        "latest_snapshot_manifest": str(manifests[-1]) if manifests else None,
-        "alignment_confirmation_count": len(alignments),
-        "latest_alignment_confirmation": str(alignments[-1]) if alignments else None,
-        "minute_feature_run_count": len(feature_runs),
-        "latest_minute_feature_run": str(feature_runs[-1]) if feature_runs else None,
-        "baostock_five_minute_storage": baostock_5m_storage_status(data_root),
+        "data_root": str(resolved_data_root),
+        "providers": providers,
+        "snapshot_manifest_count": manifest_count,
+        "latest_snapshot_manifest": str(latest_manifest) if latest_manifest else None,
+        "alignment_confirmation_count": alignment_count,
+        "latest_alignment_confirmation": (
+            str(latest_alignment) if latest_alignment else None
+        ),
+        "minute_feature_run_count": feature_run_count,
+        "latest_minute_feature_run": (
+            str(latest_feature_run) if latest_feature_run else None
+        ),
+        "baostock_five_minute_storage": baostock_5m_storage_status(resolved_data_root),
     }
 
 
@@ -23172,7 +23171,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--data-root",
         type=Path,
         default=DATA_ROOT,
-        help="inspect this BaoStock five-minute storage root without network access",
+        help="inspect this A-share data root without network access",
     )
 
     minute = subparsers.add_parser(
