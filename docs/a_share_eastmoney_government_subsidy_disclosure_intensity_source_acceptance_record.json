@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record",
+  "status": "terminal_source_identity_ambiguity_rejected_before_factor_values_full_history_capacity_uniqueness_or_returns",
+  "recorded_at": "2026-07-21T07:27:21Z",
+  "purpose": "Permanently preserve the sole frozen Eastmoney government-subsidy announcement acceptance result and reject every replay or post-result identity-rule repair before local contract or provider access.",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_government_subsidy_disclosure_intensity_mechanism_overlap_reaudit_20260721.json",
+    "sha256": "8e518365a05fc98056502a43c492dd4f44ec9195046588af2e2987c76030e368"
+  },
+  "data_contract": {
+    "path": "docs/a_share_eastmoney_government_subsidy_disclosure_intensity_data_contract.json",
+    "sha256": "b7b351e8c31e65391c208b5133ed0d740bea7b8cdeb7686e0c26866b89b360af",
+    "preregistered_at": "2026-07-21T07:05:30Z"
+  },
+  "local_failure_manifest": {
+    "path": "data/metadata/rich_data/runs/20260721T072630Z_eastmoney_government_subsidy_disclosure_intensity_acceptance_0ab4f00d.json",
+    "sha256": "609307dae1c633402c187d931d53c540b62e687882c8d9d33eec3ce9098f8c92",
+    "run_id": "20260721T072630Z_eastmoney_government_subsidy_disclosure_intensity_acceptance_0ab4f00d"
+  },
+  "frozen_request_observed_result": {
+    "requested_sample_windows": [
+      "2019Q1",
+      "2024Q1",
+      "2025Q1"
+    ],
+    "first_and_only_completed_leaf_start": "2019-01-01",
+    "first_and_only_completed_leaf_end": "2019-01-31",
+    "advertised_pages": 57,
+    "requested_pages": 57,
+    "provider_calls_issued": 57,
+    "advertised_source_rows": 5632,
+    "received_source_rows": 5632,
+    "count_reconciliation_passed": true,
+    "completed_leaf_partitions": 1,
+    "completed_sample_windows": 0,
+    "rejection_code": "multiple_supported_a_share_codes_in_one_announcement",
+    "rejection": "At least one source announcement record mapped to two or more supported Shanghai-main, Shenzhen-main, or ChiNext stock codes, while the frozen contract required exactly one supported issuer identity per record.",
+    "normalized_rows": 0,
+    "factor_values_derived": 0,
+    "published_files": [],
+    "partial_snapshot_deleted": true
+  },
+  "privacy_and_scope": {
+    "raw_provider_response_persisted": false,
+    "announcement_title_or_art_code_persisted": false,
+    "codes_or_columns_persisted": false,
+    "announcement_body_url_name_or_subsidy_amount_accessed_or_persisted": false,
+    "credential_token_account_points_cookie_proxy_or_retail_session_used": false,
+    "full_history_requested": false,
+    "capacity_or_uniqueness_run": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "aggregation_scoring_selection_sizing_or_ordering_performed": false
+  },
+  "terminal_decision": {
+    "acceptance_consumed": true,
+    "acceptance_retry_allowed": false,
+    "failed_partition_or_announcement_may_be_rerequested_for_detail": false,
+    "choose_one_supported_code_or_duplicate_the_announcement_across_codes_allowed": false,
+    "change_identity_title_exclusion_formula_direction_timing_age_sample_or_threshold_allowed": false,
+    "same_mechanism_v2_or_provider_substitution_allowed": false,
+    "full_source_sync_allowed": false,
+    "capacity_uniqueness_or_return_work_allowed": false,
+    "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed": false,
+    "next_action": "Return to the no-return mechanism frontier and freeze only a newly economically independent candidate before any new provider row, factor value, price, or return."
+  },
+  "interpretation": "This is a source identity-contract rejection, not evidence that government-subsidy announcement intensity has positive or negative predictive returns. No usable factor event was produced."
+}

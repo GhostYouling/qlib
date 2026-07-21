@@ -5201,6 +5201,20 @@ def eastmoney_government_subsidy_row(
     }
 
 
+def eastmoney_major_contract_row(
+    code: str,
+    announcement_date: str,
+    contract_name: str,
+    signing_date: str,
+) -> dict[str, object]:
+    return {
+        "SECURITYCODE": code,
+        "DIM_RDATE": announcement_date,
+        "CONTRACTNAME": contract_name,
+        "SIGNDATE": signing_date,
+    }
+
+
 def test_eastmoney_government_subsidy_contract_is_fingerprint_frozen(tmp_path):
     contract = (
         RICH.load_eastmoney_government_subsidy_disclosure_intensity_contract()
@@ -5239,6 +5253,54 @@ def test_eastmoney_government_subsidy_contract_is_fingerprint_frozen(tmp_path):
         RICH.load_eastmoney_government_subsidy_disclosure_intensity_contract(
             changed_path
         )
+
+
+def test_eastmoney_government_subsidy_terminal_record_and_guard_are_frozen(
+    tmp_path, monkeypatch
+):
+    record = (
+        RICH.load_eastmoney_government_subsidy_disclosure_intensity_acceptance_record()
+    )
+    observed = record["frozen_request_observed_result"]
+    privacy = record["privacy_and_scope"]
+    terminal = record["terminal_decision"]
+    assert record["status"] == (
+        "terminal_source_identity_ambiguity_rejected_before_factor_values_"
+        "full_history_capacity_uniqueness_or_returns"
+    )
+    assert observed["provider_calls_issued"] == 57
+    assert observed["advertised_source_rows"] == 5_632
+    assert observed["received_source_rows"] == 5_632
+    assert observed["rejection_code"] == (
+        "multiple_supported_a_share_codes_in_one_announcement"
+    )
+    assert observed["factor_values_derived"] == 0
+    assert observed["published_files"] == []
+    assert privacy["price_fields_loaded"] == []
+    assert privacy["forward_return_fields_read"] is False
+    assert terminal["acceptance_consumed"] is True
+    assert terminal["acceptance_retry_allowed"] is False
+    assert terminal["full_source_sync_allowed"] is False
+
+    changed = copy.deepcopy(record)
+    changed["frozen_request_observed_result"]["provider_calls_issued"] = 58
+    changed_path = tmp_path / "changed-government-subsidy-record.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_eastmoney_government_subsidy_disclosure_intensity_acceptance_record(
+            changed_path
+        )
+
+    def local_manifest_scan_must_not_run():
+        raise AssertionError("tracked terminal record must reject before local scan")
+
+    monkeypatch.setattr(
+        RICH,
+        "eastmoney_government_subsidy_acceptance_records",
+        local_manifest_scan_must_not_run,
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.guard_eastmoney_government_subsidy_acceptance()
 
 
 def test_eastmoney_government_subsidy_title_and_identity_rules_are_strict():
@@ -5549,6 +5611,357 @@ def test_eastmoney_government_subsidy_acceptance_is_atomic_and_text_free(
     assert not ({"title", "art_code", "codes", "columns"} & set(stored))
     with pytest.raises(RICH.RichDataError, match="one-shot"):
         RICH.sync_eastmoney_government_subsidy_disclosure_intensity_acceptance(
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+
+
+def test_eastmoney_major_contract_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_eastmoney_major_contract_disclosure_intensity_contract()
+    assert contract["provider_contract"]["report_name"] == "RPTA_WEB_ZDHT_LIST"
+    assert contract["provider_contract"]["fixed_parameters"] == {
+        "sortColumns": "DIM_RDATE",
+        "sortTypes": "-1",
+        "pageSize": "500",
+        "columns": "SECURITYCODE,DIM_RDATE,CONTRACTNAME,SIGNDATE",
+        "token": "894050c76af8597a853f5b408b759f5d",
+    }
+    assert contract["provider_contract"]["account_points_required"] == 0
+    assert contract["event_and_factor_definition"]["direction"] == "higher_is_better"
+    assert contract["point_in_time_policy"]["maximum_age_calendar_days"] == 3
+    assert contract["normalized_snapshot"]["columns"] == list(
+        RICH.EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert contract["capacity_contract_after_full_source_only"][
+        "minimum_complete_cohorts"
+    ] == 200
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+    RICH.validate_eastmoney_major_contract_local_context(contract)
+
+    changed = copy.deepcopy(contract)
+    changed["point_in_time_policy"]["maximum_age_calendar_days"] = 4
+    changed_path = tmp_path / "changed-major-contract-contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_eastmoney_major_contract_disclosure_intensity_contract(changed_path)
+
+
+def test_eastmoney_major_contract_identity_rules_are_strict_and_text_free():
+    rows = [
+        eastmoney_major_contract_row(
+            "600519", "2025-01-10 00:00:00", " 采购  合同 ", "2025-01-09"
+        ),
+        eastmoney_major_contract_row(
+            "600519", "2025-01-10", "销售合同", "2025-01-10"
+        ),
+        eastmoney_major_contract_row(
+            "000001", "2025-01-10", "服务合同", "2025-01-08"
+        ),
+        eastmoney_major_contract_row(
+            "688981", "2025-01-10", "芯片合同", "2025-01-08"
+        ),
+    ]
+    normalized, quality = RICH.canonicalize_eastmoney_major_contract_rows(
+        rows,
+        dt.date(2025, 1, 1),
+        dt.date(2025, 1, 31),
+    )
+    assert normalized.columns.tolist() == list(
+        RICH.EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert normalized["instrument"].tolist() == ["SH600519", "SZ000001"]
+    assert normalized["major_contract_disclosure_count"].tolist() == [2, 1]
+    assert quality["supported_source_rows"] == 3
+    assert quality["unsupported_board_rows_excluded"] == 1
+    assert quality["contract_identity_text_or_hash_persisted"] is False
+    assert not ({"CONTRACTNAME", "SIGNDATE"} & set(normalized))
+
+    with pytest.raises(RICH.RichDataError, match="duplicate frozen identities"):
+        RICH.canonicalize_eastmoney_major_contract_rows(
+            [rows[0], rows[0]],
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 31),
+        )
+    signing_after_announcement = eastmoney_major_contract_row(
+        "600519", "2025-01-10", "采购合同", "2025-01-11"
+    )
+    with pytest.raises(RICH.RichDataError, match="signing date follows"):
+        RICH.canonicalize_eastmoney_major_contract_rows(
+            [signing_after_announcement],
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 31),
+        )
+
+
+def test_eastmoney_major_contract_partition_is_count_complete():
+    rows = [
+        eastmoney_major_contract_row(
+            "600519",
+            "2025-01-10",
+            f"合同-{index:03d}",
+            "2025-01-09",
+        )
+        for index in range(501)
+    ]
+    calls = []
+
+    class Response:
+        status_code = 200
+
+        def __init__(self, page):
+            self.page = page
+
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            page_rows = rows[:500] if self.page == 1 else rows[500:]
+            return {
+                "success": True,
+                "result": {"pages": 2, "count": 501, "data": page_rows},
+            }
+
+    class Session:
+        def get(self, url, *, params, timeout):
+            calls.append((url, dict(params), timeout))
+            return Response(int(params["pageNumber"]))
+
+    fetched, quality = RICH.fetch_eastmoney_major_contract_partition(
+        dt.date(2025, 1, 1),
+        dt.date(2025, 1, 31),
+        session=Session(),
+        page_pause_seconds=0.0,
+    )
+    assert fetched == rows
+    assert [int(call[1]["pageNumber"]) for call in calls] == [1, 2]
+    assert all(call[1]["reportName"] == "RPTA_WEB_ZDHT_LIST" for call in calls)
+    assert all(
+        call[1]["columns"] == "SECURITYCODE,DIM_RDATE,CONTRACTNAME,SIGNDATE"
+        for call in calls
+    )
+    assert all(
+        call[1]["filter"]
+        == "(DIM_RDATE>='2025-01-01')(DIM_RDATE<='2025-01-31')"
+        for call in calls
+    )
+    assert quality["advertised_rows"] == quality["received_rows"] == 501
+    assert quality["requested_pages"] == [1, 2]
+    assert quality["provider_calls"] == 2
+
+
+def test_eastmoney_major_contract_partition_bisects_before_later_pages(
+    monkeypatch,
+):
+    contract = RICH.load_eastmoney_major_contract_disclosure_intensity_contract()
+    calls = []
+
+    def fetch(start_date, end_date, **kwargs):
+        calls.append((start_date, end_date))
+        if start_date == dt.date(2025, 1, 1) and end_date == dt.date(2025, 1, 4):
+            raise RICH.EastmoneyPartitionTooLarge(
+                start_date,
+                end_date,
+                pages=41,
+                advertised_count=20_001,
+                ceiling=40,
+            )
+        return [], {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 0,
+            "requested_pages": [1],
+            "advertised_rows": 0,
+            "received_rows": 0,
+            "page_size": 500,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+
+    monkeypatch.setattr(RICH, "fetch_eastmoney_major_contract_partition", fetch)
+    leaves, bisections = RICH.fetch_eastmoney_major_contract_partition_details(
+        dt.date(2025, 1, 1),
+        dt.date(2025, 1, 4),
+        contract=contract,
+        page_pause_seconds=0.0,
+    )
+    assert calls == [
+        (dt.date(2025, 1, 1), dt.date(2025, 1, 4)),
+        (dt.date(2025, 1, 1), dt.date(2025, 1, 2)),
+        (dt.date(2025, 1, 3), dt.date(2025, 1, 4)),
+    ]
+    assert [(start, end) for start, end, _, _ in leaves] == calls[1:]
+    assert bisections == [
+        {
+            "start": "2025-01-01",
+            "end": "2025-01-04",
+            "advertised_pages": 41,
+            "advertised_rows": 20_001,
+            "page_ceiling": 40,
+            "provider_probe_calls": 1,
+            "left_end": "2025-01-02",
+            "right_start": "2025-01-03",
+        }
+    ]
+
+
+def test_eastmoney_major_contract_materialization_is_strict_next_session():
+    events = pd.DataFrame(
+        [
+            {
+                "announcement_date": "2025-01-10",
+                "instrument": "SH600519",
+                "major_contract_disclosure_count": 2,
+                "provider": "eastmoney",
+            },
+            {
+                "announcement_date": "2025-01-13",
+                "instrument": "SH600519",
+                "major_contract_disclosure_count": 1,
+                "provider": "eastmoney",
+            },
+        ]
+    ).loc[:, list(RICH.EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS)]
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(
+            ["2025-01-10", "2025-01-13", "2025-01-14", "2025-01-15", "2025-01-16"]
+        )
+    )
+    materialized = RICH.materialize_major_contract_acceptance_sessions(
+        events, calendar
+    )
+    assert materialized["datetime"].tolist() == list(calendar[1:])
+    assert materialized["major_contract_announcement_date"].tolist() == [
+        pd.Timestamp("2025-01-10"),
+        pd.Timestamp("2025-01-13"),
+        pd.Timestamp("2025-01-13"),
+        pd.Timestamp("2025-01-13"),
+    ]
+    assert materialized["event_age_calendar_days"].tolist() == [3, 1, 2, 3]
+    assert materialized[
+        "eastmoney_major_contract_disclosure_intensity"
+    ].tolist() == pytest.approx([0.5, 0.5, 1.0 / 3.0, 0.25])
+    assert materialized.duplicated(["instrument", "datetime"]).sum() == 0
+
+
+def test_eastmoney_major_contract_acceptance_is_atomic_and_text_free(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(
+        RICH.load_eastmoney_major_contract_disclosure_intensity_contract()
+    )
+    acceptance = contract["acceptance_protocol"]
+    acceptance["minimum_supported_source_rows_per_window"] = 6
+    acceptance["minimum_qualifying_events_per_window"] = 4
+    acceptance["minimum_qualifying_events_total"] = 12
+    acceptance["minimum_candidate_cross_sections_per_window"] = 1
+    acceptance["minimum_candidate_cross_sections_total"] = 3
+    acceptance["minimum_names_per_candidate_cross_section"] = 2
+    acceptance["minimum_distinct_factor_values_per_candidate_cross_section"] = 2
+    acceptance["minimum_distinct_factor_values_across_samples"] = 2
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2018-01-01\t2026-12-31\n"
+        "SZ000001\t2018-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    calendar = tmp_path / "day.txt"
+    calendar.write_text(
+        "\n".join(
+            item.strftime("%Y-%m-%d")
+            for item in pd.bdate_range("2019-01-01", "2025-04-15")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    def fetch(start_date, end_date, *, contract):
+        announcement_date = (start_date + dt.timedelta(days=1)).isoformat()
+        signing_date = start_date.isoformat()
+        rows = [
+            eastmoney_major_contract_row(
+                "600519",
+                announcement_date,
+                f"采购合同-{start_date:%Y%m}",
+                signing_date,
+            ),
+            eastmoney_major_contract_row(
+                "600519",
+                announcement_date,
+                f"销售合同-{start_date:%Y%m}",
+                signing_date,
+            ),
+            eastmoney_major_contract_row(
+                "000001",
+                announcement_date,
+                f"服务合同-{start_date:%Y%m}",
+                signing_date,
+            ),
+        ]
+        quality = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 1,
+            "requested_pages": [1],
+            "advertised_rows": 3,
+            "received_rows": 3,
+            "page_size": 500,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+        return [(start_date, end_date, rows, quality)], []
+
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_major_contract_disclosure_intensity_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_eastmoney_major_contract_local_context",
+        lambda unused: None,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_eastmoney_major_contract_partition_details",
+        fetch,
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD",
+        tmp_path / "missing-record.json",
+    )
+
+    manifest_path = (
+        RICH.sync_eastmoney_major_contract_disclosure_intensity_acceptance(
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == (
+        "eastmoney_major_contract_disclosure_intensity_acceptance"
+    )
+    assert manifest["acceptance_status"] == acceptance["success_status"]
+    assert manifest["source_request"]["provider_calls"] == 9
+    assert manifest["source_request"][
+        "raw_response_or_contract_identity_persisted"
+    ] is False
+    assert manifest["source_quality"]["combined_rows_written"] == 18
+    assert manifest["source_quality"]["combined_candidate_cross_sections"] >= 3
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(
+        RICH.EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert len(stored) == 18
+    assert not ({"CONTRACTNAME", "SIGNDATE"} & set(stored))
+    with pytest.raises(RICH.RichDataError, match="one-shot"):
+        RICH.sync_eastmoney_major_contract_disclosure_intensity_acceptance(
             universe_path=universe,
             calendar_path=calendar,
         )

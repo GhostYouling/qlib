@@ -1,0 +1,331 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_major_contract_disclosure_intensity_data_contract",
+  "status": "frozen_before_major_contract_provider_rows_identity_values_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-21T07:36:00Z",
+  "purpose": "Acquire and no-return screen one major-contract disclosure count-and-freshness factor for the fixed three-local-session A-share protocol without contract amounts, revenue denominators, counterparties, credentials, prices, or returns.",
+  "freeze_evidence": {
+    "pinned_public_adapter_request_definition_observed": true,
+    "official_public_page_columns_observed": true,
+    "major_contract_provider_rows_observed_under_this_hypothesis": false,
+    "contract_identity_or_factor_values_observed": false,
+    "sample_capacity_observed": false,
+    "full_history_capacity_observed": false,
+    "uniqueness_observed": false,
+    "price_or_factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "mechanism_selection": {
+    "path": "docs/a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit_20260721.json",
+    "sha256_at_contract_freeze": "5299adf4f15d70ff0f3cc82eb153c67fd90afea0d766e40b6da6e7d57298efe5"
+  },
+  "provider_contract": {
+    "provider": "eastmoney",
+    "credential_required": false,
+    "account_points_required": 0,
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "public_page": "https://data.eastmoney.com/zdht/mx.html",
+    "request_method": "GET",
+    "report_name": "RPTA_WEB_ZDHT_LIST",
+    "fixed_parameters": {
+      "sortColumns": "DIM_RDATE",
+      "sortTypes": "-1",
+      "pageSize": "500",
+      "columns": "SECURITYCODE,DIM_RDATE,CONTRACTNAME,SIGNDATE",
+      "token": "894050c76af8597a853f5b408b759f5d"
+    },
+    "public_static_query_token_is_not_a_user_credential": true,
+    "partition_filter": "(DIM_RDATE>='YYYY-MM-DD')(DIM_RDATE<='YYYY-MM-DD')",
+    "pagination_parameter": "pageNumber",
+    "page_size": 500,
+    "maximum_pages_per_leaf_partition": 40,
+    "maximum_attempts_per_page": 3,
+    "timeout_seconds": 30,
+    "minimum_delay_seconds_between_attempts": 0.1,
+    "recursive_bisection": "After fetching only page one, bisect an inclusive date range into two non-overlapping inclusive calendar ranges before requesting later pages when advertised pages exceed 40. A single calendar date above 40 pages is fatal.",
+    "transport_attempt_policy": "Sequential requests. A page may be attempted at most three times only for timeout, connection, HTTP 429/5xx, or JSON-decoding failure. Schema, identity, pagination, count, or content failures are never retried or skipped.",
+    "required_result_fields": [
+      "pages",
+      "count",
+      "data"
+    ],
+    "required_record_fields": [
+      "SECURITYCODE",
+      "DIM_RDATE",
+      "CONTRACTNAME",
+      "SIGNDATE"
+    ],
+    "transport_only_fields": [
+      "CONTRACTNAME",
+      "SIGNDATE"
+    ],
+    "forbidden_persistence": [
+      "contract name",
+      "contract-name hash",
+      "signing date",
+      "security name",
+      "signatory",
+      "counterparty",
+      "relationship",
+      "contract type",
+      "contract content or remark",
+      "contract amount",
+      "prior revenue",
+      "current revenue",
+      "provider amount-to-revenue ratio",
+      "updated date",
+      "price",
+      "market capitalization",
+      "valuation",
+      "return",
+      "credential",
+      "cookie",
+      "proxy",
+      "retail session"
+    ],
+    "pinned_adapter": {
+      "project": "AKShare",
+      "repository": "https://github.com/akfamily/akshare",
+      "commit": "47987028bc5daa43f6a7cc11b3a8301c7b1d4958",
+      "source_path": "akshare/stock_feature/stock_zdhtmx_em.py",
+      "source_file_sha256": "c4245ad231e04c07a8e1760da26eff77ff7839025b3038929c6932f2675eb611",
+      "inspected_lines": "14-121",
+      "function_block_sha256": "1695b4f306e1c83997a36e32d028ec88ec71895bce1cab53303c057a8767fcc3"
+    }
+  },
+  "identity_and_schema_policy": {
+    "security_code": "NFKC-trimmed complete six-digit scalar string",
+    "supported_holding_boards": [
+      "Shanghai main board 600/601/603/605",
+      "Shenzhen main board 000/001/002/003",
+      "ChiNext 300/301"
+    ],
+    "unsupported_complete_code_policy": "Exclude and count BSE, STAR, funds, bonds, and every other complete non-holding code. They never enter source or factor coverage denominators.",
+    "announcement_date": "DIM_RDATE parsed as a strict ISO-like calendar date without coercion and required to lie inside the inclusive leaf partition",
+    "contract_name": "Unicode NFKC, trim leading and trailing whitespace, collapse internal Unicode whitespace to one ASCII space, require a nonempty scalar string, use only in memory for identity, and discard before publication",
+    "signing_date": "SIGNDATE parsed as a strict complete ISO-like calendar date without coercion, required not to exceed announcement_date, used only in memory for identity, and discarded before publication",
+    "source_identity": [
+      "instrument",
+      "announcement_date",
+      "normalized_contract_name",
+      "signing_date"
+    ],
+    "duplicate_policy": "Any duplicate source identity inside or across accepted partitions is fatal; never silently deduplicate or use a row number as identity.",
+    "extra_record_fields": "Allowed but ignored and forbidden from persistence. A missing required record field is fatal.",
+    "pagination_consistency": "Every page in one leaf partition must report the same positive integer pages and nonnegative integer count; requested pages must be exactly 1 through pages once each; each non-final page must contain 500 object rows, the final page must contain the exact remainder, and concatenated received rows must equal count exactly.",
+    "empty_leaf_policy": "A leaf with count zero must have pages zero or one and an empty data list. A whole frozen Q1 acceptance window with zero source rows is fatal.",
+    "raw_response_persisted": false,
+    "identity_text_or_hash_persisted": false
+  },
+  "event_and_factor_definition": {
+    "source_event_key": [
+      "instrument",
+      "announcement_date"
+    ],
+    "source_event_measure": "major_contract_disclosure_count = number of globally unique complete source identities for one instrument and announcement_date",
+    "source_event_count_minimum": 1,
+    "factor_name": "eastmoney_major_contract_disclosure_intensity",
+    "session_formula": "latest already-effective major_contract_disclosure_count / (1 + calendar_days_since_announcement_date)",
+    "direction": "higher_is_better",
+    "multiple_event_dates": "Use only the latest announcement_date whose strict-next-session effective date is on or before the target session. A later effective event supersedes an older event.",
+    "valid_factor": "finite and strictly positive; calendar age is an integer from 1 through 3 inclusive under the strict-next-session rule",
+    "invalid_policy": "Exclude and count without clipping, filling, winsorizing, taking an absolute value, changing sign, substituting an amount or revenue field, summing superseded dates, or extending age.",
+    "absent_event_policy": "missing; never zero demand or a favorable score",
+    "quality_or_selection_claim_at_acceptance": false
+  },
+  "point_in_time_policy": {
+    "signal_source_date": "announcement_date from DIM_RDATE",
+    "conservative_availability": "first local trading session strictly after announcement_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_age_calendar_days": 3,
+    "weekend_or_holiday_announcement": "Map to the first local trading session strictly after the calendar announcement date; age remains calendar days and can expire after a long closure.",
+    "entry_if_later_admitted": "next local session open after signal-close ranking",
+    "holding_period_if_later_admitted": "three local trading sessions",
+    "revision_policy": "The public endpoint is a current historical index without immutable row versions. Duplicate identities, identity changes, or pagination/count changes reject the source; updated-date and abolishment fields are not requested or used.",
+    "residual_limitation": "DIM_RDATE has no verified intraday publication timestamp and the current public history can add, remove, or change rows. Waiting to the next session prevents same-date trading but cannot reconstruct removed historical records."
+  },
+  "normalized_snapshot": {
+    "columns": [
+      "announcement_date",
+      "instrument",
+      "major_contract_disclosure_count",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date"
+    ],
+    "provider_value": "eastmoney",
+    "duplicate_event_keys_allowed": false,
+    "contract_identity_text_or_hash_persisted": false,
+    "names_counterparties_amounts_revenues_prices_or_returns_persisted": false
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "latest_terminal_mechanism": {
+      "path": "docs/a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json",
+      "sha256": "431f02f0e9c4609ee12b764e593fa40904daf2ebe9262cd90461ad4c39f98cfd"
+    },
+    "prospective_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "capital_cny": 200000,
+      "board_lot_shares": 100
+    }
+  },
+  "acceptance_protocol": {
+    "fixed_sample_windows": [
+      {
+        "label": "2019Q1",
+        "start": "2019-01-01",
+        "end": "2019-03-31"
+      },
+      {
+        "label": "2024Q1",
+        "start": "2024-01-01",
+        "end": "2024-03-31"
+      },
+      {
+        "label": "2025Q1",
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    ],
+    "initial_partitioning": "nine non-overlapping calendar months across the three fixed Q1 windows; recursive bisection follows the provider contract before later pages",
+    "fixed_sample_window_count": 3,
+    "every_window_count_complete_and_nonempty": true,
+    "minimum_supported_source_rows_per_window": 30,
+    "minimum_qualifying_events_per_window": 20,
+    "minimum_qualifying_events_total": 60,
+    "minimum_candidate_cross_sections_per_window": 3,
+    "minimum_candidate_cross_sections_total": 15,
+    "candidate_cross_section_definition": "one local session after strict-next-session availability and the three-calendar-day latest-event rule, point-in-time holding-universe filtering, at least six distinct instruments, and at least two distinct finite factor values",
+    "minimum_names_per_candidate_cross_section": 6,
+    "minimum_distinct_factor_values_per_candidate_cross_section": 2,
+    "minimum_distinct_factor_values_across_samples": 3,
+    "required_checks": [
+      "the mechanism audit, contract, holding universe, calendar, quarterly quality, accepted price-basis context, frontier, latest terminal record, and both execution policies match before network access",
+      "only the frozen public endpoint, report, fields, dates, page ceiling, retry policy, and exact identity are used; no user Token, credential, cookie, proxy, retail session, amount, revenue, or counterparty is accessed",
+      "all nine initial months and every recursive leaf reconcile stable pages/count metadata and received rows exactly, with no skipped or duplicate page",
+      "every required transport field is complete and structurally valid; complete unsupported-board records are excluded and counted, while malformed or duplicate identities abort",
+      "every source identity is globally unique before aggregation and every published instrument/announcement_date event key is unique afterward",
+      "point-in-time holding-universe filtering and strict-next-session calendar mapping occur before sample variation checks",
+      "the latest-event age-weighted factor formula reproduces exactly in memory, remains finite and positive, and never uses an event older than three calendar days",
+      "each Q1 window and combined samples pass the frozen source-row, event, cross-section, name, and value-variation thresholds",
+      "the published frame contains only four normalized columns; identity text/hash, signing date, names, counterparties, relationships, types, amounts, revenues, prices, returns, credentials, cookies, proxies, and retail sessions are absent"
+    ],
+    "success_status": "accepted_schema_identity_formula_and_historical_sample_variation_pending_frozen_full_source_and_no_return_gates",
+    "failed_acceptance_policy": "Write one terminal no-return source rejection, delete the hidden partial snapshot, publish no Parquet, and stop without another identity, date, field, aggregation, formula, direction, age, threshold, full sync, comparison, price, return, score, selection, sizing, or order.",
+    "one_shot_policy": "The exact acceptance may publish at most one success or rejection manifest. Once a provider request is issued, a schema/content/gate failure consumes the attempt. Every clone must reject a second attempt from the tracked result before loading this contract or issuing a request.",
+    "tracked_record_path": "docs/a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json"
+  },
+  "full_snapshot_contract_after_acceptance_only": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "initial_partitioning": "84 non-overlapping calendar months",
+    "recursive_bisection": "same count-complete leaf rule and forty-page ceiling as acceptance",
+    "every_partition_count_complete": true,
+    "every_year_required": true,
+    "reuse_accepted_rows_without_provider_rerequest": true,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "partial_snapshot_accepted": false,
+    "immutable_annual_event_partitions_and_manifest": true,
+    "one_full_snapshot_attempt_after_acceptance_and_new_preregistration": true,
+    "failure_policy": "Delete the complete temporary snapshot, publish no final partition, write one terminal no-return source record, and stop without retry or price access."
+  },
+  "capacity_contract_after_full_source_only": {
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "holding_universe": "buyable_main_chinext",
+    "quality_gate": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY with maximum age 550 calendar days",
+    "minimum_listing_age_sessions": 20,
+    "maximum_event_age_calendar_days": 3,
+    "minimum_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_complete_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "capacity_must_run_before_comparison_fields": true,
+    "capacity_must_run_before_price_or_return_fields": true,
+    "capacity_failure_policy": "Stop the exact mechanism permanently without loading comparisons, prices, or returns and without changing identity, age, samples, universe, quality, listing, name, value, cohort, or year gates."
+  },
+  "uniqueness_contract_after_capacity_only": {
+    "sparse_semantic_neighbors": [
+      "repurchase_event_count",
+      "repurchase_freshness",
+      "major_holder_event_count",
+      "pledge_event_count",
+      "institutional_survey_event_count",
+      "institutional_survey_freshness",
+      "analyst_valid_rating_report_count",
+      "related_party_transaction_count",
+      "insider_open_market_event_count"
+    ],
+    "dense_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ],
+    "semantic_gate": "Every sparse neighbor receives an explicit economic and source comparison before price access. Generic announcement count/freshness is not accepted as independence; the major-contract demand mechanism must remain distinct.",
+    "statistical_gate_for_sparse_neighbor": "When at least 100 eligible pairwise sessions contain at least 6 pairwise names, require absolute median daily Spearman rank correlation below 0.8. Otherwise report overlap and descriptive correlation without treating sparse absence as uniqueness proof.",
+    "dense_gate": "Each dense confounder must provide at least 100 eligible pairwise sessions with at least 50 names and absolute median daily Spearman rank correlation below 0.8.",
+    "no_return": true,
+    "anti_cherry_pick": "The comparison catalog, overlap policy, thresholds, identity, formula, direction, age, universe, and quality rule cannot change after any provider row or factor value is observed."
+  },
+  "future_return_protocol_boundary": {
+    "allowed_only_after_full_source_capacity_and_uniqueness_pass": true,
+    "separate_fingerprint_bound_preregistration_required": true,
+    "fixed_development_years": "2019-2025",
+    "fixed_holding_period_local_sessions": 3,
+    "fixed_topk": 3,
+    "fixed_open_cost": 0.00012,
+    "fixed_close_cost": 0.00062,
+    "prospective_execution_policy_required": true,
+    "pilot_execution_policy_required": true,
+    "pilot_capital_cny": 200000,
+    "pilot_board_lot_shares": 100,
+    "selection_or_promotion_at_source_or_no_return_stage": false
+  },
+  "prohibited_actions": [
+    "change the source identity, drop or fill incomplete names or signing dates, or add amount, revenue, counterparty, type, status, content, or updated-date fields after observing rows",
+    "persist contract names or hashes, signing dates, names, counterparties, relationships, types, amounts, revenues, prices, returns, credentials, cookies, proxies, or retail sessions",
+    "treat absence as zero demand, a favorable value, or proof that no contract exists outside this public report",
+    "silently deduplicate, skip a page, accept changing metadata, keep partial output, mix providers, invert the factor, sum superseded dates, or widen the age",
+    "lower acceptance, capacity, uniqueness, quality, listing, name, value, cohort, or year gates after results",
+    "read prices or returns, aggregate, current-score, select, size, order, or justify Level-2 before every separately frozen gate passes"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

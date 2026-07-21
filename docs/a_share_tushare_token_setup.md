@@ -157,6 +157,18 @@ Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_
 
 跨克隆终止记录是 [`a_share_eastmoney_monetary_funds_asset_intensity_research_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_research_record.json)（SHA‑256 `d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a`）。不得再运行来源验收、全量同步或无收益审计，也不得放宽三自然日与容量规则、反向、继续收益诊断、聚合、当前评分、选股、仓位或订单。Token 配置、更新或轮换不会恢复该分支。
 
+#### Eastmoney 政府补助公告强度分支已终止
+
+这个公共公告来源同样不读取 `TUSHARE_TOKEN`，也不使用账号、积分、Cookie、代理或零售客户端会话。唯一验收完整对账首个 2019‑01 分区的 57 页、5,632 行后，发现至少一则公告同时映射到两个或以上支持的 A 股代码，违反预注册的单一发行人身份规则，因此在因子值、全历史、价格和收益之前终止。
+
+跨克隆终止记录是 [`a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json`](a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json)（SHA‑256 `431f02f0e9c4609ee12b764e593fa40904daf2ebe9262cd90461ad4c39f98cfd`）。不得再次运行来源验收、任选或复制公告代码、改变身份/标题/三日规则，或继续全量、容量、收益与选股。Token 配置、更新或轮换与该分支无关，也不会恢复它。
+
+#### Eastmoney 重大合同公告强度不使用 Token
+
+当前预注册的 `eastmoney_major_contract_disclosure_intensity` 使用 Eastmoney 公共接口与公开静态查询参数，不读取 `TUSHARE_TOKEN`，也不使用 Tushare 账号或积分、Cookie、代理和零售客户端会话。它只允许在内存中读取股票代码、公告日、合同名称和签订日来建立唯一身份；合同名称、签订日及其哈希、合同金额、营收、对手方、价格和收益都不得落盘。
+
+因此，不要用第 4 节的 Token 透传包装器运行这个公共来源。真实验收只能按 [`a_share_data_pipeline.md`](a_share_data_pipeline.md) 的当前活动门禁执行一次；Token 已配置、更新或轮换不会授权重跑，也不会放宽合同、样本、三自然日时效、容量、唯一性或后续收益门禁。
+
 ### 4.2 `stock_st` 分支已终止
 
 ST 恢复速度的唯一全量来源尝试已经消费：完成 58 个历史会话后，2019‑04‑01 返回空表。冻结合同不允许把空表当作“当天没有 ST 股票”，因此程序停止、删除完整临时快照且没有发布年度分区；转换、因子、价格和收益均未读取。终止记录是 [`a_share_tushare_st_recovery_research_record.json`](a_share_tushare_st_recovery_research_record.json)。

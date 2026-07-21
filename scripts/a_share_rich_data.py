@@ -285,6 +285,16 @@ DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD = (
     / "docs"
     / "a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json"
 )
+DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_major_contract_disclosure_intensity_data_contract.json"
+)
+DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json"
+)
 DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_cninfo_guarantee_sparsity_data_contract.json"
 )
@@ -547,6 +557,15 @@ EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256 = (
     "8e518365a05fc98056502a43c492dd4f44ec9195046588af2e2987c76030e368"
 )
 EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256 = (
+    "431f02f0e9c4609ee12b764e593fa40904daf2ebe9262cd90461ad4c39f98cfd"
+)
+EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT_SHA256 = (
+    "12d2f985f87bbdd47ff9c113b53a47d5325a4ca6a0cc70d7897e05757bd23f6b"
+)
+EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256 = (
+    "5299adf4f15d70ff0f3cc82eb153c67fd90afea0d766e40b6da6e7d57298efe5"
+)
+EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256 = (
     "pending_after_one_shot_acceptance"
 )
 CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256 = (
@@ -1040,6 +1059,18 @@ EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS = (
     "announcement_date",
     "instrument",
     "government_subsidy_announcement_count",
+    "provider",
+)
+EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_RAW_FIELDS = (
+    "SECURITYCODE",
+    "DIM_RDATE",
+    "CONTRACTNAME",
+    "SIGNDATE",
+)
+EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS = (
+    "announcement_date",
+    "instrument",
+    "major_contract_disclosure_count",
     "provider",
 )
 CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES = (
@@ -10796,6 +10827,301 @@ def validate_eastmoney_government_subsidy_local_context(
         if not target.exists() or file_digest(target) != expected:
             raise RichDataError(
                 "Eastmoney government-subsidy local context fingerprint mismatch: "
+                f"{entry.get('path')}"
+            )
+
+
+def load_eastmoney_government_subsidy_disclosure_intensity_acceptance_record(
+    path: Path = (
+        DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
+    ),
+) -> dict[str, Any]:
+    """Verify the cross-clone record for the terminal public acceptance."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind=(
+            "a_share_eastmoney_government_subsidy_disclosure_intensity_"
+            "source_acceptance_record"
+        ),
+    )
+    mechanism = record.get("mechanism_audit") or {}
+    contract = record.get("data_contract") or {}
+    manifest = record.get("local_failure_manifest") or {}
+    observed = record.get("frozen_request_observed_result") or {}
+    privacy = record.get("privacy_and_scope") or {}
+    terminal = record.get("terminal_decision") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "terminal_source_identity_ambiguity_rejected_before_factor_values_full_history_capacity_uniqueness_or_returns"
+        or record.get("recorded_at") != "2026-07-21T07:27:21Z"
+        or mechanism.get("sha256")
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+        or contract.get("sha256")
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT_SHA256
+        or contract.get("preregistered_at") != "2026-07-21T07:05:30Z"
+        or manifest.get("path")
+        != "data/metadata/rich_data/runs/20260721T072630Z_eastmoney_government_subsidy_disclosure_intensity_acceptance_0ab4f00d.json"
+        or manifest.get("sha256")
+        != "609307dae1c633402c187d931d53c540b62e687882c8d9d33eec3ce9098f8c92"
+        or manifest.get("run_id")
+        != "20260721T072630Z_eastmoney_government_subsidy_disclosure_intensity_acceptance_0ab4f00d"
+        or observed.get("requested_sample_windows")
+        != ["2019Q1", "2024Q1", "2025Q1"]
+        or observed.get("first_and_only_completed_leaf_start") != "2019-01-01"
+        or observed.get("first_and_only_completed_leaf_end") != "2019-01-31"
+        or observed.get("advertised_pages") != 57
+        or observed.get("requested_pages") != 57
+        or observed.get("provider_calls_issued") != 57
+        or observed.get("advertised_source_rows") != 5632
+        or observed.get("received_source_rows") != 5632
+        or observed.get("count_reconciliation_passed") is not True
+        or observed.get("completed_leaf_partitions") != 1
+        or observed.get("completed_sample_windows") != 0
+        or observed.get("rejection_code")
+        != "multiple_supported_a_share_codes_in_one_announcement"
+        or observed.get("normalized_rows") != 0
+        or observed.get("factor_values_derived") != 0
+        or observed.get("published_files") != []
+        or observed.get("partial_snapshot_deleted") is not True
+        or privacy.get("raw_provider_response_persisted") is not False
+        or privacy.get("announcement_title_or_art_code_persisted") is not False
+        or privacy.get("codes_or_columns_persisted") is not False
+        or privacy.get(
+            "credential_token_account_points_cookie_proxy_or_retail_session_used"
+        )
+        is not False
+        or privacy.get("full_history_requested") is not False
+        or privacy.get("capacity_or_uniqueness_run") is not False
+        or privacy.get("price_fields_loaded") != []
+        or privacy.get("open_close_or_forward_return_fields_read") is not False
+        or privacy.get("forward_return_fields_read") is not False
+        or privacy.get(
+            "aggregation_scoring_selection_sizing_or_ordering_performed"
+        )
+        is not False
+        or terminal.get("acceptance_consumed") is not True
+        or terminal.get("acceptance_retry_allowed") is not False
+        or terminal.get("failed_partition_or_announcement_may_be_rerequested_for_detail")
+        is not False
+        or terminal.get(
+            "choose_one_supported_code_or_duplicate_the_announcement_across_codes_allowed"
+        )
+        is not False
+        or terminal.get("same_mechanism_v2_or_provider_substitution_allowed")
+        is not False
+        or terminal.get("full_source_sync_allowed") is not False
+        or terminal.get("capacity_uniqueness_or_return_work_allowed") is not False
+        or terminal.get(
+            "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed"
+        )
+        is not False
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy acceptance record does not match the "
+            "terminal result"
+        )
+    return record
+
+
+def load_eastmoney_major_contract_disclosure_intensity_contract(
+    path: Path = DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen pre-row major-contract disclosure contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT_SHA256:
+        raise RichDataError(
+            "Eastmoney major-contract disclosure contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path,
+        kind="a_share_eastmoney_major_contract_disclosure_intensity_data_contract",
+    )
+    mechanism = contract.get("mechanism_selection") or {}
+    provider = contract.get("provider_contract") or {}
+    identity = contract.get("identity_and_schema_policy") or {}
+    factor = contract.get("event_and_factor_definition") or {}
+    timing = contract.get("point_in_time_policy") or {}
+    normalized = contract.get("normalized_snapshot") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    full = contract.get("full_snapshot_contract_after_acceptance_only") or {}
+    capacity = contract.get("capacity_contract_after_full_source_only") or {}
+    uniqueness = contract.get("uniqueness_contract_after_capacity_only") or {}
+    expected_parameters = {
+        "sortColumns": "DIM_RDATE",
+        "sortTypes": "-1",
+        "pageSize": "500",
+        "columns": "SECURITYCODE,DIM_RDATE,CONTRACTNAME,SIGNDATE",
+        "token": "894050c76af8597a853f5b408b759f5d",
+    }
+    expected_windows = [
+        {"label": "2019Q1", "start": "2019-01-01", "end": "2019-03-31"},
+        {"label": "2024Q1", "start": "2024-01-01", "end": "2024-03-31"},
+        {"label": "2025Q1", "start": "2025-01-01", "end": "2025-03-31"},
+    ]
+    sparse_neighbors = [
+        "repurchase_event_count",
+        "repurchase_freshness",
+        "major_holder_event_count",
+        "pledge_event_count",
+        "institutional_survey_event_count",
+        "institutional_survey_freshness",
+        "analyst_valid_rating_report_count",
+        "related_party_transaction_count",
+        "insider_open_market_event_count",
+    ]
+    dense_confounders = [
+        "free_float_cap_proxy",
+        "liquidity_5",
+        "turnover_surge_1",
+    ]
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_major_contract_provider_rows_identity_values_capacity_uniqueness_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-21T07:36:00Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit_20260721.json"
+        or mechanism.get("sha256_at_contract_freeze")
+        != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+        or provider.get("provider") != "eastmoney"
+        or provider.get("credential_required") is not False
+        or provider.get("account_points_required") != 0
+        or provider.get("endpoint")
+        != "https://datacenter-web.eastmoney.com/api/data/v1/get"
+        or provider.get("report_name") != "RPTA_WEB_ZDHT_LIST"
+        or provider.get("fixed_parameters") != expected_parameters
+        or provider.get("public_static_query_token_is_not_a_user_credential")
+        is not True
+        or provider.get("page_size") != 500
+        or provider.get("maximum_pages_per_leaf_partition") != 40
+        or provider.get("maximum_attempts_per_page") != 3
+        or provider.get("timeout_seconds") != 30
+        or provider.get("minimum_delay_seconds_between_attempts") != 0.1
+        or tuple(provider.get("required_record_fields") or ())
+        != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_RAW_FIELDS
+        or identity.get("source_identity")
+        != [
+            "instrument",
+            "announcement_date",
+            "normalized_contract_name",
+            "signing_date",
+        ]
+        or identity.get("raw_response_persisted") is not False
+        or identity.get("identity_text_or_hash_persisted") is not False
+        or factor.get("factor_name")
+        != "eastmoney_major_contract_disclosure_intensity"
+        or factor.get("session_formula")
+        != "latest already-effective major_contract_disclosure_count / (1 + calendar_days_since_announcement_date)"
+        or factor.get("direction") != "higher_is_better"
+        or timing.get("conservative_availability")
+        != "first local trading session strictly after announcement_date"
+        or timing.get("maximum_age_calendar_days") != 3
+        or tuple(normalized.get("columns") or ())
+        != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS
+        or normalized.get("event_key") != ["instrument", "announcement_date"]
+        or normalized.get("provider_value") != "eastmoney"
+        or normalized.get("contract_identity_text_or_hash_persisted") is not False
+        or acceptance.get("fixed_sample_windows") != expected_windows
+        or acceptance.get("fixed_sample_window_count") != 3
+        or acceptance.get("minimum_supported_source_rows_per_window") != 30
+        or acceptance.get("minimum_qualifying_events_per_window") != 20
+        or acceptance.get("minimum_qualifying_events_total") != 60
+        or acceptance.get("minimum_candidate_cross_sections_per_window") != 3
+        or acceptance.get("minimum_candidate_cross_sections_total") != 15
+        or acceptance.get("minimum_names_per_candidate_cross_section") != 6
+        or acceptance.get(
+            "minimum_distinct_factor_values_per_candidate_cross_section"
+        )
+        != 2
+        or acceptance.get("minimum_distinct_factor_values_across_samples") != 3
+        or acceptance.get("tracked_record_path")
+        != "docs/a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json"
+        or full.get("development_start") != "2019-01-01"
+        or full.get("development_end") != "2025-12-31"
+        or full.get("reuse_accepted_rows_without_provider_rerequest") is not True
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("holding_universe") != "buyable_main_chinext"
+        or capacity.get("minimum_listing_age_sessions") != 20
+        or capacity.get("maximum_event_age_calendar_days") != 3
+        or capacity.get("minimum_names_per_cohort") != 6
+        or capacity.get("minimum_distinct_factor_values_per_cohort") != 2
+        or capacity.get("minimum_complete_cohorts") != 200
+        or capacity.get("minimum_observed_calendar_years") != 5
+        or capacity.get("capacity_must_run_before_comparison_fields") is not True
+        or capacity.get("capacity_must_run_before_price_or_return_fields") is not True
+        or list(uniqueness.get("sparse_semantic_neighbors") or [])
+        != sparse_neighbors
+        or list(uniqueness.get("dense_confounders") or []) != dense_confounders
+        or uniqueness.get("no_return") is not True
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney major-contract disclosure contract changed after freeze"
+        )
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney major-contract mechanism audit fingerprint mismatch"
+        )
+    return contract
+
+
+def validate_eastmoney_major_contract_local_context(
+    contract: dict[str, Any],
+) -> None:
+    """Fingerprint-bind every local no-return context before provider access."""
+
+    local = contract.get("local_context") or {}
+    entries: list[dict[str, Any]] = []
+    for label in (
+        "holding_universe",
+        "local_calendar",
+        "accepted_price_basis_for_future_gated_work_only",
+        "accepted_price_frontier",
+        "latest_terminal_mechanism",
+        "prospective_execution_policy_for_future_diagnostic_only",
+        "pilot_execution_policy_for_future_diagnostic_only",
+    ):
+        value = local.get(label)
+        if not isinstance(value, dict):
+            raise RichDataError(
+                f"Eastmoney major-contract local context is missing {label}"
+            )
+        entries.append(value)
+    quarterly = local.get("quarterly_quality") or {}
+    entries.extend(
+        [
+            {"path": quarterly.get("path"), "sha256": quarterly.get("sha256")},
+            {
+                "path": quarterly.get("manifest_path"),
+                "sha256": quarterly.get("manifest_sha256"),
+            },
+        ]
+    )
+    for entry in entries:
+        target = resolve_record_path(str(entry.get("path") or ""))
+        expected = str(entry.get("sha256") or "")
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "Eastmoney major-contract local context fingerprint mismatch: "
                 f"{entry.get('path')}"
             )
 
@@ -20596,14 +20922,9 @@ def guard_eastmoney_government_subsidy_acceptance() -> None:
         DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
     )
     if record_path.exists():
-        if (
-            file_digest(record_path)
-            != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
-        ):
-            raise RichDataError(
-                "Eastmoney government-subsidy tracked acceptance record fingerprint "
-                "mismatch"
-            )
+        load_eastmoney_government_subsidy_disclosure_intensity_acceptance_record(
+            record_path
+        )
         raise RichDataError(
             "Eastmoney government-subsidy acceptance is permanently consumed; "
             "another provider request is forbidden"
@@ -21025,6 +21346,962 @@ def sync_eastmoney_government_subsidy_disclosure_intensity_acceptance(
                 "acceptance_status": (
                     "terminal_source_schema_identity_title_formula_or_historical_"
                     "sample_variation_rejected_stop_before_full_history_capacity_"
+                    "uniqueness_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
+def normalize_eastmoney_major_contract_identity_text(value: Any) -> str:
+    """Normalize one contract name for memory-only identity use."""
+
+    if not isinstance(value, str):
+        raise RichDataError("Eastmoney major-contract record has a non-string name")
+    normalized = " ".join(unicodedata.normalize("NFKC", value).strip().split())
+    if not normalized:
+        raise RichDataError("Eastmoney major-contract record has an empty name")
+    return normalized
+
+
+def parse_eastmoney_major_contract_date(value: Any, *, field: str) -> pd.Timestamp:
+    """Parse one strict ISO-like provider date without coercion."""
+
+    if not isinstance(value, str):
+        raise RichDataError(
+            f"Eastmoney major-contract record has a non-string {field}"
+        )
+    normalized = unicodedata.normalize("NFKC", value).strip()
+    if (
+        len(normalized) < 10
+        or normalized[4] != "-"
+        or normalized[7] != "-"
+        or (len(normalized) > 10 and normalized[10] not in {" ", "T"})
+    ):
+        raise RichDataError(
+            f"Eastmoney major-contract record has a malformed {field}"
+        )
+    try:
+        return pd.Timestamp(dt.date.fromisoformat(normalized[:10]))
+    except ValueError as exc:
+        raise RichDataError(
+            f"Eastmoney major-contract record has a malformed {field}"
+        ) from exc
+
+
+def fetch_eastmoney_major_contract_partition(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Fetch one count-complete major-contract announcement partition."""
+
+    if end_date < start_date:
+        raise RichDataError("Eastmoney major-contract partition end precedes start")
+    frozen = contract or load_eastmoney_major_contract_disclosure_intensity_contract()
+    provider = frozen["provider_contract"]
+    fixed = provider["fixed_parameters"]
+    endpoint = str(provider["endpoint"])
+    page_size = int(provider["page_size"])
+    maximum_pages = int(provider["maximum_pages_per_leaf_partition"])
+    maximum_attempts = int(provider["maximum_attempts_per_page"])
+    timeout = int(provider["timeout_seconds"])
+    pause = (
+        float(provider["minimum_delay_seconds_between_attempts"])
+        if page_pause_seconds is None
+        else float(page_pause_seconds)
+    )
+    if pause < 0:
+        raise RichDataError("Eastmoney major-contract page pause must be non-negative")
+    if session is None:
+        try:
+            import requests
+        except ImportError as exc:  # pragma: no cover - workspace dependency.
+            raise RichDataError("requests is required for Eastmoney intake") from exc
+        requester = requests
+    else:
+        requester = session
+    base_params = {
+        **{str(key): str(value) for key, value in fixed.items()},
+        "reportName": str(provider["report_name"]),
+        "filter": (
+            f"(DIM_RDATE>='{start_date.isoformat()}')"
+            f"(DIM_RDATE<='{end_date.isoformat()}')"
+        ),
+    }
+    provider_calls = 0
+
+    def fetch_page(page_number: int) -> dict[str, Any]:
+        nonlocal provider_calls
+        request_params = {**base_params, "pageNumber": str(page_number)}
+        last_error: BaseException | None = None
+        for attempt in range(maximum_attempts):
+            if provider_calls and pause:
+                time.sleep(pause)
+            provider_calls += 1
+            try:
+                response = requester.get(
+                    endpoint,
+                    params=request_params,
+                    timeout=timeout,
+                )
+                status_code = int(getattr(response, "status_code", 200))
+                if status_code == 429 or status_code >= 500:
+                    raise RuntimeError(
+                        f"transient Eastmoney major-contract HTTP status {status_code}"
+                    )
+                if status_code >= 400:
+                    raise RichDataError(
+                        "Eastmoney major-contract source rejected the request with "
+                        f"HTTP status {status_code}"
+                    )
+                if hasattr(response, "raise_for_status"):
+                    response.raise_for_status()
+                try:
+                    payload = response.json()
+                except Exception as exc:
+                    raise RuntimeError(
+                        "transient Eastmoney major-contract JSON decode failure"
+                    ) from exc
+                if not isinstance(payload, dict):
+                    raise RichDataError(
+                        "Eastmoney major-contract response is not an object"
+                    )
+                if payload.get("success") is False:
+                    raise RichDataError(
+                        "Eastmoney major-contract source rejected the request: "
+                        f"code={payload.get('code')}, message={payload.get('message')}"
+                    )
+                result = payload.get("result")
+                if not isinstance(result, dict):
+                    raise RichDataError(
+                        "Eastmoney major-contract response has no result object"
+                    )
+                data = result.get("data")
+                if not isinstance(data, list) or any(
+                    not isinstance(row, dict) for row in data
+                ):
+                    raise RichDataError(
+                        "Eastmoney major-contract response has an invalid data list"
+                    )
+                return result
+            except RichDataError:
+                raise
+            except Exception as exc:
+                last_error = exc
+                if attempt + 1 >= maximum_attempts:
+                    break
+        assert last_error is not None
+        raise RichDataError(
+            "Eastmoney major-contract page "
+            f"{page_number} failed after {maximum_attempts} attempts: "
+            f"{safe_exception_text(last_error)}"
+        ) from last_error
+
+    first = fetch_page(1)
+    try:
+        pages = int(first["pages"])
+        advertised_count = int(first["count"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise RichDataError(
+            "Eastmoney major-contract page 1 has invalid pages or count"
+        ) from exc
+    first_rows = first["data"]
+    if pages < 0 or advertised_count < 0:
+        raise RichDataError(
+            "Eastmoney major-contract page 1 has negative pages or count"
+        )
+    expected_pages = math.ceil(advertised_count / page_size) if advertised_count else 0
+    if advertised_count and pages != expected_pages:
+        raise RichDataError(
+            "Eastmoney major-contract advertised pages do not match count"
+        )
+    if pages > maximum_pages:
+        raise EastmoneyPartitionTooLarge(
+            start_date,
+            end_date,
+            pages=pages,
+            advertised_count=advertised_count,
+            ceiling=maximum_pages,
+        )
+    if advertised_count == 0:
+        if pages not in {0, 1} or first_rows:
+            raise RichDataError(
+                "Eastmoney major-contract empty partition has inconsistent metadata"
+            )
+        return [], {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": pages,
+            "requested_pages": [1],
+            "advertised_rows": 0,
+            "received_rows": 0,
+            "page_size": page_size,
+            "provider_calls": provider_calls,
+            "count_verified": True,
+        }
+    if pages <= 0 or len(first_rows) != min(page_size, advertised_count):
+        raise RichDataError(
+            "Eastmoney major-contract first page length does not match count"
+        )
+    requested_pages = [1]
+    rows = list(first_rows)
+    for page_number in range(2, pages + 1):
+        result = fetch_page(page_number)
+        try:
+            result_pages = int(result["pages"])
+            result_count = int(result["count"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise RichDataError(
+                f"Eastmoney major-contract page {page_number} metadata is invalid"
+            ) from exc
+        if result_pages != pages or result_count != advertised_count:
+            raise RichDataError(
+                "Eastmoney major-contract pagination metadata changed"
+            )
+        page_rows = result["data"]
+        expected_rows = (
+            page_size
+            if page_number < pages
+            else advertised_count - page_size * (pages - 1)
+        )
+        if len(page_rows) != expected_rows:
+            raise RichDataError(
+                "Eastmoney major-contract page length does not match count"
+            )
+        rows.extend(page_rows)
+        requested_pages.append(page_number)
+    if requested_pages != list(range(1, pages + 1)) or len(rows) != advertised_count:
+        raise RichDataError(
+            "Eastmoney major-contract count-complete pagination failed: "
+            f"received={len(rows)}, advertised={advertised_count}"
+        )
+    return rows, {
+        "start": start_date.isoformat(),
+        "end": end_date.isoformat(),
+        "advertised_pages": pages,
+        "requested_pages": requested_pages,
+        "advertised_rows": advertised_count,
+        "received_rows": len(rows),
+        "page_size": page_size,
+        "provider_calls": provider_calls,
+        "count_verified": True,
+    }
+
+
+def fetch_eastmoney_major_contract_partition_details(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any],
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[
+    list[tuple[dt.date, dt.date, list[dict[str, Any]], dict[str, Any]]],
+    list[dict[str, Any]],
+]:
+    """Recursively bisect a large major-contract range before later pages."""
+
+    try:
+        rows, quality = fetch_eastmoney_major_contract_partition(
+            start_date,
+            end_date,
+            contract=contract,
+            session=session,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return [(start_date, end_date, rows, quality)], []
+    except EastmoneyPartitionTooLarge as exc:
+        if start_date == end_date:
+            raise RichDataError(
+                "Eastmoney major-contract single-date partition exceeds the frozen "
+                f"page ceiling: {start_date.isoformat()}"
+            ) from exc
+        midpoint = start_date + (end_date - start_date) // 2
+        right_start = midpoint + dt.timedelta(days=1)
+        left_parts, left_bisections = fetch_eastmoney_major_contract_partition_details(
+            start_date,
+            midpoint,
+            contract=contract,
+            session=session,
+            page_pause_seconds=page_pause_seconds,
+        )
+        right_parts, right_bisections = fetch_eastmoney_major_contract_partition_details(
+            right_start,
+            end_date,
+            contract=contract,
+            session=session,
+            page_pause_seconds=page_pause_seconds,
+        )
+        bisection = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": exc.pages,
+            "advertised_rows": exc.advertised_count,
+            "page_ceiling": exc.ceiling,
+            "provider_probe_calls": 1,
+            "left_end": midpoint.isoformat(),
+            "right_start": right_start.isoformat(),
+        }
+        return (
+            left_parts + right_parts,
+            [bisection, *left_bisections, *right_bisections],
+        )
+
+
+def canonicalize_eastmoney_major_contract_rows(
+    rows: list[dict[str, Any]],
+    start_date: dt.date,
+    end_date: dt.date,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Aggregate complete contract identities without persisting identity fields."""
+
+    if end_date < start_date:
+        raise RichDataError("Eastmoney major-contract normalization end precedes start")
+    columns = list(EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS)
+    if not rows:
+        return pd.DataFrame(columns=columns), {
+            "input_source_rows": 0,
+            "supported_source_rows": 0,
+            "unsupported_board_rows_excluded": 0,
+            "qualifying_source_rows": 0,
+            "aggregated_events": 0,
+            "distinct_event_counts": 0,
+            "contract_identity_text_or_hash_persisted": False,
+        }
+    required = set(EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_RAW_FIELDS)
+    identities: list[dict[str, Any]] = []
+    unsupported_rows = 0
+    for row in rows:
+        if not isinstance(row, dict) or not required.issubset(row):
+            raise RichDataError(
+                "Eastmoney major-contract row is not an object with every frozen field"
+            )
+        raw_code = row["SECURITYCODE"]
+        if not isinstance(raw_code, str):
+            raise RichDataError(
+                "Eastmoney major-contract record has a non-string security code"
+            )
+        code = unicodedata.normalize("NFKC", raw_code).strip()
+        if len(code) != 6 or not code.isdigit():
+            raise RichDataError(
+                "Eastmoney major-contract record has a malformed security code"
+            )
+        announcement = parse_eastmoney_major_contract_date(
+            row["DIM_RDATE"], field="DIM_RDATE"
+        )
+        if not pd.Timestamp(start_date) <= announcement <= pd.Timestamp(end_date):
+            raise RichDataError(
+                "Eastmoney major-contract source returned an out-of-partition date"
+            )
+        signing_date = parse_eastmoney_major_contract_date(
+            row["SIGNDATE"], field="SIGNDATE"
+        )
+        if signing_date > announcement:
+            raise RichDataError(
+                "Eastmoney major-contract signing date follows announcement date"
+            )
+        contract_name = normalize_eastmoney_major_contract_identity_text(
+            row["CONTRACTNAME"]
+        )
+        if not code.startswith(
+            ("600", "601", "603", "605", "000", "001", "002", "003", "300", "301")
+        ):
+            unsupported_rows += 1
+            continue
+        identities.append(
+            {
+                "instrument": qlib_symbol(code),
+                "announcement_date": announcement,
+                "normalized_contract_name": contract_name,
+                "signing_date": signing_date,
+            }
+        )
+    if not identities:
+        return pd.DataFrame(columns=columns), {
+            "input_source_rows": int(len(rows)),
+            "supported_source_rows": 0,
+            "unsupported_board_rows_excluded": unsupported_rows,
+            "qualifying_source_rows": 0,
+            "aggregated_events": 0,
+            "distinct_event_counts": 0,
+            "contract_identity_text_or_hash_persisted": False,
+        }
+    identity_frame = pd.DataFrame(identities)
+    identity_columns = [
+        "instrument",
+        "announcement_date",
+        "normalized_contract_name",
+        "signing_date",
+    ]
+    duplicate_rows = int(
+        identity_frame.duplicated(identity_columns, keep=False).sum()
+    )
+    if duplicate_rows:
+        raise RichDataError(
+            "Eastmoney major-contract partition contains duplicate frozen identities: "
+            f"{duplicate_rows}"
+        )
+    grouped = (
+        identity_frame.groupby(
+            ["announcement_date", "instrument"], as_index=False, sort=True
+        )
+        .agg(major_contract_disclosure_count=("normalized_contract_name", "size"))
+        .sort_values(["announcement_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    grouped["major_contract_disclosure_count"] = pd.to_numeric(
+        grouped["major_contract_disclosure_count"], errors="raise"
+    ).astype("int64")
+    grouped["provider"] = "eastmoney"
+    result = grouped.loc[:, columns]
+    counts = result["major_contract_disclosure_count"]
+    if (
+        result.empty
+        or result.duplicated(["instrument", "announcement_date"]).any()
+        or not counts.gt(0).all()
+        or {
+            "CONTRACTNAME",
+            "SIGNDATE",
+            "normalized_contract_name",
+            "signing_date",
+        }
+        & set(result.columns)
+    ):
+        raise RichDataError(
+            "Eastmoney major-contract normalized frame failed integrity checks"
+        )
+    return result, {
+        "input_source_rows": int(len(rows)),
+        "supported_source_rows": int(len(identity_frame)),
+        "unsupported_board_rows_excluded": unsupported_rows,
+        "qualifying_source_rows": int(len(identity_frame)),
+        "aggregated_events": int(len(result)),
+        "distinct_event_counts": int(counts.nunique(dropna=True)),
+        "contract_identity_text_or_hash_persisted": False,
+    }
+
+
+def filter_major_contract_events_to_point_in_time_holding_universe(
+    frame: pd.DataFrame,
+    intervals: pd.DataFrame,
+) -> tuple[pd.DataFrame, int]:
+    """Filter major-contract events using only listing intervals."""
+
+    if tuple(frame.columns) != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS:
+        raise RichDataError(
+            "Eastmoney major-contract frame violates the frozen schema before "
+            "universe filtering"
+        )
+    if frame.empty:
+        return frame.copy(), 0
+    indexed = intervals.set_index("instrument")
+    starts = frame["instrument"].map(indexed["start_date"])
+    ends = frame["instrument"].map(indexed["end_date"])
+    dates = pd.to_datetime(frame["announcement_date"], errors="coerce").dt.normalize()
+    active = starts.notna() & ends.notna() & dates.ge(starts) & dates.le(ends)
+    return frame.loc[active].reset_index(drop=True), int((~active).sum())
+
+
+def materialize_major_contract_acceptance_sessions(
+    events: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    *,
+    maximum_age_calendar_days: int = 3,
+) -> pd.DataFrame:
+    """Materialize latest major-contract count/freshness without price fields."""
+
+    if tuple(events.columns) != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS:
+        raise RichDataError(
+            "Eastmoney major-contract event frame changed before materialization"
+        )
+    if maximum_age_calendar_days != 3:
+        raise RichDataError(
+            "Eastmoney major-contract event age changed after preregistration"
+        )
+    normalized_calendar = pd.DatetimeIndex(calendar).normalize().unique().sort_values()
+    output_columns = [
+        "datetime",
+        "instrument",
+        "major_contract_announcement_date",
+        "event_effective_date",
+        "event_age_calendar_days",
+        "major_contract_disclosure_count",
+        "eastmoney_major_contract_disclosure_intensity",
+    ]
+    if events.empty or normalized_calendar.empty:
+        return pd.DataFrame(columns=output_columns)
+    expanded: list[dict[str, Any]] = []
+    for event in events.itertuples(index=False):
+        announcement = pd.Timestamp(event.announcement_date).normalize()
+        position = int(normalized_calendar.searchsorted(announcement, side="right"))
+        if position >= len(normalized_calendar):
+            raise RichDataError(
+                "Eastmoney major-contract event cannot map to a later local session"
+            )
+        effective = normalized_calendar[position]
+        count_value = event.major_contract_disclosure_count
+        if isinstance(count_value, (bool, np.bool_)) or not float(count_value).is_integer():
+            raise RichDataError(
+                "Eastmoney major-contract event count is not a positive integer"
+            )
+        count = int(count_value)
+        if count <= 0:
+            raise RichDataError(
+                "Eastmoney major-contract event count is not a positive integer"
+            )
+        for session_date in normalized_calendar[position:]:
+            age = int((session_date - announcement).days)
+            if age > maximum_age_calendar_days:
+                break
+            expanded.append(
+                {
+                    "datetime": session_date,
+                    "instrument": str(event.instrument),
+                    "major_contract_announcement_date": announcement,
+                    "event_effective_date": effective,
+                    "event_age_calendar_days": age,
+                    "major_contract_disclosure_count": count,
+                    "eastmoney_major_contract_disclosure_intensity": (
+                        float(count) / (1.0 + float(age))
+                    ),
+                }
+            )
+    if not expanded:
+        return pd.DataFrame(columns=output_columns)
+    materialized = pd.DataFrame(expanded)
+    materialized.sort_values(
+        ["instrument", "datetime", "major_contract_announcement_date"],
+        kind="stable",
+        inplace=True,
+    )
+    materialized = materialized.drop_duplicates(
+        ["instrument", "datetime"], keep="last"
+    ).sort_values(["datetime", "instrument"], kind="stable")
+    materialized.reset_index(drop=True, inplace=True)
+    factor = materialized["eastmoney_major_contract_disclosure_intensity"]
+    if (
+        materialized.duplicated(["instrument", "datetime"]).any()
+        or not materialized["event_age_calendar_days"].between(1, 3).all()
+        or not np.isfinite(factor).all()
+        or not factor.gt(0.0).all()
+    ):
+        raise RichDataError(
+            "Eastmoney major-contract session materialization failed"
+        )
+    return materialized.loc[:, output_columns]
+
+
+def eastmoney_major_contract_acceptance_records() -> list[Path]:
+    """Return prior local terminal manifests for the exact acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob(
+            "*eastmoney_major_contract_disclosure_intensity_acceptance*.json"
+        )
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == (
+            "eastmoney_major_contract_disclosure_intensity_acceptance"
+        ):
+            records.append(path)
+    return records
+
+
+def guard_eastmoney_major_contract_acceptance() -> None:
+    """Reject cross-clone and local replays before contract/provider access."""
+
+    record_path = DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
+    if record_path.exists():
+        if (
+            file_digest(record_path)
+            != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
+        ):
+            raise RichDataError(
+                "Eastmoney major-contract tracked acceptance-record fingerprint mismatch"
+            )
+        raise RichDataError(
+            "Eastmoney major-contract acceptance is permanently consumed; another "
+            "provider request is forbidden"
+        )
+    prior = eastmoney_major_contract_acceptance_records()
+    if prior:
+        raise RichDataError(
+            "Eastmoney major-contract acceptance is one-shot and already consumed by "
+            f"{prior[-1]}"
+        )
+
+
+def sync_eastmoney_major_contract_disclosure_intensity_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Run the sole frozen no-price three-window major-contract acceptance."""
+
+    guard_eastmoney_major_contract_acceptance()
+    lock_path = (
+        METADATA_ROOT / ".eastmoney_major_contract_disclosure_intensity_acceptance.lock"
+    )
+    with RichDataProcessLock(lock_path):
+        guard_eastmoney_major_contract_acceptance()
+        contract = load_eastmoney_major_contract_disclosure_intensity_contract()
+        validate_eastmoney_major_contract_local_context(contract)
+        acceptance = contract["acceptance_protocol"]
+        sample_windows = list(acceptance["fixed_sample_windows"])
+        intervals = load_factor_universe_intervals(universe_path)
+        first_sample_date = dt.date.fromisoformat(str(sample_windows[0]["start"]))
+        final_sample_date = dt.date.fromisoformat(str(sample_windows[-1]["end"]))
+        calendar = local_calendar_dates(
+            first_sample_date,
+            final_sample_date + dt.timedelta(days=14),
+            calendar_path,
+        )
+        if calendar.empty:
+            raise RichDataError(
+                "local calendar is empty for major-contract acceptance"
+            )
+        run_id = new_run_id("eastmoney_major_contract_disclosure_intensity_acceptance")
+        run_root = (
+            RAW_ROOT
+            / "eastmoney"
+            / "major_contract_disclosure_intensity"
+            / "acceptance"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError("Eastmoney major-contract acceptance run already exists")
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        request_quality: list[dict[str, Any]] = []
+        window_quality: list[dict[str, Any]] = []
+        bisections: list[dict[str, Any]] = []
+        try:
+            accepted_windows: list[pd.DataFrame] = []
+            for window in sample_windows:
+                label = str(window["label"])
+                window_start = dt.date.fromisoformat(str(window["start"]))
+                window_end = dt.date.fromisoformat(str(window["end"]))
+                normalized_parts: list[pd.DataFrame] = []
+                part_quality: list[dict[str, Any]] = []
+                for month_start, month_end in calendar_month_ranges(
+                    window_start, window_end
+                ):
+                    provider_request_issued = True
+                    leaves, split_records = fetch_eastmoney_major_contract_partition_details(
+                        month_start,
+                        month_end,
+                        contract=contract,
+                    )
+                    bisections.extend(
+                        [{"window": label, **item} for item in split_records]
+                    )
+                    for leaf_start, leaf_end, rows, quality in leaves:
+                        request_quality.append({"window": label, **quality})
+                        normalized, observed = canonicalize_eastmoney_major_contract_rows(
+                            rows,
+                            leaf_start,
+                            leaf_end,
+                        )
+                        part_quality.append(observed)
+                        if not normalized.empty:
+                            normalized_parts.append(normalized)
+                source_rows = sum(
+                    int(item["received_rows"])
+                    for item in request_quality
+                    if item["window"] == label
+                )
+                supported_rows = sum(
+                    int(item["supported_source_rows"]) for item in part_quality
+                )
+                if supported_rows < int(
+                    acceptance["minimum_supported_source_rows_per_window"]
+                ):
+                    raise RichDataError(
+                        f"Eastmoney major-contract {label} has too few supported "
+                        f"source rows: {supported_rows}"
+                    )
+                if not normalized_parts:
+                    raise RichDataError(
+                        f"Eastmoney major-contract {label} has no qualifying event"
+                    )
+                normalized_window = (
+                    pd.concat(normalized_parts, ignore_index=True)
+                    .sort_values(["announcement_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                if normalized_window.duplicated(
+                    ["instrument", "announcement_date"]
+                ).any():
+                    raise RichDataError(
+                        "Eastmoney major-contract leaf partitions produced a duplicate "
+                        "event key"
+                    )
+                accepted, outside_universe = (
+                    filter_major_contract_events_to_point_in_time_holding_universe(
+                        normalized_window,
+                        intervals,
+                    )
+                )
+                qualifying_events = int(len(accepted))
+                if qualifying_events < int(
+                    acceptance["minimum_qualifying_events_per_window"]
+                ):
+                    raise RichDataError(
+                        f"Eastmoney major-contract {label} has too few qualifying "
+                        f"events: {qualifying_events}"
+                    )
+                materialized = materialize_major_contract_acceptance_sessions(
+                    accepted,
+                    calendar,
+                )
+                cross_sections = (
+                    materialized.groupby("datetime", sort=True)
+                    .agg(
+                        eligible_names=("instrument", "nunique"),
+                        distinct_factor_values=(
+                            "eastmoney_major_contract_disclosure_intensity",
+                            "nunique",
+                        ),
+                    )
+                    .reset_index()
+                )
+                candidate = cross_sections[
+                    cross_sections["eligible_names"].ge(
+                        int(acceptance["minimum_names_per_candidate_cross_section"])
+                    )
+                    & cross_sections["distinct_factor_values"].ge(
+                        int(
+                            acceptance[
+                                "minimum_distinct_factor_values_per_candidate_cross_section"
+                            ]
+                        )
+                    )
+                ]
+                candidate_count = int(len(candidate))
+                if candidate_count < int(
+                    acceptance["minimum_candidate_cross_sections_per_window"]
+                ):
+                    raise RichDataError(
+                        f"Eastmoney major-contract {label} lacks sample "
+                        f"cross-sectional variation: {candidate_count}"
+                    )
+                window_quality.append(
+                    {
+                        "label": label,
+                        "source_rows": source_rows,
+                        "supported_source_rows": supported_rows,
+                        "unsupported_board_rows_excluded": sum(
+                            int(item["unsupported_board_rows_excluded"])
+                            for item in part_quality
+                        ),
+                        "qualifying_source_rows": sum(
+                            int(item["qualifying_source_rows"])
+                            for item in part_quality
+                        ),
+                        "point_in_time_holding_events": qualifying_events,
+                        "outside_point_in_time_holding_universe_events_excluded": (
+                            outside_universe
+                        ),
+                        "candidate_cross_sections": candidate_count,
+                        "distinct_materialized_factor_values": int(
+                            materialized[
+                                "eastmoney_major_contract_disclosure_intensity"
+                            ].nunique(dropna=True)
+                        ),
+                        "maximum_candidate_names": int(
+                            cross_sections["eligible_names"].max()
+                        ),
+                        "maximum_candidate_distinct_factor_values": int(
+                            cross_sections["distinct_factor_values"].max()
+                        ),
+                    }
+                )
+                accepted_windows.append(accepted)
+
+            accepted_all = (
+                pd.concat(accepted_windows, ignore_index=True)
+                .loc[:, list(EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS)]
+                .sort_values(["announcement_date", "instrument"], kind="stable")
+                .reset_index(drop=True)
+            )
+            if accepted_all.duplicated(["instrument", "announcement_date"]).any():
+                raise RichDataError(
+                    "Eastmoney major-contract combined sample has duplicate events"
+                )
+            total_events = int(len(accepted_all))
+            total_candidates = sum(
+                int(item["candidate_cross_sections"]) for item in window_quality
+            )
+            materialized_all = materialize_major_contract_acceptance_sessions(
+                accepted_all,
+                calendar,
+            )
+            distinct_values = int(
+                materialized_all[
+                    "eastmoney_major_contract_disclosure_intensity"
+                ].nunique(dropna=True)
+            )
+            if total_events < int(acceptance["minimum_qualifying_events_total"]):
+                raise RichDataError(
+                    "Eastmoney major-contract combined sample has too few events: "
+                    f"{total_events}"
+                )
+            if total_candidates < int(
+                acceptance["minimum_candidate_cross_sections_total"]
+            ):
+                raise RichDataError(
+                    "Eastmoney major-contract combined sample lacks frozen "
+                    f"cross-sectional variation: {total_candidates}"
+                )
+            if distinct_values < int(
+                acceptance["minimum_distinct_factor_values_across_samples"]
+            ):
+                raise RichDataError(
+                    "Eastmoney major-contract combined sample lacks factor variation"
+                )
+
+            temporary_destination = temporary_root / "major_contract_events.parquet"
+            final_destination = run_root / "major_contract_events.parquet"
+            atomic_write_frame(accepted_all, temporary_destination)
+            resolved_universe = universe_path.expanduser().resolve()
+            resolved_calendar = calendar_path.expanduser().resolve()
+            provider_calls = sum(
+                int(item["provider_calls"]) for item in request_quality
+            ) + sum(int(item["provider_probe_calls"]) for item in bisections)
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_major_contract_disclosure_intensity_acceptance",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_selection"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "filter_date": "announcement_date",
+                },
+                "local_calendar": {
+                    "path": manifest_path(resolved_calendar),
+                    "sha256": file_digest(resolved_calendar),
+                    "availability": (
+                        "first local session strictly after announcement_date"
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "report_name": contract["provider_contract"]["report_name"],
+                    "requested_fields": list(
+                        EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "provider_calls": provider_calls,
+                    "leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "public_static_query_token_used": True,
+                    "user_credentials_tokens_cookies_proxy_or_retail_session_used": False,
+                    "raw_response_or_contract_identity_persisted": False,
+                    "amount_revenue_counterparty_or_relationship_accessed": False,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": total_events,
+                        "sha256": frame_digest(accepted_all),
+                    }
+                ],
+                "source_quality": {
+                    "windows": window_quality,
+                    "combined_rows_written": total_events,
+                    "combined_candidate_cross_sections": total_candidates,
+                    "combined_distinct_materialized_factor_values": distinct_values,
+                    "contract_identity_text_or_hash_persisted": False,
+                },
+                "factor": {
+                    "name": "eastmoney_major_contract_disclosure_intensity",
+                    "formula": contract["event_and_factor_definition"][
+                        "session_formula"
+                    ],
+                    "direction": "higher_is_better",
+                    "factor_values_persisted_at_acceptance": False,
+                },
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_major_contract_disclosure_intensity_acceptance",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "report_name": contract["provider_contract"]["report_name"],
+                    "requested_fields": list(
+                        EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "completed_leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "public_static_query_token_used": True,
+                    "user_credentials_tokens_cookies_proxy_or_retail_session_used": False,
+                    "raw_response_or_contract_identity_persisted": False,
+                    "amount_revenue_counterparty_or_relationship_accessed": False,
+                },
+                "observed_quality_before_rejection": window_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": (
+                    "terminal_source_schema_identity_formula_or_historical_sample_"
+                    "variation_rejected_stop_before_full_history_capacity_"
                     "uniqueness_or_returns"
                 ),
                 "error_type": type(exc).__name__,
@@ -29278,6 +30555,20 @@ def build_parser() -> argparse.ArgumentParser:
         "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
     )
 
+    eastmoney_major_contract_acceptance = subparsers.add_parser(
+        "acceptance-eastmoney-major-contract-disclosure-intensity",
+        help=(
+            "run the frozen three-window public major-contract announcement "
+            "acceptance"
+        ),
+    )
+    eastmoney_major_contract_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    eastmoney_major_contract_acceptance.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+
     cninfo_guarantee_acceptance = subparsers.add_parser(
         "acceptance-cninfo-guarantee-sparsity",
         help="run the frozen 57-signal public guarantee-sparsity acceptance",
@@ -29592,6 +30883,13 @@ def main(argv: list[str] | None = None) -> int:
                     calendar_path=args.calendar_file,
                 )
             )
+        elif args.command == (
+            "acceptance-eastmoney-major-contract-disclosure-intensity"
+        ):
+            manifest = sync_eastmoney_major_contract_disclosure_intensity_acceptance(
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+            )
         elif args.command == "acceptance-cninfo-guarantee-sparsity":
             manifest = sync_cninfo_guarantee_sparsity_acceptance(
                 universe_path=args.universe_file,
@@ -29693,6 +30991,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-eastmoney-government-subsidy-disclosure-intensity": (
             "stored_no_return_public_government_subsidy_acceptance"
+        ),
+        "acceptance-eastmoney-major-contract-disclosure-intensity": (
+            "stored_no_return_public_major_contract_acceptance"
         ),
         "acceptance-cninfo-guarantee-sparsity": (
             "stored_no_return_public_guarantee_sparsity_acceptance"

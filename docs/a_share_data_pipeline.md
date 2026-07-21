@@ -2023,7 +2023,7 @@ python scripts/a_share_rich_data.py \
 
 容量失败意味着固定七项比较从未加载，唯一性门未运行，也没有读取价格或未来收益。跨克隆终止记录为 [`a_share_eastmoney_monetary_funds_asset_intensity_research_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_research_record.json)（SHA‑256 `d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a`）。不得再次运行验收、全量或无收益审计，不得反向、延长三自然日、降低质量/上市/名称/取值/容量门、改变比较项，亦不得继续收益诊断、聚合、当前评分、选股、仓位、订单或 Level‑2。下一步只能回到一个经济机制独立、在读取新来源行或因子值前冻结的新候选。
 
-### Eastmoney 政府补助公告强度（来源验收待执行）
+### Eastmoney 政府补助公告强度（来源身份门终止）
 
 货币资金资产占比分支终止后，新一轮无收益机制核重冻结为 [`a_share_three_day_government_subsidy_disclosure_intensity_mechanism_overlap_reaudit_20260721.json`](a_share_three_day_government_subsidy_disclosure_intensity_mechanism_overlap_reaudit_20260721.json)（SHA‑256 `8e518365a05fc98056502a43c492dd4f44ec9195046588af2e2987c76030e368`）。研发投入候选被判定为复用已终止的 Tushare 财务报表/指标路线；筹码分布需要当前账户未具备的 5,000 积分权限；开盘和收盘集合竞价需要独立权限。当前只推进经济上不同的外部支持催化候选：
 
@@ -2037,11 +2037,31 @@ eastmoney_government_subsidy_disclosure_intensity
 
 公告在严格下一本地交易日才生效，最长保持三自然日；同一股票有新公告时只使用最新已生效事件，没有事件保持缺失。分页必须逐页对账广告数与接收数；单分区超过 80 页时先按日期递归二分，单日仍超限则终止。任一缺键、畸形日期、同一公告映射多个支持股票、重复股票/日期/公告编号、分页元数据变化或计数不一致均为致命错误。这个公共来源不读取 `TUSHARE_TOKEN`、账号、积分、Cookie、代理、零售客户端会话、价格或收益。
 
-实现和离线测试已加入，但本次提交没有执行唯一真实来源验收。唯一获准的下一步命令是：
+6 项专项离线测试通过后，唯一真实验收按冻结顺序从 `2019Q1` 开始。`2019-01-01` 至 `2019-01-31` 的首个叶分区完整请求 57/57 页并对账 5,632/5,632 行；规范化阶段随后发现至少一则公告同时映射到两个或以上受支持的主板/创业板代码，违反“每条公告恰好一个支持发行人”的预注册身份规则。程序没有任选其中一个代码、没有把同一公告复制给多个代码，也没有继续请求 `2019Q1` 后续月份或 2024/2025 样本。
+
+本机失败清单为 `data/metadata/rich_data/runs/20260721T072630Z_eastmoney_government_subsidy_disclosure_intensity_acceptance_0ab4f00d.json`（SHA‑256 `609307dae1c633402c187d931d53c540b62e687882c8d9d33eec3ce9098f8c92`）；跨克隆终止记录为 [`a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json`](a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json)（SHA‑256 `431f02f0e9c4609ee12b764e593fa40904daf2ebe9262cd90461ad4c39f98cfd`）。规范行和因子值均为 0，`files=[]`，隐藏临时快照已删除；标题、公告编号、代码数组、栏目、响应体、公告正文、金额、价格和收益均未持久化，价格与未来收益也未读取。
+
+`acceptance-eastmoney-government-subsidy-disclosure-intensity` 已永久消费，入口现在必须先验证跟踪记录并在合同、本地上下文、清单扫描或供应商访问前拒绝。不得重请求失败分区或公告来查明细、选择一个代码、把公告复制到多个代码、改变身份/标题/排除词/公式/方向/时点/三日年龄/样本/阈值、创建同机制 v2 或更换供应商救援；也不得继续全历史、容量、唯一性、收益、聚合、当前评分、选股、仓位、订单或 Level‑2。该结果是来源身份合同失败，不是因子收益为正或为负的证据；下一步只能回到新的经济独立机制并在任何新来源行或因子值前重新冻结。
+
+### Eastmoney 重大合同公告强度（唯一来源验收待执行）
+
+政府补助公告分支在来源身份门终止后，新一轮无收益机制核重冻结为 [`a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit_20260721.json`](a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit_20260721.json)（SHA‑256 `5299adf4f15d70ff0f3cc82eb153c67fd90afea0d766e40b6da6e7d57298efe5`）。金额/上年营收版本因历史分母稀疏、当前营收可能包含后续修订且会引入币种与尺度风险而在读取来源行前拒绝；当前唯一候选只刻画商业需求或订单确认事件：
+
+```text
+eastmoney_major_contract_disclosure_intensity
+  = latest already-effective major_contract_disclosure_count
+    / (1 + calendar days since announcement date)
+```
+
+数据合同 [`a_share_eastmoney_major_contract_disclosure_intensity_data_contract.json`](a_share_eastmoney_major_contract_disclosure_intensity_data_contract.json)（SHA‑256 `12d2f985f87bbdd47ff9c113b53a47d5325a4ca6a0cc70d7897e05757bd23f6b`）在任何重大合同来源行、合同身份、因子值、价格或收益出现前冻结。公共 Eastmoney `RPTA_WEB_ZDHT_LIST` 请求仅允许传输 `SECURITYCODE,DIM_RDATE,CONTRACTNAME,SIGNDATE`；合同名称和签订日只在内存中组成唯一身份，发布前必须丢弃。规范帧只能保存公告日、股票、同日唯一合同数和供应商四列，禁止金额、营收、占比、对手方、关系、合同文本、名称、身份哈希、价格和收益落盘。
+
+公告在严格下一本地交易日才生效，最长保持三自然日；新公告生效后替代旧公告，没有事件保持缺失。分页固定每页 500 行并完整对账 `pages/count/data`；一个叶分区超过 40 页时必须在请求后续页前按日期递归二分，单日仍超限即终止。任何缺键、畸形代码/日期、签订日晚于公告日、重复完整身份、分页元数据变化或计数不一致都是致命错误。本来源使用公共静态查询参数，不读取 `TUSHARE_TOKEN`、账号、积分、Cookie、代理或零售客户端会话。
+
+6 项重大合同专项离线测试已覆盖合同指纹、本地上下文、严格身份与文本不落盘、501 行跨页对账、超页先递归二分、严格下一会话三日物化及原子发布；本提交没有执行真实来源验收。冻结验收固定请求 `2019Q1`、`2024Q1`、`2025Q1` 共九个月，唯一获准的下一步命令是：
 
 ```bash
 python scripts/a_share_rich_data.py \
-  acceptance-eastmoney-government-subsidy-disclosure-intensity
+  acceptance-eastmoney-major-contract-disclosure-intensity
 ```
 
-该命令固定抽取 2019Q1、2024Q1、2025Q1 三个窗口，先验证本地合同与机制指纹，再原子发布仅包含规范事件的样本。成功只证明公开来源、分类、时点和样本覆盖可用；失败则永久终止这一精确定义。无论结果如何，都不得在同一验收后修改标题词表、排除词、方向、三日时效、样本或阈值。验收成功后也只能另行冻结全历史无收益协议和 200-cohort 容量门，不能直接读取收益、聚合、评分、选股、仓位或下单。
+该命令成功只证明来源结构、唯一身份、公式和固定历史样本变化可用；随后仍须另行冻结 2019–2025 全历史无收益协议，并先通过 200 个三日非重叠 cohort 的容量门与固定稀疏近邻/规模流动性唯一性门，才允许冻结一次收益诊断。失败则永久终止这一精确定义。无论结果如何，都不得事后修改字段、身份、公式、方向、时点、三日年龄、样本或阈值，也不得直接聚合、当前评分、选股、仓位、订单或 Level‑2。

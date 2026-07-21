@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit",
+  "status": "frozen_before_major_contract_provider_rows_identity_values_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-21T07:33:18Z",
+  "purpose": "Select one economically independent no-return mechanism after the government-subsidy source-identity rejection, without reopening a consumed branch, inspecting a new provider row, or searching formulas, directions, ages, fields, weights, or subsets against returns.",
+  "fixed_strategy_context": {
+    "holding_period_local_sessions": 3,
+    "holding_universe": "buyable_main_chinext",
+    "development_dates_if_later_admitted": [
+      "2019-01-01",
+      "2025-12-31"
+    ],
+    "topk_if_later_admitted": 3,
+    "capital_cny_if_later_admitted": 200000,
+    "board_lot_shares_if_later_admitted": 100,
+    "commission_rate_if_later_admitted": 0.0001,
+    "transfer_fee_rate_each_side_if_later_admitted": 0.00002,
+    "stamp_duty_sell_only_if_later_admitted": 0.0005,
+    "primary_adverse_slippage_bps_each_side_if_later_admitted": 10
+  },
+  "freeze_evidence": {
+    "accepted_price_frontier_revalidated_without_new_returns": true,
+    "historical_frontier_factor_count": 43,
+    "historical_dual_gate_qualified_factor_count": 0,
+    "latest_government_subsidy_acceptance_rejection_known": true,
+    "major_contract_public_page_and_adapter_request_definition_observed": true,
+    "major_contract_provider_rows_observed_under_this_hypothesis": false,
+    "major_contract_identity_or_factor_values_observed": false,
+    "sample_or_full_history_capacity_observed": false,
+    "uniqueness_observed": false,
+    "price_or_factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "frontier_decisions": [
+    {
+      "candidate": "cninfo_recent_lawsuit_disclosure_sparsity",
+      "decision": "deferred_before_rows",
+      "reason": "The adjacent CNInfo guarantee endpoint already returned object-shaped records where the pinned adapter required positional arrays. A lawsuit contract would first need a newly verified no-row transport schema rather than replaying the same currently incompatible positional family."
+    },
+    {
+      "candidate": "major_contract_amount_to_prior_revenue",
+      "decision": "rejected_before_rows",
+      "reason": "The previously inspected major-contract route exposed revision-prone current revenue and historically sparse prior-revenue normalization. Amount and revenue fields would also introduce currency, version, and denominator leakage risks."
+    },
+    {
+      "candidate": "eastmoney_major_contract_disclosure_intensity",
+      "decision": "selected_before_rows",
+      "reason": "A dated major-contract disclosure is a direct external-demand and order-confirmation event. Counting distinct disclosed contracts and decaying only by elapsed calendar days avoids amount, revenue, price, valuation, counterparty identity, and financial-statement reuse."
+    }
+  ],
+  "economic_independence": {
+    "mechanism": "new_customer_or_commercial_order_confirmation_disclosed_as_a_major_contract",
+    "distinct_from_government_subsidy": "Government grants are public support transfers; a major contract is a commercial demand/order event. The rejected subsidy source produced no factor and cannot be repaired or substituted.",
+    "distinct_from_contract_liability_backlog": "Contract liabilities are a quarterly accounting stock of customer prepayments; this candidate is a dated contract disclosure event and never requests balance-sheet values.",
+    "distinct_from_related_party_transactions": "Related-party transactions measure governance-linked transaction clustering; this candidate measures external commercial order disclosures and requests no relationship field.",
+    "distinct_from_performance_forecasts_and_analyst_reports": "The event is a company contract disclosure rather than management earnings guidance or analyst interpretation.",
+    "distinct_from_prices_and_moneyflow": "No OHLCV, return, order-flow, valuation, market-cap, or trading field enters the mechanism."
+  },
+  "selected_candidate": {
+    "factor_name": "eastmoney_major_contract_disclosure_intensity",
+    "source_event_measure": "major_contract_disclosure_count = number of globally unique complete contract identities for one supported instrument and announcement_date",
+    "session_formula": "latest already-effective major_contract_disclosure_count / (1 + calendar_days_since_announcement_date)",
+    "direction": "higher_is_better",
+    "interpretation": "More distinct newly disclosed major contracts and greater freshness indicate stronger near-term commercial demand confirmation.",
+    "availability": "first local trading session strictly after announcement_date",
+    "maximum_age_calendar_days": 3,
+    "multiple_event_dates": "Use only the latest already-effective announcement date; a later effective event supersedes an older event.",
+    "absent_event_policy": "missing_never_zero_or_favorable",
+    "future_entry_if_admitted": "next local session open after signal-close ranking"
+  },
+  "source_scope_frozen_before_rows": {
+    "provider": "eastmoney",
+    "public_page": "https://data.eastmoney.com/zdht/mx.html",
+    "report_name": "RPTA_WEB_ZDHT_LIST",
+    "only_allowed_transport_fields": [
+      "SECURITYCODE",
+      "DIM_RDATE",
+      "CONTRACTNAME",
+      "SIGNDATE"
+    ],
+    "contract_name_and_sign_date_use": "in_memory_identity_only",
+    "forbidden_fields": [
+      "security name",
+      "signatory",
+      "counterparty",
+      "relationship",
+      "contract type",
+      "contract amount",
+      "prior revenue",
+      "current revenue",
+      "provider amount-to-revenue ratio",
+      "contract content or remark",
+      "updated date",
+      "price",
+      "market capitalization",
+      "valuation",
+      "return",
+      "credential",
+      "cookie",
+      "proxy",
+      "retail session"
+    ],
+    "raw_response_persisted": false,
+    "contract_identity_text_or_hash_persisted": false
+  },
+  "acceptance_before_any_full_source": {
+    "sample_windows": [
+      "2019Q1",
+      "2024Q1",
+      "2025Q1"
+    ],
+    "count_complete_pagination_required": true,
+    "point_in_time_holding_universe_required": true,
+    "minimum_names_per_candidate_session": 6,
+    "minimum_distinct_factor_values_per_candidate_session": 2,
+    "no_price_or_return": true,
+    "success_only_allows_new_fingerprint_bound_no_return_full_source_protocol": true,
+    "failure_is_terminal_for_exact_candidate": true
+  },
+  "prohibited_post_result_actions": [
+    "change the contract identity after observing a row",
+    "drop or fill incomplete contract names or signing dates",
+    "switch from count-and-freshness to amount or revenue normalization",
+    "change direction, three-calendar-day age, samples, thresholds, or point-in-time timing",
+    "retry a consumed acceptance or failed partition",
+    "reuse the government-subsidy announcement contract or reinterpret its ambiguous codes",
+    "read prices or returns before a separately frozen no-return capacity and uniqueness gate",
+    "aggregate, score, select, size, order, or justify Level-2 from acceptance evidence"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
