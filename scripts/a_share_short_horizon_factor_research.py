@@ -280,6 +280,12 @@ DEFAULT_RESEARCH_FRONTIER_CONTRACT = (
 DEFAULT_RESEARCH_FRONTIER_AUDIT = (
     REPO_ROOT / "docs" / "a_share_three_day_research_frontier_audit.json"
 )
+DEFAULT_THREE_DAY_ITERATION_STATUS = (
+    REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
+)
+THREE_DAY_ITERATION_STATUS_SHA256 = (
+    "b59b153745db7ee46afd3646e57d946aca4881f5d7e15f127c5912890bb9f51c"
+)
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
 )
@@ -37319,6 +37325,137 @@ def load_research_frontier_audit(
     return audit
 
 
+def load_three_day_iteration_status(
+    path: Path = DEFAULT_THREE_DAY_ITERATION_STATUS,
+) -> dict[str, Any]:
+    """Load the fingerprint-bound current decision state for three-day research."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != THREE_DAY_ITERATION_STATUS_SHA256:
+        raise ValueError("three-day iteration status fingerprint mismatch")
+    status = load_json_record(path, kind="a_share_three_day_iteration_status")
+    fixed = status.get("fixed_strategy") or {}
+    frontier_binding = status.get("accepted_price_frontier") or {}
+    post_frontier = status.get("post_frontier_summary") or {}
+    selected_source = status.get("selected_source_path") or {}
+    decision = status.get("decision") or {}
+    if (
+        status.get("version") != 1
+        or status.get("status")
+        != "aggregation_blocked_pending_real_qmt_level1_acceptance_bundle"
+        or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
+        or fixed.get("holding_period_local_sessions") != 3
+        or fixed.get("topk") != 3
+        or frontier_binding.get("historical_factor_count") != 43
+        or frontier_binding.get("stability_qualified_factor_count") != 7
+        or frontier_binding.get("topk_qualified_factor_count") != 0
+        or frontier_binding.get("dual_gate_qualified_factor_count") != 0
+        or post_frontier.get("terminal_mechanism_count") != 27
+        or post_frontier.get("admitted_factor_count") != 0
+        or post_frontier.get("aggregation_candidate_count") != 0
+        or selected_source.get("source")
+        != "qmt_xtquant_level1_one_minute_export_bridge"
+        or selected_source.get("exporter_and_importer_implemented") is not True
+        or selected_source.get("real_acceptance_bundle_observed") is not False
+        or selected_source.get("automatic_import_passed") is not False
+        or selected_source.get("explicit_time_and_volume_alignment_confirmed")
+        is not False
+        or selected_source.get("tushare_points_authorize_historical_minutes")
+        is not False
+        or any(
+            decision.get(field) is not False
+            for field in (
+                "aggregation_allowed",
+                "current_scoring_allowed",
+                "selection_allowed",
+                "sizing_allowed",
+                "orders_allowed",
+                "level2_intake_justified",
+                "new_price_or_forward_return_read_for_this_status",
+            )
+        )
+    ):
+        raise ValueError("three-day iteration status is inconsistent")
+
+    frontier_path = resolve_repository_record_path(frontier_binding.get("path", ""))
+    if (
+        file_sha256(frontier_path) != frontier_binding.get("sha256")
+        or load_research_frontier_audit(frontier_path) is None
+    ):
+        raise ValueError("three-day iteration status frontier binding changed")
+
+    terminal_mechanisms = status.get("post_frontier_terminal_mechanisms") or []
+    mechanism_ids = [str(item.get("mechanism", "")) for item in terminal_mechanisms]
+    if (
+        len(terminal_mechanisms) != post_frontier.get("terminal_mechanism_count")
+        or len(set(mechanism_ids)) != len(mechanism_ids)
+        or any(not mechanism_id for mechanism_id in mechanism_ids)
+    ):
+        raise ValueError("three-day iteration status terminal ledger is inconsistent")
+    bound_terminal_paths: set[Path] = set()
+    for item in terminal_mechanisms:
+        binding = item.get("record") or {}
+        record_path = resolve_repository_record_path(binding.get("path", ""))
+        bound_terminal_paths.add(record_path)
+        if file_sha256(record_path) != binding.get("sha256"):
+            raise ValueError(
+                "three-day iteration status terminal record fingerprint changed"
+            )
+        record = load_json_record(record_path)
+        record_status = str(record.get("status", ""))
+        if not (
+            record_status.startswith("terminal_")
+            or record_status.startswith("rejected_")
+        ):
+            raise ValueError(
+                "three-day iteration status includes a non-terminal mechanism"
+            )
+    discovered_terminal_paths: set[Path] = set()
+    for record_path in sorted((REPO_ROOT / "docs").glob("a_share_*record.json")):
+        record = load_json_record(record_path)
+        record_status = str(record.get("status", ""))
+        if record_status.startswith("terminal_") or record_status.startswith(
+            "rejected_"
+        ):
+            discovered_terminal_paths.add(record_path.resolve())
+    if bound_terminal_paths != discovered_terminal_paths:
+        raise ValueError(
+            "three-day iteration status does not cover the complete terminal record ledger"
+        )
+
+    source_bindings = {
+        "selection_audit": "a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit",
+        "data_contract": "a_share_qmt_xtquant_one_minute_export_data_contract",
+        "tushare_permission_audit": "a_share_three_day_tushare_minute_permission_frontier_audit",
+    }
+    source_records: dict[str, dict[str, Any]] = {}
+    for key, kind in source_bindings.items():
+        binding = selected_source.get(key) or {}
+        record_path = resolve_repository_record_path(binding.get("path", ""))
+        if file_sha256(record_path) != binding.get("sha256"):
+            raise ValueError(
+                f"three-day iteration status {key.replace('_', ' ')} fingerprint changed"
+            )
+        source_records[key] = load_json_record(record_path, kind=kind)
+    qmt_selection = source_records["selection_audit"].get("implementation_decision") or {}
+    qmt_contract = source_records["data_contract"].get("next_stage_policy") or {}
+    minute_permission = source_records["tushare_permission_audit"].get("decision") or {}
+    if (
+        qmt_selection.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
+        is not False
+        or qmt_selection.get("level2_intake_justified") is not False
+        or qmt_contract.get("aggregation_current_scoring_selection_sizing_orders_or_level2_allowed")
+        is not False
+        or minute_permission.get("selected_source_path")
+        != selected_source.get("source")
+        or minute_permission.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
+        is not False
+        or minute_permission.get("level2_intake_justified") is not False
+    ):
+        raise ValueError("three-day iteration status source decision changed")
+    return status
+
+
 def load_execution_tail_realism_audit(
     path: Path = DEFAULT_EXECUTION_TAIL_REALISM_AUDIT,
 ) -> dict[str, Any] | None:
@@ -37812,6 +37949,7 @@ def render_three_day_research_report(
     prospective_execution_policy: dict[str, Any] | None = None,
     pilot_execution_policy: dict[str, Any] | None = None,
     baostock_5m_restoration_probe_audit: dict[str, Any] | None = None,
+    three_day_iteration_status: dict[str, Any] | None = None,
 ) -> str:
     """Render the append-only machine records into a concise human research log."""
 
@@ -39176,6 +39314,42 @@ def render_three_day_research_report(
                     )
                 )
             lines.append("")
+    if three_day_iteration_status is not None:
+        fixed = three_day_iteration_status.get("fixed_strategy") or {}
+        frontier = three_day_iteration_status.get("accepted_price_frontier") or {}
+        later = three_day_iteration_status.get("post_frontier_summary") or {}
+        source = three_day_iteration_status.get("selected_source_path") or {}
+        next_external_action = source.get("next_external_action", "—")
+        if source.get("source") == "qmt_xtquant_level1_one_minute_export_bridge":
+            next_external_action = (
+                "在已合法可用的 Windows MiniQMT/XtQuant 环境中运行冻结的四股验收导出器，"
+                "再把未改动的完整目录转移到本机离线验收。"
+            )
+        lines.extend(
+            [
+                "## 当前迭代状态",
+                "",
+                (
+                    f"固定持有 {fixed.get('holding_period_local_sessions', 0)} 个本地交易日、"
+                    f"Top-{fixed.get('topk', 0)}。历史前沿 {frontier.get('historical_factor_count', 0)} "
+                    f"个因子中，稳定性通过 {frontier.get('stability_qualified_factor_count', 0)} 个，"
+                    f"TopK 通过 {frontier.get('topk_qualified_factor_count', 0)} 个，"
+                    f"双门禁通过 {frontier.get('dual_gate_qualified_factor_count', 0)} 个。"
+                ),
+                (
+                    f"前沿之后另有 {later.get('terminal_mechanism_count', 0)} 条机制已到达终止门禁，"
+                    f"新增获准因子 {later.get('admitted_factor_count', 0)} 个；"
+                    "因此当前禁止聚合、评分、选股、定仓和下单。"
+                ),
+                (
+                    f"唯一在途来源为 `{source.get('source', '—')}`；导出/导入代码已就绪，"
+                    f"真实四股验收包={'已观察' if source.get('real_acceptance_bundle_observed') else '尚未观察'}，"
+                    "Level2 继续延期。"
+                ),
+                f"下一外部动作：{next_external_action}",
+                "",
+            ]
+        )
     if research_frontier_audit is not None:
         frontier_summary = research_frontier_audit.get("summary") or {}
         lines.extend(
@@ -39441,6 +39615,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     prospective_execution_policy = load_prospective_execution_policy()
     pilot_execution_policy = load_pilot_execution_policy()
     baostock_5m_restoration_probe_audit = load_baostock_5m_restoration_probe_audit()
+    three_day_iteration_status = load_three_day_iteration_status()
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -39504,6 +39679,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         prospective_execution_policy=prospective_execution_policy,
         pilot_execution_policy=pilot_execution_policy,
         baostock_5m_restoration_probe_audit=baostock_5m_restoration_probe_audit,
+        three_day_iteration_status=three_day_iteration_status,
     )
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
@@ -39549,6 +39725,7 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         "baostock_5m_restoration_probe_audit": (
             baostock_5m_restoration_probe_audit is not None
         ),
+        "three_day_iteration_status": True,
         "factor_stability_audits": len(factor_stability_audits),
         "factor_topk_viability_audits": len(factor_topk_viability_audits),
         "event_factor_holdouts": len(event_factor_holdouts),

@@ -5784,6 +5784,53 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
     assert "`new_data`" in report
 
 
+def test_three_day_iteration_status_binds_terminal_ledger_and_qmt_next_step():
+    status = RESEARCH.load_three_day_iteration_status()
+    terminal = status["post_frontier_terminal_mechanisms"]
+    assert len(terminal) == 27
+    assert len({item["mechanism"] for item in terminal}) == 27
+    assert {Path(item["record"]["path"]).name for item in terminal} == {
+        path.name
+        for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
+        if str(json.loads(path.read_text(encoding="utf-8")).get("status", "")).startswith(
+            ("terminal_", "rejected_")
+        )
+    }
+    assert status["post_frontier_summary"] == {
+        "terminal_mechanism_count": 27,
+        "admitted_factor_count": 0,
+        "aggregation_candidate_count": 0,
+    }
+    assert status["decision"]["aggregation_allowed"] is False
+    assert status["decision"]["selection_allowed"] is False
+    assert status["selected_source_path"]["source"] == (
+        "qmt_xtquant_level1_one_minute_export_bridge"
+    )
+    assert status["selected_source_path"]["real_acceptance_bundle_observed"] is False
+
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        three_day_iteration_status=status,
+    )
+    assert "当前迭代状态" in report
+    assert "前沿之后另有 27 条机制已到达终止门禁" in report
+    assert "当前禁止聚合、评分、选股、定仓和下单" in report
+    assert "真实四股验收包=尚未观察" in report
+    assert "Level2 继续延期" in report
+
+
+def test_three_day_iteration_status_rejects_untracked_copy(tmp_path):
+    copied = tmp_path / "iteration-status.json"
+    copied.write_text(
+        RESEARCH.DEFAULT_THREE_DAY_ITERATION_STATUS.read_text(encoding="utf-8")
+        + "\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        RESEARCH.load_three_day_iteration_status(copied)
+
+
 def test_research_frontier_audit_rejects_partial_gate_audit(tmp_path, monkeypatch):
     contract = make_research_frontier_evidence(
         tmp_path, topk_requested_factors=["factor_a"]

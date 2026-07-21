@@ -6463,7 +6463,7 @@ def _publish_qmt_xtquant_acceptance_snapshot(
         raise
 
 
-def accept_qmt_xtquant_one_minute_export(
+def _accept_qmt_xtquant_one_minute_export_under_lock(
     source_manifest_path: Path,
     *,
     data_root: Path = DATA_ROOT,
@@ -6553,7 +6553,15 @@ def accept_qmt_xtquant_one_minute_export(
             volume_unit=next(iter(volume_units)),
             imported_at=observed_at,
         )
-    except RichDataError as exc:
+    except Exception as exc:
+        failure = (
+            exc
+            if isinstance(exc, RichDataError)
+            else RichDataError(
+                "QMT acceptance stopped on an unexpected "
+                f"{type(exc).__name__} without preserving source values"
+            )
+        )
         rejection = {
             "schema_version": 1,
             "kind": "a_share_qmt_xtquant_one_minute_export_acceptance_rejection",
@@ -6561,7 +6569,7 @@ def accept_qmt_xtquant_one_minute_export(
             "run_id": run_id,
             "rejected_at": dt.datetime.now(dt.timezone.utc).isoformat(),
             "failed_stage": stage,
-            "error": safe_exception_text(exc),
+            "error": safe_exception_text(failure),
             "source_export_manifest": {
                 "filename": provided.name,
                 "sha256": source_manifest_sha256,
@@ -6585,7 +6593,28 @@ def accept_qmt_xtquant_one_minute_export(
             "selection_or_promotion_allowed": False,
         }
         atomic_write_json(rejection, rejection_path)
-        raise RichDataError(f"{exc}; rejection_record={rejection_path}") from exc
+        raise RichDataError(
+            f"{failure}; rejection_record={rejection_path}"
+        ) from exc
+
+
+def accept_qmt_xtquant_one_minute_export(
+    source_manifest_path: Path,
+    *,
+    data_root: Path = DATA_ROOT,
+    imported_at: dt.datetime | None = None,
+) -> Path:
+    """Serialize and strictly import one frozen QMT acceptance bundle."""
+
+    resolved_data_root = data_root.expanduser().resolve()
+    resolved_data_root.mkdir(parents=True, exist_ok=True)
+    lock_path = resolved_data_root / ".a_share_qmt_xtquant_1m_acceptance.lock"
+    with RichDataProcessLock(lock_path):
+        return _accept_qmt_xtquant_one_minute_export_under_lock(
+            source_manifest_path,
+            data_root=resolved_data_root,
+            imported_at=imported_at,
+        )
 
 
 def load_jqdata_moneyflow_contract(
@@ -34055,6 +34084,144 @@ def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
     }
 
 
+def qmt_xtquant_acceptance_status(data_root: Path) -> dict[str, Any]:
+    """Summarize the frozen QMT export bridge without network or source-row access."""
+
+    resolved = data_root.expanduser().resolve()
+    runs_root = resolved / "metadata" / "rich_data" / "runs"
+    alignments_root = resolved / "metadata" / "rich_data" / "alignments"
+    contract_path = DEFAULT_QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT.resolve()
+    exporter_path = (REPO_ROOT / "scripts" / "export_qmt_one_minute.py").resolve()
+    contract_observed_sha256: str | None = None
+    try:
+        contract_observed_sha256 = file_digest(contract_path)
+    except OSError:
+        pass
+    contract_fingerprint_valid = (
+        contract_observed_sha256 == QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT_SHA256
+    )
+
+    successful_acceptance_count = 0
+    rejection_count = 0
+    invalid_record_count = 0
+    latest_record: dict[str, Any] | None = None
+    run_paths = (
+        sorted(runs_root.glob("*qmt_xtquant_export_1m_acceptance*.json"))
+        if runs_root.exists()
+        else []
+    )
+    for path in run_paths:
+        try:
+            record = load_json_record(path)
+        except (RichDataError, OSError):
+            invalid_record_count += 1
+            latest_record = {
+                "path": str(path.resolve()),
+                "record_valid": False,
+                "kind": None,
+                "status": "invalid_record",
+            }
+            continue
+        kind = str(record.get("kind") or "")
+        record_valid = False
+        if (
+            kind == "a_share_rich_data_snapshot"
+            and record.get("provider") == "qmt_xtquant_export"
+            and record.get("qmt_acceptance_status")
+            == "automatic_checks_passed_pending_explicit_time_alignment_and_separate_full_source_no_return_protocol"
+        ):
+            successful_acceptance_count += 1
+            record_valid = True
+        elif kind == "a_share_qmt_xtquant_one_minute_export_acceptance_rejection":
+            rejection_count += 1
+            record_valid = True
+        else:
+            invalid_record_count += 1
+        latest_record = {
+            "path": str(path.resolve()),
+            "record_valid": record_valid,
+            "kind": kind or None,
+            "status": record.get("qmt_acceptance_status") or record.get("status"),
+        }
+
+    alignment_confirmation_count = 0
+    latest_alignment_confirmation: str | None = None
+    alignment_paths = (
+        sorted(alignments_root.glob("*.json")) if alignments_root.exists() else []
+    )
+    for path in alignment_paths:
+        try:
+            record = load_json_record(
+                path, kind="a_share_minute_alignment_confirmation"
+            )
+        except (RichDataError, OSError):
+            continue
+        if (
+            record.get("provider") == "qmt_xtquant_export"
+            and record.get("status")
+            == "passed_pending_separate_full_source_no_return_protocol"
+        ):
+            alignment_confirmation_count += 1
+            latest_alignment_confirmation = str(path.resolve())
+
+    if not contract_fingerprint_valid or not exporter_path.is_file():
+        next_action = "repair_local_qmt_intake_infrastructure_before_export_or_import"
+    elif invalid_record_count:
+        next_action = "stop_and_repair_invalid_local_qmt_acceptance_record"
+    elif successful_acceptance_count and alignment_confirmation_count:
+        next_action = (
+            "freeze_separate_full_source_no_return_protocol_before_full_history_or_features"
+        )
+    elif successful_acceptance_count:
+        next_action = "review_boundaries_and_run_confirm_minute_alignment"
+    elif rejection_count:
+        next_action = (
+            "stop_and_review_rejection_do_not_edit_or_retry_consumed_bundle"
+        )
+    else:
+        next_action = (
+            "run_frozen_windows_qmt_four_symbol_export_and_transfer_untouched_bundle"
+        )
+
+    return {
+        "data_root": str(resolved),
+        "network_request_issued": False,
+        "contract": {
+            "path": str(contract_path),
+            "expected_sha256": QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT_SHA256,
+            "observed_sha256": contract_observed_sha256,
+            "fingerprint_valid": contract_fingerprint_valid,
+        },
+        "exporter": {
+            "path": str(exporter_path),
+            "exists": exporter_path.is_file(),
+            "operation": "export-acceptance",
+        },
+        "expected_bundle_manifest_filename": "qmt_1m_acceptance_export.json",
+        "import_command_template": (
+            "python scripts/a_share_rich_data.py acceptance-qmt-1m-export "
+            "--manifest <bundle>/qmt_1m_acceptance_export.json"
+        ),
+        "consumed_bundle_record_count": (
+            successful_acceptance_count + rejection_count
+        ),
+        "successful_acceptance_count": successful_acceptance_count,
+        "rejection_count": rejection_count,
+        "invalid_record_count": invalid_record_count,
+        "latest_acceptance_or_rejection": latest_record,
+        "real_bundle_observed": bool(
+            successful_acceptance_count or rejection_count
+        ),
+        "automatic_import_passed": successful_acceptance_count == 1,
+        "alignment_confirmation_count": alignment_confirmation_count,
+        "latest_alignment_confirmation": latest_alignment_confirmation,
+        "next_action": next_action,
+        "process_lock": advisory_lock_status(
+            resolved / ".a_share_qmt_xtquant_1m_acceptance.lock"
+        ),
+    }
+
+
 def status_payload(data_root: Path = DATA_ROOT) -> dict[str, Any]:
     """Return safe machine-readable readiness information."""
 
@@ -34091,6 +34258,9 @@ def status_payload(data_root: Path = DATA_ROOT) -> dict[str, Any]:
             str(latest_feature_run) if latest_feature_run else None
         ),
         "baostock_five_minute_storage": baostock_5m_storage_status(resolved_data_root),
+        "qmt_xtquant_one_minute_acceptance": qmt_xtquant_acceptance_status(
+            resolved_data_root
+        ),
     }
 
 

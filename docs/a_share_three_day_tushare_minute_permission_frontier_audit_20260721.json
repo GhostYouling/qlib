@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_tushare_minute_permission_frontier_audit",
+  "status": "tushare_points_do_not_authorize_historical_minutes_qmt_level1_export_remains_selected_before_rows",
+  "audited_at": "2026-07-21T11:10:30Z",
+  "purpose": "Determine whether the newly configured Tushare Token and existing 3000-point authorization can replace the selected QMT/XtQuant Level-1 one-minute path for the fixed three-session strategy, without requesting provider rows, observing factor values, or reading prices or forward returns.",
+  "starting_evidence": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "association_stability_passers": 7,
+      "topk_viability_passers": 0,
+      "dual_gate_passers": 0,
+      "aggregation_allowed": false
+    },
+    "selected_qmt_frontier": {
+      "path": "docs/a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json",
+      "sha256": "7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db",
+      "selected_source_path": "qmt_xtquant_level1_one_minute_export_bridge"
+    },
+    "qmt_export_contract": {
+      "path": "docs/a_share_qmt_xtquant_one_minute_export_data_contract.json",
+      "sha256": "a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399",
+      "real_export_bundle_observed": false
+    },
+    "local_tushare_readiness": {
+      "sdk_installed": true,
+      "environment_variable_present": true,
+      "credential_value_read_logged_hashed_or_persisted": false,
+      "account_points_from_prior_authorization_evidence": 3000,
+      "account_points_requeried_during_this_audit": false
+    },
+    "daily_price_basis": {
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_sources": [
+        "baostock"
+      ],
+      "latest_completed_session": "2026-07-13"
+    }
+  },
+  "official_tushare_documentation_review": {
+    "reviewed_at": "2026-07-21T11:10:30Z",
+    "sources": [
+      {
+        "title": "Tushare permissions and frequency table",
+        "url": "https://tushare.pro/document/1?doc_id=290",
+        "observed_contract": [
+          "points-based interfaces and independently purchased interfaces are separate permission modes",
+          "historical minute data is excluded from points permissions",
+          "A-share historical 1, 5, 15, 30, and 60 minute data begins in 2009",
+          "the listed individual historical-minute price is CNY 2000 per year",
+          "the listed historical-minute limit is 500 calls per minute and 8000 rows per call",
+          "real-time minute data is separately listed at CNY 1000 per month"
+        ]
+      },
+      {
+        "title": "Tushare minute-data usage guide",
+        "url": "https://tushare.pro/document/1?doc_id=234",
+        "observed_contract": [
+          "minute-data permission is purchased separately and is unrelated to platform points",
+          "without formal minute permission only trial access is available",
+          "historical minute data is requested one instrument at a time",
+          "one request returns at most 8000 rows",
+          "daily historical-minute updates complete between 17:00 and 21:00"
+        ]
+      },
+      {
+        "title": "Tushare pro_bar interface",
+        "url": "https://tushare.pro/document/1?doc_id=109",
+        "observed_contract": [
+          "stock minute frequencies include 1, 5, 15, 30, and 60 minutes",
+          "users with at least 600 points receive only two minute trial requests",
+          "formal minute access is governed by the independent permission list"
+        ]
+      },
+      {
+        "title": "Tushare A-share real-time minute daily accumulation",
+        "url": "https://tushare.pro/document/2?doc_id=457",
+        "observed_contract": [
+          "rt_min_daily covers only the current trading day's accumulated minute history",
+          "rt_min_daily requires the separate real-time minute permission",
+          "current-day real-time access cannot establish 2019-2025 development history"
+        ]
+      }
+    ],
+    "provider_request_issued": false,
+    "trial_request_consumed": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "tushare_a_share_historical_one_minute",
+      "interface": "pro_bar(freq=1min)",
+      "decision": "not_authorized_by_current_points_before_rows",
+      "reasons": [
+        "The configured 3000-point authorization does not include independently purchased historical-minute permission.",
+        "Two trial requests cannot satisfy the existing four-symbol, two-exchange acceptance contract or authorize a full-market 2019-2025 snapshot.",
+        "Purchasing this source would duplicate the already selected Level-1 OHLCV/amount path rather than add a new economic factor."
+      ]
+    },
+    {
+      "candidate": "tushare_a_share_realtime_minute",
+      "interfaces": [
+        "rt_min",
+        "rt_min_daily"
+      ],
+      "decision": "rejected_as_historical_research_substitute_before_rows",
+      "reasons": [
+        "The independent real-time permission is not implied by points.",
+        "Current-day accumulation cannot supply the frozen 2019-2025 development history or a completed 2026-07-13 acceptance session.",
+        "A future-only observation path cannot validate historical factor stability or Top-3 viability."
+      ]
+    },
+    {
+      "candidate": "qmt_xtquant_level1_one_minute_export_bridge",
+      "decision": "retained_as_selected_path_before_real_export_rows",
+      "reasons": [
+        "It matches the existing frozen four-symbol acceptance contract and five preregistered minute features.",
+        "It avoids a second CNY 2000 annual data purchase when a lawful broker-side export may already be available.",
+        "The exporter and strict offline importer are implemented and tested; only the real Windows-side bundle is missing."
+      ]
+    }
+  ],
+  "decision": {
+    "new_source_path_advanced": false,
+    "selected_source_path_changed": false,
+    "selected_source_path": "qmt_xtquant_level1_one_minute_export_bridge",
+    "tushare_historical_minute_purchase_recommended_now": false,
+    "tushare_realtime_minute_purchase_recommended_now": false,
+    "tushare_trial_request_allowed_from_this_audit": false,
+    "next_external_action": "Run the frozen QMT four-symbol acceptance exporter in an already-lawful Windows MiniQMT/XtQuant environment and transfer the untouched bundle for offline validation.",
+    "next_local_action_after_bundle": "Run acceptance-qmt-1m-export, review all four timestamp boundaries, and store a separate alignment confirmation before freezing any full-source no-return protocol.",
+    "full_history_allowed_before_real_acceptance": false,
+    "minute_feature_materialization_allowed_before_full_source_protocol": false,
+    "forward_returns_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "provider_rows_observed_during_this_audit": false,
+  "factor_values_observed_during_this_audit": false,
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

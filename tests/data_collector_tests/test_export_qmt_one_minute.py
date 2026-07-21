@@ -430,3 +430,37 @@ def test_qmt_importer_rejects_daily_reconciliation_mismatch(tmp_path, monkeypatc
         "amount",
         "price_basis",
     ]
+
+
+def test_qmt_importer_records_unexpected_publish_failure(tmp_path, monkeypatch):
+    manifest_path = build_qmt_bundle(tmp_path)
+    daily_root = tmp_path / "daily"
+    write_matching_daily_references(manifest_path, daily_root)
+    monkeypatch.setattr(RICH, "DAILY_RAW_DIR", daily_root)
+    monkeypatch.setattr(
+        RICH,
+        "validate_qmt_xtquant_one_minute_local_context",
+        lambda contract: None,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "_publish_qmt_xtquant_acceptance_snapshot",
+        lambda **kwargs: (_ for _ in ()).throw(OSError("do not persist this detail")),
+    )
+    data_root = tmp_path / "accepted-data"
+
+    with pytest.raises(RICH.RichDataError, match="unexpected OSError"):
+        RICH.accept_qmt_xtquant_one_minute_export(
+            manifest_path, data_root=data_root
+        )
+    rejection = next(
+        (data_root / "metadata" / "rich_data" / "runs").glob(
+            "*_rejection.json"
+        )
+    )
+    payload = json.loads(rejection.read_text(encoding="utf-8"))
+    assert payload["failed_stage"] == "atomic_publish"
+    assert payload["error"] == (
+        "QMT acceptance stopped on an unexpected OSError without preserving source values"
+    )
+    assert "do not persist this detail" not in rejection.read_text(encoding="utf-8")

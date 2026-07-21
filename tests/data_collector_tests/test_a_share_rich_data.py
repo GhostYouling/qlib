@@ -241,6 +241,119 @@ def test_status_reports_external_baostock_storage_without_mutation(tmp_path):
     assert lock_path.read_bytes() == before_lock
 
 
+def test_status_reports_qmt_export_bridge_readiness_without_mutation(tmp_path):
+    data_root = tmp_path / "rich-root"
+    data_root.mkdir()
+    before = sorted(path.relative_to(data_root) for path in data_root.rglob("*"))
+
+    payload = RICH.status_payload(data_root)
+    qmt = payload["qmt_xtquant_one_minute_acceptance"]
+    assert qmt["network_request_issued"] is False
+    assert qmt["contract"]["fingerprint_valid"] is True
+    assert qmt["exporter"]["exists"] is True
+    assert qmt["exporter"]["operation"] == "export-acceptance"
+    assert qmt["expected_bundle_manifest_filename"] == (
+        "qmt_1m_acceptance_export.json"
+    )
+    assert qmt["consumed_bundle_record_count"] == 0
+    assert qmt["successful_acceptance_count"] == 0
+    assert qmt["rejection_count"] == 0
+    assert qmt["invalid_record_count"] == 0
+    assert qmt["real_bundle_observed"] is False
+    assert qmt["automatic_import_passed"] is False
+    assert qmt["alignment_confirmation_count"] == 0
+    assert qmt["next_action"] == (
+        "run_frozen_windows_qmt_four_symbol_export_and_transfer_untouched_bundle"
+    )
+    assert qmt["process_lock"]["advisory_lock_currently_held"] is False
+    assert sorted(path.relative_to(data_root) for path in data_root.rglob("*")) == before
+
+
+def test_qmt_status_distinguishes_rejection_success_and_alignment(tmp_path):
+    invalid_root = tmp_path / "invalid"
+    invalid_path = (
+        invalid_root
+        / "metadata/rich_data/runs/20260721T115900Z_qmt_xtquant_export_1m_acceptance.json"
+    )
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_rich_data_snapshot",
+            "provider": "unexpected_provider",
+        },
+        invalid_path,
+    )
+    invalid = RICH.qmt_xtquant_acceptance_status(invalid_root)
+    assert invalid["invalid_record_count"] == 1
+    assert invalid["consumed_bundle_record_count"] == 0
+    assert invalid["real_bundle_observed"] is False
+    assert invalid["latest_acceptance_or_rejection"]["record_valid"] is False
+    assert invalid["next_action"] == (
+        "stop_and_repair_invalid_local_qmt_acceptance_record"
+    )
+
+    rejected_root = tmp_path / "rejected"
+    rejected_path = (
+        rejected_root
+        / "metadata/rich_data/runs/20260721T120000Z_qmt_xtquant_export_1m_acceptance_rejection.json"
+    )
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_qmt_xtquant_one_minute_export_acceptance_rejection",
+            "status": "rejected_without_published_snapshot",
+        },
+        rejected_path,
+    )
+    rejected = RICH.qmt_xtquant_acceptance_status(rejected_root)
+    assert rejected["real_bundle_observed"] is True
+    assert rejected["rejection_count"] == 1
+    assert rejected["successful_acceptance_count"] == 0
+    assert rejected["next_action"] == (
+        "stop_and_review_rejection_do_not_edit_or_retry_consumed_bundle"
+    )
+
+    accepted_root = tmp_path / "accepted"
+    accepted_path = (
+        accepted_root
+        / "metadata/rich_data/runs/20260721T120100Z_qmt_xtquant_export_1m_acceptance.json"
+    )
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_rich_data_snapshot",
+            "provider": "qmt_xtquant_export",
+            "qmt_acceptance_status": (
+                "automatic_checks_passed_pending_explicit_time_alignment_and_"
+                "separate_full_source_no_return_protocol"
+            ),
+        },
+        accepted_path,
+    )
+    accepted = RICH.qmt_xtquant_acceptance_status(accepted_root)
+    assert accepted["successful_acceptance_count"] == 1
+    assert accepted["automatic_import_passed"] is True
+    assert accepted["next_action"] == (
+        "review_boundaries_and_run_confirm_minute_alignment"
+    )
+
+    alignment_path = (
+        accepted_root
+        / "metadata/rich_data/alignments/20260721T120200Z_qmt_alignment.json"
+    )
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_minute_alignment_confirmation",
+            "provider": "qmt_xtquant_export",
+            "status": "passed_pending_separate_full_source_no_return_protocol",
+        },
+        alignment_path,
+    )
+    aligned = RICH.qmt_xtquant_acceptance_status(accepted_root)
+    assert aligned["alignment_confirmation_count"] == 1
+    assert aligned["latest_alignment_confirmation"] == str(alignment_path.resolve())
+    assert aligned["next_action"] == (
+        "freeze_separate_full_source_no_return_protocol_before_full_history_or_features"
+    )
+
+
 def test_advisory_lock_status_distinguishes_active_and_inactive_marker(tmp_path):
     lock_path = tmp_path / "baostock.lock"
     with RICH.RichDataProcessLock(lock_path):

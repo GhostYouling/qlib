@@ -1624,6 +1624,12 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 在交易所问询分支终止后，零行情前沿记录 [`a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json`](a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json)（SHA‑256 `7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db`）选择已有合法 MiniQMT/XtQuant 环境的 Level‑1 一分钟导出作为下一条数据路径；没有新建或改写因子。冻结合同 [`a_share_qmt_xtquant_one_minute_export_data_contract.json`](a_share_qmt_xtquant_one_minute_export_data_contract.json)（SHA‑256 `a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399`）固定 `2026-07-13` 与 `600519.SH/000001.SZ/300750.SZ/688981.SH`，只允许 `time,open,high,low,close,volume,amount,suspendFlag`、`1m`、不复权、禁止填充。账户、Token、Cookie、客户端路径、机器名、用户名、交易 API、Level‑2 与 QMT 原始缓存都不得进入导出包。
 
+Tushare Token 配置完成后，零行情权限复核 [`a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json`](a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json)（SHA‑256 `61e2325c0199b35d7e10ec97f4d71f973786b925b6e0f187a0e4de8bb4068959`）确认：现有 3,000 积分只覆盖积分接口，不能授权 A 股历史分钟。Tushare 官方权限表把 1/5/15/30/60 分钟历史列为独立权限，个人版当前标价 2,000 元/年；实时分钟另为 1,000 元/月，只覆盖实时或当日累计，不能替代 2019–2025 开发历史。600 积分以上的两次试用请求也不足以完成冻结的四股双市场验收，更不授权全市场历史。因此本次没有消耗试用调用、没有读取任何 Tushare 分钟行，也不建议为复制同一 Level‑1 路径立即追加购买；QMT 导出桥保持优先。
+
+当前迭代状态统一写入 [`a_share_three_day_iteration_status_20260721.json`](a_share_three_day_iteration_status_20260721.json)（SHA‑256 `b59b153745db7ee46afd3646e57d946aca4881f5d7e15f127c5912890bb9f51c`）。这份机器可读记录绑定 43 因子历史前沿、之后 27 条主终止机制记录、QMT 选择审计/合同和 Tushare 分钟权限审计；加载时会逐一复核文件哈希与终止状态。当前数字固定为稳定性 7、TopK 0、双门禁 0、后续获准因子 0，因此聚合、评分、选股、定仓和下单均为 `false`。`report` 命令会把该状态写入 Markdown；若任一绑定记录被改写或错误地变成非终止状态，报告会直接失败，而不是继续使用过期结论。
+
+`python scripts/a_share_rich_data.py status` 现在还会输出 `qmt_xtquant_one_minute_acceptance`。该只读段落核对合同指纹、Windows 导出器是否存在、已消费验收/拒绝记录数、真实包是否出现、自动导入与显式对齐是否通过、QMT 验收锁是否正被占用，并给出唯一下一动作；它不会扫描仓库外目录、读取 K 线、访问网络或创建锁文件。没有真实包时，`next_action` 必须为 `run_frozen_windows_qmt_four_symbol_export_and_transfer_untouched_bundle`；拒绝记录出现后会要求停止并复核，成功导入后才会转为边界检查和显式对齐。
+
 Windows 端必须在用户已经依法可用的 MiniQMT/XtQuant Python 环境中、从本仓库副本运行；输出目录必须不存在：
 
 ```powershell
@@ -1651,7 +1657,7 @@ python scripts/a_share_rich_data.py confirm-minute-alignment \
   --reviewed-boundaries
 ```
 
-QMT 的对齐记录只会得到 `passed_pending_separate_full_source_no_return_protocol`，不会得到通用的 `passed_for_feature_research`；因此验收样本不能进入 `build-minute-features`。当前仓库只有冻结合同、导出器、严格离线验收器与伪 XtData 的九项离线回归；本机仍没有观察任何真实 QMT 运行时、导出行、分钟因子值、价格或未来收益。真实四股验收和对齐成功后，仍须另行冻结并实现全市场无收益协议，才能讨论特征物化。聚合、评分、选股、仓位、订单与 Level‑2 继续禁止。
+QMT 的对齐记录只会得到 `passed_pending_separate_full_source_no_return_protocol`，不会得到通用的 `passed_for_feature_research`；因此验收样本不能进入 `build-minute-features`。验收入口持有单一进程锁，意外发布错误也只能形成不含来源值的拒绝记录。当前仓库只有冻结合同、导出器、严格离线验收器与伪 XtData 的十项离线回归；本机仍没有观察任何真实 QMT 运行时、导出行、分钟因子值、价格或未来收益。真实四股验收和对齐成功后，仍须另行冻结并实现全市场无收益协议，才能讨论特征物化。聚合、评分、选股、仓位、订单与 Level‑2 继续禁止。
 
 ### CNInfo 补充更正披露负担（全历史分页稳定性终止）
 

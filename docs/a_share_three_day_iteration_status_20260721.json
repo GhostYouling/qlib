@@ -1,0 +1,276 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "aggregation_blocked_pending_real_qmt_level1_acceptance_bundle",
+  "recorded_at": "2026-07-21T11:30:00Z",
+  "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "signal_time": "local close",
+    "entry": "next local session open",
+    "exit": "third local session close"
+  },
+  "accepted_price_frontier": {
+    "path": "docs/a_share_three_day_research_frontier_audit.json",
+    "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0
+  },
+  "post_frontier_terminal_mechanisms": [
+    {
+      "mechanism": "tushare_classified_moneyflow",
+      "terminal_gate": "return_stability_and_topk",
+      "record": {
+        "path": "docs/a_share_tushare_moneyflow_research_record.json",
+        "sha256": "3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a"
+      }
+    },
+    {
+      "mechanism": "tushare_northbound_top10_turnover",
+      "terminal_gate": "source_acceptance",
+      "record": {
+        "path": "docs/a_share_tushare_northbound_top10_source_acceptance_record.json",
+        "sha256": "29f1dd342f64b2a19efd0f5f9723db6d6b7b867940c12520395f41a8f5b6df81"
+      }
+    },
+    {
+      "mechanism": "tushare_daily_positive_book_to_market",
+      "terminal_gate": "capacity_uniqueness_association_and_execution",
+      "record": {
+        "path": "docs/a_share_tushare_daily_pb_research_record.json",
+        "sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3"
+      }
+    },
+    {
+      "mechanism": "tushare_sw_industry_breadth",
+      "terminal_gate": "coverage_capacity_uniqueness_association_and_execution",
+      "record": {
+        "path": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+        "sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3"
+      }
+    },
+    {
+      "mechanism": "tushare_institution_seat_net_buy",
+      "terminal_gate": "source_acceptance",
+      "record": {
+        "path": "docs/a_share_tushare_top_inst_source_acceptance_record.json",
+        "sha256": "1a69c5029154c9a81bfb4ee90d60742989eb6d7c86b8cce0c390dfa88899cb07"
+      }
+    },
+    {
+      "mechanism": "tushare_top10_float_concentration_change",
+      "terminal_gate": "source_acceptance",
+      "record": {
+        "path": "docs/a_share_tushare_top10_float_concentration_source_acceptance_record.json",
+        "sha256": "9396a687aeae176097006395406ab79d74a015b1d9392f89023658b438bd2cdf"
+      }
+    },
+    {
+      "mechanism": "tushare_cash_conversion",
+      "terminal_gate": "full_source_after_one_repair",
+      "record": {
+        "path": "docs/a_share_tushare_cash_conversion_research_record.json",
+        "sha256": "c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819"
+      }
+    },
+    {
+      "mechanism": "tushare_earnings_forecast_midpoint",
+      "terminal_gate": "source_acceptance_and_mechanism_overlap",
+      "record": {
+        "path": "docs/a_share_tushare_earnings_forecast_source_acceptance_record.json",
+        "sha256": "38b966eea1728769ca977c1e26733527fc908846188e4727f2d76b716e97878b"
+      }
+    },
+    {
+      "mechanism": "tushare_disclosure_promptness",
+      "terminal_gate": "source_acceptance",
+      "record": {
+        "path": "docs/a_share_tushare_disclosure_promptness_source_acceptance_record.json",
+        "sha256": "2096e48a6126126e7fb4fd612e6f443a57e43df43bcfc45aa384d2574797e3ef"
+      }
+    },
+    {
+      "mechanism": "tushare_audit_opinion",
+      "terminal_gate": "no_return_capacity",
+      "record": {
+        "path": "docs/a_share_tushare_audit_opinion_research_record.json",
+        "sha256": "48db650abbd108014eed55f0829f308d9ceb854e113b33d29aa489549fa91d65"
+      }
+    },
+    {
+      "mechanism": "tushare_single_quarter_gross_margin_yoy",
+      "terminal_gate": "full_source",
+      "record": {
+        "path": "docs/a_share_tushare_gross_margin_research_record.json",
+        "sha256": "83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18"
+      }
+    },
+    {
+      "mechanism": "tushare_management_continuity",
+      "terminal_gate": "source_acceptance",
+      "record": {
+        "path": "docs/a_share_tushare_management_continuity_source_acceptance_record.json",
+        "sha256": "e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8"
+      }
+    },
+    {
+      "mechanism": "tushare_st_recovery_duration",
+      "terminal_gate": "source_continuity",
+      "record": {
+        "path": "docs/a_share_tushare_st_recovery_research_record.json",
+        "sha256": "bbed853556c603a154501d59196ab353299b1ce4199a6bbd978197b01d37e067"
+      }
+    },
+    {
+      "mechanism": "tushare_free_float_scarcity",
+      "terminal_gate": "no_return_uniqueness",
+      "record": {
+        "path": "docs/a_share_tushare_free_float_scarcity_research_record.json",
+        "sha256": "9804ef63da08be5beec4a13460dc8ac0e36fdff3e203dd3f00dc9d148b88a24a"
+      }
+    },
+    {
+      "mechanism": "eastmoney_balance_sheet_resilience",
+      "terminal_gate": "return_stability_and_execution",
+      "record": {
+        "path": "docs/a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json",
+        "sha256": "b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf"
+      }
+    },
+    {
+      "mechanism": "eastmoney_core_profit_consistency",
+      "terminal_gate": "return_stability_and_execution",
+      "record": {
+        "path": "docs/a_share_eastmoney_core_profit_consistency_diagnostic_record.json",
+        "sha256": "970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f"
+      }
+    },
+    {
+      "mechanism": "tushare_express_asset_growth",
+      "terminal_gate": "source_acceptance",
+      "record": {
+        "path": "docs/a_share_tushare_express_asset_growth_source_acceptance_record.json",
+        "sha256": "71a61cdfb33359e07f74e101b7958258fce08a70974aee2be0aab16179e48b1e"
+      }
+    },
+    {
+      "mechanism": "tushare_contract_liability_backlog",
+      "terminal_gate": "full_source_coverage",
+      "record": {
+        "path": "docs/a_share_tushare_contract_liability_backlog_research_record.json",
+        "sha256": "982d3014b82b13ef85017e68ed8e4a2fa2e23336b752d3d488169b1a2daf2519"
+      }
+    },
+    {
+      "mechanism": "eastmoney_related_party_transaction_sparsity",
+      "terminal_gate": "return_stability_and_execution",
+      "record": {
+        "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json",
+        "sha256": "b8bda6862349a0ff9082109a3e176b4ecc195dc9be5bfb07043e91c6e7460dba"
+      }
+    },
+    {
+      "mechanism": "cninfo_recent_guarantee_disclosure_sparsity",
+      "terminal_gate": "source_transport",
+      "record": {
+        "path": "docs/a_share_cninfo_guarantee_sparsity_source_acceptance_record.json",
+        "sha256": "0719385358e9cbed298eb34c32f864093d7298253dab770e0297673a8ae6688d"
+      }
+    },
+    {
+      "mechanism": "eastmoney_monetary_funds_asset_intensity",
+      "terminal_gate": "no_return_capacity",
+      "record": {
+        "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_research_record.json",
+        "sha256": "d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a"
+      }
+    },
+    {
+      "mechanism": "eastmoney_government_subsidy_disclosure_intensity",
+      "terminal_gate": "source_identity",
+      "record": {
+        "path": "docs/a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json",
+        "sha256": "431f02f0e9c4609ee12b764e593fa40904daf2ebe9262cd90461ad4c39f98cfd"
+      }
+    },
+    {
+      "mechanism": "eastmoney_major_contract_disclosure_intensity",
+      "terminal_gate": "source_signing_date_schema",
+      "record": {
+        "path": "docs/a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json",
+        "sha256": "4c89537c713fc1ad0c0769edb73e227669d99c92461d77de9c374f14973e8316"
+      }
+    },
+    {
+      "mechanism": "cninfo_equity_incentive_plan_disclosure_intensity",
+      "terminal_gate": "full_source_title_schema",
+      "record": {
+        "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json",
+        "sha256": "6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375"
+      }
+    },
+    {
+      "mechanism": "tushare_ccass_participant_breadth",
+      "terminal_gate": "source_entitlement",
+      "record": {
+        "path": "docs/a_share_tushare_ccass_participant_breadth_source_acceptance_record.json",
+        "sha256": "54a4d18096b14797e351d9380bcf9e1e6a6bf943cacd984fe674f51353c1615f"
+      }
+    },
+    {
+      "mechanism": "cninfo_supplement_correction_disclosure_burden",
+      "terminal_gate": "full_source_pagination_stability",
+      "record": {
+        "path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json",
+        "sha256": "c331ef49010cc3481b0449326855cc8e0d879e0fd9607e9c27139af29449535a"
+      }
+    },
+    {
+      "mechanism": "official_exchange_inquiry_burden",
+      "terminal_gate": "source_metadata_schema",
+      "record": {
+        "path": "docs/a_share_official_exchange_inquiry_burden_source_acceptance_record.json",
+        "sha256": "a2c5d1c6daa11cf73d29843eb36dffdacf3d27ff07802e5d222fe9e14f3f5cdf"
+      }
+    }
+  ],
+  "post_frontier_summary": {
+    "terminal_mechanism_count": 27,
+    "admitted_factor_count": 0,
+    "aggregation_candidate_count": 0
+  },
+  "selected_source_path": {
+    "source": "qmt_xtquant_level1_one_minute_export_bridge",
+    "selection_audit": {
+      "path": "docs/a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json",
+      "sha256": "7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db"
+    },
+    "data_contract": {
+      "path": "docs/a_share_qmt_xtquant_one_minute_export_data_contract.json",
+      "sha256": "a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399"
+    },
+    "tushare_permission_audit": {
+      "path": "docs/a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json",
+      "sha256": "61e2325c0199b35d7e10ec97f4d71f973786b925b6e0f187a0e4de8bb4068959"
+    },
+    "exporter_and_importer_implemented": true,
+    "real_acceptance_bundle_observed": false,
+    "automatic_import_passed": false,
+    "explicit_time_and_volume_alignment_confirmed": false,
+    "tushare_points_authorize_historical_minutes": false,
+    "next_external_action": "Run the frozen four-symbol QMT acceptance exporter in an already-lawful Windows MiniQMT/XtQuant environment and transfer the untouched bundle for offline validation."
+  },
+  "decision": {
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "new_price_or_forward_return_read_for_this_status": false
+  }
+}
