@@ -4,6 +4,7 @@ import datetime as dt
 import gzip
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -15,6 +16,17 @@ SPEC = importlib.util.spec_from_file_location("export_qmt_one_minute", SCRIPT_PA
 QMT = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 SPEC.loader.exec_module(QMT)
+
+RICH_SCRIPT_PATH = (
+    Path(__file__).resolve().parents[2] / "scripts" / "a_share_rich_data.py"
+)
+RICH_SPEC = importlib.util.spec_from_file_location(
+    "a_share_rich_data_qmt_import_tests", RICH_SCRIPT_PATH
+)
+RICH = importlib.util.module_from_spec(RICH_SPEC)
+assert RICH_SPEC.loader is not None
+sys.modules[RICH_SPEC.name] = RICH
+RICH_SPEC.loader.exec_module(RICH)
 
 
 class FakeXtData:
@@ -69,6 +81,102 @@ class FakeXtData:
                 frame = frame.drop(columns=["amount"])
             response[symbol] = frame
         return response
+
+
+def build_qmt_bundle(tmp_path: Path) -> Path:
+    """Create one deterministic end-labelled acceptance bundle."""
+
+    return QMT.export_qmt_acceptance_bundle(
+        tmp_path / "acceptance-bundle",
+        xtdata_module=FakeXtData(),
+        generated_at=dt.datetime(2026, 7, 21, 12, 0, tzinfo=dt.timezone.utc),
+    )
+
+
+def rewrite_bundle_file(
+    manifest_path: Path,
+    source_symbol: str,
+    transform,
+) -> None:
+    """Rewrite one deterministic gzip member and update only its byte hash."""
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    record = next(
+        item for item in manifest["files"] if item["source_symbol"] == source_symbol
+    )
+    path = manifest_path.parent / record["path"]
+    with gzip.open(path, "rt", encoding="utf-8", newline="") as stream:
+        frame = pd.read_csv(stream)
+    QMT.write_deterministic_gzip_csv(transform(frame), path)
+    record["sha256"] = QMT.file_sha256(path)
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
+def write_matching_daily_references(
+    manifest_path: Path,
+    daily_root: Path,
+    *,
+    close_multiplier: float = 1.0,
+) -> None:
+    """Derive local raw daily references from the isolated fake export."""
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    daily_root.mkdir(parents=True)
+    for code, record in zip(manifest["symbols"], manifest["files"], strict=True):
+        with gzip.open(
+            manifest_path.parent / record["path"],
+            "rt",
+            encoding="utf-8",
+            newline="",
+        ) as stream:
+            minute = pd.read_csv(stream)
+        daily = pd.DataFrame(
+            {
+                "date": pd.to_datetime([manifest["trade_date"]]),
+                "raw_open": [float(minute["open"].iloc[0])],
+                "raw_high": [float(minute["high"].max())],
+                "raw_low": [float(minute["low"].min())],
+                "raw_close": [float(minute["close"].iloc[-1]) * close_multiplier],
+                "raw_volume": [float(minute["volume"].sum()) / 100.0],
+                "amount": [float(minute["amount"].sum())],
+                "price_basis": [RICH.REQUIRED_DAILY_PRICE_BASIS],
+            }
+        )
+        daily.to_parquet(
+            daily_root / f"{RICH.qlib_symbol(str(code)).lower()}.parquet",
+            index=False,
+        )
+
+
+def accept_fake_qmt_bundle(
+    manifest_path: Path,
+    tmp_path: Path,
+    monkeypatch,
+    *,
+    close_multiplier: float = 1.0,
+) -> Path:
+    """Run strict import against isolated daily references and no network."""
+
+    daily_root = tmp_path / "daily"
+    write_matching_daily_references(
+        manifest_path,
+        daily_root,
+        close_multiplier=close_multiplier,
+    )
+    monkeypatch.setattr(RICH, "DAILY_RAW_DIR", daily_root)
+    monkeypatch.setattr(
+        RICH,
+        "validate_qmt_xtquant_one_minute_local_context",
+        lambda contract: None,
+    )
+    return RICH.accept_qmt_xtquant_one_minute_export(
+        manifest_path,
+        data_root=tmp_path / "accepted-data",
+        imported_at=dt.datetime(2026, 7, 21, 12, 30, tzinfo=dt.timezone.utc),
+    )
 
 
 def test_qmt_exporter_writes_fixed_privacy_minimized_bundle(tmp_path):
@@ -156,3 +264,169 @@ def test_qmt_exporter_rejects_existing_destination_before_runtime_call(tmp_path)
         QMT.export_qmt_acceptance_bundle(output, xtdata_module=fake)
     assert fake.download_calls == []
     assert fake.read_calls == []
+
+
+def test_qmt_importer_accepts_all_four_files_atomically(tmp_path, monkeypatch):
+    manifest_path = build_qmt_bundle(tmp_path)
+    accepted_manifest_path = accept_fake_qmt_bundle(
+        manifest_path, tmp_path, monkeypatch
+    )
+
+    accepted = json.loads(accepted_manifest_path.read_text(encoding="utf-8"))
+    assert accepted["provider"] == "qmt_xtquant_export"
+    assert accepted["automatic_timestamp_grid"] == {
+        "observed_label": "end",
+        "bars_per_symbol": 240,
+        "explicit_separate_confirmation_required": True,
+    }
+    assert accepted["automatic_volume_unit"] == "shares"
+    assert accepted["minute_factor_values_persisted"] is False
+    assert accepted["full_history_persisted"] is False
+    assert accepted["forward_return_fields_read"] is False
+    assert accepted["selection_or_promotion_allowed"] is False
+    assert len(accepted["files"]) == 4
+    for record in accepted["files"]:
+        frame = pd.read_parquet(record["path"])
+        assert tuple(frame.columns) == RICH.QMT_XTQUANT_NORMALIZED_COLUMNS
+        assert len(frame) == 240
+        assert frame["provider"].eq("qmt_xtquant_export").all()
+        assert record["acceptance"]["daily_reconciliation"]["status"] == "passed"
+
+    confirmation = RICH.confirm_minute_alignment(
+        accepted_manifest_path,
+        bar_label="end",
+        volume_unit="shares",
+        reviewed_boundaries=True,
+        output=tmp_path / "alignment.json",
+    )
+    alignment = json.loads(confirmation.read_text(encoding="utf-8"))
+    assert alignment["status"] == (
+        "passed_pending_separate_full_source_no_return_protocol"
+    )
+    assert len(alignment["complete_session_evidence"]) == 4
+
+    with pytest.raises(RICH.RichDataError, match="not passed for feature research"):
+        RICH.build_minute_features(accepted_manifest_path, confirmation)
+
+
+def test_qmt_importer_rejects_byte_tampering_and_consumes_failure(
+    tmp_path, monkeypatch
+):
+    manifest_path = build_qmt_bundle(tmp_path)
+    source_file = next(manifest_path.parent.glob("*.csv.gz"))
+    source_file.write_bytes(source_file.read_bytes() + b"tampered")
+    monkeypatch.setattr(
+        RICH,
+        "validate_qmt_xtquant_one_minute_local_context",
+        lambda contract: None,
+    )
+    data_root = tmp_path / "accepted-data"
+
+    with pytest.raises(RICH.RichDataError, match="byte fingerprint mismatch"):
+        RICH.accept_qmt_xtquant_one_minute_export(
+            manifest_path, data_root=data_root
+        )
+    rejection_records = list(
+        (data_root / "metadata" / "rich_data" / "runs").glob("*_rejection.json")
+    )
+    assert len(rejection_records) == 1
+    rejection = json.loads(rejection_records[0].read_text(encoding="utf-8"))
+    assert rejection["failed_stage"] == "bundle_validation"
+    assert rejection["published_snapshot_files"] == 0
+    assert not (
+        data_root
+        / "raw"
+        / "a_share"
+        / "rich"
+        / "qmt_xtquant_export"
+        / "minutes"
+        / "1m"
+        / "snapshots"
+    ).exists()
+
+    with pytest.raises(RICH.RichDataError, match="already consumed"):
+        RICH.accept_qmt_xtquant_one_minute_export(
+            manifest_path, data_root=data_root
+        )
+    assert len(
+        list(
+            (data_root / "metadata" / "rich_data" / "runs").glob(
+                "*_rejection.json"
+            )
+        )
+    ) == 1
+
+
+def test_qmt_importer_rejects_mixed_timestamp_labels(tmp_path, monkeypatch):
+    manifest_path = build_qmt_bundle(tmp_path)
+    rewrite_bundle_file(
+        manifest_path,
+        "600519.SH",
+        lambda frame: frame.assign(timetag_ms=frame["timetag_ms"] - 60_000),
+    )
+
+    with pytest.raises(RICH.RichDataError, match="mixed timestamp-label grids"):
+        accept_fake_qmt_bundle(manifest_path, tmp_path, monkeypatch)
+    rejection = next(
+        (tmp_path / "accepted-data" / "metadata" / "rich_data" / "runs").glob(
+            "*_rejection.json"
+        )
+    )
+    assert json.loads(rejection.read_text(encoding="utf-8"))["failed_stage"] == (
+        "strict_csv_normalization"
+    )
+
+
+def test_qmt_importer_rejects_unexpected_bundle_member(tmp_path, monkeypatch):
+    manifest_path = build_qmt_bundle(tmp_path)
+    (manifest_path.parent / ".DS_Store").write_bytes(b"unexpected")
+    monkeypatch.setattr(
+        RICH,
+        "validate_qmt_xtquant_one_minute_local_context",
+        lambda contract: None,
+    )
+
+    with pytest.raises(RICH.RichDataError, match="unexpected or missing file"):
+        RICH.accept_qmt_xtquant_one_minute_export(
+            manifest_path, data_root=tmp_path / "accepted-data"
+        )
+
+
+def test_qmt_importer_rejects_csv_schema_change(tmp_path, monkeypatch):
+    manifest_path = build_qmt_bundle(tmp_path)
+    rewrite_bundle_file(
+        manifest_path,
+        "600519.SH",
+        lambda frame: frame.assign(unexpected=1),
+    )
+
+    with pytest.raises(RICH.RichDataError, match="column order or schema"):
+        accept_fake_qmt_bundle(manifest_path, tmp_path, monkeypatch)
+
+
+def test_qmt_importer_rejects_daily_reconciliation_mismatch(tmp_path, monkeypatch):
+    manifest_path = build_qmt_bundle(tmp_path)
+
+    with pytest.raises(RICH.RichDataError, match="daily reconciliation"):
+        accept_fake_qmt_bundle(
+            manifest_path,
+            tmp_path,
+            monkeypatch,
+            close_multiplier=1.1,
+        )
+    rejection = next(
+        (tmp_path / "accepted-data" / "metadata" / "rich_data" / "runs").glob(
+            "*_rejection.json"
+        )
+    )
+    payload = json.loads(rejection.read_text(encoding="utf-8"))
+    assert payload["failed_stage"] == "local_daily_reconciliation"
+    assert payload["local_daily_fields_loaded_for_reconciliation"] == [
+        "raw_open",
+        "raw_high",
+        "raw_low",
+        "raw_close",
+        "raw_volume",
+        "amount",
+        "price_basis",
+    ]

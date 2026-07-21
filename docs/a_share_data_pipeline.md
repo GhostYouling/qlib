@@ -1620,7 +1620,7 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 唯一验收从冻结顺序的 SZSE `main_wxhj` 元数据探针开始，响应没有且仅有一个可见报表，因而在默认数据行规范化、SSE 请求、因子值、价格和收益之前终止。失败清单 `data/metadata/rich_data/runs/20260721T102937Z_official_exchange_inquiry_burden_acceptance_3c38881b.json` 的 SHA‑256 为 `e73fef90eda1467ec992be8e0d00c890422110542b4b74f84ff7958b5eaf656b`；跨克隆终止记录为 [`a_share_official_exchange_inquiry_burden_source_acceptance_record.json`](a_share_official_exchange_inquiry_burden_source_acceptance_record.json)（SHA‑256 `a2c5d1c6daa11cf73d29843eb36dffdacf3d27ff07802e5d222fe9e14f3f5cdf`）。不得重跑、任选一个报表、改标签、检查默认行来倒推结构、只用一个交易所、第三方补齐或继续全量/容量/收益/选股。这是来源元数据合同失败，不是因子收益结论。
 
-### QMT / XtQuant Level‑1 一分钟导出桥（合同与导出器已冻结，尚未验收数据）
+### QMT / XtQuant Level‑1 一分钟导出桥（离线验收器已实现，尚未取得真实导出包）
 
 在交易所问询分支终止后，零行情前沿记录 [`a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json`](a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json)（SHA‑256 `7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db`）选择已有合法 MiniQMT/XtQuant 环境的 Level‑1 一分钟导出作为下一条数据路径；没有新建或改写因子。冻结合同 [`a_share_qmt_xtquant_one_minute_export_data_contract.json`](a_share_qmt_xtquant_one_minute_export_data_contract.json)（SHA‑256 `a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399`）固定 `2026-07-13` 与 `600519.SH/000001.SZ/300750.SZ/688981.SH`，只允许 `time,open,high,low,close,volume,amount,suspendFlag`、`1m`、不复权、禁止填充。账户、Token、Cookie、客户端路径、机器名、用户名、交易 API、Level‑2 与 QMT 原始缓存都不得进入导出包。
 
@@ -1632,7 +1632,26 @@ python scripts/export_qmt_one_minute.py export-acceptance --output C:\qmt_export
 
 脚本只调用 `download_history_data2` 与 `get_market_data_ex`，每个股票写一份确定性 gzip CSV，并生成 `qmt_1m_acceptance_export.json`。它不登录账户、不读取持仓或订单、不调用交易/Level‑2 接口，也不会输出 K 线内容。导出失败会删除隐藏临时目录，现有目标目录绝不覆盖。
 
-当前提交只包含冻结合同、导出器与伪 XtData 离线回归；本机没有观察任何 QMT 运行时、导出行、分钟因子值、价格或未来收益。把目录移到研究机后也不能手工改 CSV 或清单，更不能直接送入 Qlib、聚合、评分或选股。下一步必须先实现并测试严格的离线导入验收：逐字节校验四个文件、确认每股 240 个唯一规则时间戳、判断起始/结束标记、复核不复权 OHLC、成交额与成交量单位，并让四股一起通过；之后仍需单独冻结全市场无收益协议。Level‑2 继续延后。
+把完整目录原样移到研究机后，从仓库根目录运行；不能手工改 CSV 或清单，也不能在目录里加入 `.DS_Store` 或其他文件：
+
+```bash
+python scripts/a_share_rich_data.py acceptance-qmt-1m-export \
+  --manifest /绝对路径/qlib_20260713_acceptance/qmt_1m_acceptance_export.json
+```
+
+离线验收不联网，先绑定冻结合同与本地日线基座指纹，再逐字节校验清单和四份 gzip CSV；每股必须恰好有 240 个唯一、递增、同一种起始或结束标签的规则时间戳，并通过不复权 OHLC、成交额和成交量单位的本地日线对账。四股只能一起原子发布。任何失败都会写一份不含行情值的拒绝记录、删除临时快照，并永久消费该导出包，不能编辑后重试。
+
+成功清单仍是 `automatic_checks_passed_pending_time_alignment`。人工核对清单中的四组首尾时间后，按验收器报告的 `observed_label` 与 `automatic_volume_unit` 单独确认；下面只是结束标签、股数单位的示例，不能不看清单直接照抄：
+
+```bash
+python scripts/a_share_rich_data.py confirm-minute-alignment \
+  --manifest data/metadata/rich_data/runs/<QMT-acceptance-run>.json \
+  --bar-label end \
+  --volume-unit shares \
+  --reviewed-boundaries
+```
+
+QMT 的对齐记录只会得到 `passed_pending_separate_full_source_no_return_protocol`，不会得到通用的 `passed_for_feature_research`；因此验收样本不能进入 `build-minute-features`。当前仓库只有冻结合同、导出器、严格离线验收器与伪 XtData 的九项离线回归；本机仍没有观察任何真实 QMT 运行时、导出行、分钟因子值、价格或未来收益。真实四股验收和对齐成功后，仍须另行冻结并实现全市场无收益协议，才能讨论特征物化。聚合、评分、选股、仓位、订单与 Level‑2 继续禁止。
 
 ### CNInfo 补充更正披露负担（全历史分页稳定性终止）
 

@@ -75,6 +75,9 @@ DAILY_RAW_DIR = DATA_ROOT / "raw" / "a_share" / "daily"
 DEFAULT_MINUTE_FACTOR_SPEC = (
     REPO_ROOT / "docs" / "a_share_minute_factor_preregistration.json"
 )
+DEFAULT_QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_qmt_xtquant_one_minute_export_data_contract.json"
+)
 DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
@@ -674,6 +677,9 @@ OFFICIAL_EXCHANGE_INQUIRY_BURDEN_MECHANISM_AUDIT_SHA256 = (
 OFFICIAL_EXCHANGE_INQUIRY_BURDEN_ACCEPTANCE_RECORD_SHA256 = (
     "a2c5d1c6daa11cf73d29843eb36dffdacf3d27ff07802e5d222fe9e14f3f5cdf"
 )
+QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT_SHA256 = (
+    "a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399"
+)
 CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256 = (
     "1c59a4fdabbb7ae82d3279e83f81e55b3518f9634201379a96d59e25a7e12e68"
 )
@@ -1218,6 +1224,29 @@ OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS = (
     "instrument",
     "official_exchange_inquiry_count",
     "exchange",
+    "provider",
+)
+QMT_XTQUANT_EXPORT_COLUMNS = (
+    "timetag_ms",
+    "source_symbol",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount",
+    "suspend_flag",
+)
+QMT_XTQUANT_NORMALIZED_COLUMNS = (
+    "datetime",
+    "symbol",
+    "source_symbol",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount",
     "provider",
 )
 CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES = (
@@ -5814,6 +5843,16 @@ def file_digest(path: Path) -> str:
     return digest.hexdigest()
 
 
+def byte_file_digest(path: Path) -> str:
+    """Return a byte-exact SHA-256 digest without text normalization."""
+
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def resolve_record_path(value: str | Path) -> Path:
     """Resolve a manifest-stored repository-relative path safely."""
 
@@ -5838,6 +5877,715 @@ def load_json_record(path: Path, *, kind: str | None = None) -> dict[str, Any]:
     if kind is not None and payload.get("kind") != kind:
         raise RichDataError(f"expected {kind!r}, got {payload.get('kind')!r}: {path}")
     return payload
+
+
+def load_qmt_xtquant_one_minute_export_contract(
+    path: Path = DEFAULT_QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen QMT/XtQuant Level-1 one-minute export contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT_SHA256:
+        raise RichDataError("QMT one-minute export contract fingerprint mismatch")
+    contract = load_json_record(
+        path, kind="a_share_qmt_xtquant_one_minute_export_data_contract"
+    )
+    frontier = contract.get("frontier_selection") or {}
+    boundary = contract.get("environment_boundary") or {}
+    exporter = contract.get("exporter_protocol") or {}
+    acceptance = contract.get("formal_acceptance") or {}
+    bundle = contract.get("bundle_manifest_contract") or {}
+    strict_import = contract.get("strict_import_policy") or {}
+    normalized = contract.get("normalized_acceptance_snapshot") or {}
+    next_stage = contract.get("next_stage_policy") or {}
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_qmt_runtime_export_rows_minute_factor_values_prices_or_forward_returns"
+        or frontier.get("path")
+        != "docs/a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json"
+        or frontier.get("sha256")
+        != "7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db"
+        or frontier.get("selected_source_path")
+        != "qmt_xtquant_level1_one_minute_export_bridge"
+        or frontier.get("new_factor_definition_count") != 0
+        or boundary.get("macos_xtquant_install_or_client_launch_required") is not False
+        or boundary.get(
+            "credential_account_cookie_token_client_path_machine_name_or_username_allowed_in_bundle"
+        )
+        is not False
+        or boundary.get("order_cancel_position_asset_or_other_trading_api_allowed")
+        is not False
+        or boundary.get("level2_quote_order_transaction_or_queue_api_allowed")
+        is not False
+        or boundary.get("network_access_during_local_import") is not False
+        or exporter.get("allowed_operation") != "export-acceptance"
+        or exporter.get("api_module") != "xtquant.xtdata"
+        or exporter.get("history_download_function") != "download_history_data2"
+        or exporter.get("history_read_function") != "get_market_data_ex"
+        or exporter.get("period") != "1m"
+        or tuple(exporter.get("field_list_in_order") or ())
+        != (
+            "time",
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume",
+            "amount",
+            "suspendFlag",
+        )
+        or exporter.get("dividend_type") != "none"
+        or exporter.get("fill_data") is not False
+        or exporter.get("count") != -1
+        or exporter.get("export_manifest_filename")
+        != "qmt_1m_acceptance_export.json"
+        or exporter.get("one_gzip_csv_per_symbol") is not True
+        or exporter.get("gzip_mtime") != 0
+        or acceptance.get("trade_date") != "2026-07-13"
+        or acceptance.get("symbols") != ["600519", "000001", "300750", "688981"]
+        or acceptance.get("source_symbols")
+        != ["600519.SH", "000001.SZ", "300750.SZ", "688981.SH"]
+        or acceptance.get("required_rows_per_symbol") != 240
+        or acceptance.get("required_symbol_count") != 4
+        or acceptance.get("supported_timestamp_grids")
+        != ["bar_start_09_30_to_14_59", "bar_end_09_31_to_15_00"]
+        or acceptance.get("explicit_separate_alignment_confirmation_required")
+        is not True
+        or acceptance.get("daily_raw_ohlc_max_relative_error") != 0.002
+        or acceptance.get("daily_amount_ratio_tolerance") != 0.005
+        or acceptance.get("accepted_volume_ratios_to_local_raw_lot_volume")
+        != [1.0, 100.0]
+        or acceptance.get("daily_volume_ratio_tolerance") != 0.005
+        or acceptance.get("positive_total_volume_and_amount_required") is not True
+        or acceptance.get("suspend_flag_must_equal_zero") is not True
+        or acceptance.get("all_symbols_must_pass_together") is not True
+        or bundle.get("kind") != "a_share_qmt_xtquant_one_minute_export_bundle"
+        or bundle.get("version") != 1
+        or bundle.get("provider") != "qmt_xtquant"
+        or bundle.get("export_kind") != "acceptance"
+        or tuple(bundle.get("file_columns_required") or ())
+        != QMT_XTQUANT_EXPORT_COLUMNS
+        or bundle.get("relative_file_paths_only") is not True
+        or bundle.get("regular_files_only") is not True
+        or bundle.get("exactly_one_file_per_symbol") is not True
+        or bundle.get("file_byte_sha256_required") is not True
+        or bundle.get("row_count_required") is not True
+        or strict_import.get("duplicate_timestamp")
+        != "fatal_without_deduplication"
+        or strict_import.get("outside_trade_date_or_regular_session") != "fatal"
+        or strict_import.get("unexpected_extra_column_or_file") != "fatal"
+        or strict_import.get("bundle_or_file_hash_mismatch") != "fatal"
+        or tuple(normalized.get("columns") or ())
+        != QMT_XTQUANT_NORMALIZED_COLUMNS
+        or normalized.get("provider") != "qmt_xtquant_export"
+        or normalized.get("frequency") != "1m"
+        or normalized.get("prices") != "raw_unadjusted"
+        or normalized.get("factor_values_persisted") is not False
+        or normalized.get("full_history_persisted") is not False
+        or next_stage.get("acceptance_success_is_factor_return_evidence") is not False
+        or next_stage.get("full_history_allowed_from_this_contract_alone") is not False
+        or next_stage.get("minute_feature_materialization_allowed_from_this_contract_alone")
+        is not False
+        or next_stage.get("forward_return_diagnostic_allowed_from_this_contract_alone")
+        is not False
+        or next_stage.get(
+            "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed"
+        )
+        is not False
+        or contract.get("qmt_runtime_or_export_rows_observed_before_freeze") is not False
+        or contract.get("minute_factor_values_observed_before_freeze") is not False
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("QMT one-minute export contract changed after freeze")
+    frontier_path = resolve_record_path(str(frontier["path"]))
+    if not frontier_path.exists() or file_digest(frontier_path) != frontier["sha256"]:
+        raise RichDataError("QMT source-frontier record fingerprint mismatch")
+    return contract
+
+
+def validate_qmt_xtquant_one_minute_local_context(
+    contract: dict[str, Any],
+) -> None:
+    """Fingerprint-bind the daily basis, calendar, and universes before import."""
+
+    local = contract.get("local_context") or {}
+    expected = (
+        "minute_factor_preregistration",
+        "accepted_price_basis",
+        "local_calendar",
+        "holding_universe",
+        "factor_source_universe",
+    )
+    for label in expected:
+        record = local.get(label)
+        if not isinstance(record, dict):
+            raise RichDataError(f"QMT local context is missing {label}")
+        path = resolve_record_path(str(record.get("path") or ""))
+        expected_sha = str(record.get("sha256") or "")
+        if not path.exists() or file_digest(path) != expected_sha:
+            raise RichDataError(f"QMT local context fingerprint mismatch: {label}")
+    price_record = local["accepted_price_basis"]
+    price_basis = load_json_record(resolve_record_path(str(price_record["path"])))
+    if (
+        price_record.get("status") != "passed"
+        or price_record.get("price_basis") != REQUIRED_DAILY_PRICE_BASIS
+        or price_record.get("daily_source") != "baostock"
+        or price_basis.get("status") != "passed"
+        or price_basis.get("price_basis") != REQUIRED_DAILY_PRICE_BASIS
+        or price_basis.get("daily_sources") != ["baostock"]
+    ):
+        raise RichDataError("QMT local accepted-price basis is no longer valid")
+
+
+def _qmt_runtime_version(value: Any, *, field: str) -> str:
+    """Accept only compact non-sensitive version identifiers."""
+
+    text = str(value or "")
+    if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._+-]{0,63}", text) is None:
+        raise RichDataError(f"QMT export runtime field is not a version: {field}")
+    return text
+
+
+def _resolve_qmt_bundle_file(bundle_root: Path, value: Any) -> Path:
+    """Resolve one direct bundle member without traversal or symlink use."""
+
+    if not isinstance(value, str) or not value:
+        raise RichDataError("QMT export file path is missing")
+    relative = Path(value)
+    if relative.is_absolute() or len(relative.parts) != 1 or relative.name != value:
+        raise RichDataError("QMT export file path must be one direct relative filename")
+    candidate = bundle_root / relative
+    if candidate.is_symlink() or not candidate.is_file():
+        raise RichDataError("QMT export bundle member is not a regular file")
+    if candidate.resolve().parent != bundle_root.resolve():
+        raise RichDataError("QMT export file path escapes its bundle")
+    return candidate
+
+
+def load_qmt_xtquant_export_bundle(
+    manifest_path_value: Path,
+    contract: dict[str, Any],
+) -> tuple[dict[str, Any], list[tuple[dict[str, Any], Path]], str]:
+    """Validate the privacy-minimized QMT bundle and every byte hash."""
+
+    provided = manifest_path_value.expanduser()
+    if provided.is_symlink() or not provided.is_file():
+        raise RichDataError("QMT export manifest is not a regular file")
+    manifest_path = provided.resolve()
+    exporter = contract["exporter_protocol"]
+    acceptance = contract["formal_acceptance"]
+    bundle_contract = contract["bundle_manifest_contract"]
+    if manifest_path.name != exporter["export_manifest_filename"]:
+        raise RichDataError("QMT export manifest filename changed")
+    bundle = load_json_record(
+        manifest_path, kind="a_share_qmt_xtquant_one_minute_export_bundle"
+    )
+    required_top_level = list(bundle_contract["required_top_level_fields"])
+    if set(bundle) != set(required_top_level):
+        raise RichDataError("QMT export manifest top-level schema changed")
+    generated_at = str(bundle.get("generated_at_utc") or "")
+    try:
+        generated_timestamp = dt.datetime.fromisoformat(
+            generated_at.replace("Z", "+00:00")
+        )
+    except ValueError as exc:
+        raise RichDataError("QMT export generated_at_utc is invalid") from exc
+    if (
+        generated_timestamp.tzinfo is None
+        or generated_timestamp.utcoffset() != dt.timedelta(0)
+    ):
+        raise RichDataError("QMT export generated_at_utc is not UTC")
+    api_request = bundle.get("api_request") or {}
+    expected_api = {
+        "history_download_function": "download_history_data2",
+        "history_read_function": "get_market_data_ex",
+        "period": "1m",
+        "fields": list(exporter["field_list_in_order"]),
+        "start_time": "20260713",
+        "end_time": "20260713",
+        "count": -1,
+        "dividend_type": "none",
+        "fill_data": False,
+    }
+    runtime = bundle.get("runtime") or {}
+    data_contract = bundle.get("data_contract") or {}
+    privacy = bundle.get("privacy") or {}
+    if (
+        bundle.get("version") != 1
+        or bundle.get("provider") != "qmt_xtquant"
+        or bundle.get("export_kind") != "acceptance"
+        or bundle.get("trade_date") != acceptance["trade_date"]
+        or bundle.get("symbols") != acceptance["symbols"]
+        or bundle.get("source_symbols") != acceptance["source_symbols"]
+        or api_request != expected_api
+        or set(runtime) != set(bundle_contract["allowed_runtime_fields"])
+        or data_contract
+        != {
+            "path": "docs/a_share_qmt_xtquant_one_minute_export_data_contract.json",
+            "sha256": QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT_SHA256,
+        }
+        or privacy
+        != {
+            "credential_account_cookie_token_client_path_machine_name_or_username_persisted": False,
+            "trading_or_level2_api_used": False,
+            "raw_qmt_cache_or_client_database_copied": False,
+        }
+    ):
+        raise RichDataError("QMT export manifest changed its frozen request or privacy schema")
+    for field in bundle_contract["allowed_runtime_fields"]:
+        _qmt_runtime_version(runtime.get(field), field=str(field))
+
+    source_symbols = list(acceptance["source_symbols"])
+    files = bundle.get("files")
+    if not isinstance(files, list) or len(files) != len(source_symbols):
+        raise RichDataError("QMT export manifest does not contain exactly four files")
+    bundle_root = manifest_path.parent
+    expected_names = {
+        str(exporter["export_manifest_filename"]),
+        *{
+            f"qmt_1m_{source_symbol.replace('.', '_')}_20260713.csv.gz"
+            for source_symbol in source_symbols
+        },
+    }
+    observed_names = {entry.name for entry in bundle_root.iterdir()}
+    if observed_names != expected_names:
+        raise RichDataError("QMT export bundle contains an unexpected or missing file")
+    resolved_files: list[tuple[dict[str, Any], Path]] = []
+    for source_symbol, record in zip(source_symbols, files, strict=True):
+        if not isinstance(record, dict) or set(record) != {
+            "source_symbol",
+            "path",
+            "rows",
+            "sha256",
+            "columns",
+        }:
+            raise RichDataError("QMT export file record schema changed")
+        expected_name = (
+            f"qmt_1m_{source_symbol.replace('.', '_')}_20260713.csv.gz"
+        )
+        rows = record.get("rows")
+        digest = str(record.get("sha256") or "")
+        if (
+            record.get("source_symbol") != source_symbol
+            or record.get("path") != expected_name
+            or isinstance(rows, bool)
+            or rows != acceptance["required_rows_per_symbol"]
+            or re.fullmatch(r"[0-9a-f]{64}", digest) is None
+            or tuple(record.get("columns") or ()) != QMT_XTQUANT_EXPORT_COLUMNS
+        ):
+            raise RichDataError("QMT export file record changed its frozen identity")
+        path = _resolve_qmt_bundle_file(bundle_root, record["path"])
+        if byte_file_digest(path) != digest:
+            raise RichDataError("QMT export file byte fingerprint mismatch")
+        resolved_files.append((record, path))
+    return bundle, resolved_files, byte_file_digest(manifest_path)
+
+
+def _qmt_strict_numeric(
+    series: pd.Series, *, field: str, integer: bool = False
+) -> pd.Series:
+    """Parse one QMT CSV column without filling, dropping, or coercing booleans."""
+
+    text = series.astype(str)
+    if text.eq("").any():
+        raise RichDataError(f"QMT export field is empty: {field}")
+    if integer and not text.str.fullmatch(r"[0-9]+").all():
+        raise RichDataError(f"QMT export field is not a strict integer: {field}")
+    numeric = pd.to_numeric(text, errors="coerce")
+    if numeric.isna().any() or not np.isfinite(numeric.to_numpy(dtype=float)).all():
+        raise RichDataError(f"QMT export field is missing or non-finite: {field}")
+    if integer:
+        if not numeric.map(lambda value: float(value).is_integer()).all():
+            raise RichDataError(f"QMT export field is not integral: {field}")
+        return numeric.astype("int64")
+    return numeric.astype("float64")
+
+
+def normalize_qmt_xtquant_export_file(
+    path: Path,
+    *,
+    source_symbol: str,
+    code: str,
+    contract: dict[str, Any],
+) -> tuple[pd.DataFrame, str]:
+    """Read one byte-verified gzip CSV into the strict canonical minute schema."""
+
+    acceptance = contract["formal_acceptance"]
+    try:
+        raw = pd.read_csv(
+            path,
+            compression="gzip",
+            dtype=str,
+            keep_default_na=False,
+            na_filter=False,
+            skip_blank_lines=False,
+            on_bad_lines="error",
+            encoding="utf-8",
+        )
+    except Exception as exc:
+        raise RichDataError("QMT export gzip CSV cannot be parsed exactly") from exc
+    if tuple(raw.columns) != QMT_XTQUANT_EXPORT_COLUMNS:
+        raise RichDataError("QMT export CSV column order or schema changed")
+    if len(raw) != acceptance["required_rows_per_symbol"]:
+        raise RichDataError("QMT export CSV does not contain exactly 240 rows")
+    if not raw["source_symbol"].eq(source_symbol).all():
+        raise RichDataError("QMT export CSV contains an unexpected source symbol")
+
+    timetag_ms = _qmt_strict_numeric(
+        raw["timetag_ms"], field="timetag_ms", integer=True
+    )
+    if timetag_ms.duplicated().any() or not timetag_ms.is_monotonic_increasing:
+        raise RichDataError("QMT export timestamps are duplicate or not strictly ordered")
+    timestamps = pd.to_datetime(timetag_ms, unit="ms", utc=True, errors="coerce")
+    if timestamps.isna().any():
+        raise RichDataError("QMT export contains an invalid Unix-millisecond timestamp")
+    local_timestamps = timestamps.dt.tz_convert("Asia/Shanghai").dt.tz_localize(None)
+    trade_date = dt.date.fromisoformat(str(acceptance["trade_date"]))
+    if not local_timestamps.dt.date.map(lambda value: value == trade_date).all():
+        raise RichDataError("QMT export timestamp falls outside the frozen trade date")
+    observed_times = tuple(local_timestamps.dt.time)
+    timestamp_label: str | None = None
+    for label in ("start", "end"):
+        if observed_times == expected_minute_times(label, "1m"):
+            timestamp_label = label
+            break
+    if timestamp_label is None:
+        raise RichDataError("QMT export timestamps do not match either frozen 1m grid")
+
+    numeric = {
+        field: _qmt_strict_numeric(raw[field], field=field)
+        for field in ("open", "high", "low", "close", "volume", "amount")
+    }
+    suspend_flag = _qmt_strict_numeric(
+        raw["suspend_flag"], field="suspend_flag", integer=True
+    )
+    prices = pd.DataFrame({field: numeric[field] for field in ("open", "high", "low", "close")})
+    if prices.le(0.0).any().any():
+        raise RichDataError("QMT export contains a nonpositive formal-acceptance price")
+    if numeric["volume"].lt(0.0).any() or numeric["amount"].lt(0.0).any():
+        raise RichDataError("QMT export contains negative volume or amount")
+    if numeric["volume"].sum() <= 0.0 or numeric["amount"].sum() <= 0.0:
+        raise RichDataError("QMT export session volume or amount is not positive")
+    if suspend_flag.ne(0).any():
+        raise RichDataError("QMT export formal-acceptance row is marked suspended")
+    if (
+        prices["high"].lt(prices[["open", "low", "close"]].max(axis=1)).any()
+        or prices["low"].gt(prices[["open", "high", "close"]].min(axis=1)).any()
+    ):
+        raise RichDataError("QMT export OHLC ordering is invalid")
+
+    frame = pd.DataFrame(
+        {
+            "datetime": local_timestamps,
+            "symbol": qlib_symbol(code),
+            "source_symbol": source_symbol,
+            "open": numeric["open"],
+            "high": numeric["high"],
+            "low": numeric["low"],
+            "close": numeric["close"],
+            "volume": numeric["volume"],
+            "amount": numeric["amount"],
+            "provider": "qmt_xtquant_export",
+        }
+    )
+    return frame.loc[:, list(QMT_XTQUANT_NORMALIZED_COLUMNS)], timestamp_label
+
+
+def _qmt_consumption_guard(runs_root: Path, source_manifest_sha256: str) -> None:
+    """Reject a previously consumed bundle or a second successful acceptance."""
+
+    for path in sorted(runs_root.glob("*qmt_xtquant_export_1m_acceptance*.json")):
+        if not path.is_file():
+            continue
+        try:
+            record = load_json_record(path)
+        except RichDataError as exc:
+            raise RichDataError(f"stored QMT acceptance record is invalid: {path}") from exc
+        source = record.get("source_export_manifest") or {}
+        if source.get("sha256") == source_manifest_sha256:
+            raise RichDataError(f"QMT export bundle was already consumed: {path}")
+        if (
+            record.get("kind") == "a_share_rich_data_snapshot"
+            and record.get("provider") == "qmt_xtquant_export"
+            and record.get("qmt_acceptance_status")
+            == "automatic_checks_passed_pending_explicit_time_alignment_and_separate_full_source_no_return_protocol"
+        ):
+            raise RichDataError(f"a QMT one-minute acceptance already exists: {path}")
+
+
+def _qmt_boundary_summary(frame: pd.DataFrame) -> list[dict[str, Any]]:
+    """Persist only count and timestamp boundaries, never bar values."""
+
+    return [
+        {
+            "trade_date": frame["datetime"].dt.date.iloc[0].isoformat(),
+            "bars": int(len(frame)),
+            "first_bar": frame["datetime"].iloc[0].isoformat(),
+            "last_bar": frame["datetime"].iloc[-1].isoformat(),
+        }
+    ]
+
+
+def _publish_qmt_xtquant_acceptance_snapshot(
+    *,
+    data_root: Path,
+    run_id: str,
+    bundle: dict[str, Any],
+    source_manifest_sha256: str,
+    source_file_records: list[dict[str, Any]],
+    frames_by_code: dict[str, pd.DataFrame],
+    acceptance_by_code: dict[str, dict[str, Any]],
+    timestamp_label: str,
+    volume_unit: str,
+    imported_at: dt.datetime,
+) -> Path:
+    """Publish all four normalized files and their manifest as one unit."""
+
+    data_root = data_root.expanduser().resolve()
+    raw_root = data_root / "raw" / "a_share" / "rich"
+    runs_root = data_root / "metadata" / "rich_data" / "runs"
+    final_root = (
+        raw_root
+        / "qmt_xtquant_export"
+        / "minutes"
+        / "1m"
+        / "snapshots"
+        / run_id
+    )
+    temporary_root = final_root.parent / f".{run_id}.partial"
+    final_manifest = runs_root / f"{run_id}.json"
+    temporary_manifest = runs_root / f".{run_id}.json.partial"
+    if any(
+        path.exists()
+        for path in (final_root, temporary_root, final_manifest, temporary_manifest)
+    ):
+        raise RichDataError("QMT acceptance output already exists")
+    temporary_root.mkdir(parents=True)
+    runs_root.mkdir(parents=True, exist_ok=True)
+    published_root = False
+    try:
+        files: list[dict[str, Any]] = []
+        source_by_symbol = {
+            str(record["source_symbol"]): record for record in source_file_records
+        }
+        for code in bundle["symbols"]:
+            frame = frames_by_code[str(code)]
+            symbol = qlib_symbol(str(code))
+            destination = temporary_root / f"{symbol.lower()}.parquet"
+            frame.to_parquet(destination, index=False)
+            source_record = source_by_symbol[str(frame["source_symbol"].iloc[0])]
+            final_path = final_root / destination.name
+            files.append(
+                {
+                    "code": str(code),
+                    "symbol": symbol,
+                    "source_symbol": str(frame["source_symbol"].iloc[0]),
+                    "path": manifest_path(final_path),
+                    "rows": int(len(frame)),
+                    "sha256": frame_digest(frame),
+                    "boundary_summary": _qmt_boundary_summary(frame),
+                    "source_export_file": {
+                        "filename": source_record["path"],
+                        "sha256": source_record["sha256"],
+                    },
+                    "acceptance": acceptance_by_code[str(code)],
+                }
+            )
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "minutes",
+            "provider": "qmt_xtquant_export",
+            "frequency": "1m",
+            "prices": "raw_unadjusted",
+            "requested_start": bundle["trade_date"],
+            "requested_end": bundle["trade_date"],
+            "retrieved_at": imported_at.astimezone(dt.timezone.utc).isoformat(),
+            "run_id": run_id,
+            "files": files,
+            "acceptance_status": "automatic_checks_passed_pending_time_alignment",
+            "qmt_acceptance_status": (
+                "automatic_checks_passed_pending_explicit_time_alignment_and_"
+                "separate_full_source_no_return_protocol"
+            ),
+            "automatic_timestamp_grid": {
+                "observed_label": timestamp_label,
+                "bars_per_symbol": 240,
+                "explicit_separate_confirmation_required": True,
+            },
+            "automatic_volume_unit": volume_unit,
+            "source_export_manifest": {
+                "filename": "qmt_1m_acceptance_export.json",
+                "sha256": source_manifest_sha256,
+                "generated_at_utc": bundle["generated_at_utc"],
+                "runtime": bundle["runtime"],
+                "files": [
+                    {
+                        "source_symbol": record["source_symbol"],
+                        "filename": record["path"],
+                        "rows": record["rows"],
+                        "sha256": record["sha256"],
+                    }
+                    for record in source_file_records
+                ],
+            },
+            "data_contract": {
+                "path": "docs/a_share_qmt_xtquant_one_minute_export_data_contract.json",
+                "sha256": QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT_SHA256,
+            },
+            "local_daily_fields_loaded_for_reconciliation": [
+                "raw_open",
+                "raw_high",
+                "raw_low",
+                "raw_close",
+                "raw_volume",
+                "amount",
+                "price_basis",
+            ],
+            "minute_factor_values_persisted": False,
+            "full_history_persisted": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        atomic_write_json(manifest, temporary_manifest)
+        temporary_root.replace(final_root)
+        published_root = True
+        temporary_manifest.replace(final_manifest)
+        return final_manifest
+    except Exception:
+        shutil.rmtree(temporary_root, ignore_errors=True)
+        temporary_manifest.unlink(missing_ok=True)
+        if published_root:
+            shutil.rmtree(final_root, ignore_errors=True)
+        final_manifest.unlink(missing_ok=True)
+        raise
+
+
+def accept_qmt_xtquant_one_minute_export(
+    source_manifest_path: Path,
+    *,
+    data_root: Path = DATA_ROOT,
+    imported_at: dt.datetime | None = None,
+) -> Path:
+    """Strictly import one frozen QMT acceptance bundle without network or returns."""
+
+    contract = load_qmt_xtquant_one_minute_export_contract()
+    validate_qmt_xtquant_one_minute_local_context(contract)
+    provided = source_manifest_path.expanduser()
+    if provided.is_symlink() or not provided.is_file():
+        raise RichDataError("QMT export manifest is not a regular file")
+    source_manifest_sha256 = byte_file_digest(provided)
+    data_root = data_root.expanduser().resolve()
+    runs_root = data_root / "metadata" / "rich_data" / "runs"
+    runs_root.mkdir(parents=True, exist_ok=True)
+    _qmt_consumption_guard(runs_root, source_manifest_sha256)
+    run_id = new_run_id("qmt_xtquant_export_1m_acceptance")
+    rejection_path = runs_root / f"{run_id}_rejection.json"
+    stage = "bundle_validation"
+    local_daily_reconciliation_started = False
+    try:
+        bundle, resolved_files, observed_manifest_sha256 = (
+            load_qmt_xtquant_export_bundle(provided, contract)
+        )
+        if observed_manifest_sha256 != source_manifest_sha256:
+            raise RichDataError("QMT export manifest changed during validation")
+        stage = "strict_csv_normalization"
+        frames_by_code: dict[str, pd.DataFrame] = {}
+        labels: set[str] = set()
+        source_file_records: list[dict[str, Any]] = []
+        for code, source_symbol, (record, path) in zip(
+            bundle["symbols"],
+            bundle["source_symbols"],
+            resolved_files,
+            strict=True,
+        ):
+            frame, label = normalize_qmt_xtquant_export_file(
+                path,
+                source_symbol=str(source_symbol),
+                code=str(code),
+                contract=contract,
+            )
+            frames_by_code[str(code)] = frame
+            labels.add(label)
+            source_file_records.append(record)
+        if len(labels) != 1:
+            raise RichDataError("QMT export symbols use mixed timestamp-label grids")
+
+        stage = "local_daily_reconciliation"
+        local_daily_reconciliation_started = True
+        acceptance_by_code: dict[str, dict[str, Any]] = {}
+        volume_units: set[str] = set()
+        for code, frame in frames_by_code.items():
+            session = minute_session_check(frame)
+            reconciliation = minute_daily_reconciliation(frame)
+            if session.get("status") != "passed" or reconciliation.get("status") != "passed":
+                raise RichDataError(f"QMT export failed local daily reconciliation: {code}")
+            day_records = reconciliation.get("days") or []
+            if len(day_records) != 1 or day_records[0].get("status") != "passed":
+                raise RichDataError(f"QMT export daily reconciliation is incomplete: {code}")
+            volume_unit = str(day_records[0].get("inferred_volume_unit") or "")
+            if volume_unit not in {"shares", "lots"}:
+                raise RichDataError(f"QMT export volume unit is unresolved: {code}")
+            volume_units.add(volume_unit)
+            acceptance_by_code[code] = {
+                "status": "automatic_checks_passed_pending_time_alignment",
+                "session": session,
+                "daily_reconciliation": reconciliation,
+            }
+        if len(volume_units) != 1:
+            raise RichDataError("QMT export symbols use inconsistent volume units")
+
+        stage = "atomic_publish"
+        observed_at = imported_at or dt.datetime.now(dt.timezone.utc)
+        if observed_at.tzinfo is None:
+            observed_at = observed_at.replace(tzinfo=dt.timezone.utc)
+        return _publish_qmt_xtquant_acceptance_snapshot(
+            data_root=data_root,
+            run_id=run_id,
+            bundle=bundle,
+            source_manifest_sha256=source_manifest_sha256,
+            source_file_records=source_file_records,
+            frames_by_code=frames_by_code,
+            acceptance_by_code=acceptance_by_code,
+            timestamp_label=next(iter(labels)),
+            volume_unit=next(iter(volume_units)),
+            imported_at=observed_at,
+        )
+    except RichDataError as exc:
+        rejection = {
+            "schema_version": 1,
+            "kind": "a_share_qmt_xtquant_one_minute_export_acceptance_rejection",
+            "status": "rejected_without_published_snapshot",
+            "run_id": run_id,
+            "rejected_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "failed_stage": stage,
+            "error": safe_exception_text(exc),
+            "source_export_manifest": {
+                "filename": provided.name,
+                "sha256": source_manifest_sha256,
+            },
+            "published_snapshot_files": 0,
+            "local_daily_fields_loaded_for_reconciliation": (
+                [
+                    "raw_open",
+                    "raw_high",
+                    "raw_low",
+                    "raw_close",
+                    "raw_volume",
+                    "amount",
+                    "price_basis",
+                ]
+                if local_daily_reconciliation_started
+                else []
+            ),
+            "minute_factor_values_persisted": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        atomic_write_json(rejection, rejection_path)
+        raise RichDataError(f"{exc}; rejection_record={rejection_path}") from exc
 
 
 def load_jqdata_moneyflow_contract(
@@ -13524,10 +14272,15 @@ def confirm_minute_alignment(
 
     interval_minutes = int(frequency.removesuffix("m"))
     run_id = new_run_id(f"{snapshot['provider']}_{frequency}_alignment")
+    qmt_acceptance = snapshot.get("provider") == "qmt_xtquant_export"
     record = {
         "schema_version": 1,
         "kind": "a_share_minute_alignment_confirmation",
-        "status": "passed_for_feature_research",
+        "status": (
+            "passed_pending_separate_full_source_no_return_protocol"
+            if qmt_acceptance
+            else "passed_for_feature_research"
+        ),
         "run_id": run_id,
         "confirmed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "provider": snapshot["provider"],
@@ -13548,6 +14301,13 @@ def confirm_minute_alignment(
         "limitations": [
             "This confirms timestamp and volume-unit semantics only; it does not validate a factor or strategy.",
             "Missing or halted minute bars remain missing and must never be zero-filled.",
+            *(
+                [
+                    "The QMT acceptance sample cannot be materialized into features; a separate fingerprint-bound full-source no-return protocol must be frozen first."
+                ]
+                if qmt_acceptance
+                else []
+            ),
         ],
     }
     destination = (
@@ -36761,6 +37521,23 @@ def build_parser() -> argparse.ArgumentParser:
     )
     acceptance.add_argument("--frequency", default="1m")
 
+    qmt_acceptance = subparsers.add_parser(
+        "acceptance-qmt-1m-export",
+        help="strictly import the frozen four-symbol QMT Level-1 export bundle",
+    )
+    qmt_acceptance.add_argument(
+        "--manifest",
+        type=Path,
+        required=True,
+        help="qmt_1m_acceptance_export.json from the immutable Windows export bundle",
+    )
+    qmt_acceptance.add_argument(
+        "--data-root",
+        type=Path,
+        default=DATA_ROOT,
+        help="publish the accepted snapshot below this local A-share data root",
+    )
+
     subparsers.add_parser(
         "acceptance-baostock-5m",
         help="run the frozen four-symbol BaoStock five-minute acceptance",
@@ -37313,6 +38090,10 @@ def main(argv: list[str] | None = None) -> int:
                 False,
                 acceptance=True,
             )
+        elif args.command == "acceptance-qmt-1m-export":
+            manifest = accept_qmt_xtquant_one_minute_export(
+                args.manifest, data_root=args.data_root
+            )
         elif args.command == "acceptance-baostock-5m":
             manifest = sync_baostock_5m_acceptance()
         elif args.command == "preflight-baostock-5m":
@@ -37550,6 +38331,9 @@ def main(argv: list[str] | None = None) -> int:
     command_status = {
         "confirm-minute-alignment": "stored_alignment_confirmation",
         "build-minute-features": "stored_research_features",
+        "acceptance-qmt-1m-export": (
+            "stored_qmt_acceptance_pending_explicit_time_alignment"
+        ),
         "acceptance-jqdata-moneyflow": "stored_entitlement_acceptance",
         "acceptance-baostock-5m": "stored_five_minute_acceptance",
         "preflight-baostock-5m": "stored_no_network_preflight",

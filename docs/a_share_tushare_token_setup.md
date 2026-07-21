@@ -242,6 +242,7 @@ launchctl unsetenv TUSHARE_TOKEN
 ```zsh
 git status --short
 git diff --check
+git diff --cached --name-only
 ```
 
-这两条命令不会读取 Token，只用于确认待提交文件范围和补丁格式；它们不能替代泄露处置。若怀疑真实值曾经进入工作区或历史，先在 Tushare 侧轮换，再做历史清理，不要通过 `echo`、日志或聊天打印旧值来比对。
+这三条命令不会读取 Token，只用于确认工作区、补丁格式和暂存范围；真实 Token 也不会由 `git status` 自动显示。提交前应确认暂存列表中没有 `.env`、shell 历史、终端日志、Notebook 输出或本地数据目录。它们不能替代泄露处置：若怀疑真实值曾经进入工作区或历史，先在 Tushare 侧轮换，再做历史清理，不要通过 `echo`、日志或聊天打印旧值来比对。
