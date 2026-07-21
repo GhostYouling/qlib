@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_ccass_participant_breadth_source_acceptance_record",
+  "status": "terminal_after_one_frozen_entitlement_request_before_rows_factor_values_full_history_capacity_uniqueness_prices_or_returns",
+  "recorded_at": "2026-07-21T09:01:39Z",
+  "purpose": "Bind the sole frozen CCASS participant-breadth source acceptance result so every clone rejects another provider request before contract, local-context, Token, or network access.",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_ccass_participant_breadth_mechanism_overlap_reaudit_20260721.json",
+    "sha256": "875939121554c84fb0020fe7e53e55118e401a7d24c46b09fc2df8d359c51d4c"
+  },
+  "data_contract": {
+    "path": "docs/a_share_tushare_ccass_participant_breadth_data_contract.json",
+    "sha256": "97892a79c0ad650c2f4dfeceb993da9d3624105d79095e49bfa60453e3586402",
+    "preregistered_at": "2026-07-21T08:52:00Z"
+  },
+  "source_acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260721T085955Z_tushare_ccass_participant_breadth_acceptance_be044cb1.json",
+    "sha256": "a2a4bf44ce3a2129143be0554b575b12a5425f6960191f1f438ba43564c06f09",
+    "run_id": "20260721T085955Z_tushare_ccass_participant_breadth_acceptance_be044cb1",
+    "retrieved_at": "2026-07-21T08:59:55.643340+00:00"
+  },
+  "frozen_request_observed_result": {
+    "provider": "tushare",
+    "api": "ccass_hold",
+    "current_authorized_points_at_contract_freeze": 3000,
+    "requested_trade_date": "2019-01-02",
+    "requested_offset": 0,
+    "requested_fields_in_order": [
+      "trade_date",
+      "ts_code",
+      "hold_nums"
+    ],
+    "provider_requests_issued": 1,
+    "provider_result_class": "permission_rejected",
+    "provider_message_summary": "The configured account does not have ccass_hold interface access.",
+    "completed_sessions": 0,
+    "provider_rows_observed": 0,
+    "normalized_rows": 0,
+    "factor_values_derived_or_persisted": false,
+    "parquet_files_published": 0,
+    "partial_snapshot_deleted": true
+  },
+  "terminal_decision": {
+    "acceptance_status": "terminal_ccass_source_acceptance_rejected_before_full_history_capacity_uniqueness_prices_or_returns",
+    "same_contract_acceptance_may_run_again": false,
+    "older_or_newer_date_probe_allowed": false,
+    "full_source_sync_allowed": false,
+    "capacity_or_uniqueness_audit_allowed": false,
+    "return_diagnostic_allowed": false,
+    "historical_aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false,
+    "interpretation": "This is an account-entitlement rejection, not evidence about CCASS cross-exchange coverage, factor variation, capacity, uniqueness, or predictive return.",
+    "next_allowed_action": "Return to a newly preregistered economically independent no-return mechanism; do not purchase or retry this interface solely to rescue the rejected branch."
+  },
+  "privacy_and_scope": {
+    "credential_presence_checked": true,
+    "credential_value_logged_hashed_or_persisted": false,
+    "raw_provider_response_persisted": false,
+    "participant_identity_name_holding_quantity_or_ratio_read_or_persisted": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "selection_or_promotion_allowed": false
+  },
+  "acceptance_status": "terminal_ccass_source_acceptance_rejected_before_full_history_capacity_uniqueness_prices_or_returns",
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

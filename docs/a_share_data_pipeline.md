@@ -1602,6 +1602,18 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 因此 `tushare_large_order_net_inflow_share` 高值方向正式淘汰。完整终止记录为 `docs/a_share_tushare_moneyflow_research_record.json`（SHA‑256 `3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a`）。不得反向、修改大小单阈值或分母、改变三日窗口/年份/TopK/成本、挑选 2019–2021、与旧因子或 JQData 同机制复制品组合、重新运行诊断、生成当前评分/选股/仓位或据此采购 Level‑2。完成诊断的最差 cohort 明细中 `close_known_feature_ranks` 名称下保存的是原始收盘已知上下文值；这些字段只用于尾部说明，不参与 Tushare 排名、Rank IC、TopK 选择、市场状态构造、两套成交账本或门禁，不能按“分位排名”解释，也不授权为修复展示标签而重跑结果。
 
+### Tushare CCASS 参与者广度（账户权限验收终止）
+
+在前沿仍为 43 个历史因子、7 个关联稳定性通过、TopK 通过 0、双门交集 0 后，机制核重记录 `docs/a_share_three_day_ccass_participant_breadth_mechanism_overlap_reaudit_20260721.json`（SHA‑256 `875939121554c84fb0020fe7e53e55118e401a7d24c46b09fc2df8d359c51d4c`）只推进一个尚未读取价格或收益的候选：`tushare_ccass_participant_breadth_change_3 = hold_nums_t / hold_nums_t_minus_3_local_sessions - 1`，高值方向固定为更好。这里的 `hold_nums` 只表示持有该证券的 CCASS 结算参与者数量；合同不允许读取参与者身份、名称、持股数量、`shareholding`、`hold_ratio`、价格、市值或收益。
+
+数据合同 `docs/a_share_tushare_ccass_participant_breadth_data_contract.json`（SHA‑256 `97892a79c0ad650c2f4dfeceb993da9d3624105d79095e49bfa60453e3586402`）在任何权限结果、来源行或因子值出现前冻结。它只请求 `trade_date,ts_code,hold_nums`，按每页 5,000 行做未知总数分页；唯一验收固定为 2019、2024、2025 和最新本地 2026 四个四会话锚点，共 16 个会话，并要求逐日不少于 50 个点时来源股票、每锚点不少于 20 个连续四会话可持有股票、沪市主板/深市主板/创业板运输证据，以及最新锚点的科创板证据。验收快照最多只能有 `trade_date,instrument,ccass_participant_count,provider` 四列，公式只在内存复算。
+
+在 222 项离线数据采集测试通过后，唯一命令 `acceptance-tushare-ccass-participant-breadth` 发出第一项冻结请求：2019‑01‑02、offset 0。当前 3,000 积分 Token 被 Tushare 明确拒绝为没有 `ccass_hold` 接口访问权限，因此程序没有取得任何来源行，完成会话数为 0，规范行和因子值均为 0，没有发布 Parquet，并删除了隐藏临时目录。失败清单 `data/metadata/rich_data/runs/20260721T085955Z_tushare_ccass_participant_breadth_acceptance_be044cb1.json` 的 SHA‑256 为 `a2a4bf44ce3a2129143be0554b575b12a5425f6960191f1f438ba43564c06f09`；跨克隆终止记录为 `docs/a_share_tushare_ccass_participant_breadth_source_acceptance_record.json`（SHA‑256 `54a4d18096b14797e351d9380bcf9e1e6a6bf943cacd984fe674f51353c1615f`）。Token 值没有被输出、哈希或持久化，价格和未来收益均未读取。
+
+该一次性验收已永久消费。不得换日期、重试、购买权限后沿用同一合同、把权限失败解释为来源为空或因子无效，也不得继续全历史、容量、唯一性、收益、聚合、当前评分、选股、仓位、订单或 Level‑2。程序必须先校验上述终止记录并在合同、本地上下文、Token 和网络之前拒绝。这个结果只证明当前账户无接口权限，不证明 CCASS 的沪深覆盖、历史容量、独立性或预测能力；下一步只能重新冻结一个经济机制独立且当前已授权的无收益候选。
+
+后续零网络前沿审计 `docs/a_share_three_day_post_ccass_authorized_source_frontier_audit_20260721.json`（SHA‑256 `61804bfb535954ae517aba1e67791dc8371ce68cf384219fe8a08c6ded6dc499`）没有推进新候选。券商月度金股和 TDX 板块成分均需 6,000 积分；同花顺概念资金流需 5,000 积分；深证互动易和全量公告需要单独权限。即使忽略权限，月度金股在 2019–2025 的硬上限只有 84 个独立月份，低于 200 个三日 cohort；互动易只有深圳路线；板块/概念资金流分别与已终止的行业广度和分类资金流机制重叠。当前 120 分可用的 `stock_company` 只是当前静态快照，不能无泄漏地重建 2019–2025；标准财务报表和限售解禁则分别是已终止来源字段扫描与已完成失败机制的供应商复制。审计没有请求任何接口行、因子值、价格或收益。本机同时未发现 `xtquant` Python 包或常见 QMT/XTQuant 本地路径；这只表示当前 macOS 工作区没有可直接接入的券商分钟运行时，不代表用户的其他 Windows/QMT 环境不存在。当前下一条可执行路径是由用户暴露已有合法的全市场 1 分钟 OHLCV/成交额导出后另冻合同，或等待 BaoStock 按既有规则出现可验证恢复；不为重试 CCASS 或复制淘汰机制追加购买。
+
 ### Tushare 北向 Top10 与日频 PB 验收
 
 在大单资金流停止后，只按独立经济机制依次做了两个不读取价格或收益的单日来源验收。北向成交 Top10 合同 `docs/a_share_tushare_northbound_top10_data_contract.json`（SHA‑256 `9362211f3e35cbb24c779d49d138fb757d61f7a092b61f0304d0e147a739f63e`）先于接口行冻结，固定要求 2026‑07‑13 沪股通与深股通各含完整排名 1–10。第一个沪股通请求返回 0 行，程序立即停止，没有发出第二个市场请求。终止记录为 `docs/a_share_tushare_northbound_top10_source_acceptance_record.json`（SHA‑256 `29f1dd342f64b2a19efd0f5f9723db6d6b7b867940c12520395f41a8f5b6df81`）。这只证明当前日期路线不能形成合格信号，不声称供应商全球历史为空；不得改用旧日期、把空响应当零、降低完整性、同步历史或读取收益。

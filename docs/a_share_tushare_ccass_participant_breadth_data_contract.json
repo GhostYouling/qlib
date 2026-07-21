@@ -1,0 +1,294 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_ccass_participant_breadth_data_contract",
+  "status": "frozen_before_ccass_entitlement_rows_factor_values_full_history_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-21T08:52:00Z",
+  "purpose": "Acquire and no-return screen one daily CCASS clearing-participant breadth-change factor for the fixed three-local-session A-share protocol without participant identities, holding quantities or ratios, prices, returns, or credential persistence.",
+  "mechanism_selection": {
+    "path": "docs/a_share_three_day_ccass_participant_breadth_mechanism_overlap_reaudit_20260721.json",
+    "sha256_at_contract_freeze": "875939121554c84fb0020fe7e53e55118e401a7d24c46b09fc2df8d359c51d4c",
+    "selected_candidate": "tushare_ccass_participant_breadth_change_3",
+    "independent_factor_count": 1,
+    "historical_factor_aggregation_allowed": false
+  },
+  "provider_contract": {
+    "provider": "tushare",
+    "api": "ccass_hold",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=295",
+    "credential_environment_variable": "TUSHARE_TOKEN",
+    "credential_value_logged_or_persisted": false,
+    "documented_minimum_trial_points": 120,
+    "current_authorized_points": 3000,
+    "documented_higher_frequency_points": 5000,
+    "documented_history": "all_history",
+    "documented_availability": "source trade-date data is loaded before 09:00 on the next trading day",
+    "request_mode": "one completed local trading session per count-unknown paginated partition",
+    "fixed_request_fields_in_order": [
+      "trade_date",
+      "ts_code",
+      "hold_nums"
+    ],
+    "forbidden_request_fields": [
+      "name",
+      "shareholding",
+      "hold_ratio",
+      "hk_code",
+      "participant identity",
+      "participant name",
+      "participant holding",
+      "price",
+      "market cap",
+      "return"
+    ],
+    "fixed_page_size": 5000,
+    "maximum_pages_per_session": 4,
+    "pagination_offsets": "0, 5000, 10000, 15000; stop only after a page shorter than 5000; four full pages are fatal before another request",
+    "maximum_attempts_per_page": 3,
+    "minimum_seconds_between_provider_calls": 0.65,
+    "retryable_failures": [
+      "connection error",
+      "timeout",
+      "HTTP 429 or explicit rate-limit error",
+      "provider internal transient error"
+    ],
+    "nonretryable_failures": [
+      "permission or points rejection",
+      "schema mismatch",
+      "empty required session",
+      "pagination duplicate or overflow",
+      "invalid target A-share key or participant count"
+    ]
+  },
+  "identity_and_schema_policy": {
+    "raw_response_persisted": false,
+    "source_identity": [
+      "trade_date",
+      "ts_code"
+    ],
+    "required_response_columns_exactly": [
+      "trade_date",
+      "ts_code",
+      "hold_nums"
+    ],
+    "source_trade_date": "strict eight-digit YYYYMMDD string equal to the requested completed local session",
+    "source_code": "complete string; supported A-share codes are six digits with SH or SZ suffix and are mapped to Qlib SH/SZ prefix; complete unsupported codes are excluded and counted",
+    "participant_count": "finite strictly positive base-ten integer; boolean, missing, nonfinite, fractional, zero, negative, signed, exponent, or decorated strings are fatal for a supported target row",
+    "page_identity_uniqueness": "every full trade_date/ts_code source identity must be unique across all pages of one requested session before board filtering",
+    "target_identity_uniqueness": "every normalized trade_date/instrument key must be globally unique",
+    "names_or_participant_identities_allowed": false,
+    "missing_fill_zero_clip_absolute_or_inference_allowed": false
+  },
+  "factor": {
+    "name": "tushare_ccass_participant_breadth_change_3",
+    "raw_input": "ccass_participant_count",
+    "formula": "ccass_participant_count_t / ccass_participant_count_t_minus_3_local_sessions - 1",
+    "direction": "higher_is_better",
+    "lookback_local_sessions": 3,
+    "complete_window_required": true,
+    "intermediate_session_continuity_required": true,
+    "missing_current_prior_or_intermediate_session": "missing factor; never fill or shorten the lookback",
+    "cross_sectional_score_if_every_gate_passes": "percentile_rank(tushare_ccass_participant_breadth_change_3, higher_is_better)",
+    "shareholding_or_hold_ratio_used": false,
+    "participant_identity_used": false
+  },
+  "point_in_time_policy": {
+    "source_trade_date_label": "the clearing-position date reported by Tushare",
+    "availability": "before 09:00 on the next local trading session as documented by the provider",
+    "signal_label": "source trade-date close for the fixed next-open protocol",
+    "earliest_entry": "next local trading session open after the source trade date",
+    "same_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 0,
+    "forward_fill_allowed": false,
+    "calendar": "the exact frozen local Qlib day calendar",
+    "source_universe": "factor_main_chinext_star point-in-time intervals",
+    "holding_universe": "buyable_main_chinext point-in-time intervals",
+    "minimum_listing_sessions_before_ranking": 20,
+    "quarterly_quality_maximum_age_days": 550
+  },
+  "local_context": {
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "latest_session": "2026-07-13"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "latest_terminal_mechanism": {
+      "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json",
+      "sha256": "6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375"
+    },
+    "prospective_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "capital_cny": 200000,
+      "board_lot_shares": 100
+    }
+  },
+  "normalized_acceptance_snapshot": {
+    "columns_in_order": [
+      "trade_date",
+      "instrument",
+      "ccass_participant_count",
+      "provider"
+    ],
+    "provider_value": "tushare",
+    "raw_response_or_unsupported_security_rows_persisted": false,
+    "participant_identity_holding_quantity_ratio_name_price_or_return_persisted": false,
+    "factor_values": "derived and checked in memory for the four anchor sessions but not persisted in the source-count snapshot"
+  },
+  "acceptance_protocol": {
+    "fixed_four_session_windows": [
+      {
+        "label": "2019_anchor",
+        "sessions": [
+          "2019-01-02",
+          "2019-01-03",
+          "2019-01-04",
+          "2019-01-07"
+        ]
+      },
+      {
+        "label": "2024_anchor",
+        "sessions": [
+          "2024-01-02",
+          "2024-01-03",
+          "2024-01-04",
+          "2024-01-05"
+        ]
+      },
+      {
+        "label": "2025_anchor",
+        "sessions": [
+          "2025-01-02",
+          "2025-01-03",
+          "2025-01-06",
+          "2025-01-07"
+        ]
+      },
+      {
+        "label": "latest_local_anchor",
+        "sessions": [
+          "2026-07-08",
+          "2026-07-09",
+          "2026-07-10",
+          "2026-07-13"
+        ]
+      }
+    ],
+    "provider_session_partitions": 16,
+    "all_sessions_count_complete_nonempty_and_short_page_terminated": true,
+    "minimum_supported_source_names_each_session": 50,
+    "minimum_complete_four_session_holding_names_each_anchor": 20,
+    "minimum_distinct_factor_values_each_anchor": 2,
+    "minimum_nonzero_factor_values_each_anchor": 1,
+    "required_board_evidence_each_anchor": [
+      "Shanghai main board",
+      "Shenzhen main board",
+      "ChiNext"
+    ],
+    "required_current_only_board_evidence": [
+      "STAR Market"
+    ],
+    "required_checks": [
+      "the mechanism audit, contract, source and holding universes, local calendar, quarterly quality, price-basis context, frontier, latest terminal record, and both execution policies match before Token access or network access",
+      "only Token presence is checked; the credential value is never logged, persisted, hashed, or returned",
+      "all sixteen fixed completed local sessions are requested in chronological order with exact fields and count-unknown 5000-row offset pagination",
+      "every requested session ends on a short page, every source identity is unique across pages, and no unsupported code or raw response is persisted",
+      "every supported A-share row has the requested date, a point-in-time source-universe identity, and one strict positive integer participant count",
+      "every anchor proves Shanghai-main, Shenzhen-main, and ChiNext transport; the latest anchor additionally proves STAR transport",
+      "each anchor has at least twenty point-in-time holding names present on all four sessions, at least two distinct finite three-session changes, and at least one nonzero change",
+      "the exact t over t-minus-three-local-session formula is independently reproducible in memory without open, close, price, return, market cap, holding quantity, ownership ratio, or participant identity",
+      "the published snapshot has only four frozen columns and contains all accepted source-count rows from the sixteen sessions"
+    ],
+    "success_status": "accepted_entitlement_cross_exchange_schema_identity_pagination_timing_and_formula_pending_frozen_full_source_no_return_gates",
+    "failed_acceptance_status": "terminal_ccass_source_acceptance_rejected_before_full_history_capacity_uniqueness_prices_or_returns",
+    "one_shot_policy": "The exact acceptance may publish at most one success or rejection manifest. Once any provider request is issued, an entitlement, empty-session, schema, identity, pagination, coverage, board, continuity, or variation failure consumes the attempt. Every clone must reject a second attempt from the tracked result before loading this contract, Token, local context, or network.",
+    "tracked_record_path": "docs/a_share_tushare_ccass_participant_breadth_source_acceptance_record.json"
+  },
+  "full_snapshot_contract_after_acceptance_only": {
+    "development_start": "2019-01-02",
+    "development_end": "2025-12-31",
+    "provider_partition": "one local trading session with the same pagination and field contract",
+    "reuse_accepted_2019_2024_2025_sessions_without_provider_rerequest": true,
+    "atomic_publish": "one hidden temporary root; publish seven annual four-column source-count Parquet partitions and one manifest only after every session and source gate passes",
+    "minimum_supported_source_names_each_session": 50,
+    "minimum_session_count": 1600,
+    "minimum_year_count": 7,
+    "full_protocol_must_be_frozen_after_acceptance_before_any_unaccepted_session_row": true,
+    "full_sync_authorized_by_this_contract_alone": false
+  },
+  "no_return_gates_after_full_source_only": {
+    "order": [
+      "source completeness and formula reconstruction",
+      "three-session non-overlapping capacity",
+      "semantic overlap review",
+      "statistical near-synonym screen"
+    ],
+    "capacity": {
+      "calendar_start": "2019-01-02",
+      "calendar_end": "2025-12-31",
+      "holding_period_local_sessions": 3,
+      "non_overlapping": true,
+      "minimum_complete_factor_names_per_cohort": 50,
+      "minimum_distinct_factor_values_per_cohort": 2,
+      "minimum_cohorts": 200,
+      "minimum_observed_years": 5,
+      "minimum_listing_sessions": 20,
+      "quarterly_quality_maximum_age_days": 550
+    },
+    "mandatory_semantic_neighbors": [
+      "institutional_survey_org_count",
+      "analyst_valid_rating_report_count",
+      "major_holder_event_count",
+      "holder_count_change",
+      "tushare_large_order_net_inflow_share"
+    ],
+    "mandatory_dense_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ],
+    "statistical_rule": "for every dense comparison with at least 100 pairwise-valid sessions and at least 50 names per session, absolute median daily Spearman correlation must be below 0.8; sparse neighbors remain mandatory semantic reviews with their observed overlap reported",
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "future_return_protocol_boundary": {
+    "return_diagnostic_allowed_now": false,
+    "required_before_any_open_close_or_forward_return": "one accepted source record, one separately frozen fingerprint-bound full-source/no-return protocol, one successful atomic 2019-2025 source snapshot, one passed capacity audit, one passed semantic and statistical uniqueness audit, and one new immutable single-factor diagnostic preregistration",
+    "historical_factor_combination_allowed": false,
+    "current_scoring_selection_sizing_or_ordering_allowed": false,
+    "level2_intake_justified": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -22,6 +22,15 @@ python scripts/a_share_rich_data.py status
 
 只确认输出中的 Tushare 环境变量与 SDK 为“已就绪”；不要运行会输出 Token 明文的检查命令。仓库提交只包含变量名和以上安全模板，不包含本机 `launchctl` 值、真实 Token 或 `.env` 文件。
 
+### 配置成功的判定
+
+下面两项同时成立，才表示新启动的项目进程已经拿到凭据：
+
+- `test -n "$(launchctl getenv TUSHARE_TOKEN)"` 的包装检查输出 `launchctl：已配置`；
+- 彻底重启 Codex 后，`python scripts/a_share_rich_data.py status` 中 Tushare 的 `ready` 为 `true`，且 `missing_environment` 为空。
+
+这里的 `ready` 只证明 SDK 与环境变量存在，不会访问供应商，也不证明账号拥有某个具体接口的权限。每个数据接口仍须遵守各自冻结合同和一次性来源验收，不能用 `ready=true` 代替权限或数据质量结论。
+
 ### 配置范围说明
 
 Tushare Token 与 GitHub 远程仓库认证是两套彼此独立的配置：Token 只用于本项目的数据接口，Git 的提交和推送仍由本机 GitHub 凭据负责。`launchctl setenv` 设置在当前 macOS 登录会话中，之后启动的其他图形程序理论上也能继承该变量；它不是按仓库隔离的配置，但不会被 Git 自动提交。
@@ -221,3 +230,16 @@ launchctl unsetenv TUSHARE_TOKEN
 如果当前终端也必须立即切换到新 Token，请使用第 2 节包含 `export` 的版本；不要只更新 `launchctl` 后继续从旧终端运行数据命令。更新完成后只执行第 3 节的“已配置/未配置”检查，不要打印新旧 Token 做对比。
 
 一旦怀疑 Token 曾进入命令历史、日志、截图、聊天或 Git，必须立即在 Tushare 账户侧轮换，并检查 Git 历史和相关输出；仅执行 `unset` 或删除工作区文件不能撤销已经发生的泄露。
+
+## 8. Git 提交边界
+
+允许提交的是本指南、环境变量名称、安全命令模板，以及只包含 `ready` / `missing_environment` 等布尔状态的检查结果。禁止提交真实 Token、`launchctl getenv TUSHARE_TOKEN` 的原始输出、`.env`、shell 历史、带凭据的日志或把 Token 复制成常量的脚本。
+
+提交前至少运行：
+
+```zsh
+git status --short
+git diff --check
+```
+
+这两条命令不会读取 Token，只用于确认待提交文件范围和补丁格式；它们不能替代泄露处置。若怀疑真实值曾经进入工作区或历史，先在 Tushare 侧轮换，再做历史清理，不要通过 `echo`、日志或聊天打印旧值来比对。

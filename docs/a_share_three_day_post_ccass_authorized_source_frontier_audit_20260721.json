@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_post_ccass_authorized_source_frontier_audit",
+  "status": "no_currently_authorized_independent_historical_candidate_advanced_before_provider_rows_factor_values_prices_or_returns",
+  "audited_at": "2026-07-21T09:07:27Z",
+  "purpose": "Audit the remaining visible Tushare and local broker-minute routes after the terminal CCASS permission result, advancing no candidate unless current authorization, point-in-time history, economic independence, and the fixed 200-cohort three-session capacity are all plausible before any new provider row or factor value.",
+  "starting_evidence": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "association_stability_passers": 7,
+      "topk_viability_passers": 0,
+      "dual_gate_passers": 0,
+      "aggregation_allowed": false
+    },
+    "terminal_ccass_source": {
+      "path": "docs/a_share_tushare_ccass_participant_breadth_source_acceptance_record.json",
+      "sha256": "54a4d18096b14797e351d9380bcf9e1e6a6bf943cacd984fe674f51353c1615f",
+      "provider_result": "permission_rejected",
+      "provider_rows_observed": 0,
+      "factor_values_observed": 0,
+      "retry_allowed": false
+    },
+    "current_tushare_points": 3000,
+    "credential_value_read_logged_hashed_or_persisted": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "broker_monthly_recommendation_breadth",
+      "provider_api": "broker_recommend",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=267",
+      "documented_points": 6000,
+      "decision": "rejected_before_rows",
+      "reasons": [
+        "The documented 6000-point requirement exceeds current authorization.",
+        "A monthly 2019-2025 event has at most 84 distinct release months before any quality, listing, name, or variation gate, below the fixed 200 non-overlapping three-session cohort minimum.",
+        "Broker recommendation attention is also a close semantic neighbor of the already rejected dated analyst-rating mechanism."
+      ]
+    },
+    {
+      "candidate": "investor_relations_question_answer_activity",
+      "provider_api": "irm_qa_sz",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=367",
+      "documented_permission": "separate_permission",
+      "decision": "rejected_before_rows",
+      "reasons": [
+        "The route is not included in the current points authorization and requires separate permission.",
+        "The documented interface is Shenzhen-only, so it cannot meet the frozen historical Shanghai-main, Shenzhen-main, and ChiNext cross-exchange source gate by itself.",
+        "Question and answer text would require a separately frozen privacy-minimized classification mechanism rather than an after-result text sweep."
+      ]
+    },
+    {
+      "candidate": "full_announcement_text_or_title_mining",
+      "provider_api": "anns_d",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=176",
+      "documented_permission": "separate_permission",
+      "decision": "rejected_before_rows",
+      "reasons": [
+        "The interface requires separate permission not currently authorized.",
+        "The repository already has public announcement routes and terminal title, identity, and transport evidence; buying a generic announcement mirror does not by itself define an economically independent factor.",
+        "No text, URL, PDF, title, or provider row is requested."
+      ]
+    },
+    {
+      "candidate": "tdx_theme_membership_breadth",
+      "provider_api": "tdx_member",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=377",
+      "documented_points": 6000,
+      "decision": "rejected_before_rows",
+      "reasons": [
+        "The documented 6000-point requirement exceeds current authorization.",
+        "A theme-membership breadth transform is a close group-breadth neighbor of the terminal SW2021 industry breadth route and would require a new point-in-time membership proof before any price-derived breadth value."
+      ]
+    },
+    {
+      "candidate": "ths_concept_moneyflow",
+      "provider_api": "moneyflow_cnt_ths",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=371",
+      "documented_points": 5000,
+      "decision": "rejected_before_rows",
+      "reasons": [
+        "The documented 5000-point requirement exceeds current authorization.",
+        "Concept money flow combines the already rejected classified-flow and group-breadth mechanisms rather than adding a clean independent stock-level signal."
+      ]
+    },
+    {
+      "candidate": "current_company_static_characteristics",
+      "provider_api": "stock_company",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=112",
+      "documented_points": 120,
+      "decision": "rejected_before_rows",
+      "reasons": [
+        "Although authorized, the interface exposes a current company-information snapshot rather than timestamped 2019-2025 versions.",
+        "Current employees, registered capital, management identities, province, or business text cannot be backfilled as point-in-time historical signals without survivorship and revision leakage.",
+        "Names, identities, emails, addresses, text, and current static values are not requested."
+      ]
+    },
+    {
+      "candidate": "another_standard_financial_statement_ratio",
+      "provider_api": "cashflow_or_other_standard_statement",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=44",
+      "documented_points": 2000,
+      "decision": "rejected_as_same_source_field_sweep_before_rows",
+      "reasons": [
+        "The standard per-stock statement transport is authorized but the repository has already consumed and terminally audited cash conversion, gross margin, balance-sheet resilience, monetary-funds intensity, core-profit consistency, express growth, and contract-liability mechanisms.",
+        "Selecting another field after those outcomes would be a same-report field sweep rather than an independent source discovery."
+      ]
+    },
+    {
+      "candidate": "restricted_share_unlock_supply",
+      "provider_api": "share_float",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=160",
+      "documented_points": 120,
+      "decision": "rejected_as_terminal_mechanism_duplicate_before_rows",
+      "reasons": [
+        "The repository already completed source, capacity, diagnostic, and both full gates for realized restricted-share unlock pressure and rejected the frozen direction.",
+        "Changing to the Tushare mirror or another unlock field does not create a new economic mechanism."
+      ]
+    }
+  ],
+  "local_broker_minute_readiness": {
+    "inspection_only": true,
+    "network_request_issued": false,
+    "package_installed_or_modified": false,
+    "xtquant_python_available": false,
+    "known_qmt_or_xtquant_paths_present": false,
+    "interpretation": "No local QMT/XTQuant minute-data runtime is currently visible in this macOS workspace. This does not prove the user lacks a broker account or a separate Windows QMT installation."
+  },
+  "decision": {
+    "advanced_candidate_count": 0,
+    "new_provider_request_authorized": false,
+    "new_factor_value_allowed": false,
+    "historical_aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false,
+    "next_allowed_paths": [
+      "Obtain or expose an already-lawful full-market one-minute OHLCV and amount export from QMT/XTQuant, RQData, or JQData, then freeze a timestamp, adjustment, volume-unit, coverage, and point-in-time contract before downloading historical bars.",
+      "Wait for a future separately verified BaoStock restoration under its existing no-repeat session policy.",
+      "If purchasing a new Tushare product later, first select one economically independent mechanism and freeze a new authorization and hard-capacity audit; do not buy access merely to retry CCASS or duplicate a rejected mechanism."
+    ]
+  },
+  "provider_rows_observed_during_this_audit": false,
+  "factor_values_observed_during_this_audit": false,
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

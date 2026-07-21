@@ -199,6 +199,14 @@ DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC = (
 DEFAULT_TUSHARE_FREE_FLOAT_SCARCITY_FULL_SOURCE_RECORD = (
     REPO_ROOT / "docs" / "a_share_tushare_free_float_scarcity_full_source_record.json"
 )
+DEFAULT_TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_tushare_ccass_participant_breadth_data_contract.json"
+)
+DEFAULT_TUSHARE_CCASS_PARTICIPANT_BREADTH_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_ccass_participant_breadth_source_acceptance_record.json"
+)
 DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_eastmoney_balance_sheet_resilience_data_contract.json"
 )
@@ -510,6 +518,15 @@ TUSHARE_FREE_FLOAT_SCARCITY_NO_RETURN_SPEC_SHA256 = (
 TUSHARE_FREE_FLOAT_SCARCITY_FULL_SOURCE_RECORD_SHA256 = (
     "2d9855e286e8fd8233e9bafe38301e2381fc4d2ca221a4a69626d580285adc13"
 )
+TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT_SHA256 = (
+    "97892a79c0ad650c2f4dfeceb993da9d3624105d79095e49bfa60453e3586402"
+)
+TUSHARE_CCASS_PARTICIPANT_BREADTH_MECHANISM_AUDIT_SHA256 = (
+    "875939121554c84fb0020fe7e53e55118e401a7d24c46b09fc2df8d359c51d4c"
+)
+TUSHARE_CCASS_PARTICIPANT_BREADTH_ACCEPTANCE_RECORD_SHA256 = (
+    "54a4d18096b14797e351d9380bcf9e1e6a6bf943cacd984fe674f51353c1615f"
+)
 EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT_SHA256 = (
     "44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4"
 )
@@ -704,6 +721,17 @@ TUSHARE_NORTHBOUND_TOP10_COLUMNS = (
     "provider",
 )
 TUSHARE_NORTHBOUND_TOP10_MARKET_TYPES = ("1", "3")
+TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS = (
+    "trade_date",
+    "ts_code",
+    "hold_nums",
+)
+TUSHARE_CCASS_PARTICIPANT_BREADTH_COLUMNS = (
+    "trade_date",
+    "instrument",
+    "ccass_participant_count",
+    "provider",
+)
 TUSHARE_TOP_INST_RAW_FIELDS = (
     "trade_date",
     "ts_code",
@@ -32286,6 +32314,781 @@ def sync_jqdata_moneyflow(
         raise
 
 
+def load_tushare_ccass_participant_breadth_contract(
+    path: Path = DEFAULT_TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen pre-entitlement CCASS participant-breadth contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT_SHA256:
+        raise RichDataError(
+            "Tushare CCASS participant-breadth contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_tushare_ccass_participant_breadth_data_contract"
+    )
+    provider = contract.get("provider_contract") or {}
+    schema = contract.get("identity_and_schema_policy") or {}
+    factor = contract.get("factor") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    snapshot = contract.get("normalized_acceptance_snapshot") or {}
+    windows = acceptance.get("fixed_four_session_windows") or []
+    expected_windows = [
+        {
+            "label": "2019_anchor",
+            "sessions": ["2019-01-02", "2019-01-03", "2019-01-04", "2019-01-07"],
+        },
+        {
+            "label": "2024_anchor",
+            "sessions": ["2024-01-02", "2024-01-03", "2024-01-04", "2024-01-05"],
+        },
+        {
+            "label": "2025_anchor",
+            "sessions": ["2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07"],
+        },
+        {
+            "label": "latest_local_anchor",
+            "sessions": ["2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13"],
+        },
+    ]
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_ccass_entitlement_rows_factor_values_full_history_capacity_uniqueness_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-21T08:52:00Z"
+        or provider.get("provider") != "tushare"
+        or provider.get("api") != "ccass_hold"
+        or provider.get("credential_environment_variable") != "TUSHARE_TOKEN"
+        or provider.get("fixed_request_fields_in_order")
+        != list(TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS)
+        or provider.get("fixed_page_size") != 5000
+        or provider.get("maximum_pages_per_session") != 4
+        or provider.get("maximum_attempts_per_page") != 3
+        or provider.get("minimum_seconds_between_provider_calls") != 0.65
+        or schema.get("required_response_columns_exactly")
+        != list(TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS)
+        or factor.get("name") != "tushare_ccass_participant_breadth_change_3"
+        or factor.get("formula")
+        != "ccass_participant_count_t / ccass_participant_count_t_minus_3_local_sessions - 1"
+        or factor.get("lookback_local_sessions") != 3
+        or windows != expected_windows
+        or acceptance.get("provider_session_partitions") != 16
+        or acceptance.get("minimum_supported_source_names_each_session") != 50
+        or acceptance.get("minimum_complete_four_session_holding_names_each_anchor")
+        != 20
+        or acceptance.get("minimum_distinct_factor_values_each_anchor") != 2
+        or acceptance.get("minimum_nonzero_factor_values_each_anchor") != 1
+        or snapshot.get("columns_in_order")
+        != list(TUSHARE_CCASS_PARTICIPANT_BREADTH_COLUMNS)
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Tushare CCASS participant-breadth contract does not match the frozen protocol"
+        )
+    return contract
+
+
+def _validate_tushare_ccass_local_context(
+    contract: dict[str, Any],
+    *,
+    source_universe_path: Path,
+    holding_universe_path: Path,
+    calendar_path: Path,
+) -> None:
+    """Revalidate every frozen local input before Token presence or network access."""
+
+    mechanism = contract.get("mechanism_selection") or {}
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        mechanism.get("sha256_at_contract_freeze")
+        != TUSHARE_CCASS_PARTICIPANT_BREADTH_MECHANISM_AUDIT_SHA256
+        or file_digest(mechanism_path)
+        != TUSHARE_CCASS_PARTICIPANT_BREADTH_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError(
+            "CCASS participant-breadth mechanism audit fingerprint mismatch"
+        )
+
+    context = contract.get("local_context") or {}
+    exact_paths = {
+        "source_universe": source_universe_path.expanduser().resolve(),
+        "holding_universe": holding_universe_path.expanduser().resolve(),
+        "local_calendar": calendar_path.expanduser().resolve(),
+    }
+    for label, supplied in exact_paths.items():
+        record = context.get(label) or {}
+        frozen_path = resolve_record_path(str(record.get("path") or ""))
+        if supplied != frozen_path or file_digest(frozen_path) != record.get("sha256"):
+            raise RichDataError(f"CCASS frozen {label} path or fingerprint mismatch")
+
+    fingerprinted_context = [
+        ("quarterly_quality", "path", "sha256"),
+        ("quarterly_quality", "manifest_path", "manifest_sha256"),
+        ("accepted_price_basis_for_future_gated_work_only", "path", "sha256"),
+        ("accepted_price_frontier", "path", "sha256"),
+        ("latest_terminal_mechanism", "path", "sha256"),
+        (
+            "prospective_execution_policy_for_future_diagnostic_only",
+            "path",
+            "sha256",
+        ),
+        ("pilot_execution_policy_for_future_diagnostic_only", "path", "sha256"),
+    ]
+    for section, path_key, digest_key in fingerprinted_context:
+        record = context.get(section) or {}
+        path = resolve_record_path(str(record.get(path_key) or ""))
+        if file_digest(path) != record.get(digest_key):
+            raise RichDataError(f"CCASS frozen {section} fingerprint mismatch")
+
+    calendar_record = context.get("local_calendar") or {}
+    calendar_values = local_calendar_dates(
+        dt.date(2019, 1, 2), dt.date(2026, 7, 13), exact_paths["local_calendar"]
+    )
+    if calendar_values.empty or calendar_values[
+        -1
+    ].date().isoformat() != calendar_record.get("latest_session"):
+        raise RichDataError("CCASS frozen local calendar latest-session mismatch")
+    frozen_sessions = {
+        session
+        for window in contract["acceptance_protocol"]["fixed_four_session_windows"]
+        for session in window["sessions"]
+    }
+    observed_sessions = {value.date().isoformat() for value in calendar_values}
+    if not frozen_sessions.issubset(observed_sessions):
+        raise RichDataError(
+            "CCASS acceptance contains a date outside the frozen local calendar"
+        )
+
+
+def fetch_tushare_ccass_participant_breadth_page(
+    trade_date: dt.date,
+    *,
+    offset: int,
+    limit: int = 5000,
+) -> pd.DataFrame:
+    """Fetch one exact-field CCASS page without reading any holding amount or ratio."""
+
+    ts = _import_tushare()
+    pro = ts.pro_api()
+    try:
+        result = pro.ccass_hold(
+            trade_date=trade_date.strftime("%Y%m%d"),
+            fields=",".join(TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS),
+            limit=int(limit),
+            offset=int(offset),
+        )
+    except Exception as exc:
+        raise RichDataError(
+            "Tushare ccass_hold request failed for "
+            f"{trade_date.isoformat()} offset={offset}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame(columns=TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS)
+    return result.copy()
+
+
+def _tushare_ccass_retryable_error(exc: BaseException) -> bool:
+    """Restrict retries to the transient classes frozen in the contract."""
+
+    message = safe_exception_text(exc).casefold()
+    if any(
+        marker in message
+        for marker in ("权限", "积分", "permission", "points", "schema", "字段")
+    ):
+        return False
+    return any(
+        marker in message
+        for marker in (
+            "connection",
+            "timeout",
+            "timed out",
+            "429",
+            "rate limit",
+            "频率",
+            "internal",
+            "系统繁忙",
+            "temporar",
+        )
+    )
+
+
+def fetch_tushare_ccass_participant_breadth_session(
+    trade_date: dt.date,
+    *,
+    contract: dict[str, Any],
+    last_request_started: list[float | None] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Fetch one count-complete session with bounded retries and pagination."""
+
+    provider = contract["provider_contract"]
+    page_size = int(provider["fixed_page_size"])
+    maximum_pages = int(provider["maximum_pages_per_session"])
+    maximum_attempts = int(provider["maximum_attempts_per_page"])
+    minimum_interval = float(provider["minimum_seconds_between_provider_calls"])
+    last_started = last_request_started if last_request_started is not None else [None]
+    pages: list[pd.DataFrame] = []
+    page_rows: list[int] = []
+    attempts_by_page: list[int] = []
+    short_page_terminated = False
+    for page_number in range(maximum_pages):
+        offset = page_number * page_size
+        page: pd.DataFrame | None = None
+        for attempt in range(maximum_attempts):
+            previous = last_started[0]
+            if previous is not None:
+                remaining = minimum_interval - (time.monotonic() - previous)
+                if remaining > 0.0:
+                    time.sleep(remaining)
+            last_started[0] = time.monotonic()
+            try:
+                page = fetch_tushare_ccass_participant_breadth_page(
+                    trade_date, offset=offset, limit=page_size
+                )
+                attempts_by_page.append(attempt + 1)
+                break
+            except RichDataError as exc:
+                if (
+                    attempt + 1 >= maximum_attempts
+                    or not _tushare_ccass_retryable_error(exc)
+                ):
+                    raise
+        if page is None:  # pragma: no cover - loop either returns a page or raises.
+            raise AssertionError("unreachable Tushare CCASS page state")
+        if tuple(page.columns) != TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS:
+            raise RichDataError(
+                "Tushare ccass_hold response columns differ from the frozen exact whitelist"
+            )
+        pages.append(page)
+        page_rows.append(int(len(page)))
+        if len(page) < page_size:
+            short_page_terminated = True
+            break
+    if not short_page_terminated:
+        raise RichDataError(
+            "Tushare ccass_hold reached four full pages; count completeness is unproven"
+        )
+    combined = (
+        pd.concat(pages, ignore_index=True)
+        if pages
+        else pd.DataFrame(columns=TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS)
+    )
+    if combined.duplicated(["trade_date", "ts_code"]).any():
+        raise RichDataError(
+            "Tushare ccass_hold contains duplicate source identities across pages"
+        )
+    return combined, {
+        "trade_date": trade_date.isoformat(),
+        "page_count": len(pages),
+        "page_rows": page_rows,
+        "attempts_by_page": attempts_by_page,
+        "provider_calls": int(sum(attempts_by_page)),
+        "short_page_terminated": short_page_terminated,
+        "source_rows": int(len(combined)),
+    }
+
+
+def _strict_positive_ccass_count(value: Any) -> int:
+    """Parse only finite, unsigned, strictly positive base-ten integers."""
+
+    if isinstance(value, (bool, np.bool_)) or pd.isna(value):
+        raise RichDataError("CCASS participant count is not a strict positive integer")
+    if isinstance(value, str):
+        if not value.isascii() or not value.isdigit() or value.startswith("0"):
+            raise RichDataError(
+                "CCASS participant count is not a strict positive integer"
+            )
+        return int(value)
+    if isinstance(value, (int, np.integer)):
+        parsed = int(value)
+    elif isinstance(value, (float, np.floating)):
+        numeric = float(value)
+        if not math.isfinite(numeric) or not numeric.is_integer():
+            raise RichDataError(
+                "CCASS participant count is not a strict positive integer"
+            )
+        parsed = int(numeric)
+    else:
+        raise RichDataError("CCASS participant count is not a strict positive integer")
+    if parsed <= 0:
+        raise RichDataError("CCASS participant count is not a strict positive integer")
+    return parsed
+
+
+def _active_instruments(intervals: pd.DataFrame, trade_date: dt.date) -> set[str]:
+    timestamp = pd.Timestamp(trade_date)
+    active = intervals[
+        intervals["start_date"].le(timestamp) & intervals["end_date"].ge(timestamp)
+    ]
+    return set(active["instrument"].astype(str))
+
+
+def canonicalize_tushare_ccass_participant_breadth(
+    frame: pd.DataFrame,
+    trade_date: dt.date,
+    source_intervals: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Normalize participant counts and exclude all non-PIT or unsupported identities."""
+
+    empty = pd.DataFrame(columns=TUSHARE_CCASS_PARTICIPANT_BREADTH_COLUMNS)
+    if frame is None or frame.empty:
+        return empty, {
+            "input_rows": 0,
+            "unsupported_security_rows_excluded": 0,
+            "outside_point_in_time_source_universe_rows_excluded": 0,
+            "supported_source_names": 0,
+            "rows_written": 0,
+        }
+    raw = frame.copy()
+    if tuple(raw.columns) != TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS:
+        raise RichDataError(
+            "Tushare ccass_hold response violates the frozen exact schema"
+        )
+    expected_date = trade_date.strftime("%Y%m%d")
+    if (
+        not raw["trade_date"]
+        .map(lambda value: isinstance(value, str) and value == expected_date)
+        .all()
+    ):
+        raise RichDataError(
+            "Tushare ccass_hold contains an invalid or unexpected trade_date"
+        )
+    if (
+        not raw["ts_code"]
+        .map(
+            lambda value: isinstance(value, str)
+            and bool(value)
+            and value == value.strip()
+        )
+        .all()
+    ):
+        raise RichDataError("Tushare ccass_hold contains an incomplete source identity")
+    if raw.duplicated(["trade_date", "ts_code"]).any():
+        raise RichDataError("Tushare ccass_hold contains duplicate source identities")
+
+    supported = raw["ts_code"].str.fullmatch(r"\d{6}\.(?:SH|SZ)", na=False)
+    unsupported_rows = int((~supported).sum())
+    target = raw.loc[supported].copy()
+
+    def instrument(value: str) -> str:
+        code, suffix = value.split(".", 1)
+        symbol = qlib_symbol(code)
+        if symbol[:2] != suffix:
+            raise RichDataError("Tushare ccass_hold code suffix conflicts with its A-share code")
+        return symbol
+
+    target["instrument"] = target["ts_code"].map(instrument)
+    active_source = _active_instruments(source_intervals, trade_date)
+    in_source = target["instrument"].isin(active_source)
+    outside_source = int((~in_source).sum())
+    target = target.loc[in_source].copy()
+    target["ccass_participant_count"] = target["hold_nums"].map(
+        _strict_positive_ccass_count
+    )
+    result = pd.DataFrame(
+        {
+            "trade_date": pd.Timestamp(trade_date),
+            "instrument": target["instrument"].astype("string"),
+            "ccass_participant_count": target["ccass_participant_count"].astype(
+                "int64"
+            ),
+            "provider": "tushare",
+        }
+    )
+    result = result.sort_values("instrument", kind="stable").reset_index(drop=True)
+    if result.duplicated(["trade_date", "instrument"]).any():
+        raise RichDataError("normalized CCASS response contains duplicate target keys")
+    return result, {
+        "input_rows": int(len(raw)),
+        "unsupported_security_rows_excluded": unsupported_rows,
+        "outside_point_in_time_source_universe_rows_excluded": outside_source,
+        "supported_source_names": int(result["instrument"].nunique()),
+        "rows_written": int(len(result)),
+    }
+
+
+def _ccass_board_evidence(instruments: Iterable[str]) -> dict[str, bool]:
+    values = pd.Series(list(instruments), dtype="string")
+    return {
+        "shanghai_main": bool(
+            values.str.fullmatch(r"SH(?:600|601|603|605)\d{3}", na=False).any()
+        ),
+        "shenzhen_main": bool(
+            values.str.fullmatch(r"SZ(?:000|001|002|003)\d{3}", na=False).any()
+        ),
+        "chinext": bool(values.str.fullmatch(r"SZ(?:300|301)\d{3}", na=False).any()),
+        "star": bool(values.str.fullmatch(r"SH(?:688|689)\d{3}", na=False).any()),
+    }
+
+
+def evaluate_tushare_ccass_participant_breadth_acceptance(
+    snapshot: pd.DataFrame,
+    *,
+    contract: dict[str, Any],
+    holding_intervals: pd.DataFrame,
+) -> list[dict[str, Any]]:
+    """Check four-session continuity, board transport, and t/t-3 variation in memory."""
+
+    if tuple(snapshot.columns) != TUSHARE_CCASS_PARTICIPANT_BREADTH_COLUMNS:
+        raise RichDataError("CCASS acceptance snapshot violates the four-column schema")
+    acceptance = contract["acceptance_protocol"]
+    reports: list[dict[str, Any]] = []
+    for window in acceptance["fixed_four_session_windows"]:
+        sessions = [dt.date.fromisoformat(value) for value in window["sessions"]]
+        frames: list[pd.DataFrame] = []
+        holding_sets: list[set[str]] = []
+        for session in sessions:
+            frame = snapshot.loc[
+                snapshot["trade_date"].eq(pd.Timestamp(session))
+            ].copy()
+            if frame.empty:
+                raise RichDataError(
+                    f"CCASS acceptance session is empty: {session.isoformat()}"
+                )
+            names = set(frame["instrument"].astype(str))
+            if len(names) < int(
+                acceptance["minimum_supported_source_names_each_session"]
+            ):
+                raise RichDataError(
+                    f"CCASS acceptance has too few supported source names on {session.isoformat()}"
+                )
+            active_holding = _active_instruments(holding_intervals, session)
+            holding_sets.append(names & active_holding)
+            frames.append(frame.set_index("instrument"))
+        complete_names = set.intersection(*holding_sets)
+        if len(complete_names) < int(
+            acceptance["minimum_complete_four_session_holding_names_each_anchor"]
+        ):
+            raise RichDataError(
+                f"CCASS acceptance lacks complete four-session holding names for {window['label']}"
+            )
+        first = (
+            frames[0]
+            .loc[sorted(complete_names), "ccass_participant_count"]
+            .astype(float)
+        )
+        last = (
+            frames[-1]
+            .loc[sorted(complete_names), "ccass_participant_count"]
+            .astype(float)
+        )
+        values = last.div(first).sub(1.0)
+        if not np.isfinite(values).all():
+            raise RichDataError(
+                "CCASS participant-breadth change contains a nonfinite value"
+            )
+        distinct = int(values.nunique(dropna=True))
+        nonzero = int(values.ne(0.0).sum())
+        if distinct < int(acceptance["minimum_distinct_factor_values_each_anchor"]):
+            raise RichDataError(f"CCASS factor lacks variation for {window['label']}")
+        if nonzero < int(acceptance["minimum_nonzero_factor_values_each_anchor"]):
+            raise RichDataError(
+                f"CCASS factor has no nonzero change for {window['label']}"
+            )
+        evidence = _ccass_board_evidence(
+            instrument
+            for frame in frames
+            for instrument in frame.index.astype(str).tolist()
+        )
+        required = ("shanghai_main", "shenzhen_main", "chinext")
+        if not all(evidence[item] for item in required):
+            raise RichDataError(
+                f"CCASS cross-exchange board evidence failed for {window['label']}"
+            )
+        if window["label"] == "latest_local_anchor" and not evidence["star"]:
+            raise RichDataError(
+                "CCASS latest anchor lacks STAR Market transport evidence"
+            )
+        reports.append(
+            {
+                "label": window["label"],
+                "sessions": window["sessions"],
+                "complete_four_session_holding_names": len(complete_names),
+                "distinct_factor_values": distinct,
+                "nonzero_factor_values": nonzero,
+                "board_evidence": evidence,
+                "factor_values_persisted": False,
+            }
+        )
+    return reports
+
+
+def tushare_ccass_participant_breadth_acceptance_records() -> list[Path]:
+    """Return local manifests that consumed the exact one-shot CCASS gate."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*tushare_ccass_participant_breadth_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "tushare_ccass_participant_breadth_acceptance":
+            records.append(path)
+    return records
+
+
+def load_tushare_ccass_participant_breadth_acceptance_record(
+    path: Path = DEFAULT_TUSHARE_CCASS_PARTICIPANT_BREADTH_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Validate the committed cross-clone terminal record after the sole attempt."""
+
+    path = path.expanduser().resolve()
+    if not TUSHARE_CCASS_PARTICIPANT_BREADTH_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError("CCASS acceptance-record fingerprint has not been frozen")
+    if file_digest(path) != TUSHARE_CCASS_PARTICIPANT_BREADTH_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError("CCASS acceptance-record fingerprint mismatch")
+    record = load_json_record(
+        path,
+        kind="a_share_tushare_ccass_participant_breadth_source_acceptance_record",
+    )
+    observed = record.get("frozen_request_observed_result") or {}
+    terminal = record.get("terminal_decision") or {}
+    privacy = record.get("privacy_and_scope") or {}
+    if (
+        record.get("version") != 1
+        or (record.get("data_contract") or {}).get("sha256")
+        != TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT_SHA256
+        or record.get("acceptance_status")
+        != "terminal_ccass_source_acceptance_rejected_before_full_history_capacity_uniqueness_prices_or_returns"
+        or observed.get("provider") != "tushare"
+        or observed.get("api") != "ccass_hold"
+        or observed.get("requested_trade_date") != "2019-01-02"
+        or observed.get("requested_offset") != 0
+        or observed.get("requested_fields_in_order")
+        != list(TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS)
+        or observed.get("provider_requests_issued") != 1
+        or observed.get("provider_result_class") != "permission_rejected"
+        or observed.get("provider_rows_observed") != 0
+        or observed.get("normalized_rows") != 0
+        or observed.get("factor_values_derived_or_persisted") is not False
+        or terminal.get("same_contract_acceptance_may_run_again") is not False
+        or terminal.get("full_source_sync_allowed") is not False
+        or terminal.get("return_diagnostic_allowed") is not False
+        or privacy.get("credential_value_logged_hashed_or_persisted") is not False
+        or privacy.get("raw_provider_response_persisted") is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CCASS tracked acceptance record violates the frozen protocol"
+        )
+    return record
+
+
+def _guard_tushare_ccass_participant_breadth_acceptance_tracked_record() -> None:
+    """Reject a cross-clone replay before contract, context, Token, or network access."""
+
+    path = DEFAULT_TUSHARE_CCASS_PARTICIPANT_BREADTH_ACCEPTANCE_RECORD
+    if not path.exists():
+        return
+    load_tushare_ccass_participant_breadth_acceptance_record(path)
+    raise RichDataError(
+        "Tushare CCASS participant-breadth acceptance is permanently consumed; another provider request is forbidden"
+    )
+
+
+def sync_tushare_ccass_participant_breadth_acceptance(
+    *,
+    source_universe_path: Path = DEFAULT_FACTOR_UNIVERSE,
+    holding_universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Run the sole frozen sixteen-session CCASS no-price source acceptance."""
+
+    _guard_tushare_ccass_participant_breadth_acceptance_tracked_record()
+    lock_path = METADATA_ROOT / ".tushare_ccass_participant_breadth_acceptance.lock"
+    with RichDataProcessLock(lock_path):
+        _guard_tushare_ccass_participant_breadth_acceptance_tracked_record()
+        prior = tushare_ccass_participant_breadth_acceptance_records()
+        if prior:
+            raise RichDataError(
+                "Tushare CCASS participant-breadth acceptance is one-shot and already consumed by "
+                f"{prior[-1]}"
+            )
+        contract = load_tushare_ccass_participant_breadth_contract()
+        _validate_tushare_ccass_local_context(
+            contract,
+            source_universe_path=source_universe_path,
+            holding_universe_path=holding_universe_path,
+            calendar_path=calendar_path,
+        )
+        source_intervals = load_factor_universe_intervals(source_universe_path)
+        holding_intervals = load_factor_universe_intervals(holding_universe_path)
+        require_provider("tushare")
+
+        acceptance = contract["acceptance_protocol"]
+        sessions = sorted(
+            {
+                dt.date.fromisoformat(value)
+                for window in acceptance["fixed_four_session_windows"]
+                for value in window["sessions"]
+            }
+        )
+        run_id = new_run_id("tushare_ccass_participant_breadth_acceptance")
+        run_root = (
+            RAW_ROOT / "tushare" / "ccass_participant_breadth" / "acceptance" / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Tushare CCASS acceptance output already exists: {run_id}"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        session_quality: list[dict[str, Any]] = []
+        anchor_quality: list[dict[str, Any]] = []
+        last_request_started: list[float | None] = [None]
+        try:
+            accepted_frames: list[pd.DataFrame] = []
+            for session in sessions:
+                provider_request_issued = True
+                raw, request_quality = fetch_tushare_ccass_participant_breadth_session(
+                    session,
+                    contract=contract,
+                    last_request_started=last_request_started,
+                )
+                normalized, normalize_quality = (
+                    canonicalize_tushare_ccass_participant_breadth(
+                        raw, session, source_intervals
+                    )
+                )
+                combined_quality = {**request_quality, **normalize_quality}
+                session_quality.append(combined_quality)
+                if normalized.empty:
+                    raise RichDataError(
+                        f"Tushare CCASS acceptance session is empty: {session.isoformat()}"
+                    )
+                if int(normalize_quality["supported_source_names"]) < int(
+                    acceptance["minimum_supported_source_names_each_session"]
+                ):
+                    raise RichDataError(
+                        f"Tushare CCASS session has too few supported names: {session.isoformat()}"
+                    )
+                accepted_frames.append(normalized)
+            snapshot = (
+                pd.concat(accepted_frames, ignore_index=True)
+                .loc[:, list(TUSHARE_CCASS_PARTICIPANT_BREADTH_COLUMNS)]
+                .sort_values(["trade_date", "instrument"], kind="stable")
+                .reset_index(drop=True)
+            )
+            if snapshot.duplicated(["trade_date", "instrument"]).any():
+                raise RichDataError(
+                    "CCASS acceptance snapshot contains duplicate target keys"
+                )
+            anchor_quality = evaluate_tushare_ccass_participant_breadth_acceptance(
+                snapshot, contract=contract, holding_intervals=holding_intervals
+            )
+            temporary_destination = temporary_root / "ccass_participant_counts.parquet"
+            final_destination = run_root / "ccass_participant_counts.parquet"
+            atomic_write_frame(snapshot, temporary_destination)
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "tushare_ccass_participant_breadth_acceptance",
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT
+                    ),
+                    "sha256": TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT_SHA256,
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "source_request": {
+                    "api": "ccass_hold",
+                    "sessions": [value.isoformat() for value in sessions],
+                    "fields": list(TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS),
+                    "page_size": int(contract["provider_contract"]["fixed_page_size"]),
+                    "maximum_pages_per_session": int(
+                        contract["provider_contract"]["maximum_pages_per_session"]
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "provider_calls": sum(
+                        int(item["provider_calls"]) for item in session_quality
+                    ),
+                    "raw_response_persisted": False,
+                    "forbidden_fields_requested_or_persisted": [],
+                    "credential_presence_checked": True,
+                    "credential_value_logged_hashed_or_persisted": False,
+                },
+                "local_context": contract["local_context"],
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(snapshot)),
+                        "sha256": frame_digest(snapshot),
+                        "columns": list(snapshot.columns),
+                    }
+                ],
+                "source_quality": {
+                    "sessions": session_quality,
+                    "anchors": anchor_quality,
+                    "session_count": len(session_quality),
+                    "all_sessions_short_page_terminated": all(
+                        bool(item["short_page_terminated"]) for item in session_quality
+                    ),
+                    "factor_values_persisted": False,
+                },
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            if not provider_request_issued:
+                raise
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "tushare_ccass_participant_breadth_acceptance",
+                "provider": "tushare",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT
+                    ),
+                    "sha256": TUSHARE_CCASS_PARTICIPANT_BREADTH_CONTRACT_SHA256,
+                },
+                "source_request": {
+                    "api": "ccass_hold",
+                    "fields": list(TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS),
+                    "provider_request_issued": True,
+                    "completed_sessions": session_quality,
+                    "raw_response_persisted": False,
+                    "credential_value_logged_hashed_or_persisted": False,
+                },
+                "observed_anchor_quality_before_rejection": anchor_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": acceptance["failed_acceptance_status"],
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def advisory_lock_status(path: Path) -> dict[str, Any]:
     """Inspect an advisory lock without deleting, truncating, or holding it."""
 
@@ -32563,6 +33366,11 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser(
         "acceptance-tushare-northbound-top10",
         help="run the frozen completed-session Northbound top-ten entitlement check",
+    )
+
+    subparsers.add_parser(
+        "acceptance-tushare-ccass-participant-breadth",
+        help="run the frozen sixteen-session CCASS participant-breadth acceptance",
     )
 
     subparsers.add_parser(
@@ -33023,6 +33831,8 @@ def main(argv: list[str] | None = None) -> int:
             )
         elif args.command == "acceptance-tushare-northbound-top10":
             manifest = sync_tushare_northbound_top10_acceptance()
+        elif args.command == "acceptance-tushare-ccass-participant-breadth":
+            manifest = sync_tushare_ccass_participant_breadth_acceptance()
         elif args.command == "acceptance-tushare-top-inst":
             manifest = sync_tushare_top_inst_acceptance()
         elif args.command == "acceptance-tushare-top10-float-concentration":
@@ -33257,6 +34067,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-tushare-top-inst": (
             "stored_no_return_entitlement_and_top_list_acceptance"
+        ),
+        "acceptance-tushare-ccass-participant-breadth": (
+            "stored_no_return_ccass_participant_breadth_acceptance"
         ),
         "acceptance-tushare-top10-float-concentration": (
             "stored_no_return_ownership_concentration_acceptance"

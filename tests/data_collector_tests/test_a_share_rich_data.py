@@ -10309,3 +10309,281 @@ def test_feature_builder_accepts_passed_baostock_5m_history_snapshot(
     )
     assert features["minute_bars"].tolist() == [48]
     assert feature_manifest["forward_return_fields_read"] is False
+
+
+def ccass_test_codes() -> list[str]:
+    return [
+        *[f"{value:06d}.SH" for value in range(600000, 600020)],
+        *[f"{value:06d}.SZ" for value in range(1, 16)],
+        *[f"{value:06d}.SZ" for value in range(300001, 300016)],
+        "688001.SH",
+        "688002.SH",
+    ]
+
+
+def ccass_test_intervals(contract: dict) -> pd.DataFrame:
+    sessions = [
+        value
+        for window in contract["acceptance_protocol"]["fixed_four_session_windows"]
+        for value in window["sessions"]
+    ]
+    return pd.DataFrame(
+        {
+            "instrument": [
+                RICH.qlib_symbol(code.split(".", 1)[0]) for code in ccass_test_codes()
+            ],
+            "start_date": pd.Timestamp(min(sessions)),
+            "end_date": pd.Timestamp(max(sessions)),
+        }
+    )
+
+
+def ccass_test_raw(trade_date: dt.date, session_index: int) -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "trade_date": [trade_date.strftime("%Y%m%d")] * len(ccass_test_codes()),
+            "ts_code": ccass_test_codes(),
+            "hold_nums": [
+                100 + index + session_index * (1 + index % 3)
+                for index in range(len(ccass_test_codes()))
+            ],
+        },
+        columns=RICH.TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS,
+    )
+
+
+def test_tushare_ccass_contract_and_cli_are_frozen_before_rows():
+    contract = RICH.load_tushare_ccass_participant_breadth_contract()
+    assert contract["provider_contract"]["fixed_request_fields_in_order"] == [
+        "trade_date",
+        "ts_code",
+        "hold_nums",
+    ]
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+    args = RICH.build_parser().parse_args(
+        ["acceptance-tushare-ccass-participant-breadth"]
+    )
+    assert args.command == "acceptance-tushare-ccass-participant-breadth"
+
+
+def test_tushare_ccass_terminal_record_blocks_before_contract_or_provider(monkeypatch):
+    record = RICH.load_tushare_ccass_participant_breadth_acceptance_record()
+    assert record["frozen_request_observed_result"]["provider_result_class"] == (
+        "permission_rejected"
+    )
+    assert record["frozen_request_observed_result"]["provider_rows_observed"] == 0
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_ccass_participant_breadth_contract",
+        lambda: pytest.fail("contract must not load after the tracked terminal record"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_tushare_ccass_participant_breadth_page",
+        lambda *args, **kwargs: pytest.fail("provider must not be called again"),
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.sync_tushare_ccass_participant_breadth_acceptance()
+
+
+def test_tushare_ccass_page_requests_only_exact_fields(monkeypatch):
+    calls = []
+
+    class Pro:
+        def ccass_hold(self, **kwargs):
+            calls.append(kwargs)
+            return pd.DataFrame(
+                [["20260713", "600519.SH", 12]],
+                columns=RICH.TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS,
+            )
+
+    monkeypatch.setattr(
+        RICH, "_import_tushare", lambda: SimpleNamespace(pro_api=lambda: Pro())
+    )
+    result = RICH.fetch_tushare_ccass_participant_breadth_page(
+        dt.date(2026, 7, 13), offset=5000
+    )
+    assert len(result) == 1
+    assert calls == [
+        {
+            "trade_date": "20260713",
+            "fields": "trade_date,ts_code,hold_nums",
+            "limit": 5000,
+            "offset": 5000,
+        }
+    ]
+
+
+def test_tushare_ccass_pagination_requires_short_page_and_unique_source_keys(
+    monkeypatch,
+):
+    contract = copy.deepcopy(RICH.load_tushare_ccass_participant_breadth_contract())
+    contract["provider_contract"].update(
+        {
+            "fixed_page_size": 2,
+            "maximum_pages_per_session": 4,
+            "minimum_seconds_between_provider_calls": 0.0,
+        }
+    )
+    pages = {
+        0: pd.DataFrame(
+            [["20260713", "600519.SH", 10], ["20260713", "000001.SZ", 11]],
+            columns=RICH.TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS,
+        ),
+        2: pd.DataFrame(
+            [["20260713", "300001.SZ", 12]],
+            columns=RICH.TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS,
+        ),
+    }
+    monkeypatch.setattr(
+        RICH,
+        "fetch_tushare_ccass_participant_breadth_page",
+        lambda trade_date, offset, limit: pages[offset],
+    )
+    rows, quality = RICH.fetch_tushare_ccass_participant_breadth_session(
+        dt.date(2026, 7, 13), contract=contract
+    )
+    assert len(rows) == 3
+    assert quality["page_rows"] == [2, 1]
+    assert quality["short_page_terminated"] is True
+
+    contract["provider_contract"]["maximum_pages_per_session"] = 2
+    monkeypatch.setattr(
+        RICH,
+        "fetch_tushare_ccass_participant_breadth_page",
+        lambda trade_date, offset, limit: pages[0],
+    )
+    with pytest.raises(RICH.RichDataError, match="four full pages|count completeness"):
+        RICH.fetch_tushare_ccass_participant_breadth_session(
+            dt.date(2026, 7, 13), contract=contract
+        )
+
+
+def test_tushare_ccass_canonicalization_is_strict_and_privacy_minimized():
+    intervals = pd.DataFrame(
+        {
+            "instrument": ["SH600519", "SZ000001"],
+            "start_date": [pd.Timestamp("2020-01-01")] * 2,
+            "end_date": [pd.Timestamp("2030-01-01")] * 2,
+        }
+    )
+    raw = pd.DataFrame(
+        [
+            ["20260713", "600519.SH", 12],
+            ["20260713", "000001.SZ", "13"],
+            ["20260713", "600001.SH", "not-parsed-outside-universe"],
+            ["20260713", "00700.HK", "not-parsed-unsupported"],
+        ],
+        columns=RICH.TUSHARE_CCASS_PARTICIPANT_BREADTH_RAW_FIELDS,
+    )
+    normalized, quality = RICH.canonicalize_tushare_ccass_participant_breadth(
+        raw, dt.date(2026, 7, 13), intervals
+    )
+    assert tuple(normalized.columns) == RICH.TUSHARE_CCASS_PARTICIPANT_BREADTH_COLUMNS
+    assert normalized["ccass_participant_count"].tolist() == [12, 13]
+    assert quality["unsupported_security_rows_excluded"] == 1
+    assert quality["outside_point_in_time_source_universe_rows_excluded"] == 1
+    assert not ({"hold_nums", "shareholding", "hold_ratio", "name"} & set(normalized))
+
+    raw.loc[0, "hold_nums"] = "+12"
+    with pytest.raises(RICH.RichDataError, match="strict positive integer"):
+        RICH.canonicalize_tushare_ccass_participant_breadth(
+            raw, dt.date(2026, 7, 13), intervals
+        )
+
+    raw.loc[0, "hold_nums"] = 12
+    raw.loc[0, "ts_code"] = "600519.SZ"
+    with pytest.raises(RICH.RichDataError, match="suffix conflicts"):
+        RICH.canonicalize_tushare_ccass_participant_breadth(
+            raw, dt.date(2026, 7, 13), intervals
+        )
+
+
+def test_tushare_ccass_acceptance_evaluates_all_four_frozen_anchors():
+    contract = RICH.load_tushare_ccass_participant_breadth_contract()
+    intervals = ccass_test_intervals(contract)
+    frames = []
+    for window in contract["acceptance_protocol"]["fixed_four_session_windows"]:
+        for session_index, value in enumerate(window["sessions"]):
+            raw = ccass_test_raw(dt.date.fromisoformat(value), session_index)
+            normalized, _ = RICH.canonicalize_tushare_ccass_participant_breadth(
+                raw, dt.date.fromisoformat(value), intervals
+            )
+            frames.append(normalized)
+    snapshot = pd.concat(frames, ignore_index=True)
+    reports = RICH.evaluate_tushare_ccass_participant_breadth_acceptance(
+        snapshot, contract=contract, holding_intervals=intervals
+    )
+    assert [report["label"] for report in reports] == [
+        "2019_anchor",
+        "2024_anchor",
+        "2025_anchor",
+        "latest_local_anchor",
+    ]
+    assert reports[-1]["board_evidence"]["star"] is True
+    assert all(report["factor_values_persisted"] is False for report in reports)
+
+
+def test_tushare_ccass_acceptance_publishes_only_four_source_columns(
+    tmp_path, monkeypatch
+):
+    contract = RICH.load_tushare_ccass_participant_breadth_contract()
+    intervals = ccass_test_intervals(contract)
+    all_sessions = sorted(
+        {
+            value
+            for window in contract["acceptance_protocol"]["fixed_four_session_windows"]
+            for value in window["sessions"]
+        }
+    )
+    session_indices = {value: index % 4 for index, value in enumerate(all_sessions)}
+
+    def fake_session(trade_date, *, contract, last_request_started):
+        raw = ccass_test_raw(trade_date, session_indices[trade_date.isoformat()])
+        return raw, {
+            "trade_date": trade_date.isoformat(),
+            "page_count": 1,
+            "page_rows": [len(raw)],
+            "attempts_by_page": [1],
+            "provider_calls": 1,
+            "short_page_terminated": True,
+            "source_rows": len(raw),
+        }
+
+    monkeypatch.setattr(
+        RICH,
+        "_guard_tushare_ccass_participant_breadth_acceptance_tracked_record",
+        lambda: None,
+    )
+    monkeypatch.setattr(
+        RICH, "tushare_ccass_participant_breadth_acceptance_records", lambda: []
+    )
+    monkeypatch.setattr(
+        RICH, "_validate_tushare_ccass_local_context", lambda *args, **kwargs: None
+    )
+    monkeypatch.setattr(RICH, "require_provider", lambda provider: None)
+    monkeypatch.setattr(RICH, "load_factor_universe_intervals", lambda path: intervals)
+    monkeypatch.setattr(
+        RICH, "fetch_tushare_ccass_participant_breadth_session", fake_session
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    manifest_path = RICH.sync_tushare_ccass_participant_breadth_acceptance(
+        source_universe_path=tmp_path / "source.txt",
+        holding_universe_path=tmp_path / "holding.txt",
+        calendar_path=tmp_path / "calendar.txt",
+    )
+    manifest = RICH.load_json_record(manifest_path)
+    snapshot_path = RICH.resolve_record_path(manifest["files"][0]["path"])
+    snapshot = pd.read_parquet(snapshot_path)
+    assert tuple(snapshot.columns) == RICH.TUSHARE_CCASS_PARTICIPANT_BREADTH_COLUMNS
+    assert manifest["source_request"]["fields"] == [
+        "trade_date",
+        "ts_code",
+        "hold_nums",
+    ]
+    assert manifest["source_quality"]["factor_values_persisted"] is False
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False

@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_ccass_participant_breadth_mechanism_overlap_reaudit",
+  "status": "one_currently_authorized_independent_candidate_selected_before_provider_rows_factor_values_prices_or_returns",
+  "audited_at": "2026-07-21T08:44:24Z",
+  "purpose": "Revalidate the exhausted three-session factor frontier after the terminal CNInfo equity-incentive full-source gate and select at most one economically independent, currently authorized no-return mechanism before any provider row, factor value, price, or return is observed.",
+  "accepted_price_frontier": {
+    "path": "docs/a_share_three_day_research_frontier_audit.json",
+    "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+    "contract_path": "docs/a_share_three_day_research_frontier_contract.json",
+    "contract_sha256": "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf",
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "latest_terminal_mechanism": {
+    "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json",
+    "sha256": "6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375",
+    "status": "terminal_full_source_title_markup_schema_rejected_before_capacity_uniqueness_prices_or_returns",
+    "reuse_or_provider_substitution_allowed": false
+  },
+  "authorization_context": {
+    "tushare_points": 3000,
+    "credential_value_read_or_persisted": false,
+    "token_presence_only_may_be_checked": true
+  },
+  "candidate_review": [
+    {
+      "candidate": "tushare_public_fund_portfolio_crowding_change",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=121",
+      "minimum_points": 5000,
+      "decision": "rejected_before_rows",
+      "reason": "The official fund_portfolio interface requires 5000 points, above the current 3000-point authorization. No purchase, provider row, holding value, price, or return is authorized.",
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false
+    },
+    {
+      "candidate": "tushare_daily_chip_cost_and_winner_share",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=293",
+      "minimum_points": 5000,
+      "decision": "rejected_before_rows",
+      "reason": "The official cyq_perf interface requires 5000 points, above current authorization; it is not probed or approximated from prices.",
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false
+    },
+    {
+      "candidate": "tushare_hot_money_participant_net_flow",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=312",
+      "minimum_points": 10000,
+      "decision": "rejected_before_rows",
+      "reason": "The official hm_detail interface requires 10000 points and begins only in August 2022; it is outside current authorization and cannot satisfy the fixed seven-year development protocol.",
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false
+    },
+    {
+      "candidate": "index_rebalance_weight_change_event",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=96",
+      "minimum_points": 2000,
+      "decision": "rejected_by_hard_capacity_upper_bound_before_rows",
+      "reason": "A monthly 2019-2025 rebalance/change event has at most 84 dated snapshots before quality, listing, name, and distinct-value gates, below the fixed minimum of 200 non-overlapping three-session cohorts.",
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false
+    },
+    {
+      "candidate": "tushare_ccass_participant_breadth_change_3",
+      "official_documentation": "https://tushare.pro/document/2?doc_id=295",
+      "documented_minimum_trial_points": 120,
+      "documented_higher_frequency_points": 5000,
+      "documented_history": "all_history",
+      "documented_availability": "source trade-date data is loaded before 09:00 on the next trading day",
+      "documented_row_limit": 5000,
+      "economic_mechanism": "three-local-session change in the number of CCASS clearing participants holding one security, representing breadth of cross-border custody participation rather than amount ownership, issuer attention, classified order flow, valuation, fundamentals, or price action",
+      "frozen_raw_formula": "hold_nums_t / hold_nums_t_minus_3_local_sessions - 1",
+      "frozen_direction": "higher_is_better",
+      "decision": "selected_for_one_frozen_no_return_cross_exchange_source_acceptance",
+      "current_operability_caveat": "The documentation provides an A-share example and all-history claim but does not prove that the current response covers both supported Shanghai and Shenzhen A-share boards. The acceptance must prove both exchanges at historical and latest local anchors or terminate.",
+      "relationship_to_terminal_hk_hold": "The terminal hk_hold idea measured aggregate Northbound ownership stock and was rejected because its daily disclosure stopped. This candidate uses only the CCASS participant-count field from a separately documented next-morning clearing dataset. It never uses shareholding or hold_ratio; failure to reproduce both exchanges and the latest anchor terminates rather than substituting the discontinued ownership series.",
+      "closest_existing_mechanisms": [
+        "institutional_survey_org_count",
+        "analyst_valid_rating_report_count",
+        "major_holder_event_count",
+        "tushare_large_order_net_inflow_share",
+        "holder_count_change",
+        "free_float_cap_proxy",
+        "liquidity_5",
+        "turnover_surge_1"
+      ],
+      "independence_reason": "CCASS participant breadth counts clearing/custody participants on every observed security-day. Existing survey and analyst counts measure disclosed attention events; major-holder and holder-number factors measure issuer ownership disclosures; classified moneyflow measures transaction-size flow; size and liquidity factors measure trading capacity. No participant identity, holding quantity, ownership percentage, price, market cap, report text, or return enters the candidate.",
+      "required_before_returns": [
+        "freeze an exact three-field, paginated, cross-exchange Tushare source and point-in-time contract",
+        "pass one fixed sixteen-session acceptance covering four four-session anchors across 2019, 2024, 2025, and the latest local 2026 session",
+        "prove current and historical Shanghai-main, Shenzhen-main, ChiNext, and current STAR source transport without using names or identities",
+        "freeze a fingerprint-bound 2019-2025 atomic full-source and no-return capacity protocol only after acceptance",
+        "pass source coverage, 200-cohort capacity, and semantic/statistical uniqueness before any price or forward return",
+        "freeze one immutable single-factor return diagnostic before any future quote access"
+      ],
+      "provider_rows_observed": false,
+      "factor_values_observed": false,
+      "forward_return_fields_read": false
+    }
+  ],
+  "selection_policy": {
+    "maximum_new_candidates_advanced": 1,
+    "current_authorization_required": true,
+    "economic_independence_required": true,
+    "hard_capacity_upper_bound_applied_before_rows": true,
+    "provider_row_or_entitlement_observation_allowed_before_contract": false,
+    "return_access_allowed_during_overlap_audit": false,
+    "historical_factor_aggregation_allowed": false,
+    "selection_scoring_sizing_or_ordering_allowed": false
+  },
+  "price_fields_loaded": [],
+  "provider_rows_observed": false,
+  "factor_values_observed": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
