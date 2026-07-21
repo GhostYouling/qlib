@@ -11160,3 +11160,643 @@ def test_tushare_ccass_acceptance_publishes_only_four_source_columns(
     assert manifest["source_quality"]["factor_values_persisted"] is False
     assert manifest["price_fields_loaded"] == []
     assert manifest["forward_return_fields_read"] is False
+
+
+def test_official_exchange_inquiry_contract_and_local_context_are_frozen(tmp_path):
+    contract = RICH.load_official_exchange_inquiry_burden_contract()
+    RICH.validate_official_exchange_inquiry_local_context(contract)
+    assert contract["mechanism_selection"]["both_exchanges_required"] is True
+    assert contract["sse_provider_contract"]["record_fields_read"] == [
+        "extSECURITY_CODE",
+        "createTime",
+        "extDWDM",
+        "docURL",
+    ]
+    assert contract["szse_provider_contract"]["catalog_id"] == "main_wxhj"
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+    parsed = RICH.build_parser().parse_args(
+        ["acceptance-official-exchange-inquiry-burden"]
+    )
+    assert parsed.command == "acceptance-official-exchange-inquiry-burden"
+
+    changed = copy.deepcopy(contract)
+    changed["acceptance_protocol"]["minimum_candidate_cross_sections_total"] = 14
+    changed_path = tmp_path / "changed-inquiry-contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_official_exchange_inquiry_burden_contract(changed_path)
+
+
+def test_official_exchange_inquiry_cli_dispatches_frozen_paths(
+    monkeypatch, tmp_path, capsys
+):
+    universe_path = tmp_path / "universe.txt"
+    calendar_path = tmp_path / "calendar.txt"
+    manifest_path = tmp_path / "acceptance.json"
+    observed = {}
+
+    def fake_acceptance(*, universe_path, calendar_path):
+        observed["universe_path"] = universe_path
+        observed["calendar_path"] = calendar_path
+        return manifest_path
+
+    monkeypatch.setattr(
+        RICH, "sync_official_exchange_inquiry_burden_acceptance", fake_acceptance
+    )
+    result = RICH.main(
+        [
+            "acceptance-official-exchange-inquiry-burden",
+            "--universe-file",
+            str(universe_path),
+            "--calendar-file",
+            str(calendar_path),
+        ]
+    )
+    output = RICH.json.loads(capsys.readouterr().out)
+    assert result == 0
+    assert observed == {
+        "universe_path": universe_path,
+        "calendar_path": calendar_path,
+    }
+    assert output == {
+        "manifest": str(manifest_path),
+        "status": "stored_no_return_official_exchange_inquiry_acceptance",
+    }
+
+
+def test_official_exchange_inquiry_tracked_rejection_blocks_before_contract_or_source(
+    monkeypatch, tmp_path
+):
+    monkeypatch.setattr(
+        RICH,
+        "load_official_exchange_inquiry_burden_contract",
+        lambda: pytest.fail("contract must not load after terminal rejection"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_szse_official_exchange_inquiry_schema",
+        lambda **kwargs: pytest.fail("source must not run after terminal rejection"),
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.sync_official_exchange_inquiry_burden_acceptance()
+
+    changed = RICH.load_json_record(
+        RICH.DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_ACCEPTANCE_RECORD
+    )
+    changed["next_stage_decision"]["acceptance_retry_allowed"] = True
+    changed_path = tmp_path / "changed-official-inquiry-acceptance.json"
+    RICH.atomic_write_json(changed, changed_path)
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_ACCEPTANCE_RECORD",
+        changed_path,
+    )
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.guard_official_exchange_inquiry_acceptance()
+
+
+def test_official_exchange_inquiry_normalized_event_gate_is_strict():
+    events = pd.DataFrame(
+        [
+            ["2024-05-13", "SH600519", 2, "SSE", "official_exchange"],
+            ["2024-05-14", "SH600519", 1, "SSE", "official_exchange"],
+            ["2024-05-14", "SZ000001", 1, "SZSE", "official_exchange"],
+        ],
+        columns=RICH.OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS,
+    )
+    normalized = RICH.normalize_official_exchange_inquiry_events(events)
+    assert tuple(normalized.columns) == RICH.OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS
+    assert normalized["official_exchange_inquiry_count"].tolist() == [2, 1, 1]
+
+    wrong_exchange = events.copy()
+    wrong_exchange.loc[0, "exchange"] = "SZSE"
+    with pytest.raises(RICH.RichDataError, match="conflicts with exchange"):
+        RICH.normalize_official_exchange_inquiry_events(wrong_exchange)
+
+    boolean_count = events.astype(
+        {"official_exchange_inquiry_count": "object"}
+    ).copy()
+    boolean_count.loc[0, "official_exchange_inquiry_count"] = True
+    with pytest.raises(RICH.RichDataError, match="strict positive integer"):
+        RICH.normalize_official_exchange_inquiry_events(boolean_count)
+
+    duplicate = pd.concat([events, events.iloc[[0]]], ignore_index=True)
+    with pytest.raises(RICH.RichDataError, match="event key is duplicated"):
+        RICH.normalize_official_exchange_inquiry_events(duplicate)
+
+
+def test_official_exchange_inquiry_materialization_is_strict_next_session():
+    events = pd.DataFrame(
+        [
+            ["2024-05-13", "SH600519", 2, "SSE", "official_exchange"],
+            ["2024-05-14", "SH600519", 1, "SSE", "official_exchange"],
+            ["2024-05-14", "SZ000001", 1, "SZSE", "official_exchange"],
+        ],
+        columns=RICH.OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS,
+    )
+    materialized = RICH.materialize_official_exchange_inquiry_acceptance_sessions(
+        events,
+        [
+            "2024-05-13",
+            "2024-05-14",
+            "2024-05-15",
+            "2024-05-16",
+            "2024-05-17",
+        ],
+    )
+    assert not (
+        (materialized["signal_date"] == pd.Timestamp("2024-05-13"))
+        & (materialized["instrument"] == "SH600519")
+    ).any()
+    sh_14 = materialized.loc[
+        (materialized["signal_date"] == pd.Timestamp("2024-05-14"))
+        & (materialized["instrument"] == "SH600519")
+    ].iloc[0]
+    assert sh_14["active_unique_inquiry_count"] == 2
+    assert sh_14["official_exchange_inquiry_resilience"] == pytest.approx(1.0)
+    sh_15 = materialized.loc[
+        (materialized["signal_date"] == pd.Timestamp("2024-05-15"))
+        & (materialized["instrument"] == "SH600519")
+    ].iloc[0]
+    assert sh_15["active_unique_inquiry_count"] == 3
+    assert sh_15["official_exchange_inquiry_resilience"] == pytest.approx(2 / 3)
+    sz_15 = materialized.loc[
+        (materialized["signal_date"] == pd.Timestamp("2024-05-15"))
+        & (materialized["instrument"] == "SZ000001")
+    ].iloc[0]
+    assert sz_15["official_exchange_inquiry_resilience"] == pytest.approx(2.0)
+    assert materialized["signal_date"].max() == pd.Timestamp("2024-05-17")
+    assert not materialized["signal_date"].eq(pd.Timestamp("2024-05-18")).any()
+
+    with pytest.raises(RICH.RichDataError, match="event age changed"):
+        RICH.materialize_official_exchange_inquiry_acceptance_sessions(
+            events, ["2024-05-14"], maximum_age_calendar_days=4
+        )
+
+
+def szse_inquiry_payload(
+    rows,
+    *,
+    page_no=1,
+    page_size=2,
+    record_count=None,
+    page_count=None,
+    column_type_label="函件类型",
+):
+    if record_count is None:
+        record_count = len(rows)
+    if page_count is None:
+        page_count = (record_count + page_size - 1) // page_size if record_count else 0
+    return [
+        {
+            "metadata": {
+                "catalogid": "main_wxhj",
+                "tabkey": "tab1",
+                "hidden": "0",
+                "cols": {
+                    "code": "公司代码",
+                    "name": "公司简称",
+                    "date": "发函日期",
+                    "type": column_type_label,
+                    "link": "函件名称",
+                },
+                "conditions": [
+                    {"label": "开始日期", "name": "STARTDATE", "inputType": "date"},
+                    {"label": "结束日期", "name": "ENDDATE", "inputType": "date"},
+                ],
+                "pagesize": page_size,
+                "pageno": page_no,
+                "recordcount": record_count,
+                "pagecount": page_count,
+            },
+            "data": rows,
+        }
+    ]
+
+
+def test_szse_official_exchange_inquiry_metadata_roles_are_finite():
+    rows = [
+        {
+            "code": "000001",
+            "name": "not-read",
+            "date": "2024-05-14",
+            "type": "not-read",
+            "link": '<a href="//disc.static.szse.cn/test.PDF">not-read</a>',
+        }
+    ]
+    parsed = RICH.validate_szse_official_exchange_inquiry_metadata(
+        szse_inquiry_payload(rows, page_size=2, record_count=1, page_count=1)
+    )
+    assert parsed["role_keys"]["issuer_code"] == "code"
+    assert parsed["role_keys"]["document_link_cell"] == "link"
+    assert parsed["start_date_parameter"] == "STARTDATE"
+    assert parsed["end_date_parameter"] == "ENDDATE"
+    assert parsed["rows"] == rows
+
+    with pytest.raises(RICH.RichDataError, match="column role is ambiguous"):
+        RICH.validate_szse_official_exchange_inquiry_metadata(
+            szse_inquiry_payload(
+                rows,
+                page_size=2,
+                record_count=1,
+                page_count=1,
+                column_type_label="问询严重程度",
+            )
+        )
+
+
+def test_official_exchange_inquiry_row_identity_never_persists_href_or_text():
+    identity_dates = {}
+    sse_rows = [
+        {
+            "extSECURITY_CODE": "600519",
+            "createTime": "2024-05-13 00:00:00",
+            "extDWDM": "1",
+            "docURL": "www.sse.com.cn/test/a.pdf",
+            "docTitle": "must-not-survive",
+            "extGSJC": "must-not-survive",
+            "extWTFL": "must-not-survive",
+        },
+        {
+            "extSECURITY_CODE": "688981",
+            "createTime": "2024-05-13 00:00:00",
+            "extDWDM": "1",
+            "docURL": "www.sse.com.cn/test/star.pdf",
+        },
+    ]
+    sse, sse_quality = RICH.canonicalize_official_exchange_inquiry_rows(
+        sse_rows,
+        dt.date(2024, 5, 1),
+        dt.date(2024, 5, 31),
+        exchange="SSE",
+        identity_dates=identity_dates,
+    )
+    assert sse.to_dict("records") == [
+        {
+            "inquiry_date": pd.Timestamp("2024-05-13"),
+            "instrument": "SH600519",
+            "official_exchange_inquiry_count": 1,
+            "exchange": "SSE",
+            "provider": "official_exchange",
+        }
+    ]
+    assert sse_quality["unsupported_board_or_exchange_rows_excluded"] == 1
+
+    szse_rows = [
+        {
+            "code": "000001",
+            "name": "must-not-survive",
+            "date": "2024-05-14",
+            "type": "must-not-survive",
+            "link": '<a href="//disc.static.szse.cn/test/b.pdf">must-not-survive</a>',
+        }
+    ]
+    schema = RICH.validate_szse_official_exchange_inquiry_metadata(
+        szse_inquiry_payload(
+            szse_rows, page_size=2, record_count=1, page_count=1
+        )
+    )
+    schema.pop("rows")
+    szse, _ = RICH.canonicalize_official_exchange_inquiry_rows(
+        szse_rows,
+        dt.date(2024, 5, 1),
+        dt.date(2024, 5, 31),
+        exchange="SZSE",
+        szse_schema=schema,
+        identity_dates=identity_dates,
+    )
+    assert szse["instrument"].tolist() == ["SZ000001"]
+    assert not ({"document_href", "title", "type", "name"} & set(szse.columns))
+
+
+def test_official_exchange_inquiry_fetchers_reconcile_all_pages():
+    contract = RICH.load_official_exchange_inquiry_burden_contract()
+
+    class FakeResponse:
+        status_code = 200
+
+        def __init__(self, payload):
+            self.payload = payload
+
+        def json(self):
+            return self.payload
+
+        def raise_for_status(self):
+            return None
+
+    class FakeSSESession:
+        def __init__(self):
+            self.calls = []
+
+        def get(self, endpoint, *, params, headers, timeout):
+            self.calls.append(dict(params))
+            page = int(params["pageHelp.pageNo"])
+            rows = [{"row": index} for index in range(25 if page == 1 else 1)]
+            return FakeResponse(
+                {
+                    "result": rows,
+                    "pageHelp": {
+                        "pageCount": 2,
+                        "total": 26,
+                        "pageNo": page,
+                        "pageSize": 25,
+                    },
+                }
+            )
+
+    sse_session = FakeSSESession()
+    sse_rows, sse_quality = RICH.fetch_sse_official_exchange_inquiry_partition(
+        dt.date(2024, 5, 1),
+        dt.date(2024, 5, 31),
+        contract=contract,
+        session=sse_session,
+        page_pause_seconds=0,
+    )
+    assert len(sse_rows) == 26
+    assert sse_quality["requested_pages"] == [1, 2]
+    assert sse_quality["count_verified"] is True
+
+    class FakeSZSESession:
+        def __init__(self):
+            self.calls = []
+
+        def get(self, endpoint, *, params, headers, timeout):
+            self.calls.append(dict(params))
+            if "PAGENO" not in params:
+                rows = [{"default": "transported-but-not-read"}]
+                return FakeResponse(
+                    szse_inquiry_payload(
+                        rows, page_size=2, record_count=1, page_count=1
+                    )
+                )
+            page = int(params["PAGENO"])
+            all_rows = [
+                {
+                    "code": f"00000{index + 1}",
+                    "name": "not-read",
+                    "date": "2024-05-14",
+                    "type": "not-read",
+                    "link": (
+                        f'<a href="//disc.static.szse.cn/test/{index}.pdf">'
+                        "not-read</a>"
+                    ),
+                }
+                for index in range(3)
+            ]
+            page_rows = all_rows[:2] if page == 1 else all_rows[2:]
+            return FakeResponse(
+                szse_inquiry_payload(
+                    page_rows,
+                    page_no=page,
+                    page_size=2,
+                    record_count=3,
+                    page_count=2,
+                )
+            )
+
+    szse_session = FakeSZSESession()
+    schema, schema_quality = RICH.fetch_szse_official_exchange_inquiry_schema(
+        contract=contract,
+        session=szse_session,
+        page_pause_seconds=0,
+    )
+    assert schema_quality["transported_default_rows_not_read_or_used"] == 1
+    rows, quality = RICH.fetch_szse_official_exchange_inquiry_partition(
+        dt.date(2024, 5, 1),
+        dt.date(2024, 5, 31),
+        contract=contract,
+        schema=schema,
+        session=szse_session,
+        page_pause_seconds=0,
+    )
+    assert len(rows) == 3
+    assert quality["requested_pages"] == [1, 2]
+    assert quality["count_verified"] is True
+
+
+def configure_official_exchange_inquiry_acceptance_run(
+    monkeypatch, tmp_path: Path, *, run_id: str
+) -> tuple[Path, Path]:
+    universe_path = tmp_path / "universe.txt"
+    calendar_path = tmp_path / "calendar.txt"
+    universe_path.write_text("frozen test universe\n", encoding="utf-8")
+    calendar_path.write_text("frozen test calendar\n", encoding="utf-8")
+    instruments = [f"SH600{index:03d}" for index in range(1, 16)] + [
+        f"SZ000{index:03d}" for index in range(1, 16)
+    ]
+    intervals = pd.DataFrame(
+        {
+            "instrument": instruments,
+            "start_date": pd.Timestamp("2010-01-01"),
+            "end_date": pd.Timestamp("2030-12-31"),
+        }
+    )
+    schema = {
+        "tabkey": "tab1",
+        "page_size": 50,
+        "column_labels": {
+            "code": "公司代码",
+            "name": "公司简称",
+            "date": "发函日期",
+            "type": "函件类型",
+            "link": "函件名称",
+        },
+        "role_keys": {
+            "issuer_code": "code",
+            "ignored_issuer_name": "name",
+            "inquiry_date": "date",
+            "ignored_inquiry_type": "type",
+            "document_link_cell": "link",
+        },
+        "row_shape": "mapping",
+        "start_date_parameter": "STARTDATE",
+        "end_date_parameter": "ENDDATE",
+    }
+
+    def fake_schema(*, contract):
+        return schema, {
+            "provider_calls": 1,
+            "transported_default_rows_not_read_or_used": 1,
+        }
+
+    def fake_partition(
+        exchange,
+        start_date,
+        end_date,
+        *,
+        contract,
+        szse_schema=None,
+    ):
+        rows = []
+        if start_date.month == 4:
+            inquiry_day = dt.date(start_date.year, 4, 1)
+            while inquiry_day.weekday() != 1:
+                inquiry_day += dt.timedelta(days=1)
+            prefix = "600" if exchange == "SSE" else "000"
+            for index in range(1, 16):
+                code = f"{prefix}{index:03d}"
+                event_day = inquiry_day if index <= 8 else inquiry_day + dt.timedelta(days=7)
+                event_date = event_day.isoformat()
+                document_count = 1 if index % 2 else 2
+                for document in range(document_count):
+                    href = f"/{exchange.lower()}/{start_date.year}/{code}-{document}.pdf"
+                    if exchange == "SSE":
+                        rows.append(
+                            {
+                                "extSECURITY_CODE": code,
+                                "createTime": f"{event_date} 00:00:00",
+                                "extDWDM": "1",
+                                "docURL": f"www.sse.com.cn{href}",
+                            }
+                        )
+                    else:
+                        rows.append(
+                            {
+                                "code": code,
+                                "name": "transported-not-read",
+                                "date": event_date,
+                                "type": "transported-not-read",
+                                "link": (
+                                    f'<a href="//disc.static.szse.cn{href}">'
+                                    "transported-not-read</a>"
+                                ),
+                            }
+                        )
+        quality = {
+            "exchange": exchange,
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 1,
+            "requested_pages": [1],
+            "advertised_rows": len(rows),
+            "received_rows": len(rows),
+            "page_size": 50,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+        return [(start_date, end_date, rows, quality)], []
+
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_ACCEPTANCE_RECORD",
+        tmp_path / "tracked-acceptance.json",
+    )
+    monkeypatch.setattr(RICH, "new_run_id", lambda prefix: run_id)
+    monkeypatch.setattr(
+        RICH, "validate_official_exchange_inquiry_local_context", lambda contract: None
+    )
+    monkeypatch.setattr(
+        RICH, "load_factor_universe_intervals", lambda path: intervals.copy()
+    )
+    monkeypatch.setattr(
+        RICH,
+        "local_calendar_dates",
+        lambda start, end, path: pd.date_range(start, end, freq="B"),
+    )
+    monkeypatch.setattr(
+        RICH, "fetch_szse_official_exchange_inquiry_schema", fake_schema
+    )
+    monkeypatch.setattr(
+        RICH, "fetch_official_exchange_inquiry_partition_details", fake_partition
+    )
+    return universe_path, calendar_path
+
+
+def test_official_exchange_inquiry_full_acceptance_is_atomic_and_guarded(
+    monkeypatch, tmp_path
+):
+    universe_path, calendar_path = configure_official_exchange_inquiry_acceptance_run(
+        monkeypatch,
+        tmp_path,
+        run_id="20260721T120000Z_official_exchange_inquiry_burden_acceptance_test",
+    )
+    manifest_path = RICH.sync_official_exchange_inquiry_burden_acceptance(
+        universe_path=universe_path,
+        calendar_path=calendar_path,
+    )
+    manifest = RICH.load_json_record(manifest_path)
+    snapshot_path = RICH.resolve_record_path(manifest["files"][0]["path"])
+    snapshot = pd.read_parquet(snapshot_path)
+    assert tuple(snapshot.columns) == RICH.OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS
+    assert len(snapshot) == 90
+    assert snapshot["official_exchange_inquiry_count"].nunique() == 2
+    assert manifest["source_request"]["both_exchanges_required_and_completed"] is True
+    assert manifest["source_request"]["provider_calls"] == 19
+    assert manifest["source_quality"]["combined_rows_written"] == 90
+    assert manifest["source_quality"]["combined_candidate_cross_sections"] == 18
+    assert manifest["factor"]["factor_values_persisted_at_acceptance"] is False
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    assert not ({"document_href", "title", "type", "name"} & set(snapshot.columns))
+    with pytest.raises(RICH.RichDataError, match="one-shot"):
+        RICH.guard_official_exchange_inquiry_acceptance()
+
+
+def test_official_exchange_inquiry_source_failure_is_terminal_and_leaves_no_data(
+    monkeypatch, tmp_path
+):
+    universe_path, calendar_path = configure_official_exchange_inquiry_acceptance_run(
+        monkeypatch,
+        tmp_path,
+        run_id="20260721T120100Z_official_exchange_inquiry_burden_acceptance_test",
+    )
+
+    def fail_schema(*, contract):
+        raise RICH.RichDataError("mock source schema drift")
+
+    monkeypatch.setattr(
+        RICH, "fetch_szse_official_exchange_inquiry_schema", fail_schema
+    )
+    with pytest.raises(RICH.RichDataError, match="rejection_record"):
+        RICH.sync_official_exchange_inquiry_burden_acceptance(
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    records = RICH.official_exchange_inquiry_acceptance_records()
+    assert len(records) == 1
+    rejection = RICH.load_json_record(records[0])
+    assert rejection["source_request"]["provider_request_issued"] is True
+    assert rejection["partial_snapshot_deleted"] is True
+    assert rejection["files"] == []
+    assert not list((tmp_path / "raw").rglob("*.parquet"))
+    with pytest.raises(RICH.RichDataError, match="one-shot"):
+        RICH.guard_official_exchange_inquiry_acceptance()
+
+
+def test_official_exchange_inquiry_manifest_failure_removes_staged_snapshot(
+    monkeypatch, tmp_path
+):
+    universe_path, calendar_path = configure_official_exchange_inquiry_acceptance_run(
+        monkeypatch,
+        tmp_path,
+        run_id="20260721T120200Z_official_exchange_inquiry_burden_acceptance_test",
+    )
+    real_atomic_write_json = RICH.atomic_write_json
+    success_status = RICH.load_official_exchange_inquiry_burden_contract()[
+        "acceptance_protocol"
+    ]["success_status"]
+    failed = False
+
+    def fail_success_manifest_once(payload, destination):
+        nonlocal failed
+        if payload.get("acceptance_status") == success_status and not failed:
+            failed = True
+            raise OSError("mock manifest commit failure")
+        real_atomic_write_json(payload, destination)
+
+    monkeypatch.setattr(RICH, "atomic_write_json", fail_success_manifest_once)
+    with pytest.raises(RICH.RichDataError, match="rejection_record"):
+        RICH.sync_official_exchange_inquiry_burden_acceptance(
+            universe_path=universe_path,
+            calendar_path=calendar_path,
+        )
+    records = RICH.official_exchange_inquiry_acceptance_records()
+    assert len(records) == 1
+    rejection = RICH.load_json_record(records[0])
+    assert rejection["error_type"] == "OSError"
+    assert rejection["partial_snapshot_deleted"] is True
+    assert not list((tmp_path / "raw").rglob("*.parquet"))

@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "kind": "a_share_qmt_xtquant_one_minute_export_data_contract",
+  "status": "frozen_before_qmt_runtime_export_rows_minute_factor_values_prices_or_forward_returns",
+  "preregistered_at": "2026-07-21T10:37:24Z",
+  "purpose": "Move a privacy-minimized raw Level-1 one-minute acceptance sample from an already-lawful Windows MiniQMT/XtQuant runtime into this macOS repository, validate timestamp, adjustment, fill, volume, amount, and daily reconciliation semantics, and stop before full history or minute factor values.",
+  "frontier_selection": {
+    "path": "docs/a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json",
+    "sha256": "7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db",
+    "selected_source_path": "qmt_xtquant_level1_one_minute_export_bridge",
+    "new_factor_definition_count": 0
+  },
+  "official_documentation": {
+    "xtdata_interface": "https://docs.thinktrader.net/pages/36f5df/",
+    "xtquant_faq": "https://docs.thinktrader.net/pages/040ff7/",
+    "reviewed_at": "2026-07-21T10:37:24Z",
+    "documented_interface_facts": [
+      "download_history_data2 supports batched 1m history download",
+      "get_market_data_ex returns one DataFrame per symbol",
+      "time is a millisecond timestamp",
+      "1m Level-1 fields include open, high, low, close, volume, amount, and suspendFlag",
+      "dividend_type none requests unadjusted bars",
+      "fill_data false disables forward filling"
+    ]
+  },
+  "environment_boundary": {
+    "export_runtime": "user-controlled Windows MiniQMT/XtQuant environment with lawful broker authorization",
+    "import_runtime": "this repository on macOS or another offline research machine",
+    "macos_xtquant_install_or_client_launch_required": false,
+    "credential_account_cookie_token_client_path_machine_name_or_username_allowed_in_bundle": false,
+    "order_cancel_position_asset_or_other_trading_api_allowed": false,
+    "level2_quote_order_transaction_or_queue_api_allowed": false,
+    "network_access_during_local_import": false
+  },
+  "local_context": {
+    "minute_factor_preregistration": {
+      "path": "docs/a_share_minute_factor_preregistration.json",
+      "sha256": "0e1ca9f041a0eb659b97c2c52bf1af5873717eec2c2705716f662d56b98eceae"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_source": "baostock"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "factor_source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    }
+  },
+  "exporter_protocol": {
+    "script_path": "scripts/export_qmt_one_minute.py",
+    "allowed_operation": "export-acceptance",
+    "api_module": "xtquant.xtdata",
+    "history_download_function": "download_history_data2",
+    "history_read_function": "get_market_data_ex",
+    "period": "1m",
+    "field_list_in_order": [
+      "time",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "suspendFlag"
+    ],
+    "dividend_type": "none",
+    "fill_data": false,
+    "count": -1,
+    "start_and_end_bounds": "closed_single_local_session",
+    "source_symbol_format": "six_digit_code_dot_SH_or_SZ",
+    "export_manifest_filename": "qmt_1m_acceptance_export.json",
+    "one_gzip_csv_per_symbol": true,
+    "gzip_mtime": 0,
+    "raw_response_cache_or_qmt_client_database_copied": false
+  },
+  "formal_acceptance": {
+    "trade_date": "2026-07-13",
+    "symbols": [
+      "600519",
+      "000001",
+      "300750",
+      "688981"
+    ],
+    "source_symbols": [
+      "600519.SH",
+      "000001.SZ",
+      "300750.SZ",
+      "688981.SH"
+    ],
+    "required_rows_per_symbol": 240,
+    "required_symbol_count": 4,
+    "supported_timestamp_grids": [
+      "bar_start_09_30_to_14_59",
+      "bar_end_09_31_to_15_00"
+    ],
+    "explicit_separate_alignment_confirmation_required": true,
+    "daily_raw_ohlc_max_relative_error": 0.002,
+    "daily_amount_ratio_tolerance": 0.005,
+    "accepted_volume_ratios_to_local_raw_lot_volume": [
+      1.0,
+      100.0
+    ],
+    "daily_volume_ratio_tolerance": 0.005,
+    "positive_total_volume_and_amount_required": true,
+    "suspend_flag_must_equal_zero": true,
+    "all_symbols_must_pass_together": true,
+    "success_status": "automatic_checks_passed_pending_explicit_time_alignment_and_separate_full_source_no_return_protocol"
+  },
+  "bundle_manifest_contract": {
+    "kind": "a_share_qmt_xtquant_one_minute_export_bundle",
+    "version": 1,
+    "provider": "qmt_xtquant",
+    "export_kind": "acceptance",
+    "required_top_level_fields": [
+      "version",
+      "kind",
+      "provider",
+      "export_kind",
+      "generated_at_utc",
+      "trade_date",
+      "symbols",
+      "source_symbols",
+      "api_request",
+      "runtime",
+      "data_contract",
+      "files",
+      "privacy"
+    ],
+    "allowed_runtime_fields": [
+      "python_version",
+      "xtquant_version"
+    ],
+    "relative_file_paths_only": true,
+    "regular_files_only": true,
+    "exactly_one_file_per_symbol": true,
+    "file_byte_sha256_required": true,
+    "row_count_required": true,
+    "file_columns_required": [
+      "timetag_ms",
+      "source_symbol",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "suspend_flag"
+    ]
+  },
+  "strict_import_policy": {
+    "timetag_ms": "strict non-boolean integer interpreted as Unix epoch milliseconds and converted to Asia/Shanghai naive local datetime",
+    "source_symbol": "strict exact frozen symbol repeated on every row",
+    "prices": "finite positive raw unadjusted OHLC with high and low consistency",
+    "volume_and_amount": "finite nonnegative values with strictly positive session sums",
+    "suspend_flag": "strict integer zero for every formal-acceptance row",
+    "missing_row_field_or_nonfinite_value": "fatal_without_drop_or_fill",
+    "duplicate_timestamp": "fatal_without_deduplication",
+    "outside_trade_date_or_regular_session": "fatal",
+    "unexpected_extra_column_or_file": "fatal",
+    "bundle_or_file_hash_mismatch": "fatal",
+    "csv_edit_or_reuse_after_failed_import": "forbidden",
+    "failed_exporter_or_importer_infrastructure_repair": "may create one new immutable bundle only under the exact same symbols, date, fields, no-adjustment, no-fill, and acceptance gates, and only before factor values or forward returns"
+  },
+  "normalized_acceptance_snapshot": {
+    "provider": "qmt_xtquant_export",
+    "frequency": "1m",
+    "prices": "raw_unadjusted",
+    "columns": [
+      "datetime",
+      "symbol",
+      "source_symbol",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "provider"
+    ],
+    "factor_values_persisted": false,
+    "full_history_persisted": false
+  },
+  "next_stage_policy": {
+    "acceptance_success_permits": "a separate explicit time-alignment confirmation followed by a new fingerprint-bound full-source no-return export protocol",
+    "acceptance_success_is_factor_return_evidence": false,
+    "full_history_allowed_from_this_contract_alone": false,
+    "minute_feature_materialization_allowed_from_this_contract_alone": false,
+    "forward_return_diagnostic_allowed_from_this_contract_alone": false,
+    "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed": false
+  },
+  "qmt_runtime_or_export_rows_observed_before_freeze": false,
+  "minute_factor_values_observed_before_freeze": false,
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

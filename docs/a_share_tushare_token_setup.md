@@ -2,6 +2,8 @@
 
 本项目只从环境变量 `TUSHARE_TOKEN` 读取 Tushare 凭据。真实 Token 不得写入 Git、源码、YAML、Notebook、日志、研究清单、聊天或带明文参数的 shell 命令。
 
+本指南适用于本仓库 `GhostYouling/qlib` 的数据命令，与 GitHub 登录、提交和推送认证无关。若希望凭据只在本项目的一条命令中可见，优先使用下文“配置范围说明”里的单进程注入；`launchctl setenv` 是为了让新启动的 Codex 等 macOS 图形程序继承变量，它作用于当前登录会话，并不是仓库级密钥存储。
+
 本文是仓库的凭据配置规范。下面代码块中的 `token?请粘贴...` 是 zsh 的隐藏输入提示，不是 Token 占位符；请原样运行命令，等提示出现后再粘贴真实 Token，不能把真实值改写进命令本身。
 
 ## 0. 最短操作清单
@@ -20,7 +22,7 @@ unset token
 python scripts/a_share_rich_data.py status
 ```
 
-只确认输出中的 Tushare 环境变量与 SDK 为“已就绪”；不要运行会输出 Token 明文的检查命令。仓库提交只包含变量名和以上安全模板，不包含本机 `launchctl` 值、真实 Token 或 `.env` 文件。
+只确认输出中的 Tushare 环境变量与 SDK 为“已就绪”；不要运行会输出 Token 明文的检查命令。仓库提交只包含变量名和以上安全模板，不包含本机 `launchctl` 值、真实 Token 或 `.env` 文件。仓库的 `.gitignore` 同时忽略 `.env` 与 `.env.*`；这只是防误提交的第二道保护，不代表允许把 Token 落盘。
 
 ### 配置成功的判定
 

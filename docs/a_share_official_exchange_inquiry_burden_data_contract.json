@@ -1,0 +1,393 @@
+{
+  "version": 1,
+  "kind": "a_share_official_exchange_inquiry_burden_data_contract",
+  "status": "frozen_before_official_exchange_inquiry_rows_document_identities_factor_values_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-21T10:05:00Z",
+  "purpose": "Validate the public SSE and SZSE listed-company inquiry-letter transports, official metadata schemas, document-link identities, event aggregation, and historical sample variation before any full history, comparison field, price, return, aggregation, current score, selection, sizing, or order.",
+  "mechanism_selection": {
+    "path": "docs/a_share_three_day_official_exchange_inquiry_burden_mechanism_overlap_reaudit_20260721.json",
+    "sha256_at_contract_freeze": "8b9ee95c5a19184053aa0646bbd4a700a03488da65a9c35e20bfc82325bf4de0",
+    "selected_candidate_count": 1,
+    "factor_name": "official_exchange_inquiry_resilience",
+    "direction": "higher_is_better",
+    "both_exchanges_required": true
+  },
+  "common_public_transport_policy": {
+    "credential_required": false,
+    "account_points_required": 0,
+    "cookies_proxy_or_retail_session_allowed": false,
+    "raw_response_persisted": false,
+    "maximum_attempts_per_request": 3,
+    "timeout_seconds": 30,
+    "minimum_delay_seconds_between_attempts": 0.1,
+    "transient_retry_scope": "HTTP 429, HTTP 5xx, transport exceptions, and JSON or JSONP decoding only. Contract, metadata, schema, count, date, identity, duplicate, or content failures are fatal and never retried.",
+    "allowed_request_headers": [
+      "A stable non-secret User-Agent",
+      "Referer equal to the corresponding official inquiry page",
+      "Accept for JSON, JSONP, or HTML as required by the official page script"
+    ],
+    "forbidden_request_state": [
+      "Authorization",
+      "Cookie",
+      "Token",
+      "account session",
+      "proxy identity",
+      "browser profile",
+      "retail trading client state"
+    ]
+  },
+  "sse_provider_contract": {
+    "exchange": "SSE",
+    "provider": "official_exchange",
+    "official_page": "https://www.sse.com.cn/regulation/supervision/inquiries/",
+    "official_static_javascript": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_regulatoryInformation_2021.js",
+    "official_static_javascript_sha256_observed_before_rows": "1c2c64ac77688b89eea6d5f0245d527b9dfea85461a8db995c75652b1f7eba02",
+    "endpoint": "https://query.sse.com.cn/commonSoaQuery.do",
+    "request_method": "GET_JSONP",
+    "fixed_parameters": {
+      "isPagination": "true",
+      "pageHelp.pageSize": "25",
+      "pageHelp.beginPage": "1",
+      "pageHelp.cacheSize": "1",
+      "pageHelp.endPage": "1",
+      "sqlId": "BS_KCB_GGLL_NEW",
+      "channelId": "10743,10744,10012",
+      "type": "",
+      "stockcode": "",
+      "extGGDL": "",
+      "order": "createTime|desc,stockcode|asc"
+    },
+    "date_parameters": {
+      "start": "createTime as inclusive YYYY-MM-DD 00:00:00",
+      "end": "createTimeEnd as inclusive YYYY-MM-DD 23:59:59"
+    },
+    "page_parameter": "pageHelp.pageNo as a one-based decimal string",
+    "page_size": 25,
+    "required_top_level_fields": [
+      "result",
+      "pageHelp"
+    ],
+    "required_page_metadata_fields": [
+      "pageCount",
+      "total",
+      "pageNo",
+      "pageSize"
+    ],
+    "record_fields_read": [
+      "extSECURITY_CODE",
+      "createTime",
+      "extDWDM",
+      "docURL"
+    ],
+    "record_fields_explicitly_not_read": [
+      "extGSJC",
+      "extWTFL",
+      "docTitle",
+      "type",
+      "name",
+      "any other response field"
+    ],
+    "document_link_gate": "extDWDM must be the exact scalar string 1 and docURL must be a complete nonempty scalar link identity. A row rendered by the official page without a link is fatal; never fall back to docTitle.",
+    "maximum_pages_per_leaf_partition": 80,
+    "oversized_partition_policy": "After requesting only page one, recursively bisect the inclusive calendar range before any later page. A one-day leaf above 80 pages is terminal.",
+    "pagination_contract": "Every leaf keeps stable pageCount, total, pageSize, and requested pageNo, requests pages 1 through pageCount exactly once except frozen transient retries, requires exact non-final/final page lengths, and reconciles fetched rows to total."
+  },
+  "szse_provider_contract": {
+    "exchange": "SZSE",
+    "provider": "official_exchange",
+    "official_page": "https://www.szse.cn/disclosure/supervision/inquire/index.html",
+    "catalog_id": "main_wxhj",
+    "official_generic_report_javascript": "https://res.static.szse.cn/modules/report/js/report_new.min.js?version=1.2.218",
+    "official_generic_report_javascript_sha256_observed_before_rows": "e5466cb1981aee69592030da07ba279d0e3c05ebc273014670a30fce3e4381d9",
+    "endpoint": "https://www.szse.cn/api/report/ShowReport/data",
+    "request_method": "GET_JSON",
+    "fixed_parameters": {
+      "SHOWTYPE": "JSON",
+      "CATALOGID": "main_wxhj"
+    },
+    "one_based_page_parameter": "PAGENO",
+    "schema_probe_policy": "The first and only schema probe is page one at the endpoint's official default. Provider event rows may be transported but none may be used, inspected as text, persisted, counted as an acceptance sample, or converted to factor values. Only response metadata may select a predeclared role and request-parameter mapping. Any mismatch consumes and terminates the one-shot acceptance.",
+    "required_top_level_shape": "A nonempty JSON list with exactly one visible report object for catalog main_wxhj.",
+    "required_metadata_fields": [
+      "catalogid",
+      "tabkey",
+      "hidden",
+      "cols",
+      "conditions",
+      "pagesize",
+      "pageno",
+      "recordcount",
+      "pagecount"
+    ],
+    "metadata_gate": {
+      "catalogid": "exactly main_wxhj",
+      "visible_report_count": 1,
+      "hidden": "missing, null, 0, or string 0 only",
+      "pageno": "strict positive integer equal to the requested page",
+      "pagesize": "strict positive integer no greater than 100 and fixed for all later requests",
+      "recordcount": "strict nonnegative integer",
+      "pagecount": "strict nonnegative integer equal to ceil(recordcount / pagesize)",
+      "column_count": 5,
+      "column_roles": {
+        "issuer_code": [
+          "公司代码",
+          "证券代码"
+        ],
+        "ignored_issuer_name": [
+          "公司简称",
+          "证券简称"
+        ],
+        "inquiry_date": [
+          "发函日期"
+        ],
+        "ignored_inquiry_type": [
+          "函件类别",
+          "函件类型",
+          "监管问询类型"
+        ],
+        "document_link_cell": [
+          "函件名称",
+          "函件标题",
+          "标题"
+        ]
+      },
+      "column_role_rule": "After NFKC and surrounding-whitespace normalization of metadata labels only, exactly one column must match each role and no sixth or unmapped column is allowed. These finite label sets are frozen before rows and may not be expanded after the probe.",
+      "date_condition_rule": "Metadata conditions must unambiguously expose one inclusive start-date input and one inclusive end-date input for the 发函日期 range, or one official date-range input encoding both endpoints. Only its metadata-declared parameter name or names may be used. Labels after NFKC and trimming must be drawn only from 发函日期, 发函起始日期, 开始日期, 起始日期, 发函截止日期, 截止日期, 结束日期; no fuzzy, substring, positional, JavaScript, or row-derived mapping is allowed. Ambiguity or absence is terminal.",
+      "page_size_parameter": "Use the exact metadata tabkey followed by PAGESIZE, as defined by the official generic report script. The value must remain the metadata pagesize and may not be enlarged."
+    },
+    "record_fields_read_by_role": [
+      "issuer_code",
+      "inquiry_date",
+      "document_link_cell href attribute only"
+    ],
+    "record_fields_explicitly_not_read": [
+      "issuer-name cell value",
+      "inquiry-type cell value",
+      "document-link visible text",
+      "document body",
+      "any unmapped cell or response field"
+    ],
+    "document_link_gate": "The link cell must expose exactly one complete nonempty href through the official report representation. Parse only the href attribute; never inspect visible title text. A plain-text title, zero links, multiple links, JavaScript link, or non-official href is fatal.",
+    "maximum_pages_per_leaf_partition": 80,
+    "oversized_partition_policy": "After requesting only page one for a dated leaf, recursively bisect its inclusive calendar range before any later page. A one-day leaf above 80 pages is terminal.",
+    "pagination_contract": "Every dated leaf keeps stable catalogid, tabkey, cols, conditions, pagesize, pagecount, and recordcount; requests pages 1 through pagecount exactly once except frozen transient retries; requires exact non-final/final page lengths; and reconciles fetched rows to recordcount."
+  },
+  "identity_and_schema_policy": {
+    "supported_source_codes": "Exactly six decimal digits mapping to Shanghai main board for SSE, or Shenzhen main board and ChiNext for SZSE. A code on the wrong exchange, STAR, BSE, B-share, fund, bond, or other instrument is excluded only when complete and classifiable; missing or malformed codes are fatal.",
+    "inquiry_date": "A strict ISO-like date scalar whose Asia/Shanghai calendar date falls within the requested inclusive leaf; a time component is allowed only when it is exactly midnight or the SSE createTime field retains its official complete timestamp while the stored date uses the first ten characters.",
+    "document_href": "A nonempty surrounding-whitespace-trimmed official SSE or SZSE link used only as an opaque in-memory identity. Resolve official relative or protocol-relative links against the corresponding exchange page without changing path, query, case, or percent encoding. Never fetch the document.",
+    "source_identity": [
+      "exchange",
+      "instrument",
+      "document_href"
+    ],
+    "exact_repeat_policy": "Repeated rows with the same exchange, instrument, exact resolved href, and inquiry date collapse to one event and are counted as exact repeats.",
+    "conflicting_identity_policy": "The same exchange, instrument, and exact resolved href with more than one inquiry date is fatal.",
+    "multi_instrument_document_policy": "The same exact href may map to more than one supported instrument only when each mapping is explicitly present on the official source. Every exchange/instrument/href tuple remains a separate event; no code is selected, inferred, copied, or discarded.",
+    "cross_exchange_identity_policy": "SSE and SZSE identities never deduplicate each other, even when href text or date coincides.",
+    "text_policy": "Company name, inquiry type, visible title, title markup, document body, and issuer reply are never read, normalized, classified, persisted, or hashed.",
+    "raw_response_or_href_persisted": false
+  },
+  "event_and_factor_definition": {
+    "event_aggregation": "For each exchange, instrument, and inquiry_date, count unique exact document href identities after exact-repeat collapse; then sum the two exchange counts only by instrument and inquiry_date. A supported instrument belongs to exactly one exchange in the holding universe.",
+    "event_count_column": "official_exchange_inquiry_count",
+    "event_count_domain": "strictly positive integer",
+    "factor_name": "official_exchange_inquiry_resilience",
+    "session_formula": "(1 + calendar_days_since_latest_effective_inquiry) / active_unique_inquiry_count",
+    "active_unique_inquiry_count": "Sum official_exchange_inquiry_count across every already-effective event for the instrument whose raw inquiry date is no more than three calendar days before the signal session.",
+    "latest_effective_inquiry": "The greatest inquiry_date among active events for the instrument and signal session.",
+    "direction": "higher_is_better",
+    "absence_policy": "No active inquiry remains missing; never fill zero or treat an unaffected issuer as perfect resilience.",
+    "transform_policy": "Never clip, winsorize, residualize, invert, severity-weight, inquiry-type-weight, title-weight, exchange-weight, board-adjust, or substitute another formula after rows."
+  },
+  "point_in_time_policy": {
+    "holding_universe": "buyable_main_chinext",
+    "source_event_filter_date": "inquiry_date",
+    "availability": "first local trading-session close strictly after inquiry_date",
+    "entry": "next local trading-session open after the signal close",
+    "holding_period_trading_days": 3,
+    "maximum_age_calendar_days": 3,
+    "same_day_availability_forbidden": true,
+    "future_inquiry_reply_document_or_title_information_forbidden": true
+  },
+  "normalized_snapshot": {
+    "columns": [
+      "inquiry_date",
+      "instrument",
+      "official_exchange_inquiry_count",
+      "exchange",
+      "provider"
+    ],
+    "event_key": [
+      "exchange",
+      "instrument",
+      "inquiry_date"
+    ],
+    "exchange_values": [
+      "SSE",
+      "SZSE"
+    ],
+    "provider_value": "official_exchange",
+    "document_href_title_type_name_hash_or_raw_record_persisted": false,
+    "atomic_publication": "Write below one hidden run directory and rename to the final run only after both exchanges, every sample window, and every frozen gate pass. Any failure deletes the hidden snapshot and publishes no Parquet."
+  },
+  "acceptance_protocol": {
+    "fixed_sample_windows": [
+      {
+        "label": "2019Q2",
+        "start": "2019-04-01",
+        "end": "2019-06-30"
+      },
+      {
+        "label": "2024Q2",
+        "start": "2024-04-01",
+        "end": "2024-06-30"
+      },
+      {
+        "label": "2025Q2",
+        "start": "2025-04-01",
+        "end": "2025-06-30"
+      }
+    ],
+    "window_choice_frozen_reason": "Calendar Q2 is selected before rows because listed-company annual-report inquiries are structurally expected after annual-report publication; the same quarter is used at all three historical anchors and no other quarter may be substituted after source access.",
+    "initial_partitioning": "For each exchange, nine non-overlapping calendar months across the three fixed Q2 windows; recursive bisection follows the provider-specific page ceiling before any later page of an oversized month.",
+    "fixed_sample_window_count": 3,
+    "required_exchange_count": 2,
+    "every_exchange_window_count_complete_and_nonempty": true,
+    "minimum_supported_source_rows_per_exchange_window": 5,
+    "minimum_point_in_time_holding_events_per_window_combined": 20,
+    "minimum_point_in_time_holding_events_total": 90,
+    "minimum_candidate_cross_sections_per_window": 3,
+    "minimum_candidate_cross_sections_total": 15,
+    "candidate_cross_section_definition": "A local signal session after strict-next-session availability and active-window aggregation, with at least six point-in-time holding instruments and at least two distinct finite factor values.",
+    "minimum_names_per_candidate_cross_section": 6,
+    "minimum_distinct_factor_values_per_candidate_cross_section": 2,
+    "minimum_distinct_factor_values_across_samples": 3,
+    "required_checks": [
+      "Validate the mechanism audit, contract fingerprint, holding universe, calendar, quarterly-quality context, accepted price-basis context, accepted frontier, previous terminal public-source record, and both execution policies before network access.",
+      "Use only the two official inquiry pages and their frozen endpoint/catalog metadata; do not access a credential, cookie, proxy, retail session, document body, title text, name, type text, price, or return.",
+      "For SZSE, consume exactly one metadata schema probe, require the finite frozen column-role and date-condition mappings, and do not use its transported default rows as sample evidence.",
+      "Reconcile every monthly or recursively bisected leaf to stable advertised counts with exact page coverage on both exchanges.",
+      "Reject malformed required fields, missing or ambiguous links, wrong-exchange identities, and conflicting document identities; collapse and count only exact repeated identities; permit explicit multi-instrument documents without choosing or copying a code.",
+      "Aggregate unique inquiries by exchange, instrument, and date; discard href before output; and filter to the point-in-time holding universe before variation checks.",
+      "Reproduce strict-next-session active-event materialization and the exact factor formula in memory with no same-day availability and no event older than three calendar days.",
+      "Require every exchange/window and the combined samples to pass the frozen source-row, holding-event, cross-section, name, and value-variation thresholds.",
+      "Publish exactly the five normalized columns and prove that document hrefs, titles, types, names, hashes, raw records, prices, returns, credentials, cookies, proxies, and retail state are absent."
+    ],
+    "success_status": "accepted_two_exchange_schema_identity_formula_and_historical_sample_variation_pending_frozen_full_source_and_no_return_gates",
+    "failed_acceptance_policy": "Write one terminal no-return source rejection, delete the hidden partial snapshot, publish no Parquet, and stop without continuing one exchange alone or changing schema roles, identity, dates, quarter, fields, formula, direction, age, sample, thresholds, provider, or progressing to full history, comparisons, prices, returns, aggregation, scoring, selection, sizing, or orders.",
+    "one_shot_policy": "The exact acceptance may publish at most one success or rejection manifest. Once the SZSE schema request or any SSE provider request is issued, every transport, metadata, schema, identity, count, variation, or content result consumes the attempt. Every clone must reject a second attempt from the tracked result before loading this contract or issuing a request.",
+    "tracked_record_path": "docs/a_share_official_exchange_inquiry_burden_source_acceptance_record.json"
+  },
+  "full_snapshot_contract_after_acceptance_only": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "initial_partitioning": "For each exchange, 84 non-overlapping calendar months with the same metadata schema, date conditions, exact link identity, pagination, and recursive page-ceiling bisection.",
+    "reuse_accepted_rows_without_provider_rerequest": true,
+    "one_atomic_full_attempt_after_a_separate_fingerprint_bound_no_return_preregistration": true,
+    "required_source_years": 7,
+    "minimum_source_years": 7,
+    "both_exchanges_required": true,
+    "forbidden_before_acceptance": true
+  },
+  "capacity_contract_after_full_source_only": {
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "holding_universe": "buyable_main_chinext",
+    "quality_gate": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY with maximum age 550 calendar days",
+    "minimum_listing_age_sessions": 20,
+    "maximum_event_age_calendar_days": 3,
+    "minimum_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_complete_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "capacity_must_run_before_comparison_fields": true,
+    "capacity_must_run_before_price_or_return_fields": true,
+    "capacity_failure_policy": "Stop permanently without loading comparisons, prices, or returns and without changing exchanges, metadata roles, identity, event aggregation, formula, direction, age, universe, quality, listing, name, value, cohort, or year gates."
+  },
+  "uniqueness_contract_after_capacity_only": {
+    "sparse_semantic_neighbors": [
+      "cninfo_supplement_correction_disclosure_resilience",
+      "audit_opinion_clean_flag",
+      "disclosure_promptness",
+      "related_party_transaction_count",
+      "pledge_event_count",
+      "institutional_survey_event_count",
+      "analyst_valid_rating_report_count"
+    ],
+    "dense_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ],
+    "semantic_gate": "Explicitly distinguish direct exchange scrutiny from issuer correction burden, audit opinion, scheduled-report timing, generic event counts, ownership, governance, and operating disclosures before price access.",
+    "statistical_gate_for_sparse_neighbor": "When at least 100 eligible pairwise sessions contain at least six pairwise names, require absolute median daily Spearman rank correlation below 0.8. Otherwise preserve overlap and descriptive correlation without treating sparse absence as uniqueness proof.",
+    "dense_gate": "Each dense confounder must provide at least 100 eligible pairwise sessions with at least 50 names and absolute median daily Spearman rank correlation below 0.8.",
+    "no_return": true,
+    "anti_cherry_pick": "The comparison catalog, overlap policy, thresholds, exchanges, metadata roles, identity, formula, direction, age, universe, and quality rule cannot change after any provider row, link identity, or factor value is observed."
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "terminal_previous_public_source": {
+      "path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json",
+      "sha256": "c331ef49010cc3481b0449326855cc8e0d879e0fd9607e9c27139af29449535a"
+    },
+    "prospective_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "capital_cny": 200000,
+      "board_lot_shares": 100,
+      "slot_fraction": 0.05,
+      "maximum_gross_entry_fraction": 0.15,
+      "commission_rate_each_side": 0.0001,
+      "transfer_fee_rate_each_side": 0.00002,
+      "stamp_duty_rate_sell_only": 0.0005,
+      "primary_slippage_basis_points_each_side": 10,
+      "maximum_daily_amount_participation": 0.01
+    }
+  },
+  "forbidden_fields_or_actions": [
+    "Read, normalize, search, classify, persist, or hash company names, inquiry types, visible title text, title markup, document bodies, issuer replies, or any response field outside the exact code/date/link roles.",
+    "Fetch any inquiry document or reply document; the href is an opaque identity only.",
+    "Read a Token, account, points balance, credential, cookie, proxy, retail-client state, price, market cap, valuation, open, close, forward return, score, selection, position, or order.",
+    "Continue with only SSE or only SZSE, infer one exchange from the other, fill an inaccessible archive, treat missing source partitions as zero, or mix a third-party provider.",
+    "Interpret an unaffected issuer as zero burden, perfect resilience, or a selectable value.",
+    "Change metadata label sets after the SZSE probe; add title/body semantics; infer severity; choose one code from a multi-instrument document; or copy an identity to a code not explicitly present.",
+    "Retry after a consumed acceptance, change Q2 anchors, samples, thresholds, formula, direction, age, run full source without a new frozen no-return protocol, combine with terminal factors, or justify Level-2."
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

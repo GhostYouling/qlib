@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit",
+  "status": "selected_qmt_level1_one_minute_export_bridge_before_qmt_runtime_export_rows_factor_values_or_returns",
+  "audited_at": "2026-07-21T10:37:24Z",
+  "purpose": "Select the next economically useful and currently non-duplicative data path for the fixed three-session strategy after the official-exchange inquiry source rejection, without observing a QMT runtime, QMT row, minute factor value, or minute-factor return.",
+  "starting_evidence": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "association_stability_passers": 7,
+      "topk_viability_passers": 0,
+      "dual_gate_passers": 0,
+      "aggregation_allowed": false
+    },
+    "post_ccass_authorized_source_frontier": {
+      "path": "docs/a_share_three_day_post_ccass_authorized_source_frontier_audit_20260721.json",
+      "sha256": "61804bfb535954ae517aba1e67791dc8371ce68cf384219fe8a08c6ded6dc499",
+      "next_lawful_path": "Expose a full-market one-minute OHLCV and amount export from an already-authorized QMT, RQData, or JQData environment before freezing source semantics."
+    },
+    "terminal_official_exchange_inquiry": {
+      "path": "docs/a_share_official_exchange_inquiry_burden_source_acceptance_record.json",
+      "sha256": "a2c5d1c6daa11cf73d29843eb36dffdacf3d27ff07802e5d222fe9e14f3f5cdf",
+      "event_rows_observed": 0,
+      "retry_allowed": false
+    },
+    "existing_minute_factor_protocol": {
+      "path": "docs/a_share_minute_factor_preregistration.json",
+      "sha256": "0e1ca9f041a0eb659b97c2c52bf1af5873717eec2c2705716f662d56b98eceae",
+      "factor_count": 5,
+      "frequency": "1m",
+      "holding_period_trading_days": 3,
+      "minute_factor_returns_observed": false
+    }
+  },
+  "official_qmt_documentation_review": {
+    "reviewed_at": "2026-07-21T10:37:24Z",
+    "sources": [
+      {
+        "title": "XtQuant XtData interface documentation",
+        "url": "https://docs.thinktrader.net/pages/36f5df/",
+        "observed_contract": [
+          "download_history_data2 supports batched 1m history download",
+          "get_market_data_ex returns a per-symbol DataFrame",
+          "1m fields include time, open, high, low, close, volume, amount, and suspendFlag",
+          "dividend_type supports none",
+          "fill_data controls forward filling",
+          "time is represented as a millisecond timestamp",
+          "the ordinary K-line interface is Level-1"
+        ]
+      },
+      {
+        "title": "XtQuant FAQ",
+        "url": "https://docs.thinktrader.net/pages/040ff7/",
+        "observed_contract": [
+          "XtQuant requires a local MiniQMT client runtime",
+          "XtData supplies historical and real-time K-lines",
+          "the historical cache and Python runtime are local to the user's QMT environment"
+        ]
+      }
+    ],
+    "documentation_last_update_observed": "2023-10-12",
+    "network_or_vendor_runtime_test_performed": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "qmt_xtquant_level1_one_minute_export_bridge",
+      "economic_mechanism": "minute_price_path_participation_and_realized_risk_for_the_existing_five_preregistered_features",
+      "decision": "selected_before_qmt_runtime_or_rows",
+      "reasons": [
+        "It supplies the intraday path information missing from daily OHLC rather than another daily or announcement-field variant.",
+        "The exact five factor formulas and directions were frozen before any local one-minute snapshot existed.",
+        "Level-1 time, OHLC, volume, amount, suspension state, no-adjustment, and no-fill controls are sufficient for source acceptance and daily reconciliation.",
+        "A Windows-side export bundle separates the lawful broker runtime from the macOS research repository and prevents credentials, account details, or client paths from entering Git."
+      ]
+    },
+    {
+      "candidate": "qmt_level2_depth_order_trade_or_queue_history",
+      "decision": "deferred_before_subscription_or_cache_access",
+      "reasons": [
+        "The official interface documents Level-2 data as subscription or local-cache data, and no lawful historical entitlement is visible in this workspace.",
+        "No lower-cost Level-1 minute factor has passed source coverage, association, Top-3, and execution gates.",
+        "Queue data is not required to validate the five existing path factors."
+      ]
+    },
+    {
+      "candidate": "another_public_daily_or_announcement_factor",
+      "decision": "not_advanced_before_rows",
+      "reasons": [
+        "The current frontier already exhausts price-path, moneyflow, ownership, analyst, institutional-survey, financing, accounting, disclosure-burden, and supervisory-event neighbors.",
+        "Selecting another field after the terminal outcomes would be a same-source or same-mechanism sweep rather than a clean independent hypothesis."
+      ]
+    }
+  ],
+  "implementation_decision": {
+    "advanced_source_path_count": 1,
+    "new_factor_definition_count": 0,
+    "live_qmt_download_authorized_from_this_macos_workspace": false,
+    "package_install_or_client_launch_authorized": false,
+    "first_allowed_external_action": "Run only the fixed four-symbol completed-session acceptance exporter inside an already-lawful Windows MiniQMT/XtQuant environment.",
+    "first_allowed_local_action": "Fingerprint-validate and import only that acceptance bundle, reconcile it to accepted raw daily data, and stop before full history or factor values.",
+    "full_history_allowed_from_this_audit_alone": false,
+    "minute_factor_values_allowed_from_this_audit_alone": false,
+    "forward_returns_allowed_from_this_audit_alone": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "qmt_runtime_or_export_rows_observed": false,
+  "new_candidate_factor_values_observed": false,
+  "existing_daily_price_basis_revalidated": true,
+  "new_candidate_price_or_forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

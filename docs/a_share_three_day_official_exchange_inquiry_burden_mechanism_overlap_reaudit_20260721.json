@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_official_exchange_inquiry_burden_mechanism_overlap_reaudit",
+  "status": "one_two_exchange_public_inquiry_mechanism_selected_before_provider_rows_document_identities_factor_values_prices_or_returns",
+  "audited_at": "2026-07-21T10:02:15Z",
+  "purpose": "Select at most one economically independent three-session public regulatory-event mechanism after the terminal CNInfo supplement/correction branch, before requesting any exchange report row, document identity, factor value, price, or return.",
+  "starting_evidence": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "association_stability_passers": 7,
+      "topk_viability_passers": 0,
+      "dual_gate_passers": 0,
+      "aggregation_allowed": false
+    },
+    "terminal_immediately_previous_public_category_source": {
+      "path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json",
+      "sha256": "c331ef49010cc3481b0449326855cc8e0d879e0fd9607e9c27139af29449535a",
+      "full_source_passed": false,
+      "capacity_or_uniqueness_allowed": false,
+      "price_or_return_read": false,
+      "retry_allowed": false
+    }
+  },
+  "official_public_metadata_reviewed_before_rows": {
+    "sse": {
+      "inquiry_page": "https://www.sse.com.cn/regulation/supervision/inquiries/",
+      "official_static_javascript": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_regulatoryInformation_2021.js",
+      "official_static_javascript_sha256_observed": "1c2c64ac77688b89eea6d5f0245d527b9dfea85461a8db995c75652b1f7eba02",
+      "observed_metadata_only": {
+        "endpoint_suffix": "commonSoaQuery.do",
+        "sql_id": "BS_KCB_GGLL_NEW",
+        "channel_ids": "10743,10744,10012",
+        "page_size": 25,
+        "date_parameters": [
+          "createTime",
+          "createTimeEnd"
+        ],
+        "visible_columns": [
+          "公司代码",
+          "公司简称",
+          "发函日期",
+          "监管问询类型",
+          "标题"
+        ],
+        "visible_inquiry_types": [
+          "问询函",
+          "定期报告信息披露监管问询函",
+          "重大资产重组预案审核意见函"
+        ]
+      }
+    },
+    "szse": {
+      "inquiry_page": "https://www.szse.cn/disclosure/supervision/inquire/index.html",
+      "catalog_id": "main_wxhj",
+      "generic_report_javascript": "https://res.static.szse.cn/modules/report/js/report_new.min.js?version=1.2.218",
+      "generic_report_javascript_sha256_observed": "e5466cb1981aee69592030da07ba279d0e3c05ebc273014670a30fce3e4381d9",
+      "observed_metadata_only": {
+        "endpoint": "https://www.szse.cn/api/report/ShowReport/data",
+        "fixed_query": "SHOWTYPE=JSON&CATALOGID=main_wxhj",
+        "one_based_page_parameter": "PAGENO",
+        "tab_key_page_size_parameter": "<tabkey>PAGESIZE",
+        "count_fields": [
+          "recordcount",
+          "pagesize",
+          "pageno",
+          "pagecount"
+        ]
+      }
+    },
+    "provider_event_rows_observed": false,
+    "document_identities_or_titles_observed": false,
+    "factor_values_observed": false
+  },
+  "mechanism_review": [
+    {
+      "official_route": "SSE and SZSE listed-company inquiry-letter pages",
+      "candidate": "official_exchange_inquiry_burden",
+      "decision": "selected_before_rows",
+      "economic_mechanism": "An official exchange inquiry is a direct observable episode of regulatory scrutiny and an issuer response burden. Among issuers with a recent active inquiry, fewer inquiries and greater elapsed calendar time since the latest inquiry are frozen as the more resilient direction.",
+      "independence": "The event is the exchange's own inquiry action, not an issuer financial ratio, valuation transform, price path, classified order flow, ownership change, insider trade, financing balance, contract, subsidy, guarantee, audit opinion, correction announcement, or generic issuer disclosure count."
+    },
+    {
+      "official_routes": [
+        "https://www.sse.com.cn/regulation/listing/measures/",
+        "https://www.szse.cn/disclosure/supervision/measure/measure/index.html"
+      ],
+      "candidate": "regulatory_measure_burden",
+      "decision": "rejected_before_rows",
+      "reason": "Regulatory-measure pages mix listed companies with directors, accountants, lawyers, sponsors, intermediaries, and other responsible persons. A uniform issuer identity and severity-neutral two-exchange event cannot be recovered without title or document-body mining."
+    },
+    {
+      "official_route": "SZSE discipline and listed-company punishment records, with the corresponding SSE discipline route",
+      "candidate": "discipline_or_punishment_burden",
+      "decision": "rejected_before_rows",
+      "reason": "Discipline and punishment events are materially sparser, severity-heterogeneous, and frequently attach to multiple people or institutions. They cannot share a clean issuer/date identity contract with inquiry letters and are structurally more likely to fail the fixed 200-cohort gate."
+    },
+    {
+      "candidate": "issuer_reply_or_inquiry_text_sentiment",
+      "decision": "rejected_before_rows",
+      "reason": "Issuer replies duplicate disclosure-event mechanisms and require title/body parsing, language-model or keyword choices, response-timing reconstruction, and post-row semantic tuning."
+    }
+  ],
+  "selected_candidate": {
+    "factor_name": "official_exchange_inquiry_resilience",
+    "source_scope": "Only official SSE and SZSE listed-company inquiry-letter pages; both exchanges are mandatory.",
+    "raw_event": "One official inquiry-letter row with a supported issuer code, send date, and stable document-link identity.",
+    "session_formula": "(1 + calendar_days_since_latest_effective_inquiry) / active_unique_inquiry_count",
+    "direction": "higher_is_better",
+    "availability": "Each inquiry becomes effective only at the first local trading-session close strictly after its official send date; entry can occur no earlier than the following local open.",
+    "maximum_event_age_calendar_days": 3,
+    "absence_policy": "An issuer with no active inquiry remains missing, never zero burden or perfect resilience.",
+    "interpretation_boundary": "The factor ranks only recently inquired issuers by relative inquiry burden. It does not assert misconduct, predict a reply, infer inquiry severity, or rank unaffected issuers.",
+    "text_policy": "Company name, inquiry type, title text, document body, and reply text may not be read, normalized, classified, persisted, hashed, weighted, or used as a filter. The official inquiry page is the complete semantic selector.",
+    "identity_policy": "Use only the exact document href supplied on the official row as an opaque memory-only identity. A row without a nonempty stable href is fatal; never fall back to title text, row position, company name, type, or an inferred identifier.",
+    "published_event_columns": [
+      "inquiry_date",
+      "instrument",
+      "official_exchange_inquiry_count",
+      "exchange",
+      "provider"
+    ]
+  },
+  "hard_capacity_plausibility_before_rows": {
+    "development_interval": "2019-01-01 through 2025-12-31",
+    "local_trading_session_upper_bound": 1699,
+    "fixed_minimum_complete_non_overlapping_three_session_cohorts": 200,
+    "structural_upper_bound_passed": true,
+    "reason": "Both official pages are event-dated continuous archives rather than quarterly or monthly publications, so calendar structure alone does not cap the candidate below 200. Actual two-exchange continuity, event density, point-in-time sample variation, quality/listing eligibility, and cohort capacity remain unknown until their frozen no-return gates run."
+  },
+  "anti_overlap_and_anti_cherry_pick": {
+    "one_candidate_only": true,
+    "both_exchanges_required": true,
+    "exchange_specific_factor_or_weight_allowed": false,
+    "inquiry_type_or_title_weight_allowed": false,
+    "same_mechanism_alternative_formula_allowed_after_rows": false,
+    "factor_inversion_allowed": false,
+    "event_age_or_holding_period_search_allowed": false,
+    "subset_year_or_board_search_allowed": false,
+    "provider_substitution_after_result_allowed": false,
+    "historical_factor_combination_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "decision": {
+    "advanced_candidate_count": 1,
+    "next_required_action": "Freeze a credential-free two-exchange source and historical sample-variation contract with exact official routes, metadata schema, document-link identity, pagination, point-in-time universe, formula, thresholds, atomic publication, and one-shot guard before requesting any report row or factor value.",
+    "price_or_return_access_allowed": false,
+    "aggregation_or_selection_allowed": false
+  },
+  "provider_rows_observed_during_this_audit": false,
+  "factor_values_observed_during_this_audit": false,
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

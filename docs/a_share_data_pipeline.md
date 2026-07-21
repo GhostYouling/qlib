@@ -1614,6 +1614,26 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 后续零网络前沿审计 `docs/a_share_three_day_post_ccass_authorized_source_frontier_audit_20260721.json`（SHA‑256 `61804bfb535954ae517aba1e67791dc8371ce68cf384219fe8a08c6ded6dc499`）没有推进新候选。券商月度金股和 TDX 板块成分均需 6,000 积分；同花顺概念资金流需 5,000 积分；深证互动易和全量公告需要单独权限。即使忽略权限，月度金股在 2019–2025 的硬上限只有 84 个独立月份，低于 200 个三日 cohort；互动易只有深圳路线；板块/概念资金流分别与已终止的行业广度和分类资金流机制重叠。当前 120 分可用的 `stock_company` 只是当前静态快照，不能无泄漏地重建 2019–2025；标准财务报表和限售解禁则分别是已终止来源字段扫描与已完成失败机制的供应商复制。审计没有请求任何接口行、因子值、价格或收益。本机同时未发现 `xtquant` Python 包或常见 QMT/XTQuant 本地路径；这只表示当前 macOS 工作区没有可直接接入的券商分钟运行时，不代表用户的其他 Windows/QMT 环境不存在。当前下一条可执行路径是由用户暴露已有合法的全市场 1 分钟 OHLCV/成交额导出后另冻合同，或等待 BaoStock 按既有规则出现可验证恢复；不为重试 CCASS 或复制淘汰机制追加购买。
 
+### 官方交易所问询负担（来源元数据门禁终止）
+
+独立机制审计 [`a_share_three_day_official_exchange_inquiry_burden_mechanism_overlap_reaudit_20260721.json`](a_share_three_day_official_exchange_inquiry_burden_mechanism_overlap_reaudit_20260721.json)（SHA‑256 `8b9ee95c5a19184053aa0646bbd4a700a03488da65a9c35e20bfc82325bf4de0`）只推进沪深交易所同时可复现的问询韧性；两所合同 [`a_share_official_exchange_inquiry_burden_data_contract.json`](a_share_official_exchange_inquiry_burden_data_contract.json)（SHA‑256 `6e9912ebd6a58291a91d6773c1ef4d241877dd33eea6a95180372f8c4bd47a51`）在任何来源行、文档身份、因子值、价格或收益前冻结。唯一候选为 `(1 + 距最近已生效问询的自然日数) / 最近三自然日内有效的唯一问询数`，高值固定为更好；必须同时通过 SSE 和 SZSE，且禁止读取或保存标题、公司名、问询类型、正文和回复文本。
+
+唯一验收从冻结顺序的 SZSE `main_wxhj` 元数据探针开始，响应没有且仅有一个可见报表，因而在默认数据行规范化、SSE 请求、因子值、价格和收益之前终止。失败清单 `data/metadata/rich_data/runs/20260721T102937Z_official_exchange_inquiry_burden_acceptance_3c38881b.json` 的 SHA‑256 为 `e73fef90eda1467ec992be8e0d00c890422110542b4b74f84ff7958b5eaf656b`；跨克隆终止记录为 [`a_share_official_exchange_inquiry_burden_source_acceptance_record.json`](a_share_official_exchange_inquiry_burden_source_acceptance_record.json)（SHA‑256 `a2c5d1c6daa11cf73d29843eb36dffdacf3d27ff07802e5d222fe9e14f3f5cdf`）。不得重跑、任选一个报表、改标签、检查默认行来倒推结构、只用一个交易所、第三方补齐或继续全量/容量/收益/选股。这是来源元数据合同失败，不是因子收益结论。
+
+### QMT / XtQuant Level‑1 一分钟导出桥（合同与导出器已冻结，尚未验收数据）
+
+在交易所问询分支终止后，零行情前沿记录 [`a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json`](a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json)（SHA‑256 `7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db`）选择已有合法 MiniQMT/XtQuant 环境的 Level‑1 一分钟导出作为下一条数据路径；没有新建或改写因子。冻结合同 [`a_share_qmt_xtquant_one_minute_export_data_contract.json`](a_share_qmt_xtquant_one_minute_export_data_contract.json)（SHA‑256 `a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399`）固定 `2026-07-13` 与 `600519.SH/000001.SZ/300750.SZ/688981.SH`，只允许 `time,open,high,low,close,volume,amount,suspendFlag`、`1m`、不复权、禁止填充。账户、Token、Cookie、客户端路径、机器名、用户名、交易 API、Level‑2 与 QMT 原始缓存都不得进入导出包。
+
+Windows 端必须在用户已经依法可用的 MiniQMT/XtQuant Python 环境中、从本仓库副本运行；输出目录必须不存在：
+
+```powershell
+python scripts/export_qmt_one_minute.py export-acceptance --output C:\qmt_exports\qlib_20260713_acceptance
+```
+
+脚本只调用 `download_history_data2` 与 `get_market_data_ex`，每个股票写一份确定性 gzip CSV，并生成 `qmt_1m_acceptance_export.json`。它不登录账户、不读取持仓或订单、不调用交易/Level‑2 接口，也不会输出 K 线内容。导出失败会删除隐藏临时目录，现有目标目录绝不覆盖。
+
+当前提交只包含冻结合同、导出器与伪 XtData 离线回归；本机没有观察任何 QMT 运行时、导出行、分钟因子值、价格或未来收益。把目录移到研究机后也不能手工改 CSV 或清单，更不能直接送入 Qlib、聚合、评分或选股。下一步必须先实现并测试严格的离线导入验收：逐字节校验四个文件、确认每股 240 个唯一规则时间戳、判断起始/结束标记、复核不复权 OHLC、成交额与成交量单位，并让四股一起通过；之后仍需单独冻结全市场无收益协议。Level‑2 继续延后。
+
 ### CNInfo 补充更正披露负担（全历史分页稳定性终止）
 
 在上述 Tushare/本地券商审计之后，只补查了此前未覆盖的 CNInfo 官方分类元数据。官方检索脚本 `history-notice.js?v=20260710082532` 的观测 SHA‑256 为 `ef36c3fb82af6b4176c2b4fcf92c1c7eb58ff03beba7931fa48bc1b2b417213a`，其中明确把 `category_bcgz_szsh` 标为“补充更正”。机制复核 `docs/a_share_three_day_cninfo_supplement_correction_disclosure_burden_mechanism_overlap_reaudit_20260721.json`（SHA‑256 `95e8e93d5ace85e44fbe6d682cdea1c1873cfba9152b06fcb37c0c4e626c3853`）在公告行前只推进这一项：`cninfo_supplement_correction_disclosure_resilience = (1 + 距最近已生效公告的自然日数) / 最近三自然日内有效的唯一补充更正公告数`，高值固定为更好；无有效事件的股票保持缺失，不得当成零负担或满分。

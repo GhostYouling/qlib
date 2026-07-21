@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "kind": "a_share_official_exchange_inquiry_burden_source_acceptance_record",
+  "status": "terminal_szse_metadata_visibility_rejected_stop_before_event_rows_full_history_capacity_uniqueness_prices_or_returns",
+  "recorded_at": "2026-07-21T10:30:12Z",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_official_exchange_inquiry_burden_mechanism_overlap_reaudit_20260721.json",
+    "sha256": "8b9ee95c5a19184053aa0646bbd4a700a03488da65a9c35e20bfc82325bf4de0"
+  },
+  "data_contract": {
+    "path": "docs/a_share_official_exchange_inquiry_burden_data_contract.json",
+    "sha256": "6e9912ebd6a58291a91d6773c1ef4d241877dd33eea6a95180372f8c4bd47a51",
+    "preregistered_at": "2026-07-21T10:05:00Z"
+  },
+  "rejected_manifest": {
+    "path": "data/metadata/rich_data/runs/20260721T102937Z_official_exchange_inquiry_burden_acceptance_3c38881b.json",
+    "sha256": "e73fef90eda1467ec992be8e0d00c890422110542b4b74f84ff7958b5eaf656b",
+    "run_id": "20260721T102937Z_official_exchange_inquiry_burden_acceptance_3c38881b"
+  },
+  "frozen_request_observed_result": {
+    "required_exchanges": [
+      "SSE",
+      "SZSE"
+    ],
+    "first_request_stage": "SZSE catalog main_wxhj metadata schema probe",
+    "provider_request_issued": true,
+    "provider_calls_issued_at_least": 1,
+    "provider_response_transport_completed": true,
+    "rejection_stage": "before selecting exactly one visible report and before reading any event row",
+    "error_type": "RichDataError",
+    "error": "SZSE inquiry response lacks exactly one visible report",
+    "completed_leaf_partitions": 0,
+    "normalized_partitions": 0,
+    "event_rows_read_normalized_or_persisted": 0,
+    "factor_values_materialized_or_persisted": 0,
+    "SSE_request_issued": false,
+    "price_or_return_read": false
+  },
+  "published_snapshot": {
+    "files": [],
+    "partial_snapshot_deleted": true,
+    "parquet_residue_after_rejection": 0
+  },
+  "independent_local_verification": {
+    "rejected_manifest_sha256_reproduced": true,
+    "rejected_manifest_files_empty": true,
+    "completed_leaf_partition_count": 0,
+    "observed_normalization_partition_count": 0,
+    "raw_acceptance_parquet_residue_count": 0,
+    "second_command_blocked_before_contract_or_network": true
+  },
+  "privacy_and_scope": {
+    "credential_token_points_cookie_proxy_or_retail_session_used": false,
+    "company_name_inquiry_type_visible_title_body_or_document_read": false,
+    "document_or_reply_fetched": false,
+    "raw_response_document_href_or_hash_persisted": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "current_score_selection_sizing_or_order_created": false
+  },
+  "next_stage_decision": {
+    "acceptance_consumed": true,
+    "acceptance_retry_allowed": false,
+    "provider_rerequest_allowed": false,
+    "parser_change_and_retry_allowed": false,
+    "acceptance_success_is_factor_return_evidence": false,
+    "full_source_allowed": false,
+    "capacity_uniqueness_or_return_work_allowed": false,
+    "next_allowed_action": "Preserve this terminal record, abandon this source route for the frozen inquiry-burden candidate, and continue pre-return research on a separately preregistered independent mechanism without re-requesting this acceptance.",
+    "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

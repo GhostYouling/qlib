@@ -33,6 +33,7 @@ import importlib.util
 import json
 import math
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -42,6 +43,7 @@ import uuid
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable
+from urllib.parse import urljoin, urlparse
 
 import numpy as np
 import pandas as pd
@@ -342,6 +344,14 @@ DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_FULL_SOURCE_RECORD = (
     REPO_ROOT
     / "docs"
     / "a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json"
+)
+DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_official_exchange_inquiry_burden_data_contract.json"
+)
+DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_official_exchange_inquiry_burden_source_acceptance_record.json"
 )
 DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_cninfo_guarantee_sparsity_data_contract.json"
@@ -654,6 +664,15 @@ CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC_SHA256 = (
 )
 CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_FULL_SOURCE_RECORD_SHA256 = (
     "c331ef49010cc3481b0449326855cc8e0d879e0fd9607e9c27139af29449535a"
+)
+OFFICIAL_EXCHANGE_INQUIRY_BURDEN_CONTRACT_SHA256 = (
+    "6e9912ebd6a58291a91d6773c1ef4d241877dd33eea6a95180372f8c4bd47a51"
+)
+OFFICIAL_EXCHANGE_INQUIRY_BURDEN_MECHANISM_AUDIT_SHA256 = (
+    "8b9ee95c5a19184053aa0646bbd4a700a03488da65a9c35e20bfc82325bf4de0"
+)
+OFFICIAL_EXCHANGE_INQUIRY_BURDEN_ACCEPTANCE_RECORD_SHA256 = (
+    "a2c5d1c6daa11cf73d29843eb36dffdacf3d27ff07802e5d222fe9e14f3f5cdf"
 )
 CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256 = (
     "1c59a4fdabbb7ae82d3279e83f81e55b3518f9634201379a96d59e25a7e12e68"
@@ -1194,6 +1213,13 @@ CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS = (
     "supplement_correction_notice_count",
     "provider",
 )
+OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS = (
+    "inquiry_date",
+    "instrument",
+    "official_exchange_inquiry_count",
+    "exchange",
+    "provider",
+)
 CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES = (
     "announcement_statistics_interval",
     "guarantee_amount_to_parent_equity_ratio_transport_only",
@@ -1299,6 +1325,32 @@ class CninfoAnnouncementPartitionTooLarge(RichDataError):
             "CNInfo announcement partition exceeds the frozen page ceiling: "
             f"{start_date.isoformat()} to {end_date.isoformat()}, "
             f"pages={pages}, ceiling={ceiling}"
+        )
+
+
+class OfficialExchangeInquiryPartitionTooLarge(RichDataError):
+    """Signal a count-known official inquiry range that requires bisection."""
+
+    def __init__(
+        self,
+        exchange: str,
+        start_date: dt.date,
+        end_date: dt.date,
+        *,
+        pages: int,
+        advertised_count: int,
+        ceiling: int,
+    ) -> None:
+        self.exchange = exchange
+        self.start_date = start_date
+        self.end_date = end_date
+        self.pages = pages
+        self.advertised_count = advertised_count
+        self.ceiling = ceiling
+        super().__init__(
+            "official exchange inquiry partition exceeds the frozen page ceiling: "
+            f"exchange={exchange}, {start_date.isoformat()} to "
+            f"{end_date.isoformat()}, pages={pages}, ceiling={ceiling}"
         )
 
 
@@ -35003,6 +35055,1664 @@ def sync_cninfo_supplement_correction_disclosure_burden_full_source(
             raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
 
 
+def load_official_exchange_inquiry_burden_contract(
+    path: Path = DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_CONTRACT,
+) -> dict[str, Any]:
+    """Load the pre-row two-exchange inquiry-burden contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != OFFICIAL_EXCHANGE_INQUIRY_BURDEN_CONTRACT_SHA256:
+        raise RichDataError("official exchange inquiry contract fingerprint mismatch")
+    contract = load_json_record(
+        path, kind="a_share_official_exchange_inquiry_burden_data_contract"
+    )
+    mechanism = contract.get("mechanism_selection") or {}
+    common = contract.get("common_public_transport_policy") or {}
+    sse = contract.get("sse_provider_contract") or {}
+    szse = contract.get("szse_provider_contract") or {}
+    identity = contract.get("identity_and_schema_policy") or {}
+    factor = contract.get("event_and_factor_definition") or {}
+    timing = contract.get("point_in_time_policy") or {}
+    normalized = contract.get("normalized_snapshot") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    capacity = contract.get("capacity_contract_after_full_source_only") or {}
+    expected_windows = [
+        {"label": "2019Q2", "start": "2019-04-01", "end": "2019-06-30"},
+        {"label": "2024Q2", "start": "2024-04-01", "end": "2024-06-30"},
+        {"label": "2025Q2", "start": "2025-04-01", "end": "2025-06-30"},
+    ]
+    expected_sse_fields = (
+        "extSECURITY_CODE",
+        "createTime",
+        "extDWDM",
+        "docURL",
+    )
+    expected_roles = {
+        "issuer_code": ["公司代码", "证券代码"],
+        "ignored_issuer_name": ["公司简称", "证券简称"],
+        "inquiry_date": ["发函日期"],
+        "ignored_inquiry_type": ["函件类别", "函件类型", "监管问询类型"],
+        "document_link_cell": ["函件名称", "函件标题", "标题"],
+    }
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_official_exchange_inquiry_rows_document_identities_factor_values_capacity_uniqueness_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-21T10:05:00Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_official_exchange_inquiry_burden_mechanism_overlap_reaudit_20260721.json"
+        or mechanism.get("sha256_at_contract_freeze")
+        != OFFICIAL_EXCHANGE_INQUIRY_BURDEN_MECHANISM_AUDIT_SHA256
+        or mechanism.get("factor_name") != "official_exchange_inquiry_resilience"
+        or mechanism.get("direction") != "higher_is_better"
+        or mechanism.get("both_exchanges_required") is not True
+        or common.get("credential_required") is not False
+        or common.get("account_points_required") != 0
+        or common.get("cookies_proxy_or_retail_session_allowed") is not False
+        or common.get("raw_response_persisted") is not False
+        or common.get("maximum_attempts_per_request") != 3
+        or sse.get("exchange") != "SSE"
+        or sse.get("provider") != "official_exchange"
+        or sse.get("endpoint") != "https://query.sse.com.cn/commonSoaQuery.do"
+        or sse.get("request_method") != "GET_JSONP"
+        or sse.get("page_size") != 25
+        or sse.get("maximum_pages_per_leaf_partition") != 80
+        or tuple(sse.get("record_fields_read") or ()) != expected_sse_fields
+        or szse.get("exchange") != "SZSE"
+        or szse.get("provider") != "official_exchange"
+        or szse.get("catalog_id") != "main_wxhj"
+        or szse.get("endpoint")
+        != "https://www.szse.cn/api/report/ShowReport/data"
+        or szse.get("request_method") != "GET_JSON"
+        or szse.get("one_based_page_parameter") != "PAGENO"
+        or szse.get("maximum_pages_per_leaf_partition") != 80
+        or (szse.get("metadata_gate") or {}).get("column_count") != 5
+        or (szse.get("metadata_gate") or {}).get("column_roles")
+        != expected_roles
+        or identity.get("source_identity")
+        != ["exchange", "instrument", "document_href"]
+        or identity.get("raw_response_or_href_persisted") is not False
+        or factor.get("factor_name") != "official_exchange_inquiry_resilience"
+        or factor.get("session_formula")
+        != "(1 + calendar_days_since_latest_effective_inquiry) / active_unique_inquiry_count"
+        or factor.get("direction") != "higher_is_better"
+        or timing.get("holding_universe") != "buyable_main_chinext"
+        or timing.get("holding_period_trading_days") != 3
+        or timing.get("maximum_age_calendar_days") != 3
+        or timing.get("same_day_availability_forbidden") is not True
+        or tuple(normalized.get("columns") or ())
+        != OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS
+        or normalized.get("event_key")
+        != ["exchange", "instrument", "inquiry_date"]
+        or normalized.get("exchange_values") != ["SSE", "SZSE"]
+        or normalized.get("provider_value") != "official_exchange"
+        or acceptance.get("fixed_sample_windows") != expected_windows
+        or acceptance.get("fixed_sample_window_count") != 3
+        or acceptance.get("required_exchange_count") != 2
+        or acceptance.get("minimum_supported_source_rows_per_exchange_window")
+        != 5
+        or acceptance.get("minimum_point_in_time_holding_events_total") != 90
+        or acceptance.get("minimum_candidate_cross_sections_total") != 15
+        or acceptance.get("minimum_names_per_candidate_cross_section") != 6
+        or acceptance.get(
+            "minimum_distinct_factor_values_per_candidate_cross_section"
+        )
+        != 2
+        or acceptance.get("minimum_distinct_factor_values_across_samples") != 3
+        or acceptance.get("tracked_record_path")
+        != "docs/a_share_official_exchange_inquiry_burden_source_acceptance_record.json"
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_names_per_cohort") != 6
+        or capacity.get("minimum_distinct_factor_values_per_cohort") != 2
+        or capacity.get("minimum_complete_cohorts") != 200
+        or capacity.get("minimum_observed_calendar_years") != 5
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError("official exchange inquiry contract changed after freeze")
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != OFFICIAL_EXCHANGE_INQUIRY_BURDEN_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError(
+            "official exchange inquiry mechanism audit fingerprint mismatch"
+        )
+    return contract
+
+
+def validate_official_exchange_inquiry_local_context(
+    contract: dict[str, Any],
+) -> None:
+    """Fingerprint-bind all no-return local inputs before source access."""
+
+    local = contract.get("local_context") or {}
+    entries: list[dict[str, Any]] = []
+    for label in (
+        "holding_universe",
+        "local_calendar",
+        "accepted_price_basis_for_future_gated_work_only",
+        "accepted_price_frontier",
+        "terminal_previous_public_source",
+        "prospective_execution_policy_for_future_diagnostic_only",
+        "pilot_execution_policy_for_future_diagnostic_only",
+    ):
+        value = local.get(label)
+        if not isinstance(value, dict):
+            raise RichDataError(
+                f"official exchange inquiry local context is missing {label}"
+            )
+        entries.append(value)
+    quarterly = local.get("quarterly_quality") or {}
+    entries.extend(
+        [
+            {"path": quarterly.get("path"), "sha256": quarterly.get("sha256")},
+            {
+                "path": quarterly.get("manifest_path"),
+                "sha256": quarterly.get("manifest_sha256"),
+            },
+        ]
+    )
+    for entry in entries:
+        target = resolve_record_path(str(entry.get("path") or ""))
+        expected = str(entry.get("sha256") or "")
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "official exchange inquiry local context fingerprint mismatch: "
+                f"{entry.get('path')}"
+            )
+
+
+def _official_exchange_strict_count(value: Any, *, field: str) -> int:
+    """Parse one provider count without accepting booleans or signs."""
+
+    if isinstance(value, bool):
+        raise RichDataError(f"official exchange inquiry {field} is invalid")
+    if isinstance(value, (int, np.integer)):
+        parsed = int(value)
+    elif isinstance(value, str) and value.isdigit():
+        parsed = int(value)
+    else:
+        raise RichDataError(f"official exchange inquiry {field} is invalid")
+    if parsed < 0:
+        raise RichDataError(f"official exchange inquiry {field} is negative")
+    return parsed
+
+
+def _official_exchange_normalized_label(value: Any) -> str:
+    """Normalize metadata labels only; provider row text remains unread."""
+
+    if not isinstance(value, str):
+        raise RichDataError("SZSE inquiry metadata label is not a string")
+    label = " ".join(unicodedata.normalize("NFKC", value).strip().split())
+    if not label:
+        raise RichDataError("SZSE inquiry metadata label is empty")
+    return label
+
+
+def _official_exchange_json_payload(response: Any, *, exchange: str) -> Any:
+    """Decode JSON or a simple official JSONP wrapper without persisting it."""
+
+    try:
+        return response.json()
+    except Exception:
+        text = getattr(response, "text", None)
+        if not isinstance(text, str):
+            raise RuntimeError(
+                f"transient {exchange} inquiry JSON decode failure"
+            ) from None
+        match = re.fullmatch(
+            r"\s*[A-Za-z_$][A-Za-z0-9_$.]*\s*\((.*)\)\s*;?\s*",
+            text,
+            flags=re.DOTALL,
+        )
+        if match is None:
+            raise RuntimeError(
+                f"transient {exchange} inquiry JSONP decode failure"
+            ) from None
+        try:
+            return json.loads(match.group(1))
+        except json.JSONDecodeError as exc:
+            raise RuntimeError(
+                f"transient {exchange} inquiry JSONP payload decode failure"
+            ) from exc
+
+
+def _official_exchange_href(value: Any, *, exchange: str) -> str:
+    """Extract exactly one official href without reading visible link text."""
+
+    if isinstance(value, dict):
+        if not isinstance(value.get("label"), str):
+            raise RichDataError(
+                f"{exchange} inquiry document cell lacks one label string"
+            )
+        markup = value["label"]
+    elif isinstance(value, str):
+        markup = value
+    else:
+        raise RichDataError(f"{exchange} inquiry document cell is not text")
+    matches = re.findall(
+        r"<a\b[^>]*\bhref\s*=\s*(['\"])(.*?)\1",
+        markup,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    if len(matches) != 1:
+        raise RichDataError(
+            f"{exchange} inquiry document cell does not expose exactly one href"
+        )
+    href = unicodedata.normalize("NFKC", matches[0][1]).strip()
+    if not href or href.lower().startswith(("javascript:", "data:")):
+        raise RichDataError(f"{exchange} inquiry document href is invalid")
+    page = (
+        "https://www.sse.com.cn/regulation/supervision/inquiries/"
+        if exchange == "SSE"
+        else "https://www.szse.cn/disclosure/supervision/inquire/index.html"
+    )
+    if href.startswith("//"):
+        resolved = f"https:{href}"
+    elif re.match(r"^(?:www\.|static\.|disc\.)", href, flags=re.IGNORECASE):
+        resolved = f"https://{href}"
+    else:
+        resolved = urljoin(page, href)
+    parsed = urlparse(resolved)
+    host = (parsed.hostname or "").lower()
+    expected_suffix = "sse.com.cn" if exchange == "SSE" else "szse.cn"
+    if (
+        parsed.scheme not in {"http", "https"}
+        or not host
+        or not (host == expected_suffix or host.endswith(f".{expected_suffix}"))
+    ):
+        raise RichDataError(f"{exchange} inquiry document href is not official")
+    return resolved
+
+
+def validate_szse_official_exchange_inquiry_metadata(
+    payload: Any,
+    *,
+    requested_page: int = 1,
+) -> dict[str, Any]:
+    """Bind the frozen SZSE metadata roles without inspecting row text."""
+
+    if not isinstance(payload, list) or not payload:
+        raise RichDataError("SZSE inquiry response is not a nonempty report list")
+    visible: list[dict[str, Any]] = []
+    for item in payload:
+        if not isinstance(item, dict) or not isinstance(item.get("metadata"), dict):
+            raise RichDataError("SZSE inquiry report object is malformed")
+        hidden = item["metadata"].get("hidden")
+        if hidden in (None, 0, "0"):
+            visible.append(item)
+    if len(visible) != 1:
+        raise RichDataError("SZSE inquiry response lacks exactly one visible report")
+    report = visible[0]
+    metadata = report["metadata"]
+    required = {
+        "catalogid",
+        "tabkey",
+        "cols",
+        "conditions",
+        "pagesize",
+        "pageno",
+        "recordcount",
+        "pagecount",
+    }
+    if not required.issubset(metadata):
+        raise RichDataError("SZSE inquiry metadata misses frozen fields")
+    if metadata["catalogid"] != "main_wxhj":
+        raise RichDataError("SZSE inquiry catalog changed")
+    tabkey = metadata["tabkey"]
+    if not isinstance(tabkey, str) or not tabkey.strip():
+        raise RichDataError("SZSE inquiry tabkey is invalid")
+    page_size = _official_exchange_strict_count(
+        metadata["pagesize"], field="SZSE pagesize"
+    )
+    page_no = _official_exchange_strict_count(
+        metadata["pageno"], field="SZSE pageno"
+    )
+    record_count = _official_exchange_strict_count(
+        metadata["recordcount"], field="SZSE recordcount"
+    )
+    page_count = _official_exchange_strict_count(
+        metadata["pagecount"], field="SZSE pagecount"
+    )
+    if (
+        page_size <= 0
+        or page_size > 100
+        or page_no != requested_page
+        or page_count != (math.ceil(record_count / page_size) if record_count else 0)
+    ):
+        raise RichDataError("SZSE inquiry pagination metadata is inconsistent")
+
+    cols = metadata["cols"]
+    if isinstance(cols, dict):
+        column_items: list[tuple[Any, Any]] = list(cols.items())
+        row_shape = "mapping"
+    elif isinstance(cols, list) and all(isinstance(item, str) for item in cols):
+        column_items = list(enumerate(cols))
+        row_shape = "sequence"
+    else:
+        raise RichDataError("SZSE inquiry columns are not one simple five-column table")
+    if len(column_items) != 5:
+        raise RichDataError("SZSE inquiry column count changed")
+    allowed_roles = {
+        "issuer_code": {"公司代码", "证券代码"},
+        "ignored_issuer_name": {"公司简称", "证券简称"},
+        "inquiry_date": {"发函日期"},
+        "ignored_inquiry_type": {"函件类别", "函件类型", "监管问询类型"},
+        "document_link_cell": {"函件名称", "函件标题", "标题"},
+    }
+    role_keys: dict[str, Any] = {}
+    for key, raw_label in column_items:
+        label = _official_exchange_normalized_label(raw_label)
+        matches = [role for role, labels in allowed_roles.items() if label in labels]
+        if len(matches) != 1 or matches[0] in role_keys:
+            raise RichDataError("SZSE inquiry metadata column role is ambiguous")
+        role_keys[matches[0]] = key
+    if set(role_keys) != set(allowed_roles):
+        raise RichDataError("SZSE inquiry metadata column roles are incomplete")
+
+    conditions = metadata["conditions"]
+    if not isinstance(conditions, list) or any(
+        not isinstance(item, dict) for item in conditions
+    ):
+        raise RichDataError("SZSE inquiry metadata conditions are malformed")
+    start_labels = {"发函日期", "发函起始日期", "开始日期", "起始日期"}
+    end_labels = {"发函截止日期", "截止日期", "结束日期"}
+    start_names: list[str] = []
+    end_names: list[str] = []
+    for condition in conditions:
+        label_value = condition.get("label")
+        if not isinstance(label_value, str):
+            continue
+        label = _official_exchange_normalized_label(label_value)
+        name = condition.get("name")
+        if label in start_labels | end_labels:
+            if not isinstance(name, str) or not name.strip():
+                raise RichDataError("SZSE inquiry date condition name is invalid")
+            if label in start_labels:
+                start_names.append(name.strip())
+            if label in end_labels:
+                end_names.append(name.strip())
+    if len(start_names) != 1 or len(end_names) != 1:
+        raise RichDataError("SZSE inquiry date conditions are absent or ambiguous")
+    data = report.get("data")
+    if not isinstance(data, list):
+        raise RichDataError("SZSE inquiry report data is not a list")
+    return {
+        "rows": data,
+        "tabkey": tabkey.strip(),
+        "page_size": page_size,
+        "page_no": page_no,
+        "record_count": record_count,
+        "page_count": page_count,
+        "row_shape": row_shape,
+        "role_keys": role_keys,
+        "start_date_parameter": start_names[0],
+        "end_date_parameter": end_names[0],
+        "column_labels": [
+            _official_exchange_normalized_label(label)
+            for _, label in column_items
+        ],
+    }
+
+
+def _szse_official_exchange_inquiry_cell(
+    row: Any,
+    *,
+    key: Any,
+    row_shape: str,
+) -> Any:
+    """Read only one pre-mapped SZSE role cell."""
+
+    if row_shape == "mapping":
+        if not isinstance(row, dict) or key not in row:
+            raise RichDataError("SZSE inquiry row misses a frozen mapped cell")
+        return row[key]
+    if (
+        row_shape == "sequence"
+        and isinstance(row, (list, tuple))
+        and isinstance(key, int)
+        and 0 <= key < len(row)
+        and len(row) == 5
+    ):
+        return row[key]
+    raise RichDataError("SZSE inquiry row shape changed")
+
+
+def _official_exchange_get_payload(
+    endpoint: str,
+    *,
+    params: dict[str, str],
+    headers: dict[str, str],
+    exchange: str,
+    requester: Any,
+    maximum_attempts: int,
+    timeout: int,
+    pause_seconds: float,
+) -> tuple[Any, int]:
+    """Run one retry-bounded public GET without carrying secret state."""
+
+    last_error: BaseException | None = None
+    for attempt in range(maximum_attempts):
+        if attempt and pause_seconds:
+            time.sleep(pause_seconds)
+        try:
+            response = requester.get(
+                endpoint,
+                params=params,
+                headers=headers,
+                timeout=timeout,
+            )
+            status_code = int(getattr(response, "status_code", 200))
+            if status_code == 429 or status_code >= 500:
+                raise RuntimeError(
+                    f"transient {exchange} inquiry HTTP status {status_code}"
+                )
+            if status_code >= 400:
+                raise RichDataError(
+                    f"{exchange} inquiry source rejected HTTP status {status_code}"
+                )
+            if hasattr(response, "raise_for_status"):
+                response.raise_for_status()
+            return (
+                _official_exchange_json_payload(response, exchange=exchange),
+                attempt + 1,
+            )
+        except RichDataError:
+            raise
+        except Exception as exc:
+            last_error = exc
+            if attempt + 1 >= maximum_attempts:
+                break
+    assert last_error is not None
+    raise RichDataError(
+        f"{exchange} inquiry request failed after {maximum_attempts} attempts: "
+        f"{safe_exception_text(last_error)}"
+    ) from last_error
+
+
+def _official_exchange_requester(session: Any | None) -> Any:
+    """Return a caller-supplied requester or the public requests module."""
+
+    if session is not None:
+        return session
+    try:
+        import requests
+    except ImportError as exc:  # pragma: no cover - workspace dependency.
+        raise RichDataError("requests is required for official exchange intake") from exc
+    return requests
+
+
+def fetch_sse_official_exchange_inquiry_partition(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any],
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Fetch one count-complete SSE inquiry partition."""
+
+    if end_date < start_date:
+        raise RichDataError("SSE inquiry partition end precedes start")
+    provider = contract["sse_provider_contract"]
+    common = contract["common_public_transport_policy"]
+    requester = _official_exchange_requester(session)
+    page_size = int(provider["page_size"])
+    maximum_pages = int(provider["maximum_pages_per_leaf_partition"])
+    maximum_attempts = int(common["maximum_attempts_per_request"])
+    timeout = int(common["timeout_seconds"])
+    pause = (
+        float(common["minimum_delay_seconds_between_attempts"])
+        if page_pause_seconds is None
+        else float(page_pause_seconds)
+    )
+    if pause < 0:
+        raise RichDataError("SSE inquiry page pause is negative")
+    base_params = {
+        str(key): str(value) for key, value in provider["fixed_parameters"].items()
+    }
+    base_params.update(
+        {
+            "createTime": f"{start_date.isoformat()} 00:00:00",
+            "createTimeEnd": f"{end_date.isoformat()} 23:59:59",
+            "jsonCallBack": "jsonCallback",
+        }
+    )
+    headers = {
+        "Accept": "application/javascript, application/json, text/javascript, */*",
+        "Referer": str(provider["official_page"]),
+        "User-Agent": "qlib-a-share-research/1.0",
+    }
+    provider_calls = 0
+
+    def fetch_page(page_number: int) -> tuple[list[dict[str, Any]], dict[str, int]]:
+        nonlocal provider_calls
+        payload, attempts = _official_exchange_get_payload(
+            str(provider["endpoint"]),
+            params={**base_params, "pageHelp.pageNo": str(page_number)},
+            headers=headers,
+            exchange="SSE",
+            requester=requester,
+            maximum_attempts=maximum_attempts,
+            timeout=timeout,
+            pause_seconds=pause,
+        )
+        provider_calls += attempts
+        if not isinstance(payload, dict) or not {"result", "pageHelp"}.issubset(
+            payload
+        ):
+            raise RichDataError("SSE inquiry response misses frozen fields")
+        rows = payload["result"]
+        metadata = payload["pageHelp"]
+        if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+            raise RichDataError("SSE inquiry result is not a row list")
+        if not isinstance(metadata, dict) or not {
+            "pageCount",
+            "total",
+            "pageNo",
+            "pageSize",
+        }.issubset(metadata):
+            raise RichDataError("SSE inquiry pagination metadata is incomplete")
+        parsed = {
+            "page_count": _official_exchange_strict_count(
+                metadata["pageCount"], field="SSE pageCount"
+            ),
+            "total": _official_exchange_strict_count(
+                metadata["total"], field="SSE total"
+            ),
+            "page_no": _official_exchange_strict_count(
+                metadata["pageNo"], field="SSE pageNo"
+            ),
+            "page_size": _official_exchange_strict_count(
+                metadata["pageSize"], field="SSE pageSize"
+            ),
+        }
+        expected_pages = (
+            math.ceil(parsed["total"] / page_size) if parsed["total"] else 0
+        )
+        if (
+            parsed["page_no"] != page_number
+            or parsed["page_size"] != page_size
+            or parsed["page_count"] != expected_pages
+        ):
+            raise RichDataError("SSE inquiry pagination metadata is inconsistent")
+        return rows, parsed
+
+    first_rows, first_meta = fetch_page(1)
+    advertised_count = first_meta["total"]
+    pages = first_meta["page_count"]
+    if pages > maximum_pages:
+        raise OfficialExchangeInquiryPartitionTooLarge(
+            "SSE",
+            start_date,
+            end_date,
+            pages=pages,
+            advertised_count=advertised_count,
+            ceiling=maximum_pages,
+        )
+    expected_first = min(page_size, advertised_count)
+    if len(first_rows) != expected_first:
+        raise RichDataError("SSE inquiry first page length does not match count")
+    rows = list(first_rows)
+    requested_pages = [1]
+    for page_number in range(2, pages + 1):
+        page_rows, metadata = fetch_page(page_number)
+        if metadata != {**first_meta, "page_no": page_number}:
+            raise RichDataError("SSE inquiry pagination metadata changed")
+        expected_rows = (
+            page_size
+            if page_number < pages
+            else advertised_count - page_size * (pages - 1)
+        )
+        if len(page_rows) != expected_rows:
+            raise RichDataError("SSE inquiry page length does not match count")
+        rows.extend(page_rows)
+        requested_pages.append(page_number)
+    if len(rows) != advertised_count:
+        raise RichDataError("SSE inquiry fetched count does not reconcile")
+    return rows, {
+        "exchange": "SSE",
+        "start": start_date.isoformat(),
+        "end": end_date.isoformat(),
+        "advertised_pages": pages,
+        "requested_pages": requested_pages,
+        "advertised_rows": advertised_count,
+        "received_rows": len(rows),
+        "page_size": page_size,
+        "provider_calls": provider_calls,
+        "count_verified": True,
+    }
+
+
+def fetch_szse_official_exchange_inquiry_schema(
+    *,
+    contract: dict[str, Any],
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Consume the one official default-page probe and retain metadata only."""
+
+    provider = contract["szse_provider_contract"]
+    common = contract["common_public_transport_policy"]
+    requester = _official_exchange_requester(session)
+    pause = (
+        float(common["minimum_delay_seconds_between_attempts"])
+        if page_pause_seconds is None
+        else float(page_pause_seconds)
+    )
+    payload, attempts = _official_exchange_get_payload(
+        str(provider["endpoint"]),
+        params={
+            str(key): str(value)
+            for key, value in provider["fixed_parameters"].items()
+        },
+        headers={
+            "Accept": "application/json, text/plain, */*",
+            "Referer": str(provider["official_page"]),
+            "User-Agent": "qlib-a-share-research/1.0",
+        },
+        exchange="SZSE",
+        requester=requester,
+        maximum_attempts=int(common["maximum_attempts_per_request"]),
+        timeout=int(common["timeout_seconds"]),
+        pause_seconds=pause,
+    )
+    parsed = validate_szse_official_exchange_inquiry_metadata(
+        payload, requested_page=1
+    )
+    transported_default_rows = int(len(parsed.pop("rows")))
+    schema = {
+        key: parsed[key]
+        for key in (
+            "tabkey",
+            "page_size",
+            "row_shape",
+            "role_keys",
+            "start_date_parameter",
+            "end_date_parameter",
+            "column_labels",
+        )
+    }
+    return schema, {
+        "exchange": "SZSE",
+        "provider_calls": attempts,
+        "transported_default_rows_not_read_or_used": transported_default_rows,
+        "metadata_only": True,
+        "row_text_or_factor_values_read": False,
+    }
+
+
+def fetch_szse_official_exchange_inquiry_partition(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any],
+    schema: dict[str, Any],
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[list[Any], dict[str, Any]]:
+    """Fetch one count-complete SZSE inquiry partition using frozen metadata."""
+
+    if end_date < start_date:
+        raise RichDataError("SZSE inquiry partition end precedes start")
+    provider = contract["szse_provider_contract"]
+    common = contract["common_public_transport_policy"]
+    requester = _official_exchange_requester(session)
+    page_size = int(schema["page_size"])
+    maximum_pages = int(provider["maximum_pages_per_leaf_partition"])
+    pause = (
+        float(common["minimum_delay_seconds_between_attempts"])
+        if page_pause_seconds is None
+        else float(page_pause_seconds)
+    )
+    base_params = {
+        str(key): str(value) for key, value in provider["fixed_parameters"].items()
+    }
+    base_params.update(
+        {
+            str(schema["start_date_parameter"]): start_date.isoformat(),
+            str(schema["end_date_parameter"]): end_date.isoformat(),
+            f"{schema['tabkey']}PAGESIZE": str(page_size),
+        }
+    )
+    headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Referer": str(provider["official_page"]),
+        "User-Agent": "qlib-a-share-research/1.0",
+    }
+    provider_calls = 0
+
+    def fetch_page(page_number: int) -> tuple[list[Any], dict[str, Any]]:
+        nonlocal provider_calls
+        payload, attempts = _official_exchange_get_payload(
+            str(provider["endpoint"]),
+            params={**base_params, "PAGENO": str(page_number)},
+            headers=headers,
+            exchange="SZSE",
+            requester=requester,
+            maximum_attempts=int(common["maximum_attempts_per_request"]),
+            timeout=int(common["timeout_seconds"]),
+            pause_seconds=pause,
+        )
+        provider_calls += attempts
+        parsed = validate_szse_official_exchange_inquiry_metadata(
+            payload, requested_page=page_number
+        )
+        for key in (
+            "tabkey",
+            "page_size",
+            "row_shape",
+            "role_keys",
+            "start_date_parameter",
+            "end_date_parameter",
+            "column_labels",
+        ):
+            if parsed[key] != schema[key]:
+                raise RichDataError("SZSE inquiry metadata changed between requests")
+        rows = parsed.pop("rows")
+        return rows, parsed
+
+    first_rows, first_meta = fetch_page(1)
+    advertised_count = int(first_meta["record_count"])
+    pages = int(first_meta["page_count"])
+    if pages > maximum_pages:
+        raise OfficialExchangeInquiryPartitionTooLarge(
+            "SZSE",
+            start_date,
+            end_date,
+            pages=pages,
+            advertised_count=advertised_count,
+            ceiling=maximum_pages,
+        )
+    if len(first_rows) != min(page_size, advertised_count):
+        raise RichDataError("SZSE inquiry first page length does not match count")
+    rows = list(first_rows)
+    requested_pages = [1]
+    stable_counts = (advertised_count, pages, page_size)
+    for page_number in range(2, pages + 1):
+        page_rows, metadata = fetch_page(page_number)
+        if (
+            int(metadata["record_count"]),
+            int(metadata["page_count"]),
+            int(metadata["page_size"]),
+        ) != stable_counts:
+            raise RichDataError("SZSE inquiry pagination metadata changed")
+        expected_rows = (
+            page_size
+            if page_number < pages
+            else advertised_count - page_size * (pages - 1)
+        )
+        if len(page_rows) != expected_rows:
+            raise RichDataError("SZSE inquiry page length does not match count")
+        rows.extend(page_rows)
+        requested_pages.append(page_number)
+    if len(rows) != advertised_count:
+        raise RichDataError("SZSE inquiry fetched count does not reconcile")
+    return rows, {
+        "exchange": "SZSE",
+        "start": start_date.isoformat(),
+        "end": end_date.isoformat(),
+        "advertised_pages": pages,
+        "requested_pages": requested_pages,
+        "advertised_rows": advertised_count,
+        "received_rows": len(rows),
+        "page_size": page_size,
+        "provider_calls": provider_calls,
+        "count_verified": True,
+    }
+
+
+def fetch_official_exchange_inquiry_partition_details(
+    exchange: str,
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any],
+    szse_schema: dict[str, Any] | None = None,
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[
+    list[tuple[dt.date, dt.date, list[Any], dict[str, Any]]],
+    list[dict[str, Any]],
+]:
+    """Bisect an oversized official inquiry range before later pages."""
+
+    try:
+        if exchange == "SSE":
+            rows, quality = fetch_sse_official_exchange_inquiry_partition(
+                start_date,
+                end_date,
+                contract=contract,
+                session=session,
+                page_pause_seconds=page_pause_seconds,
+            )
+        elif exchange == "SZSE" and szse_schema is not None:
+            rows, quality = fetch_szse_official_exchange_inquiry_partition(
+                start_date,
+                end_date,
+                contract=contract,
+                schema=szse_schema,
+                session=session,
+                page_pause_seconds=page_pause_seconds,
+            )
+        else:
+            raise RichDataError("official inquiry exchange or SZSE schema is invalid")
+        return [(start_date, end_date, rows, quality)], []
+    except OfficialExchangeInquiryPartitionTooLarge as exc:
+        if start_date == end_date:
+            raise RichDataError(
+                f"{exchange} inquiry single-date partition exceeds the page ceiling"
+            ) from exc
+        midpoint = start_date + (end_date - start_date) // 2
+        right_start = midpoint + dt.timedelta(days=1)
+        left, left_splits = fetch_official_exchange_inquiry_partition_details(
+            exchange,
+            start_date,
+            midpoint,
+            contract=contract,
+            szse_schema=szse_schema,
+            session=session,
+            page_pause_seconds=page_pause_seconds,
+        )
+        right, right_splits = fetch_official_exchange_inquiry_partition_details(
+            exchange,
+            right_start,
+            end_date,
+            contract=contract,
+            szse_schema=szse_schema,
+            session=session,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return left + right, [
+            {
+                "exchange": exchange,
+                "start": start_date.isoformat(),
+                "end": end_date.isoformat(),
+                "advertised_pages": exc.pages,
+                "advertised_rows": exc.advertised_count,
+                "page_ceiling": exc.ceiling,
+                "provider_probe_calls": 1,
+                "left_end": midpoint.isoformat(),
+                "right_start": right_start.isoformat(),
+            },
+            *left_splits,
+            *right_splits,
+        ]
+
+
+def canonicalize_official_exchange_inquiry_rows(
+    rows: list[dict[str, Any]] | list[Any],
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    exchange: str,
+    szse_schema: dict[str, Any] | None = None,
+    identity_dates: dict[tuple[str, str, str], pd.Timestamp] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Normalize official code/date/href identities and discard hrefs."""
+
+    if exchange not in {"SSE", "SZSE"} or end_date < start_date:
+        raise RichDataError("official exchange inquiry normalization scope is invalid")
+    if exchange == "SZSE" and not isinstance(szse_schema, dict):
+        raise RichDataError("SZSE inquiry normalization lacks frozen metadata")
+    seen_dates = identity_dates if identity_dates is not None else {}
+    identities: list[dict[str, Any]] = []
+    unsupported = 0
+    exact_repeats = 0
+    for row in rows:
+        if exchange == "SSE":
+            if not isinstance(row, dict) or not {
+                "extSECURITY_CODE",
+                "createTime",
+                "extDWDM",
+                "docURL",
+            }.issubset(row):
+                raise RichDataError("SSE inquiry row misses a frozen field")
+            raw_code = row["extSECURITY_CODE"]
+            raw_date = row["createTime"]
+            if row["extDWDM"] != "1":
+                raise RichDataError("SSE inquiry row has no official document link")
+            href_value: Any = f'<a href="{row["docURL"]}"></a>'
+        else:
+            assert szse_schema is not None
+            keys = szse_schema["role_keys"]
+            shape = str(szse_schema["row_shape"])
+            raw_code = _szse_official_exchange_inquiry_cell(
+                row, key=keys["issuer_code"], row_shape=shape
+            )
+            raw_date = _szse_official_exchange_inquiry_cell(
+                row, key=keys["inquiry_date"], row_shape=shape
+            )
+            href_value = _szse_official_exchange_inquiry_cell(
+                row, key=keys["document_link_cell"], row_shape=shape
+            )
+        if not isinstance(raw_code, str):
+            raise RichDataError(f"{exchange} inquiry security code is not a string")
+        code = unicodedata.normalize("NFKC", raw_code).strip()
+        if not re.fullmatch(r"\d{6}", code):
+            raise RichDataError(f"{exchange} inquiry security code is malformed")
+        if not isinstance(raw_date, str):
+            raise RichDataError(f"{exchange} inquiry date is not a string")
+        date_text = unicodedata.normalize("NFKC", raw_date).strip()
+        try:
+            inquiry_date = pd.Timestamp(dt.date.fromisoformat(date_text[:10]))
+        except (TypeError, ValueError) as exc:
+            raise RichDataError(f"{exchange} inquiry date is invalid") from exc
+        if not pd.Timestamp(start_date) <= inquiry_date <= pd.Timestamp(end_date):
+            raise RichDataError(f"{exchange} inquiry date is outside its partition")
+        supported = (
+            exchange == "SSE"
+            and code.startswith(("600", "601", "603", "605"))
+        ) or (
+            exchange == "SZSE"
+            and code.startswith(("000", "001", "002", "003", "300", "301"))
+        )
+        if not supported:
+            unsupported += 1
+            continue
+        instrument = qlib_symbol(code)
+        href = _official_exchange_href(href_value, exchange=exchange)
+        identity = (exchange, instrument, href)
+        previous_date = seen_dates.get(identity)
+        if previous_date is not None:
+            if previous_date != inquiry_date:
+                raise RichDataError(
+                    f"{exchange} inquiry document identity has conflicting dates"
+                )
+            exact_repeats += 1
+            continue
+        seen_dates[identity] = inquiry_date
+        identities.append(
+            {
+                "exchange": exchange,
+                "instrument": instrument,
+                "inquiry_date": inquiry_date,
+                "document_href": href,
+            }
+        )
+    if not identities:
+        return pd.DataFrame(columns=OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS), {
+            "input_source_rows": int(len(rows)),
+            "supported_source_rows": 0,
+            "unsupported_board_or_exchange_rows_excluded": unsupported,
+            "exact_repeated_identity_rows_collapsed": exact_repeats,
+            "aggregated_events": 0,
+            "document_href_title_type_or_name_persisted": False,
+        }
+    identity_frame = pd.DataFrame(identities)
+    grouped = (
+        identity_frame.groupby(
+            ["inquiry_date", "instrument", "exchange"], as_index=False, sort=True
+        )
+        .agg(official_exchange_inquiry_count=("document_href", "nunique"))
+        .sort_values(["inquiry_date", "exchange", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    grouped["provider"] = "official_exchange"
+    result = normalize_official_exchange_inquiry_events(
+        grouped.loc[:, list(OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS)]
+    )
+    return result, {
+        "input_source_rows": int(len(rows)),
+        "supported_source_rows": int(len(identity_frame)),
+        "unsupported_board_or_exchange_rows_excluded": unsupported,
+        "exact_repeated_identity_rows_collapsed": exact_repeats,
+        "aggregated_events": int(len(result)),
+        "distinct_event_counts": int(
+            result["official_exchange_inquiry_count"].nunique(dropna=True)
+        ),
+        "document_href_title_type_or_name_persisted": False,
+    }
+
+
+def filter_official_exchange_inquiry_events_to_holding_universe(
+    frame: pd.DataFrame,
+    intervals: pd.DataFrame,
+) -> tuple[pd.DataFrame, int]:
+    """Apply dated buyable-universe intervals to normalized inquiry events."""
+
+    normalized = normalize_official_exchange_inquiry_events(frame)
+    if normalized.empty:
+        return normalized, 0
+    indexed = intervals.set_index("instrument")
+    starts = normalized["instrument"].map(indexed["start_date"])
+    ends = normalized["instrument"].map(indexed["end_date"])
+    dates = normalized["inquiry_date"]
+    active = starts.notna() & ends.notna() & dates.ge(starts) & dates.le(ends)
+    return normalized.loc[active].reset_index(drop=True), int((~active).sum())
+
+
+def normalize_official_exchange_inquiry_events(frame: pd.DataFrame) -> pd.DataFrame:
+    """Validate a privacy-minimized normalized official-inquiry event frame."""
+
+    if tuple(frame.columns) != OFFICIAL_EXCHANGE_INQUIRY_BURDEN_COLUMNS:
+        raise RichDataError("official exchange inquiry event columns changed")
+    result = frame.copy()
+    try:
+        dates = pd.to_datetime(
+            result["inquiry_date"], format="%Y-%m-%d", errors="raise"
+        )
+    except (TypeError, ValueError) as exc:
+        raise RichDataError("official exchange inquiry date is not strict ISO") from exc
+    if dates.isna().any() or dates.dt.tz is not None:
+        raise RichDataError(
+            "official exchange inquiry date is missing or timezone-aware"
+        )
+    result["inquiry_date"] = dates.dt.normalize()
+    instruments = result["instrument"]
+    exchanges = result["exchange"]
+    providers = result["provider"]
+    if (
+        instruments.isna().any()
+        or not instruments.map(lambda value: isinstance(value, str)).all()
+        or exchanges.isna().any()
+        or not exchanges.map(lambda value: isinstance(value, str)).all()
+        or providers.isna().any()
+        or not providers.map(lambda value: isinstance(value, str)).all()
+    ):
+        raise RichDataError("official exchange inquiry identity is incomplete")
+    sh_supported = instruments.str.fullmatch(
+        r"SH(?:600|601|603|605)\d{3}", na=False
+    )
+    sz_supported = instruments.str.fullmatch(
+        r"SZ(?:000|001|002|003|300|301)\d{3}", na=False
+    )
+    supported_exchange = ((exchanges == "SSE") & sh_supported) | (
+        (exchanges == "SZSE") & sz_supported
+    )
+    if not (sh_supported | sz_supported).all():
+        raise RichDataError("official exchange inquiry instrument is unsupported")
+    if not supported_exchange.all():
+        raise RichDataError("official exchange inquiry code conflicts with exchange")
+    if not providers.eq("official_exchange").all():
+        raise RichDataError("official exchange inquiry provider changed")
+    counts = result["official_exchange_inquiry_count"]
+    valid_count = counts.map(
+        lambda value: (
+            not isinstance(value, (bool, np.bool_))
+            and isinstance(value, (int, np.integer))
+            and int(value) > 0
+        )
+    )
+    if not valid_count.all():
+        raise RichDataError(
+            "official exchange inquiry count is not a strict positive integer"
+        )
+    result["official_exchange_inquiry_count"] = counts.astype("int64")
+    if result.duplicated(["exchange", "instrument", "inquiry_date"]).any():
+        raise RichDataError("official exchange inquiry event key is duplicated")
+    return result.sort_values(
+        ["inquiry_date", "exchange", "instrument"], kind="stable"
+    ).reset_index(drop=True)
+
+
+def materialize_official_exchange_inquiry_acceptance_sessions(
+    events: pd.DataFrame,
+    calendar: Iterable[Any],
+    *,
+    maximum_age_calendar_days: int = 3,
+) -> pd.DataFrame:
+    """Materialize the frozen strict-next-session factor without price access."""
+
+    if maximum_age_calendar_days != 3:
+        raise RichDataError("official exchange inquiry event age changed after freeze")
+    normalized = normalize_official_exchange_inquiry_events(events)
+    sessions = pd.DatetimeIndex(pd.to_datetime(list(calendar), errors="raise"))
+    if sessions.tz is not None:
+        sessions = sessions.tz_localize(None)
+    sessions = sessions.normalize().unique().sort_values()
+    expanded: list[dict[str, Any]] = []
+    for event in normalized.itertuples(index=False):
+        inquiry_date = pd.Timestamp(event.inquiry_date)
+        active_sessions = sessions[
+            (sessions > inquiry_date)
+            & (
+                sessions
+                <= inquiry_date + pd.Timedelta(days=maximum_age_calendar_days)
+            )
+        ]
+        for signal_date in active_sessions:
+            expanded.append(
+                {
+                    "signal_date": signal_date,
+                    "instrument": event.instrument,
+                    "inquiry_date": inquiry_date,
+                    "inquiry_count": int(event.official_exchange_inquiry_count),
+                }
+            )
+    columns = (
+        "signal_date",
+        "instrument",
+        "official_exchange_inquiry_resilience",
+        "official_exchange_inquiry_latest_date",
+        "active_unique_inquiry_count",
+    )
+    if not expanded:
+        return pd.DataFrame(columns=columns)
+    active = pd.DataFrame(expanded)
+    materialized = (
+        active.groupby(["signal_date", "instrument"], as_index=False)
+        .agg(
+            official_exchange_inquiry_latest_date=("inquiry_date", "max"),
+            active_unique_inquiry_count=("inquiry_count", "sum"),
+        )
+        .sort_values(["signal_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    days_since_latest = (
+        materialized["signal_date"]
+        - materialized["official_exchange_inquiry_latest_date"]
+    ).dt.days
+    if not days_since_latest.between(1, maximum_age_calendar_days).all():
+        raise RichDataError("official exchange inquiry timing formula drifted")
+    materialized["official_exchange_inquiry_resilience"] = (
+        1.0 + days_since_latest.astype(float)
+    ) / materialized["active_unique_inquiry_count"].astype(float)
+    factor_values = materialized["official_exchange_inquiry_resilience"]
+    if (
+        not np.isfinite(factor_values).all()
+        or not factor_values.gt(0).all()
+        or not materialized["active_unique_inquiry_count"].gt(0).all()
+    ):
+        raise RichDataError("official exchange inquiry factor is invalid")
+    return materialized.loc[:, list(columns)]
+
+
+def official_exchange_inquiry_acceptance_records() -> list[Path]:
+    """Return local success or rejection manifests for this one-shot route."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*official_exchange_inquiry_burden_acceptance*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "official_exchange_inquiry_burden_acceptance":
+            records.append(path)
+    return records
+
+
+def guard_official_exchange_inquiry_acceptance() -> None:
+    """Reject tracked or local replays before contract and network access."""
+
+    record_path = DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_ACCEPTANCE_RECORD
+    if record_path.exists():
+        if (
+            file_digest(record_path)
+            != OFFICIAL_EXCHANGE_INQUIRY_BURDEN_ACCEPTANCE_RECORD_SHA256
+        ):
+            raise RichDataError(
+                "official exchange inquiry tracked acceptance record fingerprint "
+                "mismatch"
+            )
+        record = load_json_record(
+            record_path,
+            kind="a_share_official_exchange_inquiry_burden_source_acceptance_record",
+        )
+        decision = record.get("next_stage_decision") or {}
+        observed = record.get("frozen_request_observed_result") or {}
+        snapshot = record.get("published_snapshot") or {}
+        verification = record.get("independent_local_verification") or {}
+        privacy = record.get("privacy_and_scope") or {}
+        rejected = record.get("rejected_manifest") or {}
+        if (
+            record.get("version") != 1
+            or record.get("status")
+            != "terminal_szse_metadata_visibility_rejected_stop_before_event_rows_full_history_capacity_uniqueness_prices_or_returns"
+            or rejected.get("path")
+            != "data/metadata/rich_data/runs/20260721T102937Z_official_exchange_inquiry_burden_acceptance_3c38881b.json"
+            or rejected.get("sha256")
+            != "e73fef90eda1467ec992be8e0d00c890422110542b4b74f84ff7958b5eaf656b"
+            or observed.get("provider_request_issued") is not True
+            or observed.get("error")
+            != "SZSE inquiry response lacks exactly one visible report"
+            or observed.get("completed_leaf_partitions") != 0
+            or observed.get("normalized_partitions") != 0
+            or observed.get("event_rows_read_normalized_or_persisted") != 0
+            or snapshot.get("files") != []
+            or snapshot.get("partial_snapshot_deleted") is not True
+            or snapshot.get("parquet_residue_after_rejection") != 0
+            or verification.get("second_command_blocked_before_contract_or_network")
+            is not True
+            or privacy.get("credential_token_points_cookie_proxy_or_retail_session_used")
+            is not False
+            or privacy.get("forward_return_fields_read") is not False
+            or decision.get("acceptance_consumed") is not True
+            or decision.get("acceptance_retry_allowed") is not False
+            or decision.get("provider_rerequest_allowed") is not False
+            or decision.get("parser_change_and_retry_allowed") is not False
+            or decision.get("full_source_allowed") is not False
+            or decision.get("capacity_uniqueness_or_return_work_allowed") is not False
+            or record.get("price_fields_loaded") != []
+            or record.get("forward_return_fields_read") is not False
+            or record.get("selection_or_promotion_allowed") is not False
+        ):
+            raise RichDataError(
+                "official exchange inquiry tracked acceptance record is invalid"
+            )
+        raise RichDataError(
+            "official exchange inquiry acceptance is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    prior = official_exchange_inquiry_acceptance_records()
+    if prior:
+        raise RichDataError(
+            "official exchange inquiry acceptance is one-shot and already "
+            f"consumed by {prior[-1]}"
+        )
+
+
+def sync_official_exchange_inquiry_burden_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Run the sole frozen public two-exchange no-price acceptance."""
+
+    guard_official_exchange_inquiry_acceptance()
+    lock_path = METADATA_ROOT / ".official_exchange_inquiry_burden_acceptance.lock"
+    with RichDataProcessLock(lock_path):
+        guard_official_exchange_inquiry_acceptance()
+        contract = load_official_exchange_inquiry_burden_contract()
+        validate_official_exchange_inquiry_local_context(contract)
+        acceptance = contract["acceptance_protocol"]
+        sample_windows = list(acceptance["fixed_sample_windows"])
+        intervals = load_factor_universe_intervals(universe_path)
+        first_sample = dt.date.fromisoformat(str(sample_windows[0]["start"]))
+        final_sample = dt.date.fromisoformat(str(sample_windows[-1]["end"]))
+        calendar = local_calendar_dates(
+            first_sample,
+            final_sample + dt.timedelta(days=14),
+            calendar_path,
+        )
+        if calendar.empty:
+            raise RichDataError(
+                "local calendar is empty for official exchange inquiry acceptance"
+            )
+        run_id = new_run_id("official_exchange_inquiry_burden_acceptance")
+        run_root = (
+            RAW_ROOT
+            / "official_exchange"
+            / "inquiry_burden"
+            / "acceptance"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError("official exchange inquiry acceptance run exists")
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        schema_quality: dict[str, Any] | None = None
+        request_quality: list[dict[str, Any]] = []
+        normalization_quality: list[dict[str, Any]] = []
+        bisections: list[dict[str, Any]] = []
+        window_quality: list[dict[str, Any]] = []
+        identity_dates: dict[tuple[str, str, str], pd.Timestamp] = {}
+        try:
+            provider_request_issued = True
+            szse_schema, schema_quality = (
+                fetch_szse_official_exchange_inquiry_schema(contract=contract)
+            )
+            exchange_windows: dict[tuple[str, str], pd.DataFrame] = {}
+            for exchange in ("SSE", "SZSE"):
+                for window in sample_windows:
+                    label = str(window["label"])
+                    window_start = dt.date.fromisoformat(str(window["start"]))
+                    window_end = dt.date.fromisoformat(str(window["end"]))
+                    normalized_parts: list[pd.DataFrame] = []
+                    local_quality: list[dict[str, Any]] = []
+                    for month_start, month_end in calendar_month_ranges(
+                        window_start, window_end
+                    ):
+                        leaves, split_records = (
+                            fetch_official_exchange_inquiry_partition_details(
+                                exchange,
+                                month_start,
+                                month_end,
+                                contract=contract,
+                                szse_schema=(
+                                    szse_schema if exchange == "SZSE" else None
+                                ),
+                            )
+                        )
+                        bisections.extend(
+                            [
+                                {"window": label, **item}
+                                for item in split_records
+                            ]
+                        )
+                        for leaf_start, leaf_end, rows, observed_request in leaves:
+                            request_quality.append(
+                                {"window": label, **observed_request}
+                            )
+                            normalized, observed_normalization = (
+                                canonicalize_official_exchange_inquiry_rows(
+                                    rows,
+                                    leaf_start,
+                                    leaf_end,
+                                    exchange=exchange,
+                                    szse_schema=(
+                                        szse_schema
+                                        if exchange == "SZSE"
+                                        else None
+                                    ),
+                                    identity_dates=identity_dates,
+                                )
+                            )
+                            quality_item = {
+                                "window": label,
+                                "exchange": exchange,
+                                **observed_normalization,
+                            }
+                            normalization_quality.append(quality_item)
+                            local_quality.append(quality_item)
+                            if not normalized.empty:
+                                normalized_parts.append(normalized)
+                    supported_rows = sum(
+                        int(item["supported_source_rows"])
+                        for item in local_quality
+                    )
+                    if supported_rows < int(
+                        acceptance[
+                            "minimum_supported_source_rows_per_exchange_window"
+                        ]
+                    ):
+                        raise RichDataError(
+                            f"{exchange} inquiry {label} has too few supported rows: "
+                            f"{supported_rows}"
+                        )
+                    if not normalized_parts:
+                        raise RichDataError(
+                            f"{exchange} inquiry {label} has no supported event"
+                        )
+                    combined_exchange_window = normalize_official_exchange_inquiry_events(
+                        pd.concat(normalized_parts, ignore_index=True)
+                    )
+                    exchange_windows[(exchange, label)] = combined_exchange_window
+
+            accepted_windows: list[pd.DataFrame] = []
+            for window in sample_windows:
+                label = str(window["label"])
+                source_frame = normalize_official_exchange_inquiry_events(
+                    pd.concat(
+                        [
+                            exchange_windows[("SSE", label)],
+                            exchange_windows[("SZSE", label)],
+                        ],
+                        ignore_index=True,
+                    )
+                )
+                accepted, outside_universe = (
+                    filter_official_exchange_inquiry_events_to_holding_universe(
+                        source_frame, intervals
+                    )
+                )
+                if len(accepted) < int(
+                    acceptance[
+                        "minimum_point_in_time_holding_events_per_window_combined"
+                    ]
+                ):
+                    raise RichDataError(
+                        f"official inquiry {label} has too few PIT events: "
+                        f"{len(accepted)}"
+                    )
+                materialized = (
+                    materialize_official_exchange_inquiry_acceptance_sessions(
+                        accepted, calendar
+                    )
+                )
+                factor_name = "official_exchange_inquiry_resilience"
+                cross_sections = (
+                    materialized.groupby("signal_date", sort=True)
+                    .agg(
+                        eligible_names=("instrument", "nunique"),
+                        distinct_factor_values=(factor_name, "nunique"),
+                    )
+                    .reset_index()
+                )
+                candidate = cross_sections[
+                    cross_sections["eligible_names"].ge(
+                        int(acceptance["minimum_names_per_candidate_cross_section"])
+                    )
+                    & cross_sections["distinct_factor_values"].ge(
+                        int(
+                            acceptance[
+                                "minimum_distinct_factor_values_per_candidate_cross_section"
+                            ]
+                        )
+                    )
+                ]
+                if len(candidate) < int(
+                    acceptance["minimum_candidate_cross_sections_per_window"]
+                ):
+                    raise RichDataError(
+                        f"official inquiry {label} lacks sample variation: "
+                        f"{len(candidate)}"
+                    )
+                window_quality.append(
+                    {
+                        "label": label,
+                        "sse_supported_source_rows": sum(
+                            int(item["supported_source_rows"])
+                            for item in normalization_quality
+                            if item["window"] == label
+                            and item["exchange"] == "SSE"
+                        ),
+                        "szse_supported_source_rows": sum(
+                            int(item["supported_source_rows"])
+                            for item in normalization_quality
+                            if item["window"] == label
+                            and item["exchange"] == "SZSE"
+                        ),
+                        "point_in_time_holding_events": int(len(accepted)),
+                        "outside_point_in_time_holding_universe_events_excluded": (
+                            outside_universe
+                        ),
+                        "candidate_cross_sections": int(len(candidate)),
+                        "distinct_materialized_factor_values": int(
+                            materialized[factor_name].nunique(dropna=True)
+                        ),
+                    }
+                )
+                accepted_windows.append(accepted)
+
+            accepted_all = normalize_official_exchange_inquiry_events(
+                pd.concat(accepted_windows, ignore_index=True)
+            )
+            total_candidates = sum(
+                int(item["candidate_cross_sections"]) for item in window_quality
+            )
+            materialized_all = (
+                materialize_official_exchange_inquiry_acceptance_sessions(
+                    accepted_all, calendar
+                )
+            )
+            distinct_values = int(
+                materialized_all[
+                    "official_exchange_inquiry_resilience"
+                ].nunique(dropna=True)
+            )
+            if len(accepted_all) < int(
+                acceptance["minimum_point_in_time_holding_events_total"]
+            ):
+                raise RichDataError(
+                    "official inquiry combined sample has too few PIT events: "
+                    f"{len(accepted_all)}"
+                )
+            if total_candidates < int(
+                acceptance["minimum_candidate_cross_sections_total"]
+            ):
+                raise RichDataError(
+                    "official inquiry combined sample lacks cross-sectional variation: "
+                    f"{total_candidates}"
+                )
+            if distinct_values < int(
+                acceptance["minimum_distinct_factor_values_across_samples"]
+            ):
+                raise RichDataError(
+                    "official inquiry combined sample lacks factor variation"
+                )
+
+            temporary_destination = temporary_root / "inquiry_events.parquet"
+            final_destination = run_root / "inquiry_events.parquet"
+            atomic_write_frame(accepted_all, temporary_destination)
+            resolved_universe = universe_path.expanduser().resolve()
+            resolved_calendar = calendar_path.expanduser().resolve()
+            provider_calls = int(schema_quality["provider_calls"]) + sum(
+                int(item["provider_calls"]) for item in request_quality
+            ) + sum(int(item["provider_probe_calls"]) for item in bisections)
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "official_exchange_inquiry_burden_acceptance",
+                "provider": "official_exchange",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_CONTRACT
+                    ),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_selection"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "filter_date": "inquiry_date",
+                },
+                "local_calendar": {
+                    "path": manifest_path(resolved_calendar),
+                    "sha256": file_digest(resolved_calendar),
+                    "availability": (
+                        "first local trading session strictly after inquiry_date"
+                    ),
+                },
+                "source_request": {
+                    "provider_request_issued": provider_request_issued,
+                    "exchanges": ["SSE", "SZSE"],
+                    "both_exchanges_required_and_completed": True,
+                    "szse_schema_probe": schema_quality,
+                    "szse_metadata": {
+                        "catalog_id": "main_wxhj",
+                        "tabkey": szse_schema["tabkey"],
+                        "page_size": szse_schema["page_size"],
+                        "column_labels": szse_schema["column_labels"],
+                        "start_date_parameter": szse_schema[
+                            "start_date_parameter"
+                        ],
+                        "end_date_parameter": szse_schema["end_date_parameter"],
+                    },
+                    "leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "provider_calls": provider_calls,
+                    "credential_token_points_cookie_proxy_or_retail_session_used": (
+                        False
+                    ),
+                    "document_or_reply_fetched": False,
+                    "company_name_inquiry_type_visible_title_or_body_read": False,
+                    "raw_response_document_href_or_hash_persisted": False,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(accepted_all)),
+                        "file_sha256": file_digest(temporary_destination),
+                        "content_sha256": frame_digest(accepted_all),
+                        "columns": list(accepted_all.columns),
+                    }
+                ],
+                "source_quality": {
+                    "windows": window_quality,
+                    "combined_rows_written": int(len(accepted_all)),
+                    "combined_candidate_cross_sections": total_candidates,
+                    "combined_distinct_materialized_factor_values": distinct_values,
+                    "global_unique_document_identities": int(len(identity_dates)),
+                    "document_href_title_type_name_or_hash_persisted": False,
+                },
+                "factor": {
+                    "name": "official_exchange_inquiry_resilience",
+                    "formula": contract["event_and_factor_definition"][
+                        "session_formula"
+                    ],
+                    "direction": "higher_is_better",
+                    "factor_values_persisted_at_acceptance": False,
+                },
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            if not provider_request_issued:
+                raise
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "official_exchange_inquiry_burden_acceptance",
+                "provider": "official_exchange",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_OFFICIAL_EXCHANGE_INQUIRY_BURDEN_CONTRACT
+                    ),
+                },
+                "source_request": {
+                    "provider_request_issued": True,
+                    "exchanges_required": ["SSE", "SZSE"],
+                    "szse_schema_probe": schema_quality,
+                    "completed_leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credential_token_points_cookie_proxy_or_retail_session_used": (
+                        False
+                    ),
+                    "document_or_reply_fetched": False,
+                    "company_name_inquiry_type_visible_title_or_body_read": False,
+                    "raw_response_document_href_or_hash_persisted": False,
+                },
+                "observed_normalization_quality_before_rejection": (
+                    normalization_quality
+                ),
+                "observed_window_quality_before_rejection": window_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": (
+                    "terminal_two_exchange_source_metadata_schema_identity_count_"
+                    "or_sample_variation_rejected_stop_before_full_history_"
+                    "capacity_uniqueness_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build the CLI parser."""
 
@@ -35389,6 +37099,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="confirm the one-shot 75-month public full-source request",
     )
 
+    official_exchange_inquiry_acceptance = subparsers.add_parser(
+        "acceptance-official-exchange-inquiry-burden",
+        help="run the frozen one-shot SSE/SZSE inquiry-burden acceptance",
+    )
+    official_exchange_inquiry_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    official_exchange_inquiry_acceptance.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+
     cninfo_guarantee_acceptance = subparsers.add_parser(
         "acceptance-cninfo-guarantee-sparsity",
         help="run the frozen 57-signal public guarantee-sparsity acceptance",
@@ -35748,6 +37469,11 @@ def main(argv: list[str] | None = None) -> int:
                     universe_path=args.universe_file,
                 )
             )
+        elif args.command == "acceptance-official-exchange-inquiry-burden":
+            manifest = sync_official_exchange_inquiry_burden_acceptance(
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+            )
         elif args.command == "acceptance-cninfo-guarantee-sparsity":
             manifest = sync_cninfo_guarantee_sparsity_acceptance(
                 universe_path=args.universe_file,
@@ -35864,6 +37590,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "sync-cninfo-supplement-correction-disclosure-burden": (
             "stored_pending_no_return_capacity_and_uniqueness"
+        ),
+        "acceptance-official-exchange-inquiry-burden": (
+            "stored_no_return_official_exchange_inquiry_acceptance"
         ),
         "acceptance-cninfo-guarantee-sparsity": (
             "stored_no_return_public_guarantee_sparsity_acceptance"
