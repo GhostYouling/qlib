@@ -22,6 +22,24 @@ python scripts/a_share_rich_data.py status
 
 只确认输出中的 Tushare 环境变量与 SDK 为“已就绪”；不要运行会输出 Token 明文的检查命令。仓库提交只包含变量名和以上安全模板，不包含本机 `launchctl` 值、真实 Token 或 `.env` 文件。
 
+### 配置范围说明
+
+Tushare Token 与 GitHub 远程仓库认证是两套彼此独立的配置：Token 只用于本项目的数据接口，Git 的提交和推送仍由本机 GitHub 凭据负责。`launchctl setenv` 设置在当前 macOS 登录会话中，之后启动的其他图形程序理论上也能继承该变量；它不是按仓库隔离的配置，但不会被 Git 自动提交。
+
+如果希望 Token 只暴露给本仓库的一条命令，不使用 `launchctl`，可在仓库根目录用隐藏输入执行单进程注入：
+
+```zsh
+(
+  read -s "token?请粘贴 Tushare Token，随后按回车："; echo
+  TUSHARE_TOKEN="$token" python scripts/a_share_rich_data.py status
+  rc=$?
+  unset token
+  exit "$rc"
+)
+```
+
+这个做法不会修改仓库文件，也不会让同一终端里的后续命令自动获得 Token。若已经采用 `launchctl`，则按第 3 节只检查“有或无”，不要把环境值写入项目目录来实现所谓的项目级配置。
+
 ## 1. 安装本项目锁定的 SDK
 
 在仓库根目录运行：

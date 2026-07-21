@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_government_subsidy_disclosure_intensity_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_announcement_rows_titles_factor_values_prices_or_returns",
+  "frozen_at": "2026-07-21T07:05:30Z",
+  "purpose": "Re-audit the fixed three-local-session A-share frontier after the terminal monetary-funds capacity rejection and select at most one economically independent, reproducible source mechanism without inspecting a new provider row, announcement title, factor value, price, or return.",
+  "research_scope": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "development_years_if_later_admitted": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "holding_universe": "buyable_main_chinext",
+    "quality_gate": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY under the existing point-in-time quarterly-quality policy",
+    "new_provider_rows_observed": false,
+    "new_announcement_titles_observed": false,
+    "new_factor_values_observed": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "prior_terminal_evidence": {
+    "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_research_record.json",
+    "sha256": "d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a",
+    "result": "The sole no-return audit retained 9,839 quality/listing-eligible factor rows but only 114 of the required 200 complete non-overlapping three-session cohorts. Comparison fields, prices, and forward returns were not loaded."
+  },
+  "source_selection_evidence": {
+    "provider": "Eastmoney public announcement API as documented by the pinned AKShare adapter",
+    "public_page": "https://data.eastmoney.com/notices/hsa/5.html",
+    "provider_endpoint": "https://np-anotice-stock.eastmoney.com/api/security/ann",
+    "provider_category": "major matters",
+    "provider_f_node": "5",
+    "provider_s_node": "0",
+    "akshare_repository": "https://github.com/akfamily/akshare",
+    "pinned_commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+    "source_path": "akshare/stock_fundamental/stock_notice.py",
+    "source_file_sha256": "cb6be07b782185063d8faee4541d467880be42dd568d7ae5f2d2a89c1a23a6d7",
+    "inspected_function_lines": "15-139",
+    "inspected_function_block_sha256": "051938a26c77eed0a37ddaa47556bac71a1428881f6f4ca46b267a1af1cd625a",
+    "transport_fields_needed_for_classification_and_identity_only": [
+      "art_code",
+      "notice_date",
+      "title",
+      "codes",
+      "columns"
+    ],
+    "provider_rows_observed_by_this_audit": false,
+    "announcement_titles_observed_by_this_audit": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "tushare_rd_expense_to_revenue",
+      "decision": "rejected_before_rows_as_terminal_statement_route_replay_and_field_sweep",
+      "reason": "The income and fina_indicator statement-version routes have already terminated on undocumented company-type, non-standard report-period, or incomplete required-row evidence. Selecting rd_exp after those failures would replay the source interpretation and continue a financial-field sweep after the profitability and cash-conversion families were closed."
+    },
+    {
+      "candidate": "tushare_daily_chip_cost_or_winner_rate",
+      "decision": "deferred_before_rows_for_unmet_entitlement",
+      "reason": "The official cyq_perf interface currently requires at least 5,000 points, while the authorized account has 3,000. No request, purchase recommendation, factor value, or substitute price-derived approximation is permitted in this iteration."
+    },
+    {
+      "candidate": "tushare_opening_or_closing_auction_path",
+      "decision": "deferred_before_rows_for_separate_product_permission",
+      "reason": "The official stk_auction_o and stk_auction_c pages identify separate product permissions rather than the existing points entitlement. Auction data remains attractive for a three-session strategy but cannot be assumed available or purchased without a separate user decision."
+    },
+    {
+      "candidate": "eastmoney_government_subsidy_disclosure_intensity",
+      "decision": "selected_as_the_only_independent_no_return_candidate",
+      "reason": "A newly disclosed government subsidy is a dated external-support catalyst rather than price path, order flow, ownership, leverage, earnings composition, accounting cash conversion, valuation, analyst attention, or generic related-party complexity. A strict title rule and count-complete public announcement transport can be frozen before any title is observed."
+    }
+  ],
+  "selected_mechanism": {
+    "factor_name": "eastmoney_government_subsidy_disclosure_intensity",
+    "economic_mechanism": "Among quality-eligible issuers with a newly observed government-subsidy announcement, a larger number of qualifying notices disclosed more recently represents a stronger and fresher external-support catalyst that may be incorporated over the next three local sessions.",
+    "source_event_measure": "government_subsidy_announcement_count = count of globally unique complete art_code values for one supported instrument and one notice_date whose normalized title passes the frozen inclusion and exclusion rules",
+    "session_formula": "latest active government_subsidy_announcement_count / (1 + calendar_days_since_notice_date)",
+    "multiple_active_events": "use only the latest qualifying notice_date that is already effective; a later event supersedes an older event when the later event becomes effective",
+    "direction": "higher_is_better",
+    "units": "qualifying notices divided by one plus calendar-day age",
+    "title_normalization": "Unicode NFKC, trim leading and trailing whitespace, and collapse internal Unicode whitespace to one ASCII space; no tokenization, semantic model, synonym expansion, issuer-name removal, or manual correction",
+    "required_title_literals": [
+      "获得政府补助",
+      "收到政府补助",
+      "获得政府补贴",
+      "收到政府补贴"
+    ],
+    "excluded_title_literals": [
+      "更正",
+      "补充",
+      "修订",
+      "进展",
+      "取消",
+      "撤回"
+    ],
+    "title_match_rule": "include when the normalized title contains at least one required literal and no excluded literal",
+    "valid_event": "art_code, notice_date, normalized title, and codes are complete; exactly one supported main-board or ChiNext A-share code is present; notice_date lies inside the requested partition; the title passes the frozen literal rule",
+    "invalid_event_policy": "abort on malformed required transport structure, ambiguous multiple supported A-share codes, duplicate instrument/notice_date/art_code keys, out-of-partition dates, changing pagination totals, incomplete pages, or a response above the frozen page ceiling; exclude and count complete unsupported-board records and nonmatching titles; never infer, fill, manually relabel, or inspect announcement bodies",
+    "availability": "first local trading session strictly after notice_date",
+    "same_notice_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "absent_event_policy": "missing; never zero support, a favorable score, or an all-market ranking value",
+    "selection_or_promotion_allowed": false
+  },
+  "mechanism_independence": {
+    "versus_financial_statements": "No revenue, profit, R&D amount, asset, liability, cash-flow, margin, report-type, company-type, or revision-value field enters the event formula. Quarterly fundamentals remain eligibility only.",
+    "versus_dividend_repurchase_and_contract_events": "A subsidy is external public support, not a shareholder distribution, issuer-funded repurchase, or customer-funded demand contract. Those event counts and freshness measures remain mandatory no-return semantic neighbors.",
+    "versus_related_party_and_governance_events": "Related-party clustering measures governance complexity. The candidate uses only subsidy-title classification and announcement identities; it requests no counterparty, relationship, transaction amount, or control flag.",
+    "versus_analyst_survey_and_attention_events": "No broker, analyst, survey participant, rating, forecast, research-report count, or target-price field enters the formula. Generic event freshness and count remain mandatory synonym checks.",
+    "versus_price_volume_and_level2": "No OHLCV, VWAP, turnover, market capitalization, valuation, classified flow, order, trade, queue, depth, price, or return field enters source acceptance or factor construction.",
+    "required_sparse_near_neighbors": [
+      "repurchase_event_count",
+      "repurchase_freshness",
+      "major_holder_event_count",
+      "pledge_event_count",
+      "institutional_survey_event_count",
+      "institutional_survey_freshness",
+      "analyst_valid_rating_report_count",
+      "related_party_transaction_count",
+      "insider_open_market_event_count"
+    ],
+    "required_dense_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ]
+  },
+  "required_gate_order": [
+    "freeze the exact public endpoint, category, title literals, normalization, identity, pagination, sample windows, formula, direction, timing, invalid-row policy, acceptance thresholds, future capacity, and uniqueness rules before any announcement row or title",
+    "implement and locally test page-count reconciliation, recursive pre-page bisection, strict transport normalization, title classification, duplicate rejection, point-in-time universe filtering, sample variation checks, one-shot guards, and atomic publication",
+    "run exactly one no-price source acceptance over the frozen historical samples and permanently consume it whether it passes or fails",
+    "if and only if acceptance passes, freeze a fingerprint-bound full-source and no-return preregistration before requesting any remaining 2019-2025 partition",
+    "run capacity before comparison fields or prices, and semantic/statistical uniqueness before any factor return",
+    "freeze a separate one-time return and execution diagnostic only if every no-return gate passes"
+  ],
+  "prohibited_actions": [
+    "request or persist security names, announcement bodies, URLs, subsidy amounts, subsidy accounting classification, issuing agency, issuer financial values, price, market cap, valuation, return, credential, cookie, proxy, or retail-session data",
+    "expand or edit the title literals, use fuzzy matching, a language model, announcement-body text, subsidy amount, industry residual, or another category after seeing rows",
+    "treat a nonmatching or absent announcement as zero, a favorable value, or evidence that no subsidy occurred outside the contracted public category",
+    "invert the direction, widen the three-calendar-day age, change the latest-event rule, alter samples, lower source/variation/capacity/uniqueness gates, or rescue a failure with another field or provider",
+    "read prices or returns, aggregate with terminal factors, current-score, select, size, order, or justify Level-2 before all later no-return gates pass"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

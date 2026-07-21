@@ -5186,6 +5186,374 @@ def eastmoney_related_party_row(
     }
 
 
+def eastmoney_government_subsidy_row(
+    code: str,
+    notice_date: str,
+    art_code: str,
+    title: str = "关于获得政府补助的公告",
+) -> dict[str, object]:
+    return {
+        "art_code": art_code,
+        "notice_date": notice_date,
+        "title": title,
+        "codes": [{"ann_type": "A", "stock_code": code}],
+        "columns": [{"column_code": "005", "column_name": "重大事项"}],
+    }
+
+
+def test_eastmoney_government_subsidy_contract_is_fingerprint_frozen(tmp_path):
+    contract = (
+        RICH.load_eastmoney_government_subsidy_disclosure_intensity_contract()
+    )
+    assert contract["provider_contract"]["fixed_parameters"] == {
+        "sr": "-1",
+        "page_size": "100",
+        "ann_type": "A",
+        "client_source": "web",
+        "f_node": "5",
+        "s_node": "0",
+    }
+    assert contract["title_classification"]["required_literals"] == [
+        "获得政府补助",
+        "收到政府补助",
+        "获得政府补贴",
+        "收到政府补贴",
+    ]
+    assert contract["event_and_factor_definition"]["direction"] == "higher_is_better"
+    assert contract["point_in_time_policy"]["maximum_age_calendar_days"] == 3
+    assert contract["normalized_snapshot"]["columns"] == list(
+        RICH.EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert contract["capacity_contract_after_full_source_only"][
+        "minimum_complete_cohorts"
+    ] == 200
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+    RICH.validate_eastmoney_government_subsidy_local_context(contract)
+
+    changed = copy.deepcopy(contract)
+    changed["title_classification"]["required_literals"].append("取得政府补助")
+    changed_path = tmp_path / "changed-government-subsidy-contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_eastmoney_government_subsidy_disclosure_intensity_contract(
+            changed_path
+        )
+
+
+def test_eastmoney_government_subsidy_title_and_identity_rules_are_strict():
+    rows = [
+        eastmoney_government_subsidy_row(
+            "600519", "2025-01-10 00:00:00", "A1", "关于获得政府补助的公告"
+        ),
+        eastmoney_government_subsidy_row(
+            "600519", "2025-01-10 00:00:00", "A2", "公司收到政府补贴公告"
+        ),
+        eastmoney_government_subsidy_row(
+            "000001", "2025-01-10", "A3", "关于召开股东大会的公告"
+        ),
+        eastmoney_government_subsidy_row(
+            "300750", "2025-01-10", "A4", "关于获得政府补助的进展公告"
+        ),
+        eastmoney_government_subsidy_row(
+            "688981", "2025-01-10", "A5", "关于收到政府补助的公告"
+        ),
+    ]
+    normalized, quality = (
+        RICH.canonicalize_eastmoney_government_subsidy_announcements(
+            rows,
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 31),
+        )
+    )
+    assert normalized.columns.tolist() == list(
+        RICH.EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert normalized["instrument"].tolist() == ["SH600519"]
+    assert normalized["government_subsidy_announcement_count"].tolist() == [2]
+    assert quality["supported_source_rows"] == 4
+    assert quality["unsupported_board_rows_excluded"] == 1
+    assert quality["nonmatching_title_rows_excluded"] == 2
+    assert quality["qualifying_source_rows"] == 2
+    assert quality["title_or_art_code_persisted"] is False
+    assert not ({"title", "art_code", "codes", "columns"} & set(normalized))
+
+    with pytest.raises(RICH.RichDataError, match="duplicate.*art_code"):
+        RICH.canonicalize_eastmoney_government_subsidy_announcements(
+            [rows[0], rows[0]],
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 31),
+        )
+    ambiguous = copy.deepcopy(rows[0])
+    ambiguous["codes"].append({"ann_type": "A", "stock_code": "000001"})
+    with pytest.raises(RICH.RichDataError, match="multiple supported"):
+        RICH.canonicalize_eastmoney_government_subsidy_announcements(
+            [ambiguous],
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 31),
+        )
+
+
+def test_eastmoney_government_subsidy_partition_is_count_complete():
+    rows = [
+        eastmoney_government_subsidy_row(
+            "600519",
+            "2025-01-10",
+            f"A{index:03d}",
+        )
+        for index in range(101)
+    ]
+    calls = []
+
+    class Response:
+        status_code = 200
+
+        def __init__(self, page):
+            self.page = page
+
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            page_rows = rows[:100] if self.page == 1 else rows[100:]
+            return {"data": {"total_hits": 101, "list": page_rows}}
+
+    class Session:
+        def get(self, url, *, params, timeout):
+            calls.append((url, dict(params), timeout))
+            return Response(int(params["page_index"]))
+
+    fetched, quality = (
+        RICH.fetch_eastmoney_government_subsidy_announcement_partition(
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 31),
+            session=Session(),
+            page_pause_seconds=0.0,
+        )
+    )
+    assert fetched == rows
+    assert [int(call[1]["page_index"]) for call in calls] == [1, 2]
+    assert all(call[1]["f_node"] == "5" for call in calls)
+    assert all(call[1]["begin_time"] == "2025-01-01" for call in calls)
+    assert all(call[1]["end_time"] == "2025-01-31" for call in calls)
+    assert quality["advertised_rows"] == quality["received_rows"] == 101
+    assert quality["requested_pages"] == [1, 2]
+    assert quality["provider_calls"] == 2
+
+
+def test_eastmoney_government_subsidy_partition_bisects_before_later_pages(
+    monkeypatch,
+):
+    contract = (
+        RICH.load_eastmoney_government_subsidy_disclosure_intensity_contract()
+    )
+    calls = []
+
+    def fetch(start_date, end_date, **kwargs):
+        calls.append((start_date, end_date))
+        if start_date == dt.date(2025, 1, 1) and end_date == dt.date(2025, 1, 4):
+            raise RICH.EastmoneyPartitionTooLarge(
+                start_date,
+                end_date,
+                pages=81,
+                advertised_count=8_001,
+                ceiling=80,
+            )
+        return [], {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 0,
+            "requested_pages": [1],
+            "advertised_rows": 0,
+            "received_rows": 0,
+            "page_size": 100,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+
+    monkeypatch.setattr(
+        RICH,
+        "fetch_eastmoney_government_subsidy_announcement_partition",
+        fetch,
+    )
+    leaves, bisections = (
+        RICH.fetch_eastmoney_government_subsidy_announcement_partition_details(
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 4),
+            contract=contract,
+            page_pause_seconds=0.0,
+        )
+    )
+    assert calls == [
+        (dt.date(2025, 1, 1), dt.date(2025, 1, 4)),
+        (dt.date(2025, 1, 1), dt.date(2025, 1, 2)),
+        (dt.date(2025, 1, 3), dt.date(2025, 1, 4)),
+    ]
+    assert [(start, end) for start, end, _, _ in leaves] == calls[1:]
+    assert bisections == [
+        {
+            "start": "2025-01-01",
+            "end": "2025-01-04",
+            "advertised_pages": 81,
+            "advertised_rows": 8_001,
+            "page_ceiling": 80,
+            "provider_probe_calls": 1,
+            "left_end": "2025-01-02",
+            "right_start": "2025-01-03",
+        }
+    ]
+
+
+def test_eastmoney_government_subsidy_materialization_is_strict_next_session():
+    events = pd.DataFrame(
+        [
+            {
+                "announcement_date": "2025-01-10",
+                "instrument": "SH600519",
+                "government_subsidy_announcement_count": 2,
+                "provider": "eastmoney",
+            },
+            {
+                "announcement_date": "2025-01-13",
+                "instrument": "SH600519",
+                "government_subsidy_announcement_count": 1,
+                "provider": "eastmoney",
+            },
+        ]
+    ).loc[:, list(RICH.EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS)]
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(["2025-01-10", "2025-01-13", "2025-01-14", "2025-01-15", "2025-01-16"])
+    )
+    materialized = RICH.materialize_government_subsidy_acceptance_sessions(
+        events, calendar
+    )
+    assert materialized["datetime"].tolist() == list(calendar[1:])
+    assert materialized["subsidy_announcement_date"].tolist() == [
+        pd.Timestamp("2025-01-10"),
+        pd.Timestamp("2025-01-13"),
+        pd.Timestamp("2025-01-13"),
+        pd.Timestamp("2025-01-13"),
+    ]
+    assert materialized["event_age_calendar_days"].tolist() == [3, 1, 2, 3]
+    assert materialized[
+        "eastmoney_government_subsidy_disclosure_intensity"
+    ].tolist() == pytest.approx([0.5, 0.5, 1.0 / 3.0, 0.25])
+    assert materialized.duplicated(["instrument", "datetime"]).sum() == 0
+
+
+def test_eastmoney_government_subsidy_acceptance_is_atomic_and_text_free(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(
+        RICH.load_eastmoney_government_subsidy_disclosure_intensity_contract()
+    )
+    acceptance = contract["acceptance_protocol"]
+    acceptance["minimum_supported_source_rows_per_window"] = 6
+    acceptance["minimum_qualifying_events_per_window"] = 2
+    acceptance["minimum_qualifying_events_total"] = 6
+    acceptance["minimum_candidate_cross_sections_per_window"] = 1
+    acceptance["minimum_candidate_cross_sections_total"] = 3
+    acceptance["minimum_names_per_candidate_cross_section"] = 2
+    acceptance["minimum_distinct_factor_values_per_candidate_cross_section"] = 2
+    acceptance["minimum_distinct_factor_values_across_samples"] = 2
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2018-01-01\t2026-12-31\n"
+        "SZ000001\t2018-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    calendar = tmp_path / "day.txt"
+    calendar.write_text(
+        "\n".join(
+            item.strftime("%Y-%m-%d")
+            for item in pd.bdate_range("2019-01-01", "2025-04-15")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    def fetch(start_date, end_date, *, contract):
+        notice_date = (start_date + dt.timedelta(days=1)).isoformat()
+        rows = [
+            eastmoney_government_subsidy_row(
+                "600519", notice_date, f"{start_date:%Y%m}-A1"
+            ),
+            eastmoney_government_subsidy_row(
+                "600519", notice_date, f"{start_date:%Y%m}-A2"
+            ),
+            eastmoney_government_subsidy_row(
+                "000001", notice_date, f"{start_date:%Y%m}-A3"
+            ),
+        ]
+        quality = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 1,
+            "requested_pages": [1],
+            "advertised_rows": 3,
+            "received_rows": 3,
+            "page_size": 100,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+        return [(start_date, end_date, rows, quality)], []
+
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_government_subsidy_disclosure_intensity_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_eastmoney_government_subsidy_local_context",
+        lambda unused: None,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_eastmoney_government_subsidy_announcement_partition_details",
+        fetch,
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD",
+        tmp_path / "missing-record.json",
+    )
+
+    manifest_path = (
+        RICH.sync_eastmoney_government_subsidy_disclosure_intensity_acceptance(
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == (
+        "eastmoney_government_subsidy_disclosure_intensity_acceptance"
+    )
+    assert manifest["acceptance_status"] == acceptance["success_status"]
+    assert manifest["source_request"]["provider_calls"] == 9
+    assert manifest["source_request"][
+        "raw_response_title_art_code_codes_or_columns_persisted"
+    ] is False
+    assert manifest["source_quality"]["combined_rows_written"] == 18
+    assert manifest["source_quality"]["combined_candidate_cross_sections"] >= 3
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(
+        RICH.EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert len(stored) == 18
+    assert not ({"title", "art_code", "codes", "columns"} & set(stored))
+    with pytest.raises(RICH.RichDataError, match="one-shot"):
+        RICH.sync_eastmoney_government_subsidy_disclosure_intensity_acceptance(
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+
+
 def test_eastmoney_related_party_sparsity_contract_is_fingerprint_frozen(tmp_path):
     contract = RICH.load_eastmoney_related_party_transaction_sparsity_contract()
     assert contract["source"]["report_name"] == "RPT_RELATED_TRADE"

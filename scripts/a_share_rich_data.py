@@ -275,6 +275,16 @@ DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_SOURCE_RECORD = (
     / "docs"
     / "a_share_eastmoney_related_party_transaction_sparsity_full_source_record.json"
 )
+DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_government_subsidy_disclosure_intensity_data_contract.json"
+)
+DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json"
+)
 DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_cninfo_guarantee_sparsity_data_contract.json"
 )
@@ -529,6 +539,15 @@ EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_SPEC_SHA256 = (
 )
 EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_SOURCE_RECORD_SHA256 = (
     "45f39cfd550728c2b5d2260930cf1758a4aee924ca4d35d43cf457b2531c2aac"
+)
+EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT_SHA256 = (
+    "b7b351e8c31e65391c208b5133ed0d740bea7b8cdeb7686e0c26866b89b360af"
+)
+EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256 = (
+    "8e518365a05fc98056502a43c492dd4f44ec9195046588af2e2987c76030e368"
+)
+EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256 = (
+    "pending_after_one_shot_acceptance"
 )
 CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256 = (
     "1c59a4fdabbb7ae82d3279e83f81e55b3518f9634201379a96d59e25a7e12e68"
@@ -1008,6 +1027,19 @@ EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_COLUMNS = (
     "instrument",
     "related_party_transaction_count",
     "eastmoney_related_party_transaction_sparsity",
+    "provider",
+)
+EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_RAW_FIELDS = (
+    "art_code",
+    "notice_date",
+    "title",
+    "codes",
+    "columns",
+)
+EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS = (
+    "announcement_date",
+    "instrument",
+    "government_subsidy_announcement_count",
     "provider",
 )
 CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES = (
@@ -10538,6 +10570,236 @@ def load_cninfo_guarantee_sparsity_acceptance_record(
     return record
 
 
+def load_eastmoney_government_subsidy_disclosure_intensity_contract(
+    path: Path = DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen pre-row government-subsidy announcement contract."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy disclosure contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path,
+        kind=(
+            "a_share_eastmoney_government_subsidy_disclosure_intensity_data_contract"
+        ),
+    )
+    mechanism = contract.get("mechanism_selection") or {}
+    provider = contract.get("provider_contract") or {}
+    params = provider.get("fixed_parameters") or {}
+    identity = contract.get("identity_and_schema_policy") or {}
+    titles = contract.get("title_classification") or {}
+    factor = contract.get("event_and_factor_definition") or {}
+    point_in_time = contract.get("point_in_time_policy") or {}
+    normalized = contract.get("normalized_snapshot") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    full = contract.get("full_snapshot_contract_after_acceptance_only") or {}
+    capacity = contract.get("capacity_contract_after_full_source_only") or {}
+    uniqueness = contract.get("uniqueness_contract_after_capacity_only") or {}
+    windows = [
+        (str(item.get("label")), str(item.get("start")), str(item.get("end")))
+        for item in list(acceptance.get("fixed_sample_windows") or [])
+        if isinstance(item, dict)
+    ]
+    expected_windows = [
+        ("2019Q1", "2019-01-01", "2019-03-31"),
+        ("2024Q1", "2024-01-01", "2024-03-31"),
+        ("2025Q1", "2025-01-01", "2025-03-31"),
+    ]
+    required_literals = [
+        "获得政府补助",
+        "收到政府补助",
+        "获得政府补贴",
+        "收到政府补贴",
+    ]
+    excluded_literals = ["更正", "补充", "修订", "进展", "取消", "撤回"]
+    sparse_neighbors = [
+        "repurchase_event_count",
+        "repurchase_freshness",
+        "major_holder_event_count",
+        "pledge_event_count",
+        "institutional_survey_event_count",
+        "institutional_survey_freshness",
+        "analyst_valid_rating_report_count",
+        "related_party_transaction_count",
+        "insider_open_market_event_count",
+    ]
+    dense_confounders = [
+        "free_float_cap_proxy",
+        "liquidity_5",
+        "turnover_surge_1",
+    ]
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_announcement_rows_titles_factor_values_capacity_uniqueness_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-21T07:05:30Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_government_subsidy_disclosure_intensity_mechanism_overlap_reaudit_20260721.json"
+        or mechanism.get("sha256_at_contract_freeze")
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+        or provider.get("provider") != "eastmoney"
+        or provider.get("credential_required") is not False
+        or provider.get("account_points_required") != 0
+        or provider.get("endpoint")
+        != "https://np-anotice-stock.eastmoney.com/api/security/ann"
+        or provider.get("request_method") != "GET"
+        or params
+        != {
+            "sr": "-1",
+            "page_size": "100",
+            "ann_type": "A",
+            "client_source": "web",
+            "f_node": "5",
+            "s_node": "0",
+        }
+        or provider.get("pagination_parameter") != "page_index"
+        or provider.get("page_size") != 100
+        or provider.get("maximum_pages_per_leaf_partition") != 80
+        or provider.get("maximum_attempts_per_page") != 3
+        or provider.get("timeout_seconds") != 30
+        or provider.get("minimum_delay_seconds_between_attempts") != 0.1
+        or tuple(provider.get("required_record_fields") or ())
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_RAW_FIELDS
+        or tuple(identity.get("duplicate_source_key") or ())
+        != ("instrument", "notice_date", "art_code")
+        or identity.get("multiple_supported_codes_policy")
+        != (
+            "Exactly one supported A-share code must remain in a record. Zero "
+            "supported codes is an excluded non-target row; two or more supported "
+            "codes is fatal ambiguity."
+        )
+        or identity.get("raw_response_persisted") is not False
+        or titles.get("normalization")
+        != (
+            "Unicode NFKC, trim leading and trailing whitespace, collapse every "
+            "internal Unicode whitespace run to one ASCII space"
+        )
+        or list(titles.get("required_literals") or []) != required_literals
+        or list(titles.get("excluded_literals") or []) != excluded_literals
+        or titles.get("fuzzy_matching_allowed") is not False
+        or titles.get("language_model_classification_allowed") is not False
+        or titles.get("announcement_body_access_allowed") is not False
+        or titles.get("manual_relabeling_allowed") is not False
+        or factor.get("factor_name")
+        != "eastmoney_government_subsidy_disclosure_intensity"
+        or factor.get("session_formula")
+        != (
+            "latest already-effective government_subsidy_announcement_count / "
+            "(1 + calendar_days_since_announcement_date)"
+        )
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("source_event_count_minimum") != 1
+        or point_in_time.get("conservative_availability")
+        != "first local trading session strictly after announcement_date"
+        or point_in_time.get("same_notice_session_trade_allowed") is not False
+        or point_in_time.get("maximum_age_calendar_days") != 3
+        or tuple(normalized.get("columns") or ())
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS
+        or tuple(normalized.get("event_key") or ())
+        != ("instrument", "announcement_date")
+        or normalized.get("provider_value") != "eastmoney"
+        or normalized.get("duplicate_event_keys_allowed") is not False
+        or windows != expected_windows
+        or acceptance.get("fixed_sample_window_count") != 3
+        or acceptance.get("every_window_count_complete_and_nonempty") is not True
+        or acceptance.get("minimum_supported_source_rows_per_window") != 100
+        or acceptance.get("minimum_qualifying_events_per_window") != 15
+        or acceptance.get("minimum_qualifying_events_total") != 60
+        or acceptance.get("minimum_candidate_cross_sections_per_window") != 3
+        or acceptance.get("minimum_candidate_cross_sections_total") != 15
+        or acceptance.get("minimum_names_per_candidate_cross_section") != 6
+        or acceptance.get("minimum_distinct_factor_values_per_candidate_cross_section")
+        != 2
+        or acceptance.get("minimum_distinct_factor_values_across_samples") != 3
+        or full.get("development_start") != "2019-01-01"
+        or full.get("development_end") != "2025-12-31"
+        or full.get("every_partition_count_complete") is not True
+        or full.get("every_year_required") is not True
+        or full.get("reuse_accepted_rows_without_provider_rerequest") is not True
+        or full.get("one_full_snapshot_attempt_after_acceptance_and_new_preregistration")
+        is not True
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("non_overlapping_cohorts") is not True
+        or capacity.get("topk") != 3
+        or capacity.get("minimum_listing_age_sessions") != 20
+        or capacity.get("maximum_event_age_calendar_days") != 3
+        or capacity.get("minimum_names_per_cohort") != 6
+        or capacity.get("minimum_distinct_factor_values_per_cohort") != 2
+        or capacity.get("minimum_complete_cohorts") != 200
+        or capacity.get("minimum_observed_calendar_years") != 5
+        or capacity.get("capacity_must_run_before_comparison_fields") is not True
+        or capacity.get("capacity_must_run_before_price_or_return_fields") is not True
+        or list(uniqueness.get("sparse_semantic_neighbors") or [])
+        != sparse_neighbors
+        or list(uniqueness.get("dense_confounders") or []) != dense_confounders
+        or uniqueness.get("no_return") is not True
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy disclosure contract changed after freeze"
+        )
+    mechanism_path = resolve_record_path(str(mechanism["path"]))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy mechanism audit fingerprint mismatch"
+        )
+    return contract
+
+
+def validate_eastmoney_government_subsidy_local_context(
+    contract: dict[str, Any],
+) -> None:
+    """Fingerprint-bind every local no-return context before provider access."""
+
+    local = contract.get("local_context") or {}
+    entries: list[dict[str, Any]] = []
+    for label in (
+        "holding_universe",
+        "local_calendar",
+        "accepted_price_basis_for_future_gated_work_only",
+        "accepted_price_frontier",
+        "latest_terminal_mechanism",
+        "prospective_execution_policy_for_future_diagnostic_only",
+        "pilot_execution_policy_for_future_diagnostic_only",
+    ):
+        value = local.get(label)
+        if not isinstance(value, dict):
+            raise RichDataError(
+                f"Eastmoney government-subsidy local context is missing {label}"
+            )
+        entries.append(value)
+    quarterly = local.get("quarterly_quality") or {}
+    entries.extend(
+        [
+            {"path": quarterly.get("path"), "sha256": quarterly.get("sha256")},
+            {
+                "path": quarterly.get("manifest_path"),
+                "sha256": quarterly.get("manifest_sha256"),
+            },
+        ]
+    )
+    for entry in entries:
+        target = resolve_record_path(str(entry.get("path") or ""))
+        expected = str(entry.get("sha256") or "")
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "Eastmoney government-subsidy local context fingerprint mismatch: "
+                f"{entry.get('path')}"
+            )
+
+
 def load_eastmoney_related_party_transaction_sparsity_contract(
     path: Path = DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_CONTRACT,
 ) -> dict[str, Any]:
@@ -19707,6 +19969,1076 @@ def sync_cninfo_guarantee_sparsity_acceptance(
             raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
 
 
+def normalize_eastmoney_government_subsidy_title(value: Any) -> str:
+    """Apply the frozen title normalization without semantic expansion."""
+
+    if not isinstance(value, str):
+        raise RichDataError(
+            "Eastmoney government-subsidy record has a non-string title"
+        )
+    normalized = " ".join(unicodedata.normalize("NFKC", value).strip().split())
+    if not normalized:
+        raise RichDataError(
+            "Eastmoney government-subsidy record has an empty title"
+        )
+    return normalized
+
+
+def eastmoney_government_subsidy_title_matches(
+    value: Any,
+    *,
+    contract: dict[str, Any] | None = None,
+) -> bool:
+    """Classify one title with only the preregistered literal rules."""
+
+    frozen = (
+        contract
+        or load_eastmoney_government_subsidy_disclosure_intensity_contract()
+    )
+    rules = frozen["title_classification"]
+    title = normalize_eastmoney_government_subsidy_title(value)
+    required = [str(item) for item in rules["required_literals"]]
+    excluded = [str(item) for item in rules["excluded_literals"]]
+    return any(item in title for item in required) and not any(
+        item in title for item in excluded
+    )
+
+
+def fetch_eastmoney_government_subsidy_announcement_partition(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Fetch one count-complete public announcement date partition."""
+
+    if end_date < start_date:
+        raise RichDataError(
+            "Eastmoney government-subsidy partition end date precedes start date"
+        )
+    frozen = (
+        contract
+        or load_eastmoney_government_subsidy_disclosure_intensity_contract()
+    )
+    provider = frozen["provider_contract"]
+    params = provider["fixed_parameters"]
+    endpoint = str(provider["endpoint"])
+    page_size = int(provider["page_size"])
+    maximum_pages = int(provider["maximum_pages_per_leaf_partition"])
+    maximum_attempts = int(provider["maximum_attempts_per_page"])
+    timeout = int(provider["timeout_seconds"])
+    pause = (
+        float(provider["minimum_delay_seconds_between_attempts"])
+        if page_pause_seconds is None
+        else float(page_pause_seconds)
+    )
+    if pause < 0:
+        raise RichDataError(
+            "Eastmoney government-subsidy page pause must be non-negative"
+        )
+    if session is None:
+        try:
+            import requests
+        except ImportError as exc:  # pragma: no cover - workspace dependency.
+            raise RichDataError("requests is required for Eastmoney intake") from exc
+        requester = requests
+    else:
+        requester = session
+    base_params = {
+        **{str(key): str(value) for key, value in params.items()},
+        "begin_time": start_date.isoformat(),
+        "end_time": end_date.isoformat(),
+    }
+
+    provider_calls = 0
+
+    def fetch_page(page_number: int) -> tuple[int, list[dict[str, Any]]]:
+        nonlocal provider_calls
+        request_params = {**base_params, "page_index": str(page_number)}
+        last_error: BaseException | None = None
+        for attempt in range(maximum_attempts):
+            if provider_calls and pause:
+                time.sleep(pause)
+            provider_calls += 1
+            try:
+                response = requester.get(
+                    endpoint,
+                    params=request_params,
+                    timeout=timeout,
+                )
+                status_code = int(getattr(response, "status_code", 200))
+                if status_code == 429 or status_code >= 500:
+                    raise RuntimeError(
+                        "transient Eastmoney announcement HTTP status "
+                        f"{status_code}"
+                    )
+                if status_code >= 400:
+                    raise RichDataError(
+                        "Eastmoney government-subsidy source rejected the request "
+                        f"with HTTP status {status_code}"
+                    )
+                if hasattr(response, "raise_for_status"):
+                    response.raise_for_status()
+                try:
+                    payload = response.json()
+                except Exception as exc:
+                    raise RuntimeError(
+                        "transient Eastmoney announcement JSON decode failure"
+                    ) from exc
+                if not isinstance(payload, dict):
+                    raise RichDataError(
+                        "Eastmoney government-subsidy response is not an object"
+                    )
+                data = payload.get("data")
+                if not isinstance(data, dict):
+                    raise RichDataError(
+                        "Eastmoney government-subsidy response has no data object"
+                    )
+                try:
+                    total_hits = int(data["total_hits"])
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise RichDataError(
+                        "Eastmoney government-subsidy response has invalid total_hits"
+                    ) from exc
+                rows = data.get("list")
+                if total_hits < 0 or not isinstance(rows, list):
+                    raise RichDataError(
+                        "Eastmoney government-subsidy response has invalid list metadata"
+                    )
+                if any(not isinstance(row, dict) for row in rows):
+                    raise RichDataError(
+                        "Eastmoney government-subsidy response contains a non-object row"
+                    )
+                return total_hits, rows
+            except RichDataError:
+                raise
+            except Exception as exc:
+                last_error = exc
+                if attempt + 1 >= maximum_attempts:
+                    break
+        assert last_error is not None
+        raise RichDataError(
+            "Eastmoney government-subsidy page "
+            f"{page_number} failed after {maximum_attempts} attempts: "
+            f"{safe_exception_text(last_error)}"
+        ) from last_error
+
+    total_hits, first_rows = fetch_page(1)
+    pages = math.ceil(total_hits / page_size) if total_hits else 0
+    if pages > maximum_pages:
+        raise EastmoneyPartitionTooLarge(
+            start_date,
+            end_date,
+            pages=pages,
+            advertised_count=total_hits,
+            ceiling=maximum_pages,
+        )
+    if total_hits == 0:
+        if first_rows:
+            raise RichDataError(
+                "Eastmoney government-subsidy empty partition returned nonempty rows"
+            )
+        return [], {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 0,
+            "requested_pages": [1],
+            "advertised_rows": 0,
+            "received_rows": 0,
+            "page_size": page_size,
+            "provider_calls": provider_calls,
+            "count_verified": True,
+        }
+    if len(first_rows) != min(page_size, total_hits):
+        raise RichDataError(
+            "Eastmoney government-subsidy first page length does not match total_hits"
+        )
+
+    requested_pages = [1]
+    rows = list(first_rows)
+    for page_number in range(2, pages + 1):
+        page_total, page_rows = fetch_page(page_number)
+        if page_total != total_hits:
+            raise RichDataError(
+                "Eastmoney government-subsidy total_hits changed within a partition"
+            )
+        expected_rows = (
+            page_size
+            if page_number < pages
+            else total_hits - page_size * (pages - 1)
+        )
+        if len(page_rows) != expected_rows:
+            raise RichDataError(
+                "Eastmoney government-subsidy page length does not match total_hits"
+            )
+        rows.extend(page_rows)
+        requested_pages.append(page_number)
+    expected_pages = list(range(1, pages + 1))
+    if (
+        requested_pages != expected_pages
+        or len(rows) != total_hits
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy count-complete pagination failed: "
+            f"received={len(rows)}, advertised={total_hits}"
+        )
+    return rows, {
+        "start": start_date.isoformat(),
+        "end": end_date.isoformat(),
+        "advertised_pages": pages,
+        "requested_pages": requested_pages,
+        "advertised_rows": total_hits,
+        "received_rows": len(rows),
+        "page_size": page_size,
+        "provider_calls": provider_calls,
+        "count_verified": True,
+    }
+
+
+def fetch_eastmoney_government_subsidy_announcement_partition_details(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any],
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[
+    list[tuple[dt.date, dt.date, list[dict[str, Any]], dict[str, Any]]],
+    list[dict[str, Any]],
+]:
+    """Recursively bisect a large announcement range before later pages."""
+
+    try:
+        rows, quality = fetch_eastmoney_government_subsidy_announcement_partition(
+            start_date,
+            end_date,
+            contract=contract,
+            session=session,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return [(start_date, end_date, rows, quality)], []
+    except EastmoneyPartitionTooLarge as exc:
+        if start_date == end_date:
+            raise RichDataError(
+                "Eastmoney government-subsidy single-date partition exceeds the "
+                f"frozen page ceiling: {start_date.isoformat()}"
+            ) from exc
+        midpoint = start_date + (end_date - start_date) // 2
+        right_start = midpoint + dt.timedelta(days=1)
+        left_parts, left_bisections = (
+            fetch_eastmoney_government_subsidy_announcement_partition_details(
+                start_date,
+                midpoint,
+                contract=contract,
+                session=session,
+                page_pause_seconds=page_pause_seconds,
+            )
+        )
+        right_parts, right_bisections = (
+            fetch_eastmoney_government_subsidy_announcement_partition_details(
+                right_start,
+                end_date,
+                contract=contract,
+                session=session,
+                page_pause_seconds=page_pause_seconds,
+            )
+        )
+        bisection = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": exc.pages,
+            "advertised_rows": exc.advertised_count,
+            "page_ceiling": exc.ceiling,
+            "provider_probe_calls": 1,
+            "left_end": midpoint.isoformat(),
+            "right_start": right_start.isoformat(),
+        }
+        return (
+            left_parts + right_parts,
+            [bisection, *left_bisections, *right_bisections],
+        )
+
+
+def canonicalize_eastmoney_government_subsidy_announcements(
+    rows: list[dict[str, Any]],
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Classify and aggregate announcement identities without persisting text."""
+
+    frozen = (
+        contract
+        or load_eastmoney_government_subsidy_disclosure_intensity_contract()
+    )
+    if end_date < start_date:
+        raise RichDataError(
+            "Eastmoney government-subsidy normalization end date precedes start date"
+        )
+    columns = list(EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS)
+    if not rows:
+        return pd.DataFrame(columns=columns), {
+            "input_source_rows": 0,
+            "supported_source_rows": 0,
+            "unsupported_board_rows_excluded": 0,
+            "nonmatching_title_rows_excluded": 0,
+            "qualifying_source_rows": 0,
+            "aggregated_events": 0,
+            "distinct_event_counts": 0,
+            "title_or_art_code_persisted": False,
+        }
+    if any(not isinstance(row, dict) for row in rows):
+        raise RichDataError(
+            "Eastmoney government-subsidy partition contains a non-object row"
+        )
+    required = set(EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_RAW_FIELDS)
+    accepted_identities: list[dict[str, Any]] = []
+    unsupported_rows = 0
+    nonmatching_rows = 0
+    supported_rows = 0
+    for row in rows:
+        if not required.issubset(row):
+            raise RichDataError(
+                "Eastmoney government-subsidy response is missing a frozen required field"
+            )
+        art_code = row["art_code"]
+        if not isinstance(art_code, str):
+            raise RichDataError(
+                "Eastmoney government-subsidy record has a non-string art_code"
+            )
+        art_code = unicodedata.normalize("NFKC", art_code).strip()
+        if not art_code:
+            raise RichDataError(
+                "Eastmoney government-subsidy record has an empty art_code"
+            )
+        raw_notice_date = row["notice_date"]
+        if not isinstance(raw_notice_date, str):
+            raise RichDataError(
+                "Eastmoney government-subsidy record has a non-string notice_date"
+            )
+        raw_notice_date = unicodedata.normalize("NFKC", raw_notice_date).strip()
+        if (
+            len(raw_notice_date) < 10
+            or raw_notice_date[4] != "-"
+            or raw_notice_date[7] != "-"
+            or (len(raw_notice_date) > 10 and raw_notice_date[10] not in {" ", "T"})
+        ):
+            raise RichDataError(
+                "Eastmoney government-subsidy record has a malformed notice_date"
+            )
+        try:
+            parsed_notice_date = dt.date.fromisoformat(raw_notice_date[:10])
+            notice_date = pd.Timestamp(parsed_notice_date)
+        except ValueError as exc:
+            raise RichDataError(
+                "Eastmoney government-subsidy record has a malformed notice_date"
+            ) from exc
+        if not pd.Timestamp(start_date) <= notice_date <= pd.Timestamp(end_date):
+            raise RichDataError(
+                "Eastmoney government-subsidy source returned a date outside the "
+                "frozen partition"
+            )
+        title = normalize_eastmoney_government_subsidy_title(row["title"])
+        codes = row["codes"]
+        source_columns = row["columns"]
+        if (
+            not isinstance(codes, list)
+            or not codes
+            or any(not isinstance(item, dict) for item in codes)
+            or not isinstance(source_columns, list)
+            or not source_columns
+            or any(not isinstance(item, dict) for item in source_columns)
+        ):
+            raise RichDataError(
+                "Eastmoney government-subsidy record has malformed codes or columns"
+            )
+        if any(
+            not str(item.get("column_code") or "").strip()
+            or not str(item.get("column_name") or "").strip()
+            for item in source_columns
+        ):
+            raise RichDataError(
+                "Eastmoney government-subsidy record has incomplete column metadata"
+            )
+        supported_codes: list[str] = []
+        for code_item in codes:
+            ann_type = code_item.get("ann_type")
+            stock_code = code_item.get("stock_code")
+            if not isinstance(ann_type, str) or not isinstance(stock_code, str):
+                raise RichDataError(
+                    "Eastmoney government-subsidy record has incomplete code metadata"
+                )
+            ann_type = unicodedata.normalize("NFKC", ann_type).strip()
+            stock_code = unicodedata.normalize("NFKC", stock_code).strip()
+            if not ann_type or not stock_code:
+                raise RichDataError(
+                    "Eastmoney government-subsidy record has empty code metadata"
+                )
+            if not ann_type.startswith("A"):
+                continue
+            if len(stock_code) != 6 or not stock_code.isdigit():
+                raise RichDataError(
+                    "Eastmoney government-subsidy record has a malformed A-share code"
+                )
+            if stock_code.startswith(
+                ("600", "601", "603", "605", "000", "001", "002", "003", "300", "301")
+            ):
+                supported_codes.append(stock_code)
+        supported_codes = sorted(set(supported_codes))
+        if len(supported_codes) > 1:
+            raise RichDataError(
+                "Eastmoney government-subsidy record maps to multiple supported "
+                "A-share codes"
+            )
+        if not supported_codes:
+            unsupported_rows += 1
+            continue
+        supported_rows += 1
+        if not eastmoney_government_subsidy_title_matches(title, contract=frozen):
+            nonmatching_rows += 1
+            continue
+        accepted_identities.append(
+            {
+                "instrument": qlib_symbol(supported_codes[0]),
+                "announcement_date": notice_date,
+                "art_code": art_code,
+            }
+        )
+    if not accepted_identities:
+        return pd.DataFrame(columns=columns), {
+            "input_source_rows": int(len(rows)),
+            "supported_source_rows": supported_rows,
+            "unsupported_board_rows_excluded": unsupported_rows,
+            "nonmatching_title_rows_excluded": nonmatching_rows,
+            "qualifying_source_rows": 0,
+            "aggregated_events": 0,
+            "distinct_event_counts": 0,
+            "title_or_art_code_persisted": False,
+        }
+    identities = pd.DataFrame(accepted_identities)
+    duplicate_rows = int(
+        identities.duplicated(
+            ["instrument", "announcement_date", "art_code"], keep=False
+        ).sum()
+    )
+    if duplicate_rows:
+        raise RichDataError(
+            "Eastmoney government-subsidy partition contains duplicate "
+            f"instrument/date/art_code identities: {duplicate_rows}"
+        )
+    grouped = (
+        identities.groupby(
+            ["announcement_date", "instrument"], as_index=False, sort=True
+        )
+        .agg(government_subsidy_announcement_count=("art_code", "nunique"))
+        .sort_values(["announcement_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    grouped["government_subsidy_announcement_count"] = pd.to_numeric(
+        grouped["government_subsidy_announcement_count"], errors="raise"
+    ).astype("int64")
+    grouped["provider"] = "eastmoney"
+    result = grouped.loc[:, columns]
+    counts = result["government_subsidy_announcement_count"]
+    if (
+        result.empty
+        or result.duplicated(["instrument", "announcement_date"]).any()
+        or not counts.gt(0).all()
+        or {"title", "art_code", "codes", "columns"} & set(result.columns)
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy normalized frame failed integrity checks"
+        )
+    return result, {
+        "input_source_rows": int(len(rows)),
+        "supported_source_rows": supported_rows,
+        "unsupported_board_rows_excluded": unsupported_rows,
+        "nonmatching_title_rows_excluded": nonmatching_rows,
+        "qualifying_source_rows": int(len(identities)),
+        "aggregated_events": int(len(result)),
+        "distinct_event_counts": int(counts.nunique(dropna=True)),
+        "title_or_art_code_persisted": False,
+    }
+
+
+def filter_government_subsidy_events_to_point_in_time_holding_universe(
+    frame: pd.DataFrame,
+    intervals: pd.DataFrame,
+) -> tuple[pd.DataFrame, int]:
+    """Filter announcement events using only point-in-time listing intervals."""
+
+    if (
+        tuple(frame.columns)
+        != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy frame violates the frozen schema before "
+            "universe filtering"
+        )
+    if frame.empty:
+        return frame.copy(), 0
+    indexed = intervals.set_index("instrument")
+    starts = frame["instrument"].map(indexed["start_date"])
+    ends = frame["instrument"].map(indexed["end_date"])
+    dates = pd.to_datetime(frame["announcement_date"], errors="coerce").dt.normalize()
+    active = starts.notna() & ends.notna() & dates.ge(starts) & dates.le(ends)
+    return frame.loc[active].reset_index(drop=True), int((~active).sum())
+
+
+def materialize_government_subsidy_acceptance_sessions(
+    events: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    *,
+    maximum_age_calendar_days: int = 3,
+) -> pd.DataFrame:
+    """Materialize latest-event count/freshness values without prices or returns."""
+
+    required = set(EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS)
+    if set(events.columns) != required:
+        raise RichDataError(
+            "Eastmoney government-subsidy event frame changed before materialization"
+        )
+    if maximum_age_calendar_days != 3:
+        raise RichDataError(
+            "Eastmoney government-subsidy event age changed after preregistration"
+        )
+    normalized_calendar = pd.DatetimeIndex(calendar).normalize().unique().sort_values()
+    output_columns = [
+        "datetime",
+        "instrument",
+        "subsidy_announcement_date",
+        "event_effective_date",
+        "event_age_calendar_days",
+        "government_subsidy_announcement_count",
+        "eastmoney_government_subsidy_disclosure_intensity",
+    ]
+    if events.empty or normalized_calendar.empty:
+        return pd.DataFrame(columns=output_columns)
+    expanded: list[dict[str, Any]] = []
+    for event in events.itertuples(index=False):
+        announcement = pd.Timestamp(event.announcement_date).normalize()
+        position = int(normalized_calendar.searchsorted(announcement, side="right"))
+        if position >= len(normalized_calendar):
+            raise RichDataError(
+                "Eastmoney government-subsidy event cannot map to a strictly later "
+                "local session"
+            )
+        effective = normalized_calendar[position]
+        for session_date in normalized_calendar[position:]:
+            age = int((session_date - announcement).days)
+            if age > maximum_age_calendar_days:
+                break
+            count = int(event.government_subsidy_announcement_count)
+            expanded.append(
+                {
+                    "datetime": session_date,
+                    "instrument": str(event.instrument),
+                    "subsidy_announcement_date": announcement,
+                    "event_effective_date": effective,
+                    "event_age_calendar_days": age,
+                    "government_subsidy_announcement_count": count,
+                    "eastmoney_government_subsidy_disclosure_intensity": (
+                        float(count) / (1.0 + float(age))
+                    ),
+                }
+            )
+    if not expanded:
+        return pd.DataFrame(columns=output_columns)
+    materialized = pd.DataFrame(expanded)
+    materialized.sort_values(
+        ["instrument", "datetime", "subsidy_announcement_date"],
+        kind="stable",
+        inplace=True,
+    )
+    materialized = materialized.drop_duplicates(
+        ["instrument", "datetime"], keep="last"
+    ).sort_values(["datetime", "instrument"], kind="stable")
+    materialized.reset_index(drop=True, inplace=True)
+    factor = materialized["eastmoney_government_subsidy_disclosure_intensity"]
+    if (
+        materialized.duplicated(["instrument", "datetime"]).any()
+        or not materialized["event_age_calendar_days"].between(1, 3).all()
+        or not np.isfinite(factor).all()
+        or not factor.gt(0.0).all()
+    ):
+        raise RichDataError(
+            "Eastmoney government-subsidy session materialization failed"
+        )
+    return materialized.loc[:, output_columns]
+
+
+def eastmoney_government_subsidy_acceptance_records() -> list[Path]:
+    """Return prior local terminal manifests for the exact acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob(
+            "*eastmoney_government_subsidy_disclosure_intensity_acceptance*.json"
+        )
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == (
+            "eastmoney_government_subsidy_disclosure_intensity_acceptance"
+        ):
+            records.append(path)
+    return records
+
+
+def guard_eastmoney_government_subsidy_acceptance() -> None:
+    """Reject cross-clone and local replays before contract or provider access."""
+
+    record_path = (
+        DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
+    )
+    if record_path.exists():
+        if (
+            file_digest(record_path)
+            != EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
+        ):
+            raise RichDataError(
+                "Eastmoney government-subsidy tracked acceptance record fingerprint "
+                "mismatch"
+            )
+        raise RichDataError(
+            "Eastmoney government-subsidy acceptance is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    prior = eastmoney_government_subsidy_acceptance_records()
+    if prior:
+        raise RichDataError(
+            "Eastmoney government-subsidy acceptance is one-shot and already "
+            f"consumed by {prior[-1]}"
+        )
+
+
+def calendar_month_ranges(
+    start_date: dt.date,
+    end_date: dt.date,
+) -> list[tuple[dt.date, dt.date]]:
+    """Return complete non-overlapping month-clipped inclusive date ranges."""
+
+    if end_date < start_date:
+        raise RichDataError("calendar month range end precedes start")
+    ranges: list[tuple[dt.date, dt.date]] = []
+    cursor = start_date
+    while cursor <= end_date:
+        if cursor.month == 12:
+            next_month = dt.date(cursor.year + 1, 1, 1)
+        else:
+            next_month = dt.date(cursor.year, cursor.month + 1, 1)
+        month_end = min(end_date, next_month - dt.timedelta(days=1))
+        ranges.append((cursor, month_end))
+        cursor = month_end + dt.timedelta(days=1)
+    return ranges
+
+
+def sync_eastmoney_government_subsidy_disclosure_intensity_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Run the sole frozen no-price three-window announcement acceptance."""
+
+    guard_eastmoney_government_subsidy_acceptance()
+    lock_path = (
+        METADATA_ROOT
+        / ".eastmoney_government_subsidy_disclosure_intensity_acceptance.lock"
+    )
+    with RichDataProcessLock(lock_path):
+        guard_eastmoney_government_subsidy_acceptance()
+        contract = (
+            load_eastmoney_government_subsidy_disclosure_intensity_contract()
+        )
+        validate_eastmoney_government_subsidy_local_context(contract)
+        acceptance = contract["acceptance_protocol"]
+        sample_windows = list(acceptance["fixed_sample_windows"])
+        intervals = load_factor_universe_intervals(universe_path)
+        first_sample_date = dt.date.fromisoformat(str(sample_windows[0]["start"]))
+        final_sample_date = dt.date.fromisoformat(str(sample_windows[-1]["end"]))
+        calendar = local_calendar_dates(
+            first_sample_date,
+            final_sample_date + dt.timedelta(days=14),
+            calendar_path,
+        )
+        if calendar.empty:
+            raise RichDataError(
+                "local calendar is empty for government-subsidy acceptance"
+            )
+        run_id = new_run_id(
+            "eastmoney_government_subsidy_disclosure_intensity_acceptance"
+        )
+        run_root = (
+            RAW_ROOT
+            / "eastmoney"
+            / "government_subsidy_disclosure_intensity"
+            / "acceptance"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                "Eastmoney government-subsidy acceptance run already exists"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        request_quality: list[dict[str, Any]] = []
+        window_quality: list[dict[str, Any]] = []
+        bisections: list[dict[str, Any]] = []
+        try:
+            accepted_windows: list[pd.DataFrame] = []
+            for window in sample_windows:
+                label = str(window["label"])
+                window_start = dt.date.fromisoformat(str(window["start"]))
+                window_end = dt.date.fromisoformat(str(window["end"]))
+                normalized_parts: list[pd.DataFrame] = []
+                part_quality: list[dict[str, Any]] = []
+                for month_start, month_end in calendar_month_ranges(
+                    window_start, window_end
+                ):
+                    provider_request_issued = True
+                    leaves, split_records = (
+                        fetch_eastmoney_government_subsidy_announcement_partition_details(
+                            month_start,
+                            month_end,
+                            contract=contract,
+                        )
+                    )
+                    bisections.extend(
+                        [{"window": label, **item} for item in split_records]
+                    )
+                    for leaf_start, leaf_end, rows, quality in leaves:
+                        request_quality.append({"window": label, **quality})
+                        normalized, observed = (
+                            canonicalize_eastmoney_government_subsidy_announcements(
+                                rows,
+                                leaf_start,
+                                leaf_end,
+                                contract=contract,
+                            )
+                        )
+                        part_quality.append(observed)
+                        if not normalized.empty:
+                            normalized_parts.append(normalized)
+                source_rows = sum(
+                    int(item["received_rows"])
+                    for item in request_quality
+                    if item["window"] == label
+                )
+                supported_source_rows = sum(
+                    int(item["supported_source_rows"])
+                    for item in part_quality
+                )
+                if supported_source_rows < int(
+                    acceptance["minimum_supported_source_rows_per_window"]
+                ):
+                    raise RichDataError(
+                        f"Eastmoney government-subsidy {label} has too few supported "
+                        f"source rows: {supported_source_rows}"
+                    )
+                if not normalized_parts:
+                    raise RichDataError(
+                        f"Eastmoney government-subsidy {label} has no qualifying event"
+                    )
+                normalized_window = (
+                    pd.concat(normalized_parts, ignore_index=True)
+                    .sort_values(["announcement_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                if normalized_window.duplicated(
+                    ["instrument", "announcement_date"]
+                ).any():
+                    raise RichDataError(
+                        "Eastmoney government-subsidy leaf partitions produced a "
+                        "duplicate event key"
+                    )
+                accepted, outside_universe = (
+                    filter_government_subsidy_events_to_point_in_time_holding_universe(
+                        normalized_window, intervals
+                    )
+                )
+                qualifying_events = int(len(accepted))
+                if qualifying_events < int(
+                    acceptance["minimum_qualifying_events_per_window"]
+                ):
+                    raise RichDataError(
+                        f"Eastmoney government-subsidy {label} has too few qualifying "
+                        f"events: {qualifying_events}"
+                    )
+                materialized = materialize_government_subsidy_acceptance_sessions(
+                    accepted,
+                    calendar,
+                    maximum_age_calendar_days=int(
+                        contract["point_in_time_policy"][
+                            "maximum_age_calendar_days"
+                        ]
+                    ),
+                )
+                cross_sections = (
+                    materialized.groupby("datetime", sort=True)
+                    .agg(
+                        eligible_names=("instrument", "nunique"),
+                        distinct_factor_values=(
+                            "eastmoney_government_subsidy_disclosure_intensity",
+                            "nunique",
+                        ),
+                    )
+                    .reset_index()
+                )
+                candidate = cross_sections[
+                    cross_sections["eligible_names"].ge(
+                        int(
+                            acceptance[
+                                "minimum_names_per_candidate_cross_section"
+                            ]
+                        )
+                    )
+                    & cross_sections["distinct_factor_values"].ge(
+                        int(
+                            acceptance[
+                                "minimum_distinct_factor_values_per_candidate_cross_section"
+                            ]
+                        )
+                    )
+                ]
+                candidate_count = int(len(candidate))
+                if candidate_count < int(
+                    acceptance["minimum_candidate_cross_sections_per_window"]
+                ):
+                    raise RichDataError(
+                        f"Eastmoney government-subsidy {label} lacks sample "
+                        f"cross-sectional variation: {candidate_count}"
+                    )
+                window_quality.append(
+                    {
+                        "label": label,
+                        "source_rows": source_rows,
+                        "supported_source_rows": supported_source_rows,
+                        "unsupported_board_rows_excluded": sum(
+                            int(item["unsupported_board_rows_excluded"])
+                            for item in part_quality
+                        ),
+                        "nonmatching_title_rows_excluded": sum(
+                            int(item["nonmatching_title_rows_excluded"])
+                            for item in part_quality
+                        ),
+                        "qualifying_source_rows": sum(
+                            int(item["qualifying_source_rows"])
+                            for item in part_quality
+                        ),
+                        "point_in_time_holding_events": qualifying_events,
+                        "outside_point_in_time_holding_universe_events_excluded": (
+                            outside_universe
+                        ),
+                        "candidate_cross_sections": candidate_count,
+                        "distinct_materialized_factor_values": int(
+                            materialized[
+                                "eastmoney_government_subsidy_disclosure_intensity"
+                            ].nunique(dropna=True)
+                        ),
+                        "maximum_candidate_names": int(
+                            cross_sections["eligible_names"].max()
+                        ),
+                        "maximum_candidate_distinct_factor_values": int(
+                            cross_sections["distinct_factor_values"].max()
+                        ),
+                    }
+                )
+                accepted_windows.append(accepted)
+
+            accepted_all = (
+                pd.concat(accepted_windows, ignore_index=True)
+                .loc[
+                    :,
+                    list(
+                        EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_COLUMNS
+                    ),
+                ]
+                .sort_values(["announcement_date", "instrument"], kind="stable")
+                .reset_index(drop=True)
+            )
+            if accepted_all.duplicated(
+                ["instrument", "announcement_date"]
+            ).any():
+                raise RichDataError(
+                    "Eastmoney government-subsidy combined sample has duplicate events"
+                )
+            total_events = int(len(accepted_all))
+            total_candidates = sum(
+                int(item["candidate_cross_sections"]) for item in window_quality
+            )
+            materialized_all = materialize_government_subsidy_acceptance_sessions(
+                accepted_all,
+                calendar,
+            )
+            distinct_values = int(
+                materialized_all[
+                    "eastmoney_government_subsidy_disclosure_intensity"
+                ].nunique(dropna=True)
+            )
+            if total_events < int(acceptance["minimum_qualifying_events_total"]):
+                raise RichDataError(
+                    "Eastmoney government-subsidy combined sample has too few events: "
+                    f"{total_events}"
+                )
+            if total_candidates < int(
+                acceptance["minimum_candidate_cross_sections_total"]
+            ):
+                raise RichDataError(
+                    "Eastmoney government-subsidy combined sample lacks frozen "
+                    f"cross-sectional variation: {total_candidates}"
+                )
+            if distinct_values < int(
+                acceptance["minimum_distinct_factor_values_across_samples"]
+            ):
+                raise RichDataError(
+                    "Eastmoney government-subsidy combined sample lacks factor variation"
+                )
+
+            temporary_destination = temporary_root / "government_subsidy_events.parquet"
+            final_destination = run_root / "government_subsidy_events.parquet"
+            atomic_write_frame(accepted_all, temporary_destination)
+            resolved_universe = universe_path.expanduser().resolve()
+            resolved_calendar = calendar_path.expanduser().resolve()
+            provider_calls = sum(
+                int(item["provider_calls"]) for item in request_quality
+            ) + sum(int(item["provider_probe_calls"]) for item in bisections)
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": (
+                    "eastmoney_government_subsidy_disclosure_intensity_acceptance"
+                ),
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_selection"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "filter_date": "announcement_date",
+                },
+                "local_calendar": {
+                    "path": manifest_path(resolved_calendar),
+                    "sha256": file_digest(resolved_calendar),
+                    "availability": (
+                        "first local session strictly after announcement_date"
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "fixed_parameters": contract["provider_contract"][
+                        "fixed_parameters"
+                    ],
+                    "provider_request_issued": provider_request_issued,
+                    "provider_calls": provider_calls,
+                    "leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_cookies_proxy_or_retail_session_used": False,
+                    "raw_response_title_art_code_codes_or_columns_persisted": False,
+                    "announcement_body_or_subsidy_amount_accessed": False,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": total_events,
+                        "sha256": frame_digest(accepted_all),
+                    }
+                ],
+                "source_quality": {
+                    "windows": window_quality,
+                    "combined_rows_written": total_events,
+                    "combined_candidate_cross_sections": total_candidates,
+                    "combined_distinct_materialized_factor_values": distinct_values,
+                    "title_or_art_code_persisted": False,
+                },
+                "factor": {
+                    "name": (
+                        "eastmoney_government_subsidy_disclosure_intensity"
+                    ),
+                    "formula": contract["event_and_factor_definition"][
+                        "session_formula"
+                    ],
+                    "direction": "higher_is_better",
+                    "factor_values_persisted_at_acceptance": False,
+                },
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": (
+                    "eastmoney_government_subsidy_disclosure_intensity_acceptance"
+                ),
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_EASTMONEY_GOVERNMENT_SUBSIDY_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "provider_request_issued": provider_request_issued,
+                    "completed_leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_cookies_proxy_or_retail_session_used": False,
+                    "raw_response_title_art_code_codes_or_columns_persisted": False,
+                    "announcement_body_or_subsidy_amount_accessed": False,
+                },
+                "observed_quality_before_rejection": window_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": (
+                    "terminal_source_schema_identity_title_formula_or_historical_"
+                    "sample_variation_rejected_stop_before_full_history_capacity_"
+                    "uniqueness_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def fetch_eastmoney_related_party_transaction_partition(
     start_date: dt.date,
     end_date: dt.date,
@@ -27932,6 +29264,20 @@ def build_parser() -> argparse.ArgumentParser:
         "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
     )
 
+    eastmoney_government_subsidy_acceptance = subparsers.add_parser(
+        "acceptance-eastmoney-government-subsidy-disclosure-intensity",
+        help=(
+            "run the frozen three-window public government-subsidy announcement "
+            "acceptance"
+        ),
+    )
+    eastmoney_government_subsidy_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    eastmoney_government_subsidy_acceptance.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+
     cninfo_guarantee_acceptance = subparsers.add_parser(
         "acceptance-cninfo-guarantee-sparsity",
         help="run the frozen 57-signal public guarantee-sparsity acceptance",
@@ -28237,6 +29583,15 @@ def main(argv: list[str] | None = None) -> int:
                 universe_path=args.universe_file,
                 calendar_path=args.calendar_file,
             )
+        elif args.command == (
+            "acceptance-eastmoney-government-subsidy-disclosure-intensity"
+        ):
+            manifest = (
+                sync_eastmoney_government_subsidy_disclosure_intensity_acceptance(
+                    universe_path=args.universe_file,
+                    calendar_path=args.calendar_file,
+                )
+            )
         elif args.command == "acceptance-cninfo-guarantee-sparsity":
             manifest = sync_cninfo_guarantee_sparsity_acceptance(
                 universe_path=args.universe_file,
@@ -28335,6 +29690,9 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-eastmoney-related-party-transaction-sparsity": (
             "stored_no_return_public_related_party_sparsity_acceptance"
+        ),
+        "acceptance-eastmoney-government-subsidy-disclosure-intensity": (
+            "stored_no_return_public_government_subsidy_acceptance"
         ),
         "acceptance-cninfo-guarantee-sparsity": (
             "stored_no_return_public_guarantee_sparsity_acceptance"

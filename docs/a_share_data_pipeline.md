@@ -2022,3 +2022,26 @@ python scripts/a_share_rich_data.py \
 首次入口调用曾因候选报告期与季度质量报告期同名而在容量计算前中止；没有审计文件、比较字段、价格或收益产生。基础设施修复只把候选审计列改名为 `monetary_funds_report_date`，新增同时保留两个报告期的回归测试后，用完全相同参数完成上述唯一审计；公式、方向、时效、样本、网格、质量、上市、阈值和比较目录均未改变。独立重算复现了 9,839 个合格行、114 个 cohort 和全部年度计数。
 
 容量失败意味着固定七项比较从未加载，唯一性门未运行，也没有读取价格或未来收益。跨克隆终止记录为 [`a_share_eastmoney_monetary_funds_asset_intensity_research_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_research_record.json)（SHA‑256 `d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a`）。不得再次运行验收、全量或无收益审计，不得反向、延长三自然日、降低质量/上市/名称/取值/容量门、改变比较项，亦不得继续收益诊断、聚合、当前评分、选股、仓位、订单或 Level‑2。下一步只能回到一个经济机制独立、在读取新来源行或因子值前冻结的新候选。
+
+### Eastmoney 政府补助公告强度（来源验收待执行）
+
+货币资金资产占比分支终止后，新一轮无收益机制核重冻结为 [`a_share_three_day_government_subsidy_disclosure_intensity_mechanism_overlap_reaudit_20260721.json`](a_share_three_day_government_subsidy_disclosure_intensity_mechanism_overlap_reaudit_20260721.json)（SHA‑256 `8e518365a05fc98056502a43c492dd4f44ec9195046588af2e2987c76030e368`）。研发投入候选被判定为复用已终止的 Tushare 财务报表/指标路线；筹码分布需要当前账户未具备的 5,000 积分权限；开盘和收盘集合竞价需要独立权限。当前只推进经济上不同的外部支持催化候选：
+
+```text
+eastmoney_government_subsidy_disclosure_intensity
+  = latest already-effective government_subsidy_announcement_count
+    / (1 + calendar days since notice)
+```
+
+数据合同 [`a_share_eastmoney_government_subsidy_disclosure_intensity_data_contract.json`](a_share_eastmoney_government_subsidy_disclosure_intensity_data_contract.json)（SHA‑256 `b7b351e8c31e65391c208b5133ed0d740bea7b8cdeb7686e0c26866b89b360af`）在任何新公告行、标题、因子值、价格或收益出现前固定。来源是 Eastmoney 公共重大事项公告接口，只允许传输 `art_code,notice_date,title,codes,columns`；标题经 NFKC 和空白规范化后，仅匹配“获得/收到政府补助或补贴”的四个固定字面量，并排除更正、补充、修订、进展、取消和撤回。`art_code` 和标题只在内存中用于唯一性与分类，最终规范帧只保存公告日、股票、同日合格公告数和供应商，不保存文本、公告编号、名称、URL、金额或响应体。
+
+公告在严格下一本地交易日才生效，最长保持三自然日；同一股票有新公告时只使用最新已生效事件，没有事件保持缺失。分页必须逐页对账广告数与接收数；单分区超过 80 页时先按日期递归二分，单日仍超限则终止。任一缺键、畸形日期、同一公告映射多个支持股票、重复股票/日期/公告编号、分页元数据变化或计数不一致均为致命错误。这个公共来源不读取 `TUSHARE_TOKEN`、账号、积分、Cookie、代理、零售客户端会话、价格或收益。
+
+实现和离线测试已加入，但本次提交没有执行唯一真实来源验收。唯一获准的下一步命令是：
+
+```bash
+python scripts/a_share_rich_data.py \
+  acceptance-eastmoney-government-subsidy-disclosure-intensity
+```
+
+该命令固定抽取 2019Q1、2024Q1、2025Q1 三个窗口，先验证本地合同与机制指纹，再原子发布仅包含规范事件的样本。成功只证明公开来源、分类、时点和样本覆盖可用；失败则永久终止这一精确定义。无论结果如何，都不得在同一验收后修改标题词表、排除词、方向、三日时效、样本或阈值。验收成功后也只能另行冻结全历史无收益协议和 200-cohort 容量门，不能直接读取收益、聚合、评分、选股、仓位或下单。
