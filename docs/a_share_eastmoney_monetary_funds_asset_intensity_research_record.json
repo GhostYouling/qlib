@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_monetary_funds_asset_intensity_research_record",
+  "status": "terminal_rejected_at_no_return_capacity_gate",
+  "recorded_at": "2026-07-21T06:45:34Z",
+  "purpose": "Permanently bind the sole capacity-first no-return result for Eastmoney monetary-funds asset intensity so every clone stops before comparisons, returns, aggregation, current scoring, selection, sizing, orders, or Level-2.",
+  "factor": {
+    "name": "eastmoney_monetary_funds_asset_intensity",
+    "formula": "monetary_funds / total_assets",
+    "direction": "higher_is_better",
+    "interpretation": "reported monetary-funds share of total assets, not verified unrestricted cash",
+    "availability": "first local trading-session close strictly after announcement_date",
+    "entry_if_it_had_been_admitted": "following local trading-session open",
+    "maximum_event_age_calendar_days": 3
+  },
+  "evidence_chain": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json",
+      "sha256": "6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419"
+    },
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_data_contract.json",
+      "sha256": "f879f2095936e6a1f084432bbce2c5d5f2f74951d4a12d1742064b1e365b8d82"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_source_acceptance_record.json",
+      "sha256": "bcea6af54b32eb80c4118345a72be01b332c626217bba87ec95217d1811c5171"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_no_return_preregistration.json",
+      "sha256": "b8cf79b968ee9ca609748508e82d4a30d8fc9762c9e4794f5648c4b18c7f5f14"
+    },
+    "full_source_record": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json",
+      "sha256": "0b399ab472a425702e8fe40387849e2b258032081e5bac44d984b0272cce557e"
+    },
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260721T061812Z_eastmoney_monetary_funds_asset_intensity_full_ef43d4e5.json",
+      "sha256": "ee9d7cacd2097b840b2f0cfafd177fd5bb8203fea5df95b292ca14e962eba885"
+    },
+    "terminal_no_return_audit": {
+      "path": "data/experiments/short_horizon/20260721T064408Z_eastmoney_monetary_funds_asset_intensity_no_return_audit.json",
+      "sha256": "f2a5051a0b673c7b22a245b1898d0f8723eedd9ab815a25e0c7ac5a6a7f227d6"
+    }
+  },
+  "full_source_result": {
+    "report_date_partitions": 28,
+    "source_rows": 114418,
+    "first_report_date": "2019-03-31",
+    "last_report_date": "2025-12-31",
+    "minimum_valid_factor_active_holding_coverage": 0.9408168935815504,
+    "median_valid_factor_active_holding_coverage": 0.9698015577955195,
+    "source_completeness_gate_passed": true
+  },
+  "implementation_repair": {
+    "first_invocation_completed_an_audit": false,
+    "first_invocation_failure": "candidate and quarterly-quality frames both exposed report_date, so pandas rejected the quality join before capacity calculation",
+    "repair_scope": "rename only the candidate audit column to monetary_funds_report_date and add an offline regression preserving the quarterly-quality report_date",
+    "formula_direction_timing_age_universe_grid_quality_listing_thresholds_or_comparison_catalog_changed": false,
+    "comparison_fields_loaded_before_repair": [],
+    "price_fields_loaded_before_repair": [],
+    "forward_return_fields_read_before_repair": false,
+    "retry_used_the_exact_original_command": true
+  },
+  "no_return_capacity_result": {
+    "non_overlapping_rebalance_capacity": 566,
+    "source_events": 114418,
+    "expanded_rows_before_newest_report_rule": 57973,
+    "older_report_rows_blocked_after_newer_report_availability": 10985,
+    "expanded_rows": 46988,
+    "active_holding_rows": 46988,
+    "fundamental_quality_eligible_rows": 9854,
+    "listing_seasoning_eligible_rows": 46962,
+    "quality_and_listing_eligible_factor_rows": 9839,
+    "dates_with_any_valid_name": 188,
+    "potential_complete_cohorts": 114,
+    "minimum_required_cohorts": 200,
+    "potential_complete_cohorts_by_year": {
+      "2019": 17,
+      "2020": 17,
+      "2021": 19,
+      "2022": 16,
+      "2023": 16,
+      "2024": 13,
+      "2025": 16
+    },
+    "observed_calendar_years": 7,
+    "minimum_observed_calendar_years": 5,
+    "minimum_valid_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "capacity_gate_passed": false,
+    "independent_recalculation_reproduced_eligible_rows_cohorts_and_year_counts": true
+  },
+  "downstream_gates": {
+    "comparison_fields_loaded": [],
+    "uniqueness_audit_run": false,
+    "return_diagnostic_preregistration_allowed": false,
+    "return_diagnostic_run": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_justified": false
+  },
+  "decision": {
+    "classification": "insufficient_three_calendar_day_cross_sectional_capacity",
+    "same_source_or_same_mechanism_rerun_allowed": false,
+    "invert_direction_allowed": false,
+    "extend_event_age_allowed": false,
+    "relax_quality_listing_name_value_cohort_or_year_gates_allowed": false,
+    "drop_or_change_the_frozen_comparison_catalog_allowed": false,
+    "combine_with_other_factors_allowed": false,
+    "next_action": "return to no-return mechanism discovery and freeze a genuinely independent candidate before observing its provider rows or factor values"
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false,
+  "limitations": [
+    "The Eastmoney history is a current historical snapshot rather than an immutable correction-version stream.",
+    "The current listing-derived universe is not a complete point-in-time delisting master.",
+    "Capacity rejection is not return evidence; no Rank IC, Top-3 return, execution result, stock list, position, or order was computed.",
+    "The rejected three-calendar-day protocol does not authorize a wider event age or a lower capacity threshold."
+  ]
+}

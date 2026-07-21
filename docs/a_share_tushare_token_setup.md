@@ -133,11 +133,11 @@ Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_
 
 跨克隆终止记录是 [`a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json`](a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json)（SHA‑256 `b8bda6862349a0ff9082109a3e176b4ecc195dc9be5bfb07043e91c6e7460dba`）。不得重跑来源验收、全量、无收益审计、收益诊断或通用门禁；配置、更新或轮换 Token 不会恢复这些一次性入口，也不允许继续聚合、当前评分、选股、仓位或订单。
 
-#### Eastmoney 货币资金资产占比分支等待无收益双门
+#### Eastmoney 货币资金资产占比分支已终止
 
-`eastmoney_monetary_funds_asset_intensity = monetary_funds / total_assets` 使用 Eastmoney 公共资产负债表接口，不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分。唯一 2025Q4 来源验收与唯一 2019Q1–2025Q4 全量同步已经消费；全量快照共 28 个季度、114,418 行。跨克隆来源记录是 [`a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json)（SHA‑256 `0b399ab472a425702e8fe40387849e2b258032081e5bac44d984b0272cce557e`）。不得再次运行验收或全量同步。
+`eastmoney_monetary_funds_asset_intensity = monetary_funds / total_assets` 使用 Eastmoney 公共资产负债表接口，不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分。唯一 2025Q4 来源验收与唯一 2019Q1–2025Q4 全量同步已经消费；全量快照共 28 个季度、114,418 行。随后唯一容量优先的无收益审计只得到 114/200 个完整三交易日 cohort，因此在加载七个比较项、价格或未来收益之前终止。
 
-下一步仅允许按 [`a_share_data_pipeline.md`](a_share_data_pipeline.md) 运行一次容量优先的无收益审计；容量通过后才读取固定七个无收益比较项。在这两道门通过并另行冻结收益诊断前，不得读取未来收益、聚合、当前评分、选股、仓位或订单。因为这个活动分支仍不使用 Tushare，不能用 Token 包装器运行它；本机 Token 是否就绪与它的研究许可无关。
+跨克隆终止记录是 [`a_share_eastmoney_monetary_funds_asset_intensity_research_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_research_record.json)（SHA‑256 `d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a`）。不得再运行来源验收、全量同步或无收益审计，也不得放宽三自然日与容量规则、反向、继续收益诊断、聚合、当前评分、选股、仓位或订单。Token 配置、更新或轮换不会恢复该分支。
 
 ### 4.2 `stock_st` 分支已终止
 

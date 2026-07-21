@@ -9289,6 +9289,34 @@ def test_eastmoney_monetary_funds_no_return_source_chain_is_frozen():
     assert evidence["forward_return_fields_read"] is False
 
 
+def test_eastmoney_monetary_funds_terminal_record_guards_before_source_chain(
+    tmp_path, monkeypatch
+):
+    record = (
+        RESEARCH.load_eastmoney_monetary_funds_asset_intensity_research_record()
+    )
+    assert record["no_return_capacity_result"]["potential_complete_cohorts"] == 114
+    assert record["no_return_capacity_result"]["minimum_required_cohorts"] == 200
+    assert record["downstream_gates"]["comparison_fields_loaded"] == []
+    assert record["forward_return_fields_read"] is False
+    monkeypatch.setattr(
+        RESEARCH,
+        "load_eastmoney_monetary_funds_asset_intensity_no_return_preregistration",
+        lambda: (_ for _ in ()).throw(
+            AssertionError("terminal guard must run before the source chain")
+        ),
+    )
+    args = SimpleNamespace(
+        manifest=str(tmp_path / "full.json"),
+        experiment_root=str(tmp_path / "experiments"),
+        provider_uri=str(tmp_path / "provider"),
+    )
+    with pytest.raises(ValueError, match="terminal after the no-return capacity"):
+        RESEARCH.run_eastmoney_monetary_funds_asset_intensity_no_return_audit(
+            args
+        )
+
+
 def test_eastmoney_monetary_funds_materialization_uses_announcement_age_and_newest_report():
     calendar = pd.DatetimeIndex(
         pd.to_datetime(
@@ -9331,7 +9359,9 @@ def test_eastmoney_monetary_funds_materialization_uses_announcement_age_and_newe
         )
     )
     assert materialized["datetime"].tolist() == list(calendar[1:4])
-    assert materialized["report_date"].eq(pd.Timestamp("2024-06-30")).all()
+    assert materialized["monetary_funds_report_date"].eq(
+        pd.Timestamp("2024-06-30")
+    ).all()
     assert materialized[factor].tolist() == pytest.approx([0.2, 0.2, 0.2])
     assert materialized["event_age_calendar_days"].tolist() == [1, 2, 3]
     assert materialized["log_total_assets"].tolist() == pytest.approx(
@@ -9344,6 +9374,57 @@ def test_eastmoney_monetary_funds_materialization_uses_announcement_age_and_newe
     assert audit["weekend_or_holiday_extension_beyond_age_limit"] is False
     assert audit["price_fields_loaded"] == []
     assert audit["forward_return_fields_read"] is False
+
+
+def test_eastmoney_monetary_funds_quality_join_keeps_both_report_dates():
+    calendar = pd.bdate_range("2025-01-02", periods=30)
+    factor = RESEARCH.EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FACTOR_NAME
+    events = pd.DataFrame(
+        [
+            {
+                "instrument": "SZ000001",
+                "report_date": "2024-12-31",
+                "announcement_date": calendar[20],
+                "monetary_funds": 20.0,
+                "total_assets": 100.0,
+                factor: 0.2,
+            }
+        ]
+    )
+    fundamentals = pd.DataFrame(
+        [
+            {
+                "instrument": "SZ000001",
+                "report_date": "2024-09-30",
+                "announcement_date": calendar[1],
+                "roe": 10.0,
+                "net_profit": 1.0,
+                "revenue_yoy": 1.0,
+                "profit_yoy": 1.0,
+            }
+        ]
+    )
+    intervals = {"SZ000001": [(calendar[0], calendar[-1])]}
+    eligible, audit = (
+        RESEARCH.prepare_eastmoney_monetary_funds_asset_intensity_eligible_sessions(
+            events,
+            calendar[21:25],
+            fundamentals,
+            calendar,
+            intervals,
+            maximum_factor_age_days=3,
+            maximum_quality_age_days=550,
+        )
+    )
+    assert len(eligible) >= 1
+    assert eligible["monetary_funds_report_date"].eq(
+        pd.Timestamp("2024-12-31")
+    ).all()
+    assert pd.to_datetime(eligible["report_date"]).eq(
+        pd.Timestamp("2024-09-30")
+    ).all()
+    assert audit["quality_and_listing_eligible_rows"] == len(eligible)
+    assert audit["price_fields_loaded"] == []
 
 
 def test_eastmoney_monetary_funds_uniqueness_rejects_raw_cash_synonym():
@@ -9413,6 +9494,11 @@ def test_eastmoney_monetary_funds_uniqueness_rejects_raw_cash_synonym():
 def test_eastmoney_monetary_funds_capacity_failure_skips_comparisons(
     tmp_path, monkeypatch
 ):
+    monkeypatch.setattr(
+        RESEARCH,
+        "DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_RESEARCH_RECORD",
+        tmp_path / "missing-terminal-record.json",
+    )
     spec = copy.deepcopy(
         RESEARCH.load_eastmoney_monetary_funds_asset_intensity_no_return_preregistration()
     )

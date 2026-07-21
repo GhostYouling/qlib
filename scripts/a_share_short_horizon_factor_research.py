@@ -577,6 +577,14 @@ DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_MANIFEST = (
 EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_MANIFEST_SHA256 = (
     "ee9d7cacd2097b840b2f0cfafd177fd5bb8203fea5df95b292ca14e962eba885"
 )
+DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_RESEARCH_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_monetary_funds_asset_intensity_research_record.json"
+)
+EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_RESEARCH_RECORD_SHA256 = (
+    "d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a"
+)
 DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_RESEARCH_RECORD = (
     REPO_ROOT
     / "docs"
@@ -25950,6 +25958,100 @@ def load_eastmoney_monetary_funds_asset_intensity_full_source_record(
     return record
 
 
+def load_eastmoney_monetary_funds_asset_intensity_research_record(
+    path: Path = DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_RESEARCH_RECORD,
+) -> dict[str, Any]:
+    """Enforce the terminal three-calendar-day capacity rejection."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_sha256(path)
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_RESEARCH_RECORD_SHA256
+    ):
+        raise ValueError(
+            "Eastmoney monetary-funds research-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind="a_share_eastmoney_monetary_funds_asset_intensity_research_record",
+    )
+    evidence = record.get("evidence_chain") or {}
+    capacity = record.get("no_return_capacity_result") or {}
+    downstream = record.get("downstream_gates") or {}
+    decision = record.get("decision") or {}
+    terminal = evidence.get("terminal_no_return_audit") or {}
+    expected_links = {
+        "mechanism_overlap_audit": (
+            "6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419"
+        ),
+        "data_contract": (
+            EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_DATA_CONTRACT_SHA256
+        ),
+        "source_acceptance_record": (
+            EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_SOURCE_ACCEPTANCE_RECORD_SHA256
+        ),
+        "no_return_preregistration": (
+            EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC_SHA256
+        ),
+        "full_source_record": (
+            EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_SOURCE_RECORD_SHA256
+        ),
+    }
+    if (
+        record.get("status") != "terminal_rejected_at_no_return_capacity_gate"
+        or capacity.get("quality_and_listing_eligible_factor_rows") != 9839
+        or capacity.get("potential_complete_cohorts") != 114
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("potential_complete_cohorts_by_year")
+        != {
+            "2019": 17,
+            "2020": 17,
+            "2021": 19,
+            "2022": 16,
+            "2023": 16,
+            "2024": 13,
+            "2025": 16,
+        }
+        or capacity.get("observed_calendar_years") != 7
+        or capacity.get("capacity_gate_passed") is not False
+        or downstream.get("comparison_fields_loaded") != []
+        or downstream.get("uniqueness_audit_run") is not False
+        or downstream.get("return_diagnostic_run") is not False
+        or downstream.get(
+            "aggregation_current_scoring_selection_sizing_or_orders_allowed"
+        )
+        is not False
+        or decision.get("same_source_or_same_mechanism_rerun_allowed") is not False
+        or decision.get("invert_direction_allowed") is not False
+        or decision.get("extend_event_age_allowed") is not False
+        or terminal.get("sha256")
+        != "f2a5051a0b673c7b22a245b1898d0f8723eedd9ab815a25e0c7ac5a6a7f227d6"
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise ValueError(
+            "Eastmoney monetary-funds terminal research record changed"
+        )
+    for label, expected_hash in expected_links.items():
+        link = evidence.get(label) or {}
+        linked_path = resolve_repository_record_path(str(link.get("path") or ""))
+        if (
+            link.get("sha256") != expected_hash
+            or not linked_path.exists()
+            or file_sha256(linked_path) != expected_hash
+        ):
+            raise ValueError(
+                f"Eastmoney monetary-funds terminal evidence changed: {label}"
+            )
+    terminal_path = resolve_repository_record_path(str(terminal.get("path") or ""))
+    if terminal_path.exists() and file_sha256(terminal_path) != terminal["sha256"]:
+        raise ValueError(
+            "Eastmoney monetary-funds terminal no-return audit changed"
+        )
+    return record
+
+
 def validate_eastmoney_monetary_funds_asset_intensity_full_snapshot(
     manifest_path: Path,
     spec: dict[str, Any],
@@ -26157,7 +26259,7 @@ def materialize_eastmoney_monetary_funds_asset_intensity_sessions(
                 {
                     "datetime": pd.Timestamp(session),
                     "instrument": str(event.instrument),
-                    "report_date": pd.Timestamp(event.report_date),
+                    "monetary_funds_report_date": pd.Timestamp(event.report_date),
                     "candidate_announcement_date": pd.Timestamp(
                         event.announcement_date
                     ),
@@ -26181,7 +26283,7 @@ def materialize_eastmoney_monetary_funds_asset_intensity_sessions(
     columns = [
         "datetime",
         "instrument",
-        "report_date",
+        "monetary_funds_report_date",
         "candidate_announcement_date",
         "event_effective_date",
         "event_age_calendar_days",
@@ -26212,7 +26314,7 @@ def materialize_eastmoney_monetary_funds_asset_intensity_sessions(
                 side="right",
             ) - 1
             expected_latest = cumulative_latest[positions]
-            keep = pd.to_datetime(active["report_date"]).to_numpy(
+            keep = pd.to_datetime(active["monetary_funds_report_date"]).to_numpy(
                 dtype="datetime64[ns]"
             ) == expected_latest
             superseded += int((~keep).sum())
@@ -26222,7 +26324,7 @@ def materialize_eastmoney_monetary_funds_asset_intensity_sessions(
             [
                 "instrument",
                 "datetime",
-                "report_date",
+                "monetary_funds_report_date",
                 "candidate_announcement_date",
             ],
             kind="stable",
@@ -26666,6 +26768,13 @@ def run_eastmoney_monetary_funds_asset_intensity_no_return_audit(
 ) -> dict[str, Any]:
     """Run event capacity first, then the conditional seven-field uniqueness gate."""
 
+    terminal_path = DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_RESEARCH_RECORD
+    if terminal_path.exists():
+        load_eastmoney_monetary_funds_asset_intensity_research_record(terminal_path)
+        raise ValueError(
+            "Eastmoney monetary-funds factor is terminal after the no-return "
+            "capacity rejection; reruns and downstream work are forbidden"
+        )
     spec = load_eastmoney_monetary_funds_asset_intensity_no_return_preregistration()
     events, source_evidence = (
         validate_eastmoney_monetary_funds_asset_intensity_full_snapshot(

@@ -1992,7 +1992,7 @@ python scripts/a_share_rich_data.py \
 
 这是来源传输结构失败，不是收益证据。观察不匹配后不得把对象字段改写成七位数组、重请求同一窗口、换板块/日期/接口/字段、调整三日窗口/公式/方向/阈值，或改用担保金额、权益比率、诉讼数据救援；也不得继续全量、无收益审计、收益诊断、聚合、评分、选股、仓位、订单或 Level‑2。此分支不向因子池贡献值；下一步只能重新审计一个经济上独立、先无收益冻结的新候选。
 
-### Eastmoney 货币资金资产占比（全量来源通过，等待无收益双门）
+### Eastmoney 货币资金资产占比（无收益容量门终止）
 
 CNInfo 担保披露分支在传输结构门禁终止后，新的机制审计冻结为 [`a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json`](a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json)（SHA‑256 `6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419`）。唯一候选是：
 
@@ -2017,4 +2017,8 @@ python scripts/a_share_rich_data.py \
   sync-eastmoney-monetary-funds-asset-intensity --allow-large
 ```
 
-下一步只允许运行一次 `eastmoney-monetary-funds-asset-intensity-no-return-audit`。它必须先在不加载比较值、原始价格或收益的前提下证明至少 200 个跨五年的非重叠三交易日 cohort；每个截面至少 6 个质量与上市门合格名称、2 个不同值。容量通过后才允许比较固定七项：`eastmoney_balance_sheet_resilience`、`log_total_assets`、`log1p_monetary_funds`、`roe`、`tushare_positive_book_to_market`、`free_float_cap_proxy`、`liquidity_5`；每项至少 100 个有效会话，绝对中位日内秩相关必须低于 0.8。所有无收益门禁通过前，不得读取未来收益、聚合、当前评分、选股、仓位、订单或 Level‑2。
+唯一无收益审计 `20260721T064408Z`（SHA‑256 `f2a5051a0b673c7b22a245b1898d0f8723eedd9ab815a25e0c7ac5a6a7f227d6`）在固定 566 个非重叠三交易日网格上，先把公告严格映射到下一本地交易日，并只保留公告日起不超过 3 个自然日的值。57,973 个展开行中，10,985 个晚披露旧报告行因不得覆盖更新报告而剔除；46,988 个点时持有行经过 20 会话上市与 550 日财务质量门后只剩 9,839 个候选值。最终只有 **114/200** 个完整 cohort，年度为 17/17/19/16/16/13/16，虽覆盖七年但容量不足，因此在第一道无收益门终止。
+
+首次入口调用曾因候选报告期与季度质量报告期同名而在容量计算前中止；没有审计文件、比较字段、价格或收益产生。基础设施修复只把候选审计列改名为 `monetary_funds_report_date`，新增同时保留两个报告期的回归测试后，用完全相同参数完成上述唯一审计；公式、方向、时效、样本、网格、质量、上市、阈值和比较目录均未改变。独立重算复现了 9,839 个合格行、114 个 cohort 和全部年度计数。
+
+容量失败意味着固定七项比较从未加载，唯一性门未运行，也没有读取价格或未来收益。跨克隆终止记录为 [`a_share_eastmoney_monetary_funds_asset_intensity_research_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_research_record.json)（SHA‑256 `d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a`）。不得再次运行验收、全量或无收益审计，不得反向、延长三自然日、降低质量/上市/名称/取值/容量门、改变比较项，亦不得继续收益诊断、聚合、当前评分、选股、仓位、订单或 Level‑2。下一步只能回到一个经济机制独立、在读取新来源行或因子值前冻结的新候选。
