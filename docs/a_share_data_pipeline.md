@@ -2043,7 +2043,7 @@ eastmoney_government_subsidy_disclosure_intensity
 
 `acceptance-eastmoney-government-subsidy-disclosure-intensity` 已永久消费，入口现在必须先验证跟踪记录并在合同、本地上下文、清单扫描或供应商访问前拒绝。不得重请求失败分区或公告来查明细、选择一个代码、把公告复制到多个代码、改变身份/标题/排除词/公式/方向/时点/三日年龄/样本/阈值、创建同机制 v2 或更换供应商救援；也不得继续全历史、容量、唯一性、收益、聚合、当前评分、选股、仓位、订单或 Level‑2。该结果是来源身份合同失败，不是因子收益为正或为负的证据；下一步只能回到新的经济独立机制并在任何新来源行或因子值前重新冻结。
 
-### Eastmoney 重大合同公告强度（唯一来源验收待执行）
+### Eastmoney 重大合同公告强度（来源签订日结构门终止）
 
 政府补助公告分支在来源身份门终止后，新一轮无收益机制核重冻结为 [`a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit_20260721.json`](a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit_20260721.json)（SHA‑256 `5299adf4f15d70ff0f3cc82eb153c67fd90afea0d766e40b6da6e7d57298efe5`）。金额/上年营收版本因历史分母稀疏、当前营收可能包含后续修订且会引入币种与尺度风险而在读取来源行前拒绝；当前唯一候选只刻画商业需求或订单确认事件：
 
@@ -2057,11 +2057,40 @@ eastmoney_major_contract_disclosure_intensity
 
 公告在严格下一本地交易日才生效，最长保持三自然日；新公告生效后替代旧公告，没有事件保持缺失。分页固定每页 500 行并完整对账 `pages/count/data`；一个叶分区超过 40 页时必须在请求后续页前按日期递归二分，单日仍超限即终止。任何缺键、畸形代码/日期、签订日晚于公告日、重复完整身份、分页元数据变化或计数不一致都是致命错误。本来源使用公共静态查询参数，不读取 `TUSHARE_TOKEN`、账号、积分、Cookie、代理或零售客户端会话。
 
-6 项重大合同专项离线测试已覆盖合同指纹、本地上下文、严格身份与文本不落盘、501 行跨页对账、超页先递归二分、严格下一会话三日物化及原子发布；本提交没有执行真实来源验收。冻结验收固定请求 `2019Q1`、`2024Q1`、`2025Q1` 共九个月，唯一获准的下一步命令是：
+6 项重大合同专项离线测试通过后，唯一真实验收按冻结顺序从 `2019Q1` 开始。`2019-01-01` 至 `2019-01-31` 的首个叶分区用 1 次公共请求完整对账 1/1 页、86/86 行；规范化随后发现至少一条来源记录的 `SIGNDATE` 不是字符串，违反“每条签订日必须是完整严格 ISO 类标量字符串且不得晚于公告日”的预注册身份规则。程序没有删除、填充、强制转换、推断或替换该值，也没有继续请求 `2019Q1` 后续月份或 2024/2025 样本。
 
-```bash
-python scripts/a_share_rich_data.py \
-  acceptance-eastmoney-major-contract-disclosure-intensity
+本机失败清单为 `data/metadata/rich_data/runs/20260721T075033Z_eastmoney_major_contract_disclosure_intensity_acceptance_d92dbd6a.json`（SHA‑256 `b94979620fb1b2af2d534b6313d39535f4126bd509e7054721836bcc576be52d`）；跨克隆终止记录为 [`a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json`](a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json)（SHA‑256 `4c89537c713fc1ad0c0769edb73e227669d99c92461d77de9c374f14973e8316`）。规范行和因子值均为 0，`files=[]`，隐藏临时快照已删除；没有重大合同 Parquet 或原始响应目录。合同名称、签订日及其哈希、金额、营收、比率、对手方、关系、文本、价格和收益均未持久化，价格与未来收益也未读取。运行结束后保留的锁文件只是未被进程持有的 PID 标记，不得为“清理”而删除。
+
+`acceptance-eastmoney-major-contract-disclosure-intensity` 已永久消费；7 项专项测试确认入口现在先验证跟踪记录并在本地清单扫描、合同、本地上下文或供应商访问前拒绝。不得重请求失败分区或记录来查看值、删除/填补/转换非字符串签订日、改变字段/身份/公式/方向/时点/三日年龄/样本/阈值、创建同机制 v2 或更换供应商救援；也不得继续全历史、容量、唯一性、收益、聚合、当前评分、选股、仓位、订单或 Level‑2。该结果是来源签订日结构合同失败，不是因子收益为正或为负的证据；下一步只能回到新的经济独立机制并在任何新来源行或因子值前重新冻结。
+
+### CNInfo 股权激励计划草案披露强度（来源验收通过、全历史标题结构门终止）
+
+重大合同分支终止后，新机制核重记录冻结为 [`a_share_three_day_cninfo_equity_incentive_plan_disclosure_intensity_mechanism_overlap_reaudit_20260721.json`](a_share_three_day_cninfo_equity_incentive_plan_disclosure_intensity_mechanism_overlap_reaudit_20260721.json)（SHA‑256 `69450addda402d3a5bef80de41f94a4d817e41de7f89c61719cfa99f90a950bf`）。该候选刻画新披露的管理层/员工薪酬对齐方案，经济机制不同于高管二级市场交易、管理层离任、股东持仓/质押、财务报表、商业合同、价格、资金流和分析师关注度：
+
+```text
+cninfo_equity_incentive_plan_disclosure_intensity
+  = latest already-effective initial_equity_incentive_plan_disclosure_count
+    / (1 + calendar days since announcement date)
 ```
 
-该命令成功只证明来源结构、唯一身份、公式和固定历史样本变化可用；随后仍须另行冻结 2019–2025 全历史无收益协议，并先通过 200 个三日非重叠 cohort 的容量门与固定稀疏近邻/规模流动性唯一性门，才允许冻结一次收益诊断。失败则永久终止这一精确定义。无论结果如何，都不得事后修改字段、身份、公式、方向、时点、三日年龄、样本或阈值，也不得直接聚合、当前评分、选股、仓位、订单或 Level‑2。
+数据合同 [`a_share_cninfo_equity_incentive_plan_disclosure_intensity_data_contract.json`](a_share_cninfo_equity_incentive_plan_disclosure_intensity_data_contract.json)（SHA‑256 `2c63471a7bc76c24d5fef8171bbac9d28d1e4bcc50c11059eb648b902aaad110`）在任何 CNInfo 来源记录、标题、身份、因子值、价格或收益出现前冻结。来源固定为 CNInfo 公告检索公共 `hisAnnouncement/query` 的 `category_gqjl_szsh` 分类，POST 表单分页每页 30 条；只允许传输 `secCode,announcementTime,announcementId,announcementTitle`。公告 ID 与标题只在内存中用于严格身份和分类，发布帧只能保留公告日、股票、同日初始计划草案数和 `cninfo` 来源四列。
+
+标题规则在来源访问前经过一次显式纠正：初始假设错误地要求所有标题都包含“股权激励计划”；常见标准名称还包括“限制性股票激励计划”和“股票期权激励计划”。最终冻结规则为标题必须包含“草案”，并至少包含“限制性股票激励计划 / 股票期权激励计划 / 股权激励计划”之一，同时排除摘要、修订、修正、更正、补充、调整、终止、取消和撤回。该纠正没有读取任何供应商标题、行、因子值、价格或收益；真实来源访问后不得再增删字面量。
+
+每条记录的代码、Unix 毫秒公告时间、公告 ID 和标题都必须完整且类型正确；时间先按 UTC 解释再转 Asia/Shanghai 公告日。支持的主板/创业板之外完整代码只计数并排除；同一股票/公告日/公告 ID 重复、日期越界、标题含角括号标记或分页广告数变化都会终止。公告严格在下一本地交易日生效，最多保留三自然日，新事件覆盖旧事件，缺失永不填零。一个叶分区超过 80 页时只能在读取第一页后先按日期二分；任一失败都原子删除临时快照并冻结该精确机制。
+
+6 项专项离线测试覆盖合同指纹、三类标题、严格身份/隐私、31 行两页 POST 表单、超限二分、下一交易日物化和原子发布；完整采集测试为 212/212。唯一真实验收随后完整请求 2019Q1、2024Q1、2025Q1 九个月：270 个广告页面全部按顺序完成，7,904/7,904 条来源记录对账；其中一次页面请求触发冻结合同允许的瞬时重试，因此供应商调用合计 271 次，没有递归二分。
+
+标题和身份规范后，2019Q1、2024Q1、2025Q1 分别保留 78、108、80 个点时持有事件，共 266 行；满足至少 6 名且至少 2 个值的候选横截面分别为 7、12、5，共 24 个，严格下一交易日/三自然日物化得到 9 个不同因子值。独立复核再次重算了每个窗口事件数、候选横截面、公式、唯一键、四列模式和文件哈希。标题、公告 ID/哈希、响应体、正文、人员身份、授予数量/价格、业绩目标、Token、价格和收益均未持久化或读取。
+
+本机验收清单为 `data/metadata/rich_data/runs/20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8.json`（SHA‑256 `021c37e542565b075b2440f575b4dd0cc9f7758abb017ee6712da2e0c42c134f`）；跨克隆跟踪记录为 [`a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record.json`](a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record.json)（SHA‑256 `4332cc7b10dc90c061d4a997180e5d38192785ed9a453c842742f56c392f07d6`）。剩余锁文件是非活动进程标记，按审计规范保留。
+
+`acceptance-cninfo-equity-incentive-plan-disclosure-intensity` 已永久消费；入口必须先验证跟踪记录，并在本地清单扫描、合同、本地上下文或网络访问前拒绝重跑。验收通过只证明冻结的公共传输、标题分类、身份、公式和三个历史样本的横截面变化成立，不证明 2019–2025 全历史容量、与既有因子的独立性或收益。
+
+验收后且在任何未验收月份来源行前，新的全历史无收益协议冻结为 [`a_share_cninfo_equity_incentive_plan_disclosure_intensity_no_return_preregistration.json`](a_share_cninfo_equity_incentive_plan_disclosure_intensity_no_return_preregistration.json)（SHA‑256 `8f49a2febee16e14dc0a142c6678dffbea264f4dff89df3e893d88558a0e35c4`）。它绑定机制、合同、验收记录、验收清单、266 行验收快照及全部本地上下文，固定 2019‑01 至 2025‑12 共 84 个月：九个验收月直接复用且禁止再请求，其余 75 个月按时间顺序请求；所有月份成功后才原子发布 2019–2025 七个年度四列 Parquet。任何失败都会删除完整临时根并永久终止，不能续传或重跑。
+
+全历史离线实现新增协议指纹、复用月和七年原子发布测试，完整采集测试达到 215/215；预检确认全量记录/本地清单/并发进程均不存在后，唯一全量命令被执行一次。程序先在内存复用 2019‑01 至 2019‑03 的 78 行验收事件，三个验收月供应商调用为 0；随后请求首个未验收月 2019‑04，22/22 页、654/654 条来源记录完整对账。严格必需字段规范化发现至少一条公告标题含角括号标记，违反冻结合同“标题不得含角括号 markup”的规则，因此立即终止。
+
+程序没有去除标签、转义、删除记录、重解释标题或重请求失败月；2019‑05 及以后月份均未请求。失败清单为 `data/metadata/rich_data/runs/20260721T082754Z_cninfo_equity_incentive_plan_disclosure_intensity_full_29dcdd5e.json`（SHA‑256 `4ed7a714fd1b890293331402caf0fe95d310498416ae5873ca2aaaffc8244233`）；跨克隆终止记录为 [`a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json`](a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json)（SHA‑256 `6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375`）。`files=[]`、年度分区为 0、隐藏临时快照已删除；标题/ID 明文或哈希、响应体、正文、人员身份、计划经济字段、比较字段、价格和收益均未持久化或读取。剩余全量锁文件是非活动 PID 标记，必须保留。
+
+`sync-cninfo-equity-incentive-plan-disclosure-intensity --allow-large` 已永久消费；跟踪记录守卫必须在本地清单扫描、协议、合同、本地上下文或供应商访问前拒绝重跑。不得去标签后再试、重请求 2019‑04 或具体记录、跳过/删除/修复该行、改变标题/身份/字段/日期/公式/方向/三日年龄、续传剩余 74 个月、创建同机制 v2 或更换供应商。全历史未通过，所以容量和唯一性不得运行；也不得访问收益、聚合、当前评分、选股、仓位、订单或 Level‑2。该结果只证明冻结标题结构合同与当前公共历史快照不兼容，不说明因子收益好坏；后续回到新的无收益经济独立机制。

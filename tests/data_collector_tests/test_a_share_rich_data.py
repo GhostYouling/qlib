@@ -5215,6 +5215,22 @@ def eastmoney_major_contract_row(
     }
 
 
+def cninfo_equity_incentive_plan_row(
+    code: str,
+    announcement_date: str,
+    announcement_id: str,
+    title: str = "2025年限制性股票激励计划（草案）",
+) -> dict[str, object]:
+    local = pd.Timestamp(announcement_date, tz="Asia/Shanghai")
+    announcement_time = int(local.tz_convert("UTC").timestamp() * 1000)
+    return {
+        "secCode": code,
+        "announcementTime": announcement_time,
+        "announcementId": announcement_id,
+        "announcementTitle": title,
+    }
+
+
 def test_eastmoney_government_subsidy_contract_is_fingerprint_frozen(tmp_path):
     contract = (
         RICH.load_eastmoney_government_subsidy_disclosure_intensity_contract()
@@ -5647,6 +5663,52 @@ def test_eastmoney_major_contract_contract_is_fingerprint_frozen(tmp_path):
         RICH.load_eastmoney_major_contract_disclosure_intensity_contract(changed_path)
 
 
+def test_eastmoney_major_contract_terminal_record_and_guard_are_frozen(
+    tmp_path, monkeypatch
+):
+    record = (
+        RICH.load_eastmoney_major_contract_disclosure_intensity_acceptance_record()
+    )
+    observed = record["frozen_request_observed_result"]
+    privacy = record["privacy_and_scope"]
+    terminal = record["terminal_decision"]
+    assert record["status"] == (
+        "terminal_source_signing_date_schema_rejected_before_factor_values_"
+        "full_history_capacity_uniqueness_or_returns"
+    )
+    assert observed["provider_calls_issued"] == 1
+    assert observed["advertised_source_rows"] == 86
+    assert observed["received_source_rows"] == 86
+    assert observed["rejection_code"] == "non_string_signing_date"
+    assert observed["factor_values_derived"] == 0
+    assert observed["published_files"] == []
+    assert privacy["price_fields_loaded"] == []
+    assert privacy["forward_return_fields_read"] is False
+    assert terminal["acceptance_consumed"] is True
+    assert terminal["acceptance_retry_allowed"] is False
+    assert terminal["full_source_sync_allowed"] is False
+
+    changed = copy.deepcopy(record)
+    changed["frozen_request_observed_result"]["provider_calls_issued"] = 2
+    changed_path = tmp_path / "changed-major-contract-record.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_eastmoney_major_contract_disclosure_intensity_acceptance_record(
+            changed_path
+        )
+
+    def local_manifest_scan_must_not_run():
+        raise AssertionError("tracked terminal record must reject before local scan")
+
+    monkeypatch.setattr(
+        RICH,
+        "eastmoney_major_contract_acceptance_records",
+        local_manifest_scan_must_not_run,
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.guard_eastmoney_major_contract_acceptance()
+
+
 def test_eastmoney_major_contract_identity_rules_are_strict_and_text_free():
     rows = [
         eastmoney_major_contract_row(
@@ -5965,6 +6027,626 @@ def test_eastmoney_major_contract_acceptance_is_atomic_and_text_free(
             universe_path=universe,
             calendar_path=calendar,
         )
+
+
+def test_cninfo_equity_incentive_contract_and_cli_are_frozen(tmp_path):
+    contract = (
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+    )
+    assert contract["provider_contract"]["fixed_parameters"] == {
+        "pageSize": "30",
+        "column": "szse",
+        "tabName": "fulltext",
+        "plate": "",
+        "stock": "",
+        "searchkey": "",
+        "secid": "",
+        "category": "category_gqjl_szsh",
+        "trade": "",
+        "sortName": "",
+        "sortType": "",
+        "isHLtitle": "true",
+    }
+    assert contract["title_classification"]["required_literals_all"] == ["草案"]
+    assert contract["title_classification"]["required_plan_literals_any"] == [
+        "限制性股票激励计划",
+        "股票期权激励计划",
+        "股权激励计划",
+    ]
+    assert contract["normalized_snapshot"]["columns"] == list(
+        RICH.CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+    RICH.validate_cninfo_equity_incentive_plan_local_context(contract)
+    assert (
+        RICH.build_parser()
+        .parse_args(
+            ["acceptance-cninfo-equity-incentive-plan-disclosure-intensity"]
+        )
+        .command
+        == "acceptance-cninfo-equity-incentive-plan-disclosure-intensity"
+    )
+
+    changed = copy.deepcopy(contract)
+    changed["title_classification"]["required_plan_literals_any"].append(
+        "员工持股计划"
+    )
+    changed_path = tmp_path / "changed-cninfo-equity-incentive-contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_contract(
+            changed_path
+        )
+
+
+def test_cninfo_equity_incentive_acceptance_record_and_guard_are_frozen(
+    tmp_path, monkeypatch
+):
+    record = (
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_record()
+    )
+    observed = record["frozen_request_observed_result"]
+    snapshot = record["published_snapshot"]
+    next_stage = record["next_stage_decision"]
+    assert observed["provider_calls_issued"] == 271
+    assert observed["advertised_source_rows"] == 7904
+    assert observed["received_source_rows"] == 7904
+    assert observed["published_event_rows"] == 266
+    assert observed["candidate_cross_sections_total"] == 24
+    assert snapshot["columns"] == list(
+        RICH.CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert snapshot["title_announcement_id_or_hash_persisted"] is False
+    assert record["privacy_and_scope"]["price_fields_loaded"] == []
+    assert record["privacy_and_scope"]["forward_return_fields_read"] is False
+    assert next_stage["acceptance_consumed"] is True
+    assert next_stage["acceptance_retry_allowed"] is False
+
+    changed = copy.deepcopy(record)
+    changed["frozen_request_observed_result"]["provider_calls_issued"] = 272
+    changed_path = tmp_path / "changed-cninfo-equity-incentive-record.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_record(
+            changed_path
+        )
+
+    def local_manifest_scan_must_not_run():
+        raise AssertionError("tracked acceptance must reject before local scan")
+
+    monkeypatch.setattr(
+        RICH,
+        "cninfo_equity_incentive_plan_acceptance_records",
+        local_manifest_scan_must_not_run,
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.guard_cninfo_equity_incentive_plan_acceptance()
+
+
+def test_cninfo_equity_incentive_title_identity_and_privacy_are_strict():
+    rows = [
+        cninfo_equity_incentive_plan_row(
+            "600519", "2025-01-10", "A1", "2025年限制性股票激励计划（草案）"
+        ),
+        cninfo_equity_incentive_plan_row(
+            "600519", "2025-01-10", "A2", "2025年股票期权激励计划（草案）"
+        ),
+        cninfo_equity_incentive_plan_row(
+            "000001", "2025-01-10", "A3", "2025年股权激励计划（草案）"
+        ),
+        cninfo_equity_incentive_plan_row(
+            "300750", "2025-01-10", "A4", "限制性股票激励计划（草案）摘要"
+        ),
+        cninfo_equity_incentive_plan_row(
+            "300750", "2025-01-10", "A5", "关于召开股东大会的公告"
+        ),
+        cninfo_equity_incentive_plan_row(
+            "688981", "2025-01-10", "A6", "限制性股票激励计划（草案）"
+        ),
+    ]
+    contract = (
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+    )
+    normalized, quality = RICH.canonicalize_cninfo_equity_incentive_plan_rows(
+        rows,
+        dt.date(2025, 1, 1),
+        dt.date(2025, 1, 31),
+        contract=contract,
+    )
+    assert normalized.columns.tolist() == list(
+        RICH.CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert normalized["instrument"].tolist() == ["SH600519", "SZ000001"]
+    assert normalized[
+        "initial_equity_incentive_plan_disclosure_count"
+    ].tolist() == [2, 1]
+    assert quality["supported_source_rows"] == 5
+    assert quality["unsupported_board_rows_excluded"] == 1
+    assert quality["nonmatching_title_rows_excluded"] == 2
+    assert quality["qualifying_source_rows"] == 3
+    assert quality["title_announcement_id_or_hash_persisted"] is False
+    assert not ({"announcementTitle", "announcementId"} & set(normalized))
+
+    with pytest.raises(RICH.RichDataError, match="duplicate source identity"):
+        RICH.canonicalize_cninfo_equity_incentive_plan_rows(
+            [rows[0], rows[0]],
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 31),
+            contract=contract,
+        )
+    malformed = copy.deepcopy(rows[0])
+    malformed["announcementTime"] = "1736438400000"
+    with pytest.raises(RICH.RichDataError, match="non-integer announcementTime"):
+        RICH.canonicalize_cninfo_equity_incentive_plan_rows(
+            [malformed],
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 31),
+            contract=contract,
+        )
+
+
+def test_cninfo_equity_incentive_partition_is_count_complete_post_form():
+    rows = [
+        cninfo_equity_incentive_plan_row(
+            "600519", "2025-01-10", f"A{index:03d}"
+        )
+        for index in range(31)
+    ]
+    calls = []
+
+    class Response:
+        status_code = 200
+
+        def __init__(self, page):
+            self.page = page
+
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            page_rows = rows[:30] if self.page == 1 else rows[30:]
+            return {"totalAnnouncement": 31, "announcements": page_rows}
+
+    class Session:
+        def post(self, url, *, data, timeout):
+            calls.append((url, dict(data), timeout))
+            return Response(int(data["pageNum"]))
+
+    fetched, quality = RICH.fetch_cninfo_equity_incentive_plan_partition(
+        dt.date(2025, 1, 1),
+        dt.date(2025, 1, 31),
+        session=Session(),
+        page_pause_seconds=0.0,
+    )
+    assert fetched == rows
+    assert [call[1]["pageNum"] for call in calls] == ["1", "2"]
+    assert all(call[1]["category"] == "category_gqjl_szsh" for call in calls)
+    assert all(call[1]["seDate"] == "2025-01-01~2025-01-31" for call in calls)
+    assert all(call[1]["pageSize"] == "30" for call in calls)
+    assert quality["advertised_rows"] == quality["received_rows"] == 31
+    assert quality["requested_pages"] == [1, 2]
+    assert quality["provider_calls"] == 2
+
+
+def test_cninfo_equity_incentive_partition_bisects_before_later_pages(
+    monkeypatch,
+):
+    contract = (
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+    )
+    calls = []
+
+    def fetch(start_date, end_date, **kwargs):
+        calls.append((start_date, end_date))
+        if start_date == dt.date(2025, 1, 1) and end_date == dt.date(2025, 1, 4):
+            raise RICH.CninfoAnnouncementPartitionTooLarge(
+                start_date,
+                end_date,
+                pages=81,
+                advertised_count=2_401,
+                ceiling=80,
+            )
+        return [], {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 0,
+            "requested_pages": [1],
+            "advertised_rows": 0,
+            "received_rows": 0,
+            "page_size": 30,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+
+    monkeypatch.setattr(
+        RICH, "fetch_cninfo_equity_incentive_plan_partition", fetch
+    )
+    leaves, bisections = (
+        RICH.fetch_cninfo_equity_incentive_plan_partition_details(
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 4),
+            contract=contract,
+            page_pause_seconds=0.0,
+        )
+    )
+    assert calls == [
+        (dt.date(2025, 1, 1), dt.date(2025, 1, 4)),
+        (dt.date(2025, 1, 1), dt.date(2025, 1, 2)),
+        (dt.date(2025, 1, 3), dt.date(2025, 1, 4)),
+    ]
+    assert [(start, end) for start, end, _, _ in leaves] == calls[1:]
+    assert bisections[0]["provider_probe_calls"] == 1
+    assert bisections[0]["left_end"] == "2025-01-02"
+    assert bisections[0]["right_start"] == "2025-01-03"
+
+
+def test_cninfo_equity_incentive_materialization_is_strict_next_session():
+    events = pd.DataFrame(
+        [
+            {
+                "announcement_date": "2025-01-10",
+                "instrument": "SH600519",
+                "initial_equity_incentive_plan_disclosure_count": 2,
+                "provider": "cninfo",
+            },
+            {
+                "announcement_date": "2025-01-13",
+                "instrument": "SH600519",
+                "initial_equity_incentive_plan_disclosure_count": 1,
+                "provider": "cninfo",
+            },
+        ]
+    ).loc[
+        :,
+        list(RICH.CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS),
+    ]
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(
+            ["2025-01-10", "2025-01-13", "2025-01-14", "2025-01-15", "2025-01-16"]
+        )
+    )
+    materialized = (
+        RICH.materialize_cninfo_equity_incentive_plan_acceptance_sessions(
+            events, calendar
+        )
+    )
+    assert materialized["datetime"].tolist() == list(calendar[1:])
+    assert materialized["equity_incentive_plan_announcement_date"].tolist() == [
+        pd.Timestamp("2025-01-10"),
+        pd.Timestamp("2025-01-13"),
+        pd.Timestamp("2025-01-13"),
+        pd.Timestamp("2025-01-13"),
+    ]
+    assert materialized["event_age_calendar_days"].tolist() == [3, 1, 2, 3]
+    assert materialized[
+        "cninfo_equity_incentive_plan_disclosure_intensity"
+    ].tolist() == pytest.approx([0.5, 0.5, 1.0 / 3.0, 0.25])
+    assert materialized.duplicated(["instrument", "datetime"]).sum() == 0
+
+
+def test_cninfo_equity_incentive_acceptance_is_atomic_and_text_free(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+    )
+    acceptance = contract["acceptance_protocol"]
+    acceptance["minimum_supported_source_rows_per_window"] = 6
+    acceptance["minimum_qualifying_events_per_window"] = 4
+    acceptance["minimum_qualifying_events_total"] = 12
+    acceptance["minimum_candidate_cross_sections_per_window"] = 1
+    acceptance["minimum_candidate_cross_sections_total"] = 3
+    acceptance["minimum_names_per_candidate_cross_section"] = 2
+    acceptance["minimum_distinct_factor_values_per_candidate_cross_section"] = 2
+    acceptance["minimum_distinct_factor_values_across_samples"] = 2
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2018-01-01\t2026-12-31\n"
+        "SZ000001\t2018-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    calendar = tmp_path / "day.txt"
+    calendar.write_text(
+        "\n".join(
+            item.strftime("%Y-%m-%d")
+            for item in pd.bdate_range("2019-01-01", "2025-04-15")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    def fetch(start_date, end_date, *, contract):
+        announcement_date = (start_date + dt.timedelta(days=1)).isoformat()
+        rows = [
+            cninfo_equity_incentive_plan_row(
+                "600519",
+                announcement_date,
+                f"{start_date:%Y%m}-A1",
+                "限制性股票激励计划（草案）",
+            ),
+            cninfo_equity_incentive_plan_row(
+                "600519",
+                announcement_date,
+                f"{start_date:%Y%m}-A2",
+                "股票期权激励计划（草案）",
+            ),
+            cninfo_equity_incentive_plan_row(
+                "000001",
+                announcement_date,
+                f"{start_date:%Y%m}-A3",
+                "股权激励计划（草案）",
+            ),
+        ]
+        quality = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 1,
+            "requested_pages": [1],
+            "advertised_rows": 3,
+            "received_rows": 3,
+            "page_size": 30,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+        return [(start_date, end_date, rows, quality)], []
+
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_equity_incentive_plan_disclosure_intensity_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_cninfo_equity_incentive_plan_local_context",
+        lambda unused: None,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_cninfo_equity_incentive_plan_partition_details",
+        fetch,
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD",
+        tmp_path / "missing-record.json",
+    )
+
+    manifest_path = (
+        RICH.sync_cninfo_equity_incentive_plan_disclosure_intensity_acceptance(
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == (
+        "cninfo_equity_incentive_plan_disclosure_intensity_acceptance"
+    )
+    assert manifest["acceptance_status"] == acceptance["success_status"]
+    assert manifest["source_request"]["provider_calls"] == 9
+    assert manifest["source_request"][
+        "raw_response_title_id_or_hash_persisted"
+    ] is False
+    assert manifest["source_quality"]["combined_rows_written"] == 18
+    assert manifest["source_quality"]["combined_candidate_cross_sections"] >= 3
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(
+        RICH.CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+    )
+    assert len(stored) == 18
+    assert not ({"announcementTitle", "announcementId"} & set(stored))
+    with pytest.raises(RICH.RichDataError, match="one-shot"):
+        RICH.sync_cninfo_equity_incentive_plan_disclosure_intensity_acceptance(
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+
+
+def test_cninfo_equity_incentive_no_return_spec_and_full_cli_are_frozen():
+    spec = (
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_no_return_spec()
+    )
+    full = spec["full_source_snapshot_contract"]
+    capacity = spec["capacity_contract"]
+    assert full["required_month_count"] == 84
+    assert full["acceptance_reuse_month_count"] == 9
+    assert full["new_network_month_count"] == 75
+    assert full["required_final_annual_partition_count"] == 7
+    assert full["acceptance_rows_reused_without_provider_rerequest"] is True
+    assert capacity["must_run_before_any_comparison_field"] is True
+    assert capacity["minimum_required_cohorts"] == 200
+    assert spec["price_fields_loaded"] == []
+    assert spec["forward_return_fields_read"] is False
+    RICH.validate_cninfo_equity_incentive_plan_no_return_local_context(spec)
+    parsed = RICH.build_parser().parse_args(
+        [
+            "sync-cninfo-equity-incentive-plan-disclosure-intensity",
+            "--allow-large",
+        ]
+    )
+    assert parsed.command == (
+        "sync-cninfo-equity-incentive-plan-disclosure-intensity"
+    )
+    assert parsed.allow_large is True
+
+
+def test_cninfo_equity_incentive_full_terminal_record_and_guard_are_frozen(
+    tmp_path, monkeypatch
+):
+    record = (
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record()
+    )
+    observed = record["frozen_request_observed_result"]
+    privacy = record["privacy_and_scope"]
+    terminal = record["terminal_decision"]
+    assert observed["accepted_month_provider_calls"] == 0
+    assert observed["new_network_months_started"] == ["2019-04"]
+    assert observed["provider_calls_issued"] == 22
+    assert observed["advertised_source_rows"] == 654
+    assert observed["received_source_rows"] == 654
+    assert observed["rejection_code"] == (
+        "announcement_title_contains_forbidden_angle_bracket_markup"
+    )
+    assert observed["published_files"] == []
+    assert observed["partial_snapshot_deleted"] is True
+    assert privacy["comparison_fields_loaded"] == []
+    assert privacy["price_fields_loaded"] == []
+    assert privacy["forward_return_fields_read"] is False
+    assert terminal["full_source_attempt_consumed"] is True
+    assert terminal["full_source_retry_or_resume_allowed"] is False
+    assert terminal["capacity_or_uniqueness_allowed"] is False
+
+    changed = copy.deepcopy(record)
+    changed["frozen_request_observed_result"]["provider_calls_issued"] = 23
+    changed_path = tmp_path / "changed-cninfo-equity-full-record.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record(
+            changed_path
+        )
+
+    def local_manifest_scan_must_not_run():
+        raise AssertionError("tracked full record must reject before local scan")
+
+    monkeypatch.setattr(
+        RICH,
+        "cninfo_equity_incentive_plan_full_source_records",
+        local_manifest_scan_must_not_run,
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.guard_cninfo_equity_incentive_plan_full_source()
+
+
+def test_cninfo_equity_incentive_full_source_reuses_acceptance_and_is_atomic(
+    tmp_path, monkeypatch
+):
+    spec = copy.deepcopy(
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_no_return_spec()
+    )
+    contract = copy.deepcopy(
+        RICH.load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+    )
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2018-01-01\t2026-12-31\n"
+        "SZ000001\t2018-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    spec["local_context"]["holding_universe"]["sha256"] = RICH.file_digest(
+        universe
+    )
+    calls = []
+
+    def fetch(start_date, end_date, *, contract):
+        calls.append((start_date, end_date))
+        announcement_date = (start_date + dt.timedelta(days=1)).isoformat()
+        rows = [
+            cninfo_equity_incentive_plan_row(
+                "600519",
+                announcement_date,
+                f"{start_date:%Y%m}-A1",
+                "限制性股票激励计划（草案）",
+            ),
+            cninfo_equity_incentive_plan_row(
+                "600519",
+                announcement_date,
+                f"{start_date:%Y%m}-A2",
+                "股票期权激励计划（草案）",
+            ),
+            cninfo_equity_incentive_plan_row(
+                "000001",
+                announcement_date,
+                f"{start_date:%Y%m}-A3",
+                "股权激励计划（草案）",
+            ),
+        ]
+        quality = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 1,
+            "requested_pages": [1],
+            "advertised_rows": 3,
+            "received_rows": 3,
+            "page_size": 30,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+        return [(start_date, end_date, rows, quality)], []
+
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_equity_incentive_plan_disclosure_intensity_no_return_spec",
+        lambda: spec,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_cninfo_equity_incentive_plan_no_return_local_context",
+        lambda unused: None,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_equity_incentive_plan_disclosure_intensity_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_record",
+        lambda: {},
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_cninfo_equity_incentive_plan_partition_details",
+        fetch,
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_FULL_SOURCE_RECORD",
+        tmp_path / "missing-full-record.json",
+    )
+
+    manifest_path = (
+        RICH.sync_cninfo_equity_incentive_plan_disclosure_intensity_full_source(
+            allow_large=True,
+            universe_path=universe,
+        )
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["full_source_status"] == (
+        "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+    )
+    assert manifest["source_acceptance"]["provider_rerequested"] is False
+    assert manifest["source_acceptance"]["rows_reused"] == 266
+    assert manifest["source_request"]["network_months_requested"] == 75
+    assert manifest["source_request"]["provider_calls"] == 75
+    assert len(calls) == 75
+    accepted_months = set(
+        spec["full_source_snapshot_contract"]["acceptance_reuse_months"]
+    )
+    assert not ({start.strftime("%Y-%m") for start, _ in calls} & accepted_months)
+    assert len(manifest["files"]) == 7
+    assert sum(item["rows"] for item in manifest["files"]) == 416
+    for item in manifest["files"]:
+        stored = pd.read_parquet(RICH.resolve_record_path(item["path"]))
+        assert stored.columns.tolist() == list(
+            RICH.CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+        )
+        assert not ({"announcementTitle", "announcementId"} & set(stored))
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    with pytest.raises(RICH.RichDataError, match="one-shot"):
+        RICH.sync_cninfo_equity_incentive_plan_disclosure_intensity_full_source(
+            allow_large=True,
+            universe_path=universe,
+        )
+    assert len(calls) == 75
 
 
 def test_eastmoney_related_party_sparsity_contract_is_fingerprint_frozen(tmp_path):

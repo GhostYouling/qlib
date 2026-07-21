@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "kind": "a_share_cninfo_equity_incentive_plan_disclosure_intensity_no_return_preregistration",
+  "status": "frozen_after_unique_source_acceptance_before_full_history_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-21T08:20:50Z",
+  "purpose": "Bind the accepted public CNInfo plan-draft event source to one atomic 2019-2025 full snapshot and ordered no-return capacity and uniqueness gates before any additional title rule, comparison value, price, or factor return is read.",
+  "freeze_evidence": {
+    "accepted_sample_rows_and_aggregate_quality_observed": true,
+    "accepted_announcement_titles_ids_or_hashes_observed_or_persisted": false,
+    "unaccepted_month_provider_rows_or_factor_values_observed": false,
+    "full_history_capacity_observed": false,
+    "comparison_values_observed_for_this_candidate": false,
+    "price_or_factor_returns_observed_for_this_candidate": false,
+    "selection_or_promotion_performed": false
+  },
+  "source_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_cninfo_equity_incentive_plan_disclosure_intensity_mechanism_overlap_reaudit_20260721.json",
+      "sha256": "69450addda402d3a5bef80de41f94a4d817e41de7f89c61719cfa99f90a950bf"
+    },
+    "data_contract": {
+      "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_data_contract.json",
+      "sha256": "2c63471a7bc76c24d5fef8171bbac9d28d1e4bcc50c11059eb648b902aaad110",
+      "preregistered_at": "2026-07-21T07:58:36Z"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record.json",
+      "sha256": "4332cc7b10dc90c061d4a997180e5d38192785ed9a453c842742f56c392f07d6"
+    },
+    "source_acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8.json",
+      "sha256": "021c37e542565b075b2440f575b4dd0cc9f7758abb017ee6712da2e0c42c134f",
+      "run_id": "20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8"
+    },
+    "source_acceptance_frame": {
+      "path": "data/raw/a_share/rich/cninfo/equity_incentive_plan_disclosure_intensity/acceptance/20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8/equity_incentive_events.parquet",
+      "content_sha256": "739e2123dc3b4da21760795c31440db112e0e140155823a37c59f81d161de20f",
+      "file_sha256": "3e9250131712c89701b49b92e4455228f779047935915d429b0b60c0d259ef98",
+      "rows": 266,
+      "columns": [
+        "announcement_date",
+        "instrument",
+        "initial_equity_incentive_plan_disclosure_count",
+        "provider"
+      ]
+    }
+  },
+  "factor_protocol": {
+    "factor_name": "cninfo_equity_incentive_plan_disclosure_intensity",
+    "raw_context_name": "initial_equity_incentive_plan_disclosure_count",
+    "formula": "latest already-effective initial_equity_incentive_plan_disclosure_count / (1 + calendar_days_since_announcement_date)",
+    "direction": "higher_is_better",
+    "availability": "first local trading session strictly after announcement_date",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_event_age_calendar_days": 3,
+    "later_effective_event_supersedes_older_event": true,
+    "absent_event_policy": "missing",
+    "normalized_columns": [
+      "announcement_date",
+      "instrument",
+      "initial_equity_incentive_plan_disclosure_count",
+      "provider"
+    ]
+  },
+  "full_source_snapshot_contract": {
+    "dataset": "cninfo_equity_incentive_plan_disclosure_intensity",
+    "provider": "cninfo",
+    "required_success_status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "required_partition_month_start": "2019-01",
+    "required_partition_month_end": "2025-12",
+    "required_month_count": 84,
+    "acceptance_reuse_months": [
+      "2019-01",
+      "2019-02",
+      "2019-03",
+      "2024-01",
+      "2024-02",
+      "2024-03",
+      "2025-01",
+      "2025-02",
+      "2025-03"
+    ],
+    "acceptance_reuse_month_count": 9,
+    "new_network_month_count": 75,
+    "new_network_month_order": "chronological from 2019-01 through 2025-12, skipping the nine accepted months",
+    "acceptance_rows_reused_without_provider_rerequest": true,
+    "endpoint": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+    "category": "category_gqjl_szsh",
+    "request_method": "POST_FORM",
+    "requested_fields": [
+      "secCode",
+      "announcementTime",
+      "announcementId",
+      "announcementTitle"
+    ],
+    "title_rule_must_match_accepted_contract_exactly": true,
+    "page_size": 30,
+    "maximum_pages_per_leaf_partition": 80,
+    "maximum_attempts_per_page": 3,
+    "minimum_page_pause_seconds": 0.1,
+    "requests_are_sequential": true,
+    "recursive_bisection_before_later_pages_when_month_exceeds_ceiling": true,
+    "single_date_above_page_ceiling_is_fatal": true,
+    "every_final_leaf_advertised_count_must_equal_received_rows": true,
+    "empty_leaf_allowed_only_when_count_metadata_is_complete": true,
+    "every_year_must_have_at_least_one_point_in_time_holding_event": true,
+    "minimum_distinct_event_counts_across_full_snapshot": 2,
+    "final_partitioning": "seven immutable annual Parquet files for 2019 through 2025",
+    "required_final_annual_partition_count": 7,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "partial_snapshot_accepted": false,
+    "one_full_snapshot_attempt_after_acceptance": true,
+    "immutable_partition_files_and_manifest": true,
+    "raw_source_rows_titles_ids_or_hashes_persisted": false,
+    "failure_policy": "Delete the entire hidden temporary snapshot, publish no final annual partition or success manifest, write one terminal no-return full-source record, and stop without retry, partial resume, provider substitution, altered title, identity, date, field, formula, direction, timing, threshold, price, or return.",
+    "tracked_record_path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json"
+  },
+  "capacity_contract": {
+    "must_run_before_any_comparison_field": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_factor_age_calendar_days": 3,
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY, effective only after the next local session following announcement",
+    "price_open_close_market_state_or_forward_return_fields_allowed": false,
+    "failure_policy": "Write one terminal no-return capacity record and stop without comparison fields, prices, returns, altered event age, overlapping cohorts, lower name/value/cohort/year thresholds, aggregation, scoring, or selection."
+  },
+  "uniqueness_contract_after_capacity_only": {
+    "screen_start": "2019-01-01",
+    "screen_end": "2025-12-31",
+    "candidate_value": "cninfo_equity_incentive_plan_disclosure_intensity",
+    "required_sparse_near_neighbors": [
+      "repurchase_event_count",
+      "repurchase_freshness",
+      "major_holder_event_count",
+      "pledge_event_count",
+      "institutional_survey_event_count",
+      "institutional_survey_freshness",
+      "analyst_valid_rating_report_count",
+      "related_party_transaction_count",
+      "insider_open_market_event_count"
+    ],
+    "required_size_liquidity_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ],
+    "sparse_minimum_pairwise_names_per_session": 6,
+    "dense_minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_for_statistical_gate": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "semantic_review_required_for_every_sparse_neighbor": true,
+    "semantic_rejection_question": "Does the candidate reduce to generic announcement attention or an ownership, insider-transaction, repurchase, or pledge event rather than a newly disclosed compensation-alignment plan?",
+    "sparse_insufficient_overlap_policy": "Record overlap and descriptive correlation without statistical pass or fail; semantic independence remains mandatory.",
+    "all_dense_confounders_must_have_minimum_sessions_and_pass": true,
+    "catalog_or_threshold_change_after_full_source_allowed": false,
+    "failure_policy": "Stop without dropping a near neighbor or confounder, changing the sparse framework, reading returns, or combining with another factor."
+  },
+  "gate_order": [
+    "validate this preregistration, tracked acceptance record, local acceptance manifest and frame, data contract, mechanism audit, universe, calendar, quarterly quality, price-basis context, frontier, predecessor terminal record, and execution-policy fingerprints without network",
+    "run one atomic full-source snapshot using nine accepted months and exactly seventy-five new monthly ranges, recursively bisecting only before unsafe later pages",
+    "freeze the full-source success or terminal failure record before another source command",
+    "if full source passes, run the fixed no-price capacity gate before loading any comparison field",
+    "only after capacity passes, load exactly nine sparse neighbors and three dense confounders for the frozen no-return uniqueness audit",
+    "only if every no-return gate passes, freeze a separate one-time return and execution diagnostic before any price access"
+  ],
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "price_or_return_access_allowed_by_this_record": false
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "predecessor_terminal_mechanism": {
+      "path": "docs/a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json",
+      "sha256": "4c89537c713fc1ad0c0769edb73e227669d99c92461d77de9c374f14973e8316"
+    },
+    "prospective_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "capital_cny": 200000,
+      "board_lot_shares": 100
+    }
+  },
+  "prohibited_actions": [
+    "repeat any of the nine accepted monthly provider requests",
+    "change provider, endpoint, category, title groups, identity, fields, dates, factor, direction, availability timing, age, universe, capacity, comparison catalog, or uniqueness threshold",
+    "persist or inspect titles, announcement ids or hashes, bodies, URLs, participant identities, grant economics, performance targets, credentials, prices, or returns as a replacement field",
+    "publish or use a partial snapshot, resume a failed partial snapshot, retry a full-source failure, or rescue the branch with a same-mechanism version or provider substitution",
+    "aggregate with another factor, current-score, select, size, order, or justify Level-2 before every no-return gate passes"
+  ],
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

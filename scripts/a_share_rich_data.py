@@ -295,6 +295,26 @@ DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD = (
     / "docs"
     / "a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json"
 )
+DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_equity_incentive_plan_disclosure_intensity_data_contract.json"
+)
+DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record.json"
+)
+DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_equity_incentive_plan_disclosure_intensity_no_return_preregistration.json"
+)
+DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_FULL_SOURCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json"
+)
 DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_cninfo_guarantee_sparsity_data_contract.json"
 )
@@ -566,7 +586,22 @@ EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256 = (
     "5299adf4f15d70ff0f3cc82eb153c67fd90afea0d766e40b6da6e7d57298efe5"
 )
 EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256 = (
-    "pending_after_one_shot_acceptance"
+    "4c89537c713fc1ad0c0769edb73e227669d99c92461d77de9c374f14973e8316"
+)
+CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT_SHA256 = (
+    "2c63471a7bc76c24d5fef8171bbac9d28d1e4bcc50c11059eb648b902aaad110"
+)
+CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256 = (
+    "69450addda402d3a5bef80de41f94a4d817e41de7f89c61719cfa99f90a950bf"
+)
+CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256 = (
+    "4332cc7b10dc90c061d4a997180e5d38192785ed9a453c842742f56c392f07d6"
+)
+CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC_SHA256 = (
+    "8f49a2febee16e14dc0a142c6678dffbea264f4dff89df3e893d88558a0e35c4"
+)
+CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_FULL_SOURCE_RECORD_SHA256 = (
+    "6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375"
 )
 CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256 = (
     "1c59a4fdabbb7ae82d3279e83f81e55b3518f9634201379a96d59e25a7e12e68"
@@ -1073,6 +1108,18 @@ EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_COLUMNS = (
     "major_contract_disclosure_count",
     "provider",
 )
+CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_RAW_FIELDS = (
+    "secCode",
+    "announcementTime",
+    "announcementId",
+    "announcementTitle",
+)
+CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS = (
+    "announcement_date",
+    "instrument",
+    "initial_equity_incentive_plan_disclosure_count",
+    "provider",
+)
 CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES = (
     "announcement_statistics_interval",
     "guarantee_amount_to_parent_equity_ratio_transport_only",
@@ -1152,6 +1199,30 @@ class EastmoneyPartitionTooLarge(RichDataError):
         self.ceiling = ceiling
         super().__init__(
             "Eastmoney related-party partition exceeds the frozen page ceiling: "
+            f"{start_date.isoformat()} to {end_date.isoformat()}, "
+            f"pages={pages}, ceiling={ceiling}"
+        )
+
+
+class CninfoAnnouncementPartitionTooLarge(RichDataError):
+    """Signal a count-known CNInfo date range that requires bisection."""
+
+    def __init__(
+        self,
+        start_date: dt.date,
+        end_date: dt.date,
+        *,
+        pages: int,
+        advertised_count: int,
+        ceiling: int,
+    ) -> None:
+        self.start_date = start_date
+        self.end_date = end_date
+        self.pages = pages
+        self.advertised_count = advertised_count
+        self.ceiling = ceiling
+        super().__init__(
+            "CNInfo announcement partition exceeds the frozen page ceiling: "
             f"{start_date.isoformat()} to {end_date.isoformat()}, "
             f"pages={pages}, ceiling={ceiling}"
         )
@@ -11124,6 +11195,319 @@ def validate_eastmoney_major_contract_local_context(
                 "Eastmoney major-contract local context fingerprint mismatch: "
                 f"{entry.get('path')}"
             )
+
+
+def load_cninfo_equity_incentive_plan_disclosure_intensity_contract(
+    path: Path = DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT,
+) -> dict[str, Any]:
+    """Load the pre-row CNInfo equity-incentive disclosure contract."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive disclosure contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path,
+        kind="a_share_cninfo_equity_incentive_plan_disclosure_intensity_data_contract",
+    )
+    mechanism = contract.get("mechanism_selection") or {}
+    provider = contract.get("provider_contract") or {}
+    identity = contract.get("identity_and_schema_policy") or {}
+    title = contract.get("title_classification") or {}
+    factor = contract.get("event_and_factor_definition") or {}
+    timing = contract.get("point_in_time_policy") or {}
+    normalized = contract.get("normalized_snapshot") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    full = contract.get("full_snapshot_contract_after_acceptance_only") or {}
+    capacity = contract.get("capacity_contract_after_full_source_only") or {}
+    uniqueness = contract.get("uniqueness_contract_after_capacity_only") or {}
+    expected_parameters = {
+        "pageSize": "30",
+        "column": "szse",
+        "tabName": "fulltext",
+        "plate": "",
+        "stock": "",
+        "searchkey": "",
+        "secid": "",
+        "category": "category_gqjl_szsh",
+        "trade": "",
+        "sortName": "",
+        "sortType": "",
+        "isHLtitle": "true",
+    }
+    expected_windows = [
+        {"label": "2019Q1", "start": "2019-01-01", "end": "2019-03-31"},
+        {"label": "2024Q1", "start": "2024-01-01", "end": "2024-03-31"},
+        {"label": "2025Q1", "start": "2025-01-01", "end": "2025-03-31"},
+    ]
+    sparse_neighbors = [
+        "repurchase_event_count",
+        "repurchase_freshness",
+        "major_holder_event_count",
+        "pledge_event_count",
+        "institutional_survey_event_count",
+        "institutional_survey_freshness",
+        "analyst_valid_rating_report_count",
+        "related_party_transaction_count",
+        "insider_open_market_event_count",
+    ]
+    dense_confounders = [
+        "free_float_cap_proxy",
+        "liquidity_5",
+        "turnover_surge_1",
+    ]
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_equity_incentive_provider_rows_titles_identity_values_capacity_uniqueness_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-21T07:58:36Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_cninfo_equity_incentive_plan_disclosure_intensity_mechanism_overlap_reaudit_20260721.json"
+        or mechanism.get("sha256_at_contract_freeze")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+        or provider.get("provider") != "cninfo"
+        or provider.get("credential_required") is not False
+        or provider.get("account_points_required") != 0
+        or provider.get("endpoint")
+        != "https://www.cninfo.com.cn/new/hisAnnouncement/query"
+        or provider.get("request_method") != "POST_FORM"
+        or provider.get("fixed_parameters") != expected_parameters
+        or provider.get("page_size") != 30
+        or provider.get("maximum_pages_per_leaf_partition") != 80
+        or provider.get("maximum_attempts_per_page") != 3
+        or provider.get("timeout_seconds") != 30
+        or provider.get("minimum_delay_seconds_between_attempts") != 0.1
+        or tuple(provider.get("required_response_fields") or ())
+        != ("totalAnnouncement", "announcements")
+        or tuple(provider.get("required_record_fields") or ())
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_RAW_FIELDS
+        or identity.get("source_identity")
+        != ["instrument", "announcement_date", "announcement_id"]
+        or identity.get("raw_response_persisted") is not False
+        or identity.get("title_announcement_id_or_hash_persisted") is not False
+        or title.get("required_literals_all") != ["草案"]
+        or title.get("required_plan_literals_any")
+        != ["限制性股票激励计划", "股票期权激励计划", "股权激励计划"]
+        or title.get("excluded_literals_any")
+        != ["摘要", "修订", "修正", "更正", "补充", "调整", "终止", "取消", "撤回"]
+        or factor.get("factor_name")
+        != "cninfo_equity_incentive_plan_disclosure_intensity"
+        or factor.get("session_formula")
+        != "latest already-effective initial_equity_incentive_plan_disclosure_count / (1 + calendar_days_since_announcement_date)"
+        or factor.get("direction") != "higher_is_better"
+        or timing.get("maximum_age_calendar_days") != 3
+        or tuple(normalized.get("columns") or ())
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+        or normalized.get("event_key") != ["instrument", "announcement_date"]
+        or normalized.get("provider_value") != "cninfo"
+        or normalized.get("title_announcement_id_or_hash_persisted") is not False
+        or acceptance.get("fixed_sample_windows") != expected_windows
+        or acceptance.get("fixed_sample_window_count") != 3
+        or acceptance.get("minimum_supported_source_rows_per_window") != 50
+        or acceptance.get("minimum_qualifying_events_per_window") != 10
+        or acceptance.get("minimum_qualifying_events_total") != 30
+        or acceptance.get("minimum_candidate_cross_sections_per_window") != 1
+        or acceptance.get("minimum_candidate_cross_sections_total") != 5
+        or acceptance.get("minimum_names_per_candidate_cross_section") != 6
+        or acceptance.get(
+            "minimum_distinct_factor_values_per_candidate_cross_section"
+        )
+        != 2
+        or acceptance.get("minimum_distinct_factor_values_across_samples") != 2
+        or acceptance.get("tracked_record_path")
+        != "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record.json"
+        or full.get("development_start") != "2019-01-01"
+        or full.get("development_end") != "2025-12-31"
+        or full.get("reuse_accepted_rows_without_provider_rerequest") is not True
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("topk") != 3
+        or capacity.get("holding_universe") != "buyable_main_chinext"
+        or capacity.get("minimum_listing_age_sessions") != 20
+        or capacity.get("maximum_event_age_calendar_days") != 3
+        or capacity.get("minimum_names_per_cohort") != 6
+        or capacity.get("minimum_distinct_factor_values_per_cohort") != 2
+        or capacity.get("minimum_complete_cohorts") != 200
+        or capacity.get("minimum_observed_calendar_years") != 5
+        or list(uniqueness.get("sparse_semantic_neighbors") or [])
+        != sparse_neighbors
+        or list(uniqueness.get("dense_confounders") or []) != dense_confounders
+        or uniqueness.get("no_return") is not True
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive disclosure contract changed after freeze"
+        )
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive mechanism audit fingerprint mismatch"
+        )
+    return contract
+
+
+def validate_cninfo_equity_incentive_plan_local_context(
+    contract: dict[str, Any],
+) -> None:
+    """Fingerprint-bind every local no-return context before CNInfo access."""
+
+    local = contract.get("local_context") or {}
+    entries: list[dict[str, Any]] = []
+    for label in (
+        "holding_universe",
+        "local_calendar",
+        "accepted_price_basis_for_future_gated_work_only",
+        "accepted_price_frontier",
+        "latest_terminal_mechanism",
+        "prospective_execution_policy_for_future_diagnostic_only",
+        "pilot_execution_policy_for_future_diagnostic_only",
+    ):
+        value = local.get(label)
+        if not isinstance(value, dict):
+            raise RichDataError(
+                f"CNInfo equity-incentive local context is missing {label}"
+            )
+        entries.append(value)
+    quarterly = local.get("quarterly_quality") or {}
+    entries.extend(
+        [
+            {"path": quarterly.get("path"), "sha256": quarterly.get("sha256")},
+            {
+                "path": quarterly.get("manifest_path"),
+                "sha256": quarterly.get("manifest_sha256"),
+            },
+        ]
+    )
+    for entry in entries:
+        target = resolve_record_path(str(entry.get("path") or ""))
+        expected = str(entry.get("sha256") or "")
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "CNInfo equity-incentive local context fingerprint mismatch: "
+                f"{entry.get('path')}"
+            )
+
+
+def load_eastmoney_major_contract_disclosure_intensity_acceptance_record(
+    path: Path = (
+        DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
+    ),
+) -> dict[str, Any]:
+    """Verify the cross-clone record for the terminal public acceptance."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney major-contract acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind=(
+            "a_share_eastmoney_major_contract_disclosure_intensity_"
+            "source_acceptance_record"
+        ),
+    )
+    mechanism = record.get("mechanism_audit") or {}
+    contract = record.get("data_contract") or {}
+    manifest = record.get("local_failure_manifest") or {}
+    observed = record.get("frozen_request_observed_result") or {}
+    privacy = record.get("privacy_and_scope") or {}
+    terminal = record.get("terminal_decision") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "terminal_source_signing_date_schema_rejected_before_factor_values_full_history_capacity_uniqueness_or_returns"
+        or record.get("recorded_at") != "2026-07-21T07:51:30Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit_20260721.json"
+        or mechanism.get("sha256")
+        != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+        or contract.get("path")
+        != "docs/a_share_eastmoney_major_contract_disclosure_intensity_data_contract.json"
+        or contract.get("sha256")
+        != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_CONTRACT_SHA256
+        or contract.get("preregistered_at") != "2026-07-21T07:36:00Z"
+        or manifest.get("path")
+        != "data/metadata/rich_data/runs/20260721T075033Z_eastmoney_major_contract_disclosure_intensity_acceptance_d92dbd6a.json"
+        or manifest.get("sha256")
+        != "b94979620fb1b2af2d534b6313d39535f4126bd509e7054721836bcc576be52d"
+        or manifest.get("run_id")
+        != "20260721T075033Z_eastmoney_major_contract_disclosure_intensity_acceptance_d92dbd6a"
+        or observed.get("requested_sample_windows")
+        != ["2019Q1", "2024Q1", "2025Q1"]
+        or observed.get("first_and_only_completed_leaf_start") != "2019-01-01"
+        or observed.get("first_and_only_completed_leaf_end") != "2019-01-31"
+        or observed.get("advertised_pages") != 1
+        or observed.get("requested_pages") != 1
+        or observed.get("provider_calls_issued") != 1
+        or observed.get("advertised_source_rows") != 86
+        or observed.get("received_source_rows") != 86
+        or observed.get("count_reconciliation_passed") is not True
+        or observed.get("completed_leaf_partitions") != 1
+        or observed.get("completed_sample_windows") != 0
+        or observed.get("rejection_code") != "non_string_signing_date"
+        or observed.get("normalized_rows") != 0
+        or observed.get("factor_values_derived") != 0
+        or observed.get("published_files") != []
+        or observed.get("partial_snapshot_deleted") is not True
+        or privacy.get("raw_provider_response_persisted") is not False
+        or privacy.get("contract_name_signing_date_or_identity_hash_persisted")
+        is not False
+        or privacy.get(
+            "security_name_signatory_counterparty_relationship_type_text_or_remark_persisted"
+        )
+        is not False
+        or privacy.get(
+            "amount_revenue_ratio_updated_date_market_data_or_valuation_accessed_or_persisted"
+        )
+        is not False
+        or privacy.get(
+            "credential_token_account_points_cookie_proxy_or_retail_session_used"
+        )
+        is not False
+        or privacy.get("full_history_requested") is not False
+        or privacy.get("capacity_or_uniqueness_run") is not False
+        or privacy.get("price_fields_loaded") != []
+        or privacy.get("open_close_or_forward_return_fields_read") is not False
+        or privacy.get("forward_return_fields_read") is not False
+        or privacy.get(
+            "aggregation_scoring_selection_sizing_or_ordering_performed"
+        )
+        is not False
+        or terminal.get("acceptance_consumed") is not True
+        or terminal.get("acceptance_retry_allowed") is not False
+        or terminal.get("failed_partition_or_record_may_be_rerequested_for_detail")
+        is not False
+        or terminal.get(
+            "drop_fill_coerce_infer_or_replace_non_string_signing_date_allowed"
+        )
+        is not False
+        or terminal.get("same_mechanism_v2_or_provider_substitution_allowed")
+        is not False
+        or terminal.get("full_source_sync_allowed") is not False
+        or terminal.get("capacity_uniqueness_or_return_work_allowed") is not False
+        or terminal.get(
+            "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed"
+        )
+        is not False
+    ):
+        raise RichDataError(
+            "Eastmoney major-contract acceptance record does not match the terminal "
+            "result"
+        )
+    return record
 
 
 def load_eastmoney_related_party_transaction_sparsity_contract(
@@ -21926,13 +22310,9 @@ def guard_eastmoney_major_contract_acceptance() -> None:
 
     record_path = DEFAULT_EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
     if record_path.exists():
-        if (
-            file_digest(record_path)
-            != EASTMONEY_MAJOR_CONTRACT_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
-        ):
-            raise RichDataError(
-                "Eastmoney major-contract tracked acceptance-record fingerprint mismatch"
-            )
+        load_eastmoney_major_contract_disclosure_intensity_acceptance_record(
+            record_path
+        )
         raise RichDataError(
             "Eastmoney major-contract acceptance is permanently consumed; another "
             "provider request is forbidden"
@@ -22314,6 +22694,1814 @@ def sync_eastmoney_major_contract_disclosure_intensity_acceptance(
             failure_path = RUNS_ROOT / f"{run_id}.json"
             atomic_write_json(failure, failure_path)
             raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
+def normalize_cninfo_announcement_text(value: Any, *, field: str) -> str:
+    """Normalize one memory-only CNInfo announcement identity field."""
+
+    if not isinstance(value, str):
+        raise RichDataError(
+            f"CNInfo equity-incentive record has a non-string {field}"
+        )
+    normalized = " ".join(unicodedata.normalize("NFKC", value).strip().split())
+    if not normalized:
+        raise RichDataError(f"CNInfo equity-incentive record has an empty {field}")
+    if field == "announcementTitle" and ("<" in normalized or ">" in normalized):
+        raise RichDataError(
+            "CNInfo equity-incentive title contains forbidden markup"
+        )
+    return normalized
+
+
+def parse_cninfo_announcement_date(value: Any) -> pd.Timestamp:
+    """Convert one strict Unix-millisecond timestamp to a Shanghai date."""
+
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise RichDataError(
+            "CNInfo equity-incentive record has a non-integer announcementTime"
+        )
+    try:
+        timestamp = pd.Timestamp(value, unit="ms", tz="UTC")
+        local = timestamp.tz_convert("Asia/Shanghai")
+    except (OverflowError, TypeError, ValueError) as exc:
+        raise RichDataError(
+            "CNInfo equity-incentive record has an invalid announcementTime"
+        ) from exc
+    if local.year < 1990 or local.year > 2100:
+        raise RichDataError(
+            "CNInfo equity-incentive record has an implausible announcementTime"
+        )
+    return local.normalize().tz_localize(None)
+
+
+def fetch_cninfo_equity_incentive_plan_partition(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Fetch one count-complete CNInfo announcement date partition."""
+
+    if end_date < start_date:
+        raise RichDataError("CNInfo equity-incentive partition end precedes start")
+    frozen = (
+        contract
+        or load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+    )
+    provider = frozen["provider_contract"]
+    endpoint = str(provider["endpoint"])
+    page_size = int(provider["page_size"])
+    maximum_pages = int(provider["maximum_pages_per_leaf_partition"])
+    maximum_attempts = int(provider["maximum_attempts_per_page"])
+    timeout = int(provider["timeout_seconds"])
+    pause = (
+        float(provider["minimum_delay_seconds_between_attempts"])
+        if page_pause_seconds is None
+        else float(page_pause_seconds)
+    )
+    if pause < 0:
+        raise RichDataError("CNInfo equity-incentive page pause must be non-negative")
+    if session is None:
+        try:
+            import requests
+        except ImportError as exc:  # pragma: no cover - workspace dependency.
+            raise RichDataError("requests is required for CNInfo intake") from exc
+        requester = requests
+    else:
+        requester = session
+    base_form = {
+        **{
+            str(key): str(value)
+            for key, value in provider["fixed_parameters"].items()
+        },
+        "seDate": f"{start_date.isoformat()}~{end_date.isoformat()}",
+    }
+    provider_calls = 0
+
+    def fetch_page(page_number: int) -> dict[str, Any]:
+        nonlocal provider_calls
+        form = {**base_form, "pageNum": str(page_number)}
+        last_error: BaseException | None = None
+        for attempt in range(maximum_attempts):
+            if provider_calls and pause:
+                time.sleep(pause)
+            provider_calls += 1
+            try:
+                response = requester.post(endpoint, data=form, timeout=timeout)
+                status_code = int(getattr(response, "status_code", 200))
+                if status_code == 429 or status_code >= 500:
+                    raise RuntimeError(
+                        "transient CNInfo equity-incentive HTTP status "
+                        f"{status_code}"
+                    )
+                if status_code >= 400:
+                    raise RichDataError(
+                        "CNInfo equity-incentive source rejected the request with "
+                        f"HTTP status {status_code}"
+                    )
+                if hasattr(response, "raise_for_status"):
+                    response.raise_for_status()
+                try:
+                    payload = response.json()
+                except Exception as exc:
+                    raise RuntimeError(
+                        "transient CNInfo equity-incentive JSON decode failure"
+                    ) from exc
+                if not isinstance(payload, dict):
+                    raise RichDataError(
+                        "CNInfo equity-incentive response is not an object"
+                    )
+                if not {"totalAnnouncement", "announcements"}.issubset(payload):
+                    raise RichDataError(
+                        "CNInfo equity-incentive response misses frozen fields"
+                    )
+                total = payload["totalAnnouncement"]
+                announcements = payload["announcements"]
+                if isinstance(total, bool) or not isinstance(total, int) or total < 0:
+                    raise RichDataError(
+                        "CNInfo equity-incentive totalAnnouncement is invalid"
+                    )
+                if not isinstance(announcements, list) or any(
+                    not isinstance(row, dict) for row in announcements
+                ):
+                    raise RichDataError(
+                        "CNInfo equity-incentive announcements is invalid"
+                    )
+                return payload
+            except RichDataError:
+                raise
+            except Exception as exc:
+                last_error = exc
+                if attempt + 1 >= maximum_attempts:
+                    break
+        assert last_error is not None
+        raise RichDataError(
+            "CNInfo equity-incentive page "
+            f"{page_number} failed after {maximum_attempts} attempts: "
+            f"{safe_exception_text(last_error)}"
+        ) from last_error
+
+    first = fetch_page(1)
+    advertised_count = first["totalAnnouncement"]
+    pages = math.ceil(advertised_count / page_size) if advertised_count else 0
+    first_rows = first["announcements"]
+    if pages > maximum_pages:
+        raise CninfoAnnouncementPartitionTooLarge(
+            start_date,
+            end_date,
+            pages=pages,
+            advertised_count=advertised_count,
+            ceiling=maximum_pages,
+        )
+    if advertised_count == 0:
+        if first_rows:
+            raise RichDataError(
+                "CNInfo equity-incentive empty partition contains rows"
+            )
+        return [], {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 0,
+            "requested_pages": [1],
+            "advertised_rows": 0,
+            "received_rows": 0,
+            "page_size": page_size,
+            "provider_calls": provider_calls,
+            "count_verified": True,
+        }
+    if len(first_rows) != min(page_size, advertised_count):
+        raise RichDataError(
+            "CNInfo equity-incentive first page length does not match count"
+        )
+    requested_pages = [1]
+    rows = list(first_rows)
+    for page_number in range(2, pages + 1):
+        payload = fetch_page(page_number)
+        if payload["totalAnnouncement"] != advertised_count:
+            raise RichDataError(
+                "CNInfo equity-incentive pagination count changed"
+            )
+        page_rows = payload["announcements"]
+        expected_rows = (
+            page_size
+            if page_number < pages
+            else advertised_count - page_size * (pages - 1)
+        )
+        if len(page_rows) != expected_rows:
+            raise RichDataError(
+                "CNInfo equity-incentive page length does not match count"
+            )
+        rows.extend(page_rows)
+        requested_pages.append(page_number)
+    if requested_pages != list(range(1, pages + 1)) or len(rows) != advertised_count:
+        raise RichDataError(
+            "CNInfo equity-incentive count-complete pagination failed: "
+            f"received={len(rows)}, advertised={advertised_count}"
+        )
+    return rows, {
+        "start": start_date.isoformat(),
+        "end": end_date.isoformat(),
+        "advertised_pages": pages,
+        "requested_pages": requested_pages,
+        "advertised_rows": advertised_count,
+        "received_rows": len(rows),
+        "page_size": page_size,
+        "provider_calls": provider_calls,
+        "count_verified": True,
+    }
+
+
+def fetch_cninfo_equity_incentive_plan_partition_details(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any],
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[
+    list[tuple[dt.date, dt.date, list[dict[str, Any]], dict[str, Any]]],
+    list[dict[str, Any]],
+]:
+    """Bisect a large CNInfo date range before requesting later pages."""
+
+    try:
+        rows, quality = fetch_cninfo_equity_incentive_plan_partition(
+            start_date,
+            end_date,
+            contract=contract,
+            session=session,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return [(start_date, end_date, rows, quality)], []
+    except CninfoAnnouncementPartitionTooLarge as exc:
+        if start_date == end_date:
+            raise RichDataError(
+                "CNInfo equity-incentive single-date partition exceeds the frozen "
+                f"page ceiling: {start_date.isoformat()}"
+            ) from exc
+        midpoint = start_date + (end_date - start_date) // 2
+        right_start = midpoint + dt.timedelta(days=1)
+        left_parts, left_bisections = (
+            fetch_cninfo_equity_incentive_plan_partition_details(
+                start_date,
+                midpoint,
+                contract=contract,
+                session=session,
+                page_pause_seconds=page_pause_seconds,
+            )
+        )
+        right_parts, right_bisections = (
+            fetch_cninfo_equity_incentive_plan_partition_details(
+                right_start,
+                end_date,
+                contract=contract,
+                session=session,
+                page_pause_seconds=page_pause_seconds,
+            )
+        )
+        bisection = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": exc.pages,
+            "advertised_rows": exc.advertised_count,
+            "page_ceiling": exc.ceiling,
+            "provider_probe_calls": 1,
+            "left_end": midpoint.isoformat(),
+            "right_start": right_start.isoformat(),
+        }
+        return (
+            left_parts + right_parts,
+            [bisection, *left_bisections, *right_bisections],
+        )
+
+
+def canonicalize_cninfo_equity_incentive_plan_rows(
+    rows: list[dict[str, Any]],
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Classify and aggregate complete identities without persisting text."""
+
+    if end_date < start_date:
+        raise RichDataError("CNInfo equity-incentive normalization end precedes start")
+    frozen = (
+        contract
+        or load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+    )
+    title_rule = frozen["title_classification"]
+    required_all = tuple(title_rule["required_literals_all"])
+    required_any = tuple(title_rule["required_plan_literals_any"])
+    excluded_any = tuple(title_rule["excluded_literals_any"])
+    columns = list(CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS)
+    empty_quality = {
+        "input_source_rows": int(len(rows)),
+        "supported_source_rows": 0,
+        "unsupported_board_rows_excluded": 0,
+        "nonmatching_title_rows_excluded": 0,
+        "qualifying_source_rows": 0,
+        "aggregated_events": 0,
+        "distinct_event_counts": 0,
+        "title_announcement_id_or_hash_persisted": False,
+    }
+    if not rows:
+        return pd.DataFrame(columns=columns), empty_quality
+    required_fields = set(
+        CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_RAW_FIELDS
+    )
+    identities: list[dict[str, Any]] = []
+    unsupported_rows = 0
+    supported_rows = 0
+    nonmatching_rows = 0
+    seen: set[tuple[str, pd.Timestamp, str]] = set()
+    for row in rows:
+        if not isinstance(row, dict) or not required_fields.issubset(row):
+            raise RichDataError(
+                "CNInfo equity-incentive row misses a frozen transport field"
+            )
+        raw_code = row["secCode"]
+        if not isinstance(raw_code, str):
+            raise RichDataError(
+                "CNInfo equity-incentive record has a non-string security code"
+            )
+        code = unicodedata.normalize("NFKC", raw_code).strip()
+        if len(code) != 6 or not code.isdigit():
+            raise RichDataError(
+                "CNInfo equity-incentive record has a malformed security code"
+            )
+        announcement = parse_cninfo_announcement_date(row["announcementTime"])
+        if not pd.Timestamp(start_date) <= announcement <= pd.Timestamp(end_date):
+            raise RichDataError(
+                "CNInfo equity-incentive source returned an out-of-partition date"
+            )
+        announcement_id = normalize_cninfo_announcement_text(
+            row["announcementId"], field="announcementId"
+        )
+        title = normalize_cninfo_announcement_text(
+            row["announcementTitle"], field="announcementTitle"
+        )
+        if not code.startswith(
+            ("600", "601", "603", "605", "000", "001", "002", "003", "300", "301")
+        ):
+            unsupported_rows += 1
+            continue
+        supported_rows += 1
+        instrument = qlib_symbol(code)
+        identity = (instrument, announcement, announcement_id)
+        if identity in seen:
+            raise RichDataError(
+                "CNInfo equity-incentive partition contains a duplicate source "
+                "identity"
+            )
+        seen.add(identity)
+        qualifies = (
+            all(literal in title for literal in required_all)
+            and any(literal in title for literal in required_any)
+            and not any(literal in title for literal in excluded_any)
+        )
+        if not qualifies:
+            nonmatching_rows += 1
+            continue
+        identities.append(
+            {
+                "instrument": instrument,
+                "announcement_date": announcement,
+                "announcement_id": announcement_id,
+            }
+        )
+    if not identities:
+        return pd.DataFrame(columns=columns), {
+            **empty_quality,
+            "supported_source_rows": supported_rows,
+            "unsupported_board_rows_excluded": unsupported_rows,
+            "nonmatching_title_rows_excluded": nonmatching_rows,
+        }
+    identity_frame = pd.DataFrame(identities)
+    grouped = (
+        identity_frame.groupby(
+            ["announcement_date", "instrument"], as_index=False, sort=True
+        )
+        .agg(
+            initial_equity_incentive_plan_disclosure_count=(
+                "announcement_id",
+                "size",
+            )
+        )
+        .sort_values(["announcement_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    grouped["initial_equity_incentive_plan_disclosure_count"] = pd.to_numeric(
+        grouped["initial_equity_incentive_plan_disclosure_count"], errors="raise"
+    ).astype("int64")
+    grouped["provider"] = "cninfo"
+    result = grouped.loc[:, columns]
+    counts = result["initial_equity_incentive_plan_disclosure_count"]
+    if (
+        result.empty
+        or result.duplicated(["instrument", "announcement_date"]).any()
+        or not counts.gt(0).all()
+        or {"announcementTitle", "announcementId", "announcement_id"}
+        & set(result.columns)
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive normalized frame failed integrity checks"
+        )
+    return result, {
+        "input_source_rows": int(len(rows)),
+        "supported_source_rows": supported_rows,
+        "unsupported_board_rows_excluded": unsupported_rows,
+        "nonmatching_title_rows_excluded": nonmatching_rows,
+        "qualifying_source_rows": int(len(identity_frame)),
+        "aggregated_events": int(len(result)),
+        "distinct_event_counts": int(counts.nunique(dropna=True)),
+        "title_announcement_id_or_hash_persisted": False,
+    }
+
+
+def filter_cninfo_equity_incentive_events_to_point_in_time_holding_universe(
+    frame: pd.DataFrame,
+    intervals: pd.DataFrame,
+) -> tuple[pd.DataFrame, int]:
+    """Filter CNInfo plan events using only dated listing intervals."""
+
+    if (
+        tuple(frame.columns)
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive frame violates the frozen schema before "
+            "universe filtering"
+        )
+    if frame.empty:
+        return frame.copy(), 0
+    indexed = intervals.set_index("instrument")
+    starts = frame["instrument"].map(indexed["start_date"])
+    ends = frame["instrument"].map(indexed["end_date"])
+    dates = pd.to_datetime(frame["announcement_date"], errors="coerce").dt.normalize()
+    active = starts.notna() & ends.notna() & dates.ge(starts) & dates.le(ends)
+    return frame.loc[active].reset_index(drop=True), int((~active).sum())
+
+
+def materialize_cninfo_equity_incentive_plan_acceptance_sessions(
+    events: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    *,
+    maximum_age_calendar_days: int = 3,
+) -> pd.DataFrame:
+    """Materialize latest plan count/freshness without any price field."""
+
+    if (
+        tuple(events.columns)
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive event frame changed before materialization"
+        )
+    if maximum_age_calendar_days != 3:
+        raise RichDataError(
+            "CNInfo equity-incentive event age changed after preregistration"
+        )
+    normalized_calendar = pd.DatetimeIndex(calendar).normalize().unique().sort_values()
+    output_columns = [
+        "datetime",
+        "instrument",
+        "equity_incentive_plan_announcement_date",
+        "event_effective_date",
+        "event_age_calendar_days",
+        "initial_equity_incentive_plan_disclosure_count",
+        "cninfo_equity_incentive_plan_disclosure_intensity",
+    ]
+    if events.empty or normalized_calendar.empty:
+        return pd.DataFrame(columns=output_columns)
+    expanded: list[dict[str, Any]] = []
+    for event in events.itertuples(index=False):
+        announcement = pd.Timestamp(event.announcement_date).normalize()
+        position = int(normalized_calendar.searchsorted(announcement, side="right"))
+        if position >= len(normalized_calendar):
+            raise RichDataError(
+                "CNInfo equity-incentive event cannot map to a later local session"
+            )
+        effective = normalized_calendar[position]
+        count_value = event.initial_equity_incentive_plan_disclosure_count
+        if isinstance(count_value, (bool, np.bool_)) or not float(
+            count_value
+        ).is_integer():
+            raise RichDataError(
+                "CNInfo equity-incentive event count is not a positive integer"
+            )
+        count = int(count_value)
+        if count <= 0:
+            raise RichDataError(
+                "CNInfo equity-incentive event count is not a positive integer"
+            )
+        for session_date in normalized_calendar[position:]:
+            age = int((session_date - announcement).days)
+            if age > maximum_age_calendar_days:
+                break
+            expanded.append(
+                {
+                    "datetime": session_date,
+                    "instrument": str(event.instrument),
+                    "equity_incentive_plan_announcement_date": announcement,
+                    "event_effective_date": effective,
+                    "event_age_calendar_days": age,
+                    "initial_equity_incentive_plan_disclosure_count": count,
+                    "cninfo_equity_incentive_plan_disclosure_intensity": (
+                        float(count) / (1.0 + float(age))
+                    ),
+                }
+            )
+    if not expanded:
+        return pd.DataFrame(columns=output_columns)
+    materialized = pd.DataFrame(expanded)
+    materialized.sort_values(
+        ["instrument", "datetime", "equity_incentive_plan_announcement_date"],
+        kind="stable",
+        inplace=True,
+    )
+    materialized = materialized.drop_duplicates(
+        ["instrument", "datetime"], keep="last"
+    ).sort_values(["datetime", "instrument"], kind="stable")
+    materialized.reset_index(drop=True, inplace=True)
+    factor = materialized["cninfo_equity_incentive_plan_disclosure_intensity"]
+    if (
+        materialized.duplicated(["instrument", "datetime"]).any()
+        or not materialized["event_age_calendar_days"].between(1, 3).all()
+        or not np.isfinite(factor).all()
+        or not factor.gt(0.0).all()
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive session materialization failed"
+        )
+    return materialized.loc[:, output_columns]
+
+
+def cninfo_equity_incentive_plan_acceptance_records() -> list[Path]:
+    """Return prior local manifests for the exact one-shot acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob(
+            "*cninfo_equity_incentive_plan_disclosure_intensity_acceptance*.json"
+        )
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == (
+            "cninfo_equity_incentive_plan_disclosure_intensity_acceptance"
+        ):
+            records.append(path)
+    return records
+
+
+def load_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_record(
+    path: Path = (
+        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
+    ),
+) -> dict[str, Any]:
+    """Verify the tracked cross-clone terminal acceptance record."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive acceptance record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind=(
+            "a_share_cninfo_equity_incentive_plan_disclosure_intensity_"
+            "source_acceptance_record"
+        ),
+    )
+    mechanism = record.get("mechanism_audit") or {}
+    contract = record.get("data_contract") or {}
+    accepted = record.get("accepted_manifest") or {}
+    observed = record.get("frozen_request_observed_result") or {}
+    snapshot = record.get("published_snapshot") or {}
+    privacy = record.get("privacy_and_scope") or {}
+    next_stage = record.get("next_stage_decision") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_schema_identity_title_formula_and_historical_sample_variation_pending_frozen_full_source_and_no_return_gates"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_cninfo_equity_incentive_plan_disclosure_intensity_mechanism_overlap_reaudit_20260721.json"
+        or mechanism.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+        or contract.get("path")
+        != "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_data_contract.json"
+        or contract.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT_SHA256
+        or accepted.get("path")
+        != "data/metadata/rich_data/runs/20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8.json"
+        or accepted.get("sha256")
+        != "021c37e542565b075b2440f575b4dd0cc9f7758abb017ee6712da2e0c42c134f"
+        or accepted.get("run_id")
+        != "20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8"
+        or observed.get("leaf_partitions_completed") != 9
+        or observed.get("advertised_pages_completed") != 270
+        or observed.get("provider_calls_issued") != 271
+        or observed.get("transient_retry_attempts") != 1
+        or observed.get("advertised_source_rows") != 7904
+        or observed.get("received_source_rows") != 7904
+        or observed.get("published_event_rows") != 266
+        or observed.get("candidate_cross_sections_total") != 24
+        or observed.get("distinct_materialized_factor_values") != 9
+        or tuple(snapshot.get("columns") or ())
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+        or snapshot.get("rows") != 266
+        or snapshot.get("frame_sha256")
+        != "739e2123dc3b4da21760795c31440db112e0e140155823a37c59f81d161de20f"
+        or snapshot.get("title_announcement_id_or_hash_persisted") is not False
+        or privacy.get("tushare_token_or_points_used") is not False
+        or privacy.get("price_fields_loaded") != []
+        or privacy.get("forward_return_fields_read") is not False
+        or next_stage.get("acceptance_consumed") is not True
+        or next_stage.get("acceptance_retry_allowed") is not False
+        or next_stage.get("acceptance_provider_rerequest_allowed") is not False
+        or next_stage.get(
+            "full_source_sync_allowed_without_new_fingerprint_bound_no_return_protocol"
+        )
+        is not False
+        or next_stage.get(
+            "capacity_uniqueness_or_return_work_allowed_from_acceptance_alone"
+        )
+        is not False
+        or next_stage.get(
+            "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed"
+        )
+        is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive acceptance record changed after freeze"
+        )
+    return record
+
+
+def load_cninfo_equity_incentive_plan_disclosure_intensity_no_return_spec(
+    path: Path = (
+        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC
+    ),
+) -> dict[str, Any]:
+    """Load the post-acceptance, pre-full-source no-return protocol."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive no-return protocol fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind=(
+            "a_share_cninfo_equity_incentive_plan_disclosure_intensity_"
+            "no_return_preregistration"
+        ),
+    )
+    chain = spec.get("source_chain") or {}
+    mechanism = chain.get("mechanism_audit") or {}
+    contract = chain.get("data_contract") or {}
+    acceptance_record = chain.get("source_acceptance_record") or {}
+    acceptance_manifest = chain.get("source_acceptance_manifest") or {}
+    acceptance_frame = chain.get("source_acceptance_frame") or {}
+    factor = spec.get("factor_protocol") or {}
+    full = spec.get("full_source_snapshot_contract") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract_after_capacity_only") or {}
+    reuse_months = [
+        "2019-01",
+        "2019-02",
+        "2019-03",
+        "2024-01",
+        "2024-02",
+        "2024-03",
+        "2025-01",
+        "2025-02",
+        "2025-03",
+    ]
+    sparse_neighbors = [
+        "repurchase_event_count",
+        "repurchase_freshness",
+        "major_holder_event_count",
+        "pledge_event_count",
+        "institutional_survey_event_count",
+        "institutional_survey_freshness",
+        "analyst_valid_rating_report_count",
+        "related_party_transaction_count",
+        "insider_open_market_event_count",
+    ]
+    dense_confounders = [
+        "free_float_cap_proxy",
+        "liquidity_5",
+        "turnover_surge_1",
+    ]
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_unique_source_acceptance_before_full_history_capacity_uniqueness_prices_or_returns"
+        or spec.get("preregistered_at") != "2026-07-21T08:20:50Z"
+        or mechanism.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+        or contract.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT_SHA256
+        or acceptance_record.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
+        or acceptance_manifest.get("sha256")
+        != "021c37e542565b075b2440f575b4dd0cc9f7758abb017ee6712da2e0c42c134f"
+        or acceptance_manifest.get("run_id")
+        != "20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8"
+        or acceptance_frame.get("content_sha256")
+        != "739e2123dc3b4da21760795c31440db112e0e140155823a37c59f81d161de20f"
+        or acceptance_frame.get("file_sha256")
+        != "3e9250131712c89701b49b92e4455228f779047935915d429b0b60c0d259ef98"
+        or acceptance_frame.get("rows") != 266
+        or tuple(acceptance_frame.get("columns") or ())
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+        or factor.get("factor_name")
+        != "cninfo_equity_incentive_plan_disclosure_intensity"
+        or factor.get("maximum_event_age_calendar_days") != 3
+        or tuple(factor.get("normalized_columns") or ())
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+        or full.get("development_start") != "2019-01-01"
+        or full.get("development_end") != "2025-12-31"
+        or full.get("required_month_count") != 84
+        or full.get("acceptance_reuse_months") != reuse_months
+        or full.get("acceptance_reuse_month_count") != 9
+        or full.get("new_network_month_count") != 75
+        or full.get("acceptance_rows_reused_without_provider_rerequest") is not True
+        or full.get("page_size") != 30
+        or full.get("maximum_pages_per_leaf_partition") != 80
+        or full.get("maximum_attempts_per_page") != 3
+        or full.get("minimum_page_pause_seconds") != 0.1
+        or full.get("required_final_annual_partition_count") != 7
+        or full.get("one_full_snapshot_attempt_after_acceptance") is not True
+        or full.get("tracked_record_path")
+        != "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json"
+        or capacity.get("must_run_before_any_comparison_field") is not True
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_factor_age_calendar_days") != 3
+        or capacity.get("maximum_quality_age_calendar_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or list(uniqueness.get("required_sparse_near_neighbors") or [])
+        != sparse_neighbors
+        or list(uniqueness.get("required_size_liquidity_confounders") or [])
+        != dense_confounders
+        or spec.get("price_fields_loaded") != []
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive no-return protocol changed after freeze"
+        )
+    for item in (
+        mechanism,
+        contract,
+        acceptance_record,
+        acceptance_manifest,
+        acceptance_frame,
+    ):
+        target = resolve_record_path(str(item.get("path") or ""))
+        expected = str(item.get("file_sha256") or item.get("sha256") or "")
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "CNInfo equity-incentive no-return source-chain fingerprint "
+                f"mismatch: {item.get('path')}"
+            )
+    accepted_frame = pd.read_parquet(
+        resolve_record_path(str(acceptance_frame["path"]))
+    )
+    if (
+        tuple(accepted_frame.columns)
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+        or len(accepted_frame) != 266
+        or frame_digest(accepted_frame) != acceptance_frame["content_sha256"]
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive accepted frame content mismatch"
+        )
+    return spec
+
+
+def validate_cninfo_equity_incentive_plan_no_return_local_context(
+    spec: dict[str, Any],
+) -> None:
+    """Validate local fingerprints before any full-source provider request."""
+
+    local = spec.get("local_context") or {}
+    entries: list[dict[str, Any]] = []
+    for label in (
+        "holding_universe",
+        "local_calendar",
+        "accepted_price_basis_for_future_gated_work_only",
+        "accepted_price_frontier",
+        "predecessor_terminal_mechanism",
+        "prospective_execution_policy_for_future_diagnostic_only",
+        "pilot_execution_policy_for_future_diagnostic_only",
+    ):
+        value = local.get(label)
+        if not isinstance(value, dict):
+            raise RichDataError(
+                f"CNInfo equity-incentive no-return context is missing {label}"
+            )
+        entries.append(value)
+    quarterly = local.get("quarterly_quality") or {}
+    entries.extend(
+        [
+            {"path": quarterly.get("path"), "sha256": quarterly.get("sha256")},
+            {
+                "path": quarterly.get("manifest_path"),
+                "sha256": quarterly.get("manifest_sha256"),
+            },
+        ]
+    )
+    for entry in entries:
+        target = resolve_record_path(str(entry.get("path") or ""))
+        expected = str(entry.get("sha256") or "")
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "CNInfo equity-incentive no-return context fingerprint mismatch: "
+                f"{entry.get('path')}"
+            )
+
+
+def guard_cninfo_equity_incentive_plan_acceptance() -> None:
+    """Reject cross-clone and local replays before contract/provider access."""
+
+    record_path = (
+        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
+    )
+    if record_path.exists():
+        load_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_record(
+            record_path
+        )
+        raise RichDataError(
+            "CNInfo equity-incentive acceptance is permanently consumed; another "
+            "provider request is forbidden"
+        )
+    prior = cninfo_equity_incentive_plan_acceptance_records()
+    if prior:
+        raise RichDataError(
+            "CNInfo equity-incentive acceptance is one-shot and already consumed by "
+            f"{prior[-1]}"
+        )
+
+
+def sync_cninfo_equity_incentive_plan_disclosure_intensity_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Run the sole frozen no-price CNInfo plan-disclosure acceptance."""
+
+    guard_cninfo_equity_incentive_plan_acceptance()
+    lock_path = (
+        METADATA_ROOT
+        / ".cninfo_equity_incentive_plan_disclosure_intensity_acceptance.lock"
+    )
+    with RichDataProcessLock(lock_path):
+        guard_cninfo_equity_incentive_plan_acceptance()
+        contract = (
+            load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+        )
+        validate_cninfo_equity_incentive_plan_local_context(contract)
+        acceptance = contract["acceptance_protocol"]
+        sample_windows = list(acceptance["fixed_sample_windows"])
+        intervals = load_factor_universe_intervals(universe_path)
+        first_sample_date = dt.date.fromisoformat(str(sample_windows[0]["start"]))
+        final_sample_date = dt.date.fromisoformat(str(sample_windows[-1]["end"]))
+        calendar = local_calendar_dates(
+            first_sample_date,
+            final_sample_date + dt.timedelta(days=14),
+            calendar_path,
+        )
+        if calendar.empty:
+            raise RichDataError(
+                "local calendar is empty for CNInfo equity-incentive acceptance"
+            )
+        run_id = new_run_id(
+            "cninfo_equity_incentive_plan_disclosure_intensity_acceptance"
+        )
+        run_root = (
+            RAW_ROOT
+            / "cninfo"
+            / "equity_incentive_plan_disclosure_intensity"
+            / "acceptance"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                "CNInfo equity-incentive acceptance run already exists"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        request_quality: list[dict[str, Any]] = []
+        window_quality: list[dict[str, Any]] = []
+        bisections: list[dict[str, Any]] = []
+        try:
+            accepted_windows: list[pd.DataFrame] = []
+            for window in sample_windows:
+                label = str(window["label"])
+                window_start = dt.date.fromisoformat(str(window["start"]))
+                window_end = dt.date.fromisoformat(str(window["end"]))
+                normalized_parts: list[pd.DataFrame] = []
+                part_quality: list[dict[str, Any]] = []
+                for month_start, month_end in calendar_month_ranges(
+                    window_start, window_end
+                ):
+                    provider_request_issued = True
+                    leaves, split_records = (
+                        fetch_cninfo_equity_incentive_plan_partition_details(
+                            month_start,
+                            month_end,
+                            contract=contract,
+                        )
+                    )
+                    bisections.extend(
+                        [{"window": label, **item} for item in split_records]
+                    )
+                    for leaf_start, leaf_end, rows, quality in leaves:
+                        request_quality.append({"window": label, **quality})
+                        normalized, observed = (
+                            canonicalize_cninfo_equity_incentive_plan_rows(
+                                rows,
+                                leaf_start,
+                                leaf_end,
+                                contract=contract,
+                            )
+                        )
+                        part_quality.append(observed)
+                        if not normalized.empty:
+                            normalized_parts.append(normalized)
+                supported_rows = sum(
+                    int(item["supported_source_rows"]) for item in part_quality
+                )
+                if supported_rows < int(
+                    acceptance["minimum_supported_source_rows_per_window"]
+                ):
+                    raise RichDataError(
+                        f"CNInfo equity-incentive {label} has too few supported "
+                        f"source rows: {supported_rows}"
+                    )
+                if not normalized_parts:
+                    raise RichDataError(
+                        f"CNInfo equity-incentive {label} has no qualifying event"
+                    )
+                normalized_window = (
+                    pd.concat(normalized_parts, ignore_index=True)
+                    .sort_values(["announcement_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                if normalized_window.duplicated(
+                    ["instrument", "announcement_date"]
+                ).any():
+                    raise RichDataError(
+                        "CNInfo equity-incentive leaf partitions produced a "
+                        "duplicate event key"
+                    )
+                accepted, outside_universe = (
+                    filter_cninfo_equity_incentive_events_to_point_in_time_holding_universe(
+                        normalized_window,
+                        intervals,
+                    )
+                )
+                qualifying_events = int(len(accepted))
+                if qualifying_events < int(
+                    acceptance["minimum_qualifying_events_per_window"]
+                ):
+                    raise RichDataError(
+                        f"CNInfo equity-incentive {label} has too few qualifying "
+                        f"events: {qualifying_events}"
+                    )
+                materialized = (
+                    materialize_cninfo_equity_incentive_plan_acceptance_sessions(
+                        accepted,
+                        calendar,
+                    )
+                )
+                factor_name = (
+                    "cninfo_equity_incentive_plan_disclosure_intensity"
+                )
+                cross_sections = (
+                    materialized.groupby("datetime", sort=True)
+                    .agg(
+                        eligible_names=("instrument", "nunique"),
+                        distinct_factor_values=(factor_name, "nunique"),
+                    )
+                    .reset_index()
+                )
+                candidate = cross_sections[
+                    cross_sections["eligible_names"].ge(
+                        int(acceptance["minimum_names_per_candidate_cross_section"])
+                    )
+                    & cross_sections["distinct_factor_values"].ge(
+                        int(
+                            acceptance[
+                                "minimum_distinct_factor_values_per_candidate_cross_section"
+                            ]
+                        )
+                    )
+                ]
+                candidate_count = int(len(candidate))
+                if candidate_count < int(
+                    acceptance["minimum_candidate_cross_sections_per_window"]
+                ):
+                    raise RichDataError(
+                        f"CNInfo equity-incentive {label} lacks sample "
+                        f"cross-sectional variation: {candidate_count}"
+                    )
+                window_quality.append(
+                    {
+                        "label": label,
+                        "source_rows": sum(
+                            int(item["received_rows"])
+                            for item in request_quality
+                            if item["window"] == label
+                        ),
+                        "supported_source_rows": supported_rows,
+                        "unsupported_board_rows_excluded": sum(
+                            int(item["unsupported_board_rows_excluded"])
+                            for item in part_quality
+                        ),
+                        "nonmatching_title_rows_excluded": sum(
+                            int(item["nonmatching_title_rows_excluded"])
+                            for item in part_quality
+                        ),
+                        "qualifying_source_rows": sum(
+                            int(item["qualifying_source_rows"])
+                            for item in part_quality
+                        ),
+                        "point_in_time_holding_events": qualifying_events,
+                        "outside_point_in_time_holding_universe_events_excluded": (
+                            outside_universe
+                        ),
+                        "candidate_cross_sections": candidate_count,
+                        "distinct_materialized_factor_values": int(
+                            materialized[factor_name].nunique(dropna=True)
+                        ),
+                        "maximum_candidate_names": int(
+                            cross_sections["eligible_names"].max()
+                        ),
+                        "maximum_candidate_distinct_factor_values": int(
+                            cross_sections["distinct_factor_values"].max()
+                        ),
+                    }
+                )
+                accepted_windows.append(accepted)
+
+            accepted_all = (
+                pd.concat(accepted_windows, ignore_index=True)
+                .loc[
+                    :,
+                    list(
+                        CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+                    ),
+                ]
+                .sort_values(["announcement_date", "instrument"], kind="stable")
+                .reset_index(drop=True)
+            )
+            if accepted_all.duplicated(["instrument", "announcement_date"]).any():
+                raise RichDataError(
+                    "CNInfo equity-incentive combined sample has duplicate events"
+                )
+            total_events = int(len(accepted_all))
+            total_candidates = sum(
+                int(item["candidate_cross_sections"]) for item in window_quality
+            )
+            materialized_all = (
+                materialize_cninfo_equity_incentive_plan_acceptance_sessions(
+                    accepted_all,
+                    calendar,
+                )
+            )
+            factor_name = "cninfo_equity_incentive_plan_disclosure_intensity"
+            distinct_values = int(
+                materialized_all[factor_name].nunique(dropna=True)
+            )
+            if total_events < int(acceptance["minimum_qualifying_events_total"]):
+                raise RichDataError(
+                    "CNInfo equity-incentive combined sample has too few events: "
+                    f"{total_events}"
+                )
+            if total_candidates < int(
+                acceptance["minimum_candidate_cross_sections_total"]
+            ):
+                raise RichDataError(
+                    "CNInfo equity-incentive combined sample lacks frozen "
+                    f"cross-sectional variation: {total_candidates}"
+                )
+            if distinct_values < int(
+                acceptance["minimum_distinct_factor_values_across_samples"]
+            ):
+                raise RichDataError(
+                    "CNInfo equity-incentive combined sample lacks factor variation"
+                )
+
+            temporary_destination = temporary_root / "equity_incentive_events.parquet"
+            final_destination = run_root / "equity_incentive_events.parquet"
+            atomic_write_frame(accepted_all, temporary_destination)
+            resolved_universe = universe_path.expanduser().resolve()
+            resolved_calendar = calendar_path.expanduser().resolve()
+            provider_calls = sum(
+                int(item["provider_calls"]) for item in request_quality
+            ) + sum(int(item["provider_probe_calls"]) for item in bisections)
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": (
+                    "cninfo_equity_incentive_plan_disclosure_intensity_acceptance"
+                ),
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_selection"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "filter_date": "announcement_date",
+                },
+                "local_calendar": {
+                    "path": manifest_path(resolved_calendar),
+                    "sha256": file_digest(resolved_calendar),
+                    "availability": (
+                        "first local trading session strictly after announcement_date"
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "category": contract["provider_contract"]["fixed_parameters"][
+                        "category"
+                    ],
+                    "requested_fields": list(
+                        CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "provider_calls": provider_calls,
+                    "leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_cookies_proxy_or_retail_session_used": False,
+                    "raw_response_title_id_or_hash_persisted": False,
+                    "body_participant_plan_economics_or_prices_accessed": False,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": total_events,
+                        "sha256": frame_digest(accepted_all),
+                    }
+                ],
+                "source_quality": {
+                    "windows": window_quality,
+                    "combined_rows_written": total_events,
+                    "combined_candidate_cross_sections": total_candidates,
+                    "combined_distinct_materialized_factor_values": distinct_values,
+                    "title_announcement_id_or_hash_persisted": False,
+                },
+                "factor": {
+                    "name": factor_name,
+                    "formula": contract["event_and_factor_definition"][
+                        "session_formula"
+                    ],
+                    "direction": "higher_is_better",
+                    "factor_values_persisted_at_acceptance": False,
+                },
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": (
+                    "cninfo_equity_incentive_plan_disclosure_intensity_acceptance"
+                ),
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "category": contract["provider_contract"]["fixed_parameters"][
+                        "category"
+                    ],
+                    "requested_fields": list(
+                        CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "completed_leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_cookies_proxy_or_retail_session_used": False,
+                    "raw_response_title_id_or_hash_persisted": False,
+                    "body_participant_plan_economics_or_prices_accessed": False,
+                },
+                "observed_quality_before_rejection": window_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": (
+                    "terminal_source_schema_identity_title_formula_or_historical_"
+                    "sample_variation_rejected_stop_before_full_history_capacity_"
+                    "uniqueness_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
+def cninfo_equity_incentive_plan_full_source_records() -> list[Path]:
+    """Return local terminal manifests for the one full-source attempt."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob(
+            "*cninfo_equity_incentive_plan_disclosure_intensity_full*.json"
+        )
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == (
+            "cninfo_equity_incentive_plan_disclosure_intensity"
+        ):
+            records.append(path)
+    return records
+
+
+def load_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record(
+    path: Path = (
+        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_FULL_SOURCE_RECORD
+    ),
+) -> dict[str, Any]:
+    """Verify a future tracked cross-clone full-source terminal record."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_FULL_SOURCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive full-source record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind=(
+            "a_share_cninfo_equity_incentive_plan_disclosure_intensity_"
+            "full_source_record"
+        ),
+    )
+    chain = record.get("source_chain") or {}
+    mechanism = chain.get("mechanism_audit") or {}
+    contract = chain.get("data_contract") or {}
+    acceptance = chain.get("source_acceptance_record") or {}
+    no_return = chain.get("no_return_preregistration") or {}
+    failure = chain.get("failure_manifest") or {}
+    observed = record.get("frozen_request_observed_result") or {}
+    privacy = record.get("privacy_and_scope") or {}
+    terminal = record.get("terminal_decision") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "terminal_full_source_title_markup_schema_rejected_before_capacity_uniqueness_prices_or_returns"
+        or mechanism.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_MECHANISM_AUDIT_SHA256
+        or contract.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT_SHA256
+        or acceptance.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD_SHA256
+        or no_return.get("sha256")
+        != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC_SHA256
+        or failure.get("path")
+        != "data/metadata/rich_data/runs/20260721T082754Z_cninfo_equity_incentive_plan_disclosure_intensity_full_29dcdd5e.json"
+        or failure.get("sha256")
+        != "4ed7a714fd1b890293331402caf0fe95d310498416ae5873ca2aaaffc8244233"
+        or observed.get("accepted_month_provider_calls") != 0
+        or observed.get("new_network_months_started") != ["2019-04"]
+        or observed.get("later_network_months_requested") is not False
+        or observed.get("provider_calls_issued") != 22
+        or observed.get("advertised_pages_completed") != 22
+        or observed.get("advertised_source_rows") != 654
+        or observed.get("received_source_rows") != 654
+        or observed.get("rejection_code")
+        != "announcement_title_contains_forbidden_angle_bracket_markup"
+        or observed.get("annual_partitions_published") != 0
+        or observed.get("published_files") != []
+        or observed.get("partial_snapshot_deleted") is not True
+        or privacy.get("announcement_title_plaintext_or_hash_persisted")
+        is not False
+        or privacy.get("comparison_fields_loaded") != []
+        or privacy.get("price_fields_loaded") != []
+        or privacy.get("forward_return_fields_read") is not False
+        or terminal.get("full_source_attempt_consumed") is not True
+        or terminal.get("full_source_retry_or_resume_allowed") is not False
+        or terminal.get("capacity_or_uniqueness_allowed") is not False
+        or terminal.get("price_or_return_diagnostic_allowed") is not False
+        or terminal.get(
+            "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed"
+        )
+        is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo equity-incentive full-source record changed after freeze"
+        )
+    return record
+
+
+def guard_cninfo_equity_incentive_plan_full_source() -> None:
+    """Reject cross-clone and local full-source replays before source access."""
+
+    record_path = (
+        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_FULL_SOURCE_RECORD
+    )
+    if record_path.exists():
+        load_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record(
+            record_path
+        )
+        raise RichDataError(
+            "CNInfo equity-incentive full source is permanently consumed; another "
+            "provider request is forbidden"
+        )
+    prior = cninfo_equity_incentive_plan_full_source_records()
+    if prior:
+        raise RichDataError(
+            "CNInfo equity-incentive full source is one-shot and already consumed by "
+            f"{prior[-1]}"
+        )
+
+
+def sync_cninfo_equity_incentive_plan_disclosure_intensity_full_source(
+    *,
+    allow_large: bool,
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Build the sole atomic 2019-2025 CNInfo plan-event snapshot."""
+
+    if not allow_large:
+        raise RichDataError(
+            "CNInfo equity-incentive full source requires --allow-large"
+        )
+    guard_cninfo_equity_incentive_plan_full_source()
+    lock_path = (
+        METADATA_ROOT
+        / ".cninfo_equity_incentive_plan_disclosure_intensity_full.lock"
+    )
+    with RichDataProcessLock(lock_path):
+        guard_cninfo_equity_incentive_plan_full_source()
+        spec = (
+            load_cninfo_equity_incentive_plan_disclosure_intensity_no_return_spec()
+        )
+        validate_cninfo_equity_incentive_plan_no_return_local_context(spec)
+        full = spec["full_source_snapshot_contract"]
+        contract = (
+            load_cninfo_equity_incentive_plan_disclosure_intensity_contract()
+        )
+        load_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_record()
+        resolved_universe = universe_path.expanduser().resolve()
+        expected_universe = spec["local_context"]["holding_universe"]
+        if (
+            not resolved_universe.exists()
+            or file_digest(resolved_universe) != expected_universe["sha256"]
+        ):
+            raise RichDataError(
+                "CNInfo equity-incentive full-source universe fingerprint mismatch"
+            )
+        intervals = load_factor_universe_intervals(resolved_universe)
+        accepted_manifest_path = resolve_record_path(
+            spec["source_chain"]["source_acceptance_manifest"]["path"]
+        )
+        accepted_manifest = load_json_record(
+            accepted_manifest_path,
+            kind="a_share_rich_data_snapshot",
+        )
+        accepted_frame_path = resolve_record_path(
+            spec["source_chain"]["source_acceptance_frame"]["path"]
+        )
+        accepted_frame = pd.read_parquet(accepted_frame_path)
+        if (
+            accepted_manifest.get("dataset")
+            != "cninfo_equity_incentive_plan_disclosure_intensity_acceptance"
+            or tuple(accepted_frame.columns)
+            != CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+            or len(accepted_frame) != 266
+            or frame_digest(accepted_frame)
+            != spec["source_chain"]["source_acceptance_frame"]["content_sha256"]
+        ):
+            raise RichDataError(
+                "CNInfo equity-incentive accepted source chain changed"
+            )
+        accepted_frame = accepted_frame.copy()
+        accepted_frame["announcement_date"] = pd.to_datetime(
+            accepted_frame["announcement_date"], errors="raise"
+        ).dt.normalize()
+        months = list(pd.period_range("2019-01", "2025-12", freq="M"))
+        if len(months) != int(full["required_month_count"]):
+            raise RichDataError(
+                "CNInfo equity-incentive full month grid changed"
+            )
+        reuse_months = set(full["acceptance_reuse_months"])
+        network_months = [month for month in months if str(month) not in reuse_months]
+        if len(network_months) != int(full["new_network_month_count"]):
+            raise RichDataError(
+                "CNInfo equity-incentive network month count changed"
+            )
+        run_id = new_run_id(
+            "cninfo_equity_incentive_plan_disclosure_intensity_full"
+        )
+        run_root = (
+            RAW_ROOT
+            / "cninfo"
+            / "equity_incentive_plan_disclosure_intensity"
+            / "full"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                "CNInfo equity-incentive full-source run already exists"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        completed_months: list[dict[str, Any]] = []
+        request_quality: list[dict[str, Any]] = []
+        bisections: list[dict[str, Any]] = []
+        try:
+            annual_parts: dict[int, list[pd.DataFrame]] = {
+                year: [] for year in range(2019, 2026)
+            }
+            network_months_requested = 0
+            for month in months:
+                month_label = str(month)
+                month_start = month.start_time.date()
+                month_end = month.end_time.date()
+                if month_label in reuse_months:
+                    mask = accepted_frame["announcement_date"].dt.to_period(
+                        "M"
+                    ).eq(month)
+                    month_events = accepted_frame.loc[
+                        mask,
+                        list(
+                            CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+                        ),
+                    ].copy()
+                    completed_months.append(
+                        {
+                            "month": month_label,
+                            "source": "accepted_snapshot_reuse_without_network",
+                            "provider_calls": 0,
+                            "point_in_time_holding_events": int(len(month_events)),
+                        }
+                    )
+                else:
+                    provider_request_issued = True
+                    network_months_requested += 1
+                    leaves, split_records = (
+                        fetch_cninfo_equity_incentive_plan_partition_details(
+                            month_start,
+                            month_end,
+                            contract=contract,
+                        )
+                    )
+                    bisections.extend(
+                        [{"month": month_label, **item} for item in split_records]
+                    )
+                    normalized_parts: list[pd.DataFrame] = []
+                    part_quality: list[dict[str, Any]] = []
+                    for leaf_start, leaf_end, rows, quality in leaves:
+                        request_quality.append({"month": month_label, **quality})
+                        normalized, observed = (
+                            canonicalize_cninfo_equity_incentive_plan_rows(
+                                rows,
+                                leaf_start,
+                                leaf_end,
+                                contract=contract,
+                            )
+                        )
+                        part_quality.append(observed)
+                        if not normalized.empty:
+                            normalized_parts.append(normalized)
+                    if normalized_parts:
+                        normalized_month = (
+                            pd.concat(normalized_parts, ignore_index=True)
+                            .sort_values(
+                                ["announcement_date", "instrument"], kind="stable"
+                            )
+                            .reset_index(drop=True)
+                        )
+                    else:
+                        normalized_month = pd.DataFrame(
+                            columns=list(
+                                CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+                            )
+                        )
+                    if normalized_month.duplicated(
+                        ["instrument", "announcement_date"]
+                    ).any():
+                        raise RichDataError(
+                            "CNInfo equity-incentive full-source leaves produced a "
+                            "duplicate event key"
+                        )
+                    month_events, outside_universe = (
+                        filter_cninfo_equity_incentive_events_to_point_in_time_holding_universe(
+                            normalized_month,
+                            intervals,
+                        )
+                    )
+                    completed_months.append(
+                        {
+                            "month": month_label,
+                            "source": "new_public_provider_request",
+                            "source_rows": sum(
+                                int(item["received_rows"])
+                                for item in request_quality
+                                if item["month"] == month_label
+                            ),
+                            "supported_source_rows": sum(
+                                int(item["supported_source_rows"])
+                                for item in part_quality
+                            ),
+                            "unsupported_board_rows_excluded": sum(
+                                int(item["unsupported_board_rows_excluded"])
+                                for item in part_quality
+                            ),
+                            "nonmatching_title_rows_excluded": sum(
+                                int(item["nonmatching_title_rows_excluded"])
+                                for item in part_quality
+                            ),
+                            "qualifying_source_rows": sum(
+                                int(item["qualifying_source_rows"])
+                                for item in part_quality
+                            ),
+                            "outside_point_in_time_holding_universe_events_excluded": (
+                                outside_universe
+                            ),
+                            "point_in_time_holding_events": int(len(month_events)),
+                        }
+                    )
+                if not month_events.empty:
+                    annual_parts[month.year].append(month_events)
+
+            if network_months_requested != 75 or len(completed_months) != 84:
+                raise RichDataError(
+                    "CNInfo equity-incentive full-source month execution changed"
+                )
+            annual_frames: dict[int, pd.DataFrame] = {}
+            combined_parts: list[pd.DataFrame] = []
+            for year, parts in annual_parts.items():
+                if not parts:
+                    raise RichDataError(
+                        f"CNInfo equity-incentive full source has no {year} event"
+                    )
+                frame = (
+                    pd.concat(parts, ignore_index=True)
+                    .loc[
+                        :,
+                        list(
+                            CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS
+                        ),
+                    ]
+                    .sort_values(["announcement_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                if frame.duplicated(["instrument", "announcement_date"]).any():
+                    raise RichDataError(
+                        "CNInfo equity-incentive full source has duplicate annual "
+                        f"event keys in {year}"
+                    )
+                annual_frames[year] = frame
+                combined_parts.append(frame)
+            combined = pd.concat(combined_parts, ignore_index=True)
+            distinct_counts = int(
+                combined[
+                    "initial_equity_incentive_plan_disclosure_count"
+                ].nunique(dropna=True)
+            )
+            if distinct_counts < int(
+                full["minimum_distinct_event_counts_across_full_snapshot"]
+            ):
+                raise RichDataError(
+                    "CNInfo equity-incentive full source lacks event-count variation"
+                )
+
+            files: list[dict[str, Any]] = []
+            for year, frame in annual_frames.items():
+                temporary_destination = temporary_root / f"{year}.parquet"
+                final_destination = run_root / f"{year}.parquet"
+                atomic_write_frame(frame, temporary_destination)
+                files.append(
+                    {
+                        "year": year,
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(frame)),
+                        "sha256": frame_digest(frame),
+                    }
+                )
+            if len(files) != int(full["required_final_annual_partition_count"]):
+                raise RichDataError(
+                    "CNInfo equity-incentive annual partition count changed"
+                )
+            provider_calls = sum(
+                int(item["provider_calls"]) for item in request_quality
+            ) + sum(int(item["provider_probe_calls"]) for item in bisections)
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "cninfo_equity_incentive_plan_disclosure_intensity",
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "development_start": full["development_start"],
+                "development_end": full["development_end"],
+                "no_return_preregistration": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC
+                    ),
+                },
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_CONTRACT
+                    ),
+                },
+                "source_acceptance": {
+                    "record_path": manifest_path(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
+                    ),
+                    "record_sha256": file_digest(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_ACCEPTANCE_RECORD
+                    ),
+                    "manifest_path": manifest_path(accepted_manifest_path),
+                    "manifest_sha256": file_digest(accepted_manifest_path),
+                    "frame_path": manifest_path(accepted_frame_path),
+                    "frame_content_sha256": frame_digest(accepted_frame),
+                    "reuse_months": sorted(reuse_months),
+                    "rows_reused": int(len(accepted_frame)),
+                    "provider_rerequested": False,
+                },
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "filter_date": "announcement_date",
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "category": contract["provider_contract"]["fixed_parameters"][
+                        "category"
+                    ],
+                    "requested_fields": list(
+                        CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "network_months_requested": network_months_requested,
+                    "provider_calls": provider_calls,
+                    "completed_months": completed_months,
+                    "leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_cookies_proxy_or_retail_session_used": False,
+                    "raw_response_title_id_or_hash_persisted": False,
+                    "body_participant_plan_economics_or_prices_accessed": False,
+                },
+                "files": files,
+                "source_quality": {
+                    "annual_rows": {
+                        str(year): int(len(frame))
+                        for year, frame in annual_frames.items()
+                    },
+                    "combined_rows_written": int(len(combined)),
+                    "distinct_event_counts": distinct_counts,
+                    "duplicate_event_keys": 0,
+                    "title_announcement_id_or_hash_persisted": False,
+                },
+                "factor": {
+                    "name": "cninfo_equity_incentive_plan_disclosure_intensity",
+                    "formula": spec["factor_protocol"]["formula"],
+                    "direction": "higher_is_better",
+                    "factor_values_persisted_at_full_source": False,
+                },
+                "full_source_status": full["required_success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "cninfo_equity_incentive_plan_disclosure_intensity",
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "development_start": full["development_start"],
+                "development_end": full["development_end"],
+                "no_return_preregistration": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "category": contract["provider_contract"]["fixed_parameters"][
+                        "category"
+                    ],
+                    "requested_fields": list(
+                        CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "completed_months": completed_months,
+                    "completed_leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_cookies_proxy_or_retail_session_used": False,
+                    "raw_response_title_id_or_hash_persisted": False,
+                    "body_participant_plan_economics_or_prices_accessed": False,
+                },
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "full_source_status": (
+                    "terminal_full_source_schema_identity_title_coverage_or_"
+                    "atomicity_rejected_stop_before_capacity_uniqueness_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; failure_record={failure_path}") from exc
 
 
 def fetch_eastmoney_related_party_transaction_partition(
@@ -30569,6 +32757,36 @@ def build_parser() -> argparse.ArgumentParser:
         "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
     )
 
+    cninfo_equity_incentive_acceptance = subparsers.add_parser(
+        "acceptance-cninfo-equity-incentive-plan-disclosure-intensity",
+        help=(
+            "run the frozen three-window public equity-incentive plan "
+            "announcement acceptance"
+        ),
+    )
+    cninfo_equity_incentive_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    cninfo_equity_incentive_acceptance.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+
+    cninfo_equity_incentive_full = subparsers.add_parser(
+        "sync-cninfo-equity-incentive-plan-disclosure-intensity",
+        help=(
+            "download the frozen 2019-2025 public equity-incentive plan event "
+            "snapshot"
+        ),
+    )
+    cninfo_equity_incentive_full.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    cninfo_equity_incentive_full.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the single 75-month public full-source request",
+    )
+
     cninfo_guarantee_acceptance = subparsers.add_parser(
         "acceptance-cninfo-guarantee-sparsity",
         help="run the frozen 57-signal public guarantee-sparsity acceptance",
@@ -30890,6 +33108,24 @@ def main(argv: list[str] | None = None) -> int:
                 universe_path=args.universe_file,
                 calendar_path=args.calendar_file,
             )
+        elif args.command == (
+            "acceptance-cninfo-equity-incentive-plan-disclosure-intensity"
+        ):
+            manifest = (
+                sync_cninfo_equity_incentive_plan_disclosure_intensity_acceptance(
+                    universe_path=args.universe_file,
+                    calendar_path=args.calendar_file,
+                )
+            )
+        elif args.command == (
+            "sync-cninfo-equity-incentive-plan-disclosure-intensity"
+        ):
+            manifest = (
+                sync_cninfo_equity_incentive_plan_disclosure_intensity_full_source(
+                    allow_large=args.allow_large,
+                    universe_path=args.universe_file,
+                )
+            )
         elif args.command == "acceptance-cninfo-guarantee-sparsity":
             manifest = sync_cninfo_guarantee_sparsity_acceptance(
                 universe_path=args.universe_file,
@@ -30994,6 +33230,12 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "acceptance-eastmoney-major-contract-disclosure-intensity": (
             "stored_no_return_public_major_contract_acceptance"
+        ),
+        "acceptance-cninfo-equity-incentive-plan-disclosure-intensity": (
+            "stored_no_return_public_equity_incentive_plan_acceptance"
+        ),
+        "sync-cninfo-equity-incentive-plan-disclosure-intensity": (
+            "stored_pending_no_return_capacity_and_uniqueness"
         ),
         "acceptance-cninfo-guarantee-sparsity": (
             "stored_no_return_public_guarantee_sparsity_acceptance"

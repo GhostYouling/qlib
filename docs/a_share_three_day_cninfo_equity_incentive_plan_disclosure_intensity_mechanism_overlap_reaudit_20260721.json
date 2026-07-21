@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_cninfo_equity_incentive_plan_disclosure_intensity_mechanism_overlap_reaudit",
+  "status": "frozen_before_equity_incentive_provider_rows_titles_identity_values_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-21T07:57:30Z",
+  "purpose": "Select one economically independent no-return mechanism after the major-contract signing-date schema rejection, without reopening a consumed branch or searching titles, formulas, directions, ages, fields, weights, or subsets against provider rows or returns.",
+  "fixed_strategy_context": {
+    "holding_period_local_sessions": 3,
+    "holding_universe": "buyable_main_chinext",
+    "development_dates_if_later_admitted": [
+      "2019-01-01",
+      "2025-12-31"
+    ],
+    "topk_if_later_admitted": 3,
+    "capital_cny_if_later_admitted": 200000,
+    "board_lot_shares_if_later_admitted": 100,
+    "commission_rate_if_later_admitted": 0.0001,
+    "transfer_fee_rate_each_side_if_later_admitted": 0.00002,
+    "stamp_duty_sell_only_if_later_admitted": 0.0005,
+    "primary_adverse_slippage_bps_each_side_if_later_admitted": 10
+  },
+  "freeze_evidence": {
+    "accepted_price_frontier_revalidated_without_new_returns": true,
+    "historical_frontier_factor_count": 43,
+    "historical_dual_gate_qualified_factor_count": 0,
+    "latest_major_contract_acceptance_rejection_known": true,
+    "official_cninfo_disclosure_page_and_pinned_adapter_definition_observed": true,
+    "equity_incentive_provider_rows_or_titles_observed_under_this_hypothesis": false,
+    "equity_incentive_identity_or_factor_values_observed": false,
+    "sample_or_full_history_capacity_observed": false,
+    "uniqueness_observed": false,
+    "price_or_factor_returns_observed": false,
+    "selection_or_promotion_performed": false
+  },
+  "pre_row_contract_correction": {
+    "performed_before_any_provider_row_or_title": true,
+    "reason": "The original all-literals rule incorrectly assumed every ordinary plan-draft title contains the literal 股权激励计划. The frozen category also covers the standard plan-type literals 限制性股票激励计划 and 股票期权激励计划, so the rule is corrected before source access to require 草案 plus exactly the disclosed title containing at least one of the three preregistered plan-type literals.",
+    "rows_prices_or_returns_used_to_make_correction": false
+  },
+  "frontier_decisions": [
+    {
+      "candidate": "cninfo_recent_lawsuit_disclosure_sparsity",
+      "decision": "deferred_before_rows",
+      "reason": "The adjacent CNInfo guarantee thematic endpoint already returned object-shaped records where the pinned thematic adapter required positional arrays. The lawsuit route uses the same positional thematic family and needs a separately justified transport contract rather than a post-failure reinterpretation."
+    },
+    {
+      "candidate": "cninfo_risk_warning_absence_score",
+      "decision": "rejected_before_rows",
+      "reason": "Treating no recent risk-warning disclosure as a favorable full-market score would require proving exhaustive category coverage and would leave a mostly tied zero cross-section; restricting the score to event issuers would not provide a coherent positive-selection mechanism."
+    },
+    {
+      "candidate": "eastmoney_vendor_stock_comment_score",
+      "decision": "rejected_before_rows",
+      "reason": "The provider-generated participation, attention, and desire scores are black-box transformations with unclear historical revision semantics and would reintroduce price, attention, and sentiment overlap."
+    },
+    {
+      "candidate": "cninfo_equity_incentive_plan_disclosure_intensity",
+      "decision": "selected_before_rows",
+      "reason": "A newly disclosed equity-incentive plan draft is a dated governance and compensation-alignment event. Strict title classification can isolate the initial plan draft without grant, vesting, exercise, amendment, cancellation, ownership, price, or financial-statement fields."
+    }
+  ],
+  "economic_independence": {
+    "mechanism": "new_management_and_employee_compensation_alignment_plan_disclosed_to_shareholders",
+    "distinct_from_insider_open_market_transactions": "Insider transactions are realized personal market purchases or sales; an incentive-plan draft is a company compensation-governance design and uses no transaction direction, size, price, or identity.",
+    "distinct_from_management_continuity": "Management continuity attempted to measure departures and tenure; this candidate measures a new compensation-alignment plan and requests no manager name or departure date.",
+    "distinct_from_holder_and_pledge_factors": "The event is neither an observed shareholder position, ownership concentration change, pledge, nor major-holder trade.",
+    "distinct_from_financial_statements_forecasts_and_contracts": "No accounting amount, earnings guidance, grant, subsidy, customer contract, revenue, or asset field enters the mechanism.",
+    "distinct_from_prices_moneyflow_and_analyst_attention": "No OHLCV, return, order flow, valuation, market capitalization, analyst opinion, or vendor sentiment score enters the mechanism."
+  },
+  "selected_candidate": {
+    "factor_name": "cninfo_equity_incentive_plan_disclosure_intensity",
+    "source_event_measure": "initial_equity_incentive_plan_disclosure_count = number of globally unique complete qualifying plan-draft announcement identities for one supported instrument and announcement_date",
+    "session_formula": "latest already-effective initial_equity_incentive_plan_disclosure_count / (1 + calendar_days_since_announcement_date)",
+    "direction": "higher_is_better",
+    "interpretation": "More distinct newly disclosed initial equity-incentive plan drafts and greater freshness indicate a stronger near-term compensation-alignment catalyst.",
+    "availability": "first local trading session strictly after the Asia/Shanghai calendar announcement date regardless of intraday timestamp",
+    "maximum_age_calendar_days": 3,
+    "multiple_event_dates": "Use only the latest already-effective announcement date; a later effective event supersedes an older event.",
+    "absent_event_policy": "missing_never_zero_or_favorable",
+    "future_entry_if_admitted": "next local session open after signal-close ranking"
+  },
+  "source_scope_frozen_before_rows": {
+    "provider": "cninfo",
+    "official_page": "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?url=disclosure/list/search",
+    "endpoint": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+    "category": "category_gqjl_szsh",
+    "only_allowed_transport_fields": [
+      "secCode",
+      "announcementTime",
+      "announcementId",
+      "announcementTitle"
+    ],
+    "announcement_title_and_id_use": "in_memory_classification_and_identity_only",
+    "required_title_literals_all": [
+      "草案"
+    ],
+    "required_plan_title_literals_any": [
+      "限制性股票激励计划",
+      "股票期权激励计划",
+      "股权激励计划"
+    ],
+    "excluded_title_literals_any": [
+      "摘要",
+      "修订",
+      "修正",
+      "更正",
+      "补充",
+      "调整",
+      "终止",
+      "取消",
+      "撤回"
+    ],
+    "forbidden_fields": [
+      "security name",
+      "organization id",
+      "announcement URL or body",
+      "participant or manager identity",
+      "grant quantity or price",
+      "exercise or vesting condition",
+      "performance target",
+      "dilution ratio",
+      "share count",
+      "market price",
+      "market capitalization",
+      "valuation",
+      "return",
+      "credential",
+      "cookie",
+      "proxy",
+      "retail session"
+    ],
+    "raw_response_persisted": false,
+    "title_announcement_id_or_hash_persisted": false
+  },
+  "acceptance_before_any_full_source": {
+    "sample_windows": [
+      "2019Q1",
+      "2024Q1",
+      "2025Q1"
+    ],
+    "count_complete_pagination_required": true,
+    "point_in_time_holding_universe_required": true,
+    "minimum_names_per_candidate_session": 6,
+    "minimum_distinct_factor_values_per_candidate_session": 2,
+    "no_price_or_return": true,
+    "success_only_allows_new_fingerprint_bound_no_return_full_source_protocol": true,
+    "failure_is_terminal_for_exact_candidate": true
+  },
+  "prohibited_post_result_actions": [
+    "change the title literal groups or announcement identity after observing a row",
+    "drop, fill, coerce, infer, or reinterpret incomplete titles, ids, codes, or timestamps",
+    "switch from initial plan drafts to grants, vesting, exercise, amendments, cancellations, employee stock-ownership plans, quantities, prices, targets, or dilution",
+    "change direction, three-calendar-day age, samples, thresholds, or point-in-time timing",
+    "retry a consumed acceptance or failed partition",
+    "reuse or repair the management-continuity, insider-trade, holder, pledge, or major-contract mechanisms",
+    "read prices or returns before a separately frozen no-return capacity and uniqueness gate",
+    "aggregate, score, select, size, order, or justify Level-2 from acceptance evidence"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

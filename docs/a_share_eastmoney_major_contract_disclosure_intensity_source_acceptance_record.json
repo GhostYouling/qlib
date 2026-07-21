@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record",
+  "status": "terminal_source_signing_date_schema_rejected_before_factor_values_full_history_capacity_uniqueness_or_returns",
+  "recorded_at": "2026-07-21T07:51:30Z",
+  "purpose": "Permanently preserve the sole frozen Eastmoney major-contract disclosure acceptance result and reject every replay or post-result signing-date repair before local contract or provider access.",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_major_contract_disclosure_intensity_mechanism_overlap_reaudit_20260721.json",
+    "sha256": "5299adf4f15d70ff0f3cc82eb153c67fd90afea0d766e40b6da6e7d57298efe5"
+  },
+  "data_contract": {
+    "path": "docs/a_share_eastmoney_major_contract_disclosure_intensity_data_contract.json",
+    "sha256": "12d2f985f87bbdd47ff9c113b53a47d5325a4ca6a0cc70d7897e05757bd23f6b",
+    "preregistered_at": "2026-07-21T07:36:00Z"
+  },
+  "local_failure_manifest": {
+    "path": "data/metadata/rich_data/runs/20260721T075033Z_eastmoney_major_contract_disclosure_intensity_acceptance_d92dbd6a.json",
+    "sha256": "b94979620fb1b2af2d534b6313d39535f4126bd509e7054721836bcc576be52d",
+    "run_id": "20260721T075033Z_eastmoney_major_contract_disclosure_intensity_acceptance_d92dbd6a"
+  },
+  "frozen_request_observed_result": {
+    "requested_sample_windows": [
+      "2019Q1",
+      "2024Q1",
+      "2025Q1"
+    ],
+    "first_and_only_completed_leaf_start": "2019-01-01",
+    "first_and_only_completed_leaf_end": "2019-01-31",
+    "advertised_pages": 1,
+    "requested_pages": 1,
+    "provider_calls_issued": 1,
+    "advertised_source_rows": 86,
+    "received_source_rows": 86,
+    "count_reconciliation_passed": true,
+    "completed_leaf_partitions": 1,
+    "completed_sample_windows": 0,
+    "rejection_code": "non_string_signing_date",
+    "rejection": "At least one source record exposed SIGNDATE as a non-string value, while the frozen contract required every signing date to be a complete strict ISO-like scalar string not later than the announcement date.",
+    "normalized_rows": 0,
+    "factor_values_derived": 0,
+    "published_files": [],
+    "partial_snapshot_deleted": true
+  },
+  "privacy_and_scope": {
+    "raw_provider_response_persisted": false,
+    "contract_name_signing_date_or_identity_hash_persisted": false,
+    "security_name_signatory_counterparty_relationship_type_text_or_remark_persisted": false,
+    "amount_revenue_ratio_updated_date_market_data_or_valuation_accessed_or_persisted": false,
+    "credential_token_account_points_cookie_proxy_or_retail_session_used": false,
+    "full_history_requested": false,
+    "capacity_or_uniqueness_run": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false,
+    "aggregation_scoring_selection_sizing_or_ordering_performed": false
+  },
+  "terminal_decision": {
+    "acceptance_consumed": true,
+    "acceptance_retry_allowed": false,
+    "failed_partition_or_record_may_be_rerequested_for_detail": false,
+    "drop_fill_coerce_infer_or_replace_non_string_signing_date_allowed": false,
+    "change_fields_identity_formula_direction_timing_age_sample_or_threshold_allowed": false,
+    "same_mechanism_v2_or_provider_substitution_allowed": false,
+    "full_source_sync_allowed": false,
+    "capacity_uniqueness_or_return_work_allowed": false,
+    "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed": false,
+    "next_action": "Return to the no-return mechanism frontier and freeze only a newly economically independent candidate before any new provider row, factor value, price, or return."
+  },
+  "interpretation": "This is a source signing-date schema-contract rejection, not evidence that major-contract disclosure intensity has positive or negative predictive returns. No usable factor event was produced."
+}

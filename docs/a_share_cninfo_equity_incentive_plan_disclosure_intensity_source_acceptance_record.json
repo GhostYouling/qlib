@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "kind": "a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record",
+  "status": "accepted_schema_identity_title_formula_and_historical_sample_variation_pending_frozen_full_source_and_no_return_gates",
+  "recorded_at": "2026-07-21T08:17:11Z",
+  "purpose": "Freeze the sole public CNInfo source acceptance result across clones without persisting announcement title, announcement id, identity hashes, plan economics, credentials, prices, or returns.",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_cninfo_equity_incentive_plan_disclosure_intensity_mechanism_overlap_reaudit_20260721.json",
+    "sha256": "69450addda402d3a5bef80de41f94a4d817e41de7f89c61719cfa99f90a950bf"
+  },
+  "data_contract": {
+    "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_data_contract.json",
+    "sha256": "2c63471a7bc76c24d5fef8171bbac9d28d1e4bcc50c11059eb648b902aaad110",
+    "preregistered_at": "2026-07-21T07:58:36Z"
+  },
+  "accepted_manifest": {
+    "path": "data/metadata/rich_data/runs/20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8.json",
+    "sha256": "021c37e542565b075b2440f575b4dd0cc9f7758abb017ee6712da2e0c42c134f",
+    "run_id": "20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8",
+    "acceptance_status": "accepted_schema_identity_title_formula_and_historical_sample_variation_pending_frozen_full_source_and_no_return_gates"
+  },
+  "frozen_request_observed_result": {
+    "fixed_sample_windows": [
+      "2019Q1",
+      "2024Q1",
+      "2025Q1"
+    ],
+    "leaf_partitions_completed": 9,
+    "recursive_bisections": 0,
+    "advertised_pages_completed": 270,
+    "provider_calls_issued": 271,
+    "transient_retry_attempts": 1,
+    "transient_retry_was_within_frozen_page_policy": true,
+    "advertised_source_rows": 7904,
+    "received_source_rows": 7904,
+    "count_complete": true,
+    "published_event_rows": 266,
+    "published_files": 1,
+    "candidate_cross_sections_total": 24,
+    "distinct_materialized_factor_values": 9,
+    "per_window": [
+      {
+        "label": "2019Q1",
+        "source_rows": 1270,
+        "supported_source_rows": 1270,
+        "unsupported_board_rows_excluded": 0,
+        "nonmatching_title_rows_excluded": 1161,
+        "qualifying_source_rows": 109,
+        "point_in_time_holding_events": 78,
+        "candidate_cross_sections": 7
+      },
+      {
+        "label": "2024Q1",
+        "source_rows": 3632,
+        "supported_source_rows": 2828,
+        "unsupported_board_rows_excluded": 804,
+        "nonmatching_title_rows_excluded": 2589,
+        "qualifying_source_rows": 239,
+        "point_in_time_holding_events": 108,
+        "candidate_cross_sections": 12
+      },
+      {
+        "label": "2025Q1",
+        "source_rows": 3002,
+        "supported_source_rows": 2346,
+        "unsupported_board_rows_excluded": 656,
+        "nonmatching_title_rows_excluded": 2161,
+        "qualifying_source_rows": 185,
+        "point_in_time_holding_events": 80,
+        "candidate_cross_sections": 5
+      }
+    ]
+  },
+  "published_snapshot": {
+    "path": "data/raw/a_share/rich/cninfo/equity_incentive_plan_disclosure_intensity/acceptance/20260721T081359Z_cninfo_equity_incentive_plan_disclosure_intensity_acceptance_c83698b8/equity_incentive_events.parquet",
+    "frame_sha256": "739e2123dc3b4da21760795c31440db112e0e140155823a37c59f81d161de20f",
+    "rows": 266,
+    "columns": [
+      "announcement_date",
+      "instrument",
+      "initial_equity_incentive_plan_disclosure_count",
+      "provider"
+    ],
+    "duplicate_event_keys": 0,
+    "provider_value": "cninfo",
+    "title_announcement_id_or_hash_persisted": false,
+    "factor_values_persisted_at_acceptance": false
+  },
+  "independent_verification": {
+    "manifest_sha256_verified": true,
+    "snapshot_frame_sha256_verified": true,
+    "nine_leaf_page_sequences_and_counts_reconciled": true,
+    "source_rows_reconciled": "7904/7904",
+    "event_schema_key_and_positive_integer_counts_reproduced": true,
+    "strict_next_session_three_calendar_day_formula_reproduced": true,
+    "per_window_event_rows_reproduced": {
+      "2019Q1": 78,
+      "2024Q1": 108,
+      "2025Q1": 80
+    },
+    "per_window_candidate_cross_sections_reproduced": {
+      "2019Q1": 7,
+      "2024Q1": 12,
+      "2025Q1": 5
+    },
+    "combined_distinct_materialized_factor_values_reproduced": 9,
+    "selection_or_promotion_performed": false
+  },
+  "privacy_and_scope": {
+    "public_source": true,
+    "credential_or_account_required": false,
+    "tushare_token_or_points_used": false,
+    "cookie_proxy_or_retail_session_used": false,
+    "raw_response_persisted": false,
+    "announcement_title_id_or_identity_hash_persisted": false,
+    "announcement_body_url_security_name_or_organization_id_accessed": false,
+    "participant_identity_grant_price_quantity_target_or_dilution_accessed": false,
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false
+  },
+  "next_stage_decision": {
+    "acceptance_consumed": true,
+    "acceptance_retry_allowed": false,
+    "acceptance_provider_rerequest_allowed": false,
+    "same_mechanism_v2_or_provider_substitution_allowed": false,
+    "full_source_sync_allowed_without_new_fingerprint_bound_no_return_protocol": false,
+    "capacity_uniqueness_or_return_work_allowed_from_acceptance_alone": false,
+    "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed": false,
+    "allowed_next_action": "Freeze a fingerprint-bound full-source no-return protocol that reuses the accepted rows without provider re-request, then implement and test it before any further CNInfo access."
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

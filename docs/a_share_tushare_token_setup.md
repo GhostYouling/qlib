@@ -163,11 +163,19 @@ Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_
 
 跨克隆终止记录是 [`a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json`](a_share_eastmoney_government_subsidy_disclosure_intensity_source_acceptance_record.json)（SHA‑256 `431f02f0e9c4609ee12b764e593fa40904daf2ebe9262cd90461ad4c39f98cfd`）。不得再次运行来源验收、任选或复制公告代码、改变身份/标题/三日规则，或继续全量、容量、收益与选股。Token 配置、更新或轮换与该分支无关，也不会恢复它。
 
-#### Eastmoney 重大合同公告强度不使用 Token
+#### Eastmoney 重大合同公告强度分支已终止且不使用 Token
 
-当前预注册的 `eastmoney_major_contract_disclosure_intensity` 使用 Eastmoney 公共接口与公开静态查询参数，不读取 `TUSHARE_TOKEN`，也不使用 Tushare 账号或积分、Cookie、代理和零售客户端会话。它只允许在内存中读取股票代码、公告日、合同名称和签订日来建立唯一身份；合同名称、签订日及其哈希、合同金额、营收、对手方、价格和收益都不得落盘。
+`eastmoney_major_contract_disclosure_intensity` 使用 Eastmoney 公共接口与公开静态查询参数，不读取 `TUSHARE_TOKEN`，也不使用 Tushare 账号或积分、Cookie、代理和零售客户端会话。唯一验收完整对账首个 2019‑01 分区的 1 页、86 行后，发现至少一条来源记录的 `SIGNDATE` 不是冻结合同要求的完整字符串，因此在规范事件、因子值、全历史、价格和收益之前终止。合同名称、签订日及其哈希、合同金额、营收、对手方、价格和收益均未落盘。
 
-因此，不要用第 4 节的 Token 透传包装器运行这个公共来源。真实验收只能按 [`a_share_data_pipeline.md`](a_share_data_pipeline.md) 的当前活动门禁执行一次；Token 已配置、更新或轮换不会授权重跑，也不会放宽合同、样本、三自然日时效、容量、唯一性或后续收益门禁。
+跨克隆终止记录是 [`a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json`](a_share_eastmoney_major_contract_disclosure_intensity_source_acceptance_record.json)（SHA‑256 `4c89537c713fc1ad0c0769edb73e227669d99c92461d77de9c374f14973e8316`）。不得再次运行来源验收、删除/填补/转换签订日、改变身份或三日规则，或继续全量、容量、收益与选股。Token 配置、更新或轮换与该分支无关，也不会恢复它。
+
+#### CNInfo 股权激励计划草案分支来源验收通过、全历史终止且不使用 Token
+
+`cninfo_equity_incentive_plan_disclosure_intensity` 使用 CNInfo 公共公告检索，不读取 `TUSHARE_TOKEN`，不使用 Tushare 账号或积分，也不需要 Cookie、代理或零售客户端会话。机制审计 SHA‑256 为 `69450addda402d3a5bef80de41f94a4d817e41de7f89c61719cfa99f90a950bf`，冻结数据合同 SHA‑256 为 `2c63471a7bc76c24d5fef8171bbac9d28d1e4bcc50c11059eb648b902aaad110`。它只传输代码、公告毫秒时间、公告 ID 和标题；标题/ID 只在内存分类去重，最终只允许四列事件计数落盘。
+
+唯一验收已经完成：九个月共 270 页、7,904/7,904 条来源记录，271 次调用包含一次合同允许的瞬时重试；最终发布 266 行四列事件，三个窗口共有 24 个候选横截面和 9 个不同物化值。跟踪记录是 [`a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record.json`](a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record.json)（SHA‑256 `4332cc7b10dc90c061d4a997180e5d38192785ed9a453c842742f56c392f07d6`）。不得再次运行 `acceptance-cninfo-equity-incentive-plan-disclosure-intensity`；入口会在合同和网络前拒绝。该结果只允许先冻结新的全历史无收益协议，不授权直接全量、价格、收益、聚合、当前选股或下单，Token 状态也不会改变这些门禁。
+
+全历史无收益协议冻结为 [`a_share_cninfo_equity_incentive_plan_disclosure_intensity_no_return_preregistration.json`](a_share_cninfo_equity_incentive_plan_disclosure_intensity_no_return_preregistration.json)（SHA‑256 `8f49a2febee16e14dc0a142c6678dffbea264f4dff89df3e893d88558a0e35c4`）。唯一全量尝试复用前三个验收月且没有重请求，在首个未验收月 2019‑04 完整对账 22 页、654 行后，因至少一条必需标题含合同禁止的角括号标记而终止；后续月份未请求、临时快照已删除、年度文件为 0。终止记录是 [`a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json`](a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json)（SHA‑256 `6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375`）。不得再次运行全量入口、去标签修复或续传，也不得运行容量、唯一性、收益或选股；Token 与该分支始终无关。
 
 ### 4.2 `stock_st` 分支已终止
 

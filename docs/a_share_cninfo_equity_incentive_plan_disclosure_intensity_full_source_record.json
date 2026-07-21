@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "kind": "a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record",
+  "status": "terminal_full_source_title_markup_schema_rejected_before_capacity_uniqueness_prices_or_returns",
+  "recorded_at": "2026-07-21T08:28:17Z",
+  "purpose": "Freeze the sole 2019-2025 public CNInfo full-source result across clones without re-requesting the failing month, repairing title markup, persisting text identities, or reading comparisons, prices, or returns.",
+  "source_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_cninfo_equity_incentive_plan_disclosure_intensity_mechanism_overlap_reaudit_20260721.json",
+      "sha256": "69450addda402d3a5bef80de41f94a4d817e41de7f89c61719cfa99f90a950bf"
+    },
+    "data_contract": {
+      "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_data_contract.json",
+      "sha256": "2c63471a7bc76c24d5fef8171bbac9d28d1e4bcc50c11059eb648b902aaad110"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_source_acceptance_record.json",
+      "sha256": "4332cc7b10dc90c061d4a997180e5d38192785ed9a453c842742f56c392f07d6"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_no_return_preregistration.json",
+      "sha256": "8f49a2febee16e14dc0a142c6678dffbea264f4dff89df3e893d88558a0e35c4"
+    },
+    "failure_manifest": {
+      "path": "data/metadata/rich_data/runs/20260721T082754Z_cninfo_equity_incentive_plan_disclosure_intensity_full_29dcdd5e.json",
+      "sha256": "4ed7a714fd1b890293331402caf0fe95d310498416ae5873ca2aaaffc8244233",
+      "run_id": "20260721T082754Z_cninfo_equity_incentive_plan_disclosure_intensity_full_29dcdd5e"
+    }
+  },
+  "frozen_request_observed_result": {
+    "accepted_months_reused_without_network_before_failure": [
+      "2019-01",
+      "2019-02",
+      "2019-03"
+    ],
+    "accepted_event_rows_reused_in_memory": 78,
+    "accepted_month_provider_calls": 0,
+    "new_network_months_started": [
+      "2019-04"
+    ],
+    "later_network_months_requested": false,
+    "provider_calls_issued": 22,
+    "advertised_pages_completed": 22,
+    "requested_pages_complete_and_sequential": true,
+    "advertised_source_rows": 654,
+    "received_source_rows": 654,
+    "count_complete": true,
+    "recursive_bisections": 0,
+    "rejection_code": "announcement_title_contains_forbidden_angle_bracket_markup",
+    "rejection_stage": "strict_required_field_normalization_before_month_event_publication",
+    "new_month_normalized_events_published": 0,
+    "annual_partitions_published": 0,
+    "published_files": [],
+    "partial_snapshot_deleted": true
+  },
+  "contract_interpretation": {
+    "announcement_title_requirement": "A required title must be a complete scalar string normalized only by Unicode NFKC and whitespace rules and must not contain angle-bracket markup.",
+    "post_result_markup_stripping_allowed": false,
+    "post_result_html_entity_or_tag_reinterpretation_allowed": false,
+    "drop_fill_coerce_infer_replace_or_re_request_allowed": false,
+    "same_mechanism_v2_or_provider_substitution_allowed": false,
+    "failure_is_predictive_return_evidence": false
+  },
+  "independent_verification": {
+    "failure_manifest_sha256_verified": true,
+    "first_unaccepted_month_page_sequence_reconciled": "22/22",
+    "first_unaccepted_month_source_rows_reconciled": "654/654",
+    "accepted_months_were_not_rerequested": true,
+    "no_later_month_was_requested": true,
+    "final_full_source_files_absent": true,
+    "partial_snapshot_deleted": true,
+    "lock_marker_is_inactive_and_preserved": true,
+    "selection_or_promotion_performed": false
+  },
+  "privacy_and_scope": {
+    "public_source": true,
+    "credential_or_account_required": false,
+    "tushare_token_or_points_used": false,
+    "cookie_proxy_or_retail_session_used": false,
+    "raw_response_persisted": false,
+    "announcement_title_plaintext_or_hash_persisted": false,
+    "announcement_id_plaintext_or_hash_persisted": false,
+    "announcement_body_url_security_name_or_organization_id_accessed": false,
+    "participant_identity_grant_price_quantity_target_or_dilution_accessed": false,
+    "comparison_fields_loaded": [],
+    "price_fields_loaded": [],
+    "open_close_or_forward_return_fields_read": false,
+    "forward_return_fields_read": false
+  },
+  "terminal_decision": {
+    "full_source_attempt_consumed": true,
+    "full_source_retry_or_resume_allowed": false,
+    "failed_month_or_row_rerequest_allowed": false,
+    "title_markup_repair_or_rule_change_allowed": false,
+    "same_mechanism_v2_or_provider_substitution_allowed": false,
+    "capacity_or_uniqueness_allowed": false,
+    "price_or_return_diagnostic_allowed": false,
+    "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed": false,
+    "allowed_next_action": "Return to the no-return mechanism frontier and preregister a newly economically independent candidate before observing its provider rows or factor values."
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
