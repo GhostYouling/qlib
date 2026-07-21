@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "kind": "a_share_cninfo_supplement_correction_disclosure_burden_no_return_preregistration",
+  "status": "frozen_after_acceptance_before_unaccepted_month_rows_full_factor_history_capacity_comparisons_prices_or_returns",
+  "preregistered_at": "2026-07-21T09:33:01Z",
+  "purpose": "Bind the accepted category/schema/identity sample and authorize exactly one atomic 2019-2025 public full-source attempt, followed only by capacity-first no-return research if the source succeeds.",
+  "source_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_cninfo_supplement_correction_disclosure_burden_mechanism_overlap_reaudit_20260721.json",
+      "sha256": "95e8e93d5ace85e44fbe6d682cdea1c1873cfba9152b06fcb37c0c4e626c3853"
+    },
+    "data_contract": {
+      "path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_data_contract.json",
+      "sha256": "d27dd754890d5c8d7743630164e68ea9f7169c466b3babaa26c74f6697d6f53b"
+    },
+    "acceptance_record": {
+      "path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_source_acceptance_record.json",
+      "sha256": "9ea84b1155f77dff651f8e0484523441606e83edf4b23cd7ec5efc5ec13d666b"
+    },
+    "acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260721T093018Z_cninfo_supplement_correction_disclosure_burden_acceptance_0c42fcbd.json",
+      "sha256": "74c47eb4a091b102353b6e2d7ae1c4210226aca40977e92849e398fcf506fa14",
+      "run_id": "20260721T093018Z_cninfo_supplement_correction_disclosure_burden_acceptance_0c42fcbd"
+    },
+    "acceptance_frame": {
+      "path": "data/raw/a_share/rich/cninfo/supplement_correction_disclosure_burden/acceptance/20260721T093018Z_cninfo_supplement_correction_disclosure_burden_acceptance_0c42fcbd/supplement_correction_events.parquet",
+      "rows": 974,
+      "file_sha256": "09d9db0b61b8f7ddaaff8bea8e1976af100b69db3e77faa6f727978f282ec2b3",
+      "content_sha256": "d4da291759ea601720dec1e89de0c74aa6e920ad69191650ccf68b2c394e4ec7",
+      "columns": [
+        "announcement_date",
+        "instrument",
+        "supplement_correction_notice_count",
+        "provider"
+      ]
+    }
+  },
+  "full_source_snapshot_contract": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "required_month_count": 84,
+    "required_year_count": 7,
+    "initial_partitioning": "One non-overlapping calendar month at a time, with the frozen recursive date bisection before later pages when a leaf exceeds 80 pages.",
+    "accepted_months_reused_without_provider_rerequest": [
+      "2019-01",
+      "2019-02",
+      "2019-03",
+      "2024-01",
+      "2024-02",
+      "2024-03",
+      "2025-01",
+      "2025-02",
+      "2025-03"
+    ],
+    "acceptance_reuse_month_count": 9,
+    "new_network_month_count": 75,
+    "provider_endpoint_category_parameters_fields_and_retry_policy": "Exactly the frozen data contract; no title, body, URL, name, other response field, credential, cookie, proxy, retail session, price, or return may be read.",
+    "new_network_identity_policy": "Across all 75 unaccepted months, collapse only exact repeated instrument/announcementId/date identities, allow explicit one-ID-to-multiple-instrument mappings, and reject conflicting dates for one instrument/announcementId.",
+    "accepted_identity_boundary": "Acceptance IDs were intentionally discarded and may not be re-requested. The accepted frame remains authoritative for its nine months; cross-chain integrity is enforced with immutable accepted fingerprints and globally unique instrument/announcement_date event keys after aggregation.",
+    "point_in_time_holding_filter_date": "announcement_date",
+    "required_final_columns": [
+      "announcement_date",
+      "instrument",
+      "supplement_correction_notice_count",
+      "provider"
+    ],
+    "required_final_annual_partition_count": 7,
+    "every_month_count_complete": true,
+    "every_year_nonempty": true,
+    "global_event_key_unique": true,
+    "event_count_positive_integer": true,
+    "announcement_id_title_hash_or_raw_record_persisted": false,
+    "one_full_snapshot_attempt_after_acceptance": true,
+    "success_status": "full_source_complete_pending_no_return_capacity_and_uniqueness",
+    "failure_policy": "Delete the complete hidden partial snapshot, publish no annual file or success manifest, write one terminal tracked no-return record, and stop without retry, resume, repair, threshold change, comparisons, prices, or returns.",
+    "tracked_record_path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json"
+  },
+  "capacity_contract": {
+    "must_run_before_any_comparison_field": true,
+    "must_run_before_any_price_or_return_field": true,
+    "factor_name": "cninfo_supplement_correction_disclosure_resilience",
+    "factor_formula": "(1 + calendar_days_since_latest_effective_announcement) / active_unique_supplement_correction_notice_count",
+    "factor_direction": "higher_is_better",
+    "holding_universe": "buyable_main_chinext",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "maximum_factor_age_calendar_days": 3,
+    "quality_rule": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY with maximum age 550 calendar days",
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "capacity_failure_policy": "Stop permanently before comparisons, prices, or returns. Do not widen age, lower gates, add unaffected issuers as zeros, change direction/formula/category, choose years, combine sparse events, or retry source."
+  },
+  "uniqueness_contract_after_capacity_only": {
+    "required_sparse_semantic_neighbors": [
+      "audit_opinion_clean_flag",
+      "disclosure_promptness",
+      "equity_incentive_plan_disclosure_intensity",
+      "related_party_transaction_count",
+      "repurchase_event_count",
+      "pledge_event_count",
+      "institutional_survey_event_count",
+      "analyst_valid_rating_report_count"
+    ],
+    "required_size_liquidity_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ],
+    "sparse_statistical_gate": "When at least 100 eligible pairwise sessions have at least six names, absolute median daily Spearman correlation must be below 0.8; otherwise preserve semantic review and descriptive overlap without claiming statistical independence.",
+    "dense_gate": "Every dense confounder must provide at least 100 eligible pairwise sessions with at least 50 names and absolute median daily Spearman correlation below 0.8.",
+    "no_return": true,
+    "forbidden_if_capacity_fails": true
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "terminal_ccass_source": {
+      "path": "docs/a_share_tushare_ccass_participant_breadth_source_acceptance_record.json",
+      "sha256": "54a4d18096b14797e351d9380bcf9e1e6a6bf943cacd984fe674f51353c1615f"
+    },
+    "post_ccass_authorized_source_frontier": {
+      "path": "docs/a_share_three_day_post_ccass_authorized_source_frontier_audit_20260721.json",
+      "sha256": "61804bfb535954ae517aba1e67791dc8371ce68cf384219fe8a08c6ded6dc499"
+    },
+    "prospective_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "capital_cny": 200000,
+      "board_lot_shares": 100
+    }
+  },
+  "one_shot_and_anti_cherry_pick": {
+    "full_source_attempts_allowed": 1,
+    "accepted_month_provider_rerequest_allowed": false,
+    "partial_resume_or_repair_allowed": false,
+    "category_title_fields_identity_formula_direction_age_or_threshold_change_allowed": false,
+    "factor_values_may_be_persisted_only_as_the_four_column_event_snapshot": true,
+    "comparison_price_or_return_access_during_full_source": false,
+    "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -5231,6 +5231,23 @@ def cninfo_equity_incentive_plan_row(
     }
 
 
+def cninfo_supplement_correction_row(
+    code: str,
+    announcement_date: str,
+    announcement_id: str,
+    *,
+    title: object = "<em>此字段不得读取</em>",
+) -> dict[str, object]:
+    local = pd.Timestamp(announcement_date, tz="Asia/Shanghai")
+    announcement_time = int(local.tz_convert("UTC").timestamp() * 1000)
+    return {
+        "secCode": code,
+        "announcementTime": announcement_time,
+        "announcementId": announcement_id,
+        "announcementTitle": title,
+    }
+
+
 def test_eastmoney_government_subsidy_contract_is_fingerprint_frozen(tmp_path):
     contract = (
         RICH.load_eastmoney_government_subsidy_disclosure_intensity_contract()
@@ -6445,6 +6462,562 @@ def test_cninfo_equity_incentive_acceptance_is_atomic_and_text_free(
             universe_path=universe,
             calendar_path=calendar,
         )
+
+
+def test_cninfo_supplement_correction_contract_and_cli_are_frozen(tmp_path):
+    contract = RICH.load_cninfo_supplement_correction_disclosure_burden_contract()
+    provider = contract["provider_contract"]
+    factor = contract["event_and_factor_definition"]
+    assert provider["fixed_parameters"]["category"] == "category_bcgz_szsh"
+    assert provider["fixed_parameters"]["isHLtitle"] == "false"
+    assert provider["record_fields_read"] == list(
+        RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_RAW_FIELDS
+    )
+    assert "announcementTitle" in provider["record_fields_explicitly_not_read"]
+    assert factor["factor_name"] == (
+        "cninfo_supplement_correction_disclosure_resilience"
+    )
+    assert factor["direction"] == "higher_is_better"
+    assert contract["normalized_snapshot"]["columns"] == list(
+        RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+    )
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+    RICH.validate_cninfo_supplement_correction_local_context(contract)
+    parsed = RICH.build_parser().parse_args(
+        ["acceptance-cninfo-supplement-correction-disclosure-burden"]
+    )
+    assert parsed.command == (
+        "acceptance-cninfo-supplement-correction-disclosure-burden"
+    )
+
+    changed = copy.deepcopy(contract)
+    changed["provider_contract"]["fixed_parameters"]["category"] = (
+        "category_cqdq_szsh"
+    )
+    changed_path = tmp_path / "changed-cninfo-supplement-contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_cninfo_supplement_correction_disclosure_burden_contract(
+            changed_path
+        )
+
+
+def test_cninfo_supplement_correction_identity_and_title_privacy_are_frozen():
+    rows = [
+        cninfo_supplement_correction_row(
+            "600519", "2025-01-10", "A1", title={"must": "not be read"}
+        ),
+        cninfo_supplement_correction_row(
+            "600519", "2025-01-10", "A1", title=None
+        ),
+        cninfo_supplement_correction_row(
+            "600519", "2025-01-10", "A2", title="<em>markup ignored</em>"
+        ),
+        cninfo_supplement_correction_row(
+            "000001", "2025-01-10", "A1", title=123
+        ),
+        cninfo_supplement_correction_row(
+            "688981", "2025-01-10", "A3", title=object()
+        ),
+    ]
+    identities = {}
+    id_instruments = {}
+    normalized, quality = RICH.canonicalize_cninfo_supplement_correction_rows(
+        rows,
+        dt.date(2025, 1, 1),
+        dt.date(2025, 1, 31),
+        identity_dates=identities,
+        announcement_instruments=id_instruments,
+    )
+    assert normalized.columns.tolist() == list(
+        RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+    )
+    assert normalized["instrument"].tolist() == ["SH600519", "SZ000001"]
+    assert normalized["supplement_correction_notice_count"].tolist() == [2, 1]
+    assert quality["exact_repeated_identity_rows_collapsed"] == 1
+    assert quality["unsupported_board_rows_excluded"] == 1
+    assert quality["announcement_title_read_or_persisted"] is False
+    assert id_instruments["A1"] == {"SH600519", "SZ000001"}
+    assert not ({"announcementTitle", "announcementId"} & set(normalized))
+
+    conflicting = cninfo_supplement_correction_row(
+        "600519", "2025-01-11", "A1"
+    )
+    with pytest.raises(RICH.RichDataError, match="conflicting dates"):
+        RICH.canonicalize_cninfo_supplement_correction_rows(
+            [conflicting],
+            dt.date(2025, 1, 11),
+            dt.date(2025, 1, 11),
+            identity_dates=identities,
+            announcement_instruments=id_instruments,
+        )
+
+
+def test_cninfo_supplement_correction_partition_uses_frozen_category():
+    rows = [
+        cninfo_supplement_correction_row(
+            "600519", "2025-01-10", f"A{index:03d}"
+        )
+        for index in range(31)
+    ]
+    calls = []
+
+    class Response:
+        status_code = 200
+
+        def __init__(self, page):
+            self.page = page
+
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            page_rows = rows[:30] if self.page == 1 else rows[30:]
+            return {"totalAnnouncement": 31, "announcements": page_rows}
+
+    class Session:
+        def post(self, url, *, data, timeout):
+            calls.append((url, dict(data), timeout))
+            return Response(int(data["pageNum"]))
+
+    fetched, quality = RICH.fetch_cninfo_supplement_correction_partition(
+        dt.date(2025, 1, 1),
+        dt.date(2025, 1, 31),
+        session=Session(),
+        page_pause_seconds=0.0,
+    )
+    assert fetched == rows
+    assert [call[1]["pageNum"] for call in calls] == ["1", "2"]
+    assert all(call[1]["category"] == "category_bcgz_szsh" for call in calls)
+    assert all(call[1]["isHLtitle"] == "false" for call in calls)
+    assert quality["advertised_rows"] == quality["received_rows"] == 31
+
+
+def test_cninfo_supplement_correction_materialization_aggregates_active_events():
+    events = pd.DataFrame(
+        [
+            {
+                "announcement_date": "2025-01-13",
+                "instrument": "SH600519",
+                "supplement_correction_notice_count": 2,
+                "provider": "cninfo",
+            },
+            {
+                "announcement_date": "2025-01-14",
+                "instrument": "SH600519",
+                "supplement_correction_notice_count": 1,
+                "provider": "cninfo",
+            },
+        ]
+    ).loc[
+        :,
+        list(RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS),
+    ]
+    calendar = pd.DatetimeIndex(
+        pd.to_datetime(
+            ["2025-01-13", "2025-01-14", "2025-01-15", "2025-01-16", "2025-01-17"]
+        )
+    )
+    materialized = (
+        RICH.materialize_cninfo_supplement_correction_acceptance_sessions(
+            events, calendar
+        )
+    )
+    assert materialized["datetime"].tolist() == list(calendar[1:])
+    assert materialized["active_supplement_correction_notice_count"].tolist() == [
+        2,
+        3,
+        3,
+        1,
+    ]
+    assert materialized["event_age_calendar_days"].tolist() == [1, 1, 2, 3]
+    assert materialized[
+        "cninfo_supplement_correction_disclosure_resilience"
+    ].tolist() == pytest.approx([1.0, 2.0 / 3.0, 1.0, 4.0])
+
+
+def test_cninfo_supplement_correction_acceptance_is_atomic_and_title_free(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(
+        RICH.load_cninfo_supplement_correction_disclosure_burden_contract()
+    )
+    acceptance = contract["acceptance_protocol"]
+    acceptance["minimum_supported_source_rows_per_window"] = 6
+    acceptance["minimum_point_in_time_holding_events_per_window"] = 4
+    acceptance["minimum_point_in_time_holding_events_total"] = 12
+    acceptance["minimum_candidate_cross_sections_per_window"] = 1
+    acceptance["minimum_candidate_cross_sections_total"] = 3
+    acceptance["minimum_names_per_candidate_cross_section"] = 2
+    acceptance["minimum_distinct_factor_values_per_candidate_cross_section"] = 2
+    acceptance["minimum_distinct_factor_values_across_samples"] = 2
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2018-01-01\t2026-12-31\n"
+        "SZ000001\t2018-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    calendar = tmp_path / "day.txt"
+    calendar.write_text(
+        "\n".join(
+            item.strftime("%Y-%m-%d")
+            for item in pd.bdate_range("2019-01-01", "2025-04-15")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    def fetch(start_date, end_date, *, contract):
+        announcement_date = (start_date + dt.timedelta(days=1)).isoformat()
+        rows = [
+            cninfo_supplement_correction_row(
+                "600519", announcement_date, f"{start_date:%Y%m}-A1", title=None
+            ),
+            cninfo_supplement_correction_row(
+                "600519", announcement_date, f"{start_date:%Y%m}-A2", title={}
+            ),
+            cninfo_supplement_correction_row(
+                "000001", announcement_date, f"{start_date:%Y%m}-A3", title=1
+            ),
+            cninfo_supplement_correction_row(
+                "688981", announcement_date, f"{start_date:%Y%m}-A4", title=object()
+            ),
+        ]
+        quality = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 1,
+            "requested_pages": [1],
+            "advertised_rows": 4,
+            "received_rows": 4,
+            "page_size": 30,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+        return [(start_date, end_date, rows, quality)], []
+
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_supplement_correction_disclosure_burden_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_cninfo_supplement_correction_local_context",
+        lambda unused: None,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_cninfo_supplement_correction_partition_details",
+        fetch,
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_ACCEPTANCE_RECORD",
+        tmp_path / "missing-record.json",
+    )
+
+    manifest_path = (
+        RICH.sync_cninfo_supplement_correction_disclosure_burden_acceptance(
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == (
+        "cninfo_supplement_correction_disclosure_burden_acceptance"
+    )
+    assert manifest["acceptance_status"] == acceptance["success_status"]
+    assert manifest["source_request"]["provider_calls"] == 9
+    assert manifest["source_request"][
+        "announcement_title_body_url_name_or_other_field_read"
+    ] is False
+    assert manifest["source_quality"]["combined_rows_written"] == 18
+    assert manifest["source_quality"]["combined_candidate_cross_sections"] >= 3
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(
+        RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+    )
+    assert len(stored) == 18
+    assert not ({"announcementTitle", "announcementId"} & set(stored))
+    with pytest.raises(RICH.RichDataError, match="one-shot"):
+        RICH.sync_cninfo_supplement_correction_disclosure_burden_acceptance(
+            universe_path=universe,
+            calendar_path=calendar,
+        )
+
+
+def test_cninfo_supplement_correction_acceptance_record_and_guard_are_frozen(
+    tmp_path, monkeypatch
+):
+    record = (
+        RICH.load_cninfo_supplement_correction_disclosure_burden_acceptance_record()
+    )
+    observed = record["frozen_request_observed_result"]
+    snapshot = record["published_snapshot"]
+    assert observed["provider_calls_issued"] == 41
+    assert observed["advertised_source_rows"] == 1076
+    assert observed["received_source_rows"] == 1076
+    assert observed["unique_instrument_announcement_identities"] == 1014
+    assert observed["published_event_rows"] == 974
+    assert observed["candidate_cross_sections_total"] == 97
+    assert snapshot["columns"] == list(
+        RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+    )
+    assert snapshot["announcement_id_title_hash_or_raw_record_persisted"] is False
+    assert record["privacy_and_scope"]["price_fields_loaded"] == []
+    assert record["privacy_and_scope"]["forward_return_fields_read"] is False
+    assert record["next_stage_decision"]["acceptance_consumed"] is True
+    assert record["next_stage_decision"]["acceptance_retry_allowed"] is False
+
+    changed = copy.deepcopy(record)
+    changed["frozen_request_observed_result"]["provider_calls_issued"] = 42
+    changed_path = tmp_path / "changed-cninfo-supplement-record.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_cninfo_supplement_correction_disclosure_burden_acceptance_record(
+            changed_path
+        )
+
+    def local_manifest_scan_must_not_run():
+        raise AssertionError("tracked record must reject before local scan")
+
+    monkeypatch.setattr(
+        RICH,
+        "cninfo_supplement_correction_acceptance_records",
+        local_manifest_scan_must_not_run,
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.guard_cninfo_supplement_correction_acceptance()
+
+
+def test_cninfo_supplement_correction_no_return_spec_and_full_cli_are_frozen():
+    spec = (
+        RICH.load_cninfo_supplement_correction_disclosure_burden_no_return_spec()
+    )
+    full = spec["full_source_snapshot_contract"]
+    capacity = spec["capacity_contract"]
+    assert full["required_month_count"] == 84
+    assert full["acceptance_reuse_month_count"] == 9
+    assert full["new_network_month_count"] == 75
+    assert full["required_final_annual_partition_count"] == 7
+    assert capacity["must_run_before_any_comparison_field"] is True
+    assert capacity["minimum_required_cohorts"] == 200
+    assert spec["price_fields_loaded"] == []
+    assert spec["forward_return_fields_read"] is False
+    RICH.validate_cninfo_supplement_correction_no_return_local_context(spec)
+    parsed = RICH.build_parser().parse_args(
+        [
+            "sync-cninfo-supplement-correction-disclosure-burden",
+            "--allow-large",
+        ]
+    )
+    assert parsed.command == (
+        "sync-cninfo-supplement-correction-disclosure-burden"
+    )
+    assert parsed.allow_large is True
+
+
+def test_cninfo_supplement_correction_full_reuses_acceptance_and_is_atomic(
+    tmp_path, monkeypatch
+):
+    spec = copy.deepcopy(
+        RICH.load_cninfo_supplement_correction_disclosure_burden_no_return_spec()
+    )
+    contract = copy.deepcopy(
+        RICH.load_cninfo_supplement_correction_disclosure_burden_contract()
+    )
+    accepted_months = spec["full_source_snapshot_contract"][
+        "accepted_months_reused_without_provider_rerequest"
+    ]
+    accepted_rows = []
+    for month in accepted_months:
+        date = pd.Timestamp(f"{month}-02")
+        accepted_rows.extend(
+            [
+                {
+                    "announcement_date": date,
+                    "instrument": "SH600519",
+                    "supplement_correction_notice_count": 2,
+                    "provider": "cninfo",
+                },
+                {
+                    "announcement_date": date,
+                    "instrument": "SZ000001",
+                    "supplement_correction_notice_count": 1,
+                    "provider": "cninfo",
+                },
+            ]
+        )
+    accepted = pd.DataFrame(accepted_rows).loc[
+        :,
+        list(RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS),
+    ]
+    accepted_path = tmp_path / "accepted.parquet"
+    RICH.atomic_write_frame(accepted, accepted_path)
+    spec["source_chain"]["acceptance_frame"] = {
+        "path": str(accepted_path),
+        "rows": len(accepted),
+        "file_sha256": RICH.file_digest(accepted_path),
+        "content_sha256": RICH.frame_digest(accepted),
+        "columns": list(
+            RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+        ),
+    }
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2018-01-01\t2026-12-31\n"
+        "SZ000001\t2018-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    calls = []
+
+    def fetch(start_date, end_date, *, contract):
+        calls.append((start_date, end_date))
+        announcement_date = (start_date + dt.timedelta(days=1)).isoformat()
+        rows = [
+            cninfo_supplement_correction_row(
+                "600519", announcement_date, f"{start_date:%Y%m}-A1", title=None
+            ),
+            cninfo_supplement_correction_row(
+                "000001", announcement_date, f"{start_date:%Y%m}-A2", title={}
+            ),
+        ]
+        quality = {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "advertised_pages": 1,
+            "requested_pages": [1],
+            "advertised_rows": 2,
+            "received_rows": 2,
+            "page_size": 30,
+            "provider_calls": 1,
+            "count_verified": True,
+        }
+        return [(start_date, end_date, rows, quality)], []
+
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_supplement_correction_disclosure_burden_no_return_spec",
+        lambda: spec,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "validate_cninfo_supplement_correction_no_return_local_context",
+        lambda unused: None,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_supplement_correction_disclosure_burden_acceptance_record",
+        lambda: {},
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_supplement_correction_disclosure_burden_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_cninfo_supplement_correction_partition_details",
+        fetch,
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_FULL_SOURCE_RECORD",
+        tmp_path / "missing-full-record.json",
+    )
+
+    manifest_path = (
+        RICH.sync_cninfo_supplement_correction_disclosure_burden_full_source(
+            allow_large=True,
+            universe_path=universe,
+        )
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["full_source_status"] == (
+        "full_source_complete_pending_no_return_capacity_and_uniqueness"
+    )
+    assert manifest["source_acceptance"]["provider_rerequested"] is False
+    assert manifest["source_acceptance"]["rows_reused"] == 18
+    assert manifest["source_request"]["network_months_requested"] == [
+        start.strftime("%Y-%m") for start, _ in calls
+    ]
+    assert manifest["source_request"]["provider_calls"] == 75
+    assert len(calls) == 75
+    assert not ({start.strftime("%Y-%m") for start, _ in calls} & set(accepted_months))
+    assert len(manifest["files"]) == 7
+    assert sum(item["rows"] for item in manifest["files"]) == 168
+    for item in manifest["files"]:
+        stored = pd.read_parquet(RICH.resolve_record_path(item["path"]))
+        assert stored.columns.tolist() == list(
+            RICH.CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+        )
+        assert not ({"announcementTitle", "announcementId"} & set(stored))
+    assert manifest["comparison_fields_loaded"] == []
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    with pytest.raises(RICH.RichDataError, match="one-shot"):
+        RICH.sync_cninfo_supplement_correction_disclosure_burden_full_source(
+            allow_large=True,
+            universe_path=universe,
+        )
+    assert len(calls) == 75
+
+
+def test_cninfo_supplement_correction_full_terminal_record_and_guard_are_frozen(
+    tmp_path, monkeypatch
+):
+    record = (
+        RICH.load_cninfo_supplement_correction_disclosure_burden_full_source_record()
+    )
+    observed = record["frozen_request_observed_result"]
+    decision = record["next_stage_decision"]
+    assert observed["completed_new_network_months"] == 28
+    assert observed["last_completed_month"] == "2021-07"
+    assert observed["first_uncompleted_month_in_fixed_sequence"] == "2021-08"
+    assert observed["completed_leaf_provider_calls"] == 234
+    assert observed["completed_leaf_advertised_rows"] == 6682
+    assert observed["completed_leaf_received_rows"] == 6682
+    assert observed["rejection_code"] == (
+        "stable_totalAnnouncement_changed_between_pages"
+    )
+    assert observed["published_annual_files"] == 0
+    assert observed["partial_snapshot_deleted"] is True
+    assert record["privacy_and_scope"]["comparison_fields_loaded"] == []
+    assert record["privacy_and_scope"]["price_fields_loaded"] == []
+    assert record["privacy_and_scope"]["forward_return_fields_read"] is False
+    assert decision["full_source_attempt_consumed"] is True
+    assert decision["full_source_retry_or_resume_allowed"] is False
+    assert decision["capacity_or_uniqueness_allowed"] is False
+
+    changed = copy.deepcopy(record)
+    changed["frozen_request_observed_result"]["completed_leaf_provider_calls"] = 235
+    changed_path = tmp_path / "changed-cninfo-supplement-full-record.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_cninfo_supplement_correction_disclosure_burden_full_source_record(
+            changed_path
+        )
+
+    def local_manifest_scan_must_not_run():
+        raise AssertionError("tracked full record must reject before local scan")
+
+    monkeypatch.setattr(
+        RICH,
+        "cninfo_supplement_correction_full_source_records",
+        local_manifest_scan_must_not_run,
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.guard_cninfo_supplement_correction_full_source()
 
 
 def test_cninfo_equity_incentive_no_return_spec_and_full_cli_are_frozen():

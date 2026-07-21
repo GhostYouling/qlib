@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "kind": "a_share_cninfo_supplement_correction_disclosure_burden_source_acceptance_record",
+  "status": "accepted_category_schema_identity_formula_and_historical_sample_variation_pending_frozen_full_source_and_no_return_gates",
+  "recorded_at": "2026-07-21T09:31:19Z",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_cninfo_supplement_correction_disclosure_burden_mechanism_overlap_reaudit_20260721.json",
+    "sha256": "95e8e93d5ace85e44fbe6d682cdea1c1873cfba9152b06fcb37c0c4e626c3853"
+  },
+  "data_contract": {
+    "path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_data_contract.json",
+    "sha256": "d27dd754890d5c8d7743630164e68ea9f7169c466b3babaa26c74f6697d6f53b",
+    "preregistered_at": "2026-07-21T09:20:54Z"
+  },
+  "accepted_manifest": {
+    "path": "data/metadata/rich_data/runs/20260721T093018Z_cninfo_supplement_correction_disclosure_burden_acceptance_0c42fcbd.json",
+    "sha256": "74c47eb4a091b102353b6e2d7ae1c4210226aca40977e92849e398fcf506fa14",
+    "run_id": "20260721T093018Z_cninfo_supplement_correction_disclosure_burden_acceptance_0c42fcbd"
+  },
+  "frozen_request_observed_result": {
+    "category": "category_bcgz_szsh",
+    "fixed_sample_windows": [
+      "2019Q1",
+      "2024Q1",
+      "2025Q1"
+    ],
+    "leaf_partitions_completed": 9,
+    "recursive_bisections": 0,
+    "provider_calls_issued": 41,
+    "advertised_source_rows": 1076,
+    "received_source_rows": 1076,
+    "supported_source_rows": 1014,
+    "unsupported_board_rows_excluded": 62,
+    "exact_repeated_identity_rows_collapsed": 0,
+    "unique_instrument_announcement_identities": 1014,
+    "multi_instrument_announcement_ids_observed": 0,
+    "published_event_rows": 974,
+    "candidate_cross_sections_by_window": {
+      "2019Q1": 53,
+      "2024Q1": 33,
+      "2025Q1": 11
+    },
+    "candidate_cross_sections_total": 97,
+    "distinct_materialized_factor_values": 10,
+    "price_or_return_read": false
+  },
+  "published_snapshot": {
+    "path": "data/raw/a_share/rich/cninfo/supplement_correction_disclosure_burden/acceptance/20260721T093018Z_cninfo_supplement_correction_disclosure_burden_acceptance_0c42fcbd/supplement_correction_events.parquet",
+    "rows": 974,
+    "columns": [
+      "announcement_date",
+      "instrument",
+      "supplement_correction_notice_count",
+      "provider"
+    ],
+    "file_sha256": "09d9db0b61b8f7ddaaff8bea8e1976af100b69db3e77faa6f727978f282ec2b3",
+    "content_sha256": "d4da291759ea601720dec1e89de0c74aa6e920ad69191650ccf68b2c394e4ec7",
+    "duplicate_event_keys": 0,
+    "positive_integer_counts_only": true,
+    "announcement_id_title_hash_or_raw_record_persisted": false,
+    "factor_values_persisted": false
+  },
+  "independent_local_verification": {
+    "schema_exact": true,
+    "file_sha256_reproduced": true,
+    "content_sha256_reproduced": true,
+    "unique_identity_count_reconciled_from_event_counts": 1014,
+    "point_in_time_rows_outside_holding_universe": 0,
+    "forbidden_columns_present": [],
+    "candidate_cross_sections_reproduced": {
+      "2019Q1": 53,
+      "2024Q1": 33,
+      "2025Q1": 11
+    },
+    "combined_candidate_cross_sections": 97,
+    "combined_distinct_factor_values": 10
+  },
+  "privacy_and_scope": {
+    "credential_token_points_cookie_proxy_or_retail_session_used": false,
+    "announcement_title_body_url_name_or_other_field_read": false,
+    "announcement_id_or_hash_persisted": false,
+    "raw_response_persisted": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "current_score_selection_sizing_or_order_created": false
+  },
+  "next_stage_decision": {
+    "acceptance_consumed": true,
+    "acceptance_retry_allowed": false,
+    "provider_rerequest_allowed": false,
+    "acceptance_success_is_factor_return_evidence": false,
+    "full_source_allowed_without_new_fingerprint_bound_no_return_protocol": false,
+    "next_allowed_action": "Freeze one full-source no-return preregistration bound to this record, accepted manifest and accepted frame. It must reuse the nine accepted months without provider re-request and keep capacity before comparisons, prices, or returns.",
+    "capacity_uniqueness_or_return_work_allowed_from_acceptance_alone": false,
+    "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

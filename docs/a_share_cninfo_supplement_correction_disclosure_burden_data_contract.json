@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "kind": "a_share_cninfo_supplement_correction_disclosure_burden_data_contract",
+  "status": "frozen_before_supplement_correction_announcement_rows_ids_factor_values_capacity_uniqueness_prices_or_returns",
+  "preregistered_at": "2026-07-21T09:20:54Z",
+  "purpose": "Validate one public CNInfo supplement/correction category transport, point-in-time identity, event aggregation, and historical sample variation before any full history, comparison field, price, return, aggregation, current score, selection, sizing, or order.",
+  "mechanism_selection": {
+    "path": "docs/a_share_three_day_cninfo_supplement_correction_disclosure_burden_mechanism_overlap_reaudit_20260721.json",
+    "sha256_at_contract_freeze": "95e8e93d5ace85e44fbe6d682cdea1c1873cfba9152b06fcb37c0c4e626c3853",
+    "selected_candidate_count": 1,
+    "factor_name": "cninfo_supplement_correction_disclosure_resilience",
+    "direction": "higher_is_better"
+  },
+  "provider_contract": {
+    "provider": "cninfo",
+    "credential_required": false,
+    "account_points_required": 0,
+    "cookies_proxy_or_retail_session_allowed": false,
+    "endpoint": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+    "request_method": "POST_FORM",
+    "fixed_parameters": {
+      "pageSize": "30",
+      "column": "szse",
+      "tabName": "fulltext",
+      "plate": "",
+      "stock": "",
+      "searchkey": "",
+      "secid": "",
+      "category": "category_bcgz_szsh",
+      "trade": "",
+      "sortName": "",
+      "sortType": "",
+      "isHLtitle": "false"
+    },
+    "date_parameter": "seDate as inclusive YYYY-MM-DD~YYYY-MM-DD",
+    "page_parameter": "pageNum as a one-based decimal string",
+    "page_size": 30,
+    "maximum_pages_per_leaf_partition": 80,
+    "oversized_partition_policy": "After requesting only page one, recursively bisect the inclusive calendar range before any later page. A one-day leaf above 80 pages is terminal.",
+    "maximum_attempts_per_page": 3,
+    "timeout_seconds": 30,
+    "minimum_delay_seconds_between_attempts": 0.1,
+    "transient_retry_scope": "HTTP 429, HTTP 5xx, transport exceptions, and JSON decoding only. Contract, schema, count, identity, or content failures are fatal and never retried.",
+    "required_response_fields": [
+      "totalAnnouncement",
+      "announcements"
+    ],
+    "record_fields_read": [
+      "secCode",
+      "announcementTime",
+      "announcementId"
+    ],
+    "record_fields_explicitly_not_read": [
+      "announcementTitle",
+      "adjunctUrl",
+      "secName",
+      "orgId",
+      "announcementType",
+      "announcementTypeName"
+    ],
+    "raw_response_persisted": false,
+    "announcement_title_body_url_name_or_other_record_field_persisted": false,
+    "pagination_contract": "Every leaf keeps stable totalAnnouncement, requests pages 1 through ceil(totalAnnouncement / 30) exactly once except frozen transient retries, requires exact page lengths, and reconciles fetched rows to the advertised total."
+  },
+  "identity_and_schema_policy": {
+    "supported_source_codes": "Exactly six decimal digits mapping to Shanghai main board, Shenzhen main board, or ChiNext. Complete STAR, BSE, B-share, fund, bond, or other codes are excluded and counted; missing or malformed codes are fatal.",
+    "announcement_time": "A strict non-boolean integer Unix-millisecond value converted to Asia/Shanghai calendar date, required within its requested inclusive leaf.",
+    "announcement_id": "A nonempty NFKC and whitespace-normalized string used only in memory.",
+    "source_identity": [
+      "instrument",
+      "announcement_id"
+    ],
+    "exact_repeat_policy": "Repeated rows with the same instrument, normalized announcementId, and announcement date collapse to one event and are counted as exact repeats.",
+    "conflicting_identity_policy": "The same instrument and normalized announcementId with more than one announcement date is fatal.",
+    "multi_instrument_announcement_policy": "The same normalized announcementId may map to more than one supported instrument only when each mapping is explicitly present in the source. Every instrument/announcementId pair remains a separate event; no code is selected, inferred, or copied.",
+    "title_policy": "announcementTitle is neither read nor classified. Angle brackets, markup, wording, and title corrections cannot affect this contract.",
+    "raw_response_persisted": false,
+    "announcement_id_or_hash_persisted": false
+  },
+  "event_and_factor_definition": {
+    "event_aggregation": "For each instrument and announcement_date, count unique normalized announcementId values after exact-repeat collapse.",
+    "event_count_column": "supplement_correction_notice_count",
+    "event_count_domain": "strictly positive integer",
+    "factor_name": "cninfo_supplement_correction_disclosure_resilience",
+    "session_formula": "(1 + calendar_days_since_latest_effective_announcement) / active_unique_supplement_correction_notice_count",
+    "active_notice_count": "Sum supplement_correction_notice_count across every already-effective event for the instrument whose raw announcement date is no more than three calendar days before the signal session.",
+    "latest_effective_announcement": "The greatest announcement_date among the active events for the instrument and signal session.",
+    "direction": "higher_is_better",
+    "absence_policy": "No active event remains missing; never fill zero or treat an unaffected issuer as perfect resilience.",
+    "transform_policy": "Never clip, winsorize, residualize, invert, rank by title, severity-weight, board-adjust, or substitute another category/formula after rows."
+  },
+  "point_in_time_policy": {
+    "holding_universe": "buyable_main_chinext",
+    "source_event_filter_date": "announcement_date",
+    "availability": "first local trading-session close strictly after announcement_date",
+    "entry": "next local trading-session open after the signal close",
+    "holding_period_trading_days": 3,
+    "maximum_age_calendar_days": 3,
+    "same_day_availability_forbidden": true,
+    "future_announcement_or_title_information_forbidden": true
+  },
+  "normalized_snapshot": {
+    "columns": [
+      "announcement_date",
+      "instrument",
+      "supplement_correction_notice_count",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "announcement_date"
+    ],
+    "provider_value": "cninfo",
+    "announcement_id_title_hash_or_raw_record_persisted": false,
+    "atomic_publication": "Write below one hidden run directory and rename to the final run only after all sample windows and frozen gates pass. Any failure deletes the hidden snapshot and publishes no Parquet."
+  },
+  "acceptance_protocol": {
+    "fixed_sample_windows": [
+      {
+        "label": "2019Q1",
+        "start": "2019-01-01",
+        "end": "2019-03-31"
+      },
+      {
+        "label": "2024Q1",
+        "start": "2024-01-01",
+        "end": "2024-03-31"
+      },
+      {
+        "label": "2025Q1",
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    ],
+    "initial_partitioning": "Nine non-overlapping calendar months across the three fixed Q1 windows; recursive bisection follows the provider contract before any later page of an oversized month.",
+    "fixed_sample_window_count": 3,
+    "every_window_count_complete_and_nonempty": true,
+    "minimum_supported_source_rows_per_window": 50,
+    "minimum_point_in_time_holding_events_per_window": 20,
+    "minimum_point_in_time_holding_events_total": 60,
+    "minimum_candidate_cross_sections_per_window": 5,
+    "minimum_candidate_cross_sections_total": 20,
+    "candidate_cross_section_definition": "A local signal session after strict-next-session availability and active-window aggregation, with at least six point-in-time holding instruments and at least two distinct finite factor values.",
+    "minimum_names_per_candidate_cross_section": 6,
+    "minimum_distinct_factor_values_per_candidate_cross_section": 2,
+    "minimum_distinct_factor_values_across_samples": 3,
+    "required_checks": [
+      "Validate the mechanism audit, contract fingerprint, holding universe, calendar, quarterly-quality context, accepted price-basis context, accepted frontier, terminal CCASS record, post-CCASS frontier record, and both execution policies before network access.",
+      "Use only the public endpoint, category_bcgz_szsh, fixed parameters, three record fields, dates, page ceiling, and retry policy; do not access a credential, title, body, URL, name, other record field, price, or return.",
+      "Reconcile every monthly or recursively bisected leaf to stable advertised counts with exact page coverage.",
+      "Reject malformed required fields and conflicting identities; collapse and count only exact repeated identities; permit explicit multi-instrument mappings without choosing or copying a code.",
+      "Aggregate unique notices by instrument and date, discard announcementId before output, and filter to the point-in-time holding universe before variation checks.",
+      "Reproduce strict-next-session active-event materialization and the exact factor formula in memory with no same-day availability and no event older than three calendar days.",
+      "Require every Q1 window and the combined samples to pass the frozen source-row, holding-event, cross-section, name, and value-variation thresholds.",
+      "Publish exactly the four normalized columns and prove that announcement IDs, hashes, titles, raw records, prices, returns, credentials, cookies, proxies, and retail state are absent."
+    ],
+    "success_status": "accepted_category_schema_identity_formula_and_historical_sample_variation_pending_frozen_full_source_and_no_return_gates",
+    "failed_acceptance_policy": "Write one terminal no-return source rejection, delete the hidden partial snapshot, publish no Parquet, and stop without changing category, identity, fields, formula, direction, age, sample, thresholds, provider, or progressing to full history, comparisons, prices, returns, aggregation, scoring, selection, sizing, or orders.",
+    "one_shot_policy": "The exact acceptance may publish at most one success or rejection manifest. Once any provider request is issued, every content, schema, identity, count, variation, or transport result consumes the attempt. Every clone must reject a second attempt from the tracked result before loading this contract or issuing a request.",
+    "tracked_record_path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_source_acceptance_record.json"
+  },
+  "full_snapshot_contract_after_acceptance_only": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "initial_partitioning": "84 non-overlapping calendar months with the same recursive page-ceiling bisection",
+    "reuse_accepted_rows_without_provider_rerequest": true,
+    "one_atomic_full_attempt_after_a_separate_fingerprint_bound_no_return_preregistration": true,
+    "required_source_years": 7,
+    "minimum_source_years": 7,
+    "forbidden_before_acceptance": true
+  },
+  "capacity_contract_after_full_source_only": {
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "rebalance_grid": "research_calendar[:-holding_period_trading_days:holding_period_trading_days]",
+    "topk": 3,
+    "holding_universe": "buyable_main_chinext",
+    "quality_gate": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY with maximum age 550 calendar days",
+    "minimum_listing_age_sessions": 20,
+    "maximum_event_age_calendar_days": 3,
+    "minimum_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_complete_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "capacity_must_run_before_comparison_fields": true,
+    "capacity_must_run_before_price_or_return_fields": true,
+    "capacity_failure_policy": "Stop permanently without loading comparisons, prices, or returns and without changing category, identity, event aggregation, formula, direction, age, universe, quality, listing, name, value, cohort, or year gates."
+  },
+  "uniqueness_contract_after_capacity_only": {
+    "sparse_semantic_neighbors": [
+      "audit_opinion_clean_flag",
+      "disclosure_promptness",
+      "equity_incentive_plan_disclosure_intensity",
+      "related_party_transaction_count",
+      "repurchase_event_count",
+      "pledge_event_count",
+      "institutional_survey_event_count",
+      "analyst_valid_rating_report_count"
+    ],
+    "dense_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ],
+    "semantic_gate": "Explicitly distinguish actual supplement/correction burden from audit opinion, scheduled-report lead time, generic event freshness/count, ownership, governance, and operating-disclosure mechanisms before price access.",
+    "statistical_gate_for_sparse_neighbor": "When at least 100 eligible pairwise sessions contain at least six pairwise names, require absolute median daily Spearman rank correlation below 0.8. Otherwise preserve overlap and descriptive correlation without treating sparse absence as uniqueness proof.",
+    "dense_gate": "Each dense confounder must provide at least 100 eligible pairwise sessions with at least 50 names and absolute median daily Spearman rank correlation below 0.8.",
+    "no_return": true,
+    "anti_cherry_pick": "The comparison catalog, overlap policy, thresholds, category, identity, formula, direction, age, universe, and quality rule cannot change after any announcement row, ID, or factor value is observed."
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "future_corporate_actions_used": false
+    },
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "terminal_ccass_source": {
+      "path": "docs/a_share_tushare_ccass_participant_breadth_source_acceptance_record.json",
+      "sha256": "54a4d18096b14797e351d9380bcf9e1e6a6bf943cacd984fe674f51353c1615f"
+    },
+    "post_ccass_authorized_source_frontier": {
+      "path": "docs/a_share_three_day_post_ccass_authorized_source_frontier_audit_20260721.json",
+      "sha256": "61804bfb535954ae517aba1e67791dc8371ce68cf384219fe8a08c6ded6dc499"
+    },
+    "prospective_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution_policy_for_future_diagnostic_only": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "capital_cny": 200000,
+      "board_lot_shares": 100
+    }
+  },
+  "forbidden_fields_or_actions": [
+    "Read, normalize, search, classify, persist, or hash announcementTitle, announcement body, URL, name, or any response field outside the exact three-field list.",
+    "Read a Token, account, points balance, credential, cookie, proxy, retail-client state, price, market cap, valuation, open, close, forward return, score, selection, position, or order.",
+    "Interpret an unaffected issuer as zero burden, perfect resilience, or a selectable value.",
+    "Change category, add title/body semantics, infer correction severity, choose one code from a multi-instrument announcement, or copy an identity to a code not explicitly present.",
+    "Retry after a consumed acceptance, change samples/thresholds/formula/direction/age, run full source without a new frozen no-return protocol, combine with terminal factors, or justify Level-2."
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

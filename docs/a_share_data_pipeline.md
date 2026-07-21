@@ -1395,7 +1395,7 @@ python scripts/a_share_rich_data.py status --data-root /Volumes/DIsk/qlib-rich-d
 
 `baostock_five_minute_storage.history_manifest_count` 是是否已有完整历史清单的权威计数，`raw_parquet_file_count` 只说明磁盘上有多少 Parquet，不能单独证明来源门禁通过。`latest_restoration_probe` 和 `latest_preflight` 只返回安全状态字段，不显示凭据或供应商错误正文。锁文件可能在进程退出后保留 PID 文本；只有 `process_lock.advisory_lock_currently_held=true` 才表示活动任务，不能因为文件存在就删除它。当前外置根检查为历史清单 **0**、历史 Parquet **0**、最新探针 `provider_rejected_stop_before_bulk_retry`，锁文件记录 PID 24906 但 advisory lock 未持有。
 
-BaoStock SDK 无需凭据；其余来源只有在已取得对应授权后才配置环境变量。macOS 的 Tushare Token 使用隐藏输入，不能把真实值直接写在命令中：
+BaoStock SDK 无需凭据；其余来源只有在已取得对应授权后才配置环境变量。完整的配置、只检查“有/无”、单命令透传、清除和轮换步骤见 [`a_share_tushare_token_setup.md`](a_share_tushare_token_setup.md)。macOS 的 Tushare Token 使用隐藏输入，不能把真实值直接写在命令中：
 
 ```zsh
 python -m pip install -r scripts/data_collector/a_share_rich/requirements.txt
@@ -1613,6 +1613,18 @@ python scripts/a_share_short_horizon_factor_research.py \
 该一次性验收已永久消费。不得换日期、重试、购买权限后沿用同一合同、把权限失败解释为来源为空或因子无效，也不得继续全历史、容量、唯一性、收益、聚合、当前评分、选股、仓位、订单或 Level‑2。程序必须先校验上述终止记录并在合同、本地上下文、Token 和网络之前拒绝。这个结果只证明当前账户无接口权限，不证明 CCASS 的沪深覆盖、历史容量、独立性或预测能力；下一步只能重新冻结一个经济机制独立且当前已授权的无收益候选。
 
 后续零网络前沿审计 `docs/a_share_three_day_post_ccass_authorized_source_frontier_audit_20260721.json`（SHA‑256 `61804bfb535954ae517aba1e67791dc8371ce68cf384219fe8a08c6ded6dc499`）没有推进新候选。券商月度金股和 TDX 板块成分均需 6,000 积分；同花顺概念资金流需 5,000 积分；深证互动易和全量公告需要单独权限。即使忽略权限，月度金股在 2019–2025 的硬上限只有 84 个独立月份，低于 200 个三日 cohort；互动易只有深圳路线；板块/概念资金流分别与已终止的行业广度和分类资金流机制重叠。当前 120 分可用的 `stock_company` 只是当前静态快照，不能无泄漏地重建 2019–2025；标准财务报表和限售解禁则分别是已终止来源字段扫描与已完成失败机制的供应商复制。审计没有请求任何接口行、因子值、价格或收益。本机同时未发现 `xtquant` Python 包或常见 QMT/XTQuant 本地路径；这只表示当前 macOS 工作区没有可直接接入的券商分钟运行时，不代表用户的其他 Windows/QMT 环境不存在。当前下一条可执行路径是由用户暴露已有合法的全市场 1 分钟 OHLCV/成交额导出后另冻合同，或等待 BaoStock 按既有规则出现可验证恢复；不为重试 CCASS 或复制淘汰机制追加购买。
+
+### CNInfo 补充更正披露负担（全历史分页稳定性终止）
+
+在上述 Tushare/本地券商审计之后，只补查了此前未覆盖的 CNInfo 官方分类元数据。官方检索脚本 `history-notice.js?v=20260710082532` 的观测 SHA‑256 为 `ef36c3fb82af6b4176c2b4fcf92c1c7eb58ff03beba7931fa48bc1b2b417213a`，其中明确把 `category_bcgz_szsh` 标为“补充更正”。机制复核 `docs/a_share_three_day_cninfo_supplement_correction_disclosure_burden_mechanism_overlap_reaudit_20260721.json`（SHA‑256 `95e8e93d5ace85e44fbe6d682cdea1c1873cfba9152b06fcb37c0c4e626c3853`）在公告行前只推进这一项：`cninfo_supplement_correction_disclosure_resilience = (1 + 距最近已生效公告的自然日数) / 最近三自然日内有效的唯一补充更正公告数`，高值固定为更好；无有效事件的股票保持缺失，不得当成零负担或满分。
+
+数据合同 `docs/a_share_cninfo_supplement_correction_disclosure_burden_data_contract.json`（SHA‑256 `d27dd754890d5c8d7743630164e68ea9f7169c466b3babaa26c74f6697d6f53b`）只从公共 `hisAnnouncement/query` 的该分类读取 `secCode,announcementTime,announcementId`。它明确不读取标题，因此即使响应含 HTML 标记也不能影响本机制；公告 ID 只在内存去重，允许来源把同一 ID 显式映射到多个支持股票，只折叠代码/ID/日期完全相同的重复，冲突日期则终止。事件严格在公告日后的第一本地交易日收盘生效，输出只允许 `announcement_date,instrument,supplement_correction_notice_count,provider` 四列。
+
+唯一验收清单 `20260721T093018Z_cninfo_supplement_correction_disclosure_burden_acceptance_0c42fcbd.json`（SHA‑256 `74c47eb4a091b102353b6e2d7ae1c4210226aca40977e92849e398fcf506fa14`）完成九个月、41 次请求并逐页对账 1,076/1,076 行。排除 62 条不支持板块记录后得到 1,014 个唯一代码/公告身份和 974 个股票/日期事件；2019Q1、2024Q1、2025Q1 分别产生 53、33、11 个至少六只股票且至少两个取值的候选截面，总计 97，物化值共有 10 种。独立本地复核重现四列表、文件/内容哈希、1,014 个计数和所有截面；事件键重复为 0、点时持有范围外记录为 0，标题、ID/哈希、原始响应、价格和收益均未落盘。跨克隆验收记录是 `docs/a_share_cninfo_supplement_correction_disclosure_burden_source_acceptance_record.json`（SHA‑256 `9ea84b1155f77dff651f8e0484523441606e83edf4b23cd7ec5efc5ec13d666b`），验收已永久消费。
+
+验收后、未验收月份之前冻结了全历史无收益协议 `docs/a_share_cninfo_supplement_correction_disclosure_burden_no_return_preregistration.json`（SHA‑256 `e9a7d740470788dfaaddc318393e63c2bac92681f0fcff0dcfa23318de64a84b`）。唯一全量复用已经验收的月份且没有再次请求它们，随后顺序完成 28 个新月份、234 次完整分页调用和 6,682/6,682 行对账；最后完整月份为 2021‑07。固定顺序的下一月 2021‑08 在同一叶分区后续页返回了不同的 `totalAnnouncement`，违反预注册的稳定分页计数，因此立即终止。共享传输助手在错误文本中保留了旧的 “equity-incentive” 标签，但清单中的运行 ID、分类和字段明确属于本分支；这个显示标签不授权修复或重试。
+
+失败清单 `20260721T093902Z_cninfo_supplement_correction_disclosure_burden_full_75258ef6.json` 的 SHA‑256 为 `eccf58bd19b3449975eb8357c5e35b0fdac3ee6663e459040b8e5b486142dc2f`；跨克隆终止记录 `docs/a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json` 的 SHA‑256 为 `c331ef49010cc3481b0449326855cc8e0d879e0fd9607e9c27139af29449535a`。完整临时快照已删除，年度文件和成功全量清单均为 0，非活动锁标记保留；比较字段、价格和未来收益均未读取。不得重跑或续传全量、重取 2021‑08、把动态计数当瞬时网络错误、改变分页/分类/字段/身份/公式/方向/三日年龄、使用已完成的部分月份、从验收样本运行容量或收益，也不得聚合、当前评分、选股、定仓、下单或据此采购 Level‑2。该结果只是来源一致性终止，不是因子收益失败。
 
 ### Tushare 北向 Top10 与日频 PB 验收
 

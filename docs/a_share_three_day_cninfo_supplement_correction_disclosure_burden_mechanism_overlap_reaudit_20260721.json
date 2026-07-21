@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_cninfo_supplement_correction_disclosure_burden_mechanism_overlap_reaudit",
+  "status": "one_public_category_mechanism_selected_before_announcement_rows_ids_factor_values_prices_or_returns",
+  "audited_at": "2026-07-21T09:19:27Z",
+  "purpose": "Re-open only the public CNInfo category-metadata frontier after the zero-network post-CCASS Tushare audit, and select at most one economically independent three-session mechanism before requesting any announcement row, announcement identity, factor value, price, or return.",
+  "starting_evidence": {
+    "accepted_price_frontier": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "association_stability_passers": 7,
+      "topk_viability_passers": 0,
+      "dual_gate_passers": 0,
+      "aggregation_allowed": false
+    },
+    "terminal_ccass_source": {
+      "path": "docs/a_share_tushare_ccass_participant_breadth_source_acceptance_record.json",
+      "sha256": "54a4d18096b14797e351d9380bcf9e1e6a6bf943cacd984fe674f51353c1615f",
+      "provider_rows_observed": 0,
+      "factor_values_observed": 0,
+      "retry_allowed": false
+    },
+    "post_ccass_tushare_and_local_broker_frontier": {
+      "path": "docs/a_share_three_day_post_ccass_authorized_source_frontier_audit_20260721.json",
+      "sha256": "61804bfb535954ae517aba1e67791dc8371ce68cf384219fe8a08c6ded6dc499",
+      "advanced_candidate_count": 0,
+      "scope_note": "That audit remains authoritative for the reviewed Tushare and local QMT/XTQuant routes. This re-audit adds only the official public CNInfo category metadata that it did not review; it does not reopen any rejected provider, factor, or source contract."
+    }
+  },
+  "official_public_category_metadata": {
+    "provider": "cninfo",
+    "search_page": "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?url=disclosure/list/search",
+    "official_javascript": "https://www.cninfo.com.cn/new/js/app/disclosure/notice/history-notice.js?v=20260710082532",
+    "official_javascript_sha256_observed_before_rows": "ef36c3fb82af6b4176c2b4fcf92c1c7eb58ff03beba7931fa48bc1b2b417213a",
+    "selected_mapping": {
+      "key": "category_bcgz_szsh",
+      "value": "补充更正"
+    },
+    "metadata_only": true,
+    "announcement_provider_rows_observed": false,
+    "announcement_ids_or_titles_observed": false,
+    "factor_values_observed": false
+  },
+  "category_mechanism_review": [
+    {
+      "category": "category_bcgz_szsh",
+      "official_label": "补充更正",
+      "candidate": "recent_supplement_correction_disclosure_burden",
+      "decision": "selected_before_rows",
+      "economic_mechanism": "Recent supplementary or corrective disclosures are an observable reporting-control and disclosure-reliability burden. Among issuers with an active event, fewer notices and greater elapsed time since the latest notice are frozen as the more resilient direction.",
+      "independence": "The source event is the act of supplementing or correcting a disclosure, not an earnings result, valuation ratio, ownership change, management trade, financing flow, contract, subsidy, guarantee, audit opinion, report publication lead time, or price transform."
+    },
+    {
+      "category": "category_cqdq_szsh",
+      "official_label": "澄清致歉",
+      "decision": "rejected_before_rows",
+      "reason": "The category mixes rumor clarification and apology semantics; without title reading it is not one economic mechanism, while title mining would reopen the already observed markup and post-result classifier risk."
+    },
+    {
+      "category": "category_fxts_szsh",
+      "official_label": "风险提示",
+      "decision": "rejected_before_rows",
+      "reason": "Generic risk warnings mix trading, delisting, litigation, operation, and financing states and overlap terminal ST/risk and announcement mechanisms without a title-independent identity."
+    },
+    {
+      "categories": [
+        "category_dshgg_szsh",
+        "category_jshgg_szsh",
+        "category_gddh_szsh",
+        "category_gszl_szsh"
+      ],
+      "official_labels": [
+        "董事会",
+        "监事会",
+        "股东会",
+        "公司治理"
+      ],
+      "decision": "rejected_before_rows",
+      "reason": "Routine meeting volume is not a directional mechanism by itself; narrower personnel, ownership, guarantee, incentive, and governance events overlap already terminal branches or require title semantics."
+    },
+    {
+      "category": "category_rcjy_szsh",
+      "official_label": "日常经营",
+      "decision": "rejected_before_rows",
+      "reason": "The category is too broad without title classification and contains mechanisms already terminally tested through contracts, subsidies, related-party transactions, and operating disclosures."
+    },
+    {
+      "categories": [
+        "category_sf_szsh",
+        "category_zf_szsh",
+        "category_pg_szsh",
+        "category_jj_szsh",
+        "category_gszq_szsh",
+        "category_kzzq_szsh",
+        "category_qtrz_szsh",
+        "category_gqbd_szsh"
+      ],
+      "decision": "rejected_before_rows",
+      "reason": "These financing, unlock, and ownership categories are provider/category variants of already exhausted supply, financing, ownership, and capital-structure mechanisms."
+    }
+  ],
+  "selected_candidate": {
+    "factor_name": "cninfo_supplement_correction_disclosure_resilience",
+    "raw_event_category": "category_bcgz_szsh",
+    "session_formula": "(1 + calendar_days_since_latest_effective_announcement) / active_unique_supplement_correction_notice_count",
+    "direction": "higher_is_better",
+    "availability": "Each announcement becomes effective only at the first local trading-session close strictly after its Shanghai calendar date; entry can occur no earlier than the following local open.",
+    "maximum_event_age_calendar_days": 3,
+    "absence_policy": "An issuer with no active category event is missing, never a zero-burden or perfect-resilience value.",
+    "interpretation_boundary": "The factor ranks only recently affected issuers by relative supplement/correction burden. It does not label unaffected issuers, infer why a filing changed, or claim fraud, accounting error, or restatement severity.",
+    "title_policy": "Do not read, normalize, classify, persist, or hash announcementTitle. The exact official category is the complete semantic selector.",
+    "identity_policy": "Read only secCode, announcementTime, and announcementId. Treat instrument plus announcementId as the event identity; allow one announcementId to be explicitly mapped by the provider to more than one supported instrument; collapse only exact repeated identities with the same date and reject conflicting dates.",
+    "published_event_columns": [
+      "announcement_date",
+      "instrument",
+      "supplement_correction_notice_count",
+      "provider"
+    ]
+  },
+  "hard_capacity_plausibility_before_rows": {
+    "development_interval": "2019-01-01 through 2025-12-31",
+    "local_trading_session_upper_bound": 1699,
+    "fixed_minimum_complete_non_overlapping_three_session_cohorts": 200,
+    "structural_upper_bound_passed": true,
+    "reason": "The official category is event-dated rather than monthly or quarterly, so its calendar structure does not cap it below 200. This is only a hard upper-bound screen; source density, cross-sectional variation, quality/listing eligibility, and actual cohort capacity remain unknown until their frozen no-return gates run."
+  },
+  "anti_overlap_and_anti_cherry_pick": {
+    "one_candidate_only": true,
+    "same_category_alternative_formulas_allowed_after_rows": false,
+    "title_or_body_mining_allowed": false,
+    "factor_inversion_allowed": false,
+    "event_age_or_holding_period_search_allowed": false,
+    "subset_year_or_board_search_allowed": false,
+    "provider_substitution_after_result_allowed": false,
+    "historical_factor_combination_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "decision": {
+    "advanced_candidate_count": 1,
+    "next_required_action": "Freeze a credential-free source and sample-variation contract with exact category, three fields, identity policy, pagination, point-in-time universe, formula, thresholds, atomic publication, and one-shot guard before requesting any announcement row or factor value.",
+    "price_or_return_access_allowed": false,
+    "aggregation_or_selection_allowed": false
+  },
+  "provider_rows_observed_during_this_audit": false,
+  "factor_values_observed_during_this_audit": false,
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

@@ -323,6 +323,26 @@ DEFAULT_CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_FULL_SOURCE_RECORD = (
     / "docs"
     / "a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json"
 )
+DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_supplement_correction_disclosure_burden_data_contract.json"
+)
+DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_supplement_correction_disclosure_burden_source_acceptance_record.json"
+)
+DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_supplement_correction_disclosure_burden_no_return_preregistration.json"
+)
+DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_FULL_SOURCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json"
+)
 DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_cninfo_guarantee_sparsity_data_contract.json"
 )
@@ -619,6 +639,21 @@ CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_NO_RETURN_SPEC_SHA256 = (
 )
 CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_FULL_SOURCE_RECORD_SHA256 = (
     "6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375"
+)
+CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT_SHA256 = (
+    "d27dd754890d5c8d7743630164e68ea9f7169c466b3babaa26c74f6697d6f53b"
+)
+CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_MECHANISM_AUDIT_SHA256 = (
+    "95e8e93d5ace85e44fbe6d682cdea1c1873cfba9152b06fcb37c0c4e626c3853"
+)
+CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_ACCEPTANCE_RECORD_SHA256 = (
+    "9ea84b1155f77dff651f8e0484523441606e83edf4b23cd7ec5efc5ec13d666b"
+)
+CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC_SHA256 = (
+    "e9a7d740470788dfaaddc318393e63c2bac92681f0fcff0dcfa23318de64a84b"
+)
+CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_FULL_SOURCE_RECORD_SHA256 = (
+    "c331ef49010cc3481b0449326855cc8e0d879e0fd9607e9c27139af29449535a"
 )
 CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256 = (
     "1c59a4fdabbb7ae82d3279e83f81e55b3518f9634201379a96d59e25a7e12e68"
@@ -1146,6 +1181,17 @@ CNINFO_EQUITY_INCENTIVE_PLAN_DISCLOSURE_INTENSITY_COLUMNS = (
     "announcement_date",
     "instrument",
     "initial_equity_incentive_plan_disclosure_count",
+    "provider",
+)
+CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_RAW_FIELDS = (
+    "secCode",
+    "announcementTime",
+    "announcementId",
+)
+CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS = (
+    "announcement_date",
+    "instrument",
+    "supplement_correction_notice_count",
     "provider",
 )
 CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES = (
@@ -33236,6 +33282,1727 @@ def status_payload(data_root: Path = DATA_ROOT) -> dict[str, Any]:
     }
 
 
+def load_cninfo_supplement_correction_disclosure_burden_contract(
+    path: Path = DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT,
+) -> dict[str, Any]:
+    """Load the pre-row CNInfo supplement/correction contract."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path,
+        kind="a_share_cninfo_supplement_correction_disclosure_burden_data_contract",
+    )
+    mechanism = contract.get("mechanism_selection") or {}
+    provider = contract.get("provider_contract") or {}
+    identity = contract.get("identity_and_schema_policy") or {}
+    factor = contract.get("event_and_factor_definition") or {}
+    timing = contract.get("point_in_time_policy") or {}
+    normalized = contract.get("normalized_snapshot") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    capacity = contract.get("capacity_contract_after_full_source_only") or {}
+    expected_parameters = {
+        "pageSize": "30",
+        "column": "szse",
+        "tabName": "fulltext",
+        "plate": "",
+        "stock": "",
+        "searchkey": "",
+        "secid": "",
+        "category": "category_bcgz_szsh",
+        "trade": "",
+        "sortName": "",
+        "sortType": "",
+        "isHLtitle": "false",
+    }
+    expected_windows = [
+        {"label": "2019Q1", "start": "2019-01-01", "end": "2019-03-31"},
+        {"label": "2024Q1", "start": "2024-01-01", "end": "2024-03-31"},
+        {"label": "2025Q1", "start": "2025-01-01", "end": "2025-03-31"},
+    ]
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_supplement_correction_announcement_rows_ids_factor_values_capacity_uniqueness_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-21T09:20:54Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_cninfo_supplement_correction_disclosure_burden_mechanism_overlap_reaudit_20260721.json"
+        or mechanism.get("sha256_at_contract_freeze")
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_MECHANISM_AUDIT_SHA256
+        or mechanism.get("factor_name")
+        != "cninfo_supplement_correction_disclosure_resilience"
+        or mechanism.get("direction") != "higher_is_better"
+        or provider.get("provider") != "cninfo"
+        or provider.get("credential_required") is not False
+        or provider.get("account_points_required") != 0
+        or provider.get("endpoint")
+        != "https://www.cninfo.com.cn/new/hisAnnouncement/query"
+        or provider.get("request_method") != "POST_FORM"
+        or provider.get("fixed_parameters") != expected_parameters
+        or provider.get("page_size") != 30
+        or provider.get("maximum_pages_per_leaf_partition") != 80
+        or provider.get("maximum_attempts_per_page") != 3
+        or provider.get("timeout_seconds") != 30
+        or provider.get("minimum_delay_seconds_between_attempts") != 0.1
+        or tuple(provider.get("required_response_fields") or ())
+        != ("totalAnnouncement", "announcements")
+        or tuple(provider.get("record_fields_read") or ())
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_RAW_FIELDS
+        or identity.get("source_identity") != ["instrument", "announcement_id"]
+        or identity.get("raw_response_persisted") is not False
+        or identity.get("announcement_id_or_hash_persisted") is not False
+        or factor.get("factor_name")
+        != "cninfo_supplement_correction_disclosure_resilience"
+        or factor.get("session_formula")
+        != "(1 + calendar_days_since_latest_effective_announcement) / active_unique_supplement_correction_notice_count"
+        or factor.get("direction") != "higher_is_better"
+        or timing.get("holding_universe") != "buyable_main_chinext"
+        or timing.get("maximum_age_calendar_days") != 3
+        or timing.get("same_day_availability_forbidden") is not True
+        or tuple(normalized.get("columns") or ())
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+        or normalized.get("event_key") != ["instrument", "announcement_date"]
+        or normalized.get("provider_value") != "cninfo"
+        or acceptance.get("fixed_sample_windows") != expected_windows
+        or acceptance.get("fixed_sample_window_count") != 3
+        or acceptance.get("minimum_supported_source_rows_per_window") != 50
+        or acceptance.get("minimum_point_in_time_holding_events_per_window") != 20
+        or acceptance.get("minimum_point_in_time_holding_events_total") != 60
+        or acceptance.get("minimum_candidate_cross_sections_per_window") != 5
+        or acceptance.get("minimum_candidate_cross_sections_total") != 20
+        or acceptance.get("minimum_names_per_candidate_cross_section") != 6
+        or acceptance.get(
+            "minimum_distinct_factor_values_per_candidate_cross_section"
+        )
+        != 2
+        or acceptance.get("minimum_distinct_factor_values_across_samples") != 3
+        or acceptance.get("tracked_record_path")
+        != "docs/a_share_cninfo_supplement_correction_disclosure_burden_source_acceptance_record.json"
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_names_per_cohort") != 6
+        or capacity.get("minimum_distinct_factor_values_per_cohort") != 2
+        or capacity.get("minimum_complete_cohorts") != 200
+        or capacity.get("minimum_observed_calendar_years") != 5
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction contract changed after freeze"
+        )
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction mechanism audit fingerprint mismatch"
+        )
+    return contract
+
+
+def validate_cninfo_supplement_correction_local_context(
+    contract: dict[str, Any],
+) -> None:
+    """Fingerprint-bind local no-return inputs before provider access."""
+
+    local = contract.get("local_context") or {}
+    entries: list[dict[str, Any]] = []
+    for label in (
+        "holding_universe",
+        "local_calendar",
+        "accepted_price_basis_for_future_gated_work_only",
+        "accepted_price_frontier",
+        "terminal_ccass_source",
+        "post_ccass_authorized_source_frontier",
+        "prospective_execution_policy_for_future_diagnostic_only",
+        "pilot_execution_policy_for_future_diagnostic_only",
+    ):
+        value = local.get(label)
+        if not isinstance(value, dict):
+            raise RichDataError(
+                f"CNInfo supplement/correction local context is missing {label}"
+            )
+        entries.append(value)
+    quarterly = local.get("quarterly_quality") or {}
+    entries.extend(
+        [
+            {"path": quarterly.get("path"), "sha256": quarterly.get("sha256")},
+            {
+                "path": quarterly.get("manifest_path"),
+                "sha256": quarterly.get("manifest_sha256"),
+            },
+        ]
+    )
+    for entry in entries:
+        target = resolve_record_path(str(entry.get("path") or ""))
+        expected = str(entry.get("sha256") or "")
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "CNInfo supplement/correction local context fingerprint mismatch: "
+                f"{entry.get('path')}"
+            )
+
+
+def parse_cninfo_supplement_correction_announcement_date(
+    value: Any,
+) -> pd.Timestamp:
+    """Convert one strict CNInfo Unix-millisecond timestamp to Shanghai date."""
+
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise RichDataError(
+            "CNInfo supplement/correction record has a non-integer announcementTime"
+        )
+    try:
+        timestamp = pd.Timestamp(value, unit="ms", tz="UTC")
+        local = timestamp.tz_convert("Asia/Shanghai")
+    except (OverflowError, TypeError, ValueError) as exc:
+        raise RichDataError(
+            "CNInfo supplement/correction record has an invalid announcementTime"
+        ) from exc
+    if local.year < 1990 or local.year > 2100:
+        raise RichDataError(
+            "CNInfo supplement/correction record has an implausible announcementTime"
+        )
+    return local.normalize().tz_localize(None)
+
+
+def normalize_cninfo_supplement_correction_announcement_id(value: Any) -> str:
+    """Normalize one memory-only announcement ID without touching titles."""
+
+    if not isinstance(value, str):
+        raise RichDataError(
+            "CNInfo supplement/correction record has a non-string announcementId"
+        )
+    normalized = " ".join(unicodedata.normalize("NFKC", value).strip().split())
+    if not normalized:
+        raise RichDataError(
+            "CNInfo supplement/correction record has an empty announcementId"
+        )
+    return normalized
+
+
+def fetch_cninfo_supplement_correction_partition(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Fetch a count-complete category partition using the frozen form."""
+
+    frozen = contract or load_cninfo_supplement_correction_disclosure_burden_contract()
+    return fetch_cninfo_equity_incentive_plan_partition(
+        start_date,
+        end_date,
+        contract=frozen,
+        session=session,
+        page_pause_seconds=page_pause_seconds,
+    )
+
+
+def fetch_cninfo_supplement_correction_partition_details(
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any],
+    session: Any | None = None,
+    page_pause_seconds: float | None = None,
+) -> tuple[
+    list[tuple[dt.date, dt.date, list[dict[str, Any]], dict[str, Any]]],
+    list[dict[str, Any]],
+]:
+    """Bisect an oversized category partition before requesting later pages."""
+
+    try:
+        rows, quality = fetch_cninfo_supplement_correction_partition(
+            start_date,
+            end_date,
+            contract=contract,
+            session=session,
+            page_pause_seconds=page_pause_seconds,
+        )
+        return [(start_date, end_date, rows, quality)], []
+    except CninfoAnnouncementPartitionTooLarge as exc:
+        if start_date == end_date:
+            raise RichDataError(
+                "CNInfo supplement/correction single-date partition exceeds the "
+                f"frozen page ceiling: {start_date.isoformat()}"
+            ) from exc
+        midpoint = start_date + (end_date - start_date) // 2
+        right_start = midpoint + dt.timedelta(days=1)
+        left_parts, left_bisections = (
+            fetch_cninfo_supplement_correction_partition_details(
+                start_date,
+                midpoint,
+                contract=contract,
+                session=session,
+                page_pause_seconds=page_pause_seconds,
+            )
+        )
+        right_parts, right_bisections = (
+            fetch_cninfo_supplement_correction_partition_details(
+                right_start,
+                end_date,
+                contract=contract,
+                session=session,
+                page_pause_seconds=page_pause_seconds,
+            )
+        )
+        return (
+            left_parts + right_parts,
+            [
+                {
+                    "start": start_date.isoformat(),
+                    "end": end_date.isoformat(),
+                    "advertised_pages": exc.pages,
+                    "advertised_rows": exc.advertised_count,
+                    "page_ceiling": exc.ceiling,
+                    "provider_probe_calls": 1,
+                    "left_end": midpoint.isoformat(),
+                    "right_start": right_start.isoformat(),
+                },
+                *left_bisections,
+                *right_bisections,
+            ],
+        )
+
+
+def canonicalize_cninfo_supplement_correction_rows(
+    rows: list[dict[str, Any]],
+    start_date: dt.date,
+    end_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+    identity_dates: dict[tuple[str, str], pd.Timestamp] | None = None,
+    announcement_instruments: dict[str, set[str]] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Aggregate unique category identities without reading a title."""
+
+    if end_date < start_date:
+        raise RichDataError(
+            "CNInfo supplement/correction normalization end precedes start"
+        )
+    frozen = contract or load_cninfo_supplement_correction_disclosure_burden_contract()
+    if tuple(frozen["provider_contract"]["record_fields_read"]) != (
+        CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_RAW_FIELDS
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction record field list changed"
+        )
+    columns = list(CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS)
+    quality = {
+        "input_source_rows": int(len(rows)),
+        "supported_source_rows": 0,
+        "unsupported_board_rows_excluded": 0,
+        "exact_repeated_identity_rows_collapsed": 0,
+        "unique_source_events": 0,
+        "aggregated_events": 0,
+        "distinct_event_counts": 0,
+        "announcement_title_read_or_persisted": False,
+        "announcement_id_or_hash_persisted": False,
+    }
+    if not rows:
+        return pd.DataFrame(columns=columns), quality
+    required_fields = set(CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_RAW_FIELDS)
+    known_dates = identity_dates if identity_dates is not None else {}
+    id_instruments = (
+        announcement_instruments if announcement_instruments is not None else {}
+    )
+    identities: list[dict[str, Any]] = []
+    unsupported_rows = 0
+    supported_rows = 0
+    exact_repeats = 0
+    for row in rows:
+        if not isinstance(row, dict) or not required_fields.issubset(row):
+            raise RichDataError(
+                "CNInfo supplement/correction row misses a frozen record field"
+            )
+        raw_code = row["secCode"]
+        if not isinstance(raw_code, str):
+            raise RichDataError(
+                "CNInfo supplement/correction record has a non-string security code"
+            )
+        code = unicodedata.normalize("NFKC", raw_code).strip()
+        if len(code) != 6 or not code.isdigit():
+            raise RichDataError(
+                "CNInfo supplement/correction record has a malformed security code"
+            )
+        announcement = parse_cninfo_supplement_correction_announcement_date(
+            row["announcementTime"]
+        )
+        if not pd.Timestamp(start_date) <= announcement <= pd.Timestamp(end_date):
+            raise RichDataError(
+                "CNInfo supplement/correction source returned an out-of-partition date"
+            )
+        announcement_id = normalize_cninfo_supplement_correction_announcement_id(
+            row["announcementId"]
+        )
+        if not code.startswith(
+            ("600", "601", "603", "605", "000", "001", "002", "003", "300", "301")
+        ):
+            unsupported_rows += 1
+            continue
+        supported_rows += 1
+        instrument = qlib_symbol(code)
+        identity = (instrument, announcement_id)
+        prior_date = known_dates.get(identity)
+        if prior_date is not None:
+            if prior_date != announcement:
+                raise RichDataError(
+                    "CNInfo supplement/correction source identity has conflicting dates"
+                )
+            exact_repeats += 1
+            continue
+        known_dates[identity] = announcement
+        id_instruments.setdefault(announcement_id, set()).add(instrument)
+        identities.append(
+            {
+                "instrument": instrument,
+                "announcement_date": announcement,
+                "announcement_id": announcement_id,
+            }
+        )
+    if not identities:
+        return pd.DataFrame(columns=columns), {
+            **quality,
+            "supported_source_rows": supported_rows,
+            "unsupported_board_rows_excluded": unsupported_rows,
+            "exact_repeated_identity_rows_collapsed": exact_repeats,
+        }
+    identity_frame = pd.DataFrame(identities)
+    grouped = (
+        identity_frame.groupby(
+            ["announcement_date", "instrument"], as_index=False, sort=True
+        )
+        .agg(supplement_correction_notice_count=("announcement_id", "nunique"))
+        .sort_values(["announcement_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    grouped["supplement_correction_notice_count"] = pd.to_numeric(
+        grouped["supplement_correction_notice_count"], errors="raise"
+    ).astype("int64")
+    grouped["provider"] = "cninfo"
+    result = grouped.loc[:, columns]
+    counts = result["supplement_correction_notice_count"]
+    if (
+        result.duplicated(["instrument", "announcement_date"]).any()
+        or not counts.gt(0).all()
+        or {"announcementTitle", "announcementId", "announcement_id"}
+        & set(result.columns)
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction normalized frame failed integrity checks"
+        )
+    return result, {
+        "input_source_rows": int(len(rows)),
+        "supported_source_rows": supported_rows,
+        "unsupported_board_rows_excluded": unsupported_rows,
+        "exact_repeated_identity_rows_collapsed": exact_repeats,
+        "unique_source_events": int(len(identity_frame)),
+        "aggregated_events": int(len(result)),
+        "distinct_event_counts": int(counts.nunique(dropna=True)),
+        "announcement_title_read_or_persisted": False,
+        "announcement_id_or_hash_persisted": False,
+    }
+
+
+def filter_cninfo_supplement_correction_events_to_holding_universe(
+    frame: pd.DataFrame,
+    intervals: pd.DataFrame,
+) -> tuple[pd.DataFrame, int]:
+    """Apply dated buyable-universe intervals to normalized events."""
+
+    if tuple(frame.columns) != (
+        CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction frame violates the frozen schema"
+        )
+    if frame.empty:
+        return frame.copy(), 0
+    indexed = intervals.set_index("instrument")
+    starts = frame["instrument"].map(indexed["start_date"])
+    ends = frame["instrument"].map(indexed["end_date"])
+    dates = pd.to_datetime(frame["announcement_date"], errors="coerce").dt.normalize()
+    active = starts.notna() & ends.notna() & dates.ge(starts) & dates.le(ends)
+    return frame.loc[active].reset_index(drop=True), int((~active).sum())
+
+
+def materialize_cninfo_supplement_correction_acceptance_sessions(
+    events: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    *,
+    maximum_age_calendar_days: int = 3,
+) -> pd.DataFrame:
+    """Build no-price active burden values for sample variation checks."""
+
+    if tuple(events.columns) != (
+        CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction event frame changed before materialization"
+        )
+    if maximum_age_calendar_days != 3:
+        raise RichDataError(
+            "CNInfo supplement/correction event age changed after preregistration"
+        )
+    normalized_calendar = pd.DatetimeIndex(calendar).normalize().unique().sort_values()
+    factor_name = "cninfo_supplement_correction_disclosure_resilience"
+    output_columns = [
+        "datetime",
+        "instrument",
+        "supplement_correction_latest_announcement_date",
+        "event_age_calendar_days",
+        "active_supplement_correction_notice_count",
+        factor_name,
+    ]
+    if events.empty or normalized_calendar.empty:
+        return pd.DataFrame(columns=output_columns)
+    expanded: list[dict[str, Any]] = []
+    for event in events.itertuples(index=False):
+        announcement = pd.Timestamp(event.announcement_date).normalize()
+        position = int(normalized_calendar.searchsorted(announcement, side="right"))
+        if position >= len(normalized_calendar):
+            raise RichDataError(
+                "CNInfo supplement/correction event cannot map to a later session"
+            )
+        raw_count = event.supplement_correction_notice_count
+        if isinstance(raw_count, (bool, np.bool_)) or not float(raw_count).is_integer():
+            raise RichDataError(
+                "CNInfo supplement/correction event count is not a positive integer"
+            )
+        count = int(raw_count)
+        if count <= 0:
+            raise RichDataError(
+                "CNInfo supplement/correction event count is not a positive integer"
+            )
+        for session_date in normalized_calendar[position:]:
+            age = int((session_date - announcement).days)
+            if age > maximum_age_calendar_days:
+                break
+            expanded.append(
+                {
+                    "datetime": session_date,
+                    "instrument": str(event.instrument),
+                    "announcement_date": announcement,
+                    "notice_count": count,
+                }
+            )
+    if not expanded:
+        return pd.DataFrame(columns=output_columns)
+    expanded_frame = pd.DataFrame(expanded)
+    materialized = (
+        expanded_frame.groupby(["datetime", "instrument"], as_index=False, sort=True)
+        .agg(
+            supplement_correction_latest_announcement_date=(
+                "announcement_date",
+                "max",
+            ),
+            active_supplement_correction_notice_count=("notice_count", "sum"),
+        )
+        .sort_values(["datetime", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    materialized["event_age_calendar_days"] = (
+        materialized["datetime"]
+        - materialized["supplement_correction_latest_announcement_date"]
+    ).dt.days.astype("int64")
+    materialized[factor_name] = (
+        1.0 + materialized["event_age_calendar_days"].astype(float)
+    ) / materialized["active_supplement_correction_notice_count"].astype(float)
+    factor = materialized[factor_name]
+    if (
+        materialized.duplicated(["instrument", "datetime"]).any()
+        or not materialized["event_age_calendar_days"].between(1, 3).all()
+        or not materialized["active_supplement_correction_notice_count"].gt(0).all()
+        or not np.isfinite(factor).all()
+        or not factor.gt(0.0).all()
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction session materialization failed"
+        )
+    return materialized.loc[:, output_columns]
+
+
+def cninfo_supplement_correction_acceptance_records() -> list[Path]:
+    """Return local manifests for the exact one-shot acceptance."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob(
+            "*cninfo_supplement_correction_disclosure_burden_acceptance*.json"
+        )
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == (
+            "cninfo_supplement_correction_disclosure_burden_acceptance"
+        ):
+            records.append(path)
+    return records
+
+
+def load_cninfo_supplement_correction_disclosure_burden_acceptance_record(
+    path: Path = (
+        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_ACCEPTANCE_RECORD
+    ),
+) -> dict[str, Any]:
+    """Verify the tracked cross-clone acceptance result."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_ACCEPTANCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction acceptance record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind=(
+            "a_share_cninfo_supplement_correction_disclosure_burden_"
+            "source_acceptance_record"
+        ),
+    )
+    mechanism = record.get("mechanism_audit") or {}
+    contract = record.get("data_contract") or {}
+    privacy = record.get("privacy_and_scope") or {}
+    next_stage = record.get("next_stage_decision") or {}
+    if (
+        record.get("version") != 1
+        or mechanism.get("sha256")
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_MECHANISM_AUDIT_SHA256
+        or contract.get("sha256")
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT_SHA256
+        or privacy.get("credential_token_points_cookie_proxy_or_retail_session_used")
+        is not False
+        or privacy.get("announcement_title_body_url_name_or_other_field_read")
+        is not False
+        or privacy.get("price_fields_loaded") != []
+        or privacy.get("forward_return_fields_read") is not False
+        or next_stage.get("acceptance_consumed") is not True
+        or next_stage.get("acceptance_retry_allowed") is not False
+        or next_stage.get("provider_rerequest_allowed") is not False
+        or next_stage.get(
+            "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed"
+        )
+        is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction acceptance record changed after freeze"
+        )
+    return record
+
+
+def guard_cninfo_supplement_correction_acceptance() -> None:
+    """Reject tracked and local replays before contract or provider access."""
+
+    record_path = (
+        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_ACCEPTANCE_RECORD
+    )
+    if record_path.exists():
+        load_cninfo_supplement_correction_disclosure_burden_acceptance_record(
+            record_path
+        )
+        raise RichDataError(
+            "CNInfo supplement/correction acceptance is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    prior = cninfo_supplement_correction_acceptance_records()
+    if prior:
+        raise RichDataError(
+            "CNInfo supplement/correction acceptance is one-shot and already "
+            f"consumed by {prior[-1]}"
+        )
+
+
+def sync_cninfo_supplement_correction_disclosure_burden_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Run the sole frozen no-price category acceptance."""
+
+    guard_cninfo_supplement_correction_acceptance()
+    lock_path = (
+        METADATA_ROOT
+        / ".cninfo_supplement_correction_disclosure_burden_acceptance.lock"
+    )
+    with RichDataProcessLock(lock_path):
+        guard_cninfo_supplement_correction_acceptance()
+        contract = load_cninfo_supplement_correction_disclosure_burden_contract()
+        validate_cninfo_supplement_correction_local_context(contract)
+        acceptance = contract["acceptance_protocol"]
+        sample_windows = list(acceptance["fixed_sample_windows"])
+        intervals = load_factor_universe_intervals(universe_path)
+        first_sample = dt.date.fromisoformat(str(sample_windows[0]["start"]))
+        final_sample = dt.date.fromisoformat(str(sample_windows[-1]["end"]))
+        calendar = local_calendar_dates(
+            first_sample,
+            final_sample + dt.timedelta(days=14),
+            calendar_path,
+        )
+        if calendar.empty:
+            raise RichDataError(
+                "local calendar is empty for CNInfo supplement/correction acceptance"
+            )
+        run_id = new_run_id(
+            "cninfo_supplement_correction_disclosure_burden_acceptance"
+        )
+        run_root = (
+            RAW_ROOT
+            / "cninfo"
+            / "supplement_correction_disclosure_burden"
+            / "acceptance"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                "CNInfo supplement/correction acceptance run already exists"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        request_quality: list[dict[str, Any]] = []
+        window_quality: list[dict[str, Any]] = []
+        bisections: list[dict[str, Any]] = []
+        identity_dates: dict[tuple[str, str], pd.Timestamp] = {}
+        announcement_instruments: dict[str, set[str]] = {}
+        try:
+            accepted_windows: list[pd.DataFrame] = []
+            for window in sample_windows:
+                label = str(window["label"])
+                window_start = dt.date.fromisoformat(str(window["start"]))
+                window_end = dt.date.fromisoformat(str(window["end"]))
+                normalized_parts: list[pd.DataFrame] = []
+                part_quality: list[dict[str, Any]] = []
+                for month_start, month_end in calendar_month_ranges(
+                    window_start, window_end
+                ):
+                    provider_request_issued = True
+                    leaves, split_records = (
+                        fetch_cninfo_supplement_correction_partition_details(
+                            month_start,
+                            month_end,
+                            contract=contract,
+                        )
+                    )
+                    bisections.extend(
+                        [{"window": label, **item} for item in split_records]
+                    )
+                    for leaf_start, leaf_end, rows, quality_item in leaves:
+                        request_quality.append({"window": label, **quality_item})
+                        normalized, observed = (
+                            canonicalize_cninfo_supplement_correction_rows(
+                                rows,
+                                leaf_start,
+                                leaf_end,
+                                contract=contract,
+                                identity_dates=identity_dates,
+                                announcement_instruments=announcement_instruments,
+                            )
+                        )
+                        part_quality.append(observed)
+                        if not normalized.empty:
+                            normalized_parts.append(normalized)
+                supported_rows = sum(
+                    int(item["supported_source_rows"]) for item in part_quality
+                )
+                if supported_rows < int(
+                    acceptance["minimum_supported_source_rows_per_window"]
+                ):
+                    raise RichDataError(
+                        f"CNInfo supplement/correction {label} has too few "
+                        f"supported rows: {supported_rows}"
+                    )
+                if not normalized_parts:
+                    raise RichDataError(
+                        f"CNInfo supplement/correction {label} has no supported event"
+                    )
+                normalized_window = (
+                    pd.concat(normalized_parts, ignore_index=True)
+                    .groupby(
+                        ["announcement_date", "instrument"],
+                        as_index=False,
+                        sort=True,
+                    )
+                    .agg(
+                        supplement_correction_notice_count=(
+                            "supplement_correction_notice_count",
+                            "sum",
+                        ),
+                        provider=("provider", "first"),
+                    )
+                    .loc[
+                        :,
+                        list(
+                            CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+                        ),
+                    ]
+                    .sort_values(["announcement_date", "instrument"], kind="stable")
+                    .reset_index(drop=True)
+                )
+                accepted, outside_universe = (
+                    filter_cninfo_supplement_correction_events_to_holding_universe(
+                        normalized_window,
+                        intervals,
+                    )
+                )
+                event_count = int(len(accepted))
+                if event_count < int(
+                    acceptance["minimum_point_in_time_holding_events_per_window"]
+                ):
+                    raise RichDataError(
+                        f"CNInfo supplement/correction {label} has too few "
+                        f"point-in-time events: {event_count}"
+                    )
+                materialized = (
+                    materialize_cninfo_supplement_correction_acceptance_sessions(
+                        accepted,
+                        calendar,
+                    )
+                )
+                factor_name = (
+                    "cninfo_supplement_correction_disclosure_resilience"
+                )
+                cross_sections = (
+                    materialized.groupby("datetime", sort=True)
+                    .agg(
+                        eligible_names=("instrument", "nunique"),
+                        distinct_factor_values=(factor_name, "nunique"),
+                    )
+                    .reset_index()
+                )
+                candidate = cross_sections[
+                    cross_sections["eligible_names"].ge(
+                        int(acceptance["minimum_names_per_candidate_cross_section"])
+                    )
+                    & cross_sections["distinct_factor_values"].ge(
+                        int(
+                            acceptance[
+                                "minimum_distinct_factor_values_per_candidate_cross_section"
+                            ]
+                        )
+                    )
+                ]
+                candidate_count = int(len(candidate))
+                if candidate_count < int(
+                    acceptance["minimum_candidate_cross_sections_per_window"]
+                ):
+                    raise RichDataError(
+                        f"CNInfo supplement/correction {label} lacks sample "
+                        f"cross-sectional variation: {candidate_count}"
+                    )
+                window_quality.append(
+                    {
+                        "label": label,
+                        "source_rows": sum(
+                            int(item["received_rows"])
+                            for item in request_quality
+                            if item["window"] == label
+                        ),
+                        "supported_source_rows": supported_rows,
+                        "unsupported_board_rows_excluded": sum(
+                            int(item["unsupported_board_rows_excluded"])
+                            for item in part_quality
+                        ),
+                        "exact_repeated_identity_rows_collapsed": sum(
+                            int(item["exact_repeated_identity_rows_collapsed"])
+                            for item in part_quality
+                        ),
+                        "point_in_time_holding_events": event_count,
+                        "outside_point_in_time_holding_universe_events_excluded": (
+                            outside_universe
+                        ),
+                        "candidate_cross_sections": candidate_count,
+                        "distinct_materialized_factor_values": int(
+                            materialized[factor_name].nunique(dropna=True)
+                        ),
+                        "maximum_candidate_names": int(
+                            cross_sections["eligible_names"].max()
+                        ),
+                        "maximum_candidate_distinct_factor_values": int(
+                            cross_sections["distinct_factor_values"].max()
+                        ),
+                    }
+                )
+                accepted_windows.append(accepted)
+
+            accepted_all = (
+                pd.concat(accepted_windows, ignore_index=True)
+                .loc[
+                    :,
+                    list(CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS),
+                ]
+                .sort_values(["announcement_date", "instrument"], kind="stable")
+                .reset_index(drop=True)
+            )
+            if accepted_all.duplicated(["instrument", "announcement_date"]).any():
+                raise RichDataError(
+                    "CNInfo supplement/correction combined sample has duplicate events"
+                )
+            total_events = int(len(accepted_all))
+            total_candidates = sum(
+                int(item["candidate_cross_sections"]) for item in window_quality
+            )
+            materialized_all = (
+                materialize_cninfo_supplement_correction_acceptance_sessions(
+                    accepted_all,
+                    calendar,
+                )
+            )
+            factor_name = "cninfo_supplement_correction_disclosure_resilience"
+            distinct_values = int(
+                materialized_all[factor_name].nunique(dropna=True)
+            )
+            if total_events < int(
+                acceptance["minimum_point_in_time_holding_events_total"]
+            ):
+                raise RichDataError(
+                    "CNInfo supplement/correction combined sample has too few events: "
+                    f"{total_events}"
+                )
+            if total_candidates < int(
+                acceptance["minimum_candidate_cross_sections_total"]
+            ):
+                raise RichDataError(
+                    "CNInfo supplement/correction combined sample lacks frozen "
+                    f"cross-sectional variation: {total_candidates}"
+                )
+            if distinct_values < int(
+                acceptance["minimum_distinct_factor_values_across_samples"]
+            ):
+                raise RichDataError(
+                    "CNInfo supplement/correction combined sample lacks factor variation"
+                )
+
+            temporary_destination = (
+                temporary_root / "supplement_correction_events.parquet"
+            )
+            final_destination = run_root / "supplement_correction_events.parquet"
+            atomic_write_frame(accepted_all, temporary_destination)
+            file_sha256 = file_digest(temporary_destination)
+            content_sha256 = frame_digest(accepted_all)
+            resolved_universe = universe_path.expanduser().resolve()
+            resolved_calendar = calendar_path.expanduser().resolve()
+            provider_calls = sum(
+                int(item["provider_calls"]) for item in request_quality
+            ) + sum(int(item["provider_probe_calls"]) for item in bisections)
+            multi_instrument_ids = sum(
+                1 for instruments in announcement_instruments.values() if len(instruments) > 1
+            )
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": (
+                    "cninfo_supplement_correction_disclosure_burden_acceptance"
+                ),
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT
+                    ),
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_selection"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "filter_date": "announcement_date",
+                },
+                "local_calendar": {
+                    "path": manifest_path(resolved_calendar),
+                    "sha256": file_digest(resolved_calendar),
+                    "availability": (
+                        "first local trading session strictly after announcement_date"
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "category": contract["provider_contract"]["fixed_parameters"][
+                        "category"
+                    ],
+                    "record_fields_read": list(
+                        CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "provider_calls": provider_calls,
+                    "leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_points_cookies_proxy_or_retail_session_used": False,
+                    "announcement_title_body_url_name_or_other_field_read": False,
+                    "raw_response_announcement_id_or_hash_persisted": False,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": total_events,
+                        "file_sha256": file_sha256,
+                        "content_sha256": content_sha256,
+                    }
+                ],
+                "source_quality": {
+                    "windows": window_quality,
+                    "combined_rows_written": total_events,
+                    "combined_candidate_cross_sections": total_candidates,
+                    "combined_distinct_materialized_factor_values": distinct_values,
+                    "global_unique_instrument_announcement_identities": int(
+                        len(identity_dates)
+                    ),
+                    "multi_instrument_announcement_ids_observed": multi_instrument_ids,
+                    "announcement_title_read_or_persisted": False,
+                    "announcement_id_or_hash_persisted": False,
+                },
+                "factor": {
+                    "name": factor_name,
+                    "formula": contract["event_and_factor_definition"][
+                        "session_formula"
+                    ],
+                    "direction": "higher_is_better",
+                    "factor_values_persisted_at_acceptance": False,
+                },
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": (
+                    "cninfo_supplement_correction_disclosure_burden_acceptance"
+                ),
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_sample_windows": sample_windows,
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT
+                    ),
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "category": contract["provider_contract"]["fixed_parameters"][
+                        "category"
+                    ],
+                    "record_fields_read": list(
+                        CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "completed_leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_points_cookies_proxy_or_retail_session_used": False,
+                    "announcement_title_body_url_name_or_other_field_read": False,
+                    "raw_response_announcement_id_or_hash_persisted": False,
+                },
+                "observed_quality_before_rejection": window_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": (
+                    "terminal_source_schema_identity_formula_or_historical_sample_"
+                    "variation_rejected_stop_before_full_history_capacity_"
+                    "uniqueness_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
+def load_cninfo_supplement_correction_disclosure_burden_no_return_spec(
+    path: Path = (
+        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC
+    ),
+) -> dict[str, Any]:
+    """Load the post-acceptance, pre-full-source protocol."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction no-return protocol fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind=(
+            "a_share_cninfo_supplement_correction_disclosure_burden_"
+            "no_return_preregistration"
+        ),
+    )
+    chain = spec.get("source_chain") or {}
+    mechanism = chain.get("mechanism_audit") or {}
+    contract = chain.get("data_contract") or {}
+    acceptance_record = chain.get("acceptance_record") or {}
+    acceptance_manifest = chain.get("acceptance_manifest") or {}
+    acceptance_frame = chain.get("acceptance_frame") or {}
+    full = spec.get("full_source_snapshot_contract") or {}
+    capacity = spec.get("capacity_contract") or {}
+    expected_months = [
+        "2019-01",
+        "2019-02",
+        "2019-03",
+        "2024-01",
+        "2024-02",
+        "2024-03",
+        "2025-01",
+        "2025-02",
+        "2025-03",
+    ]
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_acceptance_before_unaccepted_month_rows_full_factor_history_capacity_comparisons_prices_or_returns"
+        or spec.get("preregistered_at") != "2026-07-21T09:33:01Z"
+        or mechanism.get("sha256")
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_MECHANISM_AUDIT_SHA256
+        or contract.get("sha256")
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_CONTRACT_SHA256
+        or acceptance_record.get("sha256")
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_ACCEPTANCE_RECORD_SHA256
+        or acceptance_manifest.get("sha256")
+        != "74c47eb4a091b102353b6e2d7ae1c4210226aca40977e92849e398fcf506fa14"
+        or acceptance_manifest.get("run_id")
+        != "20260721T093018Z_cninfo_supplement_correction_disclosure_burden_acceptance_0c42fcbd"
+        or acceptance_frame.get("rows") != 974
+        or acceptance_frame.get("file_sha256")
+        != "09d9db0b61b8f7ddaaff8bea8e1976af100b69db3e77faa6f727978f282ec2b3"
+        or acceptance_frame.get("content_sha256")
+        != "d4da291759ea601720dec1e89de0c74aa6e920ad69191650ccf68b2c394e4ec7"
+        or tuple(acceptance_frame.get("columns") or ())
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+        or full.get("development_start") != "2019-01-01"
+        or full.get("development_end") != "2025-12-31"
+        or full.get("required_month_count") != 84
+        or full.get("required_year_count") != 7
+        or full.get("accepted_months_reused_without_provider_rerequest")
+        != expected_months
+        or full.get("acceptance_reuse_month_count") != 9
+        or full.get("new_network_month_count") != 75
+        or tuple(full.get("required_final_columns") or ())
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+        or full.get("required_final_annual_partition_count") != 7
+        or full.get("one_full_snapshot_attempt_after_acceptance") is not True
+        or full.get("tracked_record_path")
+        != "docs/a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json"
+        or capacity.get("must_run_before_any_comparison_field") is not True
+        or capacity.get("must_run_before_any_price_or_return_field") is not True
+        or capacity.get("factor_name")
+        != "cninfo_supplement_correction_disclosure_resilience"
+        or capacity.get("factor_direction") != "higher_is_better"
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or spec.get("price_fields_loaded") != []
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction no-return protocol changed after freeze"
+        )
+    for item in (
+        mechanism,
+        contract,
+        acceptance_record,
+        acceptance_manifest,
+        acceptance_frame,
+    ):
+        target = resolve_record_path(str(item.get("path") or ""))
+        expected = str(
+            item.get("file_sha256") or item.get("sha256") or ""
+        )
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "CNInfo supplement/correction no-return source-chain fingerprint "
+                f"mismatch: {item.get('path')}"
+            )
+    accepted = pd.read_parquet(
+        resolve_record_path(str(acceptance_frame["path"]))
+    )
+    if (
+        tuple(accepted.columns)
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+        or len(accepted) != 974
+        or frame_digest(accepted) != acceptance_frame["content_sha256"]
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction accepted frame content mismatch"
+        )
+    return spec
+
+
+def validate_cninfo_supplement_correction_no_return_local_context(
+    spec: dict[str, Any],
+) -> None:
+    """Validate local fingerprints before an unaccepted-month request."""
+
+    local = spec.get("local_context") or {}
+    entries: list[dict[str, Any]] = []
+    for label in (
+        "holding_universe",
+        "local_calendar",
+        "accepted_price_basis_for_future_gated_work_only",
+        "accepted_price_frontier",
+        "terminal_ccass_source",
+        "post_ccass_authorized_source_frontier",
+        "prospective_execution_policy_for_future_diagnostic_only",
+        "pilot_execution_policy_for_future_diagnostic_only",
+    ):
+        value = local.get(label)
+        if not isinstance(value, dict):
+            raise RichDataError(
+                "CNInfo supplement/correction no-return context is missing "
+                f"{label}"
+            )
+        entries.append(value)
+    quarterly = local.get("quarterly_quality") or {}
+    entries.extend(
+        [
+            {"path": quarterly.get("path"), "sha256": quarterly.get("sha256")},
+            {
+                "path": quarterly.get("manifest_path"),
+                "sha256": quarterly.get("manifest_sha256"),
+            },
+        ]
+    )
+    for entry in entries:
+        target = resolve_record_path(str(entry.get("path") or ""))
+        expected = str(entry.get("sha256") or "")
+        if not target.exists() or file_digest(target) != expected:
+            raise RichDataError(
+                "CNInfo supplement/correction no-return context fingerprint "
+                f"mismatch: {entry.get('path')}"
+            )
+
+
+def cninfo_supplement_correction_full_source_records() -> list[Path]:
+    """Return local manifests for the one full-source attempt."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*cninfo_supplement_correction_disclosure_burden_full*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == (
+            "cninfo_supplement_correction_disclosure_burden"
+        ):
+            records.append(path)
+    return records
+
+
+def load_cninfo_supplement_correction_disclosure_burden_full_source_record(
+    path: Path = (
+        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_FULL_SOURCE_RECORD
+    ),
+) -> dict[str, Any]:
+    """Verify a tracked cross-clone full-source result."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_FULL_SOURCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction full-source record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind=(
+            "a_share_cninfo_supplement_correction_disclosure_burden_"
+            "full_source_record"
+        ),
+    )
+    privacy = record.get("privacy_and_scope") or {}
+    decision = record.get("next_stage_decision") or {}
+    if (
+        record.get("version") != 1
+        or privacy.get("announcement_title_body_url_name_or_other_field_read")
+        is not False
+        or privacy.get("price_fields_loaded") != []
+        or privacy.get("forward_return_fields_read") is not False
+        or decision.get("full_source_attempt_consumed") is not True
+        or decision.get("full_source_retry_or_resume_allowed") is not False
+        or decision.get(
+            "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed"
+        )
+        is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo supplement/correction full-source record changed after freeze"
+        )
+    return record
+
+
+def guard_cninfo_supplement_correction_full_source() -> None:
+    """Reject full-source replays before loading the protocol or provider."""
+
+    record_path = (
+        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_FULL_SOURCE_RECORD
+    )
+    if record_path.exists():
+        load_cninfo_supplement_correction_disclosure_burden_full_source_record(
+            record_path
+        )
+        raise RichDataError(
+            "CNInfo supplement/correction full source is permanently consumed; "
+            "another provider request is forbidden"
+        )
+    prior = cninfo_supplement_correction_full_source_records()
+    if prior:
+        raise RichDataError(
+            "CNInfo supplement/correction full source is one-shot and already "
+            f"consumed by {prior[-1]}"
+        )
+
+
+def sync_cninfo_supplement_correction_disclosure_burden_full_source(
+    *,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Build the sole atomic 2019-2025 no-price event snapshot."""
+
+    guard_cninfo_supplement_correction_full_source()
+    if not allow_large:
+        raise RichDataError(
+            "CNInfo supplement/correction full source requires --allow-large"
+        )
+    lock_path = (
+        METADATA_ROOT / ".cninfo_supplement_correction_disclosure_burden_full.lock"
+    )
+    with RichDataProcessLock(lock_path):
+        guard_cninfo_supplement_correction_full_source()
+        spec = (
+            load_cninfo_supplement_correction_disclosure_burden_no_return_spec()
+        )
+        validate_cninfo_supplement_correction_no_return_local_context(spec)
+        load_cninfo_supplement_correction_disclosure_burden_acceptance_record()
+        contract = load_cninfo_supplement_correction_disclosure_burden_contract()
+        chain = spec["source_chain"]
+        full = spec["full_source_snapshot_contract"]
+        accepted_frame = pd.read_parquet(
+            resolve_record_path(str(chain["acceptance_frame"]["path"]))
+        )
+        intervals = load_factor_universe_intervals(universe_path)
+        start_date = dt.date.fromisoformat(str(full["development_start"]))
+        end_date = dt.date.fromisoformat(str(full["development_end"]))
+        month_ranges = list(calendar_month_ranges(start_date, end_date))
+        if len(month_ranges) != int(full["required_month_count"]):
+            raise RichDataError(
+                "CNInfo supplement/correction full month plan changed"
+            )
+        accepted_months = set(
+            str(item)
+            for item in full[
+                "accepted_months_reused_without_provider_rerequest"
+            ]
+        )
+        accepted_dates = pd.to_datetime(
+            accepted_frame["announcement_date"], errors="raise"
+        ).dt.normalize()
+        observed_accepted_months = set(accepted_dates.dt.strftime("%Y-%m"))
+        if observed_accepted_months != accepted_months:
+            raise RichDataError(
+                "CNInfo supplement/correction accepted month set mismatch"
+            )
+        run_id = new_run_id(
+            "cninfo_supplement_correction_disclosure_burden_full"
+        )
+        run_root = (
+            RAW_ROOT
+            / "cninfo"
+            / "supplement_correction_disclosure_burden"
+            / "full"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                "CNInfo supplement/correction full run already exists"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        request_quality: list[dict[str, Any]] = []
+        month_quality: list[dict[str, Any]] = []
+        bisections: list[dict[str, Any]] = []
+        identity_dates: dict[tuple[str, str], pd.Timestamp] = {}
+        announcement_instruments: dict[str, set[str]] = {}
+        try:
+            monthly_frames: list[pd.DataFrame] = []
+            network_months: list[str] = []
+            for month_start, month_end in month_ranges:
+                month_label = month_start.strftime("%Y-%m")
+                if month_label in accepted_months:
+                    month_frame = accepted_frame.loc[
+                        accepted_dates.dt.strftime("%Y-%m").eq(month_label)
+                    ].reset_index(drop=True)
+                    monthly_frames.append(month_frame)
+                    month_quality.append(
+                        {
+                            "month": month_label,
+                            "source": "accepted_frame_reuse",
+                            "provider_rerequested": False,
+                            "rows": int(len(month_frame)),
+                            "identity_count_from_event_counts": int(
+                                month_frame[
+                                    "supplement_correction_notice_count"
+                                ].sum()
+                            ),
+                        }
+                    )
+                    continue
+                network_months.append(month_label)
+                provider_request_issued = True
+                leaves, split_records = (
+                    fetch_cninfo_supplement_correction_partition_details(
+                        month_start,
+                        month_end,
+                        contract=contract,
+                    )
+                )
+                bisections.extend(
+                    [{"month": month_label, **item} for item in split_records]
+                )
+                normalized_parts: list[pd.DataFrame] = []
+                part_quality: list[dict[str, Any]] = []
+                for leaf_start, leaf_end, rows, quality_item in leaves:
+                    request_quality.append({"month": month_label, **quality_item})
+                    normalized, observed = (
+                        canonicalize_cninfo_supplement_correction_rows(
+                            rows,
+                            leaf_start,
+                            leaf_end,
+                            contract=contract,
+                            identity_dates=identity_dates,
+                            announcement_instruments=announcement_instruments,
+                        )
+                    )
+                    part_quality.append(observed)
+                    if not normalized.empty:
+                        normalized_parts.append(normalized)
+                if normalized_parts:
+                    normalized_month = (
+                        pd.concat(normalized_parts, ignore_index=True)
+                        .groupby(
+                            ["announcement_date", "instrument"],
+                            as_index=False,
+                            sort=True,
+                        )
+                        .agg(
+                            supplement_correction_notice_count=(
+                                "supplement_correction_notice_count",
+                                "sum",
+                            ),
+                            provider=("provider", "first"),
+                        )
+                        .loc[
+                            :,
+                            list(
+                                CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+                            ),
+                        ]
+                    )
+                else:
+                    normalized_month = pd.DataFrame(
+                        columns=list(
+                            CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS
+                        )
+                    )
+                month_frame, outside = (
+                    filter_cninfo_supplement_correction_events_to_holding_universe(
+                        normalized_month,
+                        intervals,
+                    )
+                )
+                monthly_frames.append(month_frame)
+                month_quality.append(
+                    {
+                        "month": month_label,
+                        "source": "provider",
+                        "provider_rerequested": True,
+                        "advertised_rows": sum(
+                            int(item["advertised_rows"])
+                            for item in request_quality
+                            if item["month"] == month_label
+                        ),
+                        "received_rows": sum(
+                            int(item["received_rows"])
+                            for item in request_quality
+                            if item["month"] == month_label
+                        ),
+                        "supported_source_rows": sum(
+                            int(item["supported_source_rows"])
+                            for item in part_quality
+                        ),
+                        "unsupported_board_rows_excluded": sum(
+                            int(item["unsupported_board_rows_excluded"])
+                            for item in part_quality
+                        ),
+                        "exact_repeated_identity_rows_collapsed": sum(
+                            int(item["exact_repeated_identity_rows_collapsed"])
+                            for item in part_quality
+                        ),
+                        "outside_point_in_time_holding_universe_events_excluded": outside,
+                        "rows": int(len(month_frame)),
+                        "identity_count_from_event_counts": int(
+                            month_frame["supplement_correction_notice_count"].sum()
+                        ),
+                    }
+                )
+
+            if len(month_quality) != 84 or len(network_months) != 75:
+                raise RichDataError(
+                    "CNInfo supplement/correction full month completion mismatch"
+                )
+            nonempty = [frame for frame in monthly_frames if not frame.empty]
+            if not nonempty:
+                raise RichDataError(
+                    "CNInfo supplement/correction full source has no event"
+                )
+            combined = (
+                pd.concat(nonempty, ignore_index=True)
+                .loc[
+                    :,
+                    list(CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_COLUMNS),
+                ]
+                .sort_values(["announcement_date", "instrument"], kind="stable")
+                .reset_index(drop=True)
+            )
+            if (
+                combined.duplicated(["instrument", "announcement_date"]).any()
+                or not combined["supplement_correction_notice_count"].gt(0).all()
+                or not combined["supplement_correction_notice_count"]
+                .map(float)
+                .map(float.is_integer)
+                .all()
+                or set(combined["provider"].unique()) != {"cninfo"}
+            ):
+                raise RichDataError(
+                    "CNInfo supplement/correction full event integrity failed"
+                )
+            combined_dates = pd.to_datetime(
+                combined["announcement_date"], errors="raise"
+            ).dt.normalize()
+            yearly_rows = combined_dates.dt.year.value_counts().sort_index()
+            if set(yearly_rows.index.astype(int)) != set(range(2019, 2026)):
+                raise RichDataError(
+                    "CNInfo supplement/correction full source misses a year"
+                )
+            files: list[dict[str, Any]] = []
+            for year in range(2019, 2026):
+                annual = combined.loc[combined_dates.dt.year.eq(year)].reset_index(
+                    drop=True
+                )
+                temporary_destination = (
+                    temporary_root
+                    / f"year={year}"
+                    / "supplement_correction_events.parquet"
+                )
+                final_destination = (
+                    run_root
+                    / f"year={year}"
+                    / "supplement_correction_events.parquet"
+                )
+                atomic_write_frame(annual, temporary_destination)
+                files.append(
+                    {
+                        "year": year,
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(annual)),
+                        "file_sha256": file_digest(temporary_destination),
+                        "content_sha256": frame_digest(annual),
+                    }
+                )
+            provider_calls = sum(
+                int(item["provider_calls"]) for item in request_quality
+            ) + sum(int(item["provider_probe_calls"]) for item in bisections)
+            multi_instrument_ids = sum(
+                1 for instruments in announcement_instruments.values() if len(instruments) > 1
+            )
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "cninfo_supplement_correction_disclosure_burden",
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "development_start": start_date.isoformat(),
+                "development_end": end_date.isoformat(),
+                "no_return_preregistration": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC
+                    ),
+                },
+                "data_contract": chain["data_contract"],
+                "source_acceptance": {
+                    "record": chain["acceptance_record"],
+                    "manifest": chain["acceptance_manifest"],
+                    "frame": chain["acceptance_frame"],
+                    "months_reused": sorted(accepted_months),
+                    "rows_reused": int(len(accepted_frame)),
+                    "provider_rerequested": False,
+                },
+                "source_request": {
+                    "endpoint": contract["provider_contract"]["endpoint"],
+                    "category": contract["provider_contract"]["fixed_parameters"][
+                        "category"
+                    ],
+                    "record_fields_read": list(
+                        CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_RAW_FIELDS
+                    ),
+                    "provider_request_issued": provider_request_issued,
+                    "network_months_requested": network_months,
+                    "provider_calls": provider_calls,
+                    "leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_points_cookies_proxy_or_retail_session_used": False,
+                    "announcement_title_body_url_name_or_other_field_read": False,
+                    "raw_response_announcement_id_or_hash_persisted": False,
+                },
+                "source_quality": {
+                    "months": month_quality,
+                    "completed_months": 84,
+                    "accepted_reuse_months": 9,
+                    "network_months": 75,
+                    "combined_rows": int(len(combined)),
+                    "identity_count_from_event_counts": int(
+                        combined["supplement_correction_notice_count"].sum()
+                    ),
+                    "new_network_unique_instrument_announcement_identities": int(
+                        len(identity_dates)
+                    ),
+                    "new_network_multi_instrument_announcement_ids_observed": (
+                        multi_instrument_ids
+                    ),
+                    "yearly_rows": {
+                        str(year): int(yearly_rows.loc[year])
+                        for year in range(2019, 2026)
+                    },
+                    "duplicate_event_keys": 0,
+                    "announcement_title_read_or_persisted": False,
+                    "announcement_id_or_hash_persisted": False,
+                },
+                "factor": {
+                    "name": "cninfo_supplement_correction_disclosure_resilience",
+                    "formula": spec["capacity_contract"]["factor_formula"],
+                    "direction": "higher_is_better",
+                    "session_factor_values_persisted": False,
+                },
+                "files": files,
+                "full_source_status": full["success_status"],
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "cninfo_supplement_correction_disclosure_burden",
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "development_start": start_date.isoformat(),
+                "development_end": end_date.isoformat(),
+                "no_return_preregistration": {
+                    "path": manifest_path(
+                        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC
+                    ),
+                    "sha256": file_digest(
+                        DEFAULT_CNINFO_SUPPLEMENT_CORRECTION_DISCLOSURE_BURDEN_NO_RETURN_SPEC
+                    ),
+                },
+                "source_request": {
+                    "provider_request_issued": provider_request_issued,
+                    "completed_leaf_partitions": request_quality,
+                    "recursive_bisections": bisections,
+                    "credentials_tokens_points_cookies_proxy_or_retail_session_used": False,
+                    "announcement_title_body_url_name_or_other_field_read": False,
+                    "raw_response_announcement_id_or_hash_persisted": False,
+                },
+                "observed_month_quality_before_rejection": month_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "full_source_status": (
+                    "terminal_full_source_schema_identity_count_or_continuity_"
+                    "rejected_stop_before_capacity_comparisons_prices_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "comparison_fields_loaded": [],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build the CLI parser."""
 
@@ -33595,6 +35362,33 @@ def build_parser() -> argparse.ArgumentParser:
         help="confirm the single 75-month public full-source request",
     )
 
+    cninfo_supplement_correction_acceptance = subparsers.add_parser(
+        "acceptance-cninfo-supplement-correction-disclosure-burden",
+        help=(
+            "run the frozen public supplement/correction category acceptance"
+        ),
+    )
+    cninfo_supplement_correction_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    cninfo_supplement_correction_acceptance.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+    cninfo_supplement_correction_full = subparsers.add_parser(
+        "sync-cninfo-supplement-correction-disclosure-burden",
+        help=(
+            "download the frozen 2019-2025 public supplement/correction events"
+        ),
+    )
+    cninfo_supplement_correction_full.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    cninfo_supplement_correction_full.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the one-shot 75-month public full-source request",
+    )
+
     cninfo_guarantee_acceptance = subparsers.add_parser(
         "acceptance-cninfo-guarantee-sparsity",
         help="run the frozen 57-signal public guarantee-sparsity acceptance",
@@ -33936,6 +35730,24 @@ def main(argv: list[str] | None = None) -> int:
                     universe_path=args.universe_file,
                 )
             )
+        elif args.command == (
+            "acceptance-cninfo-supplement-correction-disclosure-burden"
+        ):
+            manifest = (
+                sync_cninfo_supplement_correction_disclosure_burden_acceptance(
+                    universe_path=args.universe_file,
+                    calendar_path=args.calendar_file,
+                )
+            )
+        elif args.command == (
+            "sync-cninfo-supplement-correction-disclosure-burden"
+        ):
+            manifest = (
+                sync_cninfo_supplement_correction_disclosure_burden_full_source(
+                    allow_large=args.allow_large,
+                    universe_path=args.universe_file,
+                )
+            )
         elif args.command == "acceptance-cninfo-guarantee-sparsity":
             manifest = sync_cninfo_guarantee_sparsity_acceptance(
                 universe_path=args.universe_file,
@@ -34045,6 +35857,12 @@ def main(argv: list[str] | None = None) -> int:
             "stored_no_return_public_equity_incentive_plan_acceptance"
         ),
         "sync-cninfo-equity-incentive-plan-disclosure-intensity": (
+            "stored_pending_no_return_capacity_and_uniqueness"
+        ),
+        "acceptance-cninfo-supplement-correction-disclosure-burden": (
+            "stored_no_return_public_supplement_correction_acceptance"
+        ),
+        "sync-cninfo-supplement-correction-disclosure-burden": (
             "stored_pending_no_return_capacity_and_uniqueness"
         ),
         "acceptance-cninfo-guarantee-sparsity": (
