@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_monetary_funds_asset_intensity_data_contract",
+  "status": "frozen_before_new_balance_sheet_provider_rows_monetary_funds_factor_values_full_history_no_return_prices_or_returns",
+  "preregistered_at": "2026-07-21T05:51:47Z",
+  "purpose": "Define the sole public Eastmoney source acceptance for quarterly monetary-funds asset intensity before any newly requested balance-sheet row, candidate factor value, full history, comparison, price, or return is observed.",
+  "mechanism_selection": {
+    "path": "docs/a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json",
+    "sha256": "6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419",
+    "frozen_at": "2026-07-21T05:49:24Z"
+  },
+  "source": {
+    "provider": "Eastmoney public datacenter",
+    "provider_page": "https://data.eastmoney.com/bbsj/202003/zcfz.html",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_DMSK_FN_BALANCE",
+    "http_method": "GET",
+    "request_partition": "one exact quarterly accounting report date",
+    "request_parameters": {
+      "sortColumns": "NOTICE_DATE,SECURITY_CODE",
+      "sortTypes": "-1,-1",
+      "pageSize": 500,
+      "columns": "ALL",
+      "filter_template": "(SECURITY_TYPE_CODE in (\"058001001\",\"058001008\"))(TRADE_MARKET_CODE!=\"069001017\")(REPORT_DATE='YYYY-MM-DD')"
+    },
+    "maximum_pages_per_partition": 20,
+    "maximum_attempts_per_page": 4,
+    "retry_backoff_seconds": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "page_timeout_seconds": 30,
+    "open_source_adapter": {
+      "repository": "https://github.com/akfamily/akshare",
+      "commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+      "path": "akshare/stock_feature/stock_report_em.py",
+      "sha256": "2012492017222a405d5cd396d3a29a384bc79dd8c1dc4d3e8737f1d2361bd783"
+    },
+    "credentials_required": [],
+    "tushare_token_read": false,
+    "authentication_cookie_proxy_or_retail_session_allowed": false,
+    "price_or_return_endpoint_allowed": false
+  },
+  "transport_schema": {
+    "top_level_result_must_be_an_object": true,
+    "data_must_be_a_list_of_objects": true,
+    "pages_and_count_must_be_positive_integers": true,
+    "every_page_metadata_must_match_page_one": true,
+    "all_advertised_pages_must_be_requested_exactly_once": true,
+    "received_rows_must_equal_advertised_count": true,
+    "ordered_source_column_count": 57,
+    "ordered_source_columns_sha256": "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3",
+    "ordered_schema_evidence": {
+      "acceptance_manifest_path": "data/metadata/rich_data/runs/20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4.json",
+      "acceptance_manifest_sha256": "08badce50927da1083d684c1614e88ba260d3c2d54acf8d74cf59cf58c65ca8c",
+      "tracked_record_path": "docs/a_share_eastmoney_balance_sheet_resilience_source_acceptance_record.json",
+      "tracked_record_sha256": "9a014c7bfa25cfe40f1a5deca0168fe28f5c98f10c1da2bc782366cb15c94baf",
+      "monetary_funds_value_observed_or_reused_from_prior_evidence": false
+    },
+    "raw_json_data_object_zero_based_positions": {
+      "stock_code": 1,
+      "announcement_date": 12,
+      "total_assets": 14,
+      "monetary_funds": 16
+    },
+    "minimum_raw_columns": 57,
+    "schema_position_change_allowed": false,
+    "reason_for_columns_all": "The pinned public adapter exposes this report through a positional response schema and requests columns=ALL; only four predeclared positions may survive extraction.",
+    "unused_transported_fields_must_be_discarded_before_normalization": true,
+    "unused_field_values_may_enter_formula_comparison_or_selection": false,
+    "empty_count_mismatch_non_object_row_schema_hash_or_position_change_policy": "fatal"
+  },
+  "factor_protocol": {
+    "factor_name": "eastmoney_monetary_funds_asset_intensity",
+    "raw_fields": [
+      "monetary_funds",
+      "total_assets"
+    ],
+    "formula": "monetary_funds / total_assets",
+    "direction": "higher_is_better",
+    "units": "fraction",
+    "interpretation": "reported monetary-funds share of reported total assets, not verified unrestricted cash",
+    "valid_total_assets": "finite and strictly positive",
+    "valid_monetary_funds": "finite, nonnegative, and no greater than total assets",
+    "explicit_zero_monetary_funds_allowed": true,
+    "missing_nonfinite_negative_or_above_assets_policy": "exclude and count; never fill, clip, absolutize, or infer",
+    "availability": "first local trading-session close strictly after the displayed announcement date",
+    "entry_if_later_admitted": "following local trading-session open",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_factor_age_calendar_days": 3,
+    "late_older_report_may_overwrite_newer_report": false,
+    "normalized_columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "monetary_funds",
+      "total_assets",
+      "eastmoney_monetary_funds_asset_intensity",
+      "provider"
+    ],
+    "normalized_key": [
+      "instrument",
+      "report_date"
+    ],
+    "provider_value": "eastmoney",
+    "duplicate_supported_instrument_report_period_policy": "fatal",
+    "alternative_numerator_denominator_transform_direction_timing_age_or_missing_policy_allowed": false
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality_for_future_gates_only": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "price_access_allowed_by_this_contract": false
+    }
+  },
+  "acceptance_protocol": {
+    "command": "acceptance-eastmoney-monetary-funds-asset-intensity",
+    "one_completed_acceptance_only": true,
+    "fixed_report_date": "2025-12-31",
+    "active_holding_universe_date": "2025-12-31",
+    "minimum_all_market_source_rows": 5000,
+    "required_ordered_source_column_count": 57,
+    "required_ordered_source_columns_sha256": "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3",
+    "minimum_complete_identity_supported_names": 4500,
+    "minimum_valid_holding_names": 3500,
+    "minimum_valid_point_in_time_holding_coverage": 0.75,
+    "minimum_distinct_factor_values": 1000,
+    "maximum_formula_absolute_error": 1e-12,
+    "duplicate_normalized_keys_allowed": 0,
+    "source_page_or_count_failures_allowed": 0,
+    "success_status": "accepted_schema_formula_and_current_coverage_pending_separate_full_source_and_no_return_protocol",
+    "selection_or_promotion_allowed": false
+  },
+  "future_no_return_requirements_after_acceptance_only": {
+    "separate_fingerprint_bound_protocol_required_before_any_other_report_date": true,
+    "development_report_dates": "all 28 standard quarter ends from 2019Q1 through 2025Q4",
+    "accepted_partition_must_be_reused_without_provider_rerequest": "2025-12-31",
+    "capacity_must_run_before_comparison_fields": true,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_years": 5,
+    "minimum_names_per_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "minimum_listing_sessions": 20,
+    "maximum_quality_age_calendar_days": 550,
+    "required_no_return_comparisons": [
+      "eastmoney_balance_sheet_resilience",
+      "log_total_assets",
+      "log1p_monetary_funds",
+      "roe",
+      "tushare_positive_book_to_market",
+      "free_float_cap_proxy",
+      "liquidity_5"
+    ],
+    "minimum_pairwise_sessions_per_dense_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "atomicity_and_safety": {
+    "one_hidden_temporary_root": true,
+    "publish_normalized_parquet_and_manifest_only_after_every_acceptance_gate_passes": true,
+    "failure_deletes_temporary_output": true,
+    "provider_raw_response_persisted": false,
+    "unused_transported_fields_persisted": false,
+    "credentials_token_cookie_or_proxy_read": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "success_next_step": "Freeze one separate fingerprint-bound full-source and no-return protocol before requesting any non-acceptance report date.",
+  "failure_policy": "Write one terminal source-acceptance record and stop without changing the report date, source, positions, schema, formula, direction, timing, age, missing rules, thresholds, denominator, or transported field selection, and without full history, comparisons, prices, returns, aggregation, scoring, selection, sizing, orders, or Level-2.",
+  "new_balance_sheet_provider_rows_observed_before_freeze": false,
+  "new_monetary_funds_factor_values_observed_before_freeze": false,
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

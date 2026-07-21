@@ -1956,7 +1956,7 @@ python scripts/a_share_rich_data.py \
 
 因为没有成功全量清单，`tushare-contract-liability-backlog-no-return-audit` 从未真实运行；入口现在也会在读取清单、本地价格基座、质量数据或 48 个比较字段前按终止记录拒绝。因此容量门、唯一性门和毛利率语义门均未运行，更没有收益诊断、聚合、评分、选股、仓位或订单结果。此机制不进入当前因子库；下一步只能重新审计机制前沿并在读取新供应商行或因子值前冻结一个经济上独立的新候选。
 
-### Eastmoney 关联交易披露稀疏度（无收益双门通过，等待单因子收益诊断预注册）
+### Eastmoney 关联交易披露稀疏度（收益、稳定性与执行门终止）
 
 合同负债在全量来源 P05 覆盖门终止后，新一轮机制核重只选择 `eastmoney_related_party_transaction_sparsity = 1 / related_party_transaction_count`。其中计数仅为同一股票、同一 `NOTICE_DATE` 下完整且唯一的 `EID` 数；高值固定解释为同日关联交易披露聚集较少。交易金额、币种、交易方、关联关系、交易文本、控制标志以及网页展示的最新营收和净利润全部禁止请求或保存，避免币种混合、当期不可知财务分母和文本/身份字段泄漏。无收益机制记录为 [`a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit_20260720.json`](a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit_20260720.json)（SHA‑256 `697def3023b93b639363b05c262293dda75cb515fa58d8124ea5e96384d61190`）。
 
@@ -1972,4 +1972,49 @@ python scripts/a_share_rich_data.py \
 
 第一次入口调用曾因候选公告日与季度质量公告日同名而在容量计算前中止；没有审计文件、比较字段、价格或收益产生。候选公告列改名并加入专项回归测试后才执行上面的唯一完整审计，规则、阈值、方向、时点和目录均未改变。跨克隆无收益记录为 [`a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json`](a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json)（SHA‑256 `827aacdfc661c280cd22dbc3f97b3e6fc3ad7b91489861bd45c1d6a65c581cc8`）。`eastmoney-related-party-transaction-sparsity-no-return-audit`、来源验收和全量入口现在都必须拒绝重跑。
 
-这仍不是因子收益或选股证据。下一步只能先冻结一个绑定上述审计指纹、公式、正方向、2019–2025 开发窗、三日持有、Top‑3、交易成本和执行限制的单因子收益/执行诊断，再进行唯一一次价格与收益读取。在该预注册完成前，不得运行收益诊断、通用稳定性或 Top‑3 门禁，也不得聚合、当前评分、选股、仓位、订单或据此采购 Level‑2。
+价格读取前冻结的唯一诊断协议为 [`a_share_eastmoney_related_party_transaction_sparsity_diagnostic_preregistration.json`](a_share_eastmoney_related_party_transaction_sparsity_diagnostic_preregistration.json)（SHA‑256 `fcb1686eaed04764b545c80318fa6fcb74b922c4c5722e81a566c96bc7790848`）。它绑定完整来源、无收益审计和记录、接受价格基准、2019–2025 开发窗、严格公告后首个交易日生效、三自然日事件时效、三交易日非重叠持有、Top‑3、0.012%/0.062% 成本、550 日质量、20 会话上市门，以及前瞻成交与 20 万元/100 股/10bp/成交额 1% 执行规则。专用入口不暴露日期、方向、公式、时效、TopK、成本或门槛参数。
+
+唯一诊断 `20260720T134932Z`（SHA‑256 `9f208c7d7b0781dd2221a57ec3b651416cd83149a208359f070a3e47981192ed`）包含 351 个有效横截面。平均/中位 Rank IC 为 **−0.02105 / +0.00426**，正 IC 比例 50.71%，Top‑3 减 Bottom‑3 的平均毛收益差为 **−0.1351%**；2020、2021、2022、2024 年平均 IC 为负。普通固定持有 Top‑3 虽累计 +26.17%，但最大回撤 −45.36%、中位单期 −0.1481%、胜率 48.43%、P05 −5.02%、最差单期 −13.53%，不能绕过关联稳定性与执行门。
+
+前瞻保守成交台账有 420 个完整信号、1,260 个登记槽位和 1,253 个成交槽位，累计 +21.47%，但最大回撤 **−44.04%**，且 2019–2022 四年为负，执行门失败。按用户固定的 20 万元、每槽 5%、最高 15% 暴露、100 股整手、万一佣金无最低、双边 0.002% 过户费、卖出 0.05% 印花税、双边 10bp 主门槛重算后，整手可负担率 96.17%，最大成交额参与率 0.5007%，但期末仅 191,461.91 元，累计 **−4.27%**，2019–2022 四年仍为负。0/5/10/20bp 描述性累计收益分别为 +6.12%/+1.26%/−4.27%/−13.48%；10bp 才是冻结的主门，不能改用零滑点结果。
+
+完整稳定性审计 `20260720T134945Z`（SHA‑256 `684c2f5154c431dbe5861d23b1159f28a8cdbde1802828117bbcb5f4ec5b5dba`）和 Top‑3 可行性审计（SHA‑256 `a9e63484602dd9a73188ad793304bcce338a3550a0d0e8b426bd163c4fab27d3`）均为 0/1 通过。跨克隆终止记录为 [`a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json`](a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json)（SHA‑256 `b8bda6862349a0ff9082109a3e176b4ecc195dc9be5bfb07043e91c6e7460dba`）。此分支永久终止：不得重跑、反向、改变计数/时效/年份/持有期/TopK/成本/质量/上市/执行规则、选有利年份或事后加过滤器；不得聚合、当前评分、选股、仓位、订单，也不能据此采购 Level‑2。下一步只能回到新的、经济机制独立且先无收益预注册的候选。
+
+### CNInfo 近期对外担保披露稀疏度（来源传输结构终止）
+
+关联交易因子在收益与执行门终止后，新一轮机制核重只选择 `cninfo_recent_guarantee_disclosure_sparsity = 1 / guarantee_count`：每个信号只统计此前三个完整本地交易日内、至少披露一次担保的股票，记录越少分数越高；没有披露保持缺失。担保金额、归母权益、供应商比率、证券名称、价格和收益均不进入因子。机制记录为 [`a_share_three_day_cninfo_guarantee_sparsity_mechanism_overlap_reaudit_20260720.json`](a_share_three_day_cninfo_guarantee_sparsity_mechanism_overlap_reaudit_20260720.json)（SHA‑256 `295dd5e8461fac0b3d203830499ce6550c2450d708c4ee3b9afa87ec7ff20a94`）。
+
+数据合同 [`a_share_cninfo_guarantee_sparsity_data_contract.json`](a_share_cninfo_guarantee_sparsity_data_contract.json)（SHA‑256 `1c59a4fdabbb7ae82d3279e83f81e55b3518f9634201379a96d59e25a7e12e68`）在任何 CNInfo 公司记录或因子值出现前冻结。来源固定为公共 `p_sysapi1054`，依次请求深市主板 `012002`、沪市 `012001`、创业板 `012015`；固定 AES‑128‑CBC 时间签名只在请求内存中生成，不是凭据且不得落盘。样本是冻结 2019–2025 信号网格中的 2019Q1、2024Q1、2025Q1，共 57 个信号、171 个计划市场窗口。每条来源记录必须恰为七位位置数组，且只允许区间、担保次数和代码进入规范化；30 秒超时、最多三次尝试、调用间至少 0.1 秒均在真实访问前固定。
+
+467 项离线回归通过后执行唯一真实验收。首个信号 `2019-01-07` 的深市主板窗口 `2019-01-02` 至 `2019-01-04` 连续三次都得到顶层 `records` 列表，但至少一条记录不是合同要求的七位 list/tuple，而是对象形态；因此程序在任何规范化、股票池过滤或因子计算之前终止。完成市场窗口和信号窗口均为 0，规范行与因子值均为 0；没有发布 Parquet，隐藏临时目录已删除，原始响应、名称、金额、权益、比率和签名头均未保存，也没有读取价格或收益。
+
+本机失败清单是 `data/metadata/rich_data/runs/20260720T141256Z_cninfo_guarantee_sparsity_acceptance_9f29ed74.json`（SHA‑256 `8a2c04d590972c14012e49112a8738aeeace6c24517635826f947ffb2a977ac7`）；跨克隆终止记录为 [`a_share_cninfo_guarantee_sparsity_source_acceptance_record.json`](a_share_cninfo_guarantee_sparsity_source_acceptance_record.json)（SHA‑256 `0719385358e9cbed298eb34c32f864093d7298253dab770e0297673a8ae6688d`）。`acceptance-cninfo-guarantee-sparsity` 现在会先验证该记录，再在合同、本地上下文、签名和网络之前拒绝重跑。
+
+这是来源传输结构失败，不是收益证据。观察不匹配后不得把对象字段改写成七位数组、重请求同一窗口、换板块/日期/接口/字段、调整三日窗口/公式/方向/阈值，或改用担保金额、权益比率、诉讼数据救援；也不得继续全量、无收益审计、收益诊断、聚合、评分、选股、仓位、订单或 Level‑2。此分支不向因子池贡献值；下一步只能重新审计一个经济上独立、先无收益冻结的新候选。
+
+### Eastmoney 货币资金资产占比（全量来源通过，等待无收益双门）
+
+CNInfo 担保披露分支在传输结构门禁终止后，新的机制审计冻结为 [`a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json`](a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json)（SHA‑256 `6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419`）。唯一候选是：
+
+```text
+eastmoney_monetary_funds_asset_intensity = monetary_funds / total_assets
+```
+
+高值方向固定为更好，只表示报告口径下货币资金占总资产比例更高，不能宣称为已核实的无限制现金。应收账款/总资产因重叠现金转化和会计质量机制、存货/总资产因行业与周期依赖、货币资金/总负债因直接复用已终止的杠杆分母，均在读取新来源行前拒绝。
+
+数据合同 [`a_share_eastmoney_monetary_funds_asset_intensity_data_contract.json`](a_share_eastmoney_monetary_funds_asset_intensity_data_contract.json)（SHA‑256 `f879f2095936e6a1f084432bbce2c5d5f2f74951d4a12d1742064b1e365b8d82`）绑定 AKShare 提交 `fcdbf25aa864a218c54864c3f6ab6a2ed19cce28` 的 `stock_zcfz_em` 适配器和 Eastmoney 公共 `RPT_DMSK_FN_BALANCE` 报告。传输必须维持 57 列和顺序哈希 `08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3`；只允许代码、公告日、总资产、货币资金四个预声明位置进入规范化。总资产须有限且严格为正；货币资金须有限、非负且不大于总资产；明确报告的零值有效，其他无效值只排除并计数，不填充、裁剪、取绝对值或换用响应中的其他字段。公告当日不可交易，因子在公告日后的第一个本地交易日收盘才可用，若后续获准诊断则下一交易日开盘入场，最长保持 3 个自然日。
+
+在 473 项完整离线回归通过后，唯一一次 2025‑12‑31 来源验收完成 11/11 页、5,218/5,218 行。规范化前有 4,605 个完整主板/创业板身份；点时可持有股票共 4,581 个，最终发布 4,574 个有效名称，覆盖率 **99.8472%**，4,574 个取值全部不同，范围为 0.00218176–0.88652427，公式最大绝对误差为 0，重复键和无效资产/货币资金行均为 0。只发布七列规范 Parquet；未保存其余 53 个传输字段，也未读取 `TUSHARE_TOKEN`、价格或收益。
+
+接受清单为 `data/metadata/rich_data/runs/20260721T060142Z_eastmoney_monetary_funds_asset_intensity_acceptance_5196e914.json`（SHA‑256 `77172da63f5e94eebc04fb3a5493f907c22fc59c734ab84b85e33eb96e2e9907`）；跨克隆记录为 [`a_share_eastmoney_monetary_funds_asset_intensity_source_acceptance_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_source_acceptance_record.json)（SHA‑256 `bcea6af54b32eb80c4118345a72be01b332c626217bba87ec95217d1811c5171`）。不得再次运行 `acceptance-eastmoney-monetary-funds-asset-intensity`；守卫会在合同或供应商访问前核验记录并拒绝。
+
+全量与无收益协议 [`a_share_eastmoney_monetary_funds_asset_intensity_no_return_preregistration.json`](a_share_eastmoney_monetary_funds_asset_intensity_no_return_preregistration.json)（SHA‑256 `b8cf79b968ee9ca609748508e82d4a30d8fc9762c9e4794f5648c4b18c7f5f14`）已经在任何其他季度来源行前冻结。唯一全量命令已经消费：它复用已接受的 2025Q4 分区而未重复请求，用 27 个网络分区和 277 次供应商调用原子发布 2019Q1–2025Q4 共 28 个季度、114,418 行。年度行数依次为 13,739、14,473、15,735、16,772、17,550、17,936、18,213；完整身份和有效因子覆盖率的季度最小值/中位数/最大值为 94.0817%/96.9802%/99.8906%。全部分区的公式、键、七列规范结构、文件与内容哈希独立复核通过，公式最大误差为 0。
+
+本机全量清单为 `data/metadata/rich_data/runs/20260721T061812Z_eastmoney_monetary_funds_asset_intensity_full_ef43d4e5.json`（SHA‑256 `ee9d7cacd2097b840b2f0cfafd177fd5bb8203fea5df95b292ca14e962eba885`）；跨克隆来源记录为 [`a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json)（SHA‑256 `0b399ab472a425702e8fe40387849e2b258032081e5bac44d984b0272cce557e`）。不得再次运行：
+
+```bash
+python scripts/a_share_rich_data.py \
+  sync-eastmoney-monetary-funds-asset-intensity --allow-large
+```
+
+下一步只允许运行一次 `eastmoney-monetary-funds-asset-intensity-no-return-audit`。它必须先在不加载比较值、原始价格或收益的前提下证明至少 200 个跨五年的非重叠三交易日 cohort；每个截面至少 6 个质量与上市门合格名称、2 个不同值。容量通过后才允许比较固定七项：`eastmoney_balance_sheet_resilience`、`log_total_assets`、`log1p_monetary_funds`、`roe`、`tushare_positive_book_to_market`、`free_float_cap_proxy`、`liquidity_5`；每项至少 100 个有效会话，绝对中位日内秩相关必须低于 0.8。所有无收益门禁通过前，不得读取未来收益、聚合、当前评分、选股、仓位、订单或 Level‑2。

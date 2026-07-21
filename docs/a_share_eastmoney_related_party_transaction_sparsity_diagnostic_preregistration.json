@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_related_party_transaction_sparsity_diagnostic_preregistration",
+  "status": "frozen_after_no_return_capacity_and_uniqueness_pass_before_price_or_factor_return_read",
+  "preregistered_at": "2026-07-20T13:40:48Z",
+  "purpose": "Run one accepted-price single-factor return and execution diagnostic of the frozen related-party disclosure-sparsity mechanism after its source, capacity, sparse-semantic, conditional statistical, and dense-confounder gates passed without prices or forward returns.",
+  "no_return_evidence": {
+    "audit": {
+      "path": "data/experiments/short_horizon/20260720T132935Z_eastmoney_related_party_transaction_sparsity_no_return_audit.json",
+      "sha256": "277d6c4ca1f25b275cc1cf94f8a4a1b761f084808472fb9d2c83d25389cd40b2",
+      "run_id": "20260720T132935Z",
+      "purpose": "eastmoney_related_party_transaction_sparsity_capacity_then_six_sparse_and_three_dense_uniqueness_without_prices_or_forward_returns"
+    },
+    "record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json",
+      "sha256": "827aacdfc661c280cd22dbc3f97b3e6fc3ad7b91489861bd45c1d6a65c581cc8"
+    },
+    "potential_complete_cohorts": 352,
+    "observed_calendar_years": 7,
+    "sparse_semantic_reviews_passed": 6,
+    "sparse_semantic_review_count": 6,
+    "statistically_gated_sparse_neighbors": 1,
+    "statistically_gated_sparse_neighbors_passed": 1,
+    "descriptive_only_sparse_neighbors": 5,
+    "dense_confounders": 3,
+    "dense_confounders_passed": 3,
+    "capacity_gate_passed": true,
+    "uniqueness_gate_passed": true,
+    "both_no_return_gates_passed": true,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "source_admitted_for_return_diagnostic": true
+  },
+  "source_snapshots": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit_20260720.json",
+      "sha256": "697def3023b93b639363b05c262293dda75cb515fa58d8124ea5e96384d61190"
+    },
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_data_contract.json",
+      "sha256": "242baad268f11c56b0c3ccb14b9726f653b908e553d0b1d39faed36e6069c277"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_source_acceptance_record.json",
+      "sha256": "054728119ccfd39858e4eb391a16097a3b63f9f2ef8cfebf9f928f9dfa29c582"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_no_return_preregistration.json",
+      "sha256": "51447a3647ad461480b98a01c7d55f094c0dbd139c81fa8abfb378f4167e20d8"
+    },
+    "full_source_record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_full_source_record.json",
+      "sha256": "45f39cfd550728c2b5d2260930cf1758a4aee924ca4d35d43cf457b2531c2aac"
+    },
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260720T130538Z_eastmoney_related_party_transaction_sparsity_full_53f2347e.json",
+      "sha256": "e8a668ffda6668040f1129c60d402aa9731560801475fe2644f7fb7146b089e9",
+      "run_id": "20260720T130538Z_eastmoney_related_party_transaction_sparsity_full_53f2347e",
+      "status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness",
+      "rows": 51401,
+      "partitions": 84,
+      "development_start": "2019-01-01",
+      "development_end": "2025-12-31",
+      "provider": "eastmoney"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_sources": [
+        "baostock"
+      ],
+      "future_corporate_actions_used": false,
+      "status": "passed"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    }
+  },
+  "factor": {
+    "name": "eastmoney_related_party_transaction_sparsity",
+    "raw_column": "eastmoney_related_party_transaction_sparsity",
+    "raw_context_column": "related_party_transaction_count",
+    "source_formula": "1 / related_party_transaction_count",
+    "raw_direction": "higher_is_better",
+    "score_formula": "cross_sectional_percentile_rank(eastmoney_related_party_transaction_sparsity)",
+    "maximum_event_age_calendar_days": 3,
+    "same_announcement_session_trade_allowed": false,
+    "signal_availability": "first local trading session strictly after announcement_date",
+    "absent_event_policy": "missing",
+    "alternative_count_definition_transform_direction_age_amount_relationship_counterparty_or_text_allowed": false
+  },
+  "run_contract": {
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "maximum_quality_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_valid_names_per_factor_cohort": 6,
+    "minimum_distinct_factor_values_per_cohort": 2,
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "stability_minimum_calendar_years": 5,
+    "stability_minimum_cohorts": 200
+  },
+  "execution_policies": {
+    "prospective_execution_policy_path": "docs/a_share_three_day_prospective_execution_policy.json",
+    "prospective_execution_policy_sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc",
+    "pilot_execution_policy_path": "docs/a_share_three_day_pilot_execution_policy.json",
+    "pilot_execution_policy_sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+    "pilot_initial_capital_cny": 200000,
+    "target_weight_per_registered_slot": 0.05,
+    "maximum_entry_gross_exposure": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "commission_minimum_cny": 0,
+    "transfer_fee_rate_each_side": 0.00002,
+    "stamp_duty_rate_sell_only": 0.0005,
+    "primary_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01
+  },
+  "diagnostic_policy": {
+    "source_capacity_and_uniqueness_gates_passed_before_price_or_return_read": true,
+    "single_factor_only": true,
+    "factor_returns_observed_before_registration": false,
+    "prior_related_party_sparsity_price_diagnostic_exists": false,
+    "one_completed_diagnostic_only": true,
+    "preserve_source_timing_quality_and_no_return_evidence": true,
+    "no_direction_formula_event_age_date_cost_quality_source_factor_or_threshold_override": true,
+    "apply_full_default_stability_and_topk_viability_audits_after_diagnostic": true,
+    "passing_diagnostic_gates_does_not_allow_immediate_aggregation_current_scoring_selection_or_orders": true,
+    "separate_newly_dated_prospective_protocol_required_after_any_dual_gate_pass": true,
+    "failure_stops_this_factor_without_inversion_tuning_filtering_or_combination": true,
+    "selection_or_promotion_allowed": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

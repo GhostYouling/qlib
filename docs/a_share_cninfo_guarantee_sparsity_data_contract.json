@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "kind": "a_share_cninfo_guarantee_sparsity_data_contract",
+  "status": "frozen_before_first_cninfo_guarantee_provider_record_factor_value_price_or_return",
+  "preregistered_at": "2026-07-20T14:00:21Z",
+  "purpose": "Define one public CNInfo source acceptance for recent corporate-guarantee disclosure sparsity before any provider record, derived factor value, price, or return is observed.",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_cninfo_guarantee_sparsity_mechanism_overlap_reaudit_20260720.json",
+    "sha256": "295dd5e8461fac0b3d203830499ce6550c2450d708c4ee3b9afa87ec7ff20a94"
+  },
+  "source": {
+    "provider": "cninfo",
+    "page": "https://webapi.cninfo.com.cn/#/thematicStatistics",
+    "endpoint": "https://webapi.cninfo.com.cn/api/sysapi/p_sysapi1054",
+    "http_method": "POST",
+    "request_body": null,
+    "query_parameters": [
+      "sdate",
+      "edate",
+      "market"
+    ],
+    "market_requests": [
+      {
+        "label": "shenzhen_main_board",
+        "market": "012002"
+      },
+      {
+        "label": "shanghai_market",
+        "market": "012001"
+      },
+      {
+        "label": "chinext",
+        "market": "012015"
+      }
+    ],
+    "star_market_requested": false,
+    "all_market_requested": false,
+    "bse_requested": false,
+    "open_source_adapter": {
+      "repository": "https://github.com/akfamily/akshare",
+      "commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+      "path": "akshare/stock/stock_cg_guarantee.py",
+      "sha256": "b6ceea710861c8dd4f1c1ed0e1794c9f7f0785f56fb9b3af932f5165f9943fde"
+    },
+    "accept_enckey_algorithm": {
+      "plaintext": "floor(current Unix time in seconds) encoded as UTF-8 decimal text",
+      "cipher": "AES-128-CBC",
+      "key_utf8": "1234567887654321",
+      "iv_utf8": "1234567887654321",
+      "padding": "PKCS7",
+      "output": "Base64 ciphertext in the Accept-Enckey request header",
+      "credential_or_secret": false,
+      "persist_generated_header": false
+    },
+    "authentication_or_paid_entitlement_required": false,
+    "cookie_proxy_or_retail_session_allowed": false
+  },
+  "transport_schema": {
+    "top_level_records_key": "records",
+    "records_must_be_a_list": true,
+    "record_width": 7,
+    "record_positions": {
+      "0": "announcement_statistics_interval",
+      "1": "guarantee_amount_to_parent_equity_ratio_transport_only",
+      "2": "guarantee_amount_transport_only",
+      "3": "guarantee_count",
+      "4": "security_name_transport_only",
+      "5": "security_code",
+      "6": "parent_equity_transport_only"
+    },
+    "persisted_positions": [
+      0,
+      3,
+      5
+    ],
+    "discarded_before_normalized_frame_positions": [
+      1,
+      2,
+      4,
+      6
+    ],
+    "advertised_count_policy": "If any complete top-level advertised record-count field is present, it must be a nonnegative integer exactly equal to len(records). Absence is recorded because the inspected single-response adapter documents no pagination or count field; it is not silently invented.",
+    "possible_truncation_record_count": 5000,
+    "reaching_possible_truncation_count_is_fatal": true,
+    "unknown_record_width_or_schema_is_fatal": true,
+    "response_error_or_non_list_records_is_fatal": true
+  },
+  "factor_protocol": {
+    "factor_name": "cninfo_recent_guarantee_disclosure_sparsity",
+    "raw_context_name": "guarantee_count",
+    "formula": "1 / guarantee_count",
+    "direction": "higher_is_better",
+    "source_window_local_sessions": 3,
+    "source_window": "the three complete local trading sessions immediately before the signal session",
+    "signal_grid": "range-clipped 2019-2025 local calendar positions 3:-4:3",
+    "availability": "signal-session close, which is the first local trading session strictly after source-window end",
+    "same_source_window_end_session_trade_allowed": false,
+    "entry": "next local trading-session open only after any future diagnostic is separately preregistered",
+    "maximum_factor_age_calendar_days": 0,
+    "absent_event_policy": "missing",
+    "zero_count_policy": "missing and counted; never reciprocal infinity or a favorable value",
+    "normalized_columns": [
+      "signal_date",
+      "window_start",
+      "window_end",
+      "instrument",
+      "guarantee_count",
+      "cninfo_recent_guarantee_disclosure_sparsity",
+      "provider"
+    ],
+    "alternative_amount_ratio_denominator_transform_direction_window_age_or_absence_policy_allowed": false
+  },
+  "canonicalization": {
+    "required_interval_text": "YYYY-MM-DD---YYYY-MM-DD exactly matching the requested sdate and edate",
+    "supported_security_codes": "complete six-digit Shanghai main-board, Shenzhen main-board, or ChiNext common-stock codes only",
+    "board_response_must_match_requested_market": true,
+    "complete_unsupported_code_policy": "exclude and count",
+    "missing_or_malformed_security_code_policy": "fatal for the request",
+    "guarantee_count": "finite positive integer only",
+    "missing_nonfinite_nonpositive_or_noninteger_count_policy": "fatal for the request",
+    "duplicate_security_code_within_one_board_window_policy": "fatal",
+    "duplicate_security_code_across_board_responses_for_one_window_policy": "fatal",
+    "same_signal_instrument_duplicate_policy": "fatal",
+    "formula_maximum_absolute_error": 1e-12,
+    "clip_fill_infer_absolutize_or_silently_deduplicate_allowed": false
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "development_range_clipped_sessions": 1699,
+      "development_signal_windows": 564
+    },
+    "quarterly_quality_for_future_no_return_gate_only": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_future_gated_work_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "price_access_allowed_by_this_contract": false
+    }
+  },
+  "acceptance": {
+    "command": "acceptance-cninfo-guarantee-sparsity",
+    "one_completed_acceptance_only": true,
+    "sample_signal_quarters": [
+      "2019-Q1",
+      "2024-Q1",
+      "2025-Q1"
+    ],
+    "sample_signal_definition": "every frozen development signal-grid session whose date is inside a selected quarter and which has three preceding local sessions",
+    "sample_signal_count_by_quarter": {
+      "2019-Q1": 19,
+      "2024-Q1": 19,
+      "2025-Q1": 19
+    },
+    "sample_signal_count": 57,
+    "board_request_count_per_signal": 3,
+    "planned_provider_call_count": 171,
+    "all_calls_sequential": true,
+    "request_timeout_seconds": 30,
+    "minimum_pause_seconds_between_calls": 0.1,
+    "maximum_attempts_per_call": 3,
+    "ordinary_transient_backoff_seconds": [
+      0.5,
+      1.0
+    ],
+    "request_interval_is_derived_only_from_bound_local_calendar": true,
+    "request_or_result_date_override_allowed": false,
+    "minimum_retained_point_in_time_holding_rows": 200,
+    "minimum_distinct_factor_values": 3,
+    "candidate_signal_definition": "at least six point-in-time holding instruments and at least two distinct positive reciprocal-count values",
+    "minimum_candidate_signals_total": 12,
+    "minimum_candidate_signals_per_sample_quarter": 2,
+    "every_sample_quarter_must_have_a_candidate_signal": true,
+    "source_board_call_failures_allowed": 0,
+    "duplicate_keys_allowed": 0,
+    "formula_errors_allowed": 0,
+    "output_status_on_pass": "accepted_source_schema_formula_timing_and_sample_coverage_pending_full_history_no_return_protocol",
+    "selection_or_promotion_allowed": false
+  },
+  "atomicity_and_safety": {
+    "all_acceptance_calls_share_one_hidden_temporary_root": true,
+    "publish_normalized_parquet_and_manifest_only_after_every_gate_passes": true,
+    "failure_deletes_temporary_output": true,
+    "provider_raw_response_persisted": false,
+    "transport_only_amount_equity_ratio_or_name_persisted": false,
+    "accept_enckey_persisted": false,
+    "credential_token_cookie_or_proxy_read": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "success_next_step": "Freeze one separate fingerprint-bound 2019-2025 full-source and no-return capacity/uniqueness protocol before requesting any non-acceptance signal window.",
+  "failure_policy": "Write one terminal source-acceptance record and stop without changing boards, dates, windows, schema, count formula, direction, timing, thresholds, amount fields, denominator, provider, price, return, aggregation, scoring, selection, sizing, orders, or Level-2 status.",
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

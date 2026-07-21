@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import atexit
+import base64
 import concurrent.futures
 import datetime as dt
 import hashlib
@@ -216,6 +217,26 @@ DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_SOURCE_RECORD = (
     / "docs"
     / "a_share_eastmoney_balance_sheet_resilience_full_source_record.json"
 )
+DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_monetary_funds_asset_intensity_data_contract.json"
+)
+DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_monetary_funds_asset_intensity_source_acceptance_record.json"
+)
+DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_monetary_funds_asset_intensity_no_return_preregistration.json"
+)
+DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_SOURCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json"
+)
 DEFAULT_EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_eastmoney_core_profit_consistency_data_contract.json"
 )
@@ -253,6 +274,14 @@ DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_SOURCE_RECORD = (
     REPO_ROOT
     / "docs"
     / "a_share_eastmoney_related_party_transaction_sparsity_full_source_record.json"
+)
+DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT = (
+    REPO_ROOT / "docs" / "a_share_cninfo_guarantee_sparsity_data_contract.json"
+)
+DEFAULT_CNINFO_GUARANTEE_SPARSITY_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_cninfo_guarantee_sparsity_source_acceptance_record.json"
 )
 DEFAULT_TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_tushare_sw_industry_breadth_data_contract.json"
@@ -456,6 +485,21 @@ EASTMONEY_BALANCE_SHEET_RESILIENCE_NO_RETURN_SPEC_SHA256 = (
 EASTMONEY_BALANCE_SHEET_RESILIENCE_FULL_SOURCE_RECORD_SHA256 = (
     "8c523f2e5b2b14cb46b98a9becf114ef5efab582af2b84482524f6676caf6cc6"
 )
+EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256 = (
+    "f879f2095936e6a1f084432bbce2c5d5f2f74951d4a12d1742064b1e365b8d82"
+)
+EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_MECHANISM_AUDIT_SHA256 = (
+    "6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419"
+)
+EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD_SHA256 = (
+    "bcea6af54b32eb80c4118345a72be01b332c626217bba87ec95217d1811c5171"
+)
+EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC_SHA256 = (
+    "b8cf79b968ee9ca609748508e82d4a30d8fc9762c9e4794f5648c4b18c7f5f14"
+)
+EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_SOURCE_RECORD_SHA256 = (
+    "0b399ab472a425702e8fe40387849e2b258032081e5bac44d984b0272cce557e"
+)
 EASTMONEY_CORE_PROFIT_CONSISTENCY_CONTRACT_SHA256 = (
     "2ae3be4b134e16681e702171157b48e8be5bc6c1f72aa9cecfc9a285518d7a45"
 )
@@ -485,6 +529,15 @@ EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_NO_RETURN_SPEC_SHA256 = (
 )
 EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_SOURCE_RECORD_SHA256 = (
     "45f39cfd550728c2b5d2260930cf1758a4aee924ca4d35d43cf457b2531c2aac"
+)
+CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256 = (
+    "1c59a4fdabbb7ae82d3279e83f81e55b3518f9634201379a96d59e25a7e12e68"
+)
+CNINFO_GUARANTEE_SPARSITY_MECHANISM_AUDIT_SHA256 = (
+    "295dd5e8461fac0b3d203830499ce6550c2450d708c4ee3b9afa87ec7ff20a94"
+)
+CNINFO_GUARANTEE_SPARSITY_ACCEPTANCE_RECORD_SHA256 = (
+    "0719385358e9cbed298eb34c32f864093d7298253dab770e0297673a8ae6688d"
 )
 TUSHARE_SW_INDUSTRY_BREADTH_CONTRACT_SHA256 = (
     "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
@@ -915,6 +968,21 @@ EASTMONEY_BALANCE_SHEET_RAW_POSITION_NAMES = (
     "total_liabilities",
     "vendor_asset_liability_ratio_percent_for_formula_audit_only",
 )
+EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_RAW_POSITION_NAMES = (
+    "stock_code",
+    "announcement_date",
+    "total_assets",
+    "monetary_funds",
+)
+EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS = (
+    "instrument",
+    "report_date",
+    "announcement_date",
+    "monetary_funds",
+    "total_assets",
+    "eastmoney_monetary_funds_asset_intensity",
+    "provider",
+)
 EASTMONEY_CORE_PROFIT_CONSISTENCY_COLUMNS = (
     "instrument",
     "report_date",
@@ -941,6 +1009,29 @@ EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_COLUMNS = (
     "related_party_transaction_count",
     "eastmoney_related_party_transaction_sparsity",
     "provider",
+)
+CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES = (
+    "announcement_statistics_interval",
+    "guarantee_amount_to_parent_equity_ratio_transport_only",
+    "guarantee_amount_transport_only",
+    "guarantee_count",
+    "security_name_transport_only",
+    "security_code",
+    "parent_equity_transport_only",
+)
+CNINFO_GUARANTEE_SPARSITY_COLUMNS = (
+    "signal_date",
+    "window_start",
+    "window_end",
+    "instrument",
+    "guarantee_count",
+    "cninfo_recent_guarantee_disclosure_sparsity",
+    "provider",
+)
+CNINFO_GUARANTEE_MARKETS = (
+    ("shenzhen_main_board", "012002"),
+    ("shanghai_market", "012001"),
+    ("chinext", "012015"),
 )
 TUSHARE_SW_CLASSIFICATION_RAW_FIELDS = (
     "index_code",
@@ -9419,6 +9510,531 @@ def load_tushare_free_float_scarcity_acceptance_record(
     return record
 
 
+def load_eastmoney_monetary_funds_asset_intensity_contract(
+    path: Path = DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen pre-row monetary-funds asset-intensity contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256:
+        raise RichDataError(
+            "Eastmoney monetary-funds asset-intensity contract fingerprint mismatch"
+        )
+    contract = load_json_record(
+        path, kind="a_share_eastmoney_monetary_funds_asset_intensity_data_contract"
+    )
+    mechanism = contract.get("mechanism_selection") or {}
+    source = contract.get("source") or {}
+    request = source.get("request_parameters") or {}
+    transport = contract.get("transport_schema") or {}
+    positions = transport.get("raw_json_data_object_zero_based_positions") or {}
+    factor = contract.get("factor_protocol") or {}
+    acceptance = contract.get("acceptance_protocol") or {}
+    future = contract.get("future_no_return_requirements_after_acceptance_only") or {}
+    safety = contract.get("atomicity_and_safety") or {}
+    expected_positions = {
+        "stock_code": 1,
+        "announcement_date": 12,
+        "total_assets": 14,
+        "monetary_funds": 16,
+    }
+    expected_comparisons = [
+        "eastmoney_balance_sheet_resilience",
+        "log_total_assets",
+        "log1p_monetary_funds",
+        "roe",
+        "tushare_positive_book_to_market",
+        "free_float_cap_proxy",
+        "liquidity_5",
+    ]
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_new_balance_sheet_provider_rows_monetary_funds_factor_values_full_history_no_return_prices_or_returns"
+        or contract.get("preregistered_at") != "2026-07-21T05:51:47Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json"
+        or mechanism.get("sha256")
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_MECHANISM_AUDIT_SHA256
+        or source.get("provider") != "Eastmoney public datacenter"
+        or source.get("endpoint")
+        != "https://datacenter-web.eastmoney.com/api/data/v1/get"
+        or source.get("report_name") != "RPT_DMSK_FN_BALANCE"
+        or source.get("http_method") != "GET"
+        or request.get("sortColumns") != "NOTICE_DATE,SECURITY_CODE"
+        or request.get("sortTypes") != "-1,-1"
+        or request.get("pageSize") != 500
+        or request.get("columns") != "ALL"
+        or request.get("filter_template")
+        != "(SECURITY_TYPE_CODE in (\"058001001\",\"058001008\"))(TRADE_MARKET_CODE!=\"069001017\")(REPORT_DATE='YYYY-MM-DD')"
+        or source.get("maximum_pages_per_partition") != 20
+        or source.get("maximum_attempts_per_page") != 4
+        or source.get("retry_backoff_seconds") != [0.5, 1.0, 2.0, 4.0]
+        or source.get("page_timeout_seconds") != 30
+        or source.get("credentials_required") != []
+        or source.get("tushare_token_read") is not False
+        or source.get("authentication_cookie_proxy_or_retail_session_allowed")
+        is not False
+        or transport.get("data_must_be_a_list_of_objects") is not True
+        or transport.get("every_page_metadata_must_match_page_one") is not True
+        or transport.get("all_advertised_pages_must_be_requested_exactly_once")
+        is not True
+        or transport.get("received_rows_must_equal_advertised_count") is not True
+        or transport.get("ordered_source_column_count") != 57
+        or transport.get("ordered_source_columns_sha256")
+        != "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3"
+        or positions != expected_positions
+        or transport.get("minimum_raw_columns") != 57
+        or transport.get("schema_position_change_allowed") is not False
+        or transport.get("unused_transported_fields_must_be_discarded_before_normalization")
+        is not True
+        or factor.get("factor_name")
+        != "eastmoney_monetary_funds_asset_intensity"
+        or factor.get("formula") != "monetary_funds / total_assets"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("explicit_zero_monetary_funds_allowed") is not True
+        or factor.get("same_announcement_session_trade_allowed") is not False
+        or factor.get("maximum_factor_age_calendar_days") != 3
+        or tuple(factor.get("normalized_columns") or ())
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+        or tuple(factor.get("normalized_key") or ())
+        != ("instrument", "report_date")
+        or factor.get("provider_value") != "eastmoney"
+        or factor.get("duplicate_supported_instrument_report_period_policy")
+        != "fatal"
+        or acceptance.get("command")
+        != "acceptance-eastmoney-monetary-funds-asset-intensity"
+        or acceptance.get("one_completed_acceptance_only") is not True
+        or acceptance.get("fixed_report_date") != "2025-12-31"
+        or acceptance.get("minimum_all_market_source_rows") != 5000
+        or acceptance.get("required_ordered_source_column_count") != 57
+        or acceptance.get("required_ordered_source_columns_sha256")
+        != "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3"
+        or acceptance.get("minimum_complete_identity_supported_names") != 4500
+        or acceptance.get("minimum_valid_holding_names") != 3500
+        or acceptance.get("minimum_valid_point_in_time_holding_coverage") != 0.75
+        or acceptance.get("minimum_distinct_factor_values") != 1000
+        or acceptance.get("maximum_formula_absolute_error") != 1e-12
+        or acceptance.get("duplicate_normalized_keys_allowed") != 0
+        or future.get("separate_fingerprint_bound_protocol_required_before_any_other_report_date")
+        is not True
+        or future.get("minimum_non_overlapping_three_session_cohorts") != 200
+        or future.get("minimum_observed_years") != 5
+        or future.get("required_no_return_comparisons") != expected_comparisons
+        or future.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or future.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or safety.get("provider_raw_response_persisted") is not False
+        or safety.get("unused_transported_fields_persisted") is not False
+        or safety.get("credentials_token_cookie_or_proxy_read") is not False
+        or safety.get("price_fields_loaded") != []
+        or safety.get("forward_return_fields_read") is not False
+        or contract.get("new_balance_sheet_provider_rows_observed_before_freeze")
+        is not False
+        or contract.get("new_monetary_funds_factor_values_observed_before_freeze")
+        is not False
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds asset-intensity contract does not match the frozen protocol"
+        )
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds asset-intensity mechanism audit changed"
+        )
+    schema_evidence = transport.get("ordered_schema_evidence") or {}
+    for label, path_key, sha_key in (
+        ("prior acceptance manifest", "acceptance_manifest_path", "acceptance_manifest_sha256"),
+        ("prior tracked record", "tracked_record_path", "tracked_record_sha256"),
+    ):
+        linked_path = resolve_record_path(str(schema_evidence.get(path_key) or ""))
+        if (
+            not linked_path.exists()
+            or file_digest(linked_path) != schema_evidence.get(sha_key)
+        ):
+            raise RichDataError(
+                f"Eastmoney monetary-funds ordered-schema {label} changed"
+            )
+    for label, link in (contract.get("local_context") or {}).items():
+        if not isinstance(link, dict) or "path" not in link or "sha256" not in link:
+            continue
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(
+                f"Eastmoney monetary-funds local context changed: {label}"
+            )
+        manifest_link = link.get("manifest_path")
+        manifest_sha = link.get("manifest_sha256")
+        if manifest_link or manifest_sha:
+            linked_manifest = resolve_record_path(str(manifest_link or ""))
+            if (
+                not linked_manifest.exists()
+                or file_digest(linked_manifest) != manifest_sha
+            ):
+                raise RichDataError(
+                    f"Eastmoney monetary-funds local context changed: {label} manifest"
+                )
+    return contract
+
+
+def load_eastmoney_monetary_funds_asset_intensity_acceptance_record(
+    path: Path = DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the immutable result of the consumed public source probe."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds acceptance-record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind=(
+            "a_share_eastmoney_monetary_funds_asset_intensity_"
+            "source_acceptance_record"
+        ),
+    )
+    contract_link = record.get("data_contract") or {}
+    mechanism = record.get("mechanism_audit") or {}
+    manifest_link = record.get("acceptance_manifest") or {}
+    frame_link = record.get("accepted_frame") or {}
+    request = record.get("source_request") or {}
+    observed = record.get("observed_result") or {}
+    next_gate = record.get("next_gate") or {}
+    contract_path = resolve_record_path(str(contract_link.get("path") or ""))
+    contract = load_eastmoney_monetary_funds_asset_intensity_contract(contract_path)
+    manifest_file = resolve_record_path(str(manifest_link.get("path") or ""))
+    frame_file = resolve_record_path(str(frame_link.get("path") or ""))
+    if (
+        not manifest_file.exists()
+        or file_digest(manifest_file) != manifest_link.get("sha256")
+    ):
+        raise RichDataError("Eastmoney monetary-funds acceptance manifest changed")
+    manifest = load_json_record(manifest_file, kind="a_share_rich_data_snapshot")
+    files = list(manifest.get("files") or [])
+    expected_columns = list(EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS)
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_pending_separate_full_source_and_no_return_protocol"
+        or record.get("created_at") != "2026-07-21T06:02:31Z"
+        or contract_link.get("sha256")
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256
+        or contract_link.get("preregistered_at") != contract.get("preregistered_at")
+        or contract_link.get("new_balance_sheet_provider_rows_observed_before_freeze")
+        is not False
+        or contract_link.get("new_monetary_funds_factor_values_observed_before_freeze")
+        is not False
+        or mechanism.get("sha256")
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_MECHANISM_AUDIT_SHA256
+        or mechanism.get("selected_mechanism")
+        != "reported_monetary_funds_share_of_total_assets"
+        or mechanism.get(
+            "interpretation_limited_to_reported_monetary_funds_not_verified_unrestricted_cash"
+        )
+        is not True
+        or manifest_link.get("run_id")
+        != "20260721T060142Z_eastmoney_monetary_funds_asset_intensity_acceptance_5196e914"
+        or manifest_link.get("requested_report_date") != "2025-12-31"
+        or manifest_link.get("retrieved_at")
+        != "2026-07-21T06:01:42.699671+00:00"
+        or manifest_link.get("acceptance_status")
+        != "accepted_schema_formula_and_current_coverage_pending_separate_full_source_and_no_return_protocol"
+        or frame_link.get("content_sha256")
+        != "c17b9c143dae17cf88f75046488ab5d1d66a8b0580553d50802bed715ca52a1f"
+        or frame_link.get("file_sha256")
+        != "1bb1f1faa8f3eb971dc63aa3ed3589748d795398877769e615da828bdafb3791"
+        or frame_link.get("rows") != 4574
+        or frame_link.get("columns") != expected_columns
+        or request.get("provider") != "eastmoney"
+        or request.get("endpoint") != contract["source"]["endpoint"]
+        or request.get("report_name") != "RPT_DMSK_FN_BALANCE"
+        or request.get("advertised_pages") != 11
+        or request.get("requested_pages") != list(range(1, 12))
+        or request.get("provider_calls") != 11
+        or request.get("advertised_rows") != 5218
+        or request.get("received_rows") != 5218
+        or request.get("ordered_source_column_count") != 57
+        or request.get("ordered_source_columns_sha256")
+        != contract["transport_schema"]["ordered_source_columns_sha256"]
+        or request.get("tushare_token_read") is not False
+        or request.get(
+            "credentials_tokens_cookies_or_proxy_read_logged_or_stored"
+        )
+        is not False
+        or request.get("unused_transported_fields_persisted") is not False
+        or observed.get("all_market_source_rows") != 5218
+        or observed.get("complete_identity_supported_names") != 4605
+        or observed.get("normalized_supported_rows_before_universe_filter") != 4605
+        or observed.get("expected_point_in_time_holding_names") != 4581
+        or observed.get("valid_holding_names") != 4574
+        or observed.get("valid_holding_coverage") != 0.9984719493560358
+        or observed.get("distinct_factor_values") != 4574
+        or observed.get("accepted_formula_max_absolute_error") != 0.0
+        or observed.get("invalid_total_asset_rows_excluded") != 0
+        or observed.get("invalid_monetary_funds_rows_excluded") != 0
+        or observed.get("monetary_funds_above_total_assets_rows_excluded") != 0
+        or observed.get("duplicate_normalized_keys") != 0
+        or observed.get("schema_formula_and_current_coverage_gate_passed") is not True
+        or "Freeze one separate fingerprint-bound" not in str(next_gate.get("allowed"))
+        or "Do not repeat acceptance" not in str(next_gate.get("forbidden"))
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+        or manifest.get("dataset")
+        != "eastmoney_monetary_funds_asset_intensity_acceptance"
+        or manifest.get("run_id") != manifest_link.get("run_id")
+        or manifest.get("requested_report_date") != "2025-12-31"
+        or manifest.get("retrieved_at") != manifest_link.get("retrieved_at")
+        or manifest.get("acceptance_status") != manifest_link.get("acceptance_status")
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or len(files) != 1
+        or files[0].get("path") != frame_link.get("path")
+        or files[0].get("sha256") != frame_link.get("content_sha256")
+        or files[0].get("rows") != frame_link.get("rows")
+        or not frame_file.exists()
+        or file_digest(frame_file) != frame_link.get("file_sha256")
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds acceptance record is inconsistent"
+        )
+    frame = load_snapshot_frame(files[0])
+    report_dates = pd.to_datetime(frame["report_date"], errors="coerce").dt.normalize()
+    announcements = pd.to_datetime(
+        frame["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    monetary_funds = pd.to_numeric(frame["monetary_funds"], errors="coerce")
+    total_assets = pd.to_numeric(frame["total_assets"], errors="coerce")
+    factor = pd.to_numeric(
+        frame["eastmoney_monetary_funds_asset_intensity"], errors="coerce"
+    )
+    if (
+        tuple(frame.columns) != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+        or len(frame) != 4574
+        or frame["instrument"].nunique() != len(frame)
+        or frame.duplicated(["instrument", "report_date"]).any()
+        or report_dates.isna().any()
+        or not report_dates.eq(pd.Timestamp("2025-12-31")).all()
+        or announcements.isna().any()
+        or not np.isfinite(monetary_funds).all()
+        or not monetary_funds.ge(0.0).all()
+        or not np.isfinite(total_assets).all()
+        or not total_assets.gt(0.0).all()
+        or not monetary_funds.le(total_assets).all()
+        or not np.isfinite(factor).all()
+        or not np.allclose(
+            factor.to_numpy(dtype="float64"),
+            monetary_funds.to_numpy(dtype="float64")
+            / total_assets.to_numpy(dtype="float64"),
+            rtol=0.0,
+            atol=1e-12,
+        )
+        or not frame["provider"].eq("eastmoney").all()
+        or frame_digest(frame) != frame_link.get("content_sha256")
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds acceptance frame failed formula audit"
+        )
+    return record
+
+
+def load_eastmoney_monetary_funds_asset_intensity_source_chain(
+    path: Path = DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC,
+) -> dict[str, Any]:
+    """Verify the accepted source and frozen pre-history no-return protocol."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds no-return preregistration fingerprint mismatch"
+        )
+    spec = load_json_record(
+        path,
+        kind=(
+            "a_share_eastmoney_monetary_funds_asset_intensity_"
+            "no_return_preregistration"
+        ),
+    )
+    contract = load_eastmoney_monetary_funds_asset_intensity_contract()
+    record = load_eastmoney_monetary_funds_asset_intensity_acceptance_record()
+    source_chain = spec.get("source_chain") or {}
+    full = spec.get("full_source_snapshot_contract") or {}
+    normalization = spec.get("normalization_contract") or {}
+    state = spec.get("point_in_time_event_state_contract") or {}
+    capacity = spec.get("capacity_contract") or {}
+    uniqueness = spec.get("uniqueness_contract") or {}
+    expected_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    expected_comparisons = [
+        "eastmoney_balance_sheet_resilience",
+        "log_total_assets",
+        "log1p_monetary_funds",
+        "roe",
+        "tushare_positive_book_to_market",
+        "free_float_cap_proxy",
+        "liquidity_5",
+    ]
+    if (
+        spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_source_acceptance_before_other_report_dates_capacity_comparisons_prices_or_returns"
+        or spec.get("preregistered_at") != "2026-07-21T06:06:36Z"
+        or (source_chain.get("mechanism_audit") or {}).get("sha256")
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_MECHANISM_AUDIT_SHA256
+        or (source_chain.get("data_contract") or {}).get("sha256")
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256
+        or (source_chain.get("acceptance_record") or {}).get("sha256")
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD_SHA256
+        or (source_chain.get("acceptance_manifest") or {}).get("sha256")
+        != "77172da63f5e94eebc04fb3a5493f907c22fc59c734ab84b85e33eb96e2e9907"
+        or (source_chain.get("accepted_frame") or {}).get("content_sha256")
+        != "c17b9c143dae17cf88f75046488ab5d1d66a8b0580553d50802bed715ca52a1f"
+        or (source_chain.get("accepted_frame") or {}).get("file_sha256")
+        != "1bb1f1faa8f3eb971dc63aa3ed3589748d795398877769e615da828bdafb3791"
+        or (source_chain.get("accepted_frame") or {}).get("report_date")
+        != "2025-12-31"
+        or (source_chain.get("accepted_frame") or {}).get("rows") != 4574
+        or (source_chain.get("accepted_ordered_source_schema") or {}).get(
+            "ordered_source_column_count"
+        )
+        != 57
+        or (source_chain.get("accepted_ordered_source_schema") or {}).get(
+            "ordered_source_columns_sha256"
+        )
+        != "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3"
+        or full.get("report_dates") != expected_dates
+        or full.get("required_report_date_count") != 28
+        or full.get("accepted_partition_reused_without_network") != "2025-12-31"
+        or full.get("new_network_partitions") != 27
+        or full.get("maximum_new_provider_calls") != 540
+        or full.get("each_new_partition_uses_count_complete_pages_once") is not True
+        or full.get("each_new_partition_must_match_accepted_ordered_source_schema")
+        is not True
+        or full.get(
+            "minimum_complete_identity_active_holding_coverage_per_report_date"
+        )
+        != 0.85
+        or full.get("minimum_median_complete_identity_active_holding_coverage")
+        != 0.95
+        or full.get("minimum_valid_factor_active_holding_coverage_per_report_date")
+        != 0.75
+        or full.get("minimum_median_valid_factor_active_holding_coverage") != 0.95
+        or full.get("minimum_distinct_factor_values_per_nonempty_partition") != 100
+        or full.get("partial_or_mixed_snapshot_allowed") is not False
+        or full.get("one_full_snapshot_attempt_only") is not True
+        or tuple(normalization.get("columns") or ())
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+        or normalization.get("factor_formula") != "monetary_funds / total_assets"
+        or normalization.get("direction") != "higher_is_better"
+        or normalization.get("maximum_formula_absolute_error") != 1e-12
+        or normalization.get("explicit_zero_monetary_funds_allowed") is not True
+        or state.get("same_announcement_session_trade_allowed") is not False
+        or state.get("maximum_factor_age_calendar_days") != 3
+        or state.get("older_report_may_replace_a_newer_report_for_the_same_instrument")
+        is not False
+        or state.get("missing_or_invalid_new_value_carries_an_older_value") is not False
+        or capacity.get("must_run_before_any_comparison_value_or_price") is not True
+        or capacity.get("holding_period_trading_days") != 3
+        or capacity.get("non_overlapping_cohorts") is not True
+        or capacity.get("minimum_eligible_names_per_cross_section") != 6
+        or capacity.get("minimum_distinct_factor_values") != 2
+        or capacity.get("minimum_required_cohorts") != 200
+        or capacity.get("minimum_observed_years") != 5
+        or capacity.get("maximum_factor_age_calendar_days") != 3
+        or capacity.get("maximum_quality_age_calendar_days") != 550
+        or capacity.get("minimum_listing_sessions") != 20
+        or uniqueness.get("allowed_only_after_capacity_passes") is not True
+        or uniqueness.get("comparison_factor_count") != 7
+        or uniqueness.get("comparison_factors") != expected_comparisons
+        or uniqueness.get("minimum_pairwise_names_per_session") != 6
+        or uniqueness.get("minimum_pairwise_sessions_per_dense_comparison") != 100
+        or uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        != 0.8
+        or uniqueness.get("raw_price_or_forward_return_fields_loaded") != []
+        or uniqueness.get("forward_return_fields_read") is not False
+        or spec.get("historical_provider_rows_observed_before_freeze") is not False
+        or spec.get("historical_monetary_funds_factor_values_observed_before_freeze")
+        is not False
+        or spec.get("comparison_values_observed_for_this_factor_before_freeze")
+        is not False
+        or spec.get("price_fields_loaded") != []
+        or spec.get("forward_return_fields_read") is not False
+        or spec.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds no-return spec does not match the frozen protocol"
+        )
+    for label, link in source_chain.items():
+        if not isinstance(link, dict) or "path" not in link:
+            continue
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        expected_sha = link.get("sha256") or link.get("file_sha256")
+        if not linked_path.exists() or file_digest(linked_path) != expected_sha:
+            raise RichDataError(
+                f"Eastmoney monetary-funds source-chain evidence changed: {label}"
+            )
+    for label, link in (spec.get("local_context") or {}).items():
+        linked_path = resolve_record_path(str((link or {}).get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != (link or {}).get(
+            "sha256"
+        ):
+            raise RichDataError(
+                f"Eastmoney monetary-funds local context changed: {label}"
+            )
+        manifest_value = (link or {}).get("manifest_path")
+        manifest_sha = (link or {}).get("manifest_sha256")
+        if manifest_value or manifest_sha:
+            linked_manifest = resolve_record_path(str(manifest_value or ""))
+            if (
+                not linked_manifest.exists()
+                or file_digest(linked_manifest) != manifest_sha
+            ):
+                raise RichDataError(
+                    f"Eastmoney monetary-funds local manifest changed: {label}"
+                )
+    frame_path = resolve_record_path(
+        str((source_chain.get("accepted_frame") or {}).get("path") or "")
+    )
+    accepted_frame = pd.read_parquet(frame_path)
+    if (
+        tuple(accepted_frame.columns)
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+        or len(accepted_frame) != 4574
+        or frame_digest(accepted_frame)
+        != (source_chain.get("accepted_frame") or {}).get("content_sha256")
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds accepted frame integrity failed"
+        )
+    return {
+        "spec_path": path,
+        "spec": spec,
+        "contract": contract,
+        "acceptance_record": record,
+        "accepted_frame_path": frame_path,
+        "accepted_frame": accepted_frame,
+    }
+
+
 def load_eastmoney_balance_sheet_resilience_contract(
     path: Path = DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_CONTRACT,
 ) -> dict[str, Any]:
@@ -9706,6 +10322,220 @@ def load_eastmoney_core_profit_consistency_contract(
                 f"Eastmoney core-profit-consistency local context changed: {label}"
             )
     return contract
+
+
+def load_cninfo_guarantee_sparsity_contract(
+    path: Path = DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT,
+) -> dict[str, Any]:
+    """Load the frozen pre-row CNInfo guarantee-sparsity contract."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256:
+        raise RichDataError("CNInfo guarantee-sparsity contract fingerprint mismatch")
+    contract = load_json_record(
+        path, kind="a_share_cninfo_guarantee_sparsity_data_contract"
+    )
+    mechanism = contract.get("mechanism_audit") or {}
+    source = contract.get("source") or {}
+    signing = source.get("accept_enckey_algorithm") or {}
+    transport = contract.get("transport_schema") or {}
+    factor = contract.get("factor_protocol") or {}
+    canonical = contract.get("canonicalization") or {}
+    acceptance = contract.get("acceptance") or {}
+    safety = contract.get("atomicity_and_safety") or {}
+    market_requests = [
+        (str(item.get("label")), str(item.get("market")))
+        for item in list(source.get("market_requests") or [])
+        if isinstance(item, dict)
+    ]
+    if (
+        contract.get("version") != 1
+        or contract.get("status")
+        != "frozen_before_first_cninfo_guarantee_provider_record_factor_value_price_or_return"
+        or contract.get("preregistered_at") != "2026-07-20T14:00:21Z"
+        or mechanism.get("path")
+        != "docs/a_share_three_day_cninfo_guarantee_sparsity_mechanism_overlap_reaudit_20260720.json"
+        or mechanism.get("sha256")
+        != CNINFO_GUARANTEE_SPARSITY_MECHANISM_AUDIT_SHA256
+        or source.get("provider") != "cninfo"
+        or source.get("endpoint")
+        != "https://webapi.cninfo.com.cn/api/sysapi/p_sysapi1054"
+        or source.get("http_method") != "POST"
+        or source.get("request_body") is not None
+        or source.get("query_parameters") != ["sdate", "edate", "market"]
+        or market_requests != list(CNINFO_GUARANTEE_MARKETS)
+        or source.get("star_market_requested") is not False
+        or source.get("all_market_requested") is not False
+        or source.get("bse_requested") is not False
+        or source.get("authentication_or_paid_entitlement_required") is not False
+        or source.get("cookie_proxy_or_retail_session_allowed") is not False
+        or signing.get("cipher") != "AES-128-CBC"
+        or signing.get("key_utf8") != "1234567887654321"
+        or signing.get("iv_utf8") != "1234567887654321"
+        or signing.get("padding") != "PKCS7"
+        or signing.get("output")
+        != "Base64 ciphertext in the Accept-Enckey request header"
+        or signing.get("persist_generated_header") is not False
+        or transport.get("top_level_records_key") != "records"
+        or transport.get("records_must_be_a_list") is not True
+        or transport.get("record_width") != 7
+        or tuple((transport.get("record_positions") or {}).values())
+        != CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES
+        or transport.get("persisted_positions") != [0, 3, 5]
+        or transport.get("discarded_before_normalized_frame_positions")
+        != [1, 2, 4, 6]
+        or transport.get("possible_truncation_record_count") != 5000
+        or transport.get("reaching_possible_truncation_count_is_fatal") is not True
+        or factor.get("factor_name")
+        != "cninfo_recent_guarantee_disclosure_sparsity"
+        or factor.get("formula") != "1 / guarantee_count"
+        or factor.get("direction") != "higher_is_better"
+        or factor.get("source_window_local_sessions") != 3
+        or factor.get("signal_grid")
+        != "range-clipped 2019-2025 local calendar positions 3:-4:3"
+        or factor.get("same_source_window_end_session_trade_allowed") is not False
+        or factor.get("maximum_factor_age_calendar_days") != 0
+        or factor.get("absent_event_policy") != "missing"
+        or tuple(factor.get("normalized_columns") or ())
+        != CNINFO_GUARANTEE_SPARSITY_COLUMNS
+        or canonical.get("board_response_must_match_requested_market") is not True
+        or canonical.get("complete_unsupported_code_policy") != "exclude and count"
+        or canonical.get("guarantee_count") != "finite positive integer only"
+        or canonical.get("duplicate_security_code_within_one_board_window_policy")
+        != "fatal"
+        or canonical.get("duplicate_security_code_across_board_responses_for_one_window_policy")
+        != "fatal"
+        or canonical.get("formula_maximum_absolute_error") != 1e-12
+        or acceptance.get("command")
+        != "acceptance-cninfo-guarantee-sparsity"
+        or acceptance.get("one_completed_acceptance_only") is not True
+        or acceptance.get("sample_signal_quarters")
+        != ["2019-Q1", "2024-Q1", "2025-Q1"]
+        or acceptance.get("sample_signal_count_by_quarter")
+        != {"2019-Q1": 19, "2024-Q1": 19, "2025-Q1": 19}
+        or acceptance.get("sample_signal_count") != 57
+        or acceptance.get("board_request_count_per_signal") != 3
+        or acceptance.get("planned_provider_call_count") != 171
+        or acceptance.get("all_calls_sequential") is not True
+        or acceptance.get("request_timeout_seconds") != 30
+        or acceptance.get("minimum_pause_seconds_between_calls") != 0.1
+        or acceptance.get("maximum_attempts_per_call") != 3
+        or acceptance.get("ordinary_transient_backoff_seconds") != [0.5, 1.0]
+        or acceptance.get("minimum_retained_point_in_time_holding_rows") != 200
+        or acceptance.get("minimum_distinct_factor_values") != 3
+        or acceptance.get("minimum_candidate_signals_total") != 12
+        or acceptance.get("minimum_candidate_signals_per_sample_quarter") != 2
+        or acceptance.get("source_board_call_failures_allowed") != 0
+        or acceptance.get("duplicate_keys_allowed") != 0
+        or acceptance.get("formula_errors_allowed") != 0
+        or safety.get("provider_raw_response_persisted") is not False
+        or safety.get("accept_enckey_persisted") is not False
+        or safety.get("credential_token_cookie_or_proxy_read") is not False
+        or safety.get("price_fields_loaded") != []
+        or safety.get("forward_return_fields_read") is not False
+        or contract.get("price_fields_loaded") != []
+        or contract.get("forward_return_fields_read") is not False
+        or contract.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo guarantee-sparsity contract does not match the frozen protocol"
+        )
+    mechanism_path = resolve_record_path(str(mechanism.get("path") or ""))
+    if (
+        not mechanism_path.exists()
+        or file_digest(mechanism_path)
+        != CNINFO_GUARANTEE_SPARSITY_MECHANISM_AUDIT_SHA256
+    ):
+        raise RichDataError("CNInfo guarantee-sparsity mechanism audit changed")
+    for label, link in (contract.get("local_context") or {}).items():
+        if not isinstance(link, dict) or "path" not in link or "sha256" not in link:
+            continue
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if not linked_path.exists() or file_digest(linked_path) != link.get("sha256"):
+            raise RichDataError(f"CNInfo guarantee-sparsity local context changed: {label}")
+        manifest_link = link.get("manifest_path")
+        manifest_sha = link.get("manifest_sha256")
+        if manifest_link or manifest_sha:
+            linked_manifest = resolve_record_path(str(manifest_link or ""))
+            if (
+                not linked_manifest.exists()
+                or file_digest(linked_manifest) != manifest_sha
+            ):
+                raise RichDataError(
+                    f"CNInfo guarantee-sparsity local context changed: {label} manifest"
+                )
+    return contract
+
+
+def load_cninfo_guarantee_sparsity_acceptance_record(
+    path: Path = DEFAULT_CNINFO_GUARANTEE_SPARSITY_ACCEPTANCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the cross-clone record for the terminal CNInfo acceptance."""
+
+    path = path.expanduser().resolve()
+    if file_digest(path) != CNINFO_GUARANTEE_SPARSITY_ACCEPTANCE_RECORD_SHA256:
+        raise RichDataError("CNInfo guarantee-sparsity acceptance-record fingerprint mismatch")
+    record = load_json_record(
+        path, kind="a_share_cninfo_guarantee_sparsity_source_acceptance_record"
+    )
+    mechanism = record.get("mechanism_audit") or {}
+    contract = record.get("data_contract") or {}
+    manifest = record.get("local_failure_manifest") or {}
+    observed = record.get("frozen_request_observed_result") or {}
+    guards = record.get("permanent_guards") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "terminal_source_transport_schema_rejected_before_normalization_full_history_no_return_or_returns"
+        or record.get("recorded_at") != "2026-07-20T14:12:59Z"
+        or mechanism.get("sha256")
+        != CNINFO_GUARANTEE_SPARSITY_MECHANISM_AUDIT_SHA256
+        or contract.get("sha256") != CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256
+        or contract.get("preregistered_at") != "2026-07-20T14:00:21Z"
+        or manifest.get("path")
+        != "data/metadata/rich_data/runs/20260720T141256Z_cninfo_guarantee_sparsity_acceptance_9f29ed74.json"
+        or manifest.get("sha256")
+        != "8a2c04d590972c14012e49112a8738aeeace6c24517635826f947ffb2a977ac7"
+        or manifest.get("run_id")
+        != "20260720T141256Z_cninfo_guarantee_sparsity_acceptance_9f29ed74"
+        or observed.get("first_signal_date") != "2019-01-07"
+        or observed.get("first_window_start") != "2019-01-02"
+        or observed.get("first_window_end") != "2019-01-04"
+        or observed.get("first_market_label") != "shenzhen_main_board"
+        or observed.get("first_market") != "012002"
+        or observed.get("maximum_attempts_completed") != 3
+        or observed.get("all_three_attempts_rejected_for_same_reason") is not True
+        or observed.get("completed_board_windows") != 0
+        or observed.get("completed_signal_windows") != 0
+        or observed.get("normalized_rows") != 0
+        or observed.get("factor_values_derived") != 0
+        or observed.get("published_files") != []
+        or observed.get("partial_snapshot_deleted") is not True
+        or observed.get("provider_raw_response_persisted") is not False
+        or observed.get("transport_only_fields_persisted") is not False
+        or observed.get("accept_enckey_persisted") is not False
+        or guards.get("acceptance_command")
+        != "acceptance-cninfo-guarantee-sparsity"
+        or guards.get("reject_before_contract_local_context_signing_or_provider_access")
+        is not True
+        or guards.get("rerun_or_partial_resume_allowed") is not False
+        or guards.get("reinterpret_object_rows_or_change_positional_schema_allowed")
+        is not False
+        or guards.get(
+            "full_history_no_return_audit_return_diagnostic_aggregation_scoring_selection_sizing_or_order_allowed"
+        )
+        is not False
+        or record.get("credentials_tokens_cookies_or_proxy_read_logged_or_stored")
+        is not False
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+    ):
+        raise RichDataError(
+            "CNInfo guarantee-sparsity acceptance record does not match the terminal result"
+        )
+    return record
 
 
 def load_eastmoney_related_party_transaction_sparsity_contract(
@@ -18298,6 +19128,585 @@ def sync_tushare_cash_conversion_acceptance() -> Path:
         raise RichDataError(f"{error}; rejection_record={failure_path}") from exc
 
 
+def cninfo_accept_enckey(unix_seconds: int | None = None) -> str:
+    """Create the public CNInfo request header without persisting it."""
+
+    value = int(time.time()) if unix_seconds is None else unix_seconds
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise RichDataError("CNInfo Accept-Enckey timestamp must be a nonnegative integer")
+    try:
+        from Crypto.Cipher import AES
+    except ImportError as exc:  # pragma: no cover - workspace dependency.
+        raise RichDataError("pycryptodome is required for CNInfo request signing") from exc
+    plaintext = str(value).encode("utf-8")
+    padding = 16 - len(plaintext) % 16
+    padded = plaintext + bytes([padding]) * padding
+    cipher = AES.new(b"1234567887654321", AES.MODE_CBC, b"1234567887654321")
+    return base64.b64encode(cipher.encrypt(padded)).decode("ascii")
+
+
+def cninfo_guarantee_acceptance_windows(
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> list[dict[str, Any]]:
+    """Build the exact frozen no-price CNInfo sample windows."""
+
+    calendar = local_calendar_dates(
+        dt.date(2019, 1, 1), dt.date(2025, 12, 31), calendar_path
+    )
+    if len(calendar) != 1699:
+        raise RichDataError(
+            "CNInfo acceptance local calendar no longer has the frozen 1,699 sessions"
+        )
+    signal_positions = list(range(3, len(calendar) - 4, 3))
+    if len(signal_positions) != 564:
+        raise RichDataError("CNInfo acceptance signal grid no longer has 564 windows")
+    selected_quarters = {"2019-Q1", "2024-Q1", "2025-Q1"}
+    windows: list[dict[str, Any]] = []
+    for position in signal_positions:
+        signal = pd.Timestamp(calendar[position])
+        quarter = f"{signal.year}-Q{signal.quarter}"
+        if quarter not in selected_quarters:
+            continue
+        windows.append(
+            {
+                "quarter": quarter,
+                "signal_date": signal.date(),
+                "window_start": pd.Timestamp(calendar[position - 3]).date(),
+                "window_end": pd.Timestamp(calendar[position - 1]).date(),
+            }
+        )
+    counts = {
+        quarter: sum(item["quarter"] == quarter for item in windows)
+        for quarter in sorted(selected_quarters)
+    }
+    expected = {"2019-Q1": 19, "2024-Q1": 19, "2025-Q1": 19}
+    if len(windows) != 57 or counts != expected:
+        raise RichDataError(
+            f"CNInfo acceptance sample grid changed: rows={len(windows)}, counts={counts}"
+        )
+    return windows
+
+
+def fetch_cninfo_guarantee_window(
+    start_date: dt.date,
+    end_date: dt.date,
+    market: str,
+    *,
+    contract: dict[str, Any] | None = None,
+    session: Any | None = None,
+) -> tuple[list[list[Any]], dict[str, Any]]:
+    """Fetch one frozen CNInfo board-window response without retaining its header."""
+
+    if end_date < start_date:
+        raise RichDataError("CNInfo guarantee window end date precedes start date")
+    frozen = contract or load_cninfo_guarantee_sparsity_contract()
+    allowed_markets = {value for _, value in CNINFO_GUARANTEE_MARKETS}
+    if market not in allowed_markets:
+        raise RichDataError(f"CNInfo guarantee market is outside the frozen set: {market}")
+    acceptance = frozen["acceptance"]
+    endpoint = str(frozen["source"]["endpoint"])
+    maximum_attempts = int(acceptance["maximum_attempts_per_call"])
+    backoffs = [float(value) for value in acceptance["ordinary_transient_backoff_seconds"]]
+    timeout = int(acceptance["request_timeout_seconds"])
+    if session is None:
+        try:
+            import requests
+        except ImportError as exc:  # pragma: no cover - workspace dependency.
+            raise RichDataError("requests is required for CNInfo intake") from exc
+        requester = requests
+    else:
+        requester = session
+    params = {
+        "sdate": start_date.isoformat(),
+        "edate": end_date.isoformat(),
+        "market": market,
+    }
+    last_error: BaseException | None = None
+    payload: dict[str, Any] | None = None
+    attempts_used = 0
+    for attempt in range(maximum_attempts):
+        attempts_used = attempt + 1
+        try:
+            headers = {
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Enckey": cninfo_accept_enckey(),
+                "Origin": "https://webapi.cninfo.com.cn",
+                "Referer": "https://webapi.cninfo.com.cn/",
+                "User-Agent": "Mozilla/5.0",
+                "X-Requested-With": "XMLHttpRequest",
+            }
+            response = requester.post(
+                endpoint, params=params, headers=headers, timeout=timeout
+            )
+            if hasattr(response, "raise_for_status"):
+                response.raise_for_status()
+            candidate = response.json()
+            if not isinstance(candidate, dict):
+                raise RichDataError("CNInfo guarantee response is not an object")
+            records = candidate.get("records")
+            if not isinstance(records, list):
+                raise RichDataError("CNInfo guarantee response has no records list")
+            if any(not isinstance(row, (list, tuple)) for row in records):
+                raise RichDataError("CNInfo guarantee records contain a non-positional row")
+            if any(len(row) != 7 for row in records):
+                raise RichDataError("CNInfo guarantee response record width changed")
+            payload = candidate
+            break
+        except Exception as exc:
+            last_error = exc
+            if attempt + 1 >= maximum_attempts:
+                break
+            time.sleep(backoffs[attempt])
+    if payload is None:
+        assert last_error is not None
+        raise RichDataError(
+            f"CNInfo guarantee {market} {start_date}..{end_date} failed after "
+            f"{maximum_attempts} attempts: {safe_exception_text(last_error)}"
+        ) from last_error
+    records = payload["records"]
+    advertised_counts: dict[str, int] = {}
+    for key in ("count", "total", "recordCount", "totalRecordNum"):
+        if key not in payload or payload[key] is None:
+            continue
+        value = payload[key]
+        if isinstance(value, bool):
+            raise RichDataError(f"CNInfo guarantee advertised count {key} is invalid")
+        try:
+            numeric = int(value)
+        except (TypeError, ValueError) as exc:
+            raise RichDataError(
+                f"CNInfo guarantee advertised count {key} is invalid"
+            ) from exc
+        if numeric < 0 or str(value).strip() not in {str(numeric), f"{numeric}.0"}:
+            raise RichDataError(f"CNInfo guarantee advertised count {key} is invalid")
+        if numeric != len(records):
+            raise RichDataError(
+                f"CNInfo guarantee advertised count mismatch: {key}={numeric}, "
+                f"records={len(records)}"
+            )
+        advertised_counts[key] = numeric
+    ceiling = int(frozen["transport_schema"]["possible_truncation_record_count"])
+    if len(records) >= ceiling:
+        raise RichDataError(
+            f"CNInfo guarantee response reached the possible truncation ceiling: {ceiling}"
+        )
+    return [list(row) for row in records], {
+        "start": start_date.isoformat(),
+        "end": end_date.isoformat(),
+        "market": market,
+        "received_rows": len(records),
+        "advertised_counts": advertised_counts,
+        "advertised_count_absent": not advertised_counts,
+        "attempts_used": attempts_used,
+        "provider_calls": attempts_used,
+        "request_timeout_seconds": timeout,
+        "accept_enckey_persisted": False,
+        "raw_response_persisted": False,
+    }
+
+
+def canonicalize_cninfo_guarantee_sparsity(
+    rows: list[list[Any]],
+    *,
+    signal_date: dt.date,
+    start_date: dt.date,
+    end_date: dt.date,
+    market_label: str,
+    market: str,
+    contract: dict[str, Any] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Normalize one board-window while discarding all transport-only fields."""
+
+    frozen = contract or load_cninfo_guarantee_sparsity_contract()
+    expected_markets = dict(CNINFO_GUARANTEE_MARKETS)
+    if expected_markets.get(market_label) != market:
+        raise RichDataError("CNInfo guarantee board label and market code do not match")
+    if end_date < start_date or signal_date <= end_date:
+        raise RichDataError("CNInfo guarantee source window or signal timing is invalid")
+    if any(not isinstance(row, (list, tuple)) or len(row) != 7 for row in rows):
+        raise RichDataError("CNInfo guarantee response violates the frozen width-seven schema")
+    columns = list(CNINFO_GUARANTEE_SPARSITY_COLUMNS)
+    if not rows:
+        return pd.DataFrame(columns=columns), {
+            "input_rows": 0,
+            "supported_rows": 0,
+            "unsupported_complete_codes_excluded": 0,
+            "distinct_factor_values_before_holding_universe": 0,
+            "maximum_formula_absolute_error": 0.0,
+            "transport_only_fields_persisted": False,
+        }
+    raw = pd.DataFrame(rows, columns=CNINFO_GUARANTEE_SPARSITY_RAW_POSITION_NAMES)
+    required_interval = f"{start_date.isoformat()}---{end_date.isoformat()}"
+    intervals = raw["announcement_statistics_interval"].astype("string").str.strip()
+    if not intervals.eq(required_interval).all():
+        raise RichDataError("CNInfo guarantee response interval differs from the request")
+    codes = raw["security_code"].astype("string").str.strip()
+    complete = codes.str.fullmatch(r"\d{6}", na=False)
+    if not complete.all():
+        raise RichDataError("CNInfo guarantee response contains a malformed security code")
+    if codes.duplicated().any():
+        raise RichDataError("CNInfo guarantee response contains duplicate security codes")
+    supported = codes.str.fullmatch(
+        r"(?:60[0135]\d{3}|00[0-3]\d{3}|30[01]\d{3})", na=False
+    )
+    board_pattern = {
+        "shenzhen_main_board": r"00[0-3]\d{3}",
+        "shanghai_market": r"60[0135]\d{3}",
+        "chinext": r"30[01]\d{3}",
+    }[market_label]
+    wrong_board = supported & ~codes.str.fullmatch(board_pattern, na=False)
+    if wrong_board.any():
+        raise RichDataError("CNInfo guarantee response contains a supported code from another board")
+    counts = pd.to_numeric(raw["guarantee_count"], errors="coerce")
+    valid_counts = (
+        counts.notna()
+        & np.isfinite(counts)
+        & counts.gt(0)
+        & counts.eq(np.floor(counts))
+    )
+    if not valid_counts.all():
+        raise RichDataError("CNInfo guarantee response contains an invalid guarantee count")
+    kept = pd.DataFrame(
+        {
+            "signal_date": pd.Timestamp(signal_date),
+            "window_start": pd.Timestamp(start_date),
+            "window_end": pd.Timestamp(end_date),
+            "instrument": codes.map(qlib_symbol),
+            "guarantee_count": counts.astype("int64"),
+        }
+    ).loc[supported]
+    kept["cninfo_recent_guarantee_disclosure_sparsity"] = (
+        1.0 / kept["guarantee_count"]
+    )
+    kept["provider"] = "cninfo"
+    result = kept.loc[:, columns].sort_values("instrument", kind="stable").reset_index(drop=True)
+    if result.empty:
+        maximum_error = 0.0
+    else:
+        expected = 1.0 / result["guarantee_count"]
+        error = (result["cninfo_recent_guarantee_disclosure_sparsity"] - expected).abs()
+        maximum_error = float(error.max())
+        if maximum_error > float(frozen["canonicalization"]["formula_maximum_absolute_error"]):
+            raise RichDataError("CNInfo guarantee reciprocal-count formula check failed")
+    return result, {
+        "input_rows": int(len(raw)),
+        "supported_rows": int(len(result)),
+        "unsupported_complete_codes_excluded": int((~supported).sum()),
+        "distinct_factor_values_before_holding_universe": int(
+            result["cninfo_recent_guarantee_disclosure_sparsity"].nunique(dropna=True)
+        ),
+        "maximum_formula_absolute_error": maximum_error,
+        "transport_only_fields_persisted": False,
+    }
+
+
+def _filter_cninfo_guarantee_to_point_in_time_holding_universe(
+    frame: pd.DataFrame, intervals: pd.DataFrame
+) -> tuple[pd.DataFrame, int]:
+    """Apply the bound signal-date holding universe without loading prices."""
+
+    if tuple(frame.columns) != CNINFO_GUARANTEE_SPARSITY_COLUMNS:
+        raise RichDataError("CNInfo guarantee frame violates the frozen normalized schema")
+    if frame.empty:
+        return frame.copy(), 0
+    indexed = intervals.set_index("instrument")
+    starts = frame["instrument"].map(indexed["start_date"])
+    ends = frame["instrument"].map(indexed["end_date"])
+    signals = pd.to_datetime(frame["signal_date"], errors="coerce").dt.normalize()
+    active = starts.notna() & ends.notna() & signals.ge(starts) & signals.le(ends)
+    return frame.loc[active].reset_index(drop=True), int((~active).sum())
+
+
+def cninfo_guarantee_sparsity_acceptance_records() -> list[Path]:
+    """Return prior local terminal CNInfo acceptance manifests."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(RUNS_ROOT.glob("*cninfo_guarantee_sparsity_acceptance*.json")):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "cninfo_guarantee_sparsity_acceptance":
+            records.append(path)
+    return records
+
+
+def _guard_cninfo_guarantee_acceptance_tracked_record() -> None:
+    """Reject cross-clone replay before contract or provider access."""
+
+    path = DEFAULT_CNINFO_GUARANTEE_SPARSITY_ACCEPTANCE_RECORD
+    if not path.exists():
+        return
+    load_cninfo_guarantee_sparsity_acceptance_record(path)
+    raise RichDataError(
+        "CNInfo guarantee-sparsity acceptance is permanently consumed; another provider request is forbidden"
+    )
+
+
+def sync_cninfo_guarantee_sparsity_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+    calendar_path: Path = DEFAULT_LOCAL_CALENDAR,
+) -> Path:
+    """Run the sole frozen 57-signal, three-board, no-price acceptance."""
+
+    _guard_cninfo_guarantee_acceptance_tracked_record()
+    lock_path = METADATA_ROOT / ".cninfo_guarantee_sparsity_acceptance.lock"
+    with RichDataProcessLock(lock_path):
+        _guard_cninfo_guarantee_acceptance_tracked_record()
+        prior = cninfo_guarantee_sparsity_acceptance_records()
+        if prior:
+            raise RichDataError(
+                "CNInfo guarantee-sparsity acceptance is one-shot and already consumed "
+                f"by {prior[-1]}"
+            )
+        contract = load_cninfo_guarantee_sparsity_contract()
+        windows = cninfo_guarantee_acceptance_windows(calendar_path)
+        intervals = load_factor_universe_intervals(universe_path)
+        acceptance = contract["acceptance"]
+        run_id = new_run_id("cninfo_guarantee_sparsity_acceptance")
+        run_root = RAW_ROOT / "cninfo" / "guarantee_sparsity" / "acceptance" / run_id
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(f"CNInfo guarantee acceptance already exists: {run_id}")
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        request_quality: list[dict[str, Any]] = []
+        signal_quality: list[dict[str, Any]] = []
+        try:
+            accepted_frames: list[pd.DataFrame] = []
+            previous_call_started: float | None = None
+            pause = float(acceptance["minimum_pause_seconds_between_calls"])
+            for window in windows:
+                board_frames: list[pd.DataFrame] = []
+                board_quality: list[dict[str, Any]] = []
+                for market_label, market in CNINFO_GUARANTEE_MARKETS:
+                    if previous_call_started is not None:
+                        remaining = pause - (time.monotonic() - previous_call_started)
+                        if remaining > 0:
+                            time.sleep(remaining)
+                    previous_call_started = time.monotonic()
+                    provider_request_issued = True
+                    rows, fetch_quality = fetch_cninfo_guarantee_window(
+                        window["window_start"],
+                        window["window_end"],
+                        market,
+                        contract=contract,
+                    )
+                    normalized, normalize_quality = canonicalize_cninfo_guarantee_sparsity(
+                        rows,
+                        signal_date=window["signal_date"],
+                        start_date=window["window_start"],
+                        end_date=window["window_end"],
+                        market_label=market_label,
+                        market=market,
+                        contract=contract,
+                    )
+                    board_frames.append(normalized)
+                    compact = {
+                        "quarter": window["quarter"],
+                        "signal_date": window["signal_date"].isoformat(),
+                        "market_label": market_label,
+                        **fetch_quality,
+                        **normalize_quality,
+                    }
+                    request_quality.append(compact)
+                    board_quality.append(compact)
+                combined = pd.concat(board_frames, ignore_index=True)
+                if combined.duplicated(["signal_date", "instrument"]).any():
+                    raise RichDataError(
+                        "CNInfo guarantee response duplicates a code across board requests"
+                    )
+                accepted, outside = _filter_cninfo_guarantee_to_point_in_time_holding_universe(
+                    combined, intervals
+                )
+                names = int(accepted["instrument"].nunique())
+                distinct = int(
+                    accepted["cninfo_recent_guarantee_disclosure_sparsity"].nunique(
+                        dropna=True
+                    )
+                )
+                candidate = names >= 6 and distinct >= 2
+                signal_quality.append(
+                    {
+                        "quarter": window["quarter"],
+                        "signal_date": window["signal_date"].isoformat(),
+                        "window_start": window["window_start"].isoformat(),
+                        "window_end": window["window_end"].isoformat(),
+                        "board_calls": len(board_quality),
+                        "point_in_time_holding_rows": int(len(accepted)),
+                        "point_in_time_holding_names": names,
+                        "distinct_factor_values": distinct,
+                        "outside_point_in_time_holding_universe_rows_excluded": outside,
+                        "candidate_signal": candidate,
+                    }
+                )
+                if not accepted.empty:
+                    accepted_frames.append(accepted)
+            if len(request_quality) != int(acceptance["planned_provider_call_count"]):
+                raise RichDataError("CNInfo guarantee acceptance did not complete every board call")
+            if not accepted_frames:
+                raise RichDataError("CNInfo guarantee acceptance retained no holding-universe rows")
+            accepted_all = (
+                pd.concat(accepted_frames, ignore_index=True)
+                .loc[:, list(CNINFO_GUARANTEE_SPARSITY_COLUMNS)]
+                .sort_values(["signal_date", "instrument"], kind="stable")
+                .reset_index(drop=True)
+            )
+            duplicate_keys = int(
+                accepted_all.duplicated(["signal_date", "instrument"]).sum()
+            )
+            distinct_values = int(
+                accepted_all["cninfo_recent_guarantee_disclosure_sparsity"].nunique(
+                    dropna=True
+                )
+            )
+            candidates_by_quarter = {
+                quarter: sum(
+                    bool(item["candidate_signal"])
+                    for item in signal_quality
+                    if item["quarter"] == quarter
+                )
+                for quarter in acceptance["sample_signal_quarters"]
+            }
+            total_candidates = sum(candidates_by_quarter.values())
+            if duplicate_keys:
+                raise RichDataError("CNInfo guarantee accepted frame has duplicate keys")
+            if len(accepted_all) < int(
+                acceptance["minimum_retained_point_in_time_holding_rows"]
+            ):
+                raise RichDataError(
+                    f"CNInfo guarantee acceptance retained too few rows: {len(accepted_all)}"
+                )
+            if distinct_values < int(acceptance["minimum_distinct_factor_values"]):
+                raise RichDataError("CNInfo guarantee acceptance lacks factor variation")
+            if total_candidates < int(acceptance["minimum_candidate_signals_total"]):
+                raise RichDataError("CNInfo guarantee acceptance lacks candidate signals")
+            minimum_quarter = int(
+                acceptance["minimum_candidate_signals_per_sample_quarter"]
+            )
+            if any(value < minimum_quarter for value in candidates_by_quarter.values()):
+                raise RichDataError(
+                    "CNInfo guarantee acceptance lacks candidate signals in a sample quarter"
+                )
+            temporary_destination = temporary_root / "guarantee_sparsity.parquet"
+            final_destination = run_root / "guarantee_sparsity.parquet"
+            atomic_write_frame(accepted_all, temporary_destination)
+            resolved_universe = universe_path.expanduser().resolve()
+            resolved_calendar = calendar_path.expanduser().resolve()
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "cninfo_guarantee_sparsity_acceptance",
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT),
+                    "sha256": CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256,
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_audit"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "filter_date": "signal_date",
+                },
+                "local_calendar": {
+                    "path": manifest_path(resolved_calendar),
+                    "sha256": file_digest(resolved_calendar),
+                    "source_window": "three complete local sessions before signal_date",
+                },
+                "source_request": {
+                    "endpoint": contract["source"]["endpoint"],
+                    "markets": [
+                        {"label": label, "market": market}
+                        for label, market in CNINFO_GUARANTEE_MARKETS
+                    ],
+                    "provider_request_issued": provider_request_issued,
+                    "provider_calls": sum(
+                        int(item["provider_calls"]) for item in request_quality
+                    ),
+                    "planned_board_windows": len(request_quality),
+                    "request_quality": request_quality,
+                    "credentials_tokens_cookies_or_proxy_read_logged_or_stored": False,
+                    "accept_enckey_persisted": False,
+                    "raw_response_persisted": False,
+                    "transport_only_amount_equity_ratio_or_name_persisted": False,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(accepted_all)),
+                        "sha256": frame_digest(accepted_all),
+                    }
+                ],
+                "source_quality": {
+                    "signal_windows": signal_quality,
+                    "retained_point_in_time_holding_rows": int(len(accepted_all)),
+                    "distinct_factor_values": distinct_values,
+                    "candidate_signals_total": total_candidates,
+                    "candidate_signals_by_quarter": candidates_by_quarter,
+                    "duplicate_keys": duplicate_keys,
+                    "maximum_formula_absolute_error": max(
+                        float(item["maximum_formula_absolute_error"])
+                        for item in request_quality
+                    ),
+                },
+                "acceptance_status": acceptance["output_status_on_pass"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "cninfo_guarantee_sparsity_acceptance",
+                "provider": "cninfo",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "data_contract": {
+                    "path": manifest_path(DEFAULT_CNINFO_GUARANTEE_SPARSITY_CONTRACT),
+                    "sha256": CNINFO_GUARANTEE_SPARSITY_CONTRACT_SHA256,
+                },
+                "source_request": {
+                    "endpoint": contract["source"]["endpoint"],
+                    "provider_request_issued": provider_request_issued,
+                    "completed_board_windows": request_quality,
+                    "credentials_tokens_cookies_or_proxy_read_logged_or_stored": False,
+                    "accept_enckey_persisted": False,
+                    "raw_response_persisted": False,
+                    "transport_only_amount_equity_ratio_or_name_persisted": False,
+                },
+                "observed_quality_before_rejection": signal_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": (
+                    "terminal_source_schema_formula_timing_or_sample_coverage_rejected_"
+                    "stop_before_full_history_no_return_protocol_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def fetch_eastmoney_related_party_transaction_partition(
     start_date: dt.date,
     end_date: dt.date,
@@ -19933,6 +21342,432 @@ def canonicalize_eastmoney_balance_sheet_resilience(
     }
 
 
+def _eastmoney_monetary_funds_positional_frame(
+    rows: list[dict[str, Any]],
+    contract: dict[str, Any],
+) -> tuple[pd.DataFrame, str]:
+    """Extract only the four frozen positions after exact schema validation."""
+
+    if not rows or any(not isinstance(row, dict) for row in rows):
+        raise RichDataError(
+            "Eastmoney monetary-funds partition is empty or contains a non-object row"
+        )
+    ordered_keys: list[str] = []
+    seen_keys: set[str] = set()
+    for row in rows:
+        for key in row:
+            if key not in seen_keys:
+                seen_keys.add(key)
+                ordered_keys.append(key)
+    transport = contract["transport_schema"]
+    ordered_hash = hashlib.sha256(
+        json.dumps(ordered_keys, ensure_ascii=False, separators=(",", ":")).encode(
+            "utf-8"
+        )
+    ).hexdigest()
+    if (
+        len(ordered_keys) != int(transport["ordered_source_column_count"])
+        or ordered_hash != transport["ordered_source_columns_sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds ordered source schema differs from the frozen evidence"
+        )
+    positions = transport["raw_json_data_object_zero_based_positions"]
+    if max(int(value) for value in positions.values()) >= len(ordered_keys):
+        raise RichDataError("Eastmoney monetary-funds positional schema is incomplete")
+    raw = pd.DataFrame(
+        [
+            {
+                name: row.get(ordered_keys[int(positions[name])])
+                for name in EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_RAW_POSITION_NAMES
+            }
+            for row in rows
+        ]
+    )
+    return raw, ordered_hash
+
+
+def eastmoney_monetary_funds_complete_identity_instruments(
+    rows: list[dict[str, Any]],
+    contract: dict[str, Any],
+) -> set[str]:
+    """Return supported code/date identities without reading factor values."""
+
+    raw, _ = _eastmoney_monetary_funds_positional_frame(rows, contract)
+    codes = raw["stock_code"].astype("string").str.strip()
+    supported = codes.str.fullmatch(
+        r"(?:60[0135]\d{3}|00[0-3]\d{3}|30[01]\d{3})", na=False
+    )
+    announcement = pd.to_datetime(
+        raw["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    instruments = codes.loc[supported & announcement.notna()].map(qlib_symbol)
+    if instruments.duplicated(keep=False).any():
+        raise RichDataError(
+            "Eastmoney monetary-funds partition contains duplicate instrument/report-period keys"
+        )
+    return set(instruments.astype(str))
+
+
+def canonicalize_eastmoney_monetary_funds_asset_intensity(
+    rows: list[dict[str, Any]],
+    report_date: dt.date,
+    *,
+    contract: dict[str, Any] | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Derive the sole frozen monetary-funds asset-intensity factor."""
+
+    frozen = contract or load_eastmoney_monetary_funds_asset_intensity_contract()
+    raw, ordered_hash = _eastmoney_monetary_funds_positional_frame(rows, frozen)
+    transport = frozen["transport_schema"]
+    codes = raw["stock_code"].astype("string").str.strip()
+    complete_code = codes.str.fullmatch(r"\d{6}", na=False)
+    supported_code = codes.str.fullmatch(
+        r"(?:60[0135]\d{3}|00[0-3]\d{3}|30[01]\d{3})", na=False
+    )
+    instrument = pd.Series(pd.NA, index=raw.index, dtype="string")
+    instrument.loc[supported_code] = codes.loc[supported_code].map(qlib_symbol)
+    if instrument.loc[supported_code].duplicated(keep=False).any():
+        raise RichDataError(
+            "Eastmoney monetary-funds partition contains duplicate instrument/report-period keys"
+        )
+    announcement = pd.to_datetime(
+        raw["announcement_date"], errors="coerce"
+    ).dt.normalize()
+    total_assets = pd.to_numeric(raw["total_assets"], errors="coerce")
+    monetary_funds = pd.to_numeric(raw["monetary_funds"], errors="coerce")
+    finite_assets = np.isfinite(total_assets)
+    positive_assets = total_assets.gt(0.0)
+    finite_monetary = np.isfinite(monetary_funds)
+    nonnegative_monetary = monetary_funds.ge(0.0)
+    monetary_within_assets = monetary_funds.le(total_assets)
+    complete_identity = supported_code & announcement.notna()
+    valid = (
+        complete_identity
+        & finite_assets
+        & positive_assets
+        & finite_monetary
+        & nonnegative_monetary
+        & monetary_within_assets
+    )
+    factor_values = monetary_funds / total_assets
+    result = pd.DataFrame(
+        {
+            "instrument": instrument.loc[valid].astype("string"),
+            "report_date": pd.Timestamp(report_date),
+            "announcement_date": announcement.loc[valid],
+            "monetary_funds": monetary_funds.loc[valid].astype("float64"),
+            "total_assets": total_assets.loc[valid].astype("float64"),
+            "eastmoney_monetary_funds_asset_intensity": factor_values.loc[valid].astype(
+                "float64"
+            ),
+            "provider": "eastmoney",
+        }
+    )
+    result = (
+        result.loc[:, list(EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS)]
+        .sort_values(["report_date", "instrument"], kind="stable")
+        .reset_index(drop=True)
+    )
+    if result.empty:
+        raise RichDataError("Eastmoney monetary-funds partition has no valid factor row")
+    recomputed = result["monetary_funds"] / result["total_assets"]
+    formula_error = (
+        result["eastmoney_monetary_funds_asset_intensity"] - recomputed
+    ).abs()
+    maximum_error = float(formula_error.max())
+    if (
+        result.duplicated(["instrument", "report_date"]).any()
+        or not np.isfinite(
+            result["eastmoney_monetary_funds_asset_intensity"]
+        ).all()
+        or not result["eastmoney_monetary_funds_asset_intensity"].between(
+            0.0, 1.0
+        ).all()
+        or maximum_error
+        > float(frozen["acceptance_protocol"]["maximum_formula_absolute_error"])
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds normalized frame failed frozen integrity checks"
+        )
+    complete_identity_names = int(instrument.loc[complete_identity].nunique())
+    return result, {
+        "input_rows": int(len(raw)),
+        "ordered_source_column_count": int(transport["ordered_source_column_count"]),
+        "ordered_source_columns_sha256": ordered_hash,
+        "missing_or_malformed_stock_code_rows_excluded": int((~complete_code).sum()),
+        "unsupported_board_rows_excluded": int((complete_code & ~supported_code).sum()),
+        "missing_announcement_date_rows_excluded": int(announcement.isna().sum()),
+        "complete_identity_supported_names": complete_identity_names,
+        "nonfinite_or_nonpositive_total_asset_rows_excluded": int(
+            (~finite_assets | ~positive_assets).sum()
+        ),
+        "nonfinite_or_negative_monetary_funds_rows_excluded": int(
+            (~finite_monetary | ~nonnegative_monetary).sum()
+        ),
+        "monetary_funds_above_total_assets_rows_excluded": int(
+            (finite_assets & finite_monetary & ~monetary_within_assets).sum()
+        ),
+        "explicit_zero_monetary_funds_rows_retained": int(
+            (valid & monetary_funds.eq(0.0)).sum()
+        ),
+        "accepted_formula_max_absolute_error": maximum_error,
+        "rows_written_before_holding_universe": int(len(result)),
+        "unused_transported_fields_persisted": False,
+    }
+
+
+def eastmoney_monetary_funds_asset_intensity_acceptance_records() -> list[Path]:
+    """Return prior local success or rejection manifests for this one-shot probe."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*eastmoney_monetary_funds_asset_intensity_acceptance*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == (
+            "eastmoney_monetary_funds_asset_intensity_acceptance"
+        ):
+            records.append(path)
+    return records
+
+
+def _guard_eastmoney_monetary_funds_acceptance_tracked_record() -> None:
+    """Reject a cross-clone replay before contract or provider access."""
+
+    path = DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD
+    if not path.exists():
+        return
+    load_eastmoney_monetary_funds_asset_intensity_acceptance_record(path)
+    raise RichDataError(
+        "Eastmoney monetary-funds asset-intensity acceptance is permanently consumed; "
+        "another provider request is forbidden"
+    )
+
+
+def sync_eastmoney_monetary_funds_asset_intensity_acceptance(
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Run the sole frozen no-price monetary-funds source acceptance."""
+
+    _guard_eastmoney_monetary_funds_acceptance_tracked_record()
+    lock_path = METADATA_ROOT / ".eastmoney_monetary_funds_asset_intensity_acceptance.lock"
+    with RichDataProcessLock(lock_path):
+        _guard_eastmoney_monetary_funds_acceptance_tracked_record()
+        prior = eastmoney_monetary_funds_asset_intensity_acceptance_records()
+        if prior:
+            raise RichDataError(
+                "Eastmoney monetary-funds asset-intensity acceptance is one-shot and "
+                f"already consumed by {prior[-1]}"
+            )
+        contract = load_eastmoney_monetary_funds_asset_intensity_contract()
+        acceptance = contract["acceptance_protocol"]
+        report_date = dt.date.fromisoformat(acceptance["fixed_report_date"])
+        run_id = new_run_id("eastmoney_monetary_funds_asset_intensity_acceptance")
+        run_root = (
+            RAW_ROOT
+            / "eastmoney"
+            / "monetary_funds_asset_intensity"
+            / "acceptance"
+            / run_id
+        )
+        temporary_root = run_root.parent / f".{run_id}.tmp"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Eastmoney monetary-funds acceptance already exists: {run_id}"
+            )
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        provider_request_issued = False
+        request_quality: dict[str, Any] = {}
+        observed_quality: dict[str, Any] = {}
+        try:
+            provider_request_issued = True
+            raw_rows, request_quality = fetch_eastmoney_balance_sheet_partition(
+                report_date, contract=contract
+            )
+            if len(raw_rows) < int(acceptance["minimum_all_market_source_rows"]):
+                raise RichDataError(
+                    "Eastmoney monetary-funds acceptance returned too few all-market rows: "
+                    f"{len(raw_rows)}"
+                )
+            if (
+                int(request_quality["ordered_source_column_count"])
+                != int(acceptance["required_ordered_source_column_count"])
+                or request_quality["ordered_source_columns_sha256"]
+                != acceptance["required_ordered_source_columns_sha256"]
+            ):
+                raise RichDataError(
+                    "Eastmoney monetary-funds acceptance ordered schema changed"
+                )
+            normalized, quality = (
+                canonicalize_eastmoney_monetary_funds_asset_intensity(
+                    raw_rows, report_date, contract=contract
+                )
+            )
+            if int(quality["complete_identity_supported_names"]) < int(
+                acceptance["minimum_complete_identity_supported_names"]
+            ):
+                raise RichDataError(
+                    "Eastmoney monetary-funds acceptance lacks complete supported identities"
+                )
+            intervals = load_factor_universe_intervals(universe_path)
+            report_session = pd.Timestamp(report_date)
+            active_rows = intervals[
+                intervals["start_date"].le(report_session)
+                & intervals["end_date"].ge(report_session)
+            ]
+            active_instruments = set(active_rows["instrument"].astype(str))
+            if not active_instruments:
+                raise RichDataError(
+                    "buyable holding universe has no active monetary-funds report-date names"
+                )
+            in_universe = normalized["instrument"].isin(active_instruments)
+            outside_universe = int((~in_universe).sum())
+            accepted = normalized.loc[in_universe].reset_index(drop=True)
+            expected_names = int(len(active_instruments))
+            observed_names = int(accepted["instrument"].nunique())
+            coverage = observed_names / expected_names
+            distinct_values = int(
+                accepted["eastmoney_monetary_funds_asset_intensity"].nunique(
+                    dropna=True
+                )
+            )
+            observed_quality = {
+                **quality,
+                "outside_point_in_time_holding_universe_rows_excluded": outside_universe,
+                "expected_active_holding_names": expected_names,
+                "valid_holding_names": observed_names,
+                "valid_holding_coverage": coverage,
+                "distinct_factor_values": distinct_values,
+            }
+            if observed_names < int(acceptance["minimum_valid_holding_names"]):
+                raise RichDataError(
+                    "Eastmoney monetary-funds acceptance has too few valid holding names: "
+                    f"{observed_names}"
+                )
+            if coverage < float(
+                acceptance["minimum_valid_point_in_time_holding_coverage"]
+            ):
+                raise RichDataError(
+                    "Eastmoney monetary-funds holding coverage failed: "
+                    f"{coverage:.6f}"
+                )
+            if distinct_values < int(acceptance["minimum_distinct_factor_values"]):
+                raise RichDataError(
+                    "Eastmoney monetary-funds acceptance lacks factor variation"
+                )
+            if (
+                tuple(accepted.columns)
+                != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+                or accepted.duplicated(["instrument", "report_date"]).any()
+            ):
+                raise RichDataError(
+                    "Eastmoney monetary-funds accepted frame violates the frozen schema"
+                )
+            temporary_destination = temporary_root / "monetary_funds_asset_intensity.parquet"
+            final_destination = run_root / "monetary_funds_asset_intensity.parquet"
+            atomic_write_frame(accepted, temporary_destination)
+            resolved_universe = universe_path.expanduser().resolve()
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_monetary_funds_asset_intensity_acceptance",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_report_date": report_date.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT
+                    ),
+                    "sha256": EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256,
+                    "preregistered_at": contract["preregistered_at"],
+                },
+                "mechanism_audit": contract["mechanism_selection"],
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                    "active_names_on_report_date": expected_names,
+                },
+                "source_request": {
+                    "endpoint": contract["source"]["endpoint"],
+                    "report_name": contract["source"]["report_name"],
+                    "request_mode": "one fixed count-complete quarterly partition",
+                    "provider_request_issued": provider_request_issued,
+                    "tushare_token_read": False,
+                    "credentials_tokens_cookies_or_proxy_read_logged_or_stored": False,
+                    "unused_transported_fields_persisted": False,
+                    **request_quality,
+                },
+                "files": [
+                    {
+                        "path": manifest_path(final_destination),
+                        "rows": int(len(accepted)),
+                        "sha256": frame_digest(accepted),
+                    }
+                ],
+                "source_quality": observed_quality,
+                "acceptance_status": acceptance["success_status"],
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_monetary_funds_asset_intensity_acceptance",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_report_date": report_date.isoformat(),
+                "data_contract": {
+                    "path": manifest_path(
+                        DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT
+                    ),
+                    "sha256": EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256,
+                },
+                "source_request": {
+                    "endpoint": contract["source"]["endpoint"],
+                    "report_name": contract["source"]["report_name"],
+                    "provider_request_issued": provider_request_issued,
+                    "request_quality_before_rejection": request_quality,
+                    "tushare_token_read": False,
+                    "credentials_tokens_cookies_or_proxy_read_logged_or_stored": False,
+                    "unused_transported_fields_persisted": False,
+                },
+                "observed_quality_before_rejection": observed_quality,
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "acceptance_status": (
+                    "terminal_source_schema_formula_or_current_coverage_rejected_stop_"
+                    "before_full_history_no_return_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
+
+
 def load_eastmoney_balance_sheet_resilience_acceptance_record(
     path: Path = DEFAULT_EASTMONEY_BALANCE_SHEET_RESILIENCE_ACCEPTANCE_RECORD,
 ) -> dict[str, Any]:
@@ -21108,6 +22943,616 @@ def load_eastmoney_balance_sheet_resilience_full_source_record(
             "Eastmoney balance-sheet-resilience full snapshot aggregate changed"
         )
     return record
+
+
+def load_eastmoney_monetary_funds_asset_intensity_full_source_record(
+    path: Path = DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_SOURCE_RECORD,
+) -> dict[str, Any]:
+    """Verify the immutable full-source record and every published partition."""
+
+    path = path.expanduser().resolve()
+    if (
+        file_digest(path)
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_SOURCE_RECORD_SHA256
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds full-source record fingerprint mismatch"
+        )
+    record = load_json_record(
+        path,
+        kind="a_share_eastmoney_monetary_funds_asset_intensity_full_source_record",
+    )
+    source_chain = record.get("source_chain") or {}
+    manifest_link = record.get("full_manifest") or {}
+    snapshot = record.get("published_snapshot") or {}
+    request = record.get("source_request") or {}
+    coverage = record.get("coverage") or {}
+    next_gate = record.get("next_gate") or {}
+    expected_chain = {
+        "mechanism_audit": (
+            EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_MECHANISM_AUDIT_SHA256
+        ),
+        "data_contract": EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256,
+        "source_acceptance_record": (
+            EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD_SHA256
+        ),
+        "no_return_preregistration": (
+            EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC_SHA256
+        ),
+    }
+    for label, expected_sha in expected_chain.items():
+        link = source_chain.get(label) or {}
+        linked_path = resolve_record_path(str(link.get("path") or ""))
+        if (
+            link.get("sha256") != expected_sha
+            or not linked_path.exists()
+            or file_digest(linked_path) != expected_sha
+        ):
+            raise RichDataError(
+                f"Eastmoney monetary-funds full-source chain changed: {label}"
+            )
+    manifest_path_value = resolve_record_path(
+        str(manifest_link.get("path") or "")
+    )
+    if (
+        not manifest_path_value.exists()
+        or file_digest(manifest_path_value) != manifest_link.get("sha256")
+    ):
+        raise RichDataError("Eastmoney monetary-funds full manifest changed")
+    manifest = load_json_record(
+        manifest_path_value, kind="a_share_rich_data_snapshot"
+    )
+    files = list(manifest.get("files") or [])
+    expected_dates = [
+        f"{year}-{month_day}"
+        for year in range(2019, 2026)
+        for month_day in ("03-31", "06-30", "09-30", "12-31")
+    ]
+    observed_dates = [str(item.get("report_date")) for item in files]
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_full_source_pending_no_return_capacity_and_uniqueness"
+        or record.get("created_at") != "2026-07-21T06:22:04Z"
+        or manifest_link.get("sha256")
+        != "ee9d7cacd2097b840b2f0cfafd177fd5bb8203fea5df95b292ca14e962eba885"
+        or manifest_link.get("run_id")
+        != "20260721T061812Z_eastmoney_monetary_funds_asset_intensity_full_ef43d4e5"
+        or manifest_link.get("retrieved_at")
+        != "2026-07-21T06:18:12.907970+00:00"
+        or manifest_link.get("status")
+        != "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+        or snapshot.get("first_report_date") != "2019-03-31"
+        or snapshot.get("last_report_date") != "2025-12-31"
+        or snapshot.get("partition_count") != 28
+        or snapshot.get("total_rows") != 114418
+        or snapshot.get("year_rows")
+        != {
+            "2019": 13739,
+            "2020": 14473,
+            "2021": 15735,
+            "2022": 16772,
+            "2023": 17550,
+            "2024": 17936,
+            "2025": 18213,
+        }
+        or snapshot.get("canonical_partition_file_sha256_listing_sha256")
+        != "864b5cb82a80c4110c71823fb9360471f31a53a40303487a5508aec08579e0de"
+        or snapshot.get("partition_content_and_file_sha256s_bound_by_manifest_and_listing")
+        is not True
+        or tuple(snapshot.get("normalized_columns") or ())
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+        or snapshot.get("factor_formula") != "monetary_funds / total_assets"
+        or snapshot.get("maximum_reproduced_formula_absolute_error") != 0.0
+        or snapshot.get("all_partition_formula_key_schema_and_content_checks_passed")
+        is not True
+        or request.get("new_network_partitions") != 27
+        or request.get("accepted_partitions_reused_without_network") != 1
+        or request.get("new_provider_calls") != 277
+        or request.get("maximum_allowed_new_provider_calls") != 540
+        or request.get("ordered_source_column_count") != 57
+        or request.get("ordered_source_columns_sha256")
+        != "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3"
+        or request.get("tushare_token_read") is not False
+        or request.get(
+            "credentials_tokens_cookies_or_proxy_read_logged_or_stored"
+        )
+        is not False
+        or request.get("unused_transported_fields_persisted") is not False
+        or coverage.get("complete_identity_minimum") != 0.9408168935815504
+        or coverage.get("complete_identity_median") != 0.9698015577955195
+        or coverage.get("complete_identity_maximum") != 0.9989056686364631
+        or coverage.get("valid_factor_minimum") != 0.9408168935815504
+        or coverage.get("valid_factor_median") != 0.9698015577955195
+        or coverage.get("valid_factor_maximum") != 0.9989056686364631
+        or coverage.get("source_coverage_gate_passed") is not True
+        or "Run exactly the frozen" not in str(next_gate.get("allowed"))
+        or "Do not repeat or resume" not in str(next_gate.get("forbidden"))
+        or record.get("price_fields_loaded") != []
+        or record.get("open_close_or_forward_return_fields_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or record.get("selection_or_promotion_allowed") is not False
+        or manifest.get("dataset")
+        != "eastmoney_monetary_funds_asset_intensity"
+        or manifest.get("run_id") != manifest_link.get("run_id")
+        or manifest.get("retrieved_at") != manifest_link.get("retrieved_at")
+        or manifest.get("status") != manifest_link.get("status")
+        or manifest.get("price_fields_loaded") != []
+        or manifest.get("forward_return_fields_read") is not False
+        or manifest.get("selection_or_promotion_allowed") is not False
+        or len(files) != 28
+        or observed_dates != expected_dates
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds full-source record is inconsistent"
+        )
+    total_rows = 0
+    year_rows: dict[str, int] = {}
+    listing_lines: list[str] = []
+    for item in files:
+        frame_path = resolve_record_path(str(item.get("path") or ""))
+        if not frame_path.exists():
+            raise RichDataError(
+                "Eastmoney monetary-funds full partition is missing: "
+                f"{item.get('report_date')}"
+            )
+        frame = load_snapshot_frame(item)
+        report_dates = pd.to_datetime(
+            frame["report_date"], errors="coerce"
+        ).dt.normalize()
+        announcements = pd.to_datetime(
+            frame["announcement_date"], errors="coerce"
+        ).dt.normalize()
+        monetary_funds = pd.to_numeric(frame["monetary_funds"], errors="coerce")
+        total_assets = pd.to_numeric(frame["total_assets"], errors="coerce")
+        factor = pd.to_numeric(
+            frame["eastmoney_monetary_funds_asset_intensity"], errors="coerce"
+        )
+        if (
+            tuple(frame.columns)
+            != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+            or len(frame) != int(item.get("rows") or -1)
+            or frame_digest(frame) != item.get("sha256")
+            or frame.duplicated(["instrument", "report_date"]).any()
+            or report_dates.isna().any()
+            or not report_dates.eq(pd.Timestamp(item["report_date"])).all()
+            or announcements.isna().any()
+            or not np.isfinite(monetary_funds).all()
+            or not monetary_funds.ge(0.0).all()
+            or not np.isfinite(total_assets).all()
+            or not total_assets.gt(0.0).all()
+            or not monetary_funds.le(total_assets).all()
+            or not np.isfinite(factor).all()
+            or not np.allclose(
+                factor.to_numpy(dtype="float64"),
+                monetary_funds.to_numpy(dtype="float64")
+                / total_assets.to_numpy(dtype="float64"),
+                rtol=0.0,
+                atol=1e-12,
+            )
+            or not frame["provider"].eq("eastmoney").all()
+        ):
+            raise RichDataError(
+                "Eastmoney monetary-funds full partition integrity failed: "
+                f"{item['report_date']}"
+            )
+        rows = int(len(frame))
+        total_rows += rows
+        year = str(item["report_date"])[:4]
+        year_rows[year] = year_rows.get(year, 0) + rows
+        listing_lines.append(
+            f"{item['report_date']}|{rows}|{item['sha256']}|{file_digest(frame_path)}\n"
+        )
+    listing_digest = hashlib.sha256(
+        "".join(listing_lines).encode("utf-8")
+    ).hexdigest()
+    if (
+        total_rows != snapshot["total_rows"]
+        or year_rows != snapshot["year_rows"]
+        or listing_digest
+        != snapshot["canonical_partition_file_sha256_listing_sha256"]
+    ):
+        raise RichDataError(
+            "Eastmoney monetary-funds full snapshot aggregate changed"
+        )
+    return record
+
+
+def eastmoney_monetary_funds_asset_intensity_full_records() -> list[Path]:
+    """Return prior local success or failure manifests for the full source."""
+
+    if not RUNS_ROOT.exists():
+        return []
+    records: list[Path] = []
+    for path in sorted(
+        RUNS_ROOT.glob("*eastmoney_monetary_funds_asset_intensity_full*.json")
+    ):
+        payload = load_json_record(path)
+        if payload.get("dataset") == "eastmoney_monetary_funds_asset_intensity":
+            records.append(path)
+    return records
+
+
+def _guard_eastmoney_monetary_funds_full_source_record() -> None:
+    """Stop a cross-clone full-source replay before source-chain loading."""
+
+    path = DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_SOURCE_RECORD
+    if not path.exists():
+        return
+    load_eastmoney_monetary_funds_asset_intensity_full_source_record(path)
+    raise RichDataError(
+        "Eastmoney monetary-funds full snapshot is permanently consumed; "
+        "another provider request is forbidden"
+    )
+
+
+def sync_eastmoney_monetary_funds_asset_intensity(
+    *,
+    allow_large: bool = False,
+    universe_path: Path = DEFAULT_BUYABLE_UNIVERSE,
+) -> Path:
+    """Store the sole frozen 2019-2025 monetary-funds source snapshot."""
+
+    if not allow_large:
+        raise RichDataError(
+            "pass --allow-large only after reviewing the accepted source and frozen "
+            "27-partition monetary-funds protocol"
+        )
+    _guard_eastmoney_monetary_funds_full_source_record()
+    prior = eastmoney_monetary_funds_asset_intensity_full_records()
+    if prior:
+        raise RichDataError(
+            "Eastmoney monetary-funds full snapshot is one-shot and already consumed by "
+            f"{prior[-1]}"
+        )
+    lock_path = METADATA_ROOT / ".eastmoney_monetary_funds_asset_intensity.lock"
+    with RichDataProcessLock(lock_path):
+        _guard_eastmoney_monetary_funds_full_source_record()
+        prior = eastmoney_monetary_funds_asset_intensity_full_records()
+        if prior:
+            raise RichDataError(
+                "Eastmoney monetary-funds full snapshot is one-shot and already "
+                f"consumed by {prior[-1]}"
+            )
+        chain = load_eastmoney_monetary_funds_asset_intensity_source_chain()
+        spec = chain["spec"]
+        contract = chain["contract"]
+        full = spec["full_source_snapshot_contract"]
+        report_dates = [dt.date.fromisoformat(value) for value in full["report_dates"]]
+        reused_date = dt.date.fromisoformat(
+            full["accepted_partition_reused_without_network"]
+        )
+        intervals = load_factor_universe_intervals(universe_path)
+        resolved_universe = universe_path.expanduser().resolve()
+        run_id = new_run_id("eastmoney_monetary_funds_asset_intensity_full")
+        parent = RAW_ROOT / "eastmoney" / "monetary_funds_asset_intensity" / "snapshots"
+        run_root = parent / run_id
+        temporary_root = parent / f".{run_id}.partial"
+        if run_root.exists() or temporary_root.exists():
+            raise RichDataError(
+                f"Eastmoney monetary-funds snapshot already exists: {run_id}"
+            )
+        temporary_root.mkdir(parents=True)
+        files: list[dict[str, Any]] = []
+        partition_quality: list[dict[str, Any]] = []
+        completed_network_partitions = 0
+        provider_calls = 0
+        current_report_date: dt.date | None = None
+        retrieved_at = dt.datetime.now(dt.timezone.utc).isoformat()
+        accepted_schema = spec["source_chain"]["accepted_ordered_source_schema"]
+        try:
+            for index, report_date in enumerate(report_dates, start=1):
+                current_report_date = report_date
+                if report_date == reused_date:
+                    normalized = chain["accepted_frame"].copy()
+                    complete_identity_instruments = set(
+                        normalized["instrument"].astype(str)
+                    )
+                    quality: dict[str, Any] = {
+                        "input_rows": int(
+                            chain["acceptance_record"]["observed_result"][
+                                "all_market_source_rows"
+                            ]
+                        ),
+                        "complete_identity_supported_names": int(
+                            chain["acceptance_record"]["observed_result"][
+                                "complete_identity_supported_names"
+                            ]
+                        ),
+                        "rows_written_before_holding_universe": int(len(normalized)),
+                        "accepted_formula_max_absolute_error": 0.0,
+                    }
+                    request_quality = {
+                        "provider_calls": 0,
+                        "advertised_pages": 0,
+                        "advertised_rows": int(
+                            chain["acceptance_record"]["source_request"][
+                                "advertised_rows"
+                            ]
+                        ),
+                        "received_rows": int(
+                            chain["acceptance_record"]["source_request"][
+                                "received_rows"
+                            ]
+                        ),
+                        "ordered_source_column_count": int(
+                            accepted_schema["ordered_source_column_count"]
+                        ),
+                        "ordered_source_columns_sha256": accepted_schema[
+                            "ordered_source_columns_sha256"
+                        ],
+                    }
+                    source_mode = "reused_immutable_acceptance_partition"
+                else:
+                    raw_rows, request_quality = fetch_eastmoney_balance_sheet_partition(
+                        report_date, contract=contract
+                    )
+                    if (
+                        request_quality["ordered_source_column_count"]
+                        != accepted_schema["ordered_source_column_count"]
+                        or request_quality["ordered_source_columns_sha256"]
+                        != accepted_schema["ordered_source_columns_sha256"]
+                    ):
+                        raise RichDataError(
+                            "Eastmoney monetary-funds historical ordered schema changed "
+                            f"for {report_date.isoformat()}"
+                        )
+                    complete_identity_instruments = (
+                        eastmoney_monetary_funds_complete_identity_instruments(
+                            raw_rows, contract
+                        )
+                    )
+                    normalized, quality = (
+                        canonicalize_eastmoney_monetary_funds_asset_intensity(
+                            raw_rows, report_date, contract=contract
+                        )
+                    )
+                    completed_network_partitions += 1
+                    provider_calls += int(request_quality["provider_calls"])
+                    source_mode = "new_count_complete_public_partition"
+
+                session = pd.Timestamp(report_date)
+                active_rows = intervals[
+                    intervals["start_date"].le(session)
+                    & intervals["end_date"].ge(session)
+                ]
+                active_instruments = set(active_rows["instrument"].astype(str))
+                if not active_instruments:
+                    raise RichDataError(
+                        "buyable holding universe has no active monetary-funds names for "
+                        f"{report_date.isoformat()}"
+                    )
+                expected_names = int(len(active_instruments))
+                identity_names = int(
+                    len(complete_identity_instruments & active_instruments)
+                )
+                identity_coverage = identity_names / expected_names
+                in_universe = normalized["instrument"].isin(active_instruments)
+                outside_universe = int((~in_universe).sum())
+                partition = normalized.loc[in_universe].reset_index(drop=True)
+                valid_names = int(partition["instrument"].nunique())
+                valid_coverage = valid_names / expected_names
+                distinct_values = int(
+                    partition[
+                        "eastmoney_monetary_funds_asset_intensity"
+                    ].nunique(dropna=True)
+                )
+                if identity_coverage < float(
+                    full[
+                        "minimum_complete_identity_active_holding_coverage_per_report_date"
+                    ]
+                ):
+                    raise RichDataError(
+                        "Eastmoney monetary-funds complete-identity coverage failed for "
+                        f"{report_date.isoformat()}: {identity_coverage:.6f}"
+                    )
+                if valid_coverage < float(
+                    full[
+                        "minimum_valid_factor_active_holding_coverage_per_report_date"
+                    ]
+                ):
+                    raise RichDataError(
+                        "Eastmoney monetary-funds valid-factor coverage failed for "
+                        f"{report_date.isoformat()}: {valid_coverage:.6f}"
+                    )
+                if distinct_values < int(
+                    full["minimum_distinct_factor_values_per_nonempty_partition"]
+                ):
+                    raise RichDataError(
+                        "Eastmoney monetary-funds historical variation failed for "
+                        f"{report_date.isoformat()}: {distinct_values}"
+                    )
+                if (
+                    tuple(partition.columns)
+                    != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+                    or partition.duplicated(["instrument", "report_date"]).any()
+                ):
+                    raise RichDataError(
+                        "Eastmoney monetary-funds historical partition violates the frozen schema"
+                    )
+                filename = f"{report_date.isoformat()}.parquet"
+                temporary_destination = temporary_root / filename
+                final_destination = run_root / filename
+                atomic_write_frame(partition, temporary_destination)
+                files.append(
+                    {
+                        "path": manifest_path(final_destination),
+                        "report_date": report_date.isoformat(),
+                        "rows": int(len(partition)),
+                        "sha256": frame_digest(partition),
+                        "source_mode": source_mode,
+                    }
+                )
+                partition_quality.append(
+                    {
+                        "report_date": report_date.isoformat(),
+                        "source_mode": source_mode,
+                        "expected_active_holding_names": expected_names,
+                        "complete_identity_active_holding_names": identity_names,
+                        "complete_identity_active_holding_coverage": identity_coverage,
+                        "valid_factor_active_holding_names": valid_names,
+                        "valid_factor_active_holding_coverage": valid_coverage,
+                        "distinct_factor_values": distinct_values,
+                        "outside_point_in_time_holding_universe_rows_excluded": (
+                            outside_universe
+                        ),
+                        "normalization": quality,
+                        "request": request_quality,
+                    }
+                )
+                print(
+                    "Eastmoney monetary-funds full source "
+                    f"{index}/{len(report_dates)}: {report_date.isoformat()} "
+                    f"rows={len(partition)} valid_coverage={valid_coverage:.6f}"
+                )
+
+            identity_coverages = [
+                float(item["complete_identity_active_holding_coverage"])
+                for item in partition_quality
+            ]
+            valid_coverages = [
+                float(item["valid_factor_active_holding_coverage"])
+                for item in partition_quality
+            ]
+            median_identity = float(np.median(identity_coverages))
+            median_valid = float(np.median(valid_coverages))
+            if median_identity < float(
+                full["minimum_median_complete_identity_active_holding_coverage"]
+            ):
+                raise RichDataError(
+                    "Eastmoney monetary-funds median complete-identity coverage failed: "
+                    f"{median_identity:.6f}"
+                )
+            if median_valid < float(
+                full["minimum_median_valid_factor_active_holding_coverage"]
+            ):
+                raise RichDataError(
+                    "Eastmoney monetary-funds median valid-factor coverage failed: "
+                    f"{median_valid:.6f}"
+                )
+            if (
+                len(files) != int(full["required_report_date_count"])
+                or completed_network_partitions != int(full["new_network_partitions"])
+                or provider_calls > int(full["maximum_new_provider_calls"])
+            ):
+                raise RichDataError(
+                    "Eastmoney monetary-funds full-source partition or call count changed"
+                )
+            manifest = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_monetary_funds_asset_intensity",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "requested_start_report_date": report_dates[0].isoformat(),
+                "requested_end_report_date": report_dates[-1].isoformat(),
+                "source_chain": {
+                    "data_contract": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT
+                        ),
+                        "sha256": EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256,
+                    },
+                    "acceptance_record": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD
+                        ),
+                        "sha256": EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD_SHA256,
+                    },
+                    "no_return_preregistration": {
+                        "path": manifest_path(
+                            DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC
+                        ),
+                        "sha256": EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC_SHA256,
+                    },
+                },
+                "point_in_time_holding_universe": {
+                    "path": manifest_path(resolved_universe),
+                    "sha256": file_digest(resolved_universe),
+                },
+                "source_request": {
+                    "new_network_partitions": completed_network_partitions,
+                    "accepted_partitions_reused_without_network": 1,
+                    "new_provider_calls": provider_calls,
+                    "maximum_allowed_new_provider_calls": int(
+                        full["maximum_new_provider_calls"]
+                    ),
+                    "ordered_source_column_count": int(
+                        accepted_schema["ordered_source_column_count"]
+                    ),
+                    "ordered_source_columns_sha256": accepted_schema[
+                        "ordered_source_columns_sha256"
+                    ],
+                    "tushare_token_read": False,
+                    "credentials_tokens_cookies_or_proxy_read_logged_or_stored": False,
+                    "unused_transported_fields_persisted": False,
+                },
+                "files": files,
+                "partition_quality": partition_quality,
+                "coverage": {
+                    "complete_identity_minimum": float(min(identity_coverages)),
+                    "complete_identity_median": median_identity,
+                    "complete_identity_maximum": float(max(identity_coverages)),
+                    "valid_factor_minimum": float(min(valid_coverages)),
+                    "valid_factor_median": median_valid,
+                    "valid_factor_maximum": float(max(valid_coverages)),
+                    "source_coverage_gate_passed": True,
+                },
+                "status": (
+                    "full_source_coverage_passed_pending_no_return_"
+                    "capacity_and_uniqueness"
+                ),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            temporary_root.replace(run_root)
+            destination = RUNS_ROOT / f"{run_id}.json"
+            try:
+                atomic_write_json(manifest, destination)
+            except Exception:
+                shutil.rmtree(run_root, ignore_errors=True)
+                raise
+            return destination
+        except Exception as exc:
+            shutil.rmtree(temporary_root, ignore_errors=True)
+            shutil.rmtree(run_root, ignore_errors=True)
+            failure = {
+                "schema_version": 1,
+                "kind": "a_share_rich_data_snapshot",
+                "dataset": "eastmoney_monetary_funds_asset_intensity",
+                "provider": "eastmoney",
+                "run_id": run_id,
+                "retrieved_at": retrieved_at,
+                "current_report_date": (
+                    current_report_date.isoformat() if current_report_date else None
+                ),
+                "completed_network_partitions": completed_network_partitions,
+                "new_provider_calls": provider_calls,
+                "data_contract_sha256": (
+                    EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT_SHA256
+                ),
+                "no_return_preregistration_sha256": (
+                    EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC_SHA256
+                ),
+                "files": [],
+                "partial_snapshot_deleted": True,
+                "status": (
+                    "terminal_full_source_rejected_stop_before_capacity_"
+                    "uniqueness_prices_or_returns"
+                ),
+                "error_type": type(exc).__name__,
+                "error": safe_exception_text(exc),
+                "price_fields_loaded": [],
+                "open_close_or_forward_return_fields_read": False,
+                "forward_return_fields_read": False,
+                "selection_or_promotion_allowed": False,
+            }
+            failure_path = RUNS_ROOT / f"{run_id}.json"
+            atomic_write_json(failure, failure_path)
+            raise RichDataError(f"{exc}; rejection_record={failure_path}") from exc
 
 
 def eastmoney_balance_sheet_resilience_full_records() -> list[Path]:
@@ -25460,6 +27905,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
     )
 
+    eastmoney_monetary_funds_acceptance = subparsers.add_parser(
+        "acceptance-eastmoney-monetary-funds-asset-intensity",
+        help="run the frozen public quarterly monetary-funds intensity acceptance",
+    )
+    eastmoney_monetary_funds_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+
     eastmoney_core_profit_acceptance = subparsers.add_parser(
         "acceptance-eastmoney-core-profit-consistency",
         help="run the frozen public quarterly core-profit consistency acceptance",
@@ -25476,6 +27929,17 @@ def build_parser() -> argparse.ArgumentParser:
         "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
     )
     eastmoney_related_party_acceptance.add_argument(
+        "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
+    )
+
+    cninfo_guarantee_acceptance = subparsers.add_parser(
+        "acceptance-cninfo-guarantee-sparsity",
+        help="run the frozen 57-signal public guarantee-sparsity acceptance",
+    )
+    cninfo_guarantee_acceptance.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    cninfo_guarantee_acceptance.add_argument(
         "--calendar-file", type=Path, default=DEFAULT_LOCAL_CALENDAR
     )
 
@@ -25500,6 +27964,19 @@ def build_parser() -> argparse.ArgumentParser:
         "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
     )
     eastmoney_balance_full.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the accepted one-shot 27-partition public request",
+    )
+
+    eastmoney_monetary_funds_full = subparsers.add_parser(
+        "sync-eastmoney-monetary-funds-asset-intensity",
+        help="download the frozen 2019-2025 monetary-funds intensity snapshot",
+    )
+    eastmoney_monetary_funds_full.add_argument(
+        "--universe-file", type=Path, default=DEFAULT_BUYABLE_UNIVERSE
+    )
+    eastmoney_monetary_funds_full.add_argument(
         "--allow-large",
         action="store_true",
         help="confirm the accepted one-shot 27-partition public request",
@@ -25744,12 +28221,24 @@ def main(argv: list[str] | None = None) -> int:
             manifest = sync_eastmoney_balance_sheet_resilience_acceptance(
                 universe_path=args.universe_file
             )
+        elif (
+            args.command
+            == "acceptance-eastmoney-monetary-funds-asset-intensity"
+        ):
+            manifest = sync_eastmoney_monetary_funds_asset_intensity_acceptance(
+                universe_path=args.universe_file
+            )
         elif args.command == "acceptance-eastmoney-core-profit-consistency":
             manifest = sync_eastmoney_core_profit_consistency_acceptance(
                 universe_path=args.universe_file
             )
         elif args.command == "acceptance-eastmoney-related-party-transaction-sparsity":
             manifest = sync_eastmoney_related_party_transaction_sparsity_acceptance(
+                universe_path=args.universe_file,
+                calendar_path=args.calendar_file,
+            )
+        elif args.command == "acceptance-cninfo-guarantee-sparsity":
+            manifest = sync_cninfo_guarantee_sparsity_acceptance(
                 universe_path=args.universe_file,
                 calendar_path=args.calendar_file,
             )
@@ -25760,6 +28249,11 @@ def main(argv: list[str] | None = None) -> int:
             )
         elif args.command == "sync-eastmoney-balance-sheet-resilience":
             manifest = sync_eastmoney_balance_sheet_resilience(
+                allow_large=args.allow_large,
+                universe_path=args.universe_file,
+            )
+        elif args.command == "sync-eastmoney-monetary-funds-asset-intensity":
+            manifest = sync_eastmoney_monetary_funds_asset_intensity(
                 allow_large=args.allow_large,
                 universe_path=args.universe_file,
             )
@@ -25833,16 +28327,25 @@ def main(argv: list[str] | None = None) -> int:
         "acceptance-eastmoney-balance-sheet-resilience": (
             "stored_no_return_public_balance_sheet_acceptance"
         ),
+        "acceptance-eastmoney-monetary-funds-asset-intensity": (
+            "stored_no_return_public_monetary_funds_intensity_acceptance"
+        ),
         "acceptance-eastmoney-core-profit-consistency": (
             "stored_no_return_public_core_profit_acceptance"
         ),
         "acceptance-eastmoney-related-party-transaction-sparsity": (
             "stored_no_return_public_related_party_sparsity_acceptance"
         ),
+        "acceptance-cninfo-guarantee-sparsity": (
+            "stored_no_return_public_guarantee_sparsity_acceptance"
+        ),
         "sync-eastmoney-related-party-transaction-sparsity": (
             "stored_pending_no_return_capacity_and_uniqueness"
         ),
         "sync-eastmoney-balance-sheet-resilience": (
+            "stored_pending_no_return_capacity_and_uniqueness"
+        ),
+        "sync-eastmoney-monetary-funds-asset-intensity": (
             "stored_pending_no_return_capacity_and_uniqueness"
         ),
         "sync-eastmoney-core-profit-consistency": (

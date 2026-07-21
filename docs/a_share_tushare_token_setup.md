@@ -4,6 +4,24 @@
 
 本文是仓库的凭据配置规范。下面代码块中的 `token?请粘贴...` 是 zsh 的隐藏输入提示，不是 Token 占位符；请原样运行命令，等提示出现后再粘贴真实 Token，不能把真实值改写进命令本身。
 
+## 0. 最短操作清单
+
+macOS 上首次配置时，复制下面三行；第一行出现提示后再粘贴 Token 并按回车，输入不会回显：
+
+```zsh
+read -s "token?请粘贴 Tushare Token，随后按回车："; echo
+launchctl setenv TUSHARE_TOKEN "$token"
+unset token
+```
+
+随后彻底退出并重新打开 Codex，再在仓库根目录运行：
+
+```zsh
+python scripts/a_share_rich_data.py status
+```
+
+只确认输出中的 Tushare 环境变量与 SDK 为“已就绪”；不要运行会输出 Token 明文的检查命令。仓库提交只包含变量名和以上安全模板，不包含本机 `launchctl` 值、真实 Token 或 `.env` 文件。
+
 ## 1. 安装本项目锁定的 SDK
 
 在仓库根目录运行：
@@ -109,11 +127,17 @@ Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_
 
 跨克隆终止记录为 [`a_share_eastmoney_core_profit_consistency_diagnostic_record.json`](a_share_eastmoney_core_profit_consistency_diagnostic_record.json)（SHA‑256 `970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f`）。不得再次运行验收、全量、无收益审计、收益诊断或两道通用门禁，也不得反向、挑选年份、改变公式/状态/持有期/TopK/成本或与已拒绝因子组合。`TUSHARE_TOKEN` 的配置、更新或轮换不会恢复该分支；它不进入聚合、当前评分、选股、仓位或订单。提交仓库不包含本机 Token 或 `launchctl` 环境值。
 
-#### Eastmoney 关联交易披露稀疏度分支等待收益诊断预注册
+#### Eastmoney 关联交易披露稀疏度分支已终止
 
-这个来源同样不读取 `TUSHARE_TOKEN`，不使用 Tushare 账号或积分。唯一来源验收、2019–2025 全量快照以及容量优先的无收益审计都已消费；无收益容量为 352/200 个三日非重叠 cohort，六个稀疏语义近邻和三个规模/流动性混淆项的固定门禁均通过。跨克隆记录是 [`a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json`](a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json)（SHA‑256 `827aacdfc661c280cd22dbc3f97b3e6fc3ad7b91489861bd45c1d6a65c581cc8`）。
+这个来源同样不读取 `TUSHARE_TOKEN`，不使用 Tushare 账号或积分。唯一来源验收、2019–2025 全量快照以及容量优先的无收益审计都已消费；无收益容量为 352/200 个三日非重叠 cohort，六个稀疏语义近邻和三个规模/流动性混淆项的固定门禁均通过。随后唯一收益与执行诊断、稳定性审计和 Top‑3 审计均已完成，但冻结的 20 万元、100 股整手、双边 10bp 滑点方案累计 −4.27%，2019–2022 四年均为负，稳定性与 Top‑3 门都是 0/1。
 
-通过仅允许先冻结一个绑定审计指纹的单因子收益/执行诊断，并不允许立即读取收益或选股。不得重跑 `acceptance-eastmoney-related-party-transaction-sparsity`、`sync-eastmoney-related-party-transaction-sparsity --allow-large` 或 `eastmoney-related-party-transaction-sparsity-no-return-audit`；配置、更新或轮换 Token 也不会恢复这些一次性入口。下一阶段若将来明确预注册为 Tushare 数据命令，仍按第 4 节只向单个子进程透传，仓库永远只保存变量名和安全命令模板，不保存真实 Token。
+跨克隆终止记录是 [`a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json`](a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json)（SHA‑256 `b8bda6862349a0ff9082109a3e176b4ecc195dc9be5bfb07043e91c6e7460dba`）。不得重跑来源验收、全量、无收益审计、收益诊断或通用门禁；配置、更新或轮换 Token 不会恢复这些一次性入口，也不允许继续聚合、当前评分、选股、仓位或订单。
+
+#### Eastmoney 货币资金资产占比分支等待无收益双门
+
+`eastmoney_monetary_funds_asset_intensity = monetary_funds / total_assets` 使用 Eastmoney 公共资产负债表接口，不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分。唯一 2025Q4 来源验收与唯一 2019Q1–2025Q4 全量同步已经消费；全量快照共 28 个季度、114,418 行。跨克隆来源记录是 [`a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json`](a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json)（SHA‑256 `0b399ab472a425702e8fe40387849e2b258032081e5bac44d984b0272cce557e`）。不得再次运行验收或全量同步。
+
+下一步仅允许按 [`a_share_data_pipeline.md`](a_share_data_pipeline.md) 运行一次容量优先的无收益审计；容量通过后才读取固定七个无收益比较项。在这两道门通过并另行冻结收益诊断前，不得读取未来收益、聚合、当前评分、选股、仓位或订单。因为这个活动分支仍不使用 Tushare，不能用 Token 包装器运行它；本机 Token 是否就绪与它的研究许可无关。
 
 ### 4.2 `stock_st` 分支已终止
 

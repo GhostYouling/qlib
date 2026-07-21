@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_monetary_funds_asset_intensity_no_return_preregistration",
+  "status": "frozen_after_source_acceptance_before_other_report_dates_capacity_comparisons_prices_or_returns",
+  "preregistered_at": "2026-07-21T06:06:36Z",
+  "purpose": "Bind the accepted Eastmoney balance-sheet transport to one atomic 2019-2025 quarterly monetary-funds snapshot, a three-calendar-day point-in-time event state, capacity-first screening, and seven fixed no-return independence comparisons before any historical provider row, comparison value, price, forward return, aggregation, score, or selection is observed for this branch.",
+  "source_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json",
+      "sha256": "6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419"
+    },
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_data_contract.json",
+      "sha256": "f879f2095936e6a1f084432bbce2c5d5f2f74951d4a12d1742064b1e365b8d82"
+    },
+    "acceptance_record": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_source_acceptance_record.json",
+      "sha256": "bcea6af54b32eb80c4118345a72be01b332c626217bba87ec95217d1811c5171"
+    },
+    "acceptance_manifest": {
+      "path": "data/metadata/rich_data/runs/20260721T060142Z_eastmoney_monetary_funds_asset_intensity_acceptance_5196e914.json",
+      "sha256": "77172da63f5e94eebc04fb3a5493f907c22fc59c734ab84b85e33eb96e2e9907"
+    },
+    "accepted_frame": {
+      "path": "data/raw/a_share/rich/eastmoney/monetary_funds_asset_intensity/acceptance/20260721T060142Z_eastmoney_monetary_funds_asset_intensity_acceptance_5196e914/monetary_funds_asset_intensity.parquet",
+      "content_sha256": "c17b9c143dae17cf88f75046488ab5d1d66a8b0580553d50802bed715ca52a1f",
+      "file_sha256": "1bb1f1faa8f3eb971dc63aa3ed3589748d795398877769e615da828bdafb3791",
+      "report_date": "2025-12-31",
+      "rows": 4574
+    },
+    "accepted_ordered_source_schema": {
+      "ordered_source_column_count": 57,
+      "ordered_source_columns_sha256": "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3",
+      "same_schema_required_for_every_historical_partition": true
+    }
+  },
+  "local_context": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "accepted_price_basis_for_later_conditional_diagnostic_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "price_or_return_access_allowed_by_this_record": false
+    }
+  },
+  "full_source_snapshot_contract": {
+    "report_dates": [
+      "2019-03-31",
+      "2019-06-30",
+      "2019-09-30",
+      "2019-12-31",
+      "2020-03-31",
+      "2020-06-30",
+      "2020-09-30",
+      "2020-12-31",
+      "2021-03-31",
+      "2021-06-30",
+      "2021-09-30",
+      "2021-12-31",
+      "2022-03-31",
+      "2022-06-30",
+      "2022-09-30",
+      "2022-12-31",
+      "2023-03-31",
+      "2023-06-30",
+      "2023-09-30",
+      "2023-12-31",
+      "2024-03-31",
+      "2024-06-30",
+      "2024-09-30",
+      "2024-12-31",
+      "2025-03-31",
+      "2025-06-30",
+      "2025-09-30",
+      "2025-12-31"
+    ],
+    "required_report_date_count": 28,
+    "accepted_partition_reused_without_network": "2025-12-31",
+    "new_network_partitions": 27,
+    "maximum_new_provider_calls": 540,
+    "each_new_partition_uses_count_complete_pages_once": true,
+    "each_new_partition_must_match_accepted_ordered_source_schema": true,
+    "point_in_time_holding_universe_date": "the exact report date for each partition",
+    "minimum_complete_identity_active_holding_coverage_per_report_date": 0.85,
+    "minimum_median_complete_identity_active_holding_coverage": 0.95,
+    "minimum_valid_factor_active_holding_coverage_per_report_date": 0.75,
+    "minimum_median_valid_factor_active_holding_coverage": 0.95,
+    "minimum_distinct_factor_values_per_nonempty_partition": 100,
+    "all_partitions_share_one_hidden_temporary_root": true,
+    "final_partition_format": "one immutable parquet per report date",
+    "partial_or_mixed_snapshot_allowed": false,
+    "one_full_snapshot_attempt_only": true,
+    "tracked_record_path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_full_source_record.json",
+    "failure_policy": "Delete the complete temporary snapshot, publish no final partition, write one terminal no-return source manifest and tracked record, and stop without retrying a date, changing the schema, switching source, inspecting an unused field, running capacity or uniqueness, or reading a price or return."
+  },
+  "normalization_contract": {
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "monetary_funds",
+      "total_assets",
+      "eastmoney_monetary_funds_asset_intensity",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "report_date"
+    ],
+    "factor_formula": "monetary_funds / total_assets",
+    "direction": "higher_is_better",
+    "maximum_formula_absolute_error": 1e-12,
+    "valid_total_assets": "finite and strictly positive",
+    "valid_monetary_funds": "finite, nonnegative, and no greater than total assets",
+    "explicit_zero_monetary_funds_allowed": true,
+    "invalid_row_policy": "exclude and count; never fill, clip, absolutize, infer, or substitute another transported field",
+    "unused_transported_fields_persisted_or_inspected_for_replacement": false
+  },
+  "point_in_time_event_state_contract": {
+    "individual_value_availability": "first local trading-session close strictly after the displayed announcement date",
+    "entry_if_later_admitted": "the following local trading-session open",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_factor_age_calendar_days": 3,
+    "active_on_session_rule": "availability_session <= session and session_date minus announcement_date is at most 3 calendar days",
+    "older_report_may_replace_a_newer_report_for_the_same_instrument": false,
+    "missing_or_invalid_new_value_carries_an_older_value": false,
+    "weekend_or_holiday_extension_beyond_three_calendar_days": false,
+    "reported_monetary_funds_interpreted_as_verified_unrestricted_cash": false
+  },
+  "capacity_contract": {
+    "must_run_before_any_comparison_value_or_price": true,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_universe": "buyable_main_chinext",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "minimum_eligible_names_per_cross_section": 6,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_factor_age_calendar_days": 3,
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY, and positive profit YoY under the existing next-session point-in-time policy",
+    "capacity_failure_is_terminal_before_comparisons_prices_or_returns": true
+  },
+  "uniqueness_contract": {
+    "allowed_only_after_capacity_passes": true,
+    "screen_start": "2025-01-01",
+    "screen_end": "2025-12-31",
+    "comparison_factor_count": 7,
+    "comparison_factors": [
+      "eastmoney_balance_sheet_resilience",
+      "log_total_assets",
+      "log1p_monetary_funds",
+      "roe",
+      "tushare_positive_book_to_market",
+      "free_float_cap_proxy",
+      "liquidity_5"
+    ],
+    "minimum_pairwise_names_per_session": 6,
+    "minimum_pairwise_sessions_per_dense_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "every_comparison_must_have_minimum_sessions_and_pass": true,
+    "comparison_catalog_or_threshold_change_allowed": false,
+    "raw_price_or_forward_return_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "gate_order": [
+    "revalidate every source-chain and local-context fingerprint plus the accepted factor frame without network",
+    "atomically fetch exactly the 27 unobserved report partitions while reusing the accepted 2025-12-31 partition without a provider request",
+    "publish only if all 28 partitions pass count completeness, exact schema, formula, identity, coverage, distinct-value, and atomicity gates",
+    "freeze the full-source success or terminal failure record",
+    "if and only if full-source completeness passes, materialize the three-calendar-day point-in-time state and run capacity without any comparison value, price, or return",
+    "if and only if capacity passes, load exactly the seven predeclared comparison factors and run uniqueness without any forward return",
+    "freeze a separate one-time three-session return, execution, and CNY 200,000 pilot diagnostic only if every no-return gate passes"
+  ],
+  "prohibited_actions": [
+    "repeat the accepted 2025-12-31 provider request",
+    "change provider, endpoint, report, source positions, schema fingerprint, report dates, factor, direction, availability timing, age, invalid-row policy, universe, coverage, capacity, comparison catalog, or uniqueness threshold",
+    "inspect or persist receivables, inventory, liabilities, payables, prepaid accounts, equity, growth, or any other unused transported balance-sheet field",
+    "publish a partial snapshot, resume a partial snapshot, retry any full-source failure, or rescue the branch with a new denominator or transform",
+    "read a raw price or forward return, aggregate with another factor, current-score, select, size, order, or use Level-2 before every no-return gate passes"
+  ],
+  "historical_provider_rows_observed_before_freeze": false,
+  "historical_monetary_funds_factor_values_observed_before_freeze": false,
+  "comparison_values_observed_for_this_factor_before_freeze": false,
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

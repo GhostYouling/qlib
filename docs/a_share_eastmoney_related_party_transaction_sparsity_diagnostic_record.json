@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record",
+  "status": "terminal_rejected_after_return_stability_and_execution_gates",
+  "recorded_at": "2026-07-20T13:50:11Z",
+  "purpose": "Freeze the one allowed related-party disclosure-sparsity return and execution diagnostic, its two full default audits, and the terminal rejection without inversion, tuning, filtering, aggregation, current scoring, or selection.",
+  "factor": {
+    "name": "eastmoney_related_party_transaction_sparsity",
+    "formula": "1 / related_party_transaction_count",
+    "direction": "higher_is_better",
+    "interpretation": "fewer unique related-party transaction disclosures is better",
+    "maximum_event_age_calendar_days": 3
+  },
+  "evidence_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_related_party_transaction_sparsity_mechanism_overlap_reaudit_20260720.json",
+      "sha256": "697def3023b93b639363b05c262293dda75cb515fa58d8124ea5e96384d61190"
+    },
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_data_contract.json",
+      "sha256": "242baad268f11c56b0c3ccb14b9726f653b908e553d0b1d39faed36e6069c277"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_source_acceptance_record.json",
+      "sha256": "054728119ccfd39858e4eb391a16097a3b63f9f2ef8cfebf9f928f9dfa29c582"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_no_return_preregistration.json",
+      "sha256": "51447a3647ad461480b98a01c7d55f094c0dbd139c81fa8abfb378f4167e20d8"
+    },
+    "full_source_record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_full_source_record.json",
+      "sha256": "45f39cfd550728c2b5d2260930cf1758a4aee924ca4d35d43cf457b2531c2aac"
+    },
+    "full_source_manifest": {
+      "path": "data/metadata/rich_data/runs/20260720T130538Z_eastmoney_related_party_transaction_sparsity_full_53f2347e.json",
+      "sha256": "e8a668ffda6668040f1129c60d402aa9731560801475fe2644f7fb7146b089e9"
+    },
+    "no_return_record": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_no_return_record.json",
+      "sha256": "827aacdfc661c280cd22dbc3f97b3e6fc3ad7b91489861bd45c1d6a65c581cc8"
+    },
+    "combined_no_return_audit": {
+      "path": "data/experiments/short_horizon/20260720T132935Z_eastmoney_related_party_transaction_sparsity_no_return_audit.json",
+      "sha256": "277d6c4ca1f25b275cc1cf94f8a4a1b761f084808472fb9d2c83d25389cd40b2"
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_diagnostic_preregistration.json",
+      "sha256": "fcb1686eaed04764b545c80318fa6fcb74b922c4c5722e81a566c96bc7790848"
+    },
+    "diagnostic": {
+      "path": "data/experiments/short_horizon/20260720T134932Z_factor_diagnostic.json",
+      "sha256": "9f208c7d7b0781dd2221a57ec3b651416cd83149a208359f070a3e47981192ed"
+    },
+    "stability_audit": {
+      "path": "data/experiments/short_horizon/20260720T134945Z_factor_stability_audit.json",
+      "sha256": "684c2f5154c431dbe5861d23b1159f28a8cdbde1802828117bbcb5f4ec5b5dba"
+    },
+    "topk_viability_audit": {
+      "path": "data/experiments/short_horizon/20260720T134945Z_factor_topk_viability_audit.json",
+      "sha256": "a9e63484602dd9a73188ad793304bcce338a3550a0d0e8b426bd163c4fab27d3"
+    }
+  },
+  "no_return_gate_summary": {
+    "potential_complete_cohorts": 352,
+    "observed_calendar_years": 7,
+    "sparse_semantic_reviews_passed": 6,
+    "statistically_gated_sparse_neighbors_passed": 1,
+    "descriptive_only_sparse_neighbors": 5,
+    "dense_confounders_passed": 3,
+    "capacity_gate_passed": true,
+    "uniqueness_gate_passed": true,
+    "both_no_return_gates_passed": true
+  },
+  "diagnostic_summary": {
+    "cohorts": 351,
+    "mean_rank_ic": -0.02105438530569997,
+    "median_rank_ic": 0.004263239263154681,
+    "positive_rank_ic_rate": 0.5071225071225072,
+    "mean_top_minus_bottom_gross_return": -0.0013506939015125701,
+    "negative_annual_mean_rank_ic_years": [
+      2020,
+      2021,
+      2022,
+      2024
+    ],
+    "naive_fixed_horizon_top3": {
+      "net_cumulative_return": 0.2616728780749953,
+      "maximum_drawdown": -0.4535974900331363,
+      "median_cohort_net_return": -0.0014808587396542006,
+      "win_rate": 0.4843304843304843,
+      "p01_net_return": -0.06771722336316932,
+      "p05_net_return": -0.05023411042754339,
+      "worst_cohort_net_return": -0.13530945021733864
+    },
+    "prospective_execution_top3": {
+      "complete_scheduled_signals": 420,
+      "registered_entry_slots": 1260,
+      "filled_entry_slots": 1253,
+      "net_cumulative_return": 0.21469367714237908,
+      "maximum_drawdown": -0.4403818465527817,
+      "negative_signal_years": [
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "terminal_unresolved_position_count": 0,
+      "gate_passed": false
+    },
+    "cny_200000_board_lot_top3_at_ten_basis_points": {
+      "initial_capital_cny": 200000,
+      "final_marked_equity_cny": 191461.90715854036,
+      "net_cumulative_return": -0.04269046420729816,
+      "maximum_drawdown": -0.10180402728138471,
+      "board_lot_affordable_opportunity_rate": 0.9616919393455706,
+      "filled_entry_slots": 1201,
+      "negative_signal_years": [
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "maximum_filled_trade_daily_amount_participation": 0.005006598066138392,
+      "terminal_unresolved_position_count": 0,
+      "gate_passed": false
+    },
+    "slippage_sensitivity_net_cumulative_return": {
+      "0_bps_each_side": 0.061218096135289723,
+      "5_bps_each_side": 0.01259874856249521,
+      "10_bps_each_side_primary_gate": -0.04269046420729816,
+      "20_bps_each_side": -0.13482431099389947
+    }
+  },
+  "gate_decisions": {
+    "association_stability_gate_passed": false,
+    "prospective_execution_gate_passed": false,
+    "pilot_execution_gate_passed": false,
+    "topk_viability_gate_passed": false,
+    "dual_gate_qualified": false,
+    "qualified_factor_count": 0
+  },
+  "decision": {
+    "branch_status": "terminal_rejected",
+    "rerun_same_history_allowed": false,
+    "invert_factor_allowed": false,
+    "change_formula_event_age_years_horizon_topk_costs_quality_listing_or_execution_rules_allowed": false,
+    "select_favorable_years_or_add_post_hoc_filter_allowed": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "current_stock_selection_evidence_exists": false,
+    "level2_justified": false,
+    "next_action": "Return to a new economically independent no-return mechanism; do not reopen this branch."
+  },
+  "data_safety": {
+    "source_uses_tushare_token": false,
+    "source_uses_account_points_cookie_proxy_or_retail_session": false,
+    "raw_daily_prices_persisted": false,
+    "individual_trade_notionals_persisted": false,
+    "forward_return_fields_read": true,
+    "selection_or_promotion_allowed": false
+  },
+  "limitations": [
+    "The historical holding universe is derived from a current public listing snapshot and can introduce survivorship bias.",
+    "The public disclosure source is a current historical snapshot rather than an immutable correction-version archive.",
+    "Daily bars and limit-like rules cannot reconstruct exact queue priority, partial fills, or realized market impact.",
+    "Positive naive cumulative return does not override negative association, drawdown, annual consistency, and executable CNY 200,000 failures."
+  ],
+  "selection_or_promotion_allowed": false
+}

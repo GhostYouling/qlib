@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_monetary_funds_asset_intensity_full_source_record",
+  "status": "accepted_full_source_pending_no_return_capacity_and_uniqueness",
+  "created_at": "2026-07-21T06:22:04Z",
+  "purpose": "Permanently bind the sole atomic 2019Q1-2025Q4 Eastmoney monetary-funds asset-intensity source snapshot so every clone rejects another full-source request and downstream work remains ordered as capacity before the seven frozen no-return comparisons before any return diagnostic.",
+  "source_chain": {
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json",
+      "sha256": "6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419"
+    },
+    "data_contract": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_data_contract.json",
+      "sha256": "f879f2095936e6a1f084432bbce2c5d5f2f74951d4a12d1742064b1e365b8d82"
+    },
+    "source_acceptance_record": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_source_acceptance_record.json",
+      "sha256": "bcea6af54b32eb80c4118345a72be01b332c626217bba87ec95217d1811c5171"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_no_return_preregistration.json",
+      "sha256": "b8cf79b968ee9ca609748508e82d4a30d8fc9762c9e4794f5648c4b18c7f5f14"
+    }
+  },
+  "full_manifest": {
+    "path": "data/metadata/rich_data/runs/20260721T061812Z_eastmoney_monetary_funds_asset_intensity_full_ef43d4e5.json",
+    "sha256": "ee9d7cacd2097b840b2f0cfafd177fd5bb8203fea5df95b292ca14e962eba885",
+    "run_id": "20260721T061812Z_eastmoney_monetary_funds_asset_intensity_full_ef43d4e5",
+    "retrieved_at": "2026-07-21T06:18:12.907970+00:00",
+    "status": "full_source_coverage_passed_pending_no_return_capacity_and_uniqueness"
+  },
+  "published_snapshot": {
+    "first_report_date": "2019-03-31",
+    "last_report_date": "2025-12-31",
+    "partition_count": 28,
+    "total_rows": 114418,
+    "year_rows": {
+      "2019": 13739,
+      "2020": 14473,
+      "2021": 15735,
+      "2022": 16772,
+      "2023": 17550,
+      "2024": 17936,
+      "2025": 18213
+    },
+    "canonical_partition_file_sha256_listing_sha256": "864b5cb82a80c4110c71823fb9360471f31a53a40303487a5508aec08579e0de",
+    "partition_content_and_file_sha256s_bound_by_manifest_and_listing": true,
+    "normalized_columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "monetary_funds",
+      "total_assets",
+      "eastmoney_monetary_funds_asset_intensity",
+      "provider"
+    ],
+    "factor_formula": "monetary_funds / total_assets",
+    "maximum_reproduced_formula_absolute_error": 0.0,
+    "all_partition_formula_key_schema_and_content_checks_passed": true
+  },
+  "source_request": {
+    "new_network_partitions": 27,
+    "accepted_partitions_reused_without_network": 1,
+    "new_provider_calls": 277,
+    "maximum_allowed_new_provider_calls": 540,
+    "ordered_source_column_count": 57,
+    "ordered_source_columns_sha256": "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3",
+    "tushare_token_read": false,
+    "credentials_tokens_cookies_or_proxy_read_logged_or_stored": false,
+    "unused_transported_fields_persisted": false
+  },
+  "coverage": {
+    "complete_identity_minimum": 0.9408168935815504,
+    "complete_identity_median": 0.9698015577955195,
+    "complete_identity_maximum": 0.9989056686364631,
+    "valid_factor_minimum": 0.9408168935815504,
+    "valid_factor_median": 0.9698015577955195,
+    "valid_factor_maximum": 0.9989056686364631,
+    "source_coverage_gate_passed": true
+  },
+  "next_gate": {
+    "allowed": "Run exactly the frozen three-calendar-day point-in-time capacity audit without loading any comparison value, raw price, or forward return; only if at least 200 non-overlapping three-session cohorts span at least five years may the exact seven preregistered no-return comparisons be loaded.",
+    "forbidden": "Do not repeat or resume full source, re-request any quarter, change a field/schema/formula/direction/timing/age/universe/threshold, inspect unused transported fields, read a forward return, aggregate, score, select, size, order, or use Level-2."
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

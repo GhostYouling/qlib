@@ -5121,6 +5121,44 @@ def eastmoney_balance_row(
     return {f"field_{index:02d}": value for index, value in enumerate(values)}
 
 
+def eastmoney_monetary_funds_row(
+    code: str,
+    *,
+    announcement_date: str | None = "2026-04-30",
+    total_assets: float | None = 100.0,
+    monetary_funds: float | None = 20.0,
+) -> dict[str, object]:
+    values: list[object] = [f"unused-{index}" for index in range(57)]
+    values[1] = code
+    values[12] = announcement_date
+    values[14] = total_assets
+    values[16] = monetary_funds
+    return {f"field_{index:02d}": value for index, value in enumerate(values)}
+
+
+def permissive_eastmoney_monetary_funds_contract(
+    rows: list[dict[str, object]],
+) -> dict:
+    contract = copy.deepcopy(
+        RICH.load_eastmoney_monetary_funds_asset_intensity_contract()
+    )
+    ordered_keys = list(rows[0])
+    schema_hash = RICH.hashlib.sha256(
+        RICH.json.dumps(
+            ordered_keys, ensure_ascii=False, separators=(",", ":")
+        ).encode("utf-8")
+    ).hexdigest()
+    contract["transport_schema"]["ordered_source_columns_sha256"] = schema_hash
+    acceptance = contract["acceptance_protocol"]
+    acceptance["required_ordered_source_columns_sha256"] = schema_hash
+    acceptance["minimum_all_market_source_rows"] = len(rows)
+    acceptance["minimum_complete_identity_supported_names"] = 2
+    acceptance["minimum_valid_holding_names"] = 2
+    acceptance["minimum_valid_point_in_time_holding_coverage"] = 1.0
+    acceptance["minimum_distinct_factor_values"] = 2
+    return contract
+
+
 def eastmoney_core_profit_row(
     code: str,
     *,
@@ -5613,6 +5651,274 @@ def test_eastmoney_related_party_tracked_record_blocks_before_contract(
         RICH.sync_eastmoney_related_party_transaction_sparsity_acceptance()
 
 
+def cninfo_guarantee_row(
+    code: str,
+    count: int,
+    start_date: dt.date,
+    end_date: dt.date,
+) -> list:
+    return [
+        f"{start_date.isoformat()}---{end_date.isoformat()}",
+        "999.99",
+        "888888.88",
+        count,
+        "discarded-name",
+        code,
+        "777777.77",
+    ]
+
+
+def test_cninfo_guarantee_contract_signer_and_windows_are_frozen(tmp_path):
+    contract = RICH.load_cninfo_guarantee_sparsity_contract()
+    assert contract["source"]["endpoint"].endswith("p_sysapi1054")
+    assert contract["source"]["market_requests"] == [
+        {"label": label, "market": market}
+        for label, market in RICH.CNINFO_GUARANTEE_MARKETS
+    ]
+    assert contract["factor_protocol"]["normalized_columns"] == list(
+        RICH.CNINFO_GUARANTEE_SPARSITY_COLUMNS
+    )
+    assert contract["acceptance"]["request_timeout_seconds"] == 30
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+    assert RICH.cninfo_accept_enckey(1700000000) == "WltfJaS1dRCcbgz+YSPgFg=="
+    record = RICH.load_cninfo_guarantee_sparsity_acceptance_record()
+    assert record["status"].startswith("terminal_source_transport_schema_rejected")
+    assert record["frozen_request_observed_result"]["maximum_attempts_completed"] == 3
+    assert record["frozen_request_observed_result"]["factor_values_derived"] == 0
+    assert record["price_fields_loaded"] == []
+    assert record["forward_return_fields_read"] is False
+
+    windows = RICH.cninfo_guarantee_acceptance_windows()
+    assert len(windows) == 57
+    assert windows[0] == {
+        "quarter": "2019-Q1",
+        "signal_date": dt.date(2019, 1, 7),
+        "window_start": dt.date(2019, 1, 2),
+        "window_end": dt.date(2019, 1, 4),
+    }
+    assert all(item["window_end"] < item["signal_date"] for item in windows)
+    assert {
+        quarter: sum(item["quarter"] == quarter for item in windows)
+        for quarter in ("2019-Q1", "2024-Q1", "2025-Q1")
+    } == {"2019-Q1": 19, "2024-Q1": 19, "2025-Q1": 19}
+
+    changed = copy.deepcopy(contract)
+    changed["factor_protocol"]["direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed-cninfo-contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_cninfo_guarantee_sparsity_contract(changed_path)
+
+
+def test_cninfo_guarantee_request_retries_and_keeps_signing_header_ephemeral(
+    monkeypatch,
+):
+    start = dt.date(2025, 1, 2)
+    end = dt.date(2025, 1, 6)
+    rows = [cninfo_guarantee_row("600000", 2, start, end)]
+    calls = []
+
+    class Response:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {"records": rows, "count": 1}
+
+    class Session:
+        def post(self, url, *, params, headers, timeout):
+            calls.append((url, dict(params), dict(headers), timeout))
+            if len(calls) == 1:
+                raise RuntimeError("transient")
+            return Response()
+
+    monkeypatch.setattr(RICH.time, "sleep", lambda _seconds: None)
+    fetched, quality = RICH.fetch_cninfo_guarantee_window(
+        start,
+        end,
+        "012001",
+        session=Session(),
+    )
+    assert fetched == rows
+    assert len(calls) == 2
+    assert calls[-1][1] == {
+        "sdate": "2025-01-02",
+        "edate": "2025-01-06",
+        "market": "012001",
+    }
+    assert calls[-1][2]["Accept-Enckey"]
+    assert calls[-1][3] == 30
+    assert quality["attempts_used"] == quality["provider_calls"] == 2
+    assert quality["advertised_counts"] == {"count": 1}
+    assert quality["accept_enckey_persisted"] is False
+    assert "Accept-Enckey" not in str(quality)
+
+
+def test_cninfo_guarantee_normalization_enforces_board_interval_and_formula():
+    signal = dt.date(2025, 1, 7)
+    start = dt.date(2025, 1, 2)
+    end = dt.date(2025, 1, 6)
+    rows = [
+        cninfo_guarantee_row("600000", 1, start, end),
+        cninfo_guarantee_row("600519", 2, start, end),
+        cninfo_guarantee_row("688981", 3, start, end),
+    ]
+    normalized, quality = RICH.canonicalize_cninfo_guarantee_sparsity(
+        rows,
+        signal_date=signal,
+        start_date=start,
+        end_date=end,
+        market_label="shanghai_market",
+        market="012001",
+    )
+    assert normalized.columns.tolist() == list(RICH.CNINFO_GUARANTEE_SPARSITY_COLUMNS)
+    assert normalized["instrument"].tolist() == ["SH600000", "SH600519"]
+    assert normalized["guarantee_count"].tolist() == [1, 2]
+    assert normalized["cninfo_recent_guarantee_disclosure_sparsity"].tolist() == [
+        1.0,
+        0.5,
+    ]
+    assert quality["unsupported_complete_codes_excluded"] == 1
+    assert quality["transport_only_fields_persisted"] is False
+    assert not ({"security_name", "guarantee_amount", "parent_equity"} & set(normalized))
+
+    with pytest.raises(RICH.RichDataError, match="another board"):
+        RICH.canonicalize_cninfo_guarantee_sparsity(
+            [cninfo_guarantee_row("300001", 1, start, end)],
+            signal_date=signal,
+            start_date=start,
+            end_date=end,
+            market_label="shanghai_market",
+            market="012001",
+        )
+    bad_interval = cninfo_guarantee_row("600000", 1, start, end)
+    bad_interval[0] = "2025-01-01---2025-01-06"
+    with pytest.raises(RICH.RichDataError, match="interval differs"):
+        RICH.canonicalize_cninfo_guarantee_sparsity(
+            [bad_interval],
+            signal_date=signal,
+            start_date=start,
+            end_date=end,
+            market_label="shanghai_market",
+            market="012001",
+        )
+
+
+def test_cninfo_guarantee_acceptance_is_atomic_no_price_and_transport_minimized(
+    tmp_path, monkeypatch
+):
+    contract = copy.deepcopy(RICH.load_cninfo_guarantee_sparsity_contract())
+    codes_by_market = {
+        "012002": ["000001", "000002", "000003", "000004"],
+        "012001": ["600000", "600001", "600002", "600003"],
+        "012015": ["300001", "300002", "300003", "300004"],
+    }
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "".join(
+            f"{RICH.qlib_symbol(code)}\t2018-01-01\t2026-12-31\n"
+            for codes in codes_by_market.values()
+            for code in codes
+        ),
+        encoding="utf-8",
+    )
+
+    def fetch(start_date, end_date, market, *, contract):
+        rows = [
+            cninfo_guarantee_row(code, (index % 3) + 1, start_date, end_date)
+            for index, code in enumerate(codes_by_market[market])
+        ]
+        return rows, {
+            "start": start_date.isoformat(),
+            "end": end_date.isoformat(),
+            "market": market,
+            "received_rows": len(rows),
+            "advertised_counts": {},
+            "advertised_count_absent": True,
+            "attempts_used": 1,
+            "provider_calls": 1,
+            "request_timeout_seconds": 30,
+            "accept_enckey_persisted": False,
+            "raw_response_persisted": False,
+        }
+
+    monkeypatch.setattr(RICH, "load_cninfo_guarantee_sparsity_contract", lambda: contract)
+    monkeypatch.setattr(RICH, "fetch_cninfo_guarantee_window", fetch)
+    monkeypatch.setattr(RICH.time, "sleep", lambda _seconds: None)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_CNINFO_GUARANTEE_SPARSITY_ACCEPTANCE_RECORD",
+        tmp_path / "missing-record.json",
+    )
+
+    manifest_path = RICH.sync_cninfo_guarantee_sparsity_acceptance(
+        universe_path=universe,
+        calendar_path=RICH.DEFAULT_LOCAL_CALENDAR,
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == "cninfo_guarantee_sparsity_acceptance"
+    assert manifest["acceptance_status"] == contract["acceptance"]["output_status_on_pass"]
+    assert manifest["source_request"]["provider_calls"] == 171
+    assert manifest["source_request"]["accept_enckey_persisted"] is False
+    assert manifest["source_request"]["raw_response_persisted"] is False
+    assert manifest["source_quality"]["retained_point_in_time_holding_rows"] == 684
+    assert manifest["source_quality"]["candidate_signals_total"] == 57
+    assert manifest["source_quality"]["candidate_signals_by_quarter"] == {
+        "2019-Q1": 19,
+        "2024-Q1": 19,
+        "2025-Q1": 19,
+    }
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(RICH.CNINFO_GUARANTEE_SPARSITY_COLUMNS)
+    assert len(stored) == 684
+    assert not (
+        {
+            "security_name",
+            "guarantee_amount",
+            "parent_equity",
+            "close",
+            "forward_return",
+        }
+        & set(stored)
+    )
+
+
+def test_cninfo_guarantee_tracked_record_blocks_before_contract_or_provider(
+    tmp_path, monkeypatch
+):
+    tracked = tmp_path / "tracked-record.json"
+    RICH.atomic_write_json(
+        {"kind": "a_share_cninfo_guarantee_sparsity_source_acceptance_record"},
+        tracked,
+    )
+    monkeypatch.setattr(
+        RICH, "DEFAULT_CNINFO_GUARANTEE_SPARSITY_ACCEPTANCE_RECORD", tracked
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_guarantee_sparsity_acceptance_record",
+        lambda path: {},
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_cninfo_guarantee_sparsity_contract",
+        lambda: pytest.fail("tracked record must block before contract loading"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_cninfo_guarantee_window",
+        lambda *args, **kwargs: pytest.fail("provider must not be touched"),
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.sync_cninfo_guarantee_sparsity_acceptance()
+
+
 def test_eastmoney_related_party_full_record_blocks_before_source_chain(
     tmp_path, monkeypatch
 ):
@@ -5955,6 +6261,427 @@ def test_eastmoney_core_profit_full_record_blocks_before_source_chain(monkeypatc
     )
     with pytest.raises(RICH.RichDataError, match="permanently consumed"):
         RICH.sync_eastmoney_core_profit_consistency(allow_large=True)
+
+
+def test_eastmoney_monetary_funds_contract_is_fingerprint_frozen(tmp_path):
+    contract = RICH.load_eastmoney_monetary_funds_asset_intensity_contract()
+    assert contract["source"]["report_name"] == "RPT_DMSK_FN_BALANCE"
+    assert contract["source"]["tushare_token_read"] is False
+    assert contract["transport_schema"][
+        "raw_json_data_object_zero_based_positions"
+    ] == {
+        "stock_code": 1,
+        "announcement_date": 12,
+        "total_assets": 14,
+        "monetary_funds": 16,
+    }
+    assert contract["factor_protocol"]["formula"] == (
+        "monetary_funds / total_assets"
+    )
+    assert contract["factor_protocol"]["explicit_zero_monetary_funds_allowed"]
+    assert contract["acceptance_protocol"]["one_completed_acceptance_only"]
+    assert contract["price_fields_loaded"] == []
+    assert contract["forward_return_fields_read"] is False
+
+    record = RICH.load_eastmoney_monetary_funds_asset_intensity_acceptance_record()
+    assert record["status"] == (
+        "accepted_pending_separate_full_source_and_no_return_protocol"
+    )
+    assert record["source_request"]["received_rows"] == 5218
+    assert record["source_request"]["tushare_token_read"] is False
+    assert record["observed_result"]["valid_holding_names"] == 4574
+    assert record["observed_result"]["valid_holding_coverage"] == (
+        0.9984719493560358
+    )
+    assert record["observed_result"]["accepted_formula_max_absolute_error"] == 0.0
+    assert record["price_fields_loaded"] == []
+    assert record["forward_return_fields_read"] is False
+
+    chain = RICH.load_eastmoney_monetary_funds_asset_intensity_source_chain()
+    assert chain["spec"]["full_source_snapshot_contract"][
+        "new_network_partitions"
+    ] == 27
+    assert chain["spec"]["capacity_contract"][
+        "maximum_factor_age_calendar_days"
+    ] == 3
+    assert chain["spec"]["capacity_contract"]["minimum_required_cohorts"] == 200
+    assert chain["spec"]["uniqueness_contract"]["comparison_factor_count"] == 7
+    assert len(chain["accepted_frame"]) == 4574
+
+    full_record = (
+        RICH.load_eastmoney_monetary_funds_asset_intensity_full_source_record()
+    )
+    assert full_record["status"] == (
+        "accepted_full_source_pending_no_return_capacity_and_uniqueness"
+    )
+    assert full_record["published_snapshot"]["partition_count"] == 28
+    assert full_record["published_snapshot"]["total_rows"] == 114418
+    assert full_record["source_request"]["new_provider_calls"] == 277
+    assert full_record["coverage"]["source_coverage_gate_passed"] is True
+    assert full_record["price_fields_loaded"] == []
+    assert full_record["forward_return_fields_read"] is False
+
+    changed = RICH.json.loads(
+        RICH.DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_CONTRACT.read_text()
+    )
+    changed["factor_protocol"]["direction"] = "lower_is_better"
+    changed_path = tmp_path / "changed-monetary-funds-contract.json"
+    RICH.atomic_write_json(changed, changed_path)
+    with pytest.raises(RICH.RichDataError, match="fingerprint mismatch"):
+        RICH.load_eastmoney_monetary_funds_asset_intensity_contract(changed_path)
+
+
+def test_eastmoney_monetary_funds_normalization_uses_only_four_positions():
+    rows = [
+        eastmoney_monetary_funds_row("600519", monetary_funds=20.0),
+        eastmoney_monetary_funds_row("000001", monetary_funds=0.0),
+        eastmoney_monetary_funds_row("688981", monetary_funds=30.0),
+        eastmoney_monetary_funds_row("300750", announcement_date=None),
+        eastmoney_monetary_funds_row("002345", monetary_funds=-1.0),
+        eastmoney_monetary_funds_row("603338", monetary_funds=101.0),
+    ]
+    contract = permissive_eastmoney_monetary_funds_contract(rows)
+    normalized, quality = (
+        RICH.canonicalize_eastmoney_monetary_funds_asset_intensity(
+            rows, dt.date(2025, 12, 31), contract=contract
+        )
+    )
+    assert normalized.columns.tolist() == list(
+        RICH.EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+    )
+    assert normalized["instrument"].tolist() == ["SH600519", "SZ000001"]
+    assert normalized["eastmoney_monetary_funds_asset_intensity"].tolist() == (
+        pytest.approx([0.2, 0.0])
+    )
+    assert quality["unsupported_board_rows_excluded"] == 1
+    assert quality["missing_announcement_date_rows_excluded"] == 1
+    assert quality["nonfinite_or_negative_monetary_funds_rows_excluded"] == 1
+    assert quality["monetary_funds_above_total_assets_rows_excluded"] == 1
+    assert quality["explicit_zero_monetary_funds_rows_retained"] == 1
+    assert quality["accepted_formula_max_absolute_error"] == 0.0
+    assert quality["unused_transported_fields_persisted"] is False
+    assert not ({"close", "market_cap", "forward_return"} & set(normalized))
+
+
+def test_eastmoney_monetary_funds_schema_hash_change_is_fatal():
+    rows = [eastmoney_monetary_funds_row("600519")]
+    contract = permissive_eastmoney_monetary_funds_contract(rows)
+    changed = dict(rows[0])
+    changed["unexpected_field"] = "not-accepted"
+    with pytest.raises(RICH.RichDataError, match="ordered source schema"):
+        RICH.canonicalize_eastmoney_monetary_funds_asset_intensity(
+            [changed], dt.date(2025, 12, 31), contract=contract
+        )
+
+
+def test_eastmoney_monetary_funds_acceptance_is_atomic_and_no_price(
+    tmp_path, monkeypatch
+):
+    rows = [
+        eastmoney_monetary_funds_row("600519", monetary_funds=20.0),
+        eastmoney_monetary_funds_row("000001", monetary_funds=40.0),
+        eastmoney_monetary_funds_row("300750", monetary_funds=60.0),
+    ]
+    contract = permissive_eastmoney_monetary_funds_contract(rows)
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2020-01-01\t2026-12-31\n"
+        "SZ000001\t2020-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    request_quality = {
+        "report_date": "2025-12-31",
+        "advertised_pages": 1,
+        "requested_pages": [1],
+        "advertised_rows": 3,
+        "received_rows": 3,
+        "page_size": 500,
+        "ordered_source_column_count": 57,
+        "ordered_source_columns_sha256": contract["transport_schema"][
+            "ordered_source_columns_sha256"
+        ],
+        "provider_calls": 1,
+    }
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_monetary_funds_asset_intensity_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD",
+        tmp_path / "missing-record.json",
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_eastmoney_balance_sheet_partition",
+        lambda report_date, contract: (rows, request_quality),
+    )
+    manifest_path = (
+        RICH.sync_eastmoney_monetary_funds_asset_intensity_acceptance(
+            universe_path=universe
+        )
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert manifest["dataset"] == (
+        "eastmoney_monetary_funds_asset_intensity_acceptance"
+    )
+    assert manifest["acceptance_status"] == (
+        contract["acceptance_protocol"]["success_status"]
+    )
+    assert manifest["source_request"]["tushare_token_read"] is False
+    assert manifest["source_request"]["unused_transported_fields_persisted"] is False
+    assert manifest["source_quality"]["valid_holding_coverage"] == 1.0
+    assert manifest["source_quality"]["distinct_factor_values"] == 2
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    stored = pd.read_parquet(RICH.resolve_record_path(manifest["files"][0]["path"]))
+    assert stored.columns.tolist() == list(
+        RICH.EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+    )
+    assert stored["instrument"].tolist() == ["SH600519", "SZ000001"]
+    assert not any(path.name.startswith(".") for path in (tmp_path / "raw").rglob("*"))
+
+
+def test_eastmoney_monetary_funds_rejection_deletes_partial_output(
+    tmp_path, monkeypatch
+):
+    rows = [
+        eastmoney_monetary_funds_row("600519", monetary_funds=20.0),
+        eastmoney_monetary_funds_row("000001", monetary_funds=40.0),
+    ]
+    contract = permissive_eastmoney_monetary_funds_contract(rows)
+    contract["acceptance_protocol"]["minimum_distinct_factor_values"] = 3
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2020-01-01\t2026-12-31\n"
+        "SZ000001\t2020-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    request_quality = {
+        "ordered_source_column_count": 57,
+        "ordered_source_columns_sha256": contract["transport_schema"][
+            "ordered_source_columns_sha256"
+        ],
+        "provider_calls": 1,
+    }
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_monetary_funds_asset_intensity_contract",
+        lambda: contract,
+    )
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD",
+        tmp_path / "missing-record.json",
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_eastmoney_balance_sheet_partition",
+        lambda report_date, contract: (rows, request_quality),
+    )
+    with pytest.raises(RICH.RichDataError, match="lacks factor variation"):
+        RICH.sync_eastmoney_monetary_funds_asset_intensity_acceptance(
+            universe_path=universe
+        )
+    failure_paths = list((tmp_path / "runs").glob("*.json"))
+    assert len(failure_paths) == 1
+    failure = RICH.json.loads(failure_paths[0].read_text())
+    assert failure["files"] == []
+    assert failure["partial_snapshot_deleted"] is True
+    assert failure["price_fields_loaded"] == []
+    assert failure["forward_return_fields_read"] is False
+    assert not (tmp_path / "raw").exists() or not any((tmp_path / "raw").rglob("*"))
+
+
+def test_eastmoney_monetary_funds_tracked_record_blocks_before_contract(
+    tmp_path, monkeypatch
+):
+    tracked = tmp_path / "tracked-record.json"
+    RICH.atomic_write_json(
+        {
+            "kind": (
+                "a_share_eastmoney_monetary_funds_asset_intensity_"
+                "source_acceptance_record"
+            )
+        },
+        tracked,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_ACCEPTANCE_RECORD",
+        tracked,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_monetary_funds_asset_intensity_acceptance_record",
+        lambda path=tracked: {},
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_monetary_funds_asset_intensity_contract",
+        lambda: pytest.fail("tracked record must block before contract loading"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_eastmoney_balance_sheet_partition",
+        lambda *args, **kwargs: pytest.fail("provider must not be touched"),
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.sync_eastmoney_monetary_funds_asset_intensity_acceptance()
+
+
+def test_eastmoney_monetary_funds_full_sync_requires_explicit_confirmation():
+    with pytest.raises(RICH.RichDataError, match="--allow-large"):
+        RICH.sync_eastmoney_monetary_funds_asset_intensity()
+
+
+def test_eastmoney_monetary_funds_full_sync_is_atomic_and_reuses_acceptance(
+    tmp_path, monkeypatch
+):
+    new_rows = [
+        eastmoney_monetary_funds_row("600519", monetary_funds=25.0),
+        eastmoney_monetary_funds_row("000001", monetary_funds=45.0),
+    ]
+    contract = permissive_eastmoney_monetary_funds_contract(new_rows)
+    accepted_rows = [
+        eastmoney_monetary_funds_row("600519", monetary_funds=20.0),
+        eastmoney_monetary_funds_row("000001", monetary_funds=40.0),
+    ]
+    accepted, _ = RICH.canonicalize_eastmoney_monetary_funds_asset_intensity(
+        accepted_rows, dt.date(2025, 12, 31), contract=contract
+    )
+    chain = copy.deepcopy(
+        RICH.load_eastmoney_monetary_funds_asset_intensity_source_chain()
+    )
+    chain["contract"] = contract
+    chain["accepted_frame"] = accepted
+    chain["acceptance_record"]["observed_result"]["all_market_source_rows"] = 2
+    chain["acceptance_record"]["observed_result"][
+        "complete_identity_supported_names"
+    ] = 2
+    chain["acceptance_record"]["source_request"]["advertised_rows"] = 2
+    chain["acceptance_record"]["source_request"]["received_rows"] = 2
+    full = chain["spec"]["full_source_snapshot_contract"]
+    full["report_dates"] = ["2025-09-30", "2025-12-31"]
+    full["required_report_date_count"] = 2
+    full["new_network_partitions"] = 1
+    full["maximum_new_provider_calls"] = 20
+    full["minimum_complete_identity_active_holding_coverage_per_report_date"] = 1.0
+    full["minimum_median_complete_identity_active_holding_coverage"] = 1.0
+    full["minimum_valid_factor_active_holding_coverage_per_report_date"] = 1.0
+    full["minimum_median_valid_factor_active_holding_coverage"] = 1.0
+    full["minimum_distinct_factor_values_per_nonempty_partition"] = 2
+    accepted_schema = chain["spec"]["source_chain"][
+        "accepted_ordered_source_schema"
+    ]
+    accepted_schema["ordered_source_columns_sha256"] = contract[
+        "transport_schema"
+    ]["ordered_source_columns_sha256"]
+    universe = tmp_path / "buyable.txt"
+    universe.write_text(
+        "SH600519\t2020-01-01\t2026-12-31\n"
+        "SZ000001\t2020-01-01\t2026-12-31\n",
+        encoding="utf-8",
+    )
+    calls = []
+
+    def fetch(report_date, *, contract):
+        calls.append(report_date)
+        return new_rows, {
+            "provider_calls": 1,
+            "advertised_pages": 1,
+            "requested_pages": [1],
+            "advertised_rows": 2,
+            "received_rows": 2,
+            "ordered_source_column_count": 57,
+            "ordered_source_columns_sha256": accepted_schema[
+                "ordered_source_columns_sha256"
+            ],
+        }
+
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_monetary_funds_asset_intensity_source_chain",
+        lambda: chain,
+    )
+    monkeypatch.setattr(RICH, "fetch_eastmoney_balance_sheet_partition", fetch)
+    monkeypatch.setattr(RICH, "RAW_ROOT", tmp_path / "raw")
+    monkeypatch.setattr(RICH, "RUNS_ROOT", tmp_path / "runs")
+    monkeypatch.setattr(RICH, "METADATA_ROOT", tmp_path / "metadata")
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_SOURCE_RECORD",
+        tmp_path / "missing-full-record.json",
+    )
+    manifest_path = RICH.sync_eastmoney_monetary_funds_asset_intensity(
+        allow_large=True, universe_path=universe
+    )
+    manifest = RICH.json.loads(manifest_path.read_text())
+    assert calls == [dt.date(2025, 9, 30)]
+    assert manifest["dataset"] == "eastmoney_monetary_funds_asset_intensity"
+    assert manifest["source_request"]["new_network_partitions"] == 1
+    assert manifest["source_request"][
+        "accepted_partitions_reused_without_network"
+    ] == 1
+    assert manifest["source_request"]["new_provider_calls"] == 1
+    assert manifest["source_request"]["tushare_token_read"] is False
+    assert manifest["coverage"]["source_coverage_gate_passed"] is True
+    assert len(manifest["files"]) == 2
+    assert [item["source_mode"] for item in manifest["files"]] == [
+        "new_count_complete_public_partition",
+        "reused_immutable_acceptance_partition",
+    ]
+    assert manifest["price_fields_loaded"] == []
+    assert manifest["forward_return_fields_read"] is False
+    for item in manifest["files"]:
+        stored = pd.read_parquet(RICH.resolve_record_path(item["path"]))
+        assert stored.columns.tolist() == list(
+            RICH.EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+        )
+
+
+def test_eastmoney_monetary_funds_full_record_blocks_before_source_chain(
+    tmp_path, monkeypatch
+):
+    tracked = tmp_path / "full-record.json"
+    RICH.atomic_write_json(
+        {
+            "kind": (
+                "a_share_eastmoney_monetary_funds_asset_intensity_"
+                "full_source_record"
+            )
+        },
+        tracked,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_SOURCE_RECORD",
+        tracked,
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_monetary_funds_asset_intensity_full_source_record",
+        lambda path=tracked: {},
+    )
+    monkeypatch.setattr(
+        RICH,
+        "load_eastmoney_monetary_funds_asset_intensity_source_chain",
+        lambda: pytest.fail("tracked full record must block before source chain"),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_eastmoney_balance_sheet_partition",
+        lambda *args, **kwargs: pytest.fail("provider must not be touched"),
+    )
+    with pytest.raises(RICH.RichDataError, match="permanently consumed"):
+        RICH.sync_eastmoney_monetary_funds_asset_intensity(allow_large=True)
 
 
 def test_eastmoney_balance_sheet_resilience_contract_is_fingerprint_frozen(

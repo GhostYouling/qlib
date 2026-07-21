@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_new_balance_sheet_provider_rows_factor_values_prices_or_returns",
+  "frozen_at": "2026-07-21T05:49:24Z",
+  "purpose": "Re-audit the fixed three-local-session frontier after the terminal CNInfo guarantee transport acceptance and select at most one economically distinct public-data mechanism without requesting a new balance-sheet provider row, deriving the candidate factor, or reading a price or return.",
+  "research_scope": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "development_years_if_later_admitted": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "holding_universe": "buyable_main_chinext",
+    "quality_gate": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY under the existing point-in-time quarterly-quality policy",
+    "new_balance_sheet_provider_rows_observed": false,
+    "new_monetary_funds_factor_values_observed": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "frontier_evidence": {
+    "historical_frontier_audit": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+      "historical_factor_count": 43,
+      "stability_qualified_factor_count": 7,
+      "topk_qualified_factor_count": 0,
+      "dual_gate_qualified_factor_count": 0
+    },
+    "immediately_prior_terminal_branch": {
+      "path": "docs/a_share_cninfo_guarantee_sparsity_source_acceptance_record.json",
+      "sha256": "0719385358e9cbed298eb34c32f864093d7298253dab770e0297673a8ae6688d",
+      "result": "The sole frozen guarantee-sparsity acceptance rejected the current transport shape before normalization or factor derivation and cannot be repaired or replayed."
+    },
+    "same_report_prior_formula": {
+      "data_contract": {
+        "path": "docs/a_share_eastmoney_balance_sheet_resilience_data_contract.json",
+        "sha256": "44c3fa5498cbc644f7b7de07c3c53d6d8f7af6a9a367922929d458706133e5a4"
+      },
+      "acceptance_record": {
+        "path": "docs/a_share_eastmoney_balance_sheet_resilience_source_acceptance_record.json",
+        "sha256": "9a014c7bfa25cfe40f1a5deca0168fe28f5c98f10c1da2bc782366cb15c94baf"
+      },
+      "terminal_formula": "1 - total_liabilities / total_assets",
+      "result": "The total-leverage direction failed its return, execution, and pilot gates. It remains a mandatory no-return near neighbor and may not be rerun or reused as evidence for this candidate."
+    }
+  },
+  "source_selection_evidence": {
+    "provider": "Eastmoney public datacenter",
+    "provider_page": "https://data.eastmoney.com/bbsj/202003/zcfz.html",
+    "provider_endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_DMSK_FN_BALANCE",
+    "open_source_adapter": {
+      "repository": "https://github.com/akfamily/akshare",
+      "commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+      "path": "akshare/stock_feature/stock_report_em.py",
+      "sha256": "2012492017222a405d5cd396d3a29a384bc79dd8c1dc4d3e8737f1d2361bd783"
+    },
+    "documented_inputs": [
+      "one quarter-end report date"
+    ],
+    "documented_outputs_used": [
+      "security code",
+      "announcement date",
+      "monetary funds",
+      "total assets"
+    ],
+    "documented_history_start": "2008-12-31",
+    "previously_verified_transport_metadata_only": {
+      "ordered_source_column_count": 57,
+      "ordered_source_columns_sha256": "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3",
+      "candidate_monetary_funds_values_reused_or_observed": false
+    }
+  },
+  "candidate_review": [
+    {
+      "candidate": "eastmoney_receivables_asset_cleanliness",
+      "decision": "rejected_before_new_rows",
+      "reason": "Receivables relative to assets is another cash-collection and accrual-quality mechanism, overlapping the terminal cash-conversion and accounting-quality branches."
+    },
+    {
+      "candidate": "eastmoney_inventory_asset_lightness",
+      "decision": "rejected_before_new_rows",
+      "reason": "Inventory intensity is highly industry- and cycle-dependent and overlaps the terminal gross-margin and operating-efficiency mechanisms; selecting a sector transform would open additional choices."
+    },
+    {
+      "candidate": "eastmoney_monetary_funds_to_total_liabilities",
+      "decision": "rejected_before_new_rows",
+      "reason": "A total-liability denominator directly reuses the terminal leverage mechanism and can create extreme ratios for very low-liability issuers."
+    },
+    {
+      "candidate": "eastmoney_monetary_funds_asset_intensity",
+      "decision": "selected_as_the_only_independent_no_return_candidate",
+      "reason": "The share of reported total assets represented by monetary funds measures liquid-asset composition and financial optionality rather than price action, valuation, order flow, ownership, total leverage, profit composition, gross margin, or event count. Sharing total assets with the terminal leverage ratio is disclosed and requires a strict no-return synonym/confounder gate."
+    }
+  ],
+  "selected_mechanism": {
+    "factor_name": "eastmoney_monetary_funds_asset_intensity",
+    "economic_mechanism": "Among quality-eligible issuers publishing a quarterly balance sheet, a larger reported monetary-funds share of total assets may provide more short-horizon resilience and operating optionality after disclosure.",
+    "raw_measure": "reported monetary funds divided by reported total assets for the same issuer, report period, response row, and displayed announcement date",
+    "formula": "monetary_funds / total_assets",
+    "direction": "higher_is_better",
+    "units": "fraction of reported total assets",
+    "availability": "the first local trading-session close strictly after the displayed announcement date, for entry at the following local open",
+    "same_announcement_session_trade_allowed": false,
+    "maximum_factor_age_calendar_days": 3,
+    "missing_policy": "missing; never zero cash intensity, inferred cash, or a favorable score",
+    "zero_monetary_funds_policy": "valid zero only when explicitly reported with positive total assets",
+    "interpretation_limit": "monetary funds are used exactly as reported and are not claimed to be unrestricted cash or cash equivalents",
+    "selection_or_promotion_allowed": false
+  },
+  "mechanism_independence": {
+    "versus_balance_sheet_resilience": "The terminal factor measured liabilities relative to total assets. This factor measures monetary-funds asset composition. The common denominator makes the terminal leverage factor, raw log total assets, and raw monetary funds mandatory no-return comparisons rather than proof of independence by assertion.",
+    "versus_cash_conversion": "Cash conversion compared operating cash flow with attributable profit. This candidate uses a balance-sheet stock and does not use profit, revenue, cash-flow statement fields, or a flow-to-profit ratio.",
+    "versus_price_value_and_liquidity": "No market price, PB, market capitalization, turnover, VWAP, return, volume, or Level-2 field enters the source factor. Positive book-to-market, free-float-cap proxy, and market liquidity remain mandatory no-return confounders.",
+    "versus_quality": "ROE, profit, revenue growth, and profit growth remain eligibility fields only and do not enter the factor. ROE is a mandatory no-return comparison.",
+    "mandatory_no_return_near_neighbors": [
+      "eastmoney_balance_sheet_resilience",
+      "log_total_assets",
+      "log1p_monetary_funds",
+      "roe",
+      "tushare_positive_book_to_market",
+      "free_float_cap_proxy",
+      "liquidity_5"
+    ],
+    "minimum_pairwise_sessions_per_dense_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "required_gate_order": [
+    "freeze the exact source, pinned adapter, positional schema, report partition, formula, direction, timing, invalid-row policy, acceptance partition, thresholds, and future no-return comparison catalog before a new provider row",
+    "implement and offline-test count-complete pagination, ordered-schema binding, positional extraction, duplicate rejection, point-in-time universe filtering, formula checks, one-shot guards, and atomic publication",
+    "run exactly one no-price 2025-12-31 source acceptance and permanently consume it",
+    "if and only if acceptance passes, freeze a separate 2019-2025 full-source and no-return protocol before requesting any other report period",
+    "run full-source completeness and the fixed 200-cohort five-year capacity gate before loading any comparison field",
+    "only after capacity passes, run every predeclared near-neighbor and confounder comparison without forward returns",
+    "freeze a separate one-time return, execution, and CNY 200,000 pilot diagnostic only if every no-return gate passes"
+  ],
+  "prohibited_actions": [
+    "reuse or infer monetary-funds values from the prior balance-sheet-resilience response, which did not persist or authorize this field",
+    "scan receivables, inventory, payables, prepaid accounts, equity, growth, or another transported balance-sheet field after any new provider row",
+    "change the formula to cash divided by liabilities, equity, market cap, revenue, profit, or another denominator",
+    "claim reported monetary funds are unrestricted cash, clip a ratio, fill a missing value, or treat absence as zero",
+    "use same-announcement-session information for a same-session trade",
+    "read prices or returns, aggregate with terminal factors, current-score, select, size, order, or justify Level-2 before every later no-return gate passes"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

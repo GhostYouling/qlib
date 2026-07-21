@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_cninfo_guarantee_sparsity_mechanism_overlap_reaudit",
+  "status": "one_independent_no_return_candidate_selected_before_cninfo_provider_rows_factor_values_prices_or_returns",
+  "frozen_at": "2026-07-20T14:00:21Z",
+  "purpose": "Re-audit the fixed three-local-session research frontier after the terminal related-party disclosure-sparsity diagnostic and select at most one economically independent public-data mechanism without requesting a CNInfo company record, deriving a new factor value, or reading a price or return.",
+  "research_scope": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "development_years_if_later_admitted": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "holding_universe": "buyable_main_chinext",
+    "quality_gate": "ROE at least 5 percent, positive net profit, positive revenue YoY, and positive profit YoY under the existing point-in-time quarterly-quality policy",
+    "new_cninfo_provider_rows_observed": false,
+    "new_factor_values_observed": false,
+    "price_fields_loaded": [],
+    "forward_return_fields_read": false
+  },
+  "prior_terminal_evidence": {
+    "path": "docs/a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json",
+    "sha256": "b8bda6862349a0ff9082109a3e176b4ecc195dc9be5bfb07043e91c6e7460dba",
+    "result": "The sole higher disclosure-sparsity diagnostic failed association stability, prospective execution, the CNY 200,000 pilot, and TopK viability. It contributes no factor to aggregation or current selection."
+  },
+  "source_selection_evidence": {
+    "provider": "CNInfo public data service",
+    "provider_page": "https://webapi.cninfo.com.cn/#/thematicStatistics",
+    "provider_endpoint": "https://webapi.cninfo.com.cn/api/sysapi/p_sysapi1054",
+    "open_source_adapter": {
+      "repository": "https://github.com/akfamily/akshare",
+      "commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+      "path": "akshare/stock/stock_cg_guarantee.py",
+      "sha256": "b6ceea710861c8dd4f1c1ed0e1794c9f7f0785f56fb9b3af932f5165f9943fde"
+    },
+    "documented_inputs": [
+      "market segment",
+      "start date",
+      "end date"
+    ],
+    "documented_market_segments": [
+      "all",
+      "Shenzhen main board",
+      "Shanghai market",
+      "ChiNext",
+      "STAR"
+    ],
+    "transport_record_positions_observed_in_adapter_only": [
+      "announcement statistics interval",
+      "guarantee amount divided by parent equity",
+      "guarantee amount",
+      "guarantee count",
+      "security name",
+      "security code",
+      "equity attributable to parent owners"
+    ],
+    "selected_persisted_fields": [
+      "announcement statistics interval",
+      "guarantee count",
+      "security code"
+    ],
+    "provider_rows_observed_by_this_audit": false
+  },
+  "candidate_review": [
+    {
+      "candidate": "cninfo_guarantee_amount_to_parent_equity",
+      "decision": "rejected_before_rows",
+      "reason": "The interface does not document the point-in-time date or version of the parent-equity denominator. Persisting the supplied ratio could introduce later financial-statement revisions into a historical signal."
+    },
+    {
+      "candidate": "cninfo_guarantee_amount",
+      "decision": "rejected_before_rows",
+      "reason": "An unscaled amount is mechanically dominated by issuer size. Adding a market-cap, asset, revenue, or equity denominator would either use prices or reopen the undocumented denominator problem."
+    },
+    {
+      "candidate": "cninfo_lawsuit_disclosure_sparsity",
+      "decision": "deferred_before_rows",
+      "reason": "The same public service exposes lawsuit counts, but the inspected documentation example has materially fewer issuers and many missing lawsuit amounts. Only one new mechanism may proceed, so the broader guarantee-count source is tested first without using lawsuit returns to choose."
+    },
+    {
+      "candidate": "cninfo_recent_guarantee_disclosure_sparsity",
+      "decision": "selected_as_the_only_independent_no_return_candidate",
+      "reason": "Recent guarantee disclosures measure contingent-liability and off-balance-sheet risk rather than related-party transaction complexity, prices, valuation, accounting quality, ownership, analyst attention, insider trading, or order flow. Only the complete positive count is used; amount, equity, supplied ratio, and identity text are excluded."
+    }
+  ],
+  "selected_mechanism": {
+    "factor_name": "cninfo_recent_guarantee_disclosure_sparsity",
+    "economic_mechanism": "Among quality-eligible issuers with at least one guarantee disclosure in the preceding three complete local sessions, fewer guarantee records may indicate lower fresh contingent-liability and off-balance-sheet disclosure pressure over the next three sessions.",
+    "raw_measure": "guarantee_count reported for one issuer over exactly the three complete local sessions immediately preceding the signal session",
+    "formula": "1 / guarantee_count",
+    "direction": "higher_is_better",
+    "units": "inverse guarantee records per issuer per three-session source window",
+    "source_window": "exactly the three local trading sessions ending on the local session immediately before the signal session",
+    "availability": "the first local trading session strictly after the source-window end, usable only at that signal-session close for entry at the next local open",
+    "same_window_end_session_trade_allowed": false,
+    "maximum_factor_age_calendar_days": 0,
+    "absent_event_policy": "missing; never zero guarantee pressure, infinite sparsity, or a favorable score",
+    "selection_or_promotion_allowed": false
+  },
+  "mechanism_independence": {
+    "versus_related_party_sparsity": "The terminal related-party factor counted affiliated-party transaction records on one notice date. This candidate counts only corporate-guarantee records in a frozen three-session lookback and represents contingent-liability pressure. The identical reciprocal-count shape makes the related-party factor a mandatory no-return near neighbor rather than evidence of independence by assertion.",
+    "versus_pledge_and_financing": "Share pledges concern shareholder collateral and financing constraints. Corporate guarantees are issuer or subsidiary contingent obligations; pledge event count and financing fields remain comparison context only.",
+    "versus_financial_state_and_quality": "No guarantee amount, supplied equity, supplied ratio, revenue, profit, asset, liability, ROE, valuation, or market capitalization enters the factor. Quarterly quality remains eligibility only.",
+    "versus_price_volume_and_level2": "No OHLCV, VWAP, turnover, price, return, order classification, queue, or depth field enters source acceptance or factor construction.",
+    "required_sparse_near_neighbors": [
+      "eastmoney_related_party_transaction_sparsity",
+      "pledge_event_count",
+      "major_holder_event_count",
+      "institutional_survey_event_count",
+      "analyst_valid_rating_report_count",
+      "insider_open_market_event_count",
+      "block_trade_event_count"
+    ],
+    "required_dense_size_liquidity_confounders": [
+      "free_float_cap_proxy",
+      "liquidity_5",
+      "turnover_surge_1"
+    ]
+  },
+  "required_gate_order": [
+    "freeze the exact endpoint, board requests, three-session source window, transport-position whitelist, formula, direction, timing, invalid-row policy, acceptance windows, thresholds, and future no-return comparison catalog before any provider record",
+    "implement and offline-test request signing, exact interval and positional schema checks, board isolation, duplicate rejection, point-in-time universe filtering, factor formula, one-shot guards, and atomic publication",
+    "run exactly one no-price acceptance on the frozen 2019-Q1, 2024-Q1, and 2025-Q1 signal windows and permanently consume it",
+    "if and only if acceptance passes, freeze a separate full-source and no-return protocol before any remaining 2019-2025 provider request",
+    "run source completeness and a fixed 200-cohort, five-year capacity gate before loading a comparison field",
+    "only after capacity passes, run the predeclared sparse semantic and conditional statistical comparisons plus dense size-liquidity comparisons without forward returns",
+    "freeze a separate one-time return and execution diagnostic only if every no-return gate passes"
+  ],
+  "prohibited_actions": [
+    "persist security names, guarantee amounts, parent equity, the provider-supplied guarantee-to-equity ratio, credentials, cookies, prices, market cap, valuation, or returns",
+    "treat an absent issuer record as zero guarantee pressure or a favorable score",
+    "use same-window-end-session information for a same-session trade",
+    "change the three-session source window, reciprocal formula, higher direction, signal grid, sample quarters, board set, thresholds, or comparison catalog after any provider record or factor value is observed",
+    "switch to lawsuit counts, guarantee amount, supplied ratio, another denominator, text, identities, or a combined score after source or outcome evidence",
+    "read prices or returns, aggregate with terminal factors, current-score, select, size, order, or justify Level-2 before all later no-return gates pass"
+  ],
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

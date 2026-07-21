@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "kind": "a_share_cninfo_guarantee_sparsity_source_acceptance_record",
+  "status": "terminal_source_transport_schema_rejected_before_normalization_full_history_no_return_or_returns",
+  "recorded_at": "2026-07-20T14:12:59Z",
+  "purpose": "Permanently record the sole frozen CNInfo guarantee-sparsity source-acceptance result and block any replay or post-result transport-schema repair.",
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_cninfo_guarantee_sparsity_mechanism_overlap_reaudit_20260720.json",
+    "sha256": "295dd5e8461fac0b3d203830499ce6550c2450d708c4ee3b9afa87ec7ff20a94"
+  },
+  "data_contract": {
+    "path": "docs/a_share_cninfo_guarantee_sparsity_data_contract.json",
+    "sha256": "1c59a4fdabbb7ae82d3279e83f81e55b3518f9634201379a96d59e25a7e12e68",
+    "preregistered_at": "2026-07-20T14:00:21Z"
+  },
+  "local_failure_manifest": {
+    "path": "data/metadata/rich_data/runs/20260720T141256Z_cninfo_guarantee_sparsity_acceptance_9f29ed74.json",
+    "sha256": "8a2c04d590972c14012e49112a8738aeeace6c24517635826f947ffb2a977ac7",
+    "run_id": "20260720T141256Z_cninfo_guarantee_sparsity_acceptance_9f29ed74"
+  },
+  "frozen_request_observed_result": {
+    "first_signal_date": "2019-01-07",
+    "first_window_start": "2019-01-02",
+    "first_window_end": "2019-01-04",
+    "first_market_label": "shenzhen_main_board",
+    "first_market": "012002",
+    "maximum_attempts_completed": 3,
+    "all_three_attempts_rejected_for_same_reason": true,
+    "rejection": "The top-level records value was a list, but at least one row was not a seven-position list or tuple required by the frozen transport contract.",
+    "completed_board_windows": 0,
+    "completed_signal_windows": 0,
+    "normalized_rows": 0,
+    "factor_values_derived": 0,
+    "published_files": [],
+    "partial_snapshot_deleted": true,
+    "provider_raw_response_persisted": false,
+    "transport_only_fields_persisted": false,
+    "accept_enckey_persisted": false
+  },
+  "interpretation": "This is a transport-schema acceptance failure, not evidence that guarantee disclosure sparsity has positive or negative predictive value. The exact candidate cannot be repaired or re-requested after observing the mismatch.",
+  "permanent_guards": {
+    "acceptance_command": "acceptance-cninfo-guarantee-sparsity",
+    "reject_before_contract_local_context_signing_or_provider_access": true,
+    "rerun_or_partial_resume_allowed": false,
+    "reinterpret_object_rows_or_change_positional_schema_allowed": false,
+    "change_endpoint_boards_dates_windows_fields_formula_direction_timing_or_thresholds_allowed": false,
+    "switch_to_amount_ratio_equity_lawsuit_or_another_response_field_allowed": false,
+    "full_history_no_return_audit_return_diagnostic_aggregation_scoring_selection_sizing_or_order_allowed": false
+  },
+  "credentials_tokens_cookies_or_proxy_read_logged_or_stored": false,
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

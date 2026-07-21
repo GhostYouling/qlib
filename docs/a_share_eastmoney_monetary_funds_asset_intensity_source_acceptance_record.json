@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_monetary_funds_asset_intensity_source_acceptance_record",
+  "status": "accepted_pending_separate_full_source_and_no_return_protocol",
+  "created_at": "2026-07-21T06:02:31Z",
+  "purpose": "Permanently bind the sole frozen Eastmoney 2025-12-31 monetary-funds asset-intensity acceptance so every clone stops before another provider request and no later source, comparison, price, return, aggregation, scoring, or selection work can begin without a separate fingerprint-bound protocol.",
+  "data_contract": {
+    "path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_data_contract.json",
+    "sha256": "f879f2095936e6a1f084432bbce2c5d5f2f74951d4a12d1742064b1e365b8d82",
+    "preregistered_at": "2026-07-21T05:51:47Z",
+    "new_balance_sheet_provider_rows_observed_before_freeze": false,
+    "new_monetary_funds_factor_values_observed_before_freeze": false
+  },
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_monetary_funds_asset_intensity_mechanism_overlap_reaudit_20260721.json",
+    "sha256": "6f195390c950e08f10cd5c0725497c769434f6848ce8eeee22a4b77a6088a419",
+    "selected_mechanism": "reported_monetary_funds_share_of_total_assets",
+    "interpretation_limited_to_reported_monetary_funds_not_verified_unrestricted_cash": true
+  },
+  "acceptance_manifest": {
+    "path": "data/metadata/rich_data/runs/20260721T060142Z_eastmoney_monetary_funds_asset_intensity_acceptance_5196e914.json",
+    "sha256": "77172da63f5e94eebc04fb3a5493f907c22fc59c734ab84b85e33eb96e2e9907",
+    "run_id": "20260721T060142Z_eastmoney_monetary_funds_asset_intensity_acceptance_5196e914",
+    "requested_report_date": "2025-12-31",
+    "retrieved_at": "2026-07-21T06:01:42.699671+00:00",
+    "acceptance_status": "accepted_schema_formula_and_current_coverage_pending_separate_full_source_and_no_return_protocol"
+  },
+  "accepted_frame": {
+    "path": "data/raw/a_share/rich/eastmoney/monetary_funds_asset_intensity/acceptance/20260721T060142Z_eastmoney_monetary_funds_asset_intensity_acceptance_5196e914/monetary_funds_asset_intensity.parquet",
+    "content_sha256": "c17b9c143dae17cf88f75046488ab5d1d66a8b0580553d50802bed715ca52a1f",
+    "file_sha256": "1bb1f1faa8f3eb971dc63aa3ed3589748d795398877769e615da828bdafb3791",
+    "rows": 4574,
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "monetary_funds",
+      "total_assets",
+      "eastmoney_monetary_funds_asset_intensity",
+      "provider"
+    ]
+  },
+  "source_request": {
+    "provider": "eastmoney",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_DMSK_FN_BALANCE",
+    "advertised_pages": 11,
+    "requested_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "provider_calls": 11,
+    "advertised_rows": 5218,
+    "received_rows": 5218,
+    "ordered_source_column_count": 57,
+    "ordered_source_columns_sha256": "08dbc752c0ec71e56d9aea88c0a1ecfa0929dbe006c6b71bd6c7422d6b2515e3",
+    "tushare_token_read": false,
+    "credentials_tokens_cookies_or_proxy_read_logged_or_stored": false,
+    "unused_transported_fields_persisted": false
+  },
+  "observed_result": {
+    "all_market_source_rows": 5218,
+    "complete_identity_supported_names": 4605,
+    "normalized_supported_rows_before_universe_filter": 4605,
+    "expected_point_in_time_holding_names": 4581,
+    "valid_holding_names": 4574,
+    "valid_holding_coverage": 0.9984719493560358,
+    "distinct_factor_values": 4574,
+    "factor_minimum": 0.0021817577572883764,
+    "factor_maximum": 0.8865242721216483,
+    "accepted_formula_max_absolute_error": 0.0,
+    "invalid_total_asset_rows_excluded": 0,
+    "invalid_monetary_funds_rows_excluded": 0,
+    "monetary_funds_above_total_assets_rows_excluded": 0,
+    "explicit_zero_monetary_funds_rows_retained": 0,
+    "unsupported_board_rows_excluded": 613,
+    "outside_point_in_time_holding_universe_rows_excluded": 31,
+    "duplicate_normalized_keys": 0,
+    "schema_formula_and_current_coverage_gate_passed": true
+  },
+  "next_gate": {
+    "allowed": "Freeze one separate fingerprint-bound post-acceptance protocol that binds the exact 28 quarterly partitions, reuse of this accepted partition, atomic publication, PIT availability, source-completeness thresholds, capacity checks, and the seven frozen no-return comparisons before requesting any other report date.",
+    "forbidden": "Do not repeat acceptance; do not change provider, report date, source positions, fields, schema, formula, direction, availability timing, age, invalid-row policy, thresholds, denominator, universe, or comparison catalog; do not inspect unused transported fields; do not read prices or returns; do not aggregate, score, select, size, order, or use Level-2."
+  },
+  "price_fields_loaded": [],
+  "open_close_or_forward_return_fields_read": false,
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}
