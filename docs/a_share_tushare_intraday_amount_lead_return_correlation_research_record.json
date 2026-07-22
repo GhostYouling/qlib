@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_amount_lead_return_correlation_research_record",
+  "status": "terminal_rejected_at_association_stability_and_executable_topk_gates",
+  "recorded_at": "2026-07-22T21:02:08Z",
+  "purpose": "Record the fingerprint-bound construction, no-return admission, and single historical three-session return diagnostic for the Tushare amount-leading-next-return-correlation mechanism without mistaking high coverage and uniqueness for predictive or executable value.",
+  "factor": {
+    "name": "intraday_amount_lead_return_correlation_238p",
+    "direction": "higher",
+    "formula": "Corr(log1p(A_prev), R_next) over 238 within-half pairs, where A_prev is the amount in the earlier minute bar and R_next=log(C_next/C_prev)",
+    "economic_hypothesis": "A high value means unusually active earlier minute bars tend to be followed by positive next-minute price moves rather than merely reacting contemporaneously; incomplete incorporation of informed demand may persist from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "raw_amount_used": true,
+    "raw_open_high_low_or_volume_used": false,
+    "standalone_09_30_row_excluded_from_formula": true,
+    "lunch_break_pair_excluded_from_formula": true,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_volatility_resolution_manifest_sha256": "da7d0a455697833a188e9cade9c1393ba16e7fef019e5a07b6f209c6db5cbc41",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_amount_lead_return_correlation/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_amount_lead_return_correlation_v1/snapshot_manifest.json",
+      "sha256": "505e15e5015973fb3d32fc881b8b2845c419da8f327ec8abe3a681949621e55f",
+      "dataset_sha256": "65f1d3c70da7f1f90154129d5ce4af7b3ddde7dae5b387ec5a38e8ea612f18ce",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7695088,
+      "constant_preceding_amount_rows": 1,
+      "constant_next_return_rows": 29410,
+      "invalid_required_value_rows": 0,
+      "nonfinite_log_return_rows": 0,
+      "nonfinite_log1p_amount_rows": 0,
+      "numerical_endpoint_canonicalization_rows": 0,
+      "amount_lead_return_correlation_range_violation_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_amount_lead_return_correlation_no_return_preregistration.json",
+      "sha256": "702046343e2e1e38c73095a125a6023b20d926fce47a3234c32264d4340fb730",
+      "factor_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260722T205610Z_intraday_amount_lead_return_correlation_no_return_audit.json",
+      "sha256": "d47db6b57b48dba58d83e9656eda8801f9d347f78babc3593d485063fd3d72de",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_returns_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_intraday_amount_lead_return_correlation_diagnostic_preregistration.json",
+      "sha256": "64113fbd408a6770f0c7e3dd927f6f7b0e0f0fd56af7679fac341c29dea58f2c",
+      "forward_returns_read_before_registration": false
+    }
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328065,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "comparison_factor_count": 12,
+    "maximum_absolute_median_daily_rank_correlation_to_twelve_terminal_factors": 0.26475924224930525,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "nearest_comparison_factor": "intraday_upside_semivariance_share_239m",
+    "all_twelve_uniqueness_gates_passed": true
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260722T210127Z",
+      "path": "data/experiments/short_horizon/20260722T210127Z_factor_diagnostic.json",
+      "sha256": "f459dba216b12a9ef0e8654f034ac8aaa9ac2188c30706ae819263cdee0d1d38"
+    },
+    "stability_audit": {
+      "run_id": "20260722T210147Z",
+      "path": "data/experiments/short_horizon/20260722T210147Z_factor_stability_audit.json",
+      "sha256": "70e213531b0216fb38a54b32557307a9080af238ec5c71de3036ba4bcec85a90"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260722T210147Z",
+      "path": "data/experiments/short_horizon/20260722T210147Z_factor_topk_viability_audit.json",
+      "sha256": "fcba802b687cccfd57ffdeba51b7a891d3f934fb5e16e75f2efac69399ee1f68"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/intraday_amount_lead_return_correlation_238p_historical_consumption.json",
+      "sha256": "eb7117f72e6fab1a4c618b0f8f54c37a101b2e08b10b469373fb7301eeff7a41",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "return_results": {
+    "cohorts": 539,
+    "mean_rank_ic": -0.0005666833897021254,
+    "median_rank_ic": -0.0005239754791386139,
+    "positive_rank_ic_rate": 0.49536178107606677,
+    "mean_top3_minus_bottom3_gross_return": 0.0006396603297117358,
+    "years_with_nonpositive_mean_rank_ic": [
+      2020,
+      2022,
+      2024
+    ],
+    "association_stability_gate_passed": false,
+    "execution_aware_complete_signal_count": 533,
+    "execution_aware_top3_net_cumulative_return": -0.6127966993220345,
+    "execution_aware_top3_maximum_drawdown": -0.8076293749156274,
+    "years_with_nonpositive_execution_aware_return": [
+      2020,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "pilot_net_cumulative_return_at_zero_bp_each_side": -0.14623164581561754,
+    "pilot_net_cumulative_return_at_five_bp_each_side": -0.2107019373045539,
+    "pilot_net_cumulative_return_at_ten_bp_each_side": -0.2508608721730975,
+    "pilot_maximum_drawdown_at_ten_bp_each_side": -0.2807030854173389,
+    "pilot_board_lot_affordability_rate": 0.8987421383647799,
+    "pilot_maximum_daily_amount_participation": 0.0060486630995515425,
+    "pilot_terminal_unresolved_positions": 0,
+    "topk_viability_gate_passed": false,
+    "dual_gate_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "invert_reformulate_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "terminal_reason": "The exact higher amount-leading-next-return-correlation direction failed association stability and executable Top-3 gates. Its normalized execution-aware ledger lost 61.28% with an 80.76% drawdown; the CNY 200,000 board-lot ledger lost 25.09% at ten basis points per side and its 89.87% affordability also missed the frozen 90% minimum."
+  },
+  "research_boundary": {
+    "coverage_or_uniqueness_proved_predictive_value": false,
+    "negative_historical_association_does_not_authorize_same_history_inversion": true,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction lead-lag mechanism. Preserve the close-and-amount within-half builder and ordered audit pattern, then freeze a genuinely distinct mechanism before observing its values or returns; do not purchase Level-2 to rescue this result."
+  }
+}
+
