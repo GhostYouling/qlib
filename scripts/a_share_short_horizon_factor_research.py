@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "0aeae73f1c3d05b9f783659092156fbc1e86676245d1da64bbe794b6b257aaac"
+    "6363a685065ccaf6318bd7e94657f7692d624b3a65bcb84577533656af356b41"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37342,7 +37342,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_afternoon_drawdown_recovery_terminal_rejection_zero_dual_gate_factors"
+        != "aggregation_blocked_after_intraday_amount_profile_serial_persistence_terminal_rejection_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37350,7 +37350,7 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 30
+        or post_frontier.get("terminal_mechanism_count") != 32
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source")
@@ -37477,6 +37477,76 @@ def load_three_day_iteration_status(
             "afternoon_drawdown_recovery_resilience_terminal"
         )
         is not True
+        or selected_source.get(
+            "intraday_amount_participation_entropy_candidate_manifest_sha256"
+        )
+        != "58c9a9c8f3991fa94a3e5289ed0a72333dfc037dae1e7f318de29eca4f207631"
+        or selected_source.get(
+            "intraday_amount_participation_entropy_no_return_coverage_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_amount_participation_entropy_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_amount_participation_entropy_forward_returns_read"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_amount_participation_entropy_diagnostic_cohorts"
+        )
+        != 539
+        or selected_source.get(
+            "intraday_amount_participation_entropy_association_stability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_amount_participation_entropy_topk_viability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_amount_participation_entropy_dual_gate_passed"
+        )
+        is not False
+        or selected_source.get("intraday_amount_participation_entropy_terminal")
+        is not True
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_candidate_manifest_sha256"
+        )
+        != "8c362725187c9e6021e64a07feadc6958e4334c65642dca0e0dc1eb4fccf7186"
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_no_return_coverage_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_forward_returns_read"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_diagnostic_cohorts"
+        )
+        != 539
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_association_stability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_topk_viability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_dual_gate_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_amount_profile_serial_persistence_terminal"
+        )
+        is not True
         or selected_source.get("prior_qmt_route_retained_as_fallback_only")
         is not True
         or any(
@@ -37560,6 +37630,8 @@ def load_three_day_iteration_status(
         "cleaned_four_factor_research_record": "a_share_tushare_cleaned_four_factor_research_record",
         "afternoon_signed_amount_efficiency_research_record": "a_share_tushare_afternoon_signed_amount_efficiency_research_record",
         "afternoon_drawdown_recovery_resilience_research_record": "a_share_tushare_afternoon_drawdown_recovery_resilience_research_record",
+        "intraday_amount_participation_entropy_research_record": "a_share_tushare_intraday_amount_participation_entropy_research_record",
+        "intraday_amount_profile_serial_persistence_research_record": "a_share_tushare_intraday_amount_profile_serial_persistence_research_record",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -37625,6 +37697,24 @@ def load_three_day_iteration_status(
     afternoon_recovery_results = afternoon_recovery_record.get("return_results") or {}
     afternoon_recovery_boundary = (
         afternoon_recovery_record.get("research_boundary") or {}
+    )
+    amount_entropy_record = source_records[
+        "intraday_amount_participation_entropy_research_record"
+    ]
+    amount_entropy_decision = amount_entropy_record.get("decision") or {}
+    amount_entropy_results = amount_entropy_record.get("return_results") or {}
+    amount_entropy_boundary = amount_entropy_record.get("research_boundary") or {}
+    amount_profile_persistence_record = source_records[
+        "intraday_amount_profile_serial_persistence_research_record"
+    ]
+    amount_profile_persistence_decision = (
+        amount_profile_persistence_record.get("decision") or {}
+    )
+    amount_profile_persistence_results = (
+        amount_profile_persistence_record.get("return_results") or {}
+    )
+    amount_profile_persistence_boundary = (
+        amount_profile_persistence_record.get("research_boundary") or {}
     )
     if (
         qmt_selection.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
@@ -37791,6 +37881,54 @@ def load_three_day_iteration_status(
         )
         is not False
         or afternoon_recovery_boundary.get("training_or_model_fitting_performed")
+        is not False
+        or amount_entropy_record.get("status")
+        != "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        or amount_entropy_results.get("cohorts") != 539
+        or amount_entropy_results.get("association_stability_gate_passed")
+        is not False
+        or amount_entropy_results.get("topk_viability_gate_passed") is not False
+        or amount_entropy_results.get("dual_gate_passed") is not False
+        or amount_entropy_decision.get("terminally_reject_exact_factor_direction")
+        is not True
+        or amount_entropy_decision.get("aggregation_candidate_added") is not False
+        or amount_entropy_decision.get("aggregation_allowed") is not False
+        or amount_entropy_decision.get("selection_allowed") is not False
+        or amount_entropy_decision.get("level2_intake_justified") is not False
+        or amount_entropy_boundary.get(
+            "same_history_combination_return_evaluation_performed"
+        )
+        is not False
+        or amount_entropy_boundary.get("training_or_model_fitting_performed")
+        is not False
+        or amount_profile_persistence_record.get("status")
+        != "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        or amount_profile_persistence_results.get("cohorts") != 539
+        or amount_profile_persistence_results.get(
+            "association_stability_gate_passed"
+        )
+        is not False
+        or amount_profile_persistence_results.get("topk_viability_gate_passed")
+        is not False
+        or amount_profile_persistence_results.get("dual_gate_passed") is not False
+        or amount_profile_persistence_decision.get(
+            "terminally_reject_exact_factor_direction"
+        )
+        is not True
+        or amount_profile_persistence_decision.get("aggregation_candidate_added")
+        is not False
+        or amount_profile_persistence_decision.get("aggregation_allowed")
+        is not False
+        or amount_profile_persistence_decision.get("selection_allowed") is not False
+        or amount_profile_persistence_decision.get("level2_intake_justified")
+        is not False
+        or amount_profile_persistence_boundary.get(
+            "same_history_combination_return_evaluation_performed"
+        )
+        is not False
+        or amount_profile_persistence_boundary.get(
+            "training_or_model_fitting_performed"
+        )
         is not False
     ):
         raise ValueError("three-day iteration status source decision changed")
@@ -39673,6 +39811,39 @@ def render_three_day_research_report(
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
                     if source.get(
+                        "intraday_amount_profile_serial_persistence_terminal"
+                    ):
+                        next_external_action = (
+                            "四个清洗方向、两个午后路径方向、全日成交额参与熵和全日成交额"
+                            "序列持续性较高方向均已终止；只研究预先登记的全新经济机制，或"
+                            "积累注册后真正未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子唯一一次 539-cohort 诊断只有低日内实现"
+                            "波动率通过关联稳定性门，但 TopK 通过 0 个、双门禁通过 0 个。"
+                            "午后资金加权方向效率、午后最大回撤恢复韧性、全日成交额参与熵和"
+                            "全日成交额序列持续性都先通过各自无收益覆盖及独立性门，再各完成"
+                            "唯一一次 539-cohort 诊断；四个预登记的较高方向都未同时通过关联"
+                            "稳定性和可执行 TopK 门。开盘缺口因子继续排除，未训练模型，"
+                            "Level2 继续延期。"
+                        )
+                    elif source.get("intraday_amount_participation_entropy_terminal"):
+                        next_external_action = (
+                            "四个清洗方向、两个午后路径方向和全日成交额参与熵较高方向均已"
+                            "终止；只研究预先登记的全新经济机制，或积累注册后真正未见的分钟"
+                            "样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子唯一一次 539-cohort 诊断只有低日内实现"
+                            "波动率通过关联稳定性门，但 TopK 通过 0 个、双门禁通过 0 个。"
+                            "午后资金加权方向效率、午后最大回撤恢复韧性和全日成交额参与熵都"
+                            "先通过各自无收益覆盖及独立性门，再各完成唯一一次 539-cohort "
+                            "诊断；三个预登记的较高方向都未同时通过关联稳定性和可执行 TopK "
+                            "门。开盘缺口因子继续排除，未训练模型，Level2 继续延期。"
+                        )
+                    elif source.get(
                         "afternoon_drawdown_recovery_resilience_terminal"
                     ):
                         next_external_action = (

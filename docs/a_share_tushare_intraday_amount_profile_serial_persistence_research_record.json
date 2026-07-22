@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_amount_profile_serial_persistence_research_record",
+  "status": "terminal_rejected_at_association_stability_and_executable_topk_gates",
+  "recorded_at": "2026-07-22T16:16:04Z",
+  "purpose": "Record the fingerprint-bound construction, no-return admission, and single historical three-session return diagnostic for the Tushare order-sensitive full-session amount-profile persistence mechanism without mistaking near-complete coverage or mechanism uniqueness for a usable Top-3 strategy.",
+  "factor": {
+    "name": "intraday_amount_profile_serial_persistence_240m",
+    "direction": "higher",
+    "formula": "corr(log1p(a_t) for t=1..239, log1p(a_t) for t=2..240), using the 240 continuous-session amount observations at 09:31-11:30 and 13:01-15:00",
+    "economic_hypothesis": "A stock whose adjacent minutes remain in similar transaction-amount states instead of alternating between bursts and inactivity may retain broad short-horizon participation.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "raw_open_high_low_close_or_volume_used": false,
+    "standalone_09_30_row_excluded_from_formula": true,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_afternoon_efficiency_manifest_sha256": "e1184b04385d1b0d1eb1eb4a56ad6c21609c4387cf53324cbbb41c420cdb8ed5",
+    "prior_afternoon_recovery_manifest_sha256": "a94413ba437dce44ef17215cce42c2d62e5aefab376f345df525dec3fd7a9c45",
+    "prior_amount_entropy_manifest_sha256": "58c9a9c8f3991fa94a3e5289ed0a72333dfc037dae1e7f318de29eca4f207631",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_amount_profile_serial_persistence/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_amount_profile_serial_persistence_v1/snapshot_manifest.json",
+      "sha256": "8c362725187c9e6021e64a07feadc6958e4334c65642dca0e0dc1eb4fccf7186",
+      "dataset_sha256": "a79d964f8d8a4d91f1f1bb29897753175c446b4ec649d92ddd4e6dbcc7b895e4",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7724497,
+      "constant_profile_rows": 1,
+      "invalid_required_value_rows": 0,
+      "ieee_boundary_canonicalization_rows": 0,
+      "correlation_range_violation_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_amount_profile_serial_persistence_no_return_preregistration.json",
+      "sha256": "f0eddc1fd2fe9586618d1375c53a0725d14f5a906157573e75ec59e4537b406d",
+      "factor_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260722T160810Z_intraday_amount_profile_serial_persistence_no_return_audit.json",
+      "sha256": "a95d03c6aef98f49dcd31f1ba3f3e6c7223f706b65e1283deba8a6689907345c",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_returns_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_intraday_amount_profile_serial_persistence_diagnostic_preregistration.json",
+      "sha256": "a86f51d939da2b0221f16783d470fd528c595c54eccd9079f83064b41cc062c6",
+      "forward_returns_read_before_registration": false
+    }
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "maximum_absolute_median_daily_rank_correlation_to_seven_terminal_factors": 0.30750048705048266,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "median_daily_rank_correlation_to_prior_amount_entropy": 0.2827344781148655,
+    "all_seven_uniqueness_gates_passed": true
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260722T161536Z",
+      "path": "data/experiments/short_horizon/20260722T161536Z_factor_diagnostic.json",
+      "sha256": "da232761e29a01cfd9d7b5af5eb9a82e6daf3e42e80b685ff9dc2f1af66292fb"
+    },
+    "stability_audit": {
+      "run_id": "20260722T161556Z",
+      "path": "data/experiments/short_horizon/20260722T161556Z_factor_stability_audit.json",
+      "sha256": "22b0f97d7a86b39ac1dcee3b44770ad19d9e14b038fd39fffa38e08a8e2085dc"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260722T161556Z",
+      "path": "data/experiments/short_horizon/20260722T161556Z_factor_topk_viability_audit.json",
+      "sha256": "df7afa30d18fcc5383992e3a57e2288173f1ec2830f8b56342c0385607cb6b12"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/tushare_intraday_amount_profile_serial_persistence_v1_consumption.json",
+      "sha256": "64be20a6d2b510a4a776423ff1da9a9c189a989ffeb933a72416f954a0b757dd",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "return_results": {
+    "cohorts": 539,
+    "mean_rank_ic": -0.024843433745156303,
+    "median_rank_ic": -0.022810763864874163,
+    "positive_rank_ic_rate": 0.41929499072356213,
+    "mean_top3_minus_bottom3_gross_return": 0.00044066835778414624,
+    "years_with_nonpositive_mean_rank_ic": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "association_stability_gate_passed": false,
+    "execution_aware_complete_signal_count": 533,
+    "execution_aware_top3_net_cumulative_return": -0.4121221942974308,
+    "execution_aware_top3_maximum_drawdown": -0.8866970259117184,
+    "years_with_nonpositive_execution_aware_return": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "pilot_net_cumulative_return_at_ten_bp_each_side": -0.14853797950904513,
+    "pilot_maximum_drawdown": -0.2920685358542078,
+    "pilot_board_lot_affordability_rate": 0.9206549118387909,
+    "pilot_maximum_daily_amount_participation": 0.0008235196494643914,
+    "pilot_terminal_unresolved_positions": 0,
+    "topk_viability_gate_passed": false,
+    "dual_gate_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "invert_relag_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "terminal_reason": "The exact higher amount-profile serial-persistence direction failed the full association-stability gate and the executable Top-3 gate despite near-complete candidate coverage and low correlation to seven prior terminal minute factors."
+  },
+  "research_boundary": {
+    "coverage_or_uniqueness_proved_predictive_value": false,
+    "negative_historical_association_does_not_authorize_same_history_inversion": true,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction mechanism. Preserve the amount-only ordered-path builder and audit pattern, then propose a genuinely distinct mechanism and freeze it before observing values or returns; do not purchase Level-2 to rescue this result."
+  }
+}

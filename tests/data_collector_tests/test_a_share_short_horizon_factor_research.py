@@ -5787,8 +5787,8 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
 def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
-    assert len(terminal) == 30
-    assert len({item["mechanism"] for item in terminal}) == 30
+    assert len(terminal) == 32
+    assert len({item["mechanism"] for item in terminal}) == 32
     assert {Path(item["record"]["path"]).name for item in terminal} == {
         path.name
         for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
@@ -5797,7 +5797,7 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         )
     }
     assert status["post_frontier_summary"] == {
-        "terminal_mechanism_count": 30,
+        "terminal_mechanism_count": 32,
         "admitted_factor_count": 0,
         "aggregation_candidate_count": 0,
     }
@@ -5875,6 +5875,42 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
     assert status["selected_source_path"][
         "afternoon_drawdown_recovery_resilience_terminal"
     ] is True
+    assert status["selected_source_path"][
+        "intraday_amount_participation_entropy_no_return_coverage_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_amount_participation_entropy_no_return_uniqueness_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_amount_participation_entropy_association_stability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_amount_participation_entropy_topk_viability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_amount_participation_entropy_dual_gate_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_amount_participation_entropy_terminal"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_amount_profile_serial_persistence_no_return_coverage_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_amount_profile_serial_persistence_no_return_uniqueness_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_amount_profile_serial_persistence_association_stability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_amount_profile_serial_persistence_topk_viability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_amount_profile_serial_persistence_dual_gate_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_amount_profile_serial_persistence_terminal"
+    ] is True
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -5882,14 +5918,14 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         three_day_iteration_status=status,
     )
     assert "当前迭代状态" in report
-    assert "前沿之后另有 30 条机制已到达终止门禁" in report
+    assert "前沿之后另有 32 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
     assert "Tushare 原五因子来源覆盖门仍未通过" in report
     assert "字段级清洗层保留 4 个因子并全部通过覆盖门" in report
     assert "唯一一次 539-cohort 诊断" in report
     assert "TopK 通过 0 个、双门禁通过 0 个" in report
-    assert "午后资金加权方向效率与午后最大回撤恢复韧性" in report
-    assert "两个预登记的较高方向都同时未通过关联稳定性和可执行 TopK 门" in report
+    assert "午后资金加权方向效率、午后最大回撤恢复韧性、全日成交额参与熵和全日成交额序列持续性" in report
+    assert "四个预登记的较高方向都未同时通过关联稳定性和可执行 TopK 门" in report
     assert "开盘缺口因子继续排除" in report
     assert "未训练模型" in report
     assert "Level2 继续延期" in report

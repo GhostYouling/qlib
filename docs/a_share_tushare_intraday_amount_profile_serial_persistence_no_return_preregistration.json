@@ -1,0 +1,265 @@
+{
+  "kind": "a_share_tushare_intraday_amount_profile_serial_persistence_no_return_preregistration",
+  "version": 1,
+  "status": "frozen_before_candidate_factor_values_comparison_values_or_forward_returns",
+  "preregistered_at": "2026-07-22T15:32:57Z",
+  "purpose": "Build and audit one economically distinct order-sensitive full-session amount-profile persistence factor from the immutable Tushare one-minute source without reading any price or forward return.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "c2bbefdae0f87e6d6bba10d9efe2b16a5cea263df62cb5f3a1429cd5bc412754",
+    "status": "aggregation_blocked_after_intraday_amount_participation_entropy_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count_before_this_candidate": 31,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "source_chain": {
+    "raw_minute_manifest": {
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+      "partitions": 33015,
+      "rows": 1866461373,
+      "provider": "tushare",
+      "frequency": "1m"
+    },
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498,
+      "required_status": "cleaned_sentiment_coverage_passed_pending_separate_no_return_research_protocol"
+    },
+    "afternoon_efficiency_comparison_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_afternoon_signed_amount_efficiency/tushare_stk_mins_1m_2019_2025_ea0cbb8f_afternoon_signed_amount_efficiency_v1/snapshot_manifest.json",
+      "sha256": "e1184b04385d1b0d1eb4a56ad6c21609c4387cf53324cbbb41c420cdb8ed5",
+      "dataset_sha256": "e580ce8bbcd7779256d344153def5d0587e1fd1ee8d59af63ef9e3d6a9254dd2",
+      "partitions": 33015,
+      "rows": 7724498,
+      "factor_name": "afternoon_signed_amount_efficiency_120m",
+      "required_status": "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
+    },
+    "afternoon_recovery_comparison_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_afternoon_drawdown_recovery_resilience/tushare_stk_mins_1m_2019_2025_ea0cbb8f_afternoon_drawdown_recovery_resilience_v1/snapshot_manifest.json",
+      "sha256": "a94413ba437dce44ef17215cce42c2d62e5aefab376f345df525dec3fd7a9c45",
+      "dataset_sha256": "07f1d0e83de44a1d533acf6e269bf34fc02d0c6ef582affdd96eac5c7af769c8",
+      "partitions": 33015,
+      "rows": 7724498,
+      "factor_name": "afternoon_drawdown_recovery_resilience_120m",
+      "required_status": "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
+    },
+    "amount_entropy_comparison_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_amount_participation_entropy/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_amount_participation_entropy_v1/snapshot_manifest.json",
+      "sha256": "58c9a9c8f3991fa94a3e5289ed0a72333dfc037dae1e7f318de29eca4f207631",
+      "dataset_sha256": "8d34ac56836fe1cc22157ac07f29e6a3ef94429008376e22e851730992b3891d",
+      "partitions": 33015,
+      "rows": 7724498,
+      "factor_name": "intraday_amount_participation_entropy_240m",
+      "required_status": "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
+    },
+    "repository_records": {
+      "joint_cleaning_protocol": {
+        "path": "docs/a_share_tushare_one_minute_sentiment_cleaning_protocol.json",
+        "sha256": "f70c7da688ecb6d2e88cd86f4ec086a42b620e0c12025ee9263fe603abe3a2fe"
+      },
+      "joint_cleaning_result": {
+        "path": "docs/a_share_tushare_one_minute_sentiment_cleaning_result.json",
+        "sha256": "2bd511045a1c9bc8a2b8d3bc566d4c0219c5764e8f1ae02c559125c99c6a4275"
+      },
+      "terminal_four_factor_research_record": {
+        "path": "docs/a_share_tushare_cleaned_four_factor_research_record.json",
+        "sha256": "f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2"
+      },
+      "terminal_afternoon_efficiency_research_record": {
+        "path": "docs/a_share_tushare_afternoon_signed_amount_efficiency_research_record.json",
+        "sha256": "bd872c494f8dbfa7eed82e79a67d145a08e561dbdc5f36548f172fc79641cd1d"
+      },
+      "terminal_afternoon_recovery_research_record": {
+        "path": "docs/a_share_tushare_afternoon_drawdown_recovery_resilience_research_record.json",
+        "sha256": "b608fd9c8bbe3ba40aa433c39b2c31ff7a0bbff9abb31aa1905acf26ee9f48d5"
+      },
+      "terminal_amount_entropy_research_record": {
+        "path": "docs/a_share_tushare_intraday_amount_participation_entropy_research_record.json",
+        "sha256": "6268a51a5210624e3b75283fc0a21e79f7572b9e82a31d670afa50dcf6a8f036"
+      }
+    }
+  },
+  "point_in_time_context": {
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "development_sessions": 1699
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "availability": "strictly_next_local_session_after_announcement_date",
+      "quality_state_semantics": "after_effective_date_sort_and_dedup_forward_fill_roe_net_profit_revenue_yoy_and_profit_yoy_independently",
+      "maximum_age_days": 550
+    },
+    "minimum_listing_sessions": 20
+  },
+  "candidate": {
+    "name": "intraday_amount_profile_serial_persistence_240m",
+    "diagnostic_direction": "higher",
+    "signal_time": "after_signal_session_close",
+    "eligible_source_stock_days": "exactly_the_stock_days_already_present_in_the_immutable_joint_clean_base",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "source_fields_forbidden": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "any_daily_price",
+      "any_forward_return"
+    ],
+    "bar_grid": {
+      "required_full_source_rows": 241,
+      "excluded_source_bar_end": "09:30",
+      "continuous_bar_ends_start": "09:31",
+      "morning_bar_ends_end": "11:30",
+      "afternoon_bar_ends_start": "13:01",
+      "continuous_bar_ends_end": "15:00",
+      "continuous_bars": 240,
+      "lag_pairs": 239
+    },
+    "formula_steps": [
+      "Use exactly the 240 continuous-session amount observations at 09:31-11:30 and 13:01-15:00; preserve but exclude the standalone 09:30 source row.",
+      "Require every amount a_t to be finite and nonnegative and set x_t=log1p(a_t).",
+      "Form the 239-pair vectors L=(x_1,...,x_239) and R=(x_2,...,x_240).",
+      "Return the Pearson correlation corr(L,R); require both centered vectors to have strictly positive squared norm."
+    ],
+    "formula": "corr(log1p(a_t) for t=1..239, log1p(a_t) for t=2..240), using the 240 continuous-session amount observations at 09:31-11:30 and 13:01-15:00",
+    "validity": {
+      "all_240_required_amount_values_finite_and_nonnegative": true,
+      "both_lag_vectors_centered_squared_norm_strictly_positive": true,
+      "finite_result_required": true,
+      "allowed_closed_interval": [
+        -1.0,
+        1.0
+      ],
+      "constant_profile_policy": "missing",
+      "ieee_boundary_canonicalization_tolerance": 1e-12,
+      "statistical_clipping_imputation_winsorization_or_daily_substitution_allowed": false
+    },
+    "hypothesis": "A high value indicates that adjacent minutes tend to remain in similar transaction-amount states instead of alternating between isolated bursts and inactivity; this serial participation state may persist from the next open through the third close.",
+    "economic_distinction": "This is an order-sensitive, price-free lag statistic of the full 240-minute amount path. The prior entropy factor is invariant to any permutation of the same 240 amounts, whereas this factor changes when their temporal ordering changes. It does not use total amount, return sign, price path, VWAP, volatility, or a late-window-only share.",
+    "rejected_before_value_observation": [
+      "Lower serial persistence as a burst-reversal hypothesis is rejected to avoid a post-result inversion.",
+      "Alternate lags, partial-session windows, and multiple-lag aggregates are rejected as lag/window search.",
+      "Removing the deterministic intraday profile, cross-day normalization, or stock-specific seasonal adjustment is rejected as a different learned mechanism.",
+      "Price-weighted, return-signed, volume-mixed, and direction-conditioned variants are rejected.",
+      "Including or interpreting the ambiguous standalone 09:30 source row is rejected.",
+      "Thresholding low amounts, dropping zero-amount minutes, clipping valid correlations, or filling constant profiles is rejected."
+    ]
+  },
+  "derived_snapshot": {
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_amount_profile_serial_persistence_v1",
+    "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_amount_profile_serial_persistence/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_amount_profile_serial_persistence_v1",
+    "partitioning": "one_symbol_year_parquet_matching_the_joint_clean_partition_identity",
+    "resume_policy": "resume_only_a_partition_whose_protocol_raw_source_joint_base_and_output_byte_hashes_all_match",
+    "publish_policy": "write_to_one_hidden_partial_root_and_atomically_publish_only_after_all_33015_partition_checkpoints_pass",
+    "minimum_free_space_gib": 5,
+    "provider_request_allowed": false,
+    "raw_source_rows_mutated": false,
+    "daily_values_substituted_into_minute_rows": false,
+    "forward_return_fields_read": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate_finite_rows_divided_by_quality_and_listing_eligible_buyable_rows_within_2019_2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "failed_gate_policy": "write_one_terminal_no_return_record_and_stop_before_loading_any_terminal_factor_comparison_value_or_forward_return"
+    },
+    "uniqueness_after_coverage_only": {
+      "comparison_source": "the_same_joint_clean_base_for_the_original_four_values_plus_the_three_immutable_terminal_candidate_snapshots",
+      "comparison_factors": [
+        {
+          "name": "late_return_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "late_amount_share_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "late_vwap_to_day_vwap_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_realized_volatility",
+          "score_direction": "lower"
+        },
+        {
+          "name": "afternoon_signed_amount_efficiency_120m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "afternoon_drawdown_recovery_resilience_120m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_participation_entropy_240m",
+          "score_direction": "higher"
+        }
+      ],
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "all_seven_comparisons_must_pass": true,
+      "failed_gate_policy": "write_one_terminal_no_return_record_and_retire_this_exact_candidate_without_inversion_lag_or_window_changes_reweighting_or_return_access"
+    }
+  },
+  "conditional_next_step": {
+    "if_all_no_return_gates_pass": "freeze_a_separate_fingerprint_bound_single_factor_three_session_return_and_execution_diagnostic_before_reading_any_forward_return",
+    "return_diagnostic_is_authorized_by_this_protocol_alone": false,
+    "historical_return_read_allowed_during_build_or_no_return_audit": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "prohibited_post_result_search": [
+    "invert_the_direction",
+    "change_the_240_continuous_minute_support_or_include_09_30",
+    "change_the_lag_or_correlation_formula",
+    "drop_or_threshold_zero_or_low_amount_minutes",
+    "deseasonalize_or_normalize_using_cross_day_information",
+    "add_price_return_volume_or_direction_information",
+    "threshold_statistically_clip_winsorize_or_fill_the_factor",
+    "subset_years_boards_or_market_states",
+    "combine_with_a_terminal_factor_before_this_candidate_independently_passes_both_return_gates",
+    "relax_coverage_capacity_or_uniqueness_thresholds",
+    "purchase_or_use_level2_to_rescue_a_failure"
+  ],
+  "research_boundary": {
+    "candidate_factor_values_observed_before_registration": false,
+    "terminal_factor_comparison_values_observed_for_this_candidate_before_registration": false,
+    "forward_return_fields_read_before_registration": false,
+    "training_or_model_fitting_performed": false,
+    "investment_advice": false
+  }
+}

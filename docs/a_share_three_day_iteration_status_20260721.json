@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_afternoon_drawdown_recovery_terminal_rejection_zero_dual_gate_factors",
-  "recorded_at": "2026-07-22T14:25:05Z",
+  "status": "aggregation_blocked_after_intraday_amount_profile_serial_persistence_terminal_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-22T16:16:04Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -260,10 +260,26 @@
         "path": "docs/a_share_tushare_afternoon_drawdown_recovery_resilience_research_record.json",
         "sha256": "b608fd9c8bbe3ba40aa433c39b2c31ff7a0bbff9abb31aa1905acf26ee9f48d5"
       }
+    },
+    {
+      "mechanism": "tushare_intraday_amount_participation_entropy_240m",
+      "terminal_gate": "association_stability_and_executable_topk",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_amount_participation_entropy_research_record.json",
+        "sha256": "6268a51a5210624e3b75283fc0a21e79f7572b9e82a31d670afa50dcf6a8f036"
+      }
+    },
+    {
+      "mechanism": "tushare_intraday_amount_profile_serial_persistence_240m",
+      "terminal_gate": "association_stability_and_executable_topk",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_amount_profile_serial_persistence_research_record.json",
+        "sha256": "197899381a59f7a528c575e11a21310c15a41ac8b06232b1c8174648f2117b04"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 30,
+    "terminal_mechanism_count": 32,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -325,6 +341,14 @@
       "path": "docs/a_share_tushare_afternoon_drawdown_recovery_resilience_research_record.json",
       "sha256": "b608fd9c8bbe3ba40aa433c39b2c31ff7a0bbff9abb31aa1905acf26ee9f48d5"
     },
+    "intraday_amount_participation_entropy_research_record": {
+      "path": "docs/a_share_tushare_intraday_amount_participation_entropy_research_record.json",
+      "sha256": "6268a51a5210624e3b75283fc0a21e79f7572b9e82a31d670afa50dcf6a8f036"
+    },
+    "intraday_amount_profile_serial_persistence_research_record": {
+      "path": "docs/a_share_tushare_intraday_amount_profile_serial_persistence_research_record.json",
+      "sha256": "197899381a59f7a528c575e11a21310c15a41ac8b06232b1c8174648f2117b04"
+    },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
     "automatic_acceptance_passed": true,
@@ -382,8 +406,26 @@
     "afternoon_drawdown_recovery_resilience_topk_viability_passed": false,
     "afternoon_drawdown_recovery_resilience_dual_gate_passed": false,
     "afternoon_drawdown_recovery_resilience_terminal": true,
+    "intraday_amount_participation_entropy_candidate_manifest_sha256": "58c9a9c8f3991fa94a3e5289ed0a72333dfc037dae1e7f318de29eca4f207631",
+    "intraday_amount_participation_entropy_no_return_coverage_passed": true,
+    "intraday_amount_participation_entropy_no_return_uniqueness_passed": true,
+    "intraday_amount_participation_entropy_forward_returns_read": true,
+    "intraday_amount_participation_entropy_diagnostic_cohorts": 539,
+    "intraday_amount_participation_entropy_association_stability_passed": false,
+    "intraday_amount_participation_entropy_topk_viability_passed": false,
+    "intraday_amount_participation_entropy_dual_gate_passed": false,
+    "intraday_amount_participation_entropy_terminal": true,
+    "intraday_amount_profile_serial_persistence_candidate_manifest_sha256": "8c362725187c9e6021e64a07feadc6958e4334c65642dca0e0dc1eb4fccf7186",
+    "intraday_amount_profile_serial_persistence_no_return_coverage_passed": true,
+    "intraday_amount_profile_serial_persistence_no_return_uniqueness_passed": true,
+    "intraday_amount_profile_serial_persistence_forward_returns_read": true,
+    "intraday_amount_profile_serial_persistence_diagnostic_cohorts": 539,
+    "intraday_amount_profile_serial_persistence_association_stability_passed": false,
+    "intraday_amount_profile_serial_persistence_topk_viability_passed": false,
+    "intraday_amount_profile_serial_persistence_dual_gate_passed": false,
+    "intraday_amount_profile_serial_persistence_terminal": true,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "Retire the four exact cleaned historical directions, the exact higher-direction afternoon signed-amount-efficiency mechanism, and the exact higher-direction afternoon drawdown-recovery-resilience mechanism. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
+    "next_external_action": "Retire the four exact cleaned historical directions, the exact higher-direction afternoon signed-amount-efficiency mechanism, the exact higher-direction afternoon drawdown-recovery-resilience mechanism, the exact higher-direction full-session amount-participation-entropy mechanism, and the exact higher-direction full-session amount-profile serial-persistence mechanism. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, relag, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
   },
   "decision": {
     "aggregation_allowed": false,
