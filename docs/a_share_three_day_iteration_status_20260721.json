@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_intraday_amount_center_of_mass_terminal_rejection_zero_dual_gate_factors",
-  "recorded_at": "2026-07-22T21:59:35Z",
+  "status": "aggregation_blocked_after_intraday_up_move_amount_share_terminal_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-22T23:05:47Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -324,10 +324,18 @@
         "path": "docs/a_share_tushare_intraday_amount_center_of_mass_research_record.json",
         "sha256": "79a36ae4f3b3c74078ec0680d4e3e4b31c9b90f08ccb73e81089aff483d14dd0"
       }
+    },
+    {
+      "mechanism": "tushare_intraday_up_move_amount_share_238m",
+      "terminal_gate": "association_stability_and_executable_topk",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_up_move_amount_share_research_record.json",
+        "sha256": "ae6af77dcb554cba1adffac56462b49a69afad01269d2c7198722052707b5de2"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 38,
+    "terminal_mechanism_count": 39,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -420,6 +428,10 @@
     "intraday_amount_center_of_mass_research_record": {
       "path": "docs/a_share_tushare_intraday_amount_center_of_mass_research_record.json",
       "sha256": "79a36ae4f3b3c74078ec0680d4e3e4b31c9b90f08ccb73e81089aff483d14dd0"
+    },
+    "intraday_up_move_amount_share_research_record": {
+      "path": "docs/a_share_tushare_intraday_up_move_amount_share_research_record.json",
+      "sha256": "ae6af77dcb554cba1adffac56462b49a69afad01269d2c7198722052707b5de2"
     },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
@@ -553,8 +565,18 @@
     "intraday_amount_center_of_mass_topk_viability_passed": false,
     "intraday_amount_center_of_mass_dual_gate_passed": false,
     "intraday_amount_center_of_mass_terminal": true,
+    "intraday_up_move_amount_share_candidate_manifest_sha256": "d7d839c70c2289c9f05182de5ade655f31a0006c3871fcf9273cf17e2404d634",
+    "intraday_up_move_amount_share_no_return_coverage_passed": true,
+    "intraday_up_move_amount_share_no_return_uniqueness_passed": true,
+    "intraday_up_move_amount_share_maximum_absolute_median_daily_rank_correlation": 0.5773278922327905,
+    "intraday_up_move_amount_share_forward_returns_read": true,
+    "intraday_up_move_amount_share_diagnostic_cohorts": 539,
+    "intraday_up_move_amount_share_association_stability_passed": false,
+    "intraday_up_move_amount_share_topk_viability_passed": false,
+    "intraday_up_move_amount_share_dual_gate_passed": false,
+    "intraday_up_move_amount_share_terminal": true,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "Retire the four exact cleaned historical directions and the exact higher-direction afternoon signed-amount-efficiency, afternoon drawdown-recovery-resilience, full-session amount-participation-entropy, full-session amount-profile serial-persistence, full-session upside-semivariance-share, terminal-close-location, return-sign-run-imbalance, intraday-volatility-resolution, amount-leading-next-return-correlation, and intraday-amount-center-of-mass mechanisms. The latest amount-arrival-timing candidate passed coverage and all thirteen uniqueness comparisons but failed association and executable Top-3 gates; its normalized ledger lost 59.04% and its CNY 200,000 board-lot result lost 20.62% at ten basis points per side. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
+    "next_external_action": "Retire the four exact cleaned historical directions and the exact higher-direction afternoon signed-amount-efficiency, afternoon drawdown-recovery-resilience, full-session amount-participation-entropy, full-session amount-profile serial-persistence, full-session upside-semivariance-share, terminal-close-location, return-sign-run-imbalance, intraday-volatility-resolution, amount-leading-next-return-correlation, intraday-amount-center-of-mass, and intraday-up-move-amount-share mechanisms. The latest amount-weighted minute-direction candidate passed coverage and all fourteen uniqueness comparisons but failed association and executable Top-3 gates: mean Rank IC was -0.00468, its normalized execution-aware ledger lost 81.28%, and its CNY 200,000 board-lot result lost 25.77% at ten basis points per side. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
   },
   "decision": {
     "aggregation_allowed": false,

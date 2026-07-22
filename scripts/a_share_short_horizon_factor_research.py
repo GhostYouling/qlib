@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "05bfec3c0035508e0a743384e27293991073b4bccfd41addb3ebd639a93d6080"
+    "9f636eb1b6eee11afa5a064a977c99ecfce10b87ac3acb920047d0152e86072f"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37342,7 +37342,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_intraday_amount_center_of_mass_terminal_rejection_zero_dual_gate_factors"
+        != "aggregation_blocked_after_intraday_up_move_amount_share_terminal_rejection_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37350,7 +37350,7 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 38
+        or post_frontier.get("terminal_mechanism_count") != 39
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source")
@@ -37757,6 +37757,37 @@ def load_three_day_iteration_status(
         is not False
         or selected_source.get("intraday_amount_center_of_mass_terminal")
         is not True
+        or selected_source.get(
+            "intraday_up_move_amount_share_candidate_manifest_sha256"
+        )
+        != "d7d839c70c2289c9f05182de5ade655f31a0006c3871fcf9273cf17e2404d634"
+        or selected_source.get(
+            "intraday_up_move_amount_share_no_return_coverage_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_up_move_amount_share_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_up_move_amount_share_maximum_absolute_median_daily_rank_correlation"
+        )
+        != 0.5773278922327905
+        or selected_source.get("intraday_up_move_amount_share_forward_returns_read")
+        is not True
+        or selected_source.get("intraday_up_move_amount_share_diagnostic_cohorts")
+        != 539
+        or selected_source.get(
+            "intraday_up_move_amount_share_association_stability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_up_move_amount_share_topk_viability_passed"
+        )
+        is not False
+        or selected_source.get("intraday_up_move_amount_share_dual_gate_passed")
+        is not False
+        or selected_source.get("intraday_up_move_amount_share_terminal") is not True
         or selected_source.get("prior_qmt_route_retained_as_fallback_only")
         is not True
         or any(
@@ -37848,6 +37879,7 @@ def load_three_day_iteration_status(
         "intraday_volatility_resolution_research_record": "a_share_tushare_intraday_volatility_resolution_research_record",
         "intraday_amount_lead_return_correlation_research_record": "a_share_tushare_intraday_amount_lead_return_correlation_research_record",
         "intraday_amount_center_of_mass_research_record": "a_share_tushare_intraday_amount_center_of_mass_research_record",
+        "intraday_up_move_amount_share_research_record": "a_share_tushare_intraday_up_move_amount_share_research_record",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -40347,7 +40379,24 @@ def render_three_day_research_report(
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
-                    if source.get("intraday_amount_center_of_mass_terminal"):
+                    if source.get("intraday_up_move_amount_share_terminal"):
+                        next_external_action = (
+                            "四个清洗方向、十个完成收益诊断的独立分钟方向和终点收盘位置"
+                            "方向均已终止；只研究预先登记的全新经济机制，或积累注册后真正"
+                            "未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子和之后十个完成收益诊断的独立分钟机制均"
+                            "没有产生双门禁合格因子；终点收盘位置另在无收益近同义门停止。"
+                            "最新的全日上涨分钟成交额占比通过覆盖和十四因子唯一性门（最大"
+                            "绝对中位日秩相关 0.57733），但唯一一次 539-cohort 诊断平均 "
+                            "Rank IC 为 -0.00468、Top3 减 Bottom3 平均毛差为 -0.11893%；"
+                            "执行感知累计为 -81.28%，20 万元整手、双边 10bp 滑点累计为 "
+                            "-25.77%，且最大成交额参与率 1.0204% 超过冻结的 1% 上限。"
+                            "稳定性和可执行 TopK 均未通过，未训练模型，Level2 继续延期。"
+                        )
+                    elif source.get("intraday_amount_center_of_mass_terminal"):
                         next_external_action = (
                             "四个清洗方向、九个完成收益诊断的独立分钟方向和终点收盘位置"
                             "方向均已终止；只研究预先登记的全新经济机制，或积累注册后真正"
