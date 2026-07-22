@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_return_sign_run_imbalance_research_record",
+  "status": "terminal_rejected_at_association_stability_and_executable_topk_gates",
+  "recorded_at": "2026-07-22T19:00:57Z",
+  "purpose": "Record the fingerprint-bound construction, no-return admission, and single historical three-session return diagnostic for the Tushare full-session return-sign-run-imbalance mechanism without mistaking high coverage, uniqueness, or a positive frictionless basket result for a usable Top-3 strategy.",
+  "factor": {
+    "name": "intraday_return_sign_run_imbalance_238p",
+    "direction": "higher",
+    "formula": "(N_pp - N_nn) / (N_pp + N_nn), where N_pp and N_nn count adjacent ++ and -- pairs among the 239 continuous-session close log-return signs",
+    "economic_hypothesis": "A session whose repeated positive minute-return continuations dominate repeated negative continuations may reflect persistent demand that survives from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "raw_open_high_low_volume_or_amount_used": false,
+    "standalone_09_30_row_excluded_from_formula": true,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_terminal_close_location_manifest_sha256": "69a66d063cb470702db5e8b256f0b4be0f54c847c3188578fe85fba6ba63441c",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_return_sign_run_imbalance/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_return_sign_run_imbalance_v1/snapshot_manifest.json",
+      "sha256": "e7e37808ed92c789c259296b57e3205c038dcc17f04b04d2ba32395d2cf52920",
+      "dataset_sha256": "265bb3da24be81ca1127028aecd5ffed79a7f9b35d094514bc7cc7b0cc01b20a",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7605471,
+      "zero_same_sign_pair_count_rows": 119027,
+      "invalid_required_value_rows": 0,
+      "nonfinite_log_return_rows": 0,
+      "sign_run_imbalance_range_violation_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_no_return_preregistration.json",
+      "sha256": "180e59227db73815aa0af68a0cd6781fab801e1b35b544bffbbf2be0ca5a4609",
+      "factor_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "context_repair": {
+      "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_context_repair.json",
+      "sha256": "7d71fddba20e9753e93423ffa8bd9004dcd40e7698cdd29b78ca3a071b17a89c",
+      "candidate_formula_direction_or_gate_changed": false,
+      "forward_returns_read_before_repair": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260722T185243Z_intraday_return_sign_run_imbalance_no_return_audit.json",
+      "sha256": "ea9fe485af2693473a14649a20b242e51e1e0f95d64b8c1d9b3f47847598bfee",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_returns_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_diagnostic_preregistration.json",
+      "sha256": "bd56f1dfc9c1d5e1c901e2e20c4cc31ca5499dc72f5142bbda20a65a745d9b13",
+      "forward_returns_read_before_registration": false
+    }
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1322098,
+    "median_coverage": 0.9945652173913043,
+    "p05_coverage": 0.9838523614649016,
+    "p05_eligible_names": 137,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "maximum_absolute_median_daily_rank_correlation_to_ten_terminal_factors": 0.4393974730067088,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "nearest_comparison_factor": "intraday_terminal_close_location_240m",
+    "all_ten_uniqueness_gates_passed": true
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260722T185949Z",
+      "path": "data/experiments/short_horizon/20260722T185949Z_factor_diagnostic.json",
+      "sha256": "9666f95f7234da2d79e7bd8c3e0c38f119767263fa184939a10e097c63197128"
+    },
+    "stability_audit": {
+      "run_id": "20260722T190013Z",
+      "path": "data/experiments/short_horizon/20260722T190013Z_factor_stability_audit.json",
+      "sha256": "9a2cf88630a51b1eb740e10ecc22f23ce20289900544e84678c261a4771686d7"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260722T190013Z",
+      "path": "data/experiments/short_horizon/20260722T190013Z_factor_topk_viability_audit.json",
+      "sha256": "b87e203ea6e9a6b3605060ca66db1128ef9d11a3d4e5840bf5cdc08112b5ac21"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/intraday_return_sign_run_imbalance_238p_historical_consumption.json",
+      "sha256": "d14e07757481e71623cb35c850940a3a457a6c5c6c1cef40870155d460385cee",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "return_results": {
+    "cohorts": 539,
+    "mean_rank_ic": -0.0047431740823717684,
+    "median_rank_ic": -0.005092814040640185,
+    "positive_rank_ic_rate": 0.4805194805194805,
+    "mean_top3_minus_bottom3_gross_return": 0.00036150680233746875,
+    "years_with_nonpositive_mean_rank_ic": [
+      2019,
+      2020,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "association_stability_gate_passed": false,
+    "execution_aware_complete_signal_count": 533,
+    "execution_aware_top3_net_cumulative_return": 0.1851205832317684,
+    "execution_aware_top3_maximum_drawdown": -0.4691378537559152,
+    "years_with_nonpositive_execution_aware_return": [
+      2019,
+      2024,
+      2025
+    ],
+    "pilot_net_cumulative_return_at_zero_bp_each_side": 0.0642926640482906,
+    "pilot_net_cumulative_return_at_five_bp_each_side": -0.009076323110896789,
+    "pilot_net_cumulative_return_at_ten_bp_each_side": -0.07793701057064739,
+    "pilot_maximum_drawdown_at_ten_bp_each_side": -0.10490164542725411,
+    "pilot_board_lot_affordability_rate": 0.9893350062735258,
+    "pilot_maximum_daily_amount_participation": 0.00872183584693801,
+    "pilot_terminal_unresolved_positions": 0,
+    "topk_viability_gate_passed": false,
+    "dual_gate_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "invert_reformulate_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "terminal_reason": "The exact higher return-sign-run-imbalance direction failed the full association-stability and executable Top-3 gates. Its positive frictionless basket result disappeared by five basis points per side and the frozen ten-basis-point CNY 200,000 board-lot ledger lost money."
+  },
+  "research_boundary": {
+    "coverage_or_uniqueness_proved_predictive_value": false,
+    "negative_historical_association_does_not_authorize_same_history_inversion": true,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction mechanism. Preserve the close-only path builder and ordered audit pattern, then freeze a genuinely distinct mechanism before observing its values or returns; do not purchase Level-2 to rescue this result."
+  }
+}

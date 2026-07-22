@@ -1,0 +1,2017 @@
+#!/usr/bin/env python3
+"""Build and audit the preregistered intraday return sign-run imbalance.
+
+The candidate reads only minute identity, timestamp, and close from the
+immutable Tushare source.  It compares adjacent positive-positive and
+negative-negative return-sign continuations across the 240 continuous minute
+closes.  Build and no-return audit never read a daily price or forward return,
+and terminal comparison values load only after coverage passes.
+"""
+
+from __future__ import annotations
+
+import argparse
+import concurrent.futures
+import datetime as dt
+import gc
+import hashlib
+import json
+import math
+import shutil
+import sys
+from collections import Counter
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+import pyarrow.dataset as pa_dataset
+
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+import a_share_tushare_intraday_terminal_close_location as previous
+
+
+foundation = previous.foundation
+upside = previous.previous
+profile = previous.profile
+entropy = previous.entropy
+recovery = previous.recovery
+research = previous.research
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_PREREGISTRATION = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_intraday_return_sign_run_imbalance_no_return_preregistration.json"
+)
+PREREGISTRATION_SHA256 = (
+    "180e59227db73815aa0af68a0cd6781fab801e1b35b544bffbbf2be0ca5a4609"
+)
+DEFAULT_CONTEXT_REPAIR = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_intraday_return_sign_run_imbalance_context_repair.json"
+)
+CONTEXT_REPAIR_SHA256 = (
+    "7d71fddba20e9753e93423ffa8bd9004dcd40e7698cdd29b78ca3a071b17a89c"
+)
+DEFAULT_DIAGNOSTIC_PREREGISTRATION = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_intraday_return_sign_run_imbalance_diagnostic_preregistration.json"
+)
+DIAGNOSTIC_PREREGISTRATION_SHA256 = (
+    "bd56f1dfc9c1d5e1c901e2e20c4cc31ca5499dc72f5142bbda20a65a745d9b13"
+)
+DEFAULT_TERMINAL_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_intraday_return_sign_run_imbalance_research_record.json"
+)
+TERMINAL_RECORD_SHA256 = (
+    "ef325c59c061109248c360bcd836eea70ac4531dd29c1028bf74d5e599108139"
+)
+NO_RETURN_AUDIT_SHA256 = (
+    "ea9fe485af2693473a14649a20b242e51e1e0f95d64b8c1d9b3f47847598bfee"
+)
+CANDIDATE_MANIFEST_SHA256 = (
+    "e7e37808ed92c789c259296b57e3205c038dcc17f04b04d2ba32395d2cf52920"
+)
+DIAGNOSTIC_SHA256 = (
+    "9666f95f7234da2d79e7bd8c3e0c38f119767263fa184939a10e097c63197128"
+)
+STABILITY_AUDIT_SHA256 = (
+    "9a2cf88630a51b1eb740e10ecc22f23ce20289900544e84678c261a4771686d7"
+)
+TOPK_AUDIT_SHA256 = (
+    "b87e203ea6e9a6b3605060ca66db1128ef9d11a3d4e5840bf5cdc08112b5ac21"
+)
+CONSUMPTION_MARKER_SHA256 = (
+    "d14e07757481e71623cb35c850940a3a457a6c5c6c1cef40870155d460385cee"
+)
+RAW_MANIFEST_SHA256 = foundation.RAW_MANIFEST_SHA256
+JOINT_MANIFEST_SHA256 = foundation.JOINT_MANIFEST_SHA256
+AFTERNOON_EFFICIENCY_MANIFEST_SHA256 = previous.AFTERNOON_EFFICIENCY_MANIFEST_SHA256
+AFTERNOON_EFFICIENCY_DATASET_SHA256 = previous.AFTERNOON_EFFICIENCY_DATASET_SHA256
+AFTERNOON_RECOVERY_MANIFEST_SHA256 = previous.AFTERNOON_RECOVERY_MANIFEST_SHA256
+AFTERNOON_RECOVERY_DATASET_SHA256 = previous.AFTERNOON_RECOVERY_DATASET_SHA256
+AMOUNT_ENTROPY_MANIFEST_SHA256 = previous.AMOUNT_ENTROPY_MANIFEST_SHA256
+AMOUNT_ENTROPY_DATASET_SHA256 = previous.AMOUNT_ENTROPY_DATASET_SHA256
+AMOUNT_PROFILE_PERSISTENCE_MANIFEST_SHA256 = (
+    previous.AMOUNT_PROFILE_PERSISTENCE_MANIFEST_SHA256
+)
+AMOUNT_PROFILE_PERSISTENCE_DATASET_SHA256 = (
+    previous.AMOUNT_PROFILE_PERSISTENCE_DATASET_SHA256
+)
+UPSIDE_SEMIVARIANCE_MANIFEST_SHA256 = upside.CANDIDATE_MANIFEST_SHA256
+UPSIDE_SEMIVARIANCE_DATASET_SHA256 = (
+    "4745113ff183f44f9dfab2114a5ff161471d2a8fba9f3aa529a45e25e4638c0b"
+)
+TERMINAL_CLOSE_LOCATION_MANIFEST_SHA256 = previous.CANDIDATE_MANIFEST_SHA256
+TERMINAL_CLOSE_LOCATION_DATASET_SHA256 = (
+    "da90792615fa120d07417c8d9d5a2d8660a16f7c5ea5cd2bb09b5cb724eeba00"
+)
+CURRENT_STATUS_SHA256 = (
+    "f2837b8866957b766236199cd40cb30cfe8d88b2f3c99116a031e335557d1a5a"
+)
+SOURCE_RUN_ID = foundation.SOURCE_RUN_ID
+OUTPUT_RUN_ID = f"{SOURCE_RUN_ID}_intraday_return_sign_run_imbalance_v1"
+FACTOR_NAME = "intraday_return_sign_run_imbalance_238p"
+FACTOR_FORMULA = (
+    "(N_pp - N_nn) / (N_pp + N_nn), where N_pp and N_nn count adjacent ++ "
+    "and -- pairs among the 239 continuous-session close log-return signs"
+)
+DIAGNOSTIC_PURPOSE = (
+    "single_preregistered_intraday_return_sign_run_imbalance_three_session_diagnostic"
+)
+CONSUMPTION_FILENAME = (
+    "intraday_return_sign_run_imbalance_238p_historical_consumption.json"
+)
+COMPARISON_FACTORS = (*previous.COMPARISON_FACTORS, previous.FACTOR_NAME)
+COMPARISON_DIRECTIONS = (*previous.COMPARISON_DIRECTIONS, "higher")
+RAW_COLUMNS = ("datetime", "symbol", "provider", "close")
+OUTPUT_COLUMNS = (
+    "trade_date",
+    "symbol",
+    "provider",
+    FACTOR_NAME,
+    f"{FACTOR_NAME}_eligible",
+)
+SOURCE_MINUTE_CODES = previous.SOURCE_MINUTE_CODES
+SOURCE_MINUTE_CODE_SET = previous.SOURCE_MINUTE_CODE_SET
+CONTINUOUS_MINUTE_CODES = previous.CONTINUOUS_MINUTE_CODES
+
+
+class ReturnSignRunImbalanceError(RuntimeError):
+    """Raised when a frozen source, factor, or no-return gate is violated."""
+
+
+def _repository_path(value: str) -> Path:
+    path = Path(value).expanduser()
+    return path.resolve() if path.is_absolute() else (REPO_ROOT / path).resolve()
+
+
+def _require_file(path: Path, expected_sha256: str, label: str) -> None:
+    if not path.is_file():
+        raise FileNotFoundError(f"{label} does not exist: {path}")
+    observed = foundation.file_digest(path)
+    if observed != expected_sha256:
+        raise ReturnSignRunImbalanceError(
+            f"{label} fingerprint mismatch: expected {expected_sha256}, got {observed}"
+        )
+
+
+def empty_output_frame() -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "trade_date": pd.Series(dtype="datetime64[ns]"),
+            "symbol": pd.Series(dtype="string"),
+            "provider": pd.Series(dtype="string"),
+            FACTOR_NAME: pd.Series(dtype="float64"),
+            f"{FACTOR_NAME}_eligible": pd.Series(dtype="bool"),
+        }
+    ).loc[:, OUTPUT_COLUMNS]
+
+
+def load_preregistration(path: Path = DEFAULT_PREREGISTRATION) -> dict[str, Any]:
+    """Load and enforce the exact protocol frozen before candidate values."""
+
+    path = path.expanduser().resolve()
+    _require_file(path, PREREGISTRATION_SHA256, "return-sign-run-imbalance protocol")
+    spec = research.load_json_record(
+        path,
+        kind="a_share_tushare_intraday_return_sign_run_imbalance_no_return_preregistration",
+    )
+    _require_file(
+        DEFAULT_CONTEXT_REPAIR,
+        CONTEXT_REPAIR_SHA256,
+        "return-sign-run-imbalance context repair",
+    )
+    repair = research.load_json_record(
+        DEFAULT_CONTEXT_REPAIR,
+        kind="a_share_tushare_intraday_return_sign_run_imbalance_context_repair",
+    )
+    previous_spec = previous.load_preregistration()
+    repair_boundary = repair.get("research_boundary") or {}
+    if not (
+        "point_in_time_context" not in spec
+        and repair.get("status")
+        == "frozen_before_candidate_factor_values_comparison_values_or_forward_returns"
+        and (repair.get("omitted_protocol") or {}).get("sha256")
+        == PREREGISTRATION_SHA256
+        and (repair.get("identical_context_source") or {}).get("sha256")
+        == previous.PREREGISTRATION_SHA256
+        and (repair.get("current_research_state") or {}).get("sha256")
+        == CURRENT_STATUS_SHA256
+        and repair.get("point_in_time_context")
+        == previous_spec.get("point_in_time_context")
+        and (repair.get("repair_scope") or {}).get(
+            "adds_only_missing_point_in_time_context"
+        )
+        is True
+        and (repair.get("repair_scope") or {}).get("candidate_changed") is False
+        and (repair.get("repair_scope") or {}).get("formula_changed") is False
+        and (repair.get("repair_scope") or {}).get(
+            "ordered_gate_or_threshold_changed"
+        )
+        is False
+        and repair_boundary.get(
+            "historical_candidate_factor_values_observed_before_repair"
+        )
+        is False
+        and repair_boundary.get(
+            "terminal_factor_comparison_values_observed_for_this_candidate_before_repair"
+        )
+        is False
+        and repair_boundary.get("forward_return_fields_read_before_repair") is False
+    ):
+        raise ReturnSignRunImbalanceError(
+            "return-sign-run-imbalance context repair is inconsistent"
+        )
+    spec = dict(spec)
+    spec["point_in_time_context"] = repair["point_in_time_context"]
+    current = spec.get("current_research_state") or {}
+    candidate = spec.get("candidate") or {}
+    grid = candidate.get("bar_grid") or {}
+    validity = candidate.get("validity") or {}
+    output = spec.get("derived_snapshot") or {}
+    gates = spec.get("ordered_no_return_gates") or {}
+    coverage = gates.get("coverage_and_capacity_before_comparison_values") or {}
+    uniqueness = gates.get("uniqueness_after_coverage_only") or {}
+    comparisons = list(uniqueness.get("comparison_factors") or [])
+    boundary = spec.get("research_boundary") or {}
+    if not (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_before_candidate_factor_values_comparison_values_or_forward_returns"
+        and current.get("sha256") == CURRENT_STATUS_SHA256
+        and current.get("status")
+        == "aggregation_blocked_after_intraday_terminal_close_location_no_return_uniqueness_rejection_zero_dual_gate_factors"
+        and current.get("terminal_mechanism_count_before_this_candidate") == 34
+        and current.get("aggregation_allowed") is False
+        and candidate.get("name") == FACTOR_NAME
+        and candidate.get("diagnostic_direction") == "higher"
+        and tuple(candidate.get("source_fields_allowed") or ()) == RAW_COLUMNS
+        and set(candidate.get("source_fields_forbidden") or ())
+        == {
+            "open",
+            "high",
+            "low",
+            "volume",
+            "amount",
+            "any_daily_price",
+            "any_forward_return",
+        }
+        and grid.get("required_full_source_rows") == 241
+        and grid.get("excluded_source_bar_end") == "09:30"
+        and grid.get("continuous_bar_ends_start") == "09:31"
+        and grid.get("morning_bar_ends_end") == "11:30"
+        and grid.get("afternoon_bar_ends_start") == "13:01"
+        and grid.get("continuous_bar_ends_end") == "15:00"
+        and grid.get("continuous_bars") == 240
+        and grid.get("adjacent_close_to_close_log_returns") == 239
+        and grid.get("adjacent_return_sign_pairs") == 238
+        and grid.get("lunch_break_return_included") == "11:30_to_13:01"
+        and candidate.get("formula") == FACTOR_FORMULA
+        and validity.get("all_240_required_close_values_finite_and_strictly_positive")
+        is True
+        and validity.get("all_239_log_returns_finite") is True
+        and validity.get("zero_log_return_sign") == 0
+        and validity.get("pairs_involving_zero_or_opposite_signs_ignored") is True
+        and validity.get("same_sign_pair_count_strictly_positive") is True
+        and validity.get("finite_result_required") is True
+        and validity.get("allowed_closed_interval") == [-1, 1]
+        and validity.get("zero_same_sign_pair_count_policy") == "missing"
+        and validity.get(
+            "statistical_clipping_imputation_winsorization_or_daily_substitution_allowed"
+        )
+        is False
+        and output.get("output_run_id") == OUTPUT_RUN_ID
+        and output.get("provider_request_allowed") is False
+        and output.get("forward_return_fields_read") is False
+        and coverage.get("minimum_median_coverage") == 0.95
+        and coverage.get("minimum_p05_coverage") == 0.9
+        and coverage.get("minimum_p05_eligible_names") == 50
+        and coverage.get("minimum_non_overlapping_three_session_cohorts") == 200
+        and coverage.get("minimum_observed_calendar_years") == 5
+        and coverage.get("holding_period_sessions") == 3
+        and tuple(item.get("name") for item in comparisons) == COMPARISON_FACTORS
+        and tuple(item.get("score_direction") for item in comparisons)
+        == COMPARISON_DIRECTIONS
+        and uniqueness.get("screen_start") == "2019-01-01"
+        and uniqueness.get("screen_end") == "2025-12-31"
+        and uniqueness.get("minimum_pairwise_names_per_session") == 50
+        and uniqueness.get("minimum_pairwise_sessions_per_comparison") == 100
+        and uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        == 0.8
+        and uniqueness.get("all_ten_comparisons_must_pass") is True
+        and boundary.get("candidate_factor_values_observed_before_registration")
+        is False
+        and boundary.get(
+            "terminal_factor_comparison_values_observed_for_this_candidate_before_registration"
+        )
+        is False
+        and boundary.get("forward_return_fields_read_before_registration") is False
+    ):
+        raise ReturnSignRunImbalanceError(
+            "return-sign-run-imbalance protocol no longer matches its frozen definition"
+        )
+    return spec
+
+
+def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
+    evidence = foundation.validate_repository_chain(spec)
+    evidence["context_repair"] = {
+        "path": str(DEFAULT_CONTEXT_REPAIR.resolve()),
+        "sha256": CONTEXT_REPAIR_SHA256,
+    }
+    return evidence
+
+
+def load_terminal_record_if_present() -> dict[str, Any] | None:
+    """Validate and return the immutable terminal record when this branch is closed."""
+
+    if not DEFAULT_TERMINAL_RECORD.is_file():
+        return None
+    _require_file(
+        DEFAULT_TERMINAL_RECORD,
+        TERMINAL_RECORD_SHA256,
+        "return-sign-run-imbalance research record",
+    )
+    record = research.load_json_record(
+        DEFAULT_TERMINAL_RECORD,
+        kind="a_share_tushare_intraday_return_sign_run_imbalance_research_record",
+    )
+    protocol = (record.get("ordered_protocol") or {}).get(
+        "no_return_preregistration"
+    ) or {}
+    audit = (record.get("ordered_protocol") or {}).get("no_return_audit") or {}
+    diagnostic_protocol = (record.get("ordered_protocol") or {}).get(
+        "diagnostic_preregistration"
+    ) or {}
+    candidate = (record.get("source_chain") or {}).get("candidate_manifest") or {}
+    artifacts = record.get("historical_artifacts") or {}
+    decision = record.get("decision") or {}
+    boundary = record.get("research_boundary") or {}
+    if not (
+        record.get("status")
+        == "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        and protocol.get("sha256") == PREREGISTRATION_SHA256
+        and candidate.get("sha256") == CANDIDATE_MANIFEST_SHA256
+        and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
+        and audit.get("status")
+        == "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration"
+        and audit.get("forward_returns_read") is False
+        and diagnostic_protocol.get("sha256")
+        == DIAGNOSTIC_PREREGISTRATION_SHA256
+        and (artifacts.get("diagnostic") or {}).get("sha256")
+        == DIAGNOSTIC_SHA256
+        and (artifacts.get("stability_audit") or {}).get("sha256")
+        == STABILITY_AUDIT_SHA256
+        and (artifacts.get("topk_viability_audit") or {}).get("sha256")
+        == TOPK_AUDIT_SHA256
+        and (artifacts.get("single_use_consumption_marker") or {}).get("sha256")
+        == CONSUMPTION_MARKER_SHA256
+        and decision.get("terminally_reject_exact_factor_direction") is True
+        and decision.get("aggregation_candidate_added") is False
+        and boundary.get("same_history_combination_return_evaluation_performed")
+        is False
+        and boundary.get("current_stock_list_generated") is False
+    ):
+        raise ReturnSignRunImbalanceError(
+            "return-sign-run-imbalance research record is inconsistent"
+        )
+    return record
+
+
+def _validate_terminal_close_location_manifest(
+    spec: dict[str, Any], data_root: Path
+) -> tuple[dict[str, Any], Path]:
+    link = (spec.get("source_chain") or {}).get(
+        "terminal_close_location_comparison_manifest"
+    ) or {}
+    path = (data_root / str(link.get("path_below_data_root"))).resolve()
+    _require_file(
+        path,
+        TERMINAL_CLOSE_LOCATION_MANIFEST_SHA256,
+        "terminal-close-location manifest",
+    )
+    manifest = research.load_json_record(
+        path,
+        kind="a_share_tushare_intraday_terminal_close_location_snapshot",
+    )
+    if not (
+        manifest.get("status")
+        == "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
+        and manifest.get("factor_name") == previous.FACTOR_NAME
+        and manifest.get("factor_direction") == "higher"
+        and manifest.get("dataset_sha256")
+        == TERMINAL_CLOSE_LOCATION_DATASET_SHA256
+        and manifest.get("partitions") == 33_015
+        and manifest.get("rows") == 7_724_498
+        and manifest.get("eligible_rows") == 7_695_092
+        and manifest.get("comparison_factor_values_read") is False
+        and manifest.get("forward_return_fields_read") is False
+    ):
+        raise ReturnSignRunImbalanceError(
+            "terminal-close-location manifest identity is rejected"
+        )
+    return manifest, path
+
+
+def validate_external_chain(
+    spec: dict[str, Any], data_root: Path
+) -> tuple[
+    dict[str, Any],
+    dict[str, Any],
+    Path,
+    Path,
+    dict[str, Any],
+    Path,
+    dict[str, Any],
+    Path,
+    dict[str, Any],
+    Path,
+    dict[str, Any],
+    Path,
+    dict[str, Any],
+    Path,
+    dict[str, Any],
+    Path,
+]:
+    (
+        raw,
+        joint,
+        raw_path,
+        joint_path,
+        efficiency,
+        efficiency_path,
+        recovery_manifest,
+        recovery_path,
+        entropy,
+        entropy_path,
+        profile_manifest,
+        profile_path,
+        upside,
+        upside_path,
+    ) = previous.validate_external_chain(spec, data_root)
+    terminal, terminal_path = _validate_terminal_close_location_manifest(
+        spec, data_root
+    )
+    return (
+        raw,
+        joint,
+        raw_path,
+        joint_path,
+        efficiency,
+        efficiency_path,
+        recovery_manifest,
+        recovery_path,
+        entropy,
+        entropy_path,
+        profile_manifest,
+        profile_path,
+        upside,
+        upside_path,
+        terminal,
+        terminal_path,
+    )
+
+
+def compute_partition_frame(
+    raw: pd.DataFrame,
+    base: pd.DataFrame,
+    *,
+    symbol: str,
+) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Compute the return sign-run imbalance in the continuous close range."""
+
+    if missing := sorted(set(RAW_COLUMNS) - set(raw.columns)):
+        raise ReturnSignRunImbalanceError(
+            "raw minute partition is missing columns: " + ", ".join(missing)
+        )
+    if missing := sorted({"trade_date", "symbol"} - set(base.columns)):
+        raise ReturnSignRunImbalanceError(
+            "joint base partition is missing columns: " + ", ".join(missing)
+        )
+    empty_quality = {
+        "base_rows": 0,
+        "eligible_rows": 0,
+        "zero_same_sign_pair_count_rows": 0,
+        "invalid_required_value_rows": 0,
+        "nonfinite_log_return_rows": 0,
+        "sign_run_imbalance_range_violation_rows": 0,
+    }
+    if base.empty:
+        return empty_output_frame(), empty_quality
+
+    symbol = symbol.upper()
+    base_work = base[["trade_date", "symbol"]].copy()
+    base_work["trade_date"] = pd.to_datetime(
+        base_work["trade_date"], errors="coerce"
+    ).dt.normalize()
+    base_work["symbol"] = base_work["symbol"].astype(str).str.upper()
+    if (
+        base_work["trade_date"].isna().any()
+        or set(base_work["symbol"]) != {symbol}
+        or base_work.duplicated(["trade_date", "symbol"]).any()
+    ):
+        raise ReturnSignRunImbalanceError(f"joint base identity is invalid for {symbol}")
+    base_work = base_work.sort_values("trade_date", kind="stable").reset_index(drop=True)
+
+    raw_work = raw[list(RAW_COLUMNS)].copy()
+    raw_work["datetime"] = pd.to_datetime(raw_work["datetime"], errors="coerce")
+    if raw_work["datetime"].isna().any():
+        raise ReturnSignRunImbalanceError(f"raw timestamps are invalid for {symbol}")
+    raw_work["symbol"] = raw_work["symbol"].astype(str).str.upper()
+    raw_work["provider"] = raw_work["provider"].astype(str).str.lower()
+    if set(raw_work["symbol"]) != {symbol} or set(raw_work["provider"]) != {"tushare"}:
+        raise ReturnSignRunImbalanceError(f"raw identity is invalid for {symbol}")
+    raw_work["trade_date"] = raw_work["datetime"].dt.normalize()
+    raw_work = raw_work[raw_work["trade_date"].isin(base_work["trade_date"])].copy()
+    raw_work["minute_code"] = (
+        raw_work["datetime"].dt.hour * 60 + raw_work["datetime"].dt.minute
+    ).astype(np.int16)
+    raw_work["close"] = pd.to_numeric(raw_work["close"], errors="coerce")
+    raw_work = raw_work.sort_values(["trade_date", "datetime"], kind="stable")
+    stats = raw_work.groupby("trade_date", observed=True, sort=True).agg(
+        rows=("datetime", "size"),
+        unique_times=("minute_code", "nunique"),
+        on_grid=("minute_code", lambda values: values.isin(SOURCE_MINUTE_CODE_SET).sum()),
+    )
+    if (
+        len(stats) != len(base_work)
+        or not stats.index.equals(pd.DatetimeIndex(base_work["trade_date"]))
+        or not stats["rows"].eq(241).all()
+        or not stats["unique_times"].eq(241).all()
+        or not stats["on_grid"].eq(241).all()
+    ):
+        raise ReturnSignRunImbalanceError(
+            f"raw source does not reproduce every joint-base 241-row grid for {symbol}"
+        )
+    codes = raw_work["minute_code"].to_numpy().reshape(-1, 241)
+    if not np.array_equal(codes, np.broadcast_to(SOURCE_MINUTE_CODES, codes.shape)):
+        raise ReturnSignRunImbalanceError(f"raw source grid order changed for {symbol}")
+    if len(CONTINUOUS_MINUTE_CODES) != 240:
+        raise ReturnSignRunImbalanceError("continuous close support changed")
+
+    closes = raw_work["close"].to_numpy(dtype=float).reshape(-1, 241)[:, 1:]
+    required_valid = np.isfinite(closes).all(axis=1) & (closes > 0.0).all(axis=1)
+    with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
+        log_returns = np.diff(np.log(closes), axis=1)
+    finite_log_returns = np.isfinite(log_returns).all(axis=1)
+    signs = np.sign(log_returns)
+    positive_pairs = (signs[:, :-1] > 0.0) & (signs[:, 1:] > 0.0)
+    negative_pairs = (signs[:, :-1] < 0.0) & (signs[:, 1:] < 0.0)
+    positive_count = positive_pairs.sum(axis=1, dtype=np.int16)
+    negative_count = negative_pairs.sum(axis=1, dtype=np.int16)
+    same_sign_pair_count = positive_count + negative_count
+    with np.errstate(divide="ignore", invalid="ignore"):
+        values = (positive_count - negative_count) / same_sign_pair_count
+    valid_inputs = required_valid & finite_log_returns
+    range_violation = (
+        valid_inputs
+        & (same_sign_pair_count > 0)
+        & np.isfinite(values)
+        & ((values < -1.0) | (values > 1.0))
+    )
+    if range_violation.any():
+        raise ReturnSignRunImbalanceError(
+            f"return sign-run imbalance escaped [-1, 1] for {symbol}"
+        )
+    eligible = (
+        valid_inputs
+        & (same_sign_pair_count > 0)
+        & np.isfinite(values)
+        & (values >= -1.0)
+        & (values <= 1.0)
+    )
+    output = pd.DataFrame(
+        {
+            "trade_date": base_work["trade_date"],
+            "symbol": symbol,
+            "provider": "tushare",
+            FACTOR_NAME: np.where(eligible, values, np.nan),
+            f"{FACTOR_NAME}_eligible": eligible,
+        }
+    ).loc[:, OUTPUT_COLUMNS]
+    return output, {
+        "base_rows": int(len(output)),
+        "eligible_rows": int(eligible.sum()),
+        "zero_same_sign_pair_count_rows": int(
+            (valid_inputs & (same_sign_pair_count == 0)).sum()
+        ),
+        "invalid_required_value_rows": int((~required_valid).sum()),
+        "nonfinite_log_return_rows": int(
+            (required_valid & ~finite_log_returns).sum()
+        ),
+        "sign_run_imbalance_range_violation_rows": int(range_violation.sum()),
+    }
+
+
+def output_root(data_root: Path) -> Path:
+    return (
+        data_root
+        / "derived/a_share/rich/tushare/minute_intraday_return_sign_run_imbalance"
+        / OUTPUT_RUN_ID
+    )
+
+
+def _load_checkpoint(
+    raw_record: dict[str, Any],
+    joint_record: dict[str, Any],
+    paths: foundation.PartitionPaths,
+) -> tuple[dict[str, Any], Counter[str]] | None:
+    if not paths.partial_sidecar.exists():
+        paths.partial_data.unlink(missing_ok=True)
+        return None
+    record = json.loads(paths.partial_sidecar.read_text(encoding="utf-8"))
+    raw_path = Path(str(raw_record["path"]))
+    base_path = Path(str(joint_record["path"]))
+    valid = (
+        record.get("kind")
+        == "a_share_tushare_intraday_return_sign_run_imbalance_partition"
+        and record.get("protocol_sha256") == PREREGISTRATION_SHA256
+        and record.get("raw_manifest_sha256") == RAW_MANIFEST_SHA256
+        and record.get("joint_manifest_sha256") == JOINT_MANIFEST_SHA256
+        and record.get("raw_source_byte_sha256") == raw_record.get("byte_sha256")
+        and record.get("joint_base_byte_sha256") == joint_record.get("output_byte_sha256")
+        and paths.partial_data.is_file()
+        and foundation.file_digest(raw_path) == raw_record.get("byte_sha256")
+        and foundation.file_digest(base_path) == joint_record.get("output_byte_sha256")
+        and foundation.file_digest(paths.partial_data) == record.get("output_byte_sha256")
+    )
+    if not valid:
+        raise ReturnSignRunImbalanceError(
+            f"completed return-sign-run-imbalance checkpoint changed: {paths.partial_sidecar}"
+        )
+    output = pd.read_parquet(paths.partial_data)
+    if len(output) != int(record.get("rows", -1)) or foundation.frame_digest(output) != record.get(
+        "output_frame_sha256"
+    ):
+        raise ReturnSignRunImbalanceError(
+            f"completed return-sign-run-imbalance frame changed: {paths.partial_data}"
+        )
+    dates = Counter(
+        pd.to_datetime(output.loc[output[f"{FACTOR_NAME}_eligible"], "trade_date"])
+        .dt.strftime("%Y-%m-%d")
+        .tolist()
+    )
+    return record, dates
+
+
+def _process_partition(
+    raw_record: dict[str, Any],
+    joint_record: dict[str, Any],
+    *,
+    partial_root: Path,
+    final_root: Path,
+) -> tuple[dict[str, Any], Counter[str], bool]:
+    paths = foundation.partition_paths(partial_root, final_root, joint_record)
+    completed = _load_checkpoint(raw_record, joint_record, paths)
+    if completed is not None:
+        record, dates = completed
+        return record, dates, True
+    raw_path = Path(str(raw_record["path"]))
+    base_path = Path(str(joint_record["path"]))
+    if foundation.file_digest(raw_path) != raw_record.get("byte_sha256"):
+        raise ReturnSignRunImbalanceError(f"raw partition changed: {raw_path}")
+    if foundation.file_digest(base_path) != joint_record.get("output_byte_sha256"):
+        raise ReturnSignRunImbalanceError(f"joint-base partition changed: {base_path}")
+    raw = pd.read_parquet(raw_path, columns=list(RAW_COLUMNS))
+    base = pd.read_parquet(base_path, columns=["trade_date", "symbol"])
+    if len(raw) != int(raw_record.get("rows", -1)):
+        raise ReturnSignRunImbalanceError(f"raw row count changed: {raw_path}")
+    if len(base) != int(joint_record.get("rows", -1)):
+        raise ReturnSignRunImbalanceError(f"joint-base row count changed: {base_path}")
+    output, quality = compute_partition_frame(raw, base, symbol=str(joint_record["symbol"]))
+    foundation.atomic_write_frame(output, paths.partial_data)
+    record = {
+        "schema_version": 1,
+        "kind": "a_share_tushare_intraday_return_sign_run_imbalance_partition",
+        "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "protocol_sha256": PREREGISTRATION_SHA256,
+        "raw_manifest_sha256": RAW_MANIFEST_SHA256,
+        "joint_manifest_sha256": JOINT_MANIFEST_SHA256,
+        "output_run_id": OUTPUT_RUN_ID,
+        "symbol": str(joint_record["symbol"]),
+        "code": str(joint_record["code"]),
+        "year": int(joint_record["year"]),
+        "raw_source_path": str(raw_path),
+        "raw_source_rows": int(raw_record["rows"]),
+        "raw_source_byte_sha256": str(raw_record["byte_sha256"]),
+        "joint_base_path": str(base_path),
+        "joint_base_rows": int(joint_record["rows"]),
+        "joint_base_byte_sha256": str(joint_record["output_byte_sha256"]),
+        "path": str(paths.final_data),
+        "sidecar_path": str(paths.final_sidecar),
+        "rows": int(len(output)),
+        "eligible_rows": int(output[f"{FACTOR_NAME}_eligible"].sum()),
+        "output_byte_sha256": foundation.file_digest(paths.partial_data),
+        "output_frame_sha256": foundation.frame_digest(output),
+        "quality": quality,
+        "source_fields_read": list(RAW_COLUMNS),
+        "minute_price_fields_read": ["close"],
+        "minute_open_high_low_volume_or_amount_fields_read": [],
+        "daily_price_fields_read": [],
+        "comparison_factor_values_read": False,
+        "forward_return_fields_read": False,
+    }
+    foundation.atomic_write_json(record, paths.partial_sidecar)
+    dates = Counter(
+        pd.to_datetime(output.loc[output[f"{FACTOR_NAME}_eligible"], "trade_date"])
+        .dt.strftime("%Y-%m-%d")
+        .tolist()
+    )
+    return record, dates, False
+
+
+def _process_symbol(
+    pairs: list[tuple[dict[str, Any], dict[str, Any]]],
+    *,
+    partial_root: Path,
+    final_root: Path,
+) -> tuple[list[dict[str, Any]], Counter[str], int]:
+    records: list[dict[str, Any]] = []
+    eligible_dates: Counter[str] = Counter()
+    resumed = 0
+    for raw_record, joint_record in sorted(pairs, key=lambda pair: int(pair[1]["year"])):
+        record, dates, was_resumed = _process_partition(
+            raw_record,
+            joint_record,
+            partial_root=partial_root,
+            final_root=final_root,
+        )
+        records.append(record)
+        eligible_dates.update(dates)
+        resumed += int(was_resumed)
+    return records, eligible_dates, resumed
+
+
+def build_snapshot(*, data_root: Path, workers: int) -> Path:
+    """Build all 33,015 symbol-year partitions with resumable checkpoints."""
+
+    if workers < 1 or workers > 8:
+        raise ValueError("--workers must be between 1 and 8")
+    data_root = data_root.expanduser().resolve()
+    spec = load_preregistration()
+    final_root = output_root(data_root)
+    partial_root = final_root.parent / f".{OUTPUT_RUN_ID}.partial"
+    final_manifest = final_root / "snapshot_manifest.json"
+    if final_root.exists():
+        if not final_manifest.is_file():
+            raise ReturnSignRunImbalanceError(
+                f"published return-sign-run-imbalance root has no manifest: {final_root}"
+            )
+        _require_file(
+            final_manifest,
+            CANDIDATE_MANIFEST_SHA256,
+            "published return-sign-run-imbalance manifest",
+        )
+        load_terminal_record_if_present()
+        manifest = research.load_json_record(
+            final_manifest,
+            kind="a_share_tushare_intraday_return_sign_run_imbalance_snapshot",
+        )
+        if not (
+            manifest.get("protocol_sha256") == PREREGISTRATION_SHA256
+            and manifest.get("raw_manifest_sha256") == RAW_MANIFEST_SHA256
+            and manifest.get("joint_manifest_sha256") == JOINT_MANIFEST_SHA256
+            and manifest.get("output_run_id") == OUTPUT_RUN_ID
+            and manifest.get("dataset_sha256")
+            == "265bb3da24be81ca1127028aecd5ffed79a7f9b35d094514bc7cc7b0cc01b20a"
+            and manifest.get("partitions") == 33_015
+            and manifest.get("rows") == 7_724_498
+            and manifest.get("eligible_rows") == 7_605_471
+            and (manifest.get("quality") or {}).get(
+                "zero_same_sign_pair_count_rows"
+            )
+            == 119_027
+            and (manifest.get("quality") or {}).get(
+                "invalid_required_value_rows"
+            )
+            == 0
+            and (manifest.get("quality") or {}).get(
+                "nonfinite_log_return_rows"
+            )
+            == 0
+            and (manifest.get("quality") or {}).get(
+                "sign_run_imbalance_range_violation_rows"
+            )
+            == 0
+            and manifest.get("forward_return_fields_read") is False
+        ):
+            raise ReturnSignRunImbalanceError(
+                f"published return-sign-run-imbalance snapshot changed: {final_root}"
+            )
+        return final_manifest
+    repository_evidence = validate_repository_chain(spec)
+    chain = validate_external_chain(spec, data_root)
+    raw, joint, raw_manifest_path, joint_manifest_path = chain[:4]
+    if shutil.disk_usage(data_root).free < 5 * 1024**3:
+        raise ReturnSignRunImbalanceError("external data root has less than 5 GiB free")
+
+    raw_records = list(raw.get("files") or [])
+    joint_records = list(joint.get("files") or [])
+    raw_by_key = {(str(item["symbol"]), int(item["year"])): item for item in raw_records}
+    joint_by_key = {
+        (str(item["symbol"]), int(item["year"])): item for item in joint_records
+    }
+    if (
+        len(raw_by_key) != 33_015
+        or len(joint_by_key) != 33_015
+        or set(raw_by_key) != set(joint_by_key)
+    ):
+        raise ReturnSignRunImbalanceError(
+            "raw and joint-clean partition identities do not match exactly"
+        )
+    by_symbol: dict[str, list[tuple[dict[str, Any], dict[str, Any]]]] = {}
+    for key in sorted(joint_by_key):
+        raw_record = raw_by_key[key]
+        joint_record = joint_by_key[key]
+        if (
+            joint_record.get("source_byte_sha256") != raw_record.get("byte_sha256")
+            or Path(str(joint_record.get("source_path"))).resolve()
+            != Path(str(raw_record.get("path"))).resolve()
+        ):
+            raise ReturnSignRunImbalanceError(
+                f"joint-clean raw source binding changed for {key[0]}/{key[1]}"
+            )
+        by_symbol.setdefault(key[0], []).append((raw_record, joint_record))
+
+    lock_path = data_root / ".a_share_tushare_intraday_return_sign_run_imbalance.lock"
+    with foundation.ProcessLock(lock_path):
+        partial_root.mkdir(parents=True, exist_ok=True)
+        all_records: list[dict[str, Any]] = []
+        eligible_dates: Counter[str] = Counter()
+        resumed = 0
+        completed_symbols = 0
+        print(
+            f"building {len(joint_records):,} return-sign-run-imbalance partitions "
+            f"across {len(by_symbol):,} symbols with {workers} workers",
+            flush=True,
+        )
+        with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = {
+                pool.submit(
+                    _process_symbol,
+                    pairs,
+                    partial_root=partial_root,
+                    final_root=final_root,
+                ): symbol
+                for symbol, pairs in sorted(by_symbol.items())
+            }
+            try:
+                for future in concurrent.futures.as_completed(futures):
+                    futures.pop(future)
+                    records, dates, resumed_count = future.result()
+                    all_records.extend(records)
+                    eligible_dates.update(dates)
+                    resumed += resumed_count
+                    completed_symbols += 1
+                    if completed_symbols % 25 == 0 or completed_symbols == len(by_symbol):
+                        print(
+                            f"progress symbols={completed_symbols:,}/{len(by_symbol):,} "
+                            f"partitions={len(all_records):,}/{len(joint_records):,} "
+                            f"eligible_rows={sum(eligible_dates.values()):,} "
+                            f"resumed={resumed:,}",
+                            flush=True,
+                        )
+            except BaseException:
+                for future in futures:
+                    future.cancel()
+                raise
+        if len(all_records) != 33_015:
+            raise ReturnSignRunImbalanceError(
+                "not every source partition produced an return-sign-run-imbalance checkpoint"
+            )
+        _require_file(raw_manifest_path, RAW_MANIFEST_SHA256, "raw minute manifest")
+        _require_file(joint_manifest_path, JOINT_MANIFEST_SHA256, "joint-clean manifest")
+        all_records.sort(key=lambda item: (str(item["symbol"]), int(item["year"])))
+        quality = foundation._aggregate_quality(all_records)
+        dataset_payload = "\n".join(
+            f"{item['symbol']}|{item['year']}|{item['output_byte_sha256']}"
+            for item in all_records
+        ).encode("utf-8")
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_tushare_intraday_return_sign_run_imbalance_snapshot",
+            "status": "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness",
+            "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "output_run_id": OUTPUT_RUN_ID,
+            "protocol_path": str(DEFAULT_PREREGISTRATION.resolve()),
+            "protocol_sha256": PREREGISTRATION_SHA256,
+            "raw_manifest_path": str(raw_manifest_path),
+            "raw_manifest_sha256": RAW_MANIFEST_SHA256,
+            "joint_manifest_path": str(joint_manifest_path),
+            "joint_manifest_sha256": JOINT_MANIFEST_SHA256,
+            "dataset_sha256": hashlib.sha256(dataset_payload).hexdigest(),
+            "factor_name": FACTOR_NAME,
+            "factor_direction": "higher",
+            "files": all_records,
+            "partitions": len(all_records),
+            "rows": int(quality.get("base_rows", -1)),
+            "eligible_rows": int(quality.get("eligible_rows", -1)),
+            "quality": quality,
+            "eligible_names_by_date": dict(sorted(eligible_dates.items())),
+            "source_fields_read": list(RAW_COLUMNS),
+            "source_close_read": True,
+            "source_open_high_low_volume_or_amount_read": False,
+            "standalone_09_30_row_excluded_from_formula": True,
+            "daily_price_fields_read": [],
+            "comparison_factor_values_read": False,
+            "forward_return_fields_read": False,
+            "training_or_model_fitting_performed": False,
+            "aggregation_scoring_selection_sizing_or_orders_performed": False,
+            "promotion_allowed": False,
+            "resumed_partitions": resumed,
+            "repository_evidence": repository_evidence,
+        }
+        foundation.atomic_write_json(manifest, partial_root / "snapshot_manifest.json")
+        final_root.parent.mkdir(parents=True, exist_ok=True)
+        partial_root.replace(final_root)
+        return final_manifest
+
+
+def verify_snapshot_files(
+    manifest: dict[str, Any], manifest_path: Path, workers: int
+) -> dict[str, int]:
+    records = list(manifest.get("files") or [])
+    if len(records) != 33_015:
+        raise ReturnSignRunImbalanceError("candidate snapshot partition count changed")
+    partition_root = (manifest_path.parent / "partitions").resolve()
+
+    def verify(record: dict[str, Any]) -> tuple[int, int, int]:
+        path = Path(str(record["path"])).resolve()
+        try:
+            path.relative_to(partition_root)
+        except ValueError as exc:
+            raise ReturnSignRunImbalanceError(
+                f"candidate partition escapes its frozen root: {path}"
+            ) from exc
+        _require_file(path, str(record["output_byte_sha256"]), "candidate partition")
+        _require_file(
+            Path(str(record["raw_source_path"])),
+            str(record["raw_source_byte_sha256"]),
+            "raw source partition",
+        )
+        _require_file(
+            Path(str(record["joint_base_path"])),
+            str(record["joint_base_byte_sha256"]),
+            "joint-base partition",
+        )
+        return int(record["rows"]), int(record["eligible_rows"]), path.stat().st_size
+
+    rows = eligible = byte_count = 0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        for index, result in enumerate(pool.map(verify, records), start=1):
+            partition_rows, partition_eligible, partition_bytes = result
+            rows += partition_rows
+            eligible += partition_eligible
+            byte_count += partition_bytes
+            if index % 5000 == 0 or index == len(records):
+                print(f"verified candidate partitions {index}/{len(records)}", flush=True)
+    if rows != manifest.get("rows") or eligible != manifest.get("eligible_rows"):
+        raise ReturnSignRunImbalanceError("candidate snapshot aggregate counts changed")
+    return {
+        "partitions_verified": len(records),
+        "rows_verified": rows,
+        "eligible_rows_verified": eligible,
+        "partition_bytes_verified": byte_count,
+    }
+
+
+def load_candidate_frame(manifest_path: Path, manifest: dict[str, Any]) -> pd.DataFrame:
+    dataset = pa_dataset.dataset(str(manifest_path.parent / "partitions"), format="parquet")
+    table = dataset.to_table(columns=list(OUTPUT_COLUMNS), use_threads=True)
+    frame = table.to_pandas(split_blocks=True, self_destruct=True)
+    del table, dataset
+    gc.collect()
+    if len(frame) != int(manifest.get("rows", -1)):
+        raise ReturnSignRunImbalanceError("candidate frame row count changed")
+    frame["trade_date"] = pd.to_datetime(frame["trade_date"], errors="coerce").dt.normalize()
+    frame["symbol"] = frame["symbol"].astype(str).str.upper()
+    frame[f"{FACTOR_NAME}_eligible"] = (
+        frame[f"{FACTOR_NAME}_eligible"].astype("boolean").fillna(False).astype(bool)
+    )
+    frame[FACTOR_NAME] = pd.to_numeric(frame[FACTOR_NAME], errors="coerce")
+    eligible = frame[f"{FACTOR_NAME}_eligible"]
+    if (
+        frame["trade_date"].isna().any()
+        or frame.duplicated(["trade_date", "symbol"]).any()
+        or not np.isfinite(frame.loc[eligible, FACTOR_NAME].to_numpy(dtype=float)).all()
+        or not frame.loc[eligible, FACTOR_NAME].between(-1.0, 1.0).all()
+        or frame.loc[~eligible, FACTOR_NAME].notna().any()
+    ):
+        raise ReturnSignRunImbalanceError("candidate frame values or keys are invalid")
+    frame["symbol"] = frame["symbol"].astype("category")
+    return frame
+
+
+def coverage_and_capacity(
+    candidate: pd.DataFrame,
+    eligible_keys: pd.DataFrame,
+    spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    previous_name = previous.FACTOR_NAME
+    previous.FACTOR_NAME = FACTOR_NAME
+    try:
+        return previous.coverage_and_capacity(candidate, eligible_keys, spec)
+    finally:
+        previous.FACTOR_NAME = previous_name
+
+
+def _daily_directional_rank_correlations(
+    frame: pd.DataFrame,
+    comparison: str,
+    direction: str,
+    minimum_names: int,
+) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    for trade_date, group in frame[["trade_date", FACTOR_NAME, comparison]].groupby(
+        "trade_date", observed=True, sort=True
+    ):
+        pair = group[[FACTOR_NAME, comparison]].apply(pd.to_numeric, errors="coerce")
+        pair = pair.replace([np.inf, -np.inf], np.nan).dropna()
+        if len(pair) < minimum_names or pair.nunique().min() < 2:
+            continue
+        candidate_score = pair[FACTOR_NAME].rank(method="average", pct=True)
+        comparison_score = pair[comparison].rank(
+            method="average", pct=True, ascending=(direction == "higher")
+        )
+        correlation = candidate_score.corr(comparison_score, method="pearson")
+        if math.isfinite(float(correlation)):
+            rows.append(
+                {
+                    "trade_date": pd.Timestamp(trade_date),
+                    "pairwise_names": int(len(pair)),
+                    "rank_correlation": float(correlation),
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def uniqueness_audit(
+    candidate_quality: pd.DataFrame,
+    joint_manifest_path: Path,
+    efficiency_manifest: dict[str, Any],
+    efficiency_manifest_path: Path,
+    recovery_manifest: dict[str, Any],
+    recovery_manifest_path: Path,
+    entropy_manifest: dict[str, Any],
+    entropy_manifest_path: Path,
+    profile_manifest: dict[str, Any],
+    profile_manifest_path: Path,
+    upside_manifest: dict[str, Any],
+    upside_manifest_path: Path,
+    terminal_manifest: dict[str, Any],
+    terminal_manifest_path: Path,
+    spec: dict[str, Any],
+    workers: int,
+) -> dict[str, Any]:
+    print("coverage passed; loading ten terminal comparison factors", flush=True)
+    efficiency_verification = foundation.verify_snapshot_files(
+        efficiency_manifest, efficiency_manifest_path, workers
+    )
+    recovery_verification = recovery.verify_snapshot_files(
+        recovery_manifest, recovery_manifest_path, workers
+    )
+    entropy_verification = entropy.verify_snapshot_files(
+        entropy_manifest, entropy_manifest_path, workers
+    )
+    profile_verification = profile.verify_snapshot_files(
+        profile_manifest, profile_manifest_path, workers
+    )
+    upside_verification = upside.verify_snapshot_files(
+        upside_manifest, upside_manifest_path, workers
+    )
+    terminal_verification = previous.verify_snapshot_files(
+        terminal_manifest, terminal_manifest_path, workers
+    )
+    dataset = pa_dataset.dataset(str(joint_manifest_path.parent / "partitions"), format="parquet")
+    table = dataset.to_table(
+        columns=["trade_date", "symbol", *recovery.BASE_COMPARISON_FACTORS],
+        use_threads=True,
+    )
+    comparisons = table.to_pandas(split_blocks=True, self_destruct=True)
+    del table, dataset
+    gc.collect()
+    comparisons["trade_date"] = pd.to_datetime(
+        comparisons["trade_date"], errors="coerce"
+    ).dt.normalize()
+    comparisons["symbol"] = comparisons["symbol"].astype(str).str.upper()
+    if (
+        len(comparisons) != 7_724_498
+        or comparisons["trade_date"].isna().any()
+        or comparisons.duplicated(["trade_date", "symbol"]).any()
+    ):
+        raise ReturnSignRunImbalanceError("base comparison frame identity changed")
+    efficiency = foundation.load_candidate_frame(
+        efficiency_manifest_path, efficiency_manifest
+    )[["trade_date", "symbol", foundation.FACTOR_NAME]]
+    recovery_frame = recovery.load_candidate_frame(
+        recovery_manifest_path, recovery_manifest
+    )[["trade_date", "symbol", recovery.FACTOR_NAME]]
+    entropy_frame = entropy.load_candidate_frame(
+        entropy_manifest_path, entropy_manifest
+    )[["trade_date", "symbol", entropy.FACTOR_NAME]]
+    profile_frame = profile.load_candidate_frame(
+        profile_manifest_path, profile_manifest
+    )[
+        ["trade_date", "symbol", profile.FACTOR_NAME]
+    ]
+    upside_frame = upside.load_candidate_frame(
+        upside_manifest_path, upside_manifest
+    )[
+        ["trade_date", "symbol", upside.FACTOR_NAME]
+    ]
+    terminal_frame = previous.load_candidate_frame(
+        terminal_manifest_path, terminal_manifest
+    )[
+        ["trade_date", "symbol", previous.FACTOR_NAME]
+    ]
+    for frame in (
+        efficiency,
+        recovery_frame,
+        entropy_frame,
+        profile_frame,
+        upside_frame,
+        terminal_frame,
+    ):
+        frame["symbol"] = frame["symbol"].astype(str)
+    comparisons = (
+        comparisons.merge(
+            efficiency, on=["trade_date", "symbol"], how="left", validate="one_to_one"
+        )
+        .merge(
+            recovery_frame,
+            on=["trade_date", "symbol"],
+            how="left",
+            validate="one_to_one",
+        )
+        .merge(
+            entropy_frame,
+            on=["trade_date", "symbol"],
+            how="left",
+            validate="one_to_one",
+        )
+        .merge(
+            profile_frame,
+            on=["trade_date", "symbol"],
+            how="left",
+            validate="one_to_one",
+        )
+        .merge(
+            upside_frame,
+            on=["trade_date", "symbol"],
+            how="left",
+            validate="one_to_one",
+        )
+        .merge(
+            terminal_frame,
+            on=["trade_date", "symbol"],
+            how="left",
+            validate="one_to_one",
+        )
+    )
+    del (
+        efficiency,
+        recovery_frame,
+        entropy_frame,
+        profile_frame,
+        upside_frame,
+        terminal_frame,
+    )
+    candidate_quality = candidate_quality.copy()
+    candidate_quality["symbol"] = candidate_quality["symbol"].astype(str)
+    merged = candidate_quality.merge(
+        comparisons, on=["trade_date", "symbol"], how="left", validate="one_to_one"
+    )
+    del comparisons, candidate_quality
+    gc.collect()
+    gate = spec["ordered_no_return_gates"]["uniqueness_after_coverage_only"]
+    minimum_names = int(gate["minimum_pairwise_names_per_session"])
+    minimum_sessions = int(gate["minimum_pairwise_sessions_per_comparison"])
+    threshold = float(gate["maximum_allowed_absolute_median_daily_rank_correlation"])
+    results: list[dict[str, Any]] = []
+    for comparison, direction in zip(COMPARISON_FACTORS, COMPARISON_DIRECTIONS):
+        daily = _daily_directional_rank_correlations(
+            merged, comparison, direction, minimum_names
+        )
+        sessions = int(len(daily))
+        median = float(daily["rank_correlation"].median()) if sessions else math.nan
+        passed = bool(
+            sessions >= minimum_sessions and math.isfinite(median) and abs(median) < threshold
+        )
+        results.append(
+            {
+                "comparison_factor": comparison,
+                "score_direction": direction,
+                "pairwise_sessions": sessions,
+                "minimum_pairwise_names_observed": (
+                    int(daily["pairwise_names"].min()) if sessions else 0
+                ),
+                "median_daily_rank_correlation": median if math.isfinite(median) else None,
+                "absolute_median_daily_rank_correlation": (
+                    abs(median) if math.isfinite(median) else None
+                ),
+                "daily_rank_correlation_p05": (
+                    float(daily["rank_correlation"].quantile(0.05)) if sessions else None
+                ),
+                "daily_rank_correlation_p95": (
+                    float(daily["rank_correlation"].quantile(0.95)) if sessions else None
+                ),
+                "daily_correlation_frame_sha256": (
+                    research.dataframe_content_sha256(daily) if sessions else None
+                ),
+                "gate_passed": passed,
+            }
+        )
+    observed = [
+        item["absolute_median_daily_rank_correlation"]
+        for item in results
+        if item["absolute_median_daily_rank_correlation"] is not None
+    ]
+    all_passed = len(results) == 10 and all(item["gate_passed"] for item in results)
+    return {
+        "comparison_values_loaded_after_coverage_pass": True,
+        "comparison_field_count": len(results),
+        "prior_candidate_snapshot_file_verification": {
+            "afternoon_efficiency": efficiency_verification,
+            "afternoon_recovery": recovery_verification,
+            "amount_entropy": entropy_verification,
+            "amount_profile_serial_persistence": profile_verification,
+            "upside_semivariance_share": upside_verification,
+            "terminal_close_location": terminal_verification,
+        },
+        "minimum_pairwise_names_per_session": minimum_names,
+        "minimum_pairwise_sessions_per_comparison": minimum_sessions,
+        "maximum_allowed_absolute_median_daily_rank_correlation": threshold,
+        "comparisons": results,
+        "maximum_observed_absolute_median_daily_rank_correlation": (
+            max(observed) if observed else None
+        ),
+        "all_ten_comparisons_passed": all_passed,
+    }
+
+
+def _find_existing_audit(experiment_root: Path, manifest_sha256: str) -> Path | None:
+    for path in sorted(
+        experiment_root.glob(
+            "*_intraday_return_sign_run_imbalance_no_return_audit.json"
+        )
+    ):
+        record = research.load_json_record(path)
+        if (
+            record.get("kind")
+            == "a_share_tushare_intraday_return_sign_run_imbalance_no_return_audit"
+            and (record.get("candidate_snapshot") or {}).get("sha256") == manifest_sha256
+        ):
+            return path
+    return None
+
+
+def run_no_return_audit(
+    *, data_root: Path, experiment_root: Path, workers: int
+) -> Path:
+    data_root = data_root.expanduser().resolve()
+    experiment_root = experiment_root.expanduser().resolve()
+    spec = load_preregistration()
+    terminal_record = load_terminal_record_if_present()
+    if terminal_record is not None:
+        manifest_path = output_root(data_root) / "snapshot_manifest.json"
+        _require_file(
+            manifest_path,
+            CANDIDATE_MANIFEST_SHA256,
+            "terminal candidate snapshot manifest",
+        )
+        audit_link = (terminal_record.get("ordered_protocol") or {}).get(
+            "no_return_audit"
+        ) or {}
+        audit_path = _repository_path(str(audit_link.get("path", "")))
+        _require_file(audit_path, NO_RETURN_AUDIT_SHA256, "terminal no-return audit")
+        audit = research.load_json_record(
+            audit_path,
+            kind="a_share_tushare_intraday_return_sign_run_imbalance_no_return_audit",
+        )
+        if not (
+            audit.get("status")
+            == "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration"
+            and (audit.get("candidate_snapshot") or {}).get("sha256")
+            == CANDIDATE_MANIFEST_SHA256
+            and (audit.get("coverage_and_capacity") or {}).get(
+                "gate_passed_before_comparison_values"
+            )
+            is True
+            and (audit.get("uniqueness") or {}).get(
+                "all_ten_comparisons_passed"
+            )
+            is True
+            and (audit.get("decision") or {}).get(
+                "separate_return_diagnostic_preregistration_allowed"
+            )
+            is True
+            and audit.get("forward_return_fields_read") is False
+        ):
+            raise ReturnSignRunImbalanceError(
+                "terminal no-return audit is inconsistent"
+            )
+        return audit_path
+    repository_evidence = validate_repository_chain(spec)
+    chain = validate_external_chain(spec, data_root)
+    (
+        _,
+        joint,
+        _,
+        joint_manifest_path,
+        efficiency_manifest,
+        efficiency_manifest_path,
+        recovery_manifest,
+        recovery_manifest_path,
+        entropy_manifest,
+        entropy_manifest_path,
+        profile_manifest,
+        profile_manifest_path,
+        upside_manifest,
+        upside_manifest_path,
+        terminal_manifest,
+        terminal_manifest_path,
+    ) = chain
+    manifest_path = output_root(data_root) / "snapshot_manifest.json"
+    if not manifest_path.is_file():
+        raise FileNotFoundError(
+            f"candidate snapshot must be built before its no-return audit: {manifest_path}"
+        )
+    manifest = research.load_json_record(
+        manifest_path,
+        kind="a_share_tushare_intraday_return_sign_run_imbalance_snapshot",
+    )
+    if not (
+        manifest.get("status")
+        == "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
+        and manifest.get("protocol_sha256") == PREREGISTRATION_SHA256
+        and manifest.get("raw_manifest_sha256") == RAW_MANIFEST_SHA256
+        and manifest.get("joint_manifest_sha256") == JOINT_MANIFEST_SHA256
+        and manifest.get("rows") == 7_724_498
+        and manifest.get("source_close_read") is True
+        and manifest.get("source_open_high_low_volume_or_amount_read") is False
+        and manifest.get("comparison_factor_values_read") is False
+        and manifest.get("forward_return_fields_read") is False
+    ):
+        raise ReturnSignRunImbalanceError("candidate snapshot identity is rejected")
+    manifest_sha256 = foundation.file_digest(manifest_path)
+    if manifest_sha256 != CANDIDATE_MANIFEST_SHA256:
+        raise ReturnSignRunImbalanceError(
+            "candidate snapshot fingerprint changed: expected "
+            f"{CANDIDATE_MANIFEST_SHA256}, got {manifest_sha256}"
+        )
+    existing = _find_existing_audit(experiment_root, manifest_sha256)
+    if existing is not None:
+        return existing
+    verification = verify_snapshot_files(manifest, manifest_path, workers)
+    candidate = load_candidate_frame(manifest_path, manifest)
+    print("building no-price quality/listing eligibility", flush=True)
+    eligible_keys = foundation.quality_listing_eligible_keys(spec)
+    candidate_quality, coverage = coverage_and_capacity(candidate, eligible_keys, spec)
+    del candidate, eligible_keys
+    gc.collect()
+    uniqueness: dict[str, Any] = {
+        "comparison_values_loaded_after_coverage_pass": False,
+        "all_ten_comparisons_passed": False,
+        "comparisons": [],
+    }
+    if coverage["gate_passed_before_comparison_values"]:
+        uniqueness = uniqueness_audit(
+            candidate_quality,
+            joint_manifest_path,
+            efficiency_manifest,
+            efficiency_manifest_path,
+            recovery_manifest,
+            recovery_manifest_path,
+            entropy_manifest,
+            entropy_manifest_path,
+            profile_manifest,
+            profile_manifest_path,
+            upside_manifest,
+            upside_manifest_path,
+            terminal_manifest,
+            terminal_manifest_path,
+            spec,
+            workers,
+        )
+    del candidate_quality
+    gc.collect()
+    passed = bool(
+        coverage["gate_passed_before_comparison_values"]
+        and uniqueness["all_ten_comparisons_passed"]
+    )
+    status = (
+        "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration"
+        if passed
+        else (
+            "terminal_rejected_at_no_return_uniqueness_gate"
+            if coverage["gate_passed_before_comparison_values"]
+            else "terminal_rejected_at_no_return_coverage_or_capacity_gate"
+        )
+    )
+    audit = {
+        "schema_version": 1,
+        "kind": "a_share_tushare_intraday_return_sign_run_imbalance_no_return_audit",
+        "status": status,
+        "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "purpose": "ordered_candidate_coverage_capacity_then_ten_terminal_factor_uniqueness_without_daily_prices_or_forward_returns",
+        "preregistration": {
+            "path": str(DEFAULT_PREREGISTRATION.resolve()),
+            "sha256": PREREGISTRATION_SHA256,
+            "preregistered_at": spec["preregistered_at"],
+        },
+        "candidate_snapshot": {
+            "path": str(manifest_path),
+            "sha256": manifest_sha256,
+            "dataset_sha256": str(manifest["dataset_sha256"]),
+            "rows": int(manifest["rows"]),
+            "eligible_rows": int(manifest["eligible_rows"]),
+        },
+        "source_chain": {
+            "raw_manifest_sha256": RAW_MANIFEST_SHA256,
+            "joint_manifest_sha256": JOINT_MANIFEST_SHA256,
+            "joint_dataset_sha256": str(joint["dataset_sha256"]),
+            "afternoon_efficiency_manifest_sha256": AFTERNOON_EFFICIENCY_MANIFEST_SHA256,
+            "afternoon_recovery_manifest_sha256": AFTERNOON_RECOVERY_MANIFEST_SHA256,
+            "amount_entropy_manifest_sha256": AMOUNT_ENTROPY_MANIFEST_SHA256,
+            "amount_profile_serial_persistence_manifest_sha256": AMOUNT_PROFILE_PERSISTENCE_MANIFEST_SHA256,
+            "upside_semivariance_share_manifest_sha256": UPSIDE_SEMIVARIANCE_MANIFEST_SHA256,
+            "terminal_close_location_manifest_sha256": TERMINAL_CLOSE_LOCATION_MANIFEST_SHA256,
+            "repository_evidence": repository_evidence,
+            "snapshot_file_verification": verification,
+        },
+        "candidate": {
+            "name": FACTOR_NAME,
+            "direction": "higher",
+            "formula": spec["candidate"]["formula"],
+        },
+        "coverage_and_capacity": coverage,
+        "uniqueness": uniqueness,
+        "decision": {
+            "all_no_return_gates_passed": passed,
+            "separate_return_diagnostic_preregistration_allowed": passed,
+            "return_diagnostic_authorized_without_separate_preregistration": False,
+            "aggregation_allowed": False,
+            "current_scoring_allowed": False,
+            "selection_allowed": False,
+            "sizing_or_orders_allowed": False,
+            "level2_intake_justified": False,
+        },
+        "source_fields_loaded": list(RAW_COLUMNS),
+        "minute_price_fields_loaded": ["close"],
+        "minute_open_high_low_volume_or_amount_fields_loaded": [],
+        "comparison_fields_loaded": (
+            list(COMPARISON_FACTORS)
+            if uniqueness["comparison_values_loaded_after_coverage_pass"]
+            else []
+        ),
+        "daily_price_fields_loaded": [],
+        "forward_return_fields_read": False,
+        "training_or_model_fitting_performed": False,
+        "investment_advice": False,
+    }
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    run_id = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    path = (
+        experiment_root
+        / f"{run_id}_intraday_return_sign_run_imbalance_no_return_audit.json"
+    )
+    foundation.atomic_write_json(audit, path)
+    return path
+
+
+def load_diagnostic_preregistration(
+    path: Path = DEFAULT_DIAGNOSTIC_PREREGISTRATION,
+) -> dict[str, Any]:
+    path = path.expanduser().resolve()
+    _require_file(
+        path,
+        DIAGNOSTIC_PREREGISTRATION_SHA256,
+        "return-sign-run-imbalance diagnostic protocol",
+    )
+    spec = research.load_json_record(
+        path,
+        kind="a_share_tushare_intraday_return_sign_run_imbalance_diagnostic_preregistration",
+    )
+    factor = spec.get("factor") or {}
+    evidence = spec.get("no_return_evidence") or {}
+    snapshot = evidence.get("candidate_snapshot") or {}
+    audit = evidence.get("ordered_audit") or {}
+    coverage = evidence.get("coverage_and_capacity") or {}
+    uniqueness = evidence.get("uniqueness") or {}
+    holding = spec.get("holding_protocol") or {}
+    gates = spec.get("diagnostic_gates") or {}
+    decision = spec.get("post_diagnostic_decision") or {}
+    boundary = spec.get("research_boundary") or {}
+    if not (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_no_return_coverage_capacity_and_uniqueness_pass_before_first_forward_return_read"
+        and factor.get("name") == FACTOR_NAME
+        and factor.get("direction") == "higher"
+        and factor.get("formula") == FACTOR_FORMULA
+        and factor.get(
+            "forward_returns_observed_before_this_diagnostic_preregistration"
+        )
+        is False
+        and (evidence.get("protocol") or {}).get("sha256") == PREREGISTRATION_SHA256
+        and (evidence.get("context_repair") or {}).get("sha256")
+        == CONTEXT_REPAIR_SHA256
+        and snapshot.get("sha256") == CANDIDATE_MANIFEST_SHA256
+        and snapshot.get("dataset_sha256")
+        == "265bb3da24be81ca1127028aecd5ffed79a7f9b35d094514bc7cc7b0cc01b20a"
+        and snapshot.get("partitions") == 33_015
+        and snapshot.get("rows") == 7_724_498
+        and snapshot.get("eligible_rows") == 7_605_471
+        and snapshot.get("zero_same_sign_pair_count_rows") == 119_027
+        and snapshot.get("invalid_required_value_rows") == 0
+        and snapshot.get("nonfinite_log_return_rows") == 0
+        and snapshot.get("sign_run_imbalance_range_violation_rows") == 0
+        and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
+        and audit.get("forward_return_fields_read") is False
+        and coverage.get("quality_listing_eligible_rows") == 1_331_759
+        and coverage.get("candidate_eligible_rows_after_quality_and_listing")
+        == 1_322_098
+        and coverage.get("median_coverage") == 0.9945652173913043
+        and coverage.get("p05_coverage") == 0.9838523614649016
+        and coverage.get("p05_eligible_names") == 137
+        and coverage.get("potential_non_overlapping_three_session_cohorts") == 540
+        and coverage.get("observed_calendar_years")
+        == [2019, 2020, 2021, 2022, 2023, 2024, 2025]
+        and coverage.get("gate_passed") is True
+        and uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        == 0.8
+        and uniqueness.get("maximum_observed_absolute_median_daily_rank_correlation")
+        == 0.4393974730067088
+        and uniqueness.get("all_ten_comparisons_passed") is True
+        and holding.get("universe") == "buyable_main_chinext"
+        and holding.get("minimum_listing_sessions") == research.MIN_LISTING_SESSIONS
+        and holding.get("development_start") == "2019-01-01"
+        and holding.get("development_end") == "2025-12-31"
+        and holding.get("holding_period_trading_days") == 3
+        and holding.get("non_overlapping_cohorts") is True
+        and holding.get("topk") == 3
+        and holding.get("open_cost") == 0.00012
+        and holding.get("close_cost") == 0.00062
+        and gates.get("minimum_non_overlapping_cohorts") == 200
+        and gates.get("minimum_observed_calendar_years") == 5
+        and decision.get("same_history_combination_return_evaluation_allowed")
+        is False
+        and decision.get("current_scoring_selection_sizing_or_orders_allowed")
+        is False
+        and boundary.get("forward_return_fields_read_before_registration") is False
+        and boundary.get("training_or_model_fitting_performed") is False
+    ):
+        raise ReturnSignRunImbalanceError(
+            "return-sign-run-imbalance diagnostic protocol no longer matches its frozen definition"
+        )
+    return spec
+
+
+def validate_diagnostic_source_chain(
+    spec: dict[str, Any], data_root: Path
+) -> tuple[dict[str, Any], dict[str, Any], Path, Path, dict[str, Any]]:
+    no_return = spec["no_return_evidence"]
+    protocol_path = _repository_path(str(no_return["protocol"]["path"]))
+    _require_file(protocol_path, PREREGISTRATION_SHA256, "no-return protocol")
+    context_repair_path = _repository_path(
+        str(no_return["context_repair"]["path"])
+    )
+    _require_file(
+        context_repair_path, CONTEXT_REPAIR_SHA256, "no-return context repair"
+    )
+    snapshot_link = no_return["candidate_snapshot"]
+    manifest_path = (data_root / str(snapshot_link["path_below_data_root"])).resolve()
+    _require_file(
+        manifest_path, CANDIDATE_MANIFEST_SHA256, "candidate snapshot manifest"
+    )
+    manifest = research.load_json_record(
+        manifest_path,
+        kind="a_share_tushare_intraday_return_sign_run_imbalance_snapshot",
+    )
+    if not (
+        manifest.get("status")
+        == "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
+        and manifest.get("protocol_sha256") == PREREGISTRATION_SHA256
+        and manifest.get("dataset_sha256") == snapshot_link.get("dataset_sha256")
+        and manifest.get("partitions") == 33_015
+        and manifest.get("rows") == 7_724_498
+        and manifest.get("eligible_rows") == 7_605_471
+        and (manifest.get("quality") or {}).get(
+            "zero_same_sign_pair_count_rows"
+        )
+        == 119_027
+        and (manifest.get("quality") or {}).get("invalid_required_value_rows") == 0
+        and (manifest.get("quality") or {}).get("nonfinite_log_return_rows") == 0
+        and (manifest.get("quality") or {}).get(
+            "sign_run_imbalance_range_violation_rows"
+        )
+        == 0
+        and manifest.get("comparison_factor_values_read") is False
+        and manifest.get("forward_return_fields_read") is False
+        and manifest.get("source_fields_read") == list(RAW_COLUMNS)
+        and manifest.get("source_close_read") is True
+        and manifest.get("source_open_high_low_volume_or_amount_read") is False
+    ):
+        raise ReturnSignRunImbalanceError(
+            "candidate snapshot conflicts with the diagnostic preregistration"
+        )
+    audit_link = no_return["ordered_audit"]
+    audit_path = _repository_path(str(audit_link["path"]))
+    _require_file(audit_path, NO_RETURN_AUDIT_SHA256, "ordered no-return audit")
+    audit = research.load_json_record(
+        audit_path,
+        kind="a_share_tushare_intraday_return_sign_run_imbalance_no_return_audit",
+    )
+    if not (
+        audit.get("status") == audit_link.get("status")
+        and (audit.get("candidate_snapshot") or {}).get("sha256")
+        == CANDIDATE_MANIFEST_SHA256
+        and (audit.get("coverage_and_capacity") or {}).get(
+            "gate_passed_before_comparison_values"
+        )
+        is True
+        and (audit.get("uniqueness") or {}).get("all_ten_comparisons_passed")
+        is True
+        and (audit.get("decision") or {}).get(
+            "separate_return_diagnostic_preregistration_allowed"
+        )
+        is True
+        and audit.get("daily_price_fields_loaded") == []
+        and audit.get("forward_return_fields_read") is False
+    ):
+        raise ReturnSignRunImbalanceError(
+            "ordered no-return audit does not authorize the frozen diagnostic"
+        )
+    repository_evidence: dict[str, Any] = {}
+    repository_evidence["context_repair"] = {
+        "path": str(context_repair_path),
+        "sha256": CONTEXT_REPAIR_SHA256,
+    }
+    for name, link in (
+        ("accepted_daily_price_basis", spec["accepted_daily_price_basis"]),
+        ("quarterly_quality", spec["quarterly_quality"]),
+    ):
+        path = _repository_path(str(link["path"]))
+        expected = str(link["sha256"])
+        _require_file(path, expected, name.replace("_", " "))
+        repository_evidence[name] = {"path": str(path), "sha256": expected}
+    quality = spec["quarterly_quality"]
+    quality_manifest_path = _repository_path(str(quality["manifest_path"]))
+    _require_file(
+        quality_manifest_path,
+        str(quality["manifest_sha256"]),
+        "quarterly quality manifest",
+    )
+    repository_evidence["quarterly_quality_manifest"] = {
+        "path": str(quality_manifest_path),
+        "sha256": str(quality["manifest_sha256"]),
+    }
+    for name, link in spec["execution_policies"].items():
+        path = _repository_path(str(link["path"]))
+        expected = str(link["sha256"])
+        _require_file(path, expected, name.replace("_", " "))
+        repository_evidence[name] = {"path": str(path), "sha256": expected}
+    return manifest, audit, manifest_path, audit_path, repository_evidence
+
+
+def require_diagnostic_unconsumed(experiment_root: Path) -> None:
+    marker = experiment_root / CONSUMPTION_FILENAME
+    if marker.exists():
+        raise ReturnSignRunImbalanceError(
+            f"return-sign-run-imbalance historical diagnostic is already consumed: {marker}"
+        )
+    for path in sorted(experiment_root.glob("*_factor_diagnostic.json")):
+        record = research.load_json_record(path)
+        if record.get("purpose") == DIAGNOSTIC_PURPOSE:
+            raise ReturnSignRunImbalanceError(
+                f"return-sign-run-imbalance historical diagnostic already exists: {path}"
+            )
+
+
+def attach_ranked_candidate(
+    market: pd.DataFrame,
+    candidate: pd.DataFrame,
+    diagnostic_spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    prior_factor_name = foundation.FACTOR_NAME
+    foundation.FACTOR_NAME = FACTOR_NAME
+    try:
+        return foundation.attach_ranked_candidate(market, candidate, diagnostic_spec)
+    finally:
+        foundation.FACTOR_NAME = prior_factor_name
+
+
+def run_diagnostic(args: argparse.Namespace) -> Path:
+    data_root = Path(args.data_root).expanduser().resolve()
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    fundamentals_path = Path(args.fundamentals).expanduser().resolve()
+    experiment_root = Path(args.experiment_root).expanduser().resolve()
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    require_diagnostic_unconsumed(experiment_root)
+    spec = load_diagnostic_preregistration()
+    manifest, no_return_audit, manifest_path, audit_path, repository_evidence = (
+        validate_diagnostic_source_chain(spec, data_root)
+    )
+    verification = verify_snapshot_files(
+        manifest, manifest_path, int(args.verification_workers)
+    )
+    candidate = load_candidate_frame(manifest_path, manifest)
+    holding = spec["holding_protocol"]
+    start = str(holding["development_start"])
+    end = str(holding["development_end"])
+    if candidate["trade_date"].min() < pd.Timestamp(start) or candidate[
+        "trade_date"
+    ].max() > pd.Timestamp(end):
+        raise ReturnSignRunImbalanceError(
+            "candidate feature dates escape the frozen diagnostic window"
+        )
+    print("loading accepted daily execution and quality context", flush=True)
+    price_basis = research.research_price_basis_metadata(provider_uri)
+    fundamentals = research.load_fundamentals(fundamentals_path)
+    market = research.load_market_execution_data(
+        provider_uri, start, end, int(args.batch_size)
+    )
+    market = research.attach_quality_asof(
+        market,
+        fundamentals,
+        max_age_days=int(spec["quarterly_quality"]["maximum_age_days"]),
+    )
+    del fundamentals
+    gc.collect()
+    quality_counts = {
+        "fundamental_eligible_rows_before_listing_gate": int(
+            market["fundamental_quality_eligible"].fillna(False).sum()
+        ),
+        "eligible_rows_after_listing_gate": int(
+            market["quality_eligible"].fillna(False).sum()
+        ),
+        "fundamental_rows_excluded_by_listing_gate": int(
+            (
+                market["fundamental_quality_eligible"].fillna(False)
+                & ~market["listing_seasoning_eligible"].fillna(False)
+            ).sum()
+        ),
+    }
+    market_rows = int(len(market))
+    market_start = market["datetime"].min().date().isoformat()
+    market_end = market["datetime"].max().date().isoformat()
+    ranked, coverage = attach_ranked_candidate(market, candidate, spec)
+    del market, candidate
+    gc.collect()
+
+    execution_policy = research.load_prospective_execution_policy()
+    research.require_prospective_execution_policy_compatibility(
+        execution_policy,
+        hold_days=int(holding["holding_period_trading_days"]),
+        topk=int(holding["topk"]),
+        open_cost=float(holding["open_cost"]),
+        close_cost=float(holding["close_cost"]),
+    )
+    pilot_policy = research.load_pilot_execution_policy()
+    marker_path = experiment_root / CONSUMPTION_FILENAME
+    marker = {
+        "kind": "a_share_tushare_intraday_return_sign_run_imbalance_historical_consumption",
+        "status": "historical_forward_return_read_started",
+        "started_at": research._timestamp(),
+        "diagnostic_preregistration_path": str(
+            DEFAULT_DIAGNOSTIC_PREREGISTRATION.resolve()
+        ),
+        "diagnostic_preregistration_sha256": DIAGNOSTIC_PREREGISTRATION_SHA256,
+        "candidate_manifest_sha256": CANDIDATE_MANIFEST_SHA256,
+        "no_return_audit_sha256": NO_RETURN_AUDIT_SHA256,
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
+    }
+    research._atomic_write_text(
+        marker_path, json.dumps(marker, ensure_ascii=False, indent=2) + "\n"
+    )
+    print(
+        "no-return gates reproduced; beginning the single authorized forward-return read",
+        flush=True,
+    )
+    forward_returns = research.forward_factor_return_frame(
+        ranked, int(holding["holding_period_trading_days"])
+    )
+    summaries = research.summarize_factor_diagnostics(
+        forward_returns,
+        [FACTOR_NAME],
+        hold_days=int(holding["holding_period_trading_days"]),
+        topk=int(holding["topk"]),
+        open_cost=float(holding["open_cost"]),
+        close_cost=float(holding["close_cost"]),
+    )
+    del forward_returns
+    gc.collect()
+    summary = (
+        summaries[0]
+        if summaries
+        else research.unavailable_factor_diagnostic_summary(
+            FACTOR_NAME, int(holding["holding_period_trading_days"])
+        )
+    )
+    print("simulating normalized and CNY 200,000 execution policies", flush=True)
+    summary["execution_aware_topk"] = research.simulate_prospective_execution_topk(
+        ranked, FACTOR_NAME, policy=execution_policy
+    )
+    summary["pilot_execution_topk"] = research.simulate_pilot_execution_topk(
+        ranked,
+        FACTOR_NAME,
+        execution_policy=execution_policy,
+        pilot_policy=pilot_policy,
+    )
+    del ranked
+    gc.collect()
+    run_id = research._timestamp()
+    diagnostic = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": DIAGNOSTIC_PURPOSE,
+        "factor_catalog": [FACTOR_NAME],
+        "factor_directions": {FACTOR_NAME: "higher"},
+        "strategy_timing": {
+            "universe": holding["universe"],
+            "minimum_listing_sessions": research.MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
+            "holding_period_trading_days": int(holding["holding_period_trading_days"]),
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": "full-session return-sign-run factor known after signal-session close",
+            "same_session_trade_allowed": False,
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "diagnostic_topk": int(holding["topk"]),
+            "open_cost": float(holding["open_cost"]),
+            "close_cost": float(holding["close_cost"]),
+            "parameters_read_from_preregistration": True,
+        },
+        "quality_gate": {
+            "source": str(fundamentals_path),
+            "sha256": research.file_sha256(fundamentals_path),
+            "effective_date": "strictly next local trading session after announcement_date",
+            "quality_state_semantics": spec["quarterly_quality"][
+                "quality_state_semantics"
+            ],
+            "max_quality_age_days": int(spec["quarterly_quality"]["maximum_age_days"]),
+            **quality_counts,
+        },
+        "minute_factor": {
+            "provider": "tushare",
+            "frequency": "1m",
+            "name": FACTOR_NAME,
+            "direction": "higher",
+            "formula": spec["factor"]["formula"],
+            "candidate_manifest": {
+                "path": str(manifest_path),
+                "sha256": CANDIDATE_MANIFEST_SHA256,
+                "dataset_sha256": manifest["dataset_sha256"],
+                "verification": verification,
+            },
+            "no_return_audit": {
+                "path": str(audit_path),
+                "sha256": NO_RETURN_AUDIT_SHA256,
+                "status": no_return_audit["status"],
+            },
+            "coverage": coverage,
+            "source_fields_read_for_factor": list(RAW_COLUMNS),
+            "source_close_read_for_factor": True,
+            "source_open_high_low_volume_or_amount_read_for_factor": False,
+            "standalone_09_30_row_excluded_from_formula": True,
+            "daily_prices_substituted_into_minute_rows": False,
+            "forward_return_fields_stored_in_feature_source": False,
+            "selection_or_promotion_allowed": False,
+        },
+        "data": {
+            "provider_uri": str(provider_uri),
+            **price_basis,
+            "calendar_start": market_start,
+            "calendar_end": market_end,
+            "development_start": start,
+            "development_end": end,
+            "market_rows": market_rows,
+            "eligible_rows": quality_counts["eligible_rows_after_listing_gate"],
+            "minimum_listing_sessions": research.MIN_LISTING_SESSIONS,
+            "test_period_used_for_factor_design": False,
+        },
+        "prospective_execution_policy": {
+            "path": str(research.DEFAULT_PROSPECTIVE_EXECUTION_POLICY),
+            "sha256": research.PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": execution_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+        },
+        "pilot_execution_policy": {
+            "path": str(research.DEFAULT_PILOT_EXECUTION_POLICY),
+            "sha256": research.PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+        },
+        "preregistration": {
+            "path": str(DEFAULT_DIAGNOSTIC_PREREGISTRATION.resolve()),
+            "sha256": DIAGNOSTIC_PREREGISTRATION_SHA256,
+            "preregistered_at": spec["preregistered_at"],
+            "factor_returns_observed_before_registration": False,
+            "single_use_marker": str(marker_path),
+        },
+        "repository_evidence": repository_evidence,
+        "ranking_by_development_rank_ic": [summary],
+        "post_diagnostic_decision": spec["post_diagnostic_decision"],
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "This is an exploratory 2019-2025 diagnostic, not a pristine holdout and not investment advice.",
+            "Only the higher direction frozen before this return read was evaluated.",
+            "A failure may not be inverted, reformulated, re-windowed, thresholded, or retested on this history.",
+            "A pass admits only one factor and cannot satisfy the two-factor aggregation minimum by itself.",
+            "Daily execution bars cannot reconstruct exact queue priority, partial fills, or realized market impact.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_factor_diagnostic.json"
+    research._atomic_write_text(
+        destination,
+        json.dumps(
+            diagnostic, ensure_ascii=False, indent=2, default=research._json_default
+        )
+        + "\n",
+    )
+    marker.update(
+        {
+            "status": "historical_diagnostic_completed",
+            "completed_at": research._timestamp(),
+            "diagnostic_path": str(destination),
+            "diagnostic_sha256": research.file_sha256(destination),
+        }
+    )
+    research._atomic_write_text(
+        marker_path, json.dumps(marker, ensure_ascii=False, indent=2) + "\n"
+    )
+    return destination
+
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    build_parser = subparsers.add_parser("build", help="Build the external candidate snapshot")
+    build_parser.add_argument("--data-root", type=Path, required=True)
+    build_parser.add_argument("--workers", type=int, default=4)
+    audit_parser = subparsers.add_parser(
+        "audit", help="Run ordered coverage/capacity and uniqueness without returns"
+    )
+    audit_parser.add_argument("--data-root", type=Path, required=True)
+    audit_parser.add_argument(
+        "--experiment-root",
+        type=Path,
+        default=REPO_ROOT / "data/experiments/short_horizon",
+    )
+    audit_parser.add_argument("--workers", type=int, default=8)
+    diagnose_parser = subparsers.add_parser(
+        "diagnose", help="Consume the single preregistered three-session diagnostic"
+    )
+    diagnose_parser.add_argument("--data-root", type=Path, required=True)
+    diagnose_parser.add_argument(
+        "--provider-uri", type=Path, default=REPO_ROOT / "data/qlib/cn_a_share"
+    )
+    diagnose_parser.add_argument(
+        "--fundamentals",
+        type=Path,
+        default=REPO_ROOT / "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+    )
+    diagnose_parser.add_argument(
+        "--experiment-root",
+        type=Path,
+        default=REPO_ROOT / "data/experiments/short_horizon",
+    )
+    diagnose_parser.add_argument("--batch-size", type=int, default=250)
+    diagnose_parser.add_argument("--verification-workers", type=int, default=8)
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    if args.command == "build":
+        path = build_snapshot(data_root=args.data_root, workers=args.workers)
+    elif args.command == "audit":
+        path = run_no_return_audit(
+            data_root=args.data_root,
+            experiment_root=args.experiment_root,
+            workers=args.workers,
+        )
+    else:
+        path = run_diagnostic(args)
+    print(json.dumps({"status": "ok", "path": str(path)}, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

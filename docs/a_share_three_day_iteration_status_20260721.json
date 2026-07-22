@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_intraday_terminal_close_location_no_return_uniqueness_rejection_zero_dual_gate_factors",
-  "recorded_at": "2026-07-22T18:00:23Z",
+  "status": "aggregation_blocked_after_intraday_return_sign_run_imbalance_terminal_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-22T19:00:57Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -292,10 +292,18 @@
         "path": "docs/a_share_tushare_intraday_terminal_close_location_research_record.json",
         "sha256": "b5c0f740353e35df27d7f0390dbee7e500990fb4d7986550faadd632ab0ef0c9"
       }
+    },
+    {
+      "mechanism": "tushare_intraday_return_sign_run_imbalance_238p",
+      "terminal_gate": "association_stability_and_executable_topk",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_research_record.json",
+        "sha256": "ef325c59c061109248c360bcd836eea70ac4531dd29c1028bf74d5e599108139"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 34,
+    "terminal_mechanism_count": 35,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -372,6 +380,10 @@
     "intraday_terminal_close_location_research_record": {
       "path": "docs/a_share_tushare_intraday_terminal_close_location_research_record.json",
       "sha256": "b5c0f740353e35df27d7f0390dbee7e500990fb4d7986550faadd632ab0ef0c9"
+    },
+    "intraday_return_sign_run_imbalance_research_record": {
+      "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_research_record.json",
+      "sha256": "ef325c59c061109248c360bcd836eea70ac4531dd29c1028bf74d5e599108139"
     },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
@@ -465,8 +477,18 @@
     "intraday_terminal_close_location_forward_returns_read": false,
     "intraday_terminal_close_location_diagnostic_created": false,
     "intraday_terminal_close_location_terminal": true,
+    "intraday_return_sign_run_imbalance_candidate_manifest_sha256": "e7e37808ed92c789c259296b57e3205c038dcc17f04b04d2ba32395d2cf52920",
+    "intraday_return_sign_run_imbalance_no_return_coverage_passed": true,
+    "intraday_return_sign_run_imbalance_no_return_uniqueness_passed": true,
+    "intraday_return_sign_run_imbalance_maximum_absolute_median_daily_rank_correlation": 0.4393974730067088,
+    "intraday_return_sign_run_imbalance_forward_returns_read": true,
+    "intraday_return_sign_run_imbalance_diagnostic_cohorts": 539,
+    "intraday_return_sign_run_imbalance_association_stability_passed": false,
+    "intraday_return_sign_run_imbalance_topk_viability_passed": false,
+    "intraday_return_sign_run_imbalance_dual_gate_passed": false,
+    "intraday_return_sign_run_imbalance_terminal": true,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "Retire the four exact cleaned historical directions and the exact higher-direction afternoon signed-amount-efficiency, afternoon drawdown-recovery-resilience, full-session amount-participation-entropy, full-session amount-profile serial-persistence, full-session upside-semivariance-share, and full-session terminal-close-location mechanisms. The terminal-close-location factor stopped before returns because it was a near synonym of late-VWAP-to-day-VWAP. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
+    "next_external_action": "Retire the four exact cleaned historical directions and the exact higher-direction afternoon signed-amount-efficiency, afternoon drawdown-recovery-resilience, full-session amount-participation-entropy, full-session amount-profile serial-persistence, full-session upside-semivariance-share, terminal-close-location, and return-sign-run-imbalance mechanisms. Terminal close location stopped before returns as a late-VWAP near synonym; sign-run imbalance passed uniqueness but failed association and executable Top-3 gates, with the CNY 200,000 board-lot result turning negative by five basis points per side. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
   },
   "decision": {
     "aggregation_allowed": false,

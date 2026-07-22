@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_tushare_intraday_return_sign_run_imbalance_context_repair",
+  "status": "frozen_before_candidate_factor_values_comparison_values_or_forward_returns",
+  "created_at": "2026-07-22T18:21:56Z",
+  "purpose": "Supply the point-in-time context accidentally omitted from the immutable no-return preregistration without changing its candidate, direction, formula, source fields, ordered gates, thresholds, dates, or prohibited search space.",
+  "omitted_protocol": {
+    "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_no_return_preregistration.json",
+    "sha256": "180e59227db73815aa0af68a0cd6781fab801e1b35b544bffbbf2be0ca5a4609"
+  },
+  "identical_context_source": {
+    "path": "docs/a_share_tushare_intraday_terminal_close_location_no_return_preregistration.json",
+    "sha256": "f15e3743458cdc7d52b68be50210fb35a76d8c3f5a62ed6415785a16ed4f1ef4",
+    "field": "point_in_time_context"
+  },
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "f2837b8866957b766236199cd40cb30cfe8d88b2f3c99116a031e335557d1a5a",
+    "terminal_mechanism_count_before_this_candidate": 34,
+    "aggregation_allowed": false
+  },
+  "point_in_time_context": {
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "development_sessions": 1699
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "availability": "strictly_next_local_session_after_announcement_date",
+      "quality_state_semantics": "after_effective_date_sort_and_dedup_forward_fill_roe_net_profit_revenue_yoy_and_profit_yoy_independently",
+      "maximum_age_days": 550
+    },
+    "minimum_listing_sessions": 20
+  },
+  "repair_scope": {
+    "adds_only_missing_point_in_time_context": true,
+    "context_is_byte_semantically_identical_to_bound_previous_protocol": true,
+    "candidate_changed": false,
+    "direction_changed": false,
+    "formula_changed": false,
+    "source_fields_changed": false,
+    "ordered_gate_or_threshold_changed": false,
+    "date_or_holding_period_changed": false,
+    "post_result_search_authorized": false
+  },
+  "research_boundary": {
+    "historical_candidate_factor_values_observed_before_repair": false,
+    "terminal_factor_comparison_values_observed_for_this_candidate_before_repair": false,
+    "daily_price_fields_read_before_repair": false,
+    "forward_return_fields_read_before_repair": false,
+    "training_or_model_fitting_performed": false,
+    "investment_advice": false
+  }
+}
