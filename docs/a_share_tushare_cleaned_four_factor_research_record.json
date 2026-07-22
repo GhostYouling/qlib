@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_cleaned_four_factor_research_record",
+  "status": "terminal_zero_dual_gate_factors_no_aggregation",
+  "recorded_at": "2026-07-22T12:07:07Z",
+  "purpose": "Record the single fingerprint-bound exploratory return diagnostic of the four fieldwise-cleaned Tushare one-minute factors and prevent cleaning coverage or broad association from being mistaken for a usable three-session Top-3 strategy.",
+  "preregistration": {
+    "path": "docs/a_share_tushare_cleaned_four_factor_exploratory_preregistration.json",
+    "sha256": "88e08350aff470e8c7b92fe5f5971f770297d2ca513593971e24d59f07105ca7",
+    "preregistered_at": "2026-07-22T11:52:31Z",
+    "factor_returns_observed_before_registration": false
+  },
+  "source_chain": {
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "fieldwise_clean_manifest_sha256": "06b5ffc2dac16f608d92e9eb7d93729800a2fa99e5727817caead3d698e19bd3",
+    "fieldwise_overlay_byte_sha256": "046a5902c5fe3d6040df3a57185d445268cd025f6c922275363318123bc210c6",
+    "cleaned_partitions_byte_verified": 33015,
+    "joint_base_rows": 7724498,
+    "fieldwise_overlay_rows": 325,
+    "source_open_high_low_used_by_retained_factors": false,
+    "raw_minute_rows_mutated": false,
+    "daily_prices_substituted_into_minute_rows": false,
+    "opening_gap_digestion_excluded": true,
+    "original_five_factor_protocol_retroactively_passed": false
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260722T120600Z",
+      "path": "data/experiments/short_horizon/20260722T120600Z_factor_diagnostic.json",
+      "sha256": "9979a480e7486f7d9e7bc449acbb1fb7c8357c014ade1c41b0ae48339c72f597"
+    },
+    "stability_audit": {
+      "run_id": "20260722T120608Z",
+      "path": "data/experiments/short_horizon/20260722T120608Z_factor_stability_audit.json",
+      "sha256": "12cee3ac98b35b4715484124404257ded43470b23c31258964407cce8ef1849e"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260722T120609Z",
+      "path": "data/experiments/short_horizon/20260722T120609Z_factor_topk_viability_audit.json",
+      "sha256": "06ea39b4447fb44d2b3c9c17155a6efd167642fcba03d21e33ff3d35e225235f"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/tushare_cleaned_four_factor_v1_consumption.json",
+      "sha256": "bdd9db1567ae4548fe9849b4c105e6c728bf7298ebc4194748fbe3267a5de55b",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "quality_maximum_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "coverage_result_before_returns": {
+    "gate_passed": true,
+    "quality_eligible_dates_in_feature_span": 1632,
+    "quality_eligible_rows_in_feature_span": 1331759,
+    "minimum_factor_p05_coverage": 0.9956886515772271,
+    "minimum_factor_median_coverage": 0.9994517542211769,
+    "minimum_factor_p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "factor_results": [
+    {
+      "factor": "intraday_realized_volatility",
+      "direction": "lower",
+      "cohorts": 539,
+      "mean_rank_ic": 0.03028227853194688,
+      "positive_rank_ic_rate": 0.5974025974025974,
+      "mean_top3_minus_bottom3_gross_return": 0.00440401472116722,
+      "each_observed_year_mean_rank_ic_positive": true,
+      "association_stability_gate_passed": true,
+      "execution_aware_top3_net_cumulative_return": -0.9474288128967707,
+      "execution_aware_top3_maximum_drawdown": -0.9535851297074537,
+      "each_execution_signal_year_positive": false,
+      "pilot_net_cumulative_return_at_ten_bp_each_side": -0.3644238529511208,
+      "pilot_maximum_drawdown": -0.3701996068699124,
+      "pilot_board_lot_affordability_rate": 0.822207534699273,
+      "topk_viability_gate_passed": false,
+      "interpretation": "The broad cross-section has a stable low-volatility association, but selecting the three most extreme low-volatility names is not a viable executable portfolio and often encounters one-price or board-lot pathologies."
+    },
+    {
+      "factor": "late_vwap_to_day_vwap_30m",
+      "direction": "higher",
+      "cohorts": 539,
+      "mean_rank_ic": -0.000550190034073918,
+      "positive_rank_ic_rate": 0.47309833024118736,
+      "mean_top3_minus_bottom3_gross_return": -0.009261561309269082,
+      "association_stability_gate_passed": false,
+      "execution_aware_top3_net_cumulative_return": -0.9954627683948442,
+      "execution_aware_top3_maximum_drawdown": -0.9955794522654159,
+      "pilot_net_cumulative_return_at_ten_bp_each_side": -0.44348761262851866,
+      "pilot_maximum_drawdown": -0.4453042000619043,
+      "pilot_board_lot_affordability_rate": 0.84098051539912,
+      "topk_viability_gate_passed": false
+    },
+    {
+      "factor": "late_amount_share_30m",
+      "direction": "higher",
+      "cohorts": 539,
+      "mean_rank_ic": -0.00364795907295783,
+      "positive_rank_ic_rate": 0.4749536178107607,
+      "mean_top3_minus_bottom3_gross_return": 0.0014576420804800151,
+      "association_stability_gate_passed": false,
+      "execution_aware_top3_net_cumulative_return": -0.11647720367886882,
+      "execution_aware_top3_maximum_drawdown": -0.6959256854474214,
+      "pilot_net_cumulative_return_at_ten_bp_each_side": -0.10886232719116729,
+      "pilot_maximum_drawdown": -0.201166758788196,
+      "pilot_board_lot_affordability_rate": 0.9686323713927227,
+      "topk_viability_gate_passed": false
+    },
+    {
+      "factor": "late_return_30m",
+      "direction": "higher",
+      "cohorts": 539,
+      "mean_rank_ic": -0.02262705437336464,
+      "positive_rank_ic_rate": 0.38404452690166974,
+      "mean_top3_minus_bottom3_gross_return": -0.005584792100957462,
+      "each_observed_year_mean_rank_ic_negative": true,
+      "association_stability_gate_passed": false,
+      "execution_aware_top3_net_cumulative_return": -0.9750103045333939,
+      "execution_aware_top3_maximum_drawdown": -0.9788436176725407,
+      "pilot_net_cumulative_return_at_ten_bp_each_side": -0.39961531649374205,
+      "pilot_maximum_drawdown": -0.41074777894603964,
+      "pilot_board_lot_affordability_rate": 0.8916040100250626,
+      "topk_viability_gate_passed": false
+    }
+  ],
+  "decision": {
+    "association_stability_qualified_factors": [
+      "intraday_realized_volatility"
+    ],
+    "topk_viability_qualified_factors": [],
+    "dual_gate_qualified_factors": [],
+    "minimum_dual_gate_factors_for_aggregation": 2,
+    "aggregation_allowed": false,
+    "same_history_subset_direction_window_threshold_weight_or_aggregation_search_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified_by_this_result": false,
+    "terminal_reason": "No cleaned minute factor passed both the full association-stability and executable Top-3 gates."
+  },
+  "research_boundary": {
+    "cleaning_or_coverage_proved_predictive_value": false,
+    "one_stable_broad_association_is_not_a_top3_strategy": true,
+    "failed_factors_may_be_inverted_or_rewindowed_on_2019_2025": false,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire these four exact historical directions. Continue only with a genuinely new mechanism preregistered before its own return read, or collect genuinely unseen post-registration minute observations; do not purchase Level-2 to rescue this result."
+  }
+}

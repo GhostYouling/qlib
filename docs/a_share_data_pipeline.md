@@ -1626,7 +1626,7 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 Tushare Token 配置完成后，购买前零行情权限复核 [`a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json`](a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json)（SHA‑256 `61e2325c0199b35d7e10ec97f4d71f973786b925b6e0f187a0e4de8bb4068959`）确认：3,000 积分本身只覆盖积分接口，不能授权 A 股历史分钟。该记录当时没有消耗试用调用、没有读取任何 Tushare 分钟行，并基于尚未购买的事实保留 QMT 优先。它现在只作为购买前审计保留；不能再用其中“未授权”的结论覆盖用户后来单独购买并通过真实验收的新证据。
 
-当前迭代状态统一写入 [`a_share_three_day_iteration_status_20260721.json`](a_share_three_day_iteration_status_20260721.json)（SHA‑256 `6a09968f1f779d01b81f69223594c0b6be2db44b2ea51002e46a7a527a872d17`）。这份机器可读记录绑定 43 因子历史前沿、之后 27 条主终止机制、购买前 QMT/Tushare 审计、购买后的 Tushare 验收和全量无收益协议、原协议覆盖失败，以及后续独立的非破坏性清洗证据。当前数字仍固定为稳定性 7、TopK 0、双门禁 0、后续已通过收益门的因子 0，因此聚合、评分、选股、定仓和下单仍全部为 `false`。原五因子协议没有被改判；清洗层仅让四个不依赖开盘/极值的因子通过了无收益覆盖门，下一步是在读取任何未来收益之前冻结探索性研究协议，不再要求先购买或切换分钟来源。
+当前迭代状态统一写入 [`a_share_three_day_iteration_status_20260721.json`](a_share_three_day_iteration_status_20260721.json)（SHA‑256 `616fc4ca19f9bfdc6b7eb4cd0e19740cbe4316766d33b81577f5a4baed924b2f`）。这份机器可读记录绑定 43 因子历史前沿、之后 28 条主终止机制、购买前 QMT/Tushare 审计、购买后的 Tushare 验收和全量无收益协议、原协议覆盖失败、两层非破坏性清洗证据，以及已经消费的一次四因子探索诊断。当前仍是 TopK 0、双门禁 0、聚合候选 0，因此聚合、评分、选股、定仓和下单全部为 `false`。原五因子协议没有被改判；清洗后的四因子路线也已按固定门禁终止，不能在同一段历史上反向、改窗口、挑子集或调权。
 
 `python scripts/a_share_rich_data.py status` 现在还会输出 `qmt_xtquant_one_minute_acceptance`。该只读段落核对合同指纹、Windows 导出器与交接打包器是否存在、已消费验收/拒绝记录数、真实包是否出现、自动导入与显式对齐是否通过、QMT 验收锁是否正被占用，并给出唯一下一动作；它不会扫描仓库外目录、读取 K 线、访问网络或创建锁文件。没有真实包时，`next_action` 必须为 `run_frozen_windows_qmt_four_symbol_export_and_transfer_untouched_bundle`；拒绝记录出现后会要求停止并复核，成功导入后才会转为边界检查和显式对齐。
 
@@ -1730,7 +1730,19 @@ python scripts/a_share_tushare_one_minute_sentiment_clean.py \
   --workers 4
 ```
 
-这一步证明的是“清洗后的四个因子有足够样本可以研究”，不是“因子有效”。当前仍未读取未来收益、训练模型、聚合、评分或选股。下一步必须先冻结绑定两层清洗清单的探索性研究协议，固定 2019–2025 时间切分、三日持有、Top‑3、成本、财务质量、上市满 20 日、逐因子门禁和组合规则；之后才允许一次性读取收益。
+这一步证明的是“清洗后的四个因子有足够样本可以研究”，不是“因子有效”。随后已经先冻结 [`a_share_tushare_cleaned_four_factor_exploratory_preregistration.json`](a_share_tushare_cleaned_four_factor_exploratory_preregistration.json)（SHA‑256 `88e08350aff470e8c7b92fe5f5971f770297d2ca513593971e24d59f07105ca7`），固定四个原方向、2019–2025、三日非重叠持有、Top‑3、0.012%/0.062% 成本、550 日财务新鲜度、上市满 20 日、逐因子覆盖、跨年稳定性、可成交 TopK 和 20 万元整手压力门槛。聚合只能取同时通过两道完整门槛的全部因子等权；少于两个停止，不允许枚举子集、反向、改窗口、调阈值、调权或切换聚合函数。
+
+单次研究由 `scripts/a_share_tushare_cleaned_minute_factor_research.py` 执行。它先逐字节核验 33,015 个清洗分区，再合并 7,724,498 条共同有效基表和 325 条字段级补丁。质量与上市门禁后，四因子的覆盖门全部通过：最低 P05 覆盖 99.5689%，P05 截面 138 只股票，覆盖七个年份和 540 个潜在非重叠三日 cohort；这时才写入不可重复消费标记并读取收益。正式命令已经消费，不得再次运行；下面只保留复现入口，现有消费标记会在任何行情或收益访问前拒绝：
+
+```bash
+python scripts/a_share_tushare_cleaned_minute_factor_research.py diagnose \
+  --minute-data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+  --provider-uri data/qlib/cn_a_share \
+  --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
+  --experiment-root data/experiments/short_horizon
+```
+
+539 个完整 cohort 的结果固化在 [`a_share_tushare_cleaned_four_factor_research_record.json`](a_share_tushare_cleaned_four_factor_research_record.json)（SHA‑256 `f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2`）。只有低 `intraday_realized_volatility` 通过相关性稳定门：平均 Rank IC 0.03028、正 IC 比例 59.74%、Top3−Bottom3 平均毛收益差 +0.4404%，且 2019–2025 每年平均 IC 均为正。但它没有通过可交易 Top3 门：执行感知累计收益 −94.74%、最大回撤 −95.36%、七年全部为负；20 万元、100 股整手、双边 10bp 滑点的试运行累计收益 −36.44%、回撤 −37.02%，整手可负担率只有 82.22%，并出现超过日成交额 1% 的交易。其余三因子连相关性门也未通过。双门禁交集为空，因此没有聚合模型、当前评分或选股结果；这个结果也不构成采购 Level‑2 的理由。下一步只能是先冻结一个经济机制真正不同的新候选，或积累注册后真正未见的分钟样本。
 
 ### CNInfo 补充更正披露负担（全历史分页稳定性终止）
 

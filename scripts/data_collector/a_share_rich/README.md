@@ -65,9 +65,14 @@ python scripts/a_share_tushare_one_minute_sentiment_clean.py \
   --workers 4
 ```
 
-The next permitted step is a new fingerprint-bound exploratory research
-preregistration.  Do not use the cleaning pass itself for aggregation,
-current scoring, selection, sizing, orders, or a Level-2 purchase decision.
+The fingerprint-bound exploratory protocol has since been frozen and consumed
+once by `scripts/a_share_tushare_cleaned_minute_factor_research.py`.  Its 539
+cohorts produced one association-stability passer (lower realized volatility)
+but zero executable Top-3 passers, so the dual-gate intersection is empty and
+the four-factor route is terminal.  The authoritative result is
+`docs/a_share_tushare_cleaned_four_factor_research_record.json`.  Do not rerun,
+invert, re-window, subset, reweight, aggregate, current-score, select, size,
+order, or use this failure to justify Level-2.
 
 For a 3000-point Tushare account, the event acceptance command defaults to
 `moneyflow,limit-price,stock-st,top-list`, mapped to the provider's

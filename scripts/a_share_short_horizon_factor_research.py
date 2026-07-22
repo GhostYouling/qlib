@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "6a09968f1f779d01b81f69223594c0b6be2db44b2ea51002e46a7a527a872d17"
+    "616fc4ca19f9bfdc6b7eb4cd0e19740cbe4316766d33b81577f5a4baed924b2f"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37342,7 +37342,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_fieldwise_minute_cleaning_pass_pending_exploratory_research_preregistration"
+        != "aggregation_blocked_after_cleaned_four_factor_diagnostic_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37350,7 +37350,7 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 27
+        or post_frontier.get("terminal_mechanism_count") != 28
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source")
@@ -37396,11 +37396,17 @@ def load_three_day_iteration_status(
         is not True
         or selected_source.get("minimum_fieldwise_factor_p05_coverage")
         != 0.9917170545277707
-        or selected_source.get("cleaned_feature_forward_returns_read") is not False
+        or selected_source.get("cleaned_feature_forward_returns_read") is not True
         or selected_source.get(
             "cleaned_feature_training_or_model_fitting_performed"
         )
         is not False
+        or selected_source.get("cleaned_feature_diagnostic_cohorts") != 539
+        or selected_source.get("cleaned_feature_stability_qualified_factors")
+        != ["intraday_realized_volatility"]
+        or selected_source.get("cleaned_feature_topk_qualified_factors") != []
+        or selected_source.get("cleaned_feature_dual_gate_qualified_factors") != []
+        or selected_source.get("cleaned_feature_aggregation_allowed") is not False
         or selected_source.get("prior_qmt_route_retained_as_fallback_only")
         is not True
         or any(
@@ -37412,9 +37418,10 @@ def load_three_day_iteration_status(
                 "sizing_allowed",
                 "orders_allowed",
                 "level2_intake_justified",
-                "new_research_price_or_forward_return_read_for_this_status",
             )
         )
+        or decision.get("new_research_price_or_forward_return_read_for_this_status")
+        is not True
         or decision.get(
             "acceptance_price_fields_used_only_for_daily_source_reconciliation"
         )
@@ -37479,6 +37486,8 @@ def load_three_day_iteration_status(
         "joint_cleaning_result": "a_share_tushare_one_minute_sentiment_cleaning_result",
         "fieldwise_cleaning_protocol": "a_share_tushare_one_minute_fieldwise_cleaning_protocol",
         "fieldwise_cleaning_result": "a_share_tushare_one_minute_fieldwise_cleaning_result",
+        "cleaned_four_factor_preregistration": "a_share_tushare_cleaned_four_factor_exploratory_preregistration",
+        "cleaned_four_factor_research_record": "a_share_tushare_cleaned_four_factor_research_record",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -37521,6 +37530,12 @@ def load_three_day_iteration_status(
     fieldwise_coverage = fieldwise_cleaning_result.get("factor_coverage") or {}
     fieldwise_interpretation = fieldwise_cleaning_result.get("interpretation") or {}
     fieldwise_boundary = fieldwise_cleaning_result.get("research_boundary") or {}
+    cleaned_four_factor_spec = source_records["cleaned_four_factor_preregistration"]
+    cleaned_four_factor_record = source_records["cleaned_four_factor_research_record"]
+    cleaned_four_factor_decision = cleaned_four_factor_record.get("decision") or {}
+    cleaned_four_factor_boundary = (
+        cleaned_four_factor_record.get("research_boundary") or {}
+    )
     if (
         qmt_selection.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
         is not False
@@ -37618,6 +37633,30 @@ def load_three_day_iteration_status(
         is not False
         or fieldwise_boundary.get("forward_return_fields_read") is not False
         or fieldwise_boundary.get("training_or_model_fitting_performed") is not False
+        or cleaned_four_factor_spec.get("status")
+        != "frozen_before_first_cleaned_four_factor_forward_return_read"
+        or (cleaned_four_factor_spec.get("research_boundary") or {}).get(
+            "forward_return_fields_read_before_registration"
+        )
+        is not False
+        or cleaned_four_factor_record.get("status")
+        != "terminal_zero_dual_gate_factors_no_aggregation"
+        or cleaned_four_factor_decision.get("association_stability_qualified_factors")
+        != ["intraday_realized_volatility"]
+        or cleaned_four_factor_decision.get("topk_viability_qualified_factors")
+        != []
+        or cleaned_four_factor_decision.get("dual_gate_qualified_factors") != []
+        or cleaned_four_factor_decision.get("aggregation_allowed") is not False
+        or cleaned_four_factor_decision.get("current_scoring_allowed") is not False
+        or cleaned_four_factor_decision.get("selection_allowed") is not False
+        or cleaned_four_factor_decision.get("level2_intake_justified_by_this_result")
+        is not False
+        or cleaned_four_factor_boundary.get(
+            "same_history_combination_return_evaluation_performed"
+        )
+        is not False
+        or cleaned_four_factor_boundary.get("training_or_model_fitting_performed")
+        is not False
     ):
         raise ValueError("three-day iteration status source decision changed")
     return status
@@ -39497,17 +39536,29 @@ def render_three_day_research_report(
         )
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
-                next_external_action = (
-                    "无需购买或更换数据源；先冻结绑定清洗快照的四因子探索性研究协议，"
-                    "再允许读取未来收益。"
-                )
-                source_status_line = (
-                    "Tushare 原五因子来源覆盖门仍未通过；独立、非破坏性的字段级清洗层"
-                    f"保留 {source.get('retained_cleaned_factor_count', 0)} 个因子并全部通过覆盖门，"
-                    "最小 P05 覆盖 "
-                    f"{source.get('minimum_fieldwise_factor_p05_coverage', 0):.2%}；"
-                    "开盘缺口因子继续排除，尚未读取未来收益或训练模型，Level2 继续延期。"
-                )
+                if source.get("cleaned_feature_forward_returns_read"):
+                    next_external_action = (
+                        "四个清洗方向已经终止；只研究预先登记的全新经济机制，或积累注册后"
+                        "真正未见的分钟样本，不用 Level2 挽救本结果。"
+                    )
+                    source_status_line = (
+                        "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                        "全部通过覆盖门。唯一一次 539-cohort 诊断只有低日内实现波动率通过"
+                        "关联稳定性门，但 TopK 通过 0 个、双门禁通过 0 个；开盘缺口因子"
+                        "继续排除，未训练模型，Level2 继续延期。"
+                    )
+                else:
+                    next_external_action = (
+                        "无需购买或更换数据源；先冻结绑定清洗快照的四因子探索性研究协议，"
+                        "再允许读取未来收益。"
+                    )
+                    source_status_line = (
+                        "Tushare 原五因子来源覆盖门仍未通过；独立、非破坏性的字段级清洗层"
+                        f"保留 {source.get('retained_cleaned_factor_count', 0)} 个因子并全部通过覆盖门，"
+                        "最小 P05 覆盖 "
+                        f"{source.get('minimum_fieldwise_factor_p05_coverage', 0):.2%}；"
+                        "开盘缺口因子继续排除，尚未读取未来收益或训练模型，Level2 继续延期。"
+                    )
             elif source.get("tushare_full_source_terminal"):
                 source_status_line = (
                     "Tushare 一分钟完整历史已观察，但冻结来源覆盖门未通过："

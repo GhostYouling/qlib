@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_fieldwise_minute_cleaning_pass_pending_exploratory_research_preregistration",
-  "recorded_at": "2026-07-22T11:31:00Z",
+  "status": "aggregation_blocked_after_cleaned_four_factor_diagnostic_zero_dual_gate_factors",
+  "recorded_at": "2026-07-22T12:07:07Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -236,10 +236,18 @@
         "path": "docs/a_share_official_exchange_inquiry_burden_source_acceptance_record.json",
         "sha256": "a2c5d1c6daa11cf73d29843eb36dffdacf3d27ff07802e5d222fe9e14f3f5cdf"
       }
+    },
+    {
+      "mechanism": "tushare_cleaned_one_minute_close_amount_volume_factors",
+      "terminal_gate": "return_stability_and_execution_zero_dual_gate_factors",
+      "record": {
+        "path": "docs/a_share_tushare_cleaned_four_factor_research_record.json",
+        "sha256": "f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 27,
+    "terminal_mechanism_count": 28,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -285,6 +293,14 @@
       "path": "docs/a_share_tushare_one_minute_fieldwise_cleaning_result.json",
       "sha256": "f0170519bb0ac8b49c7d48be9a65abd281e2b624e0360acdb63e1914dc429130"
     },
+    "cleaned_four_factor_preregistration": {
+      "path": "docs/a_share_tushare_cleaned_four_factor_exploratory_preregistration.json",
+      "sha256": "88e08350aff470e8c7b92fe5f5971f770297d2ca513593971e24d59f07105ca7"
+    },
+    "cleaned_four_factor_research_record": {
+      "path": "docs/a_share_tushare_cleaned_four_factor_research_record.json",
+      "sha256": "f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2"
+    },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
     "automatic_acceptance_passed": true,
@@ -315,10 +331,17 @@
     "opening_gap_digestion_excluded": true,
     "all_fieldwise_factor_coverage_gates_passed": true,
     "minimum_fieldwise_factor_p05_coverage": 0.9917170545277707,
-    "cleaned_feature_forward_returns_read": false,
+    "cleaned_feature_forward_returns_read": true,
     "cleaned_feature_training_or_model_fitting_performed": false,
+    "cleaned_feature_diagnostic_cohorts": 539,
+    "cleaned_feature_stability_qualified_factors": [
+      "intraday_realized_volatility"
+    ],
+    "cleaned_feature_topk_qualified_factors": [],
+    "cleaned_feature_dual_gate_qualified_factors": [],
+    "cleaned_feature_aggregation_allowed": false,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "No replacement source or new purchase is required for the four retained factors. Freeze a fingerprint-bound exploratory research protocol before reading any forward return; do not rerun Tushare or restore the excluded opening factor."
+    "next_external_action": "Retire the four exact cleaned historical directions. Continue only with a genuinely new preregistered mechanism or genuinely unseen post-registration minute observations; do not rerun or invert these factors, restore the excluded opening factor, or purchase Level-2 to rescue this result."
   },
   "decision": {
     "aggregation_allowed": false,
@@ -328,6 +351,6 @@
     "orders_allowed": false,
     "level2_intake_justified": false,
     "acceptance_price_fields_used_only_for_daily_source_reconciliation": true,
-    "new_research_price_or_forward_return_read_for_this_status": false
+    "new_research_price_or_forward_return_read_for_this_status": true
   }
 }

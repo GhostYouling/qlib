@@ -1,0 +1,161 @@
+{
+  "kind": "a_share_tushare_cleaned_four_factor_exploratory_preregistration",
+  "version": 1,
+  "status": "frozen_before_first_cleaned_four_factor_forward_return_read",
+  "preregistered_at": "2026-07-22T11:52:31Z",
+  "purpose": "One exploratory historical diagnostic of the four close-known Tushare one-minute factors retained by the fieldwise cleaning protocol.",
+  "source_chain": {
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "rows": 7724498,
+      "partitions": 33015
+    },
+    "fieldwise_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_fieldwise_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_fieldwise_clean_v2/snapshot_manifest.json",
+      "sha256": "06b5ffc2dac16f608d92e9eb7d93729800a2fa99e5727817caead3d698e19bd3",
+      "overlay_path_below_data_root": "derived/a_share/rich/tushare/minute_fieldwise_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_fieldwise_clean_v2/exceptions.parquet",
+      "overlay_byte_sha256": "046a5902c5fe3d6040df3a57185d445268cd025f6c922275363318123bc210c6",
+      "overlay_frame_sha256": "8ae75c1bb2d67d055491359852f9dd08b43687db4efdbd75be037947bcdb8830",
+      "overlay_rows": 325,
+      "all_factor_coverage_gates_passed": true
+    },
+    "repository_records": {
+      "joint_cleaning_protocol": {
+        "path": "docs/a_share_tushare_one_minute_sentiment_cleaning_protocol.json",
+        "sha256": "f70c7da688ecb6d2e88cd86f4ec086a42b620e0c12025ee9263fe603abe3a2fe"
+      },
+      "joint_cleaning_result": {
+        "path": "docs/a_share_tushare_one_minute_sentiment_cleaning_result.json",
+        "sha256": "2bd511045a1c9bc8a2b8d3bc566d4c0219c5764e8f1ae02c559125c99c6a4275"
+      },
+      "fieldwise_cleaning_protocol": {
+        "path": "docs/a_share_tushare_one_minute_fieldwise_cleaning_protocol.json",
+        "sha256": "51e4fbf399411f62d35cbdb81d78651b4ceab17934264db0146cef61554d2fd6"
+      },
+      "fieldwise_cleaning_result": {
+        "path": "docs/a_share_tushare_one_minute_fieldwise_cleaning_result.json",
+        "sha256": "f0170519bb0ac8b49c7d48be9a65abd281e2b624e0360acdb63e1914dc429130"
+      }
+    }
+  },
+  "accepted_daily_price_basis": {
+    "path": "data/qlib/cn_a_share/price_basis.json",
+    "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "provider": "baostock"
+  },
+  "quarterly_quality": {
+    "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+    "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+    "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+    "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+    "availability": "strictly next local trading session after announcement_date",
+    "maximum_age_days": 550
+  },
+  "factors": [
+    {
+      "name": "late_return_30m",
+      "formula": "close_at_15_00 / close_at_14_30 - 1 after bar-end normalization",
+      "diagnostic_direction": "higher",
+      "hypothesis": "A price move supported through the final thirty minutes persists over the next three sessions."
+    },
+    {
+      "name": "late_amount_share_30m",
+      "formula": "amount_over_bar_ends_14_31_through_15_00 / full_session_amount",
+      "diagnostic_direction": "higher",
+      "hypothesis": "Unusually late trading participation indicates demand that is not fully resolved by the close."
+    },
+    {
+      "name": "late_vwap_to_day_vwap_30m",
+      "formula": "late_30m_vwap / full_session_vwap - 1",
+      "diagnostic_direction": "higher",
+      "hypothesis": "Late trading above the full-session paid-price center indicates persistent closing demand."
+    },
+    {
+      "name": "intraday_realized_volatility",
+      "formula": "sqrt(sum(square(diff(log(minute_close))))) over the canonical complete regular session",
+      "diagnostic_direction": "lower",
+      "hypothesis": "Lower intraday path volatility reduces short-horizon tail risk for otherwise eligible stocks."
+    }
+  ],
+  "explicit_exclusion": {
+    "factor": "opening_gap_digestion",
+    "reason": "The cleaned route intentionally excludes the source opening price and cannot retroactively pass the original five-factor protocol."
+  },
+  "holding_protocol": {
+    "universe": "buyable_main_chinext",
+    "minimum_listing_sessions": 20,
+    "signal_time": "after_signal_session_close",
+    "entry": "next_trading_session_open",
+    "exit": "third_trading_session_close",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062
+  },
+  "coverage_gate_before_forward_returns": {
+    "coverage_basis": "factor_specific_eligible_rows_divided_by_quality_eligible_buyable_rows_within_the_cleaned_feature_span",
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_names_per_factor_cross_section": 50,
+    "minimum_potential_non_overlapping_three_session_cohorts": 200,
+    "all_four_factors_must_pass": true,
+    "failed_gate_policy": "write_a_no_return_coverage_audit_and_stop_before_forming_entry_exit_or_forward_return_fields"
+  },
+  "historical_diagnostic": {
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "minimum_observed_calendar_years": 5,
+    "minimum_non_overlapping_cohorts": 200,
+    "association_gate": "overall_and_each_year_mean_rank_ic_positive; positive_rank_ic_share_above_0.5; top3_minus_bottom3_mean_gross_return_positive",
+    "topk_gate": "association_gate_passed; overall_and_each_year_execution_aware_top3_net_return_positive; maximum_drawdown_not_below_minus_0.20; pilot_execution_gate_passed",
+    "simultaneous_factor_policy": "diagnose_exactly_all_four_registered_directions_in_one_single_use_run",
+    "failed_factor_policy": "retire_without_inverting_changing_window_or_retesting_on_2019_2025",
+    "single_use_policy": "coverage_failure_before_returns_may_retry_after_data_repair; once_forward_returns_are_read_this_exact_protocol_may_not_run_again",
+    "historical_status": "exploratory_and_not_pristine_due_to_prior_daily_factor_research",
+    "selection_or_promotion_allowed": false
+  },
+  "execution_policies": {
+    "prospective_execution": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "initial_capital_cny": 200000,
+      "buy_lot_size_shares": 100,
+      "primary_slippage_rate_each_side": 0.001,
+      "maximum_daily_amount_participation": 0.01
+    }
+  },
+  "post_diagnostic_aggregation_policy": {
+    "eligible_inputs": "intersection_of_factors_passing_the_full_default_association_and_topk_gates",
+    "minimum_qualified_factor_count": 2,
+    "factor_order": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility"
+    ],
+    "aggregation": "arithmetic_mean_of_all_qualified_directional_cross_sectional_percentile_scores",
+    "weighting": "equal_one_over_qualified_factor_count",
+    "missing_component_policy": "stock_day_ineligible_if_any_qualified_factor_is_missing",
+    "no_subset_direction_window_threshold_weight_or_aggregation_search": true,
+    "fewer_than_two_qualified_factors_policy": "stop_without_a_combination",
+    "same_history_combination_return_evaluation_allowed": false,
+    "passing_policy": "freeze_a_separately_dated_future_only_paper_protocol_before_current_scoring_or_selection"
+  },
+  "research_boundary": {
+    "forward_return_fields_read_before_registration": false,
+    "cleaning_or_coverage_proves_predictive_value": false,
+    "raw_minute_rows_mutated": false,
+    "daily_prices_substituted_into_minute_rows": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  }
+}
