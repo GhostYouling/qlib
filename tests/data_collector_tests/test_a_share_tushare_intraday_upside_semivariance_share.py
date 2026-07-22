@@ -75,6 +75,57 @@ def test_preregistration_freezes_upside_semivariance_before_values():
     )
 
 
+def test_diagnostic_preregistration_binds_passed_no_return_evidence():
+    spec = RESEARCH.load_diagnostic_preregistration()
+    evidence = spec["no_return_evidence"]
+    snapshot = evidence["candidate_snapshot"]
+    assert evidence["protocol"]["sha256"] == RESEARCH.PREREGISTRATION_SHA256
+    assert snapshot["sha256"] == RESEARCH.CANDIDATE_MANIFEST_SHA256
+    assert snapshot["eligible_rows"] == 7_695_092
+    assert snapshot["zero_realized_variance_rows"] == 29_406
+    assert evidence["ordered_audit"]["sha256"] == RESEARCH.NO_RETURN_AUDIT_SHA256
+    assert evidence["coverage_and_capacity"]["gate_passed"] is True
+    assert evidence["uniqueness"]["all_eight_comparisons_passed"] is True
+    assert (
+        spec["research_boundary"]["forward_return_fields_read_before_registration"]
+        is False
+    )
+
+
+def test_diagnostic_consumption_marker_blocks_before_source_or_prices(tmp_path):
+    marker = tmp_path / RESEARCH.CONSUMPTION_FILENAME
+    marker.write_text("{}", encoding="utf-8")
+    with pytest.raises(RESEARCH.UpsideSemivarianceShareError, match="consumed"):
+        RESEARCH.require_diagnostic_unconsumed(tmp_path)
+
+
+def test_terminal_record_binds_failed_fixed_direction_without_promotion():
+    path = (
+        RESEARCH.REPO_ROOT
+        / "docs/a_share_tushare_intraday_upside_semivariance_share_research_record.json"
+    )
+    record = json.loads(path.read_text(encoding="utf-8"))
+    assert RESEARCH.foundation.file_digest(path) == (
+        "a878729da102b9c4216f08a5c89707f58093541d8512dce522371d43d0d505b2"
+    )
+    assert (
+        record["status"]
+        == "terminal_rejected_at_association_stability_and_executable_topk_gates"
+    )
+    assert record["factor"]["direction"] == "higher"
+    assert record["factor"]["source_fields"] == list(RESEARCH.RAW_COLUMNS)
+    assert record["return_results"]["association_stability_gate_passed"] is False
+    assert record["return_results"]["topk_viability_gate_passed"] is False
+    assert record["return_results"]["dual_gate_passed"] is False
+    assert record["decision"]["aggregation_candidate_added"] is False
+    assert record["decision"]["selection_allowed"] is False
+    assert (
+        record["decision"]
+        ["invert_reformulate_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed"]
+        is False
+    )
+
+
 def test_compute_partition_frame_monotone_log_close_has_unit_upside_share():
     logged = np.linspace(0.0, 2.0, 240)
     closes = np.exp(logged)

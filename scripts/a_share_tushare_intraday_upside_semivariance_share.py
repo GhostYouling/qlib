@@ -54,7 +54,7 @@ DEFAULT_DIAGNOSTIC_PREREGISTRATION = (
     / "a_share_tushare_intraday_upside_semivariance_share_diagnostic_preregistration.json"
 )
 DIAGNOSTIC_PREREGISTRATION_SHA256 = (
-    "pending_after_no_return_gate"
+    "ecb5217ac8cc2983fb3f69ce28e56a83c1741a3b58053628802c9db04cbac9d6"
 )
 NO_RETURN_AUDIT_SHA256 = (
     "974774bca4dce314cba205dab222a560e76a301275ae92148d0d74790d509e4a"
@@ -1243,26 +1243,31 @@ def load_diagnostic_preregistration(
         and (evidence.get("protocol") or {}).get("sha256") == PREREGISTRATION_SHA256
         and snapshot.get("sha256") == CANDIDATE_MANIFEST_SHA256
         and snapshot.get("dataset_sha256")
-        == "a79d964f8d8a4d91f1f1bb29897753175c446b4ec649d92ddd4e6dbcc7b895e4"
+        == "4745113ff183f44f9dfab2114a5ff161471d2a8fba9f3aa529a45e25e4638c0b"
         and snapshot.get("partitions") == 33_015
         and snapshot.get("rows") == 7_724_498
-        and snapshot.get("eligible_rows") == 7_724_497
-        and snapshot.get("constant_profile_rows") == 1
+        and snapshot.get("eligible_rows") == 7_695_092
+        and snapshot.get("zero_realized_variance_rows") == 29_406
         and snapshot.get("invalid_required_value_rows") == 0
         and snapshot.get("ieee_boundary_canonicalization_rows") == 0
-        and snapshot.get("correlation_range_violation_rows") == 0
+        and snapshot.get("share_range_violation_rows") == 0
         and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
         and audit.get("forward_return_fields_read") is False
         and coverage.get("quality_listing_eligible_rows") == 1_331_759
         and coverage.get("candidate_eligible_rows_after_quality_and_listing")
-        == 1_330_171
+        == 1_328_066
+        and coverage.get("median_coverage") == 0.9983183851218558
+        and coverage.get("p05_coverage") == 0.9933708902303229
+        and coverage.get("p05_eligible_names") == 138.0
         and coverage.get("potential_non_overlapping_three_session_cohorts") == 540
+        and coverage.get("observed_calendar_years")
+        == [2019, 2020, 2021, 2022, 2023, 2024, 2025]
         and coverage.get("gate_passed") is True
         and uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
         == 0.8
         and uniqueness.get("maximum_observed_absolute_median_daily_rank_correlation")
-        == 0.30750048705048266
-        and uniqueness.get("all_seven_comparisons_passed") is True
+        == 0.42031791762994886
+        and uniqueness.get("all_eight_comparisons_passed") is True
         and holding.get("universe") == "buyable_main_chinext"
         and holding.get("minimum_listing_sessions") == research.MIN_LISTING_SESSIONS
         and holding.get("development_start") == "2019-01-01"
@@ -1309,11 +1314,20 @@ def validate_diagnostic_source_chain(
         and manifest.get("dataset_sha256") == snapshot_link.get("dataset_sha256")
         and manifest.get("partitions") == 33_015
         and manifest.get("rows") == 7_724_498
-        and manifest.get("eligible_rows") == 7_724_497
+        and manifest.get("eligible_rows") == 7_695_092
+        and (manifest.get("quality") or {}).get("zero_realized_variance_rows")
+        == 29_406
+        and (manifest.get("quality") or {}).get("invalid_required_value_rows") == 0
+        and (manifest.get("quality") or {}).get(
+            "ieee_boundary_canonicalization_rows"
+        )
+        == 0
+        and (manifest.get("quality") or {}).get("share_range_violation_rows") == 0
         and manifest.get("comparison_factor_values_read") is False
         and manifest.get("forward_return_fields_read") is False
-        and manifest.get("source_open_high_low_close_or_volume_read") is False
-        and manifest.get("source_amount_read") is True
+        and manifest.get("source_fields_read") == list(RAW_COLUMNS)
+        and manifest.get("source_close_read") is True
+        and manifest.get("source_open_high_low_volume_or_amount_read") is False
     ):
         raise UpsideSemivarianceShareError(
             "candidate snapshot conflicts with the diagnostic preregistration"
@@ -1333,7 +1347,7 @@ def validate_diagnostic_source_chain(
             "gate_passed_before_comparison_values"
         )
         is True
-        and (audit.get("uniqueness") or {}).get("all_seven_comparisons_passed")
+        and (audit.get("uniqueness") or {}).get("all_eight_comparisons_passed")
         is True
         and (audit.get("decision") or {}).get(
             "separate_return_diagnostic_preregistration_allowed"
@@ -1533,7 +1547,7 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
             "listing_gate_applied_before_cross_sectional_ranking": True,
             "holding_period_trading_days": int(holding["holding_period_trading_days"]),
             "rebalancing": "non_overlapping_every_holding_period",
-            "signal_time": "full-session amount-path factor known after signal-session close",
+            "signal_time": "full-session close-path factor known after signal-session close",
             "same_session_trade_allowed": False,
             "entry": "next local trading-session open",
             "exit": "local close after holding_period_trading_days",
@@ -1570,8 +1584,9 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
                 "status": no_return_audit["status"],
             },
             "coverage": coverage,
-            "source_open_high_low_close_or_volume_read_for_factor": False,
-            "source_amount_read_for_factor": True,
+            "source_fields_read_for_factor": list(RAW_COLUMNS),
+            "source_close_read_for_factor": True,
+            "source_open_high_low_volume_or_amount_read_for_factor": False,
             "standalone_09_30_row_excluded_from_formula": True,
             "daily_prices_substituted_into_minute_rows": False,
             "forward_return_fields_stored_in_feature_source": False,
@@ -1620,7 +1635,7 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
         "limitations": [
             "This is an exploratory 2019-2025 diagnostic, not a pristine holdout and not investment advice.",
             "Only the higher direction frozen before this return read was evaluated.",
-            "A failure may not be inverted, re-lagged, re-windowed, thresholded, or retested on this history.",
+            "A failure may not be inverted, reformulated, re-windowed, thresholded, or retested on this history.",
             "A pass admits only one factor and cannot satisfy the two-factor aggregation minimum by itself.",
             "Daily execution bars cannot reconstruct exact queue priority, partial fills, or realized market impact.",
         ],
