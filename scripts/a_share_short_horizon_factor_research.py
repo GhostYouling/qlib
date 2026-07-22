@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "c03b6eb2957885aa735f0e4a3ff82512654a5aabb5ccee935d71b618f734690b"
+    "0aeae73f1c3d05b9f783659092156fbc1e86676245d1da64bbe794b6b257aaac"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37342,7 +37342,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_afternoon_efficiency_terminal_rejection_zero_dual_gate_factors"
+        != "aggregation_blocked_after_afternoon_drawdown_recovery_terminal_rejection_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37350,7 +37350,7 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 29
+        or post_frontier.get("terminal_mechanism_count") != 30
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source")
@@ -37441,6 +37441,42 @@ def load_three_day_iteration_status(
         is not False
         or selected_source.get("afternoon_signed_amount_efficiency_terminal")
         is not True
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_candidate_manifest_sha256"
+        )
+        != "a94413ba437dce44ef17215cce42c2d62e5aefab376f345df525dec3fd7a9c45"
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_no_return_coverage_passed"
+        )
+        is not True
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_forward_returns_read"
+        )
+        is not True
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_diagnostic_cohorts"
+        )
+        != 539
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_association_stability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_topk_viability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_dual_gate_passed"
+        )
+        is not False
+        or selected_source.get(
+            "afternoon_drawdown_recovery_resilience_terminal"
+        )
+        is not True
         or selected_source.get("prior_qmt_route_retained_as_fallback_only")
         is not True
         or any(
@@ -37523,6 +37559,7 @@ def load_three_day_iteration_status(
         "cleaned_four_factor_preregistration": "a_share_tushare_cleaned_four_factor_exploratory_preregistration",
         "cleaned_four_factor_research_record": "a_share_tushare_cleaned_four_factor_research_record",
         "afternoon_signed_amount_efficiency_research_record": "a_share_tushare_afternoon_signed_amount_efficiency_research_record",
+        "afternoon_drawdown_recovery_resilience_research_record": "a_share_tushare_afternoon_drawdown_recovery_resilience_research_record",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -37580,6 +37617,14 @@ def load_three_day_iteration_status(
     )
     afternoon_efficiency_boundary = (
         afternoon_efficiency_record.get("research_boundary") or {}
+    )
+    afternoon_recovery_record = source_records[
+        "afternoon_drawdown_recovery_resilience_research_record"
+    ]
+    afternoon_recovery_decision = afternoon_recovery_record.get("decision") or {}
+    afternoon_recovery_results = afternoon_recovery_record.get("return_results") or {}
+    afternoon_recovery_boundary = (
+        afternoon_recovery_record.get("research_boundary") or {}
     )
     if (
         qmt_selection.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
@@ -37724,6 +37769,28 @@ def load_three_day_iteration_status(
         )
         is not False
         or afternoon_efficiency_boundary.get("training_or_model_fitting_performed")
+        is not False
+        or afternoon_recovery_record.get("status")
+        != "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        or afternoon_recovery_results.get("cohorts") != 539
+        or afternoon_recovery_results.get("association_stability_gate_passed")
+        is not False
+        or afternoon_recovery_results.get("topk_viability_gate_passed")
+        is not False
+        or afternoon_recovery_results.get("dual_gate_passed") is not False
+        or afternoon_recovery_decision.get(
+            "terminally_reject_exact_factor_direction"
+        )
+        is not True
+        or afternoon_recovery_decision.get("aggregation_candidate_added") is not False
+        or afternoon_recovery_decision.get("aggregation_allowed") is not False
+        or afternoon_recovery_decision.get("selection_allowed") is not False
+        or afternoon_recovery_decision.get("level2_intake_justified") is not False
+        or afternoon_recovery_boundary.get(
+            "same_history_combination_return_evaluation_performed"
+        )
+        is not False
+        or afternoon_recovery_boundary.get("training_or_model_fitting_performed")
         is not False
     ):
         raise ValueError("three-day iteration status source decision changed")
@@ -39605,7 +39672,24 @@ def render_three_day_research_report(
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
-                    if source.get("afternoon_signed_amount_efficiency_terminal"):
+                    if source.get(
+                        "afternoon_drawdown_recovery_resilience_terminal"
+                    ):
+                        next_external_action = (
+                            "四个清洗方向、午后资金加权方向效率较高方向和午后最大回撤恢复"
+                            "韧性较高方向均已终止；只研究预先登记的全新经济机制，或积累注册后"
+                            "真正未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子唯一一次 539-cohort 诊断只有低日内实现"
+                            "波动率通过关联稳定性门，但 TopK 通过 0 个、双门禁通过 0 个。"
+                            "午后资金加权方向效率与午后最大回撤恢复韧性都先通过各自无收益覆盖"
+                            "及独立性门，再各完成唯一一次 539-cohort 诊断；两个预登记的较高"
+                            "方向都同时未通过关联稳定性和可执行 TopK 门。开盘缺口因子继续"
+                            "排除，未训练模型，Level2 继续延期。"
+                        )
+                    elif source.get("afternoon_signed_amount_efficiency_terminal"):
                         next_external_action = (
                             "四个清洗方向和午后资金加权方向效率的较高方向均已终止；只研究"
                             "预先登记的全新经济机制，或积累注册后真正未见的分钟样本，不用 "

@@ -1626,7 +1626,7 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 Tushare Token 配置完成后，购买前零行情权限复核 [`a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json`](a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json)（SHA‑256 `61e2325c0199b35d7e10ec97f4d71f973786b925b6e0f187a0e4de8bb4068959`）确认：3,000 积分本身只覆盖积分接口，不能授权 A 股历史分钟。该记录当时没有消耗试用调用、没有读取任何 Tushare 分钟行，并基于尚未购买的事实保留 QMT 优先。它现在只作为购买前审计保留；不能再用其中“未授权”的结论覆盖用户后来单独购买并通过真实验收的新证据。
 
-当前迭代状态统一写入 [`a_share_three_day_iteration_status_20260721.json`](a_share_three_day_iteration_status_20260721.json)（SHA‑256 `c03b6eb2957885aa735f0e4a3ff82512654a5aabb5ccee935d71b618f734690b`）。这份机器可读记录绑定 43 因子历史前沿、之后 29 条主终止机制、购买前 QMT/Tushare 审计、购买后的 Tushare 验收和全量无收益协议、原协议覆盖失败、两层非破坏性清洗证据、已经消费的一次四因子探索诊断，以及新完成的午后资金加权方向效率单因子诊断。当前仍是 TopK 0、双门禁 0、聚合候选 0，因此聚合、评分、选股、定仓和下单全部为 `false`。原五因子协议没有被改判；清洗后的四因子与新的午后方向效率高值路线均已按固定门禁终止，不能在同一段历史上反向、改窗口、加过滤、挑子集或调权。
+当前迭代状态统一写入 [`a_share_three_day_iteration_status_20260721.json`](a_share_three_day_iteration_status_20260721.json)（SHA‑256 `0aeae73f1c3d05b9f783659092156fbc1e86676245d1da64bbe794b6b257aaac`）。这份机器可读记录绑定 43 因子历史前沿、之后 30 条主终止机制、购买前 QMT/Tushare 审计、购买后的 Tushare 验收和全量无收益协议、原协议覆盖失败、两层非破坏性清洗证据、已经消费的一次四因子探索诊断，以及两个独立午后路径因子的单次诊断。当前仍是 TopK 0、双门禁 0、聚合候选 0，因此聚合、评分、选股、定仓和下单全部为 `false`。原五因子协议没有被改判；清洗后的四因子、午后资金加权方向效率高值路线和午后最大回撤恢复韧性高值路线均已按固定门禁终止，不能在同一段历史上反向、改窗口、加过滤、挑子集或调权。
 
 `python scripts/a_share_rich_data.py status` 现在还会输出 `qmt_xtquant_one_minute_acceptance`。该只读段落核对合同指纹、Windows 导出器与交接打包器是否存在、已消费验收/拒绝记录数、真实包是否出现、自动导入与显式对齐是否通过、QMT 验收锁是否正被占用，并给出唯一下一动作；它不会扫描仓库外目录、读取 K 线、访问网络或创建锁文件。没有真实包时，`next_action` 必须为 `run_frozen_windows_qmt_four_symbol_export_and_transfer_untouched_bundle`；拒绝记录出现后会要求停止并复核，成功导入后才会转为边界检查和显式对齐。
 
@@ -1757,6 +1757,18 @@ python scripts/a_share_tushare_cleaned_minute_factor_research.py diagnose \
 新版收益协议 [`a_share_tushare_afternoon_signed_amount_efficiency_diagnostic_preregistration_v2.json`](a_share_tushare_afternoon_signed_amount_efficiency_diagnostic_preregistration_v2.json)（SHA‑256 `3d050a7c303ffae8dd09e31a4010d9128611accc76aac7a6399a21192c7f9eda`）随后才冻结并被唯一消费。539 个 cohort 的平均 Rank IC 为 +0.001963、正 IC 比例 51.39%，但 Top3−Bottom3 平均毛收益差为 −0.10215%；2019、2020、2021、2024、2025 年平均 IC 不为正，完整稳定性门失败。执行感知 Top‑3 累计 −70.97%、最大回撤 −88.51%；按 20 万元、100 股整手、双边 10bp 滑点和日成交额 1% 上限，试运行累计 −19.77%、最大回撤 −27.47%，可负担率 94.29%，最大成交额参与率 0.6584%，仍未通过执行门。
 
 完整终止记录为 [`a_share_tushare_afternoon_signed_amount_efficiency_research_record.json`](a_share_tushare_afternoon_signed_amount_efficiency_research_record.json)（SHA‑256 `bd872c494f8dbfa7eed82e79a67d145a08e561dbdc5f36548f172fc79641cd1d`）。该精确高值方向永久退出 2019–2025 研究池；不得反向、改午后窗口、阈值化、加过滤、选年份、调权或重测，也不加入聚合候选，不生成当前评分或选股，不构成采购 Level‑2 的理由。后续只能提出经济机制真正不同且预先冻结的新候选，或积累注册后真正未见的数据。
+
+### 午后最大回撤恢复韧性（收益与执行门终止）
+
+资金加权方向效率终止后，没有把它倒过来或改窗口；新的 close-only 路径机制先冻结在 [`a_share_tushare_afternoon_drawdown_recovery_resilience_no_return_preregistration.json`](a_share_tushare_afternoon_drawdown_recovery_resilience_no_return_preregistration.json)（SHA‑256 `b4b1a15e5f8dc6073093bcd5ed52825c545e8f8cf228bee9ea9aa28e83eda6b8`）。路径从 11:30 收盘开始，连接 13:01–15:00 共 120 个分钟收盘；先找运行峰值到当前价格的最大对数回撤 `D` 及其最早谷底，再计算谷底到 15:00 的对数恢复 `R`，唯一因子为 `R / (D + R)`，高值固定为更好。它只读取 `datetime,symbol,provider,close`；开高低、成交量、成交额、日线价格和未来收益全部禁止进入候选构建。没有严格回撤的股票日保持缺失，不填充、裁剪或设人为阈值。
+
+可恢复构建器 [`a_share_tushare_afternoon_drawdown_recovery_resilience.py`](../scripts/a_share_tushare_afternoon_drawdown_recovery_resilience.py) 完成 33,015 个股票年度分区和 7,724,498 行；7,631,291 行有效，93,207 行因最大回撤为零保持缺失，必需收盘异常与恢复恒等式违规均为 0。外置候选清单 SHA‑256 为 `a94413ba437dce44ef17215cce42c2d62e5aefab376f345df525dec3fd7a9c45`，数据集内容 SHA‑256 为 `07f1d0e83de44a1d533acf6e269bf34fc02d0c6ef582affdd96eac5c7af769c8`；原始分钟数据、联合清洗层和上一轮因子快照均未修改。
+
+唯一无收益审计 `20260722T141606Z`（SHA‑256 `57227ee97c70155a69db5275514ad418c6a72ed467f1920a79eb2b578e4d8a36`）先复现逐字段点时质量语义，再得到 1,331,759 个质量/上市合格行和 1,320,685 个候选有效行；覆盖率中位数 99.3631%、P05 98.1340%，P05 名称数 138，潜在三日非重叠 cohort 为 540，覆盖 2019–2025 七年。覆盖门通过之后才加载五个终止分钟因子。最大绝对中位日秩相关为 0.60748（对尾盘 30 分钟收益），与上一轮午后资金效率为 0.34523，均低于冻结的 0.8 门槛；该审计没有读取任何未来收益。
+
+一次性收益协议随后冻结为 [`a_share_tushare_afternoon_drawdown_recovery_resilience_diagnostic_preregistration.json`](a_share_tushare_afternoon_drawdown_recovery_resilience_diagnostic_preregistration.json)（SHA‑256 `9a4eb0da319e8acddd9cf8c22716d5bc408b46f4acb9408901651ea71b632515`）。唯一诊断 `20260722T142403Z` 在 539 个 cohort 上得到平均/中位 Rank IC −0.008087/−0.005694、正 IC 比例 46.20%、Top3−Bottom3 平均毛收益差 −0.4705%；2019、2020、2021、2024、2025 年平均 IC 不为正，关联稳定性门失败。执行感知 533 个完整信号累计 −82.70%、最大回撤 −88.90%；20 万元、100 股整手、双边 10bp 滑点账本累计 −26.02%、最大回撤 −30.13%，整手可负担率 92.22%，最大日成交额参与率 0.4122%，终端未平仓为 0。稳定性和 TopK 审计均为 0/1 通过。
+
+完整终止记录为 [`a_share_tushare_afternoon_drawdown_recovery_resilience_research_record.json`](a_share_tushare_afternoon_drawdown_recovery_resilience_research_record.json)（SHA‑256 `b608fd9c8bbe3ba40aa433c39b2c31ff7a0bbff9abb31aa1905acf26ee9f48d5`）。这证明“较高恢复韧性”在冻结方向上无效，不授权在同一 2019–2025 历史上改成低方向、改谷底定义、换路径窗口、加过滤、挑年份、调权或重测。它不加入聚合候选，不生成当前评分/选股/仓位/订单，也不构成采购 Level‑2 的理由。
 
 ### CNInfo 补充更正披露负担（全历史分页稳定性终止）
 

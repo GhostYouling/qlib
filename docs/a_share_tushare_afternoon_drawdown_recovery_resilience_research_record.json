@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_afternoon_drawdown_recovery_resilience_research_record",
+  "status": "terminal_rejected_at_association_stability_and_executable_topk_gates",
+  "recorded_at": "2026-07-22T14:25:05Z",
+  "purpose": "Record the fingerprint-bound construction, no-return admission, and single historical three-session return diagnostic for the Tushare afternoon maximum-drawdown recovery-resilience mechanism without mistaking high coverage or path uniqueness for a usable Top-3 strategy.",
+  "factor": {
+    "name": "afternoon_drawdown_recovery_resilience_120m",
+    "direction": "higher",
+    "formula": "R / (D + R), where D is the maximum running-peak log drawdown on the 11:30 plus 13:01-15:00 close path, t_star is its earliest occurrence, and R is the terminal log-price recovery from x_t_star",
+    "economic_hypothesis": "A stock that strongly recovers from its largest afternoon price shock relative to that shock may retain short-horizon dip-absorption and liquidity resilience.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "raw_open_high_low_volume_or_amount_used": false,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_afternoon_efficiency_manifest_sha256": "e1184b04385d1b0d1eb1eb4a56ad6c21609c4387cf53324cbbb41c420cdb8ed5",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_afternoon_drawdown_recovery_resilience/tushare_stk_mins_1m_2019_2025_ea0cbb8f_afternoon_drawdown_recovery_resilience_v1/snapshot_manifest.json",
+      "sha256": "a94413ba437dce44ef17215cce42c2d62e5aefab376f345df525dec3fd7a9c45",
+      "dataset_sha256": "07f1d0e83de44a1d533acf6e269bf34fc02d0c6ef582affdd96eac5c7af769c8",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7631291,
+      "zero_drawdown_rows": 93207,
+      "invalid_required_value_rows": 0,
+      "recovery_identity_violation_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_afternoon_drawdown_recovery_resilience_no_return_preregistration.json",
+      "sha256": "b4b1a15e5f8dc6073093bcd5ed52825c545e8f8cf228bee9ea9aa28e83eda6b8",
+      "factor_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260722T141606Z_afternoon_drawdown_recovery_resilience_no_return_audit.json",
+      "sha256": "57227ee97c70155a69db5275514ad418c6a72ed467f1920a79eb2b578e4d8a36",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_returns_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_afternoon_drawdown_recovery_resilience_diagnostic_preregistration.json",
+      "sha256": "9a4eb0da319e8acddd9cf8c22716d5bc408b46f4acb9408901651ea71b632515",
+      "forward_returns_read_before_registration": false
+    }
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1320685,
+    "median_coverage": 0.9936305732484076,
+    "p05_coverage": 0.98134033784176,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "maximum_absolute_median_daily_rank_correlation_to_five_terminal_factors": 0.6074802302511947,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "median_daily_rank_correlation_to_prior_afternoon_efficiency": 0.3452319924698768,
+    "all_five_uniqueness_gates_passed": true
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260722T142403Z",
+      "path": "data/experiments/short_horizon/20260722T142403Z_factor_diagnostic.json",
+      "sha256": "44cf243bbb7af8083d8808a760e9abce3b4ebe066e363e857d977acbafe8440c"
+    },
+    "stability_audit": {
+      "run_id": "20260722T142422Z",
+      "path": "data/experiments/short_horizon/20260722T142422Z_factor_stability_audit.json",
+      "sha256": "efe1ee696d376a7d7383f3a80161ed3f70151fc970f5757e443346d24159a450"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260722T142423Z",
+      "path": "data/experiments/short_horizon/20260722T142423Z_factor_topk_viability_audit.json",
+      "sha256": "edc18c4cff7998172d133da834fcabdc4a8a915758f5b9ddaf35c22a85302586"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/tushare_afternoon_drawdown_recovery_resilience_v1_consumption.json",
+      "sha256": "06bea129203ddd58947622d8508068652760c2bd13c938995507f9437f462a1d",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "return_results": {
+    "cohorts": 539,
+    "mean_rank_ic": -0.008087478829892919,
+    "median_rank_ic": -0.005693610352857453,
+    "positive_rank_ic_rate": 0.4619666048237477,
+    "mean_top3_minus_bottom3_gross_return": -0.0047049977621607866,
+    "years_with_nonpositive_mean_rank_ic": [
+      2019,
+      2020,
+      2021,
+      2024,
+      2025
+    ],
+    "association_stability_gate_passed": false,
+    "execution_aware_complete_signal_count": 533,
+    "execution_aware_top3_net_cumulative_return": -0.826970476375416,
+    "execution_aware_top3_maximum_drawdown": -0.8890125059513904,
+    "years_with_nonpositive_execution_aware_return": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "pilot_net_cumulative_return_at_ten_bp_each_side": -0.26019248555464636,
+    "pilot_maximum_drawdown": -0.3012817143188379,
+    "pilot_board_lot_affordability_rate": 0.9221594475831764,
+    "pilot_maximum_daily_amount_participation": 0.004122444594072402,
+    "pilot_terminal_unresolved_positions": 0,
+    "topk_viability_gate_passed": false,
+    "dual_gate_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "invert_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "terminal_reason": "The exact higher recovery-resilience direction failed both the full association-stability gate and the executable Top-3 gate despite passing no-return coverage and uniqueness checks."
+  },
+  "research_boundary": {
+    "coverage_or_uniqueness_proved_predictive_value": false,
+    "negative_historical_association_does_not_authorize_same_history_inversion": true,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction mechanism. Preserve the close-only path-factor builder and ordered audit pattern, then propose a genuinely distinct mechanism and freeze it before observing values or returns; do not purchase Level-2 to rescue this result."
+  }
+}

@@ -307,6 +307,9 @@ def test_status_reports_selected_tushare_minute_route_without_rows_or_network(
     assert selected["completed_research"][
         "afternoon_signed_amount_efficiency_record"
     ]["fingerprint_valid"] is True
+    assert selected["completed_research"][
+        "afternoon_drawdown_recovery_resilience_record"
+    ]["fingerprint_valid"] is True
     assert selected["next_action"] == (
         "tushare_full_source_terminal_do_not_redownload_restore_only_for_audit_and_select_a_replacement_source"
     )

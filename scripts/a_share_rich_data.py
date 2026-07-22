@@ -110,6 +110,11 @@ DEFAULT_TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD = (
     / "docs"
     / "a_share_tushare_afternoon_signed_amount_efficiency_research_record.json"
 )
+DEFAULT_TUSHARE_AFTERNOON_DRAWDOWN_RECOVERY_RESILIENCE_RESEARCH_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_afternoon_drawdown_recovery_resilience_research_record.json"
+)
 DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
@@ -482,6 +487,9 @@ TUSHARE_CLEANED_FOUR_FACTOR_RESEARCH_RECORD_SHA256 = (
 )
 TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD_SHA256 = (
     "bd872c494f8dbfa7eed82e79a67d145a08e561dbdc5f36548f172fc79641cd1d"
+)
+TUSHARE_AFTERNOON_DRAWDOWN_RECOVERY_RESILIENCE_RESEARCH_RECORD_SHA256 = (
+    "b608fd9c8bbe3ba40aa433c39b2c31ff7a0bbff9abb31aa1905acf26ee9f48d5"
 )
 TUSHARE_ONE_MINUTE_MINIMUM_FREE_BYTES = 250 * 1024**3
 TUSHARE_ONE_MINUTE_MAX_SESSIONS_PER_REQUEST = 33
@@ -35753,6 +35761,9 @@ def tushare_one_minute_acceptance_status(data_root: Path) -> dict[str, Any]:
     afternoon_efficiency_record_path = (
         DEFAULT_TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD.resolve()
     )
+    afternoon_recovery_record_path = (
+        DEFAULT_TUSHARE_AFTERNOON_DRAWDOWN_RECOVERY_RESILIENCE_RESEARCH_RECORD.resolve()
+    )
     cleaned_four_factor_record_valid = bool(
         cleaned_four_factor_record_path.is_file()
         and file_digest(cleaned_four_factor_record_path)
@@ -35763,8 +35774,15 @@ def tushare_one_minute_acceptance_status(data_root: Path) -> dict[str, Any]:
         and file_digest(afternoon_efficiency_record_path)
         == TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD_SHA256
     )
+    afternoon_recovery_record_valid = bool(
+        afternoon_recovery_record_path.is_file()
+        and file_digest(afternoon_recovery_record_path)
+        == TUSHARE_AFTERNOON_DRAWDOWN_RECOVERY_RESILIENCE_RESEARCH_RECORD_SHA256
+    )
     minute_research_terminal_chain_valid = bool(
-        cleaned_four_factor_record_valid and afternoon_efficiency_record_valid
+        cleaned_four_factor_record_valid
+        and afternoon_efficiency_record_valid
+        and afternoon_recovery_record_valid
     )
     record: dict[str, Any] = {}
     if record_valid:
@@ -35985,6 +36003,14 @@ def tushare_one_minute_acceptance_status(data_root: Path) -> dict[str, Any]:
                 "path": str(afternoon_efficiency_record_path),
                 "expected_sha256": TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD_SHA256,
                 "fingerprint_valid": afternoon_efficiency_record_valid,
+                "association_stability_gate_passed": False,
+                "topk_viability_gate_passed": False,
+                "dual_gate_passed": False,
+            },
+            "afternoon_drawdown_recovery_resilience_record": {
+                "path": str(afternoon_recovery_record_path),
+                "expected_sha256": TUSHARE_AFTERNOON_DRAWDOWN_RECOVERY_RESILIENCE_RESEARCH_RECORD_SHA256,
+                "fingerprint_valid": afternoon_recovery_record_valid,
                 "association_stability_gate_passed": False,
                 "topk_viability_gate_passed": False,
                 "dual_gate_passed": False,
