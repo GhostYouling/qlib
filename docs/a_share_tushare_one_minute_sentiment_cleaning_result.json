@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_one_minute_sentiment_cleaning_result",
+  "status": "cleaned_sentiment_coverage_passed_pending_separate_no_return_research_protocol",
+  "recorded_at": "2026-07-22T04:25:15Z",
+  "purpose": "Record the independently verified result of the non-destructive Tushare one-minute sentiment cleaning protocol without changing the failed original full-source decision or reading returns.",
+  "source_chain": {
+    "cleaning_protocol": {
+      "path": "docs/a_share_tushare_one_minute_sentiment_cleaning_protocol.json",
+      "sha256": "f70c7da688ecb6d2e88cd86f4ec086a42b620e0c12025ee9263fe603abe3a2fe"
+    },
+    "terminal_original_source_audit": {
+      "path": "docs/a_share_tushare_one_minute_full_source_coverage_audit.json",
+      "sha256": "5626c0f6523eeadd7739266f29a133b4e66852b1af0aebf84ef00ad88dadbfec"
+    },
+    "raw_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    },
+    "cleaned_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de"
+    }
+  },
+  "published_dataset": {
+    "partitions": 33015,
+    "eligible_symbol_sessions": 7724498,
+    "parquet_and_sidecar_counts_verified": true,
+    "random_partition_byte_hashes_verified": 5,
+    "published_size_mib_approximately": 966,
+    "source_rows_mutated": false
+  },
+  "coverage": {
+    "calendar_sessions": 1699,
+    "median_eligible_session_coverage": 0.9968652037617555,
+    "p05_eligible_session_coverage": 0.9917170545277707,
+    "worst_trade_date": "2022-05-05",
+    "worst_trade_date_eligible_coverage": 0.9811160619562911,
+    "dates_with_at_least_fifty_eligible_names": 1699,
+    "potential_non_overlapping_three_session_cohorts": 566,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "gate_passed": true
+  },
+  "exclusion_accounting": {
+    "expected_point_in_time_symbol_sessions": 7751950,
+    "eligible_symbol_sessions": 7724498,
+    "total_excluded_or_absent_sessions": 27452,
+    "missing_source_sessions": 7297,
+    "zero_activity_sessions_also_missing_local_daily_rows": 19830,
+    "amount_reconciliation_failed_sessions": 65,
+    "undefined_late_window_feature_sessions_due_to_zero_late_volume": 260,
+    "close_reconciliation_failed_sessions": 0,
+    "volume_reconciliation_failed_sessions": 0,
+    "accounting_identity_verified": "7297 + 19830 + 65 + 260 = 27452 = 7751950 - 7724498"
+  },
+  "original_gate_comparison": {
+    "original_daily_ohlcv_reconciled_sessions": 7320317,
+    "cleaned_close_amount_volume_and_feature_eligible_sessions": 7724498,
+    "additional_usable_sentiment_sessions": 404181,
+    "original_p05_coverage": 0.825708960635191,
+    "cleaned_p05_coverage": 0.9917170545277707,
+    "interpretation": "The recovered sessions are suitable only for the four retained close-volume-amount path features. This result does not retroactively pass or modify the original OHLC-dependent protocol."
+  },
+  "retained_features": [
+    "late_return_30m",
+    "late_amount_share_30m",
+    "late_vwap_to_day_vwap_30m",
+    "intraday_realized_volatility"
+  ],
+  "research_boundary": {
+    "forward_return_fields_read": false,
+    "existing_factor_returns_reused": false,
+    "aggregation_scoring_selection_sizing_or_orders_performed": false,
+    "promotion_allowed_from_cleaning_alone": false,
+    "next_step_requires_separate_fingerprint_bound_no_return_research_protocol": true
+  },
+  "verification": {
+    "focused_tests": "6 passed",
+    "ruff": "passed",
+    "post_publish_reprocessed_exception_partitions": 190,
+    "post_publish_nonfinite_feature_sessions_confirmed": 260
+  }
+}

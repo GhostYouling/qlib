@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_one_minute_full_source_coverage_audit",
+  "status": "terminal_full_source_coverage_failed_before_minute_factor_values_or_forward_returns",
+  "recorded_at": "2026-07-22T03:06:02.595567+00:00",
+  "purpose": "Bind the completed 2019-2025 Tushare one-minute snapshot to its frozen no-return source-coverage decision so a complete download cannot be mistaken for an accepted research feature source.",
+  "source_chain": {
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_one_minute_source_acceptance_record.json",
+      "sha256": "643f2177c80bfb77ba7bdbc84bd8cda3ad5feb222f1fc7309256f66436f75411"
+    },
+    "full_source_no_return_protocol": {
+      "path": "docs/a_share_tushare_one_minute_full_source_no_return_preregistration.json",
+      "sha256": "ea0cbb8f2adc8f64a41627c4be1d62a6cc21dae3da755ffdf4d512996d974948"
+    },
+    "external_snapshot_manifest": {
+      "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+      "relative_path": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    }
+  },
+  "completed_source": {
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31",
+    "calendar_sessions": 1699,
+    "completed_partitions": 33015,
+    "expected_partitions": 33015,
+    "provider_calls": 255955,
+    "source_rows": 1866461373,
+    "expected_stock_sessions": 7751950,
+    "observed_stock_sessions": 7744653,
+    "exact_241_row_grid_sessions": 7724581,
+    "exact_grid_share_of_expected": 0.996469404472423,
+    "daily_reconciled_complete_sessions": 7320317,
+    "daily_reconciled_share_of_expected": 0.9443194293048846,
+    "daily_reconciliation_failed_sessions": 404506,
+    "incomplete_observed_sessions": 19830,
+    "missing_expected_sessions": 7297,
+    "duplicate_timestamp_rows": 0,
+    "off_grid_rows": 0,
+    "partition_hashes_verified_before_resume_skip": true,
+    "resumed_partitions": 1
+  },
+  "frozen_coverage_gate": {
+    "minimum_median_complete_session_coverage": 0.95,
+    "minimum_p05_complete_session_coverage": 0.9,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "observed_median_complete_session_coverage": 0.9708918249380677,
+    "observed_p05_complete_session_coverage": 0.825708960635191,
+    "observed_non_overlapping_three_session_cohorts": 566,
+    "observed_calendar_years": 7,
+    "worst_trade_date": "2020-03-13",
+    "worst_trade_date_complete_session_coverage": 0.6714022625624836,
+    "failed_gate": "minimum_p05_complete_session_coverage",
+    "gate_passed": false
+  },
+  "yearly_source_quality": [
+    {
+      "year": 2019,
+      "expected_sessions": 890018,
+      "exact_grid_sessions": 884402,
+      "daily_reconciled_sessions": 760172,
+      "daily_reconciliation_failed_sessions": 124230,
+      "incomplete_observed_sessions": 3480,
+      "missing_expected_sessions": 2136
+    },
+    {
+      "year": 2020,
+      "expected_sessions": 951759,
+      "exact_grid_sessions": 945719,
+      "daily_reconciled_sessions": 811089,
+      "daily_reconciliation_failed_sessions": 134630,
+      "incomplete_observed_sessions": 2846,
+      "missing_expected_sessions": 3194
+    },
+    {
+      "year": 2021,
+      "expected_sessions": 1062147,
+      "exact_grid_sessions": 1058620,
+      "daily_reconciled_sessions": 993620,
+      "daily_reconciliation_failed_sessions": 65000,
+      "incomplete_observed_sessions": 1939,
+      "missing_expected_sessions": 1588
+    },
+    {
+      "year": 2022,
+      "expected_sessions": 1149020,
+      "exact_grid_sessions": 1145779,
+      "daily_reconciled_sessions": 1112239,
+      "daily_reconciliation_failed_sessions": 33782,
+      "incomplete_observed_sessions": 2726,
+      "missing_expected_sessions": 273
+    },
+    {
+      "year": 2023,
+      "expected_sessions": 1211712,
+      "exact_grid_sessions": 1209236,
+      "daily_reconciled_sessions": 1187102,
+      "daily_reconciliation_failed_sessions": 22134,
+      "incomplete_observed_sessions": 2431,
+      "missing_expected_sessions": 45
+    },
+    {
+      "year": 2024,
+      "expected_sessions": 1236090,
+      "exact_grid_sessions": 1232960,
+      "daily_reconciled_sessions": 1214497,
+      "daily_reconciliation_failed_sessions": 18463,
+      "incomplete_observed_sessions": 3078,
+      "missing_expected_sessions": 52
+    },
+    {
+      "year": 2025,
+      "expected_sessions": 1251204,
+      "exact_grid_sessions": 1247865,
+      "daily_reconciled_sessions": 1241598,
+      "daily_reconciliation_failed_sessions": 6267,
+      "incomplete_observed_sessions": 3330,
+      "missing_expected_sessions": 9
+    }
+  ],
+  "source_only_diagnosis": {
+    "method": "Inspect the ten symbol-year partitions with the most daily-reconciliation failures in each calendar year. Compare only source minute OHLCV/amount with the accepted local raw daily reconciliation fields; do not calculate a minute factor or load a forward return.",
+    "sampled_symbol_year_partitions": 70,
+    "failed_sample_sessions_before_placeholder_check": 6439,
+    "failed_sample_sessions_after_excluding_zero-activity_09_30_rows_from_the_diagnostic_ohlc_only": 3202,
+    "diagnostic_sessions_recovered_by_the_placeholder_check": 3237,
+    "observed_failure_classes": [
+      "some 09:30 rows have positive prices but zero volume and amount and behave as reference-price placeholders rather than a uniform opening-auction trade",
+      "some remaining minute high or low values differ from the independent local raw daily high or low beyond the frozen 0.2 percent tolerance",
+      "some remaining first minute opens differ from the independent local raw daily open beyond the frozen 0.2 percent tolerance"
+    ],
+    "interpretation_boundary": "The diagnostic explains why the frozen reconciliation gate can reject otherwise exact timestamp grids. It does not authorize changing the immutable raw rows, substituting daily prices into minute bars, changing the opening-auction rule, or widening the tolerance after source observation."
+  },
+  "research_boundary": {
+    "raw_snapshot_preserved": true,
+    "raw_rows_edited": false,
+    "coverage_threshold_changed": false,
+    "daily_reconciliation_failures_reclassified_as_eligible": false,
+    "minute_factor_values_read": false,
+    "forward_return_fields_read": false,
+    "feature_materialization_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "decision": {
+    "tushare_full_source_accepted_for_feature_research": false,
+    "rerun_or_resume_same_tushare_full_source_protocol": false,
+    "materialize_frozen_minute_features": false,
+    "change_prices_opening_policy_or_coverage_threshold_after_observation": false,
+    "next_step": "Retire the Tushare full-history route for this frozen minute protocol and select a separately accepted replacement one-minute source. Use the existing QMT/XtQuant bridge only if a lawful Windows runtime is available; otherwise require separate RQData or JQData authorization and acceptance."
+  }
+}

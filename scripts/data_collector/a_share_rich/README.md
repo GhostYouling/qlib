@@ -47,6 +47,28 @@ Run `python scripts/a_share_rich_data.py status` before any download.  Start
 with the `acceptance` command for one completed trading session; it stores raw
 unadjusted bars and a checksum manifest under `data/` (which is Git-ignored).
 
+The completed Tushare `stk_mins` 2019--2025 snapshot remains terminally failed
+under its original five-factor OHLC reconciliation protocol.  A separately
+authorized, non-destructive cleaning route now retains only four close,
+volume, and amount factors.  Its joint base has 7,724,498 symbol-sessions; the
+factor-specific overlay reads only 190 preidentified exception partitions and
+adds 325 rows for close-path factors, 260 for amount share, and zero for late
+VWAP.  Every factor-specific median/P05 coverage gate passes, with the minimum
+P05 at 99.1717%.  Neither layer changes raw rows, loads source open/high/low for
+the overlay, reads forward returns, trains a model, or admits
+`opening_gap_digestion`.  Revalidate or rebuild only the overlay with:
+
+```bash
+python scripts/a_share_tushare_one_minute_sentiment_clean.py \
+  build-fieldwise-overlay \
+  --data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+  --workers 4
+```
+
+The next permitted step is a new fingerprint-bound exploratory research
+preregistration.  Do not use the cleaning pass itself for aggregation,
+current scoring, selection, sizing, orders, or a Level-2 purchase decision.
+
 For a 3000-point Tushare account, the event acceptance command defaults to
 `moneyflow,limit-price,stock-st,top-list`, mapped to the provider's
 `moneyflow`, `stk_limit`, `stock_st`, and `top_list` APIs.  The optional

@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_pending_real_qmt_level1_acceptance_bundle",
-  "recorded_at": "2026-07-21T11:30:00Z",
+  "status": "aggregation_blocked_after_fieldwise_minute_cleaning_pass_pending_exploratory_research_preregistration",
+  "recorded_at": "2026-07-22T11:31:00Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -244,25 +244,81 @@
     "aggregation_candidate_count": 0
   },
   "selected_source_path": {
-    "source": "qmt_xtquant_level1_one_minute_export_bridge",
-    "selection_audit": {
+    "source": "tushare_stk_mins_historical_one_minute",
+    "prior_qmt_selection_audit": {
       "path": "docs/a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json",
       "sha256": "7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db"
     },
-    "data_contract": {
+    "prior_qmt_data_contract": {
       "path": "docs/a_share_qmt_xtquant_one_minute_export_data_contract.json",
       "sha256": "a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399"
     },
-    "tushare_permission_audit": {
+    "pre_purchase_tushare_permission_audit": {
       "path": "docs/a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json",
       "sha256": "61e2325c0199b35d7e10ec97f4d71f973786b925b6e0f187a0e4de8bb4068959"
     },
-    "exporter_and_importer_implemented": true,
-    "real_acceptance_bundle_observed": false,
-    "automatic_import_passed": false,
-    "explicit_time_and_volume_alignment_confirmed": false,
-    "tushare_points_authorize_historical_minutes": false,
-    "next_external_action": "Run the frozen four-symbol QMT acceptance exporter in an already-lawful Windows MiniQMT/XtQuant environment and transfer the untouched bundle for offline validation."
+    "source_acceptance_record": {
+      "path": "docs/a_share_tushare_one_minute_source_acceptance_record.json",
+      "sha256": "643f2177c80bfb77ba7bdbc84bd8cda3ad5feb222f1fc7309256f66436f75411"
+    },
+    "full_source_no_return_protocol": {
+      "path": "docs/a_share_tushare_one_minute_full_source_no_return_preregistration.json",
+      "sha256": "ea0cbb8f2adc8f64a41627c4be1d62a6cc21dae3da755ffdf4d512996d974948"
+    },
+    "full_source_coverage_audit": {
+      "path": "docs/a_share_tushare_one_minute_full_source_coverage_audit.json",
+      "sha256": "5626c0f6523eeadd7739266f29a133b4e66852b1af0aebf84ef00ad88dadbfec"
+    },
+    "joint_cleaning_protocol": {
+      "path": "docs/a_share_tushare_one_minute_sentiment_cleaning_protocol.json",
+      "sha256": "f70c7da688ecb6d2e88cd86f4ec086a42b620e0c12025ee9263fe603abe3a2fe"
+    },
+    "joint_cleaning_result": {
+      "path": "docs/a_share_tushare_one_minute_sentiment_cleaning_result.json",
+      "sha256": "2bd511045a1c9bc8a2b8d3bc566d4c0219c5764e8f1ae02c559125c99c6a4275"
+    },
+    "fieldwise_cleaning_protocol": {
+      "path": "docs/a_share_tushare_one_minute_fieldwise_cleaning_protocol.json",
+      "sha256": "51e4fbf399411f62d35cbdb81d78651b4ceab17934264db0146cef61554d2fd6"
+    },
+    "fieldwise_cleaning_result": {
+      "path": "docs/a_share_tushare_one_minute_fieldwise_cleaning_result.json",
+      "sha256": "f0170519bb0ac8b49c7d48be9a65abd281e2b624e0360acdb63e1914dc429130"
+    },
+    "direct_stk_mins_adapter_implemented": true,
+    "real_acceptance_rows_observed": true,
+    "automatic_acceptance_passed": true,
+    "explicit_time_and_volume_alignment_confirmed": true,
+    "tushare_separately_purchased_historical_minutes_authorized": true,
+    "full_source_no_return_protocol_frozen": true,
+    "full_history_snapshot_observed": true,
+    "full_history_snapshot_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "full_source_coverage_passed": false,
+    "full_source_median_complete_session_coverage": 0.9708918249380677,
+    "full_source_p05_complete_session_coverage": 0.825708960635191,
+    "full_source_failed_gate": "minimum_p05_complete_session_coverage",
+    "tushare_full_source_terminal": true,
+    "minute_features_materialized": false,
+    "original_five_factor_protocol_retroactively_passed": false,
+    "post_terminal_non_destructive_cleaning_authorized": true,
+    "joint_cleaned_snapshot_materialized": true,
+    "fieldwise_exception_overlay_materialized": true,
+    "fieldwise_exception_partitions_read": 190,
+    "fieldwise_overlay_symbol_sessions": 325,
+    "retained_cleaned_factor_count": 4,
+    "retained_cleaned_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility"
+    ],
+    "opening_gap_digestion_excluded": true,
+    "all_fieldwise_factor_coverage_gates_passed": true,
+    "minimum_fieldwise_factor_p05_coverage": 0.9917170545277707,
+    "cleaned_feature_forward_returns_read": false,
+    "cleaned_feature_training_or_model_fitting_performed": false,
+    "prior_qmt_route_retained_as_fallback_only": true,
+    "next_external_action": "No replacement source or new purchase is required for the four retained factors. Freeze a fingerprint-bound exploratory research protocol before reading any forward return; do not rerun Tushare or restore the excluded opening factor."
   },
   "decision": {
     "aggregation_allowed": false,
@@ -271,6 +327,7 @@
     "sizing_allowed": false,
     "orders_allowed": false,
     "level2_intake_justified": false,
-    "new_price_or_forward_return_read_for_this_status": false
+    "acceptance_price_fields_used_only_for_daily_source_reconciliation": true,
+    "new_research_price_or_forward_return_read_for_this_status": false
   }
 }

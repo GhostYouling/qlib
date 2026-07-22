@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_one_minute_source_acceptance_record",
+  "status": "accepted_for_separate_full_source_no_return_protocol_only",
+  "recorded_at": "2026-07-21T14:18:00Z",
+  "purpose": "Record the one completed-session Tushare A-share historical one-minute source acceptance and explicit timestamp/unit alignment after the user separately activated the historical-minute product, without treating the sample as factor or strategy evidence.",
+  "authorization": {
+    "user_confirmed_historical_minute_product_activated": true,
+    "points_entitlement_used_as_authorization": false,
+    "realtime_minute_product_required": false,
+    "credential_storage": "TUSHARE_TOKEN environment variable only",
+    "credential_value_read_logged_hashed_or_persisted": false
+  },
+  "official_contract": {
+    "reviewed_at": "2026-07-21T14:18:00Z",
+    "url": "https://tushare.pro/document/2?doc_id=370",
+    "title": "股票历史分钟行情",
+    "interface": "stk_mins",
+    "supported_frequencies": [
+      "1min",
+      "5min",
+      "15min",
+      "30min",
+      "60min"
+    ],
+    "maximum_rows_per_request": 8000,
+    "documented_history": "more_than_10_years",
+    "input_fields": [
+      "ts_code",
+      "freq",
+      "start_date",
+      "end_date"
+    ],
+    "output_fields_in_repository_request_order": [
+      "ts_code",
+      "trade_time",
+      "open",
+      "high",
+      "low",
+      "close",
+      "vol",
+      "amount"
+    ],
+    "documented_volume_unit": "shares",
+    "documented_amount_unit": "CNY"
+  },
+  "formal_acceptance": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "provider_frequency": "1min",
+    "trade_date": "2026-07-13",
+    "symbols": [
+      "SH600519",
+      "SZ000001",
+      "SZ300750",
+      "SH688981"
+    ],
+    "provider_call_count": 4,
+    "provider_rows_observed": 964,
+    "prices": "raw_unadjusted",
+    "acceptance_transport": "The accepted rows were obtained through the installed Tushare SDK pro_bar wrapper with freq=1min; that wrapper delegated minute retrieval to stk_mins. After acceptance, the repository adapter was hardened to call pro.stk_mins directly with the official field whitelist. The accepted immutable rows were not downloaded again.",
+    "first_attempt_note": "A local adapter attempt using repository frequency 1m stopped inside the SDK wrapper before a minute endpoint request because the wrapper expects a value containing min. It was an implementation failure, not a permission or source failure, and exposed no rows or factor values.",
+    "manifest": {
+      "path": "data/metadata/rich_data/runs/20260721T140021Z_tushare_1m_d57ea9d3.json",
+      "sha256": "a404aea025aec0335273d83d26cc39fe70e41e229da7aa1a8dd9e7752db9f2d0",
+      "run_id": "20260721T140021Z_tushare_1m_d57ea9d3",
+      "acceptance_status": "automatic_checks_passed_pending_time_alignment"
+    },
+    "files": [
+      {
+        "symbol": "SH600519",
+        "rows": 241,
+        "frame_sha256": "8633616b10990eae2cc7872c777804b6b2fbbe9c237605c2d48e54ca86f40477"
+      },
+      {
+        "symbol": "SZ000001",
+        "rows": 241,
+        "frame_sha256": "99bc9cc22848c5683bdb79c06f18ffede98cad9008fe226086fc233b0e3b1702"
+      },
+      {
+        "symbol": "SZ300750",
+        "rows": 241,
+        "frame_sha256": "16c7325f7340194e49d59bd1ae7e0d32cde7cd2b1d5c52f2cb53df6b12009b05"
+      },
+      {
+        "symbol": "SH688981",
+        "rows": 241,
+        "frame_sha256": "73e830f3325f197940ecf3c5ab4d000eefe110f78fcf6a2d7d3c9c3ab14daf11"
+      }
+    ]
+  },
+  "automatic_acceptance_result": {
+    "all_four_symbols_passed_together": true,
+    "source_rows_per_symbol": 241,
+    "source_first_timestamp": "09:30:00",
+    "source_last_timestamp": "15:00:00",
+    "raw_daily_ohlc_maximum_relative_error": 0.0,
+    "amount_ratio_to_local_raw_daily_range": [
+      0.9999999931803216,
+      1.0000000030850225
+    ],
+    "volume_ratio_to_local_raw_daily_lot_volume": 100.0,
+    "inferred_and_documented_volume_unit": "shares",
+    "amount_unit": "CNY"
+  },
+  "explicit_alignment": {
+    "path": "data/metadata/rich_data/alignments/20260721T140521Z_tushare_1m_alignment_89ec2deb.json",
+    "sha256": "2c8c85ba1155289d03c3ebc1175a4a2504bf8022b849087840777ee41586e2a0",
+    "run_id": "20260721T140521Z_tushare_1m_alignment_89ec2deb",
+    "status": "passed_for_feature_research",
+    "bar_timestamp_label": "end",
+    "source_grid": "09:30 opening-auction row plus 09:31-11:30 and 13:01-15:00 end-labelled rows",
+    "opening_auction_policy": "merge_09_30_into_09_31",
+    "canonical_regular_session_bars": 240,
+    "merge_conservation": "Use the 09:30 open, the envelope high/low of 09:30 and 09:31, the 09:31 close, and summed volume/amount; preserve the immutable 241-row source snapshot.",
+    "zero_volume_positive_price_rows": "retain_without_fill_or_drop"
+  },
+  "research_boundary": {
+    "acceptance_sample_may_be_used_as_full_history": false,
+    "full_history_allowed_only_after_separate_fingerprint_bound_no_return_protocol_and_storage_preflight": true,
+    "minute_features_materialized": false,
+    "minute_factor_values_observed": false,
+    "price_fields_loaded_beyond_acceptance_daily_reconciliation": [],
+    "forward_return_fields_read": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false,
+    "qmt_route_status": "superseded_as_selected_next_source_but_preserved_as_historical_audit_and_fallback_contract"
+  }
+}

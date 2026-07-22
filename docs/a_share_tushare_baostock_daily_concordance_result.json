@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_tushare_baostock_daily_concordance_result",
+  "status": "completed_no_provider_switch",
+  "created_at": "2026-07-22T05:02:00Z",
+  "scope": {
+    "market": "China A-share",
+    "start": "2019-01-01",
+    "end": "2025-12-31",
+    "fields": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ]
+  },
+  "bindings": {
+    "protocol_path": "docs/a_share_tushare_daily_concordance_protocol.json",
+    "protocol_sha256": "acf72e28283405aee93e64f68d63470380d65fa8ccc64c588bfdf203f3914297",
+    "implementation_repair_path": "docs/a_share_tushare_daily_concordance_implementation_repair.json",
+    "implementation_repair_sha256": "c673c0b4405a7cf53535e0d8915b3c2c9bf6711d40fcf9ac8e5d1689190efe80",
+    "acceptance_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/acceptance/tushare_daily_20251231_acf72e28/snapshot_manifest.json",
+    "acceptance_manifest_sha256": "f155339b20551b997a992d71dbe3a6f04499c26e863a1f741be996464c8c6b45",
+    "daily_snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/snapshot_manifest.json",
+    "daily_snapshot_manifest_sha256": "87feded06b6726d282abf52c8fd1c30340728ae37c2de201a3a8f30e1a556e2d",
+    "provider_audit_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/provider_concordance_audit.json",
+    "provider_audit_sha256": "5c2a19263a8cd71151af854d1c917864927b037bc3ad2d61148b867434d79895",
+    "minute_snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+    "minute_snapshot_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+  },
+  "download": {
+    "sessions": 1699,
+    "provider_calls": 1698,
+    "annual_files": 7,
+    "rows": 7989350,
+    "auxiliary_null_counts": {
+      "pre_close": 58,
+      "change": 58,
+      "pct_chg": 58
+    },
+    "ohlc_volume_amount_hard_validation_passed": true,
+    "existing_baostock_daily_files_mutated": false
+  },
+  "provider_comparison": {
+    "classification": "small",
+    "baostock_rows": 7751950,
+    "tushare_rows": 7989350,
+    "common_rows": 7725044,
+    "common_share_of_baostock": 0.9965291313798463,
+    "tushare_only_rows": 264306,
+    "baostock_only_rows": 26906,
+    "material_difference_rows": 68,
+    "material_difference_share_of_common": 8.80253885932559e-06,
+    "field_summary": {
+      "open": {
+        "exact_share": 1.0,
+        "p99_relative_error": 0.0,
+        "maximum_relative_error": 0.0
+      },
+      "high": {
+        "exact_share": 0.9999998705508991,
+        "p99_relative_error": 0.0,
+        "maximum_relative_error": 0.0012345679012345416
+      },
+      "low": {
+        "exact_share": 1.0,
+        "p99_relative_error": 0.0,
+        "maximum_relative_error": 0.0
+      },
+      "close": {
+        "exact_share": 1.0,
+        "p99_relative_error": 0.0,
+        "maximum_relative_error": 0.0
+      },
+      "volume": {
+        "exact_share": 0.9986941174703988,
+        "p99_relative_error": 0.0,
+        "maximum_relative_error": 0.015861602533661427
+      },
+      "amount": {
+        "exact_share": 0.227489319154687,
+        "p50_relative_error": 1.381341821673582e-09,
+        "p99_relative_error": 5.6027788525413494e-08,
+        "maximum_relative_error": 40.913668309158666,
+        "interpretation": "Most non-exact rows are negligible source rounding after converting Tushare amount from thousand CNY to CNY."
+      }
+    },
+    "key_difference_interpretation": "Key-only rows are coverage/universe/calendar semantics and are not counted as conflicting field values. Tushare daily omits suspended periods; the local BaoStock reference universe is current-list derived."
+  },
+  "minute_triangulation_of_68_material_rows": {
+    "method": "For every material common-key row, aggregate the existing Tushare one-minute amount for the same symbol and date, then compare relative distance to the Tushare and BaoStock daily amount. Minute volume is divided by 100 before comparison with daily lots.",
+    "material_rows": 68,
+    "all_had_amount_error_above_threshold": true,
+    "rows_with_volume_error_above_threshold": 3,
+    "closer_to_tushare_daily": 65,
+    "closer_to_baostock_daily": 3,
+    "ties": 0,
+    "by_date": {
+      "2020-02-21": 1,
+      "2020-03-18": 2,
+      "2020-07-21": 6,
+      "2020-11-09": 6,
+      "2020-12-09": 27,
+      "2022-07-20": 26
+    },
+    "by_exchange": {
+      "SZ": 65,
+      "SH": 3
+    },
+    "minute_amount_relative_error": {
+      "versus_tushare_daily": {
+        "p50": 1.901064221483144e-09,
+        "p99": 0.015532951895498694,
+        "maximum": 0.015824663370529166
+      },
+      "versus_baostock_daily": {
+        "p50": 0.25096092054757363,
+        "p99": 31.882964186987966,
+        "maximum": 40.913668309158666
+      }
+    },
+    "baostock_supported_exceptions": [
+      {
+        "symbol": "SH600608",
+        "trade_date": "2020-02-21",
+        "tushare_daily_amount_cny": 14157105.0,
+        "baostock_daily_amount_cny": 14332880.0,
+        "minute_sum_amount_cny": 14332880.0,
+        "tushare_daily_volume_lots": 32214.05,
+        "baostock_daily_volume_lots": 32609.05,
+        "minute_sum_volume_lots": 32609.05
+      },
+      {
+        "symbol": "SH600301",
+        "trade_date": "2020-03-18",
+        "tushare_daily_amount_cny": 9989470.0,
+        "baostock_daily_amount_cny": 10147550.0,
+        "minute_sum_amount_cny": 10147550.0,
+        "tushare_daily_volume_lots": 16343.2,
+        "baostock_daily_volume_lots": 16603.2,
+        "minute_sum_volume_lots": 16603.2
+      },
+      {
+        "symbol": "SH603005",
+        "trade_date": "2020-03-18",
+        "tushare_daily_amount_cny": 1637884572.0,
+        "baostock_daily_amount_cny": 1663090424.0,
+        "minute_sum_amount_cny": 1663090425.0,
+        "tushare_daily_volume_lots": 180173.44,
+        "baostock_daily_volume_lots": 183077.34,
+        "minute_sum_volume_lots": 183077.34
+      }
+    ],
+    "interpretation": "The 68 rows are isolated record-level discrepancies, not a systematic provider-scale or price-series mismatch. The minute source supports Tushare daily on all 65 Shenzhen exceptions and BaoStock daily on the three Shanghai exceptions."
+  },
+  "decision": {
+    "daily_sources_are_materially_different": false,
+    "active_daily_provider_switched": false,
+    "use_tushare_daily_as_independent_mirror": true,
+    "recommended_next_check": "Re-run minute-to-daily source coverage against same-provider Tushare daily. Keep the original cross-provider result unchanged and publish the same-provider result as a separate audit."
+  },
+  "research_boundary": {
+    "forward_return_fields_read": false,
+    "factor_values_read": false,
+    "aggregation_scoring_selection_sizing_or_orders_performed": false
+  }
+}

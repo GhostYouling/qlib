@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_one_minute_fieldwise_cleaning_result",
+  "status": "fieldwise_factor_coverage_passed_pending_separate_exploratory_research_preregistration",
+  "recorded_at": "2026-07-22T11:31:00Z",
+  "purpose": "Bind the independently verified factor-specific coverage result while preserving the original source failure and the conservative joint-cleaned snapshot as immutable evidence.",
+  "source_chain": {
+    "fieldwise_protocol": {
+      "path": "docs/a_share_tushare_one_minute_fieldwise_cleaning_protocol.json",
+      "sha256": "51e4fbf399411f62d35cbdb81d78651b4ceab17934264db0146cef61554d2fd6"
+    },
+    "joint_cleaning_result": {
+      "path": "docs/a_share_tushare_one_minute_sentiment_cleaning_result.json",
+      "sha256": "2bd511045a1c9bc8a2b8d3bc566d4c0219c5764e8f1ae02c559125c99c6a4275"
+    },
+    "joint_cleaned_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de"
+    },
+    "fieldwise_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_fieldwise_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_fieldwise_clean_v2/snapshot_manifest.json",
+      "sha256": "06b5ffc2dac16f608d92e9eb7d93729800a2fa99e5727817caead3d698e19bd3"
+    },
+    "exception_overlay": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_fieldwise_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_fieldwise_clean_v2/exceptions.parquet",
+      "sha256": "046a5902c5fe3d6040df3a57185d445268cd025f6c922275363318123bc210c6"
+    }
+  },
+  "processing": {
+    "immutable_joint_base_rows": 7724498,
+    "exception_partitions_read": 190,
+    "all_other_raw_partitions_read": false,
+    "overlay_symbol_sessions": 325,
+    "base_and_overlay_keys_disjoint": true,
+    "source_open_high_low_loaded": false,
+    "source_rows_mutated": false,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "factor_coverage": {
+    "late_return_30m": {
+      "eligible_symbol_sessions": 7724823,
+      "overlay_recovered_sessions": 325,
+      "median_coverage": 0.9968840418428667,
+      "p05_coverage": 0.9919780874087013,
+      "gate_passed": true
+    },
+    "late_amount_share_30m": {
+      "eligible_symbol_sessions": 7724758,
+      "overlay_recovered_sessions": 260,
+      "median_coverage": 0.9968826541972835,
+      "p05_coverage": 0.9919411439160805,
+      "gate_passed": true
+    },
+    "late_vwap_to_day_vwap_30m": {
+      "eligible_symbol_sessions": 7724498,
+      "overlay_recovered_sessions": 0,
+      "median_coverage": 0.9968652037617555,
+      "p05_coverage": 0.9917170545277707,
+      "gate_passed": true
+    },
+    "intraday_realized_volatility": {
+      "eligible_symbol_sessions": 7724823,
+      "overlay_recovered_sessions": 325,
+      "median_coverage": 0.9968840418428667,
+      "p05_coverage": 0.9919780874087013,
+      "gate_passed": true
+    }
+  },
+  "interpretation": {
+    "all_four_factor_specific_coverage_gates_passed": true,
+    "opening_gap_digestion_admitted": false,
+    "original_five_factor_protocol_retroactively_passed": false,
+    "cleaned_dataset_suitable_for_separate_exploratory_research_protocol": true,
+    "cleaning_or_coverage_proves_predictive_value": false
+  },
+  "research_boundary": {
+    "forward_return_fields_read": false,
+    "existing_factor_returns_reused": false,
+    "training_or_model_fitting_performed": false,
+    "aggregation_scoring_selection_sizing_or_orders_performed": false,
+    "promotion_allowed": false,
+    "next_step": "Freeze a fingerprint-bound exploratory four-factor research protocol, including time splits, costs, quality and listing gates, before reading any forward return."
+  },
+  "verification": {
+    "focused_tests": "10 passed",
+    "ruff": "passed",
+    "overlay_rows_reloaded": 325,
+    "duplicate_symbol_session_keys": 0,
+    "overlay_byte_hash_revalidated": true
+  }
+}

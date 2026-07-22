@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_one_minute_full_source_no_return_preregistration",
+  "status": "frozen_after_source_acceptance_and_alignment_before_full_history_features_factor_values_prices_or_forward_returns",
+  "preregistered_at": "2026-07-21T14:20:00Z",
+  "purpose": "Acquire one immutable, resumable, point-in-time-universe Tushare A-share one-minute development snapshot for the five already frozen close-known minute mechanisms, then stop at source and feature coverage before reading any forward return.",
+  "source_acceptance": {
+    "path": "docs/a_share_tushare_one_minute_source_acceptance_record.json",
+    "sha256_at_protocol_freeze": "643f2177c80bfb77ba7bdbc84bd8cda3ad5feb222f1fc7309256f66436f75411",
+    "accepted_provider": "tushare",
+    "accepted_interface": "stk_mins",
+    "accepted_frequency": "1min",
+    "accepted_bar_timestamp_label": "end",
+    "accepted_volume_unit": "shares",
+    "accepted_opening_auction_policy": "merge_09_30_into_09_31"
+  },
+  "frozen_research_context": {
+    "minute_factor_preregistration": {
+      "path": "docs/a_share_minute_factor_preregistration.json",
+      "sha256": "0e1ca9f041a0eb659b97c2c52bf1af5873717eec2c2705716f662d56b98eceae"
+    },
+    "accepted_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "price_basis": "close_known_raw_pct_chg_chain_v1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "factor_source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762",
+      "membership": "point_in_time_interval_intersection_with_each_request_window",
+      "known_limitation": "The repository universe is derived from the available local listing chain and must retain its documented survivorship-bias caveat. No current snapshot field may be backfilled as historical membership."
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    }
+  },
+  "source_request_contract": {
+    "provider": "tushare",
+    "interface": "stk_mins",
+    "frequency": "1min",
+    "prices": "raw_unadjusted",
+    "fields_in_order": [
+      "ts_code",
+      "trade_time",
+      "open",
+      "high",
+      "low",
+      "close",
+      "vol",
+      "amount"
+    ],
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "one_symbol_per_request": true,
+    "maximum_local_sessions_per_request": 33,
+    "maximum_complete_source_rows_per_request": 7953,
+    "provider_maximum_rows_per_request": 8000,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00",
+    "maximum_calls_per_minute": 400,
+    "provider_documented_limit_calls_per_minute": 500,
+    "credential_source": "TUSHARE_TOKEN environment variable only",
+    "credential_value_in_logs_manifests_errors_or_source": false,
+    "transient_transport_attempts_per_leaf": 3,
+    "transient_backoff_seconds": [
+      1,
+      3
+    ],
+    "permission_schema_contract_or_row_limit_error_retry": false
+  },
+  "normalization_contract": {
+    "preserve_provider_rows_before_feature_normalization": true,
+    "provider_row_order": "sort_by_trade_time_ascending_only_after_schema_and_identity_validation",
+    "expected_complete_source_grid": "09:30 plus 09:31-11:30 and 13:01-15:00",
+    "expected_complete_source_rows": 241,
+    "canonical_grid": "09:31-11:30 and 13:01-15:00",
+    "expected_complete_canonical_rows": 240,
+    "opening_auction_policy": "merge_09_30_into_09_31",
+    "opening_auction_merge": {
+      "open": "09:30 open",
+      "high": "max of 09:30 and 09:31 high",
+      "low": "min of 09:30 and 09:31 low",
+      "close": "09:31 close",
+      "volume": "sum of 09:30 and 09:31 vol",
+      "amount": "sum of 09:30 and 09:31 amount"
+    },
+    "volume_unit": "shares",
+    "amount_unit": "CNY",
+    "missing_duplicate_out_of_grid_or_halted_bar_policy": "never_fill_or_synthesize; retain valid source rows and mark that symbol-session ineligible for minute features",
+    "zero_volume_positive_price_bar_policy": "retain",
+    "daily_reconciliation": "recompute raw OHLC, share volume, and CNY amount and compare with the fingerprint-bound local raw daily basis before publication"
+  },
+  "immutable_storage_and_recovery": {
+    "data_root": "explicit_command_line_argument_required_for_full_sync",
+    "default_repository_data_root_allowed_for_full_sync": false,
+    "minimum_free_space_before_network_gib": 250,
+    "recommended_location": "a user-confirmed large external volume; raw data and metadata must remain under the same explicit root",
+    "partition": "one symbol-calendar-year Parquet after all accepted leaf windows for that partition complete",
+    "partial_run": "hidden run directory plus fingerprint-bound checkpoint manifest",
+    "completed_partition_resume": "verify byte/frame hash and skip without provider request",
+    "incomplete_current_partition_resume": "discard only the unpublished incomplete symbol-year temporary file and replay its exact frozen leaf windows",
+    "final_publish": "atomic rename only after every expected point-in-time partition, coverage summary, and hash is complete",
+    "overwrite_existing_completed_partition": false,
+    "delete_user_cache_or_unrelated_data_for_capacity": false,
+    "process_lock_required": true,
+    "explicit_allow_large_required": true
+  },
+  "frozen_preflight_estimate": {
+    "local_calendar_sessions": 1699,
+    "point_in_time_symbols_with_at_least_one_session": 5396,
+    "point_in_time_symbol_sessions": 7751950,
+    "maximum_complete_source_rows": 1868219950,
+    "maximum_complete_canonical_rows": 1860468000,
+    "expected_leaf_requests_at_33_sessions": 237628,
+    "provider_rate_limit_floor_hours_at_500_calls_per_minute": 7.92,
+    "expected_compressed_raw_parquet_range_gib": [
+      95.7,
+      139.19
+    ],
+    "estimate_method": "PIT interval/calendar intersection; 241 accepted source rows per complete symbol-session; 55-80 compressed bytes per row. This excludes temporary duplication, metadata, canonical features, and filesystem overhead.",
+    "default_repository_volume_observed_free_gib": 5.9,
+    "default_repository_volume_passed": false,
+    "large_external_volume_observed_free_tib": 1.7,
+    "external_volume_observation_is_authorization_to_use_it": false
+  },
+  "source_and_feature_coverage_gates": {
+    "source_row_coverage_denominator": "quality_eligible_buyable_main_chinext_rows_between_first_and_last_feature_dates",
+    "minimum_median_source_row_coverage": 0.95,
+    "minimum_p05_source_row_coverage": 0.9,
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_non_overlapping_cohorts_before_any_return_protocol": 200,
+    "minimum_observed_calendar_years": 5,
+    "failed_gate_policy": "publish a no-return coverage record and terminate this source version without changing dates, grid, fields, universe, thresholds, or missing-bar policy"
+  },
+  "allowed_next_actions": {
+    "implement_and_test_no_network_preflight_and_resumable_full_sync": true,
+    "run_preflight_without_network": true,
+    "start_full_sync_before_user_confirms_explicit_large_data_root": false,
+    "materialize_features_before_full_source_publication_and_coverage_pass": false,
+    "read_factor_values_during_source_download": false,
+    "read_prices_beyond_daily_source_reconciliation": false,
+    "read_forward_returns": false,
+    "aggregate_current_score_select_size_or_order": false,
+    "level2_intake_justified": false
+  },
+  "price_fields_loaded": [],
+  "forward_return_fields_read": false,
+  "selection_or_promotion_allowed": false
+}

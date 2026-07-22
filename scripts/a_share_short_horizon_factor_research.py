@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "b59b153745db7ee46afd3646e57d946aca4881f5d7e15f127c5912890bb9f51c"
+    "6a09968f1f779d01b81f69223594c0b6be2db44b2ea51002e46a7a527a872d17"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37342,7 +37342,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_pending_real_qmt_level1_acceptance_bundle"
+        != "aggregation_blocked_after_fieldwise_minute_cleaning_pass_pending_exploratory_research_preregistration"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37354,14 +37354,55 @@ def load_three_day_iteration_status(
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source")
-        != "qmt_xtquant_level1_one_minute_export_bridge"
-        or selected_source.get("exporter_and_importer_implemented") is not True
-        or selected_source.get("real_acceptance_bundle_observed") is not False
-        or selected_source.get("automatic_import_passed") is not False
+        != "tushare_stk_mins_historical_one_minute"
+        or selected_source.get("direct_stk_mins_adapter_implemented") is not True
+        or selected_source.get("real_acceptance_rows_observed") is not True
+        or selected_source.get("automatic_acceptance_passed") is not True
         or selected_source.get("explicit_time_and_volume_alignment_confirmed")
+        is not True
+        or selected_source.get(
+            "tushare_separately_purchased_historical_minutes_authorized"
+        )
+        is not True
+        or selected_source.get("full_source_no_return_protocol_frozen") is not True
+        or selected_source.get("full_history_snapshot_observed") is not True
+        or selected_source.get("full_source_coverage_passed") is not False
+        or selected_source.get("full_source_median_complete_session_coverage")
+        != 0.9708918249380677
+        or selected_source.get("full_source_p05_complete_session_coverage")
+        != 0.825708960635191
+        or selected_source.get("full_source_failed_gate")
+        != "minimum_p05_complete_session_coverage"
+        or selected_source.get("tushare_full_source_terminal") is not True
+        or selected_source.get("minute_features_materialized") is not False
+        or selected_source.get("original_five_factor_protocol_retroactively_passed")
         is not False
-        or selected_source.get("tushare_points_authorize_historical_minutes")
+        or selected_source.get("post_terminal_non_destructive_cleaning_authorized")
+        is not True
+        or selected_source.get("joint_cleaned_snapshot_materialized") is not True
+        or selected_source.get("fieldwise_exception_overlay_materialized") is not True
+        or selected_source.get("fieldwise_exception_partitions_read") != 190
+        or selected_source.get("fieldwise_overlay_symbol_sessions") != 325
+        or selected_source.get("retained_cleaned_factor_count") != 4
+        or selected_source.get("retained_cleaned_factors")
+        != [
+            "late_return_30m",
+            "late_amount_share_30m",
+            "late_vwap_to_day_vwap_30m",
+            "intraday_realized_volatility",
+        ]
+        or selected_source.get("opening_gap_digestion_excluded") is not True
+        or selected_source.get("all_fieldwise_factor_coverage_gates_passed")
+        is not True
+        or selected_source.get("minimum_fieldwise_factor_p05_coverage")
+        != 0.9917170545277707
+        or selected_source.get("cleaned_feature_forward_returns_read") is not False
+        or selected_source.get(
+            "cleaned_feature_training_or_model_fitting_performed"
+        )
         is not False
+        or selected_source.get("prior_qmt_route_retained_as_fallback_only")
+        is not True
         or any(
             decision.get(field) is not False
             for field in (
@@ -37371,9 +37412,13 @@ def load_three_day_iteration_status(
                 "sizing_allowed",
                 "orders_allowed",
                 "level2_intake_justified",
-                "new_price_or_forward_return_read_for_this_status",
+                "new_research_price_or_forward_return_read_for_this_status",
             )
         )
+        or decision.get(
+            "acceptance_price_fields_used_only_for_daily_source_reconciliation"
+        )
+        is not True
     ):
         raise ValueError("three-day iteration status is inconsistent")
 
@@ -37424,9 +37469,16 @@ def load_three_day_iteration_status(
         )
 
     source_bindings = {
-        "selection_audit": "a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit",
-        "data_contract": "a_share_qmt_xtquant_one_minute_export_data_contract",
-        "tushare_permission_audit": "a_share_three_day_tushare_minute_permission_frontier_audit",
+        "prior_qmt_selection_audit": "a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit",
+        "prior_qmt_data_contract": "a_share_qmt_xtquant_one_minute_export_data_contract",
+        "pre_purchase_tushare_permission_audit": "a_share_three_day_tushare_minute_permission_frontier_audit",
+        "source_acceptance_record": "a_share_tushare_one_minute_source_acceptance_record",
+        "full_source_no_return_protocol": "a_share_tushare_one_minute_full_source_no_return_preregistration",
+        "full_source_coverage_audit": "a_share_tushare_one_minute_full_source_coverage_audit",
+        "joint_cleaning_protocol": "a_share_tushare_one_minute_sentiment_cleaning_protocol",
+        "joint_cleaning_result": "a_share_tushare_one_minute_sentiment_cleaning_result",
+        "fieldwise_cleaning_protocol": "a_share_tushare_one_minute_fieldwise_cleaning_protocol",
+        "fieldwise_cleaning_result": "a_share_tushare_one_minute_fieldwise_cleaning_result",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -37437,9 +37489,38 @@ def load_three_day_iteration_status(
                 f"three-day iteration status {key.replace('_', ' ')} fingerprint changed"
             )
         source_records[key] = load_json_record(record_path, kind=kind)
-    qmt_selection = source_records["selection_audit"].get("implementation_decision") or {}
-    qmt_contract = source_records["data_contract"].get("next_stage_policy") or {}
-    minute_permission = source_records["tushare_permission_audit"].get("decision") or {}
+    qmt_selection = source_records["prior_qmt_selection_audit"].get(
+        "implementation_decision"
+    ) or {}
+    qmt_contract = source_records["prior_qmt_data_contract"].get(
+        "next_stage_policy"
+    ) or {}
+    minute_permission = source_records["pre_purchase_tushare_permission_audit"].get(
+        "decision"
+    ) or {}
+    minute_acceptance = source_records["source_acceptance_record"]
+    acceptance_authorization = minute_acceptance.get("authorization") or {}
+    acceptance_boundary = minute_acceptance.get("research_boundary") or {}
+    full_source_protocol = source_records["full_source_no_return_protocol"]
+    full_source_actions = full_source_protocol.get("allowed_next_actions") or {}
+    full_source_coverage_audit = source_records["full_source_coverage_audit"]
+    full_source_coverage = full_source_coverage_audit.get("frozen_coverage_gate") or {}
+    full_source_boundary = full_source_coverage_audit.get("research_boundary") or {}
+    full_source_decision = full_source_coverage_audit.get("decision") or {}
+    full_source_manifest = (
+        (full_source_coverage_audit.get("source_chain") or {}).get(
+            "external_snapshot_manifest"
+        )
+        or {}
+    )
+    joint_cleaning_protocol = source_records["joint_cleaning_protocol"]
+    joint_cleaning_result = source_records["joint_cleaning_result"]
+    fieldwise_cleaning_protocol = source_records["fieldwise_cleaning_protocol"]
+    fieldwise_cleaning_result = source_records["fieldwise_cleaning_result"]
+    fieldwise_processing = fieldwise_cleaning_result.get("processing") or {}
+    fieldwise_coverage = fieldwise_cleaning_result.get("factor_coverage") or {}
+    fieldwise_interpretation = fieldwise_cleaning_result.get("interpretation") or {}
+    fieldwise_boundary = fieldwise_cleaning_result.get("research_boundary") or {}
     if (
         qmt_selection.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
         is not False
@@ -37447,10 +37528,96 @@ def load_three_day_iteration_status(
         or qmt_contract.get("aggregation_current_scoring_selection_sizing_orders_or_level2_allowed")
         is not False
         or minute_permission.get("selected_source_path")
-        != selected_source.get("source")
+        != "qmt_xtquant_level1_one_minute_export_bridge"
         or minute_permission.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
         is not False
         or minute_permission.get("level2_intake_justified") is not False
+        or minute_acceptance.get("status")
+        != "accepted_for_separate_full_source_no_return_protocol_only"
+        or acceptance_authorization.get(
+            "user_confirmed_historical_minute_product_activated"
+        )
+        is not True
+        or acceptance_boundary.get(
+            "aggregation_current_scoring_selection_sizing_or_orders_allowed"
+        )
+        is not False
+        or acceptance_boundary.get("level2_intake_justified") is not False
+        or full_source_protocol.get("status")
+        != "frozen_after_source_acceptance_and_alignment_before_full_history_features_factor_values_prices_or_forward_returns"
+        or full_source_actions.get(
+            "start_full_sync_before_user_confirms_explicit_large_data_root"
+        )
+        is not False
+        or full_source_actions.get(
+            "materialize_features_before_full_source_publication_and_coverage_pass"
+        )
+        is not False
+        or full_source_actions.get("read_forward_returns") is not False
+        or full_source_actions.get("aggregate_current_score_select_size_or_order")
+        is not False
+        or full_source_actions.get("level2_intake_justified") is not False
+        or full_source_coverage_audit.get("status")
+        != "terminal_full_source_coverage_failed_before_minute_factor_values_or_forward_returns"
+        or full_source_coverage.get("gate_passed") is not False
+        or full_source_coverage.get("observed_p05_complete_session_coverage")
+        != selected_source.get("full_source_p05_complete_session_coverage")
+        or full_source_manifest.get("sha256")
+        != selected_source.get("full_history_snapshot_manifest_sha256")
+        or full_source_boundary.get("minute_factor_values_read") is not False
+        or full_source_boundary.get("forward_return_fields_read") is not False
+        or full_source_boundary.get("feature_materialization_allowed") is not False
+        or full_source_decision.get(
+            "tushare_full_source_accepted_for_feature_research"
+        )
+        is not False
+        or full_source_decision.get(
+            "rerun_or_resume_same_tushare_full_source_protocol"
+        )
+        is not False
+        or full_source_decision.get("materialize_frozen_minute_features")
+        is not False
+        or joint_cleaning_protocol.get("status")
+        != "frozen_after_source_quality_observation_before_sentiment_feature_materialization_or_returns"
+        or (joint_cleaning_protocol.get("research_boundary") or {}).get(
+            "forward_return_fields_read"
+        )
+        is not False
+        or joint_cleaning_result.get("status")
+        != "cleaned_sentiment_coverage_passed_pending_separate_no_return_research_protocol"
+        or (joint_cleaning_result.get("research_boundary") or {}).get(
+            "forward_return_fields_read"
+        )
+        is not False
+        or fieldwise_cleaning_protocol.get("status")
+        != "frozen_after_joint_cleaning_before_fieldwise_overlay_or_forward_returns"
+        or (fieldwise_cleaning_protocol.get("research_boundary") or {}).get(
+            "forward_return_fields_read"
+        )
+        is not False
+        or fieldwise_cleaning_result.get("status")
+        != "fieldwise_factor_coverage_passed_pending_separate_exploratory_research_preregistration"
+        or fieldwise_processing.get("exception_partitions_read") != 190
+        or fieldwise_processing.get("overlay_symbol_sessions") != 325
+        or fieldwise_processing.get("source_open_high_low_loaded") is not False
+        or set(fieldwise_coverage) != {
+            "late_return_30m",
+            "late_amount_share_30m",
+            "late_vwap_to_day_vwap_30m",
+            "intraday_realized_volatility",
+        }
+        or any(item.get("gate_passed") is not True for item in fieldwise_coverage.values())
+        or fieldwise_interpretation.get(
+            "all_four_factor_specific_coverage_gates_passed"
+        )
+        is not True
+        or fieldwise_interpretation.get("opening_gap_digestion_admitted") is not False
+        or fieldwise_interpretation.get(
+            "original_five_factor_protocol_retroactively_passed"
+        )
+        is not False
+        or fieldwise_boundary.get("forward_return_fields_read") is not False
+        or fieldwise_boundary.get("training_or_model_fitting_performed") is not False
     ):
         raise ValueError("three-day iteration status source decision changed")
     return status
@@ -39325,6 +39492,46 @@ def render_three_day_research_report(
                 "在已合法可用的 Windows MiniQMT/XtQuant 环境中运行冻结的四股验收导出器，"
                 "再把未改动的完整目录转移到本机离线验收。"
             )
+        tushare_minute_selected = (
+            source.get("source") == "tushare_stk_mins_historical_one_minute"
+        )
+        if tushare_minute_selected:
+            if source.get("all_fieldwise_factor_coverage_gates_passed"):
+                next_external_action = (
+                    "无需购买或更换数据源；先冻结绑定清洗快照的四因子探索性研究协议，"
+                    "再允许读取未来收益。"
+                )
+                source_status_line = (
+                    "Tushare 原五因子来源覆盖门仍未通过；独立、非破坏性的字段级清洗层"
+                    f"保留 {source.get('retained_cleaned_factor_count', 0)} 个因子并全部通过覆盖门，"
+                    "最小 P05 覆盖 "
+                    f"{source.get('minimum_fieldwise_factor_p05_coverage', 0):.2%}；"
+                    "开盘缺口因子继续排除，尚未读取未来收益或训练模型，Level2 继续延期。"
+                )
+            elif source.get("tushare_full_source_terminal"):
+                source_status_line = (
+                    "Tushare 一分钟完整历史已观察，但冻结来源覆盖门未通过："
+                    f"中位覆盖 {source.get('full_source_median_complete_session_coverage', 0):.2%}，"
+                    f"P05 覆盖 {source.get('full_source_p05_complete_session_coverage', 0):.2%}；"
+                    "未物化分钟因子，Level2 继续延期。"
+                )
+            else:
+                next_external_action = (
+                    "确认一个至少有 250 GiB 空闲空间的大容量外置数据根目录，"
+                    "然后先实现并运行无网络 preflight，再允许多年 Tushare 全量同步。"
+                )
+                source_status_line = (
+                    "唯一在途来源为 `tushare_stk_mins_historical_one_minute`；"
+                    "四股单日验收与时间/单位对齐均已通过，完整历史="
+                    f"{'已观察' if source.get('full_history_snapshot_observed') else '尚未观察'}，"
+                    "Level2 继续延期。"
+                )
+        else:
+            source_status_line = (
+                f"唯一在途来源为 `{source.get('source', '—')}`；导出/导入代码已就绪，"
+                f"真实四股验收包={'已观察' if source.get('real_acceptance_bundle_observed') else '尚未观察'}，"
+                "Level2 继续延期。"
+            )
         lines.extend(
             [
                 "## 当前迭代状态",
@@ -39341,11 +39548,7 @@ def render_three_day_research_report(
                     f"新增获准因子 {later.get('admitted_factor_count', 0)} 个；"
                     "因此当前禁止聚合、评分、选股、定仓和下单。"
                 ),
-                (
-                    f"唯一在途来源为 `{source.get('source', '—')}`；导出/导入代码已就绪，"
-                    f"真实四股验收包={'已观察' if source.get('real_acceptance_bundle_observed') else '尚未观察'}，"
-                    "Level2 继续延期。"
-                ),
+                source_status_line,
                 f"下一外部动作：{next_external_action}",
                 "",
             ]

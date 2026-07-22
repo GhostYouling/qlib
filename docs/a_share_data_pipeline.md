@@ -1620,17 +1620,32 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 唯一验收从冻结顺序的 SZSE `main_wxhj` 元数据探针开始，响应没有且仅有一个可见报表，因而在默认数据行规范化、SSE 请求、因子值、价格和收益之前终止。失败清单 `data/metadata/rich_data/runs/20260721T102937Z_official_exchange_inquiry_burden_acceptance_3c38881b.json` 的 SHA‑256 为 `e73fef90eda1467ec992be8e0d00c890422110542b4b74f84ff7958b5eaf656b`；跨克隆终止记录为 [`a_share_official_exchange_inquiry_burden_source_acceptance_record.json`](a_share_official_exchange_inquiry_burden_source_acceptance_record.json)（SHA‑256 `a2c5d1c6daa11cf73d29843eb36dffdacf3d27ff07802e5d222fe9e14f3f5cdf`）。不得重跑、任选一个报表、改标签、检查默认行来倒推结构、只用一个交易所、第三方补齐或继续全量/容量/收益/选股。这是来源元数据合同失败，不是因子收益结论。
 
-### QMT / XtQuant Level‑1 一分钟导出桥（离线验收器已实现，尚未取得真实导出包）
+### QMT / XtQuant Level‑1 一分钟导出桥（购买前已选路径，现保留为备用）
 
-在交易所问询分支终止后，零行情前沿记录 [`a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json`](a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json)（SHA‑256 `7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db`）选择已有合法 MiniQMT/XtQuant 环境的 Level‑1 一分钟导出作为下一条数据路径；没有新建或改写因子。冻结合同 [`a_share_qmt_xtquant_one_minute_export_data_contract.json`](a_share_qmt_xtquant_one_minute_export_data_contract.json)（SHA‑256 `a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399`）固定 `2026-07-13` 与 `600519.SH/000001.SZ/300750.SZ/688981.SH`，只允许 `time,open,high,low,close,volume,amount,suspendFlag`、`1m`、不复权、禁止填充。账户、Token、Cookie、客户端路径、机器名、用户名、交易 API、Level‑2 与 QMT 原始缓存都不得进入导出包。
+在交易所问询分支终止后，零行情前沿记录 [`a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json`](a_share_three_day_post_inquiry_qmt_minute_source_frontier_audit_20260721.json)（SHA‑256 `7913899f53e6e87d597929573fe9788add0fa9604c6b79999e7ad7057ed340db`）曾选择已有合法 MiniQMT/XtQuant 环境的 Level‑1 一分钟导出作为下一条数据路径；没有新建或改写因子。冻结合同 [`a_share_qmt_xtquant_one_minute_export_data_contract.json`](a_share_qmt_xtquant_one_minute_export_data_contract.json)（SHA‑256 `a5ccb8bb4a7356a2c655d3cfd3ffc72365cc93c19198476110fb793c2fa71399`）固定 `2026-07-13` 与 `600519.SH/000001.SZ/300750.SZ/688981.SH`，只允许 `time,open,high,low,close,volume,amount,suspendFlag`、`1m`、不复权、禁止填充。账户、Token、Cookie、客户端路径、机器名、用户名、交易 API、Level‑2 与 QMT 原始缓存都不得进入导出包。用户随后单独购买并启用了 Tushare 历史分钟权限，且真实四股验收已经通过，因此 QMT 不再是当前首选，只作为不改合同的备用来源保留。
 
-Tushare Token 配置完成后，零行情权限复核 [`a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json`](a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json)（SHA‑256 `61e2325c0199b35d7e10ec97f4d71f973786b925b6e0f187a0e4de8bb4068959`）确认：现有 3,000 积分只覆盖积分接口，不能授权 A 股历史分钟。Tushare 官方权限表把 1/5/15/30/60 分钟历史列为独立权限，个人版当前标价 2,000 元/年；实时分钟另为 1,000 元/月，只覆盖实时或当日累计，不能替代 2019–2025 开发历史。600 积分以上的两次试用请求也不足以完成冻结的四股双市场验收，更不授权全市场历史。因此本次没有消耗试用调用、没有读取任何 Tushare 分钟行，也不建议为复制同一 Level‑1 路径立即追加购买；QMT 导出桥保持优先。
+Tushare Token 配置完成后，购买前零行情权限复核 [`a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json`](a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json)（SHA‑256 `61e2325c0199b35d7e10ec97f4d71f973786b925b6e0f187a0e4de8bb4068959`）确认：3,000 积分本身只覆盖积分接口，不能授权 A 股历史分钟。该记录当时没有消耗试用调用、没有读取任何 Tushare 分钟行，并基于尚未购买的事实保留 QMT 优先。它现在只作为购买前审计保留；不能再用其中“未授权”的结论覆盖用户后来单独购买并通过真实验收的新证据。
 
-当前迭代状态统一写入 [`a_share_three_day_iteration_status_20260721.json`](a_share_three_day_iteration_status_20260721.json)（SHA‑256 `b59b153745db7ee46afd3646e57d946aca4881f5d7e15f127c5912890bb9f51c`）。这份机器可读记录绑定 43 因子历史前沿、之后 27 条主终止机制记录、QMT 选择审计/合同和 Tushare 分钟权限审计；加载时会逐一复核文件哈希与终止状态。当前数字固定为稳定性 7、TopK 0、双门禁 0、后续获准因子 0，因此聚合、评分、选股、定仓和下单均为 `false`。`report` 命令会把该状态写入 Markdown；若任一绑定记录被改写或错误地变成非终止状态，报告会直接失败，而不是继续使用过期结论。
+当前迭代状态统一写入 [`a_share_three_day_iteration_status_20260721.json`](a_share_three_day_iteration_status_20260721.json)（SHA‑256 `6a09968f1f779d01b81f69223594c0b6be2db44b2ea51002e46a7a527a872d17`）。这份机器可读记录绑定 43 因子历史前沿、之后 27 条主终止机制、购买前 QMT/Tushare 审计、购买后的 Tushare 验收和全量无收益协议、原协议覆盖失败，以及后续独立的非破坏性清洗证据。当前数字仍固定为稳定性 7、TopK 0、双门禁 0、后续已通过收益门的因子 0，因此聚合、评分、选股、定仓和下单仍全部为 `false`。原五因子协议没有被改判；清洗层仅让四个不依赖开盘/极值的因子通过了无收益覆盖门，下一步是在读取任何未来收益之前冻结探索性研究协议，不再要求先购买或切换分钟来源。
 
-`python scripts/a_share_rich_data.py status` 现在还会输出 `qmt_xtquant_one_minute_acceptance`。该只读段落核对合同指纹、Windows 导出器是否存在、已消费验收/拒绝记录数、真实包是否出现、自动导入与显式对齐是否通过、QMT 验收锁是否正被占用，并给出唯一下一动作；它不会扫描仓库外目录、读取 K 线、访问网络或创建锁文件。没有真实包时，`next_action` 必须为 `run_frozen_windows_qmt_four_symbol_export_and_transfer_untouched_bundle`；拒绝记录出现后会要求停止并复核，成功导入后才会转为边界检查和显式对齐。
+`python scripts/a_share_rich_data.py status` 现在还会输出 `qmt_xtquant_one_minute_acceptance`。该只读段落核对合同指纹、Windows 导出器与交接打包器是否存在、已消费验收/拒绝记录数、真实包是否出现、自动导入与显式对齐是否通过、QMT 验收锁是否正被占用，并给出唯一下一动作；它不会扫描仓库外目录、读取 K 线、访问网络或创建锁文件。没有真实包时，`next_action` 必须为 `run_frozen_windows_qmt_four_symbol_export_and_transfer_untouched_bundle`；拒绝记录出现后会要求停止并复核，成功导入后才会转为边界检查和显式对齐。
 
-Windows 端必须在用户已经依法可用的 MiniQMT/XtQuant Python 环境中、从本仓库副本运行；输出目录必须不存在：
+为了避免在 Windows 端复制整个研究仓库，可先在研究机生成一个确定性、无凭据的最小交接 ZIP。目标文件必须不存在；输出放在 Git 已忽略的 `data/` 下，不能提交 ZIP：
+
+```bash
+python scripts/package_qmt_acceptance_handoff.py \
+  --output data/handoffs/qmt-1m-acceptance-handoff-v1.zip
+```
+
+ZIP 只含冻结导出器、冻结合同、逐文件 SHA‑256 清单和一个 PowerShell 启动器，共四个普通文件；不含 Token、账户、客户端路径、QMT 缓存、行情行、价格或收益。打包器使用固定 ZIP 时间戳、文件顺序、权限与不压缩存储，因此相同仓库输入会产生相同字节；现有目标绝不覆盖。它只读取这两个已跟踪文件，不导入 XtQuant、不访问网络。
+
+把 ZIP 解压到 Windows 后，在用户已经依法可用的 MiniQMT/XtQuant Python 环境中进入 `qmt_acceptance_handoff`，运行一条命令；启动器会先复核导出器和合同哈希，再调用冻结导出命令，默认输出到同目录下全新的 `qmt-1m-acceptance-20260713`：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\RUN_QMT_ACCEPTANCE_EXPORT.ps1
+```
+
+如果激活环境中的解释器命令不是 `python`，仅可通过 `-Python <命令>` 指定同一个合法 QMT Python；不得改启动器、导出器或合同。也可以继续从完整仓库副本直接运行下列等价命令；无论哪种方式，输出目录都必须不存在：
 
 ```powershell
 python scripts/export_qmt_one_minute.py export-acceptance --output C:\qmt_exports\qlib_20260713_acceptance
@@ -1657,7 +1672,65 @@ python scripts/a_share_rich_data.py confirm-minute-alignment \
   --reviewed-boundaries
 ```
 
-QMT 的对齐记录只会得到 `passed_pending_separate_full_source_no_return_protocol`，不会得到通用的 `passed_for_feature_research`；因此验收样本不能进入 `build-minute-features`。验收入口持有单一进程锁，意外发布错误也只能形成不含来源值的拒绝记录。当前仓库只有冻结合同、导出器、严格离线验收器与伪 XtData 的十项离线回归；本机仍没有观察任何真实 QMT 运行时、导出行、分钟因子值、价格或未来收益。真实四股验收和对齐成功后，仍须另行冻结并实现全市场无收益协议，才能讨论特征物化。聚合、评分、选股、仓位、订单与 Level‑2 继续禁止。
+QMT 的对齐记录只会得到 `passed_pending_separate_full_source_no_return_protocol`，不会得到通用的 `passed_for_feature_research`；因此验收样本不能进入 `build-minute-features`。验收入口持有单一进程锁，意外发布错误也只能形成不含来源值的拒绝记录。当前仓库只有冻结合同、确定性交接包、导出器、严格离线验收器与伪 XtData 离线回归；本机仍没有观察任何真实 QMT 运行时或导出行。除非 Tushare 全量路线以后因来源或覆盖失败而明确切回备用，否则不再要求 Windows/QMT 验收。聚合、评分、选股、仓位、订单与 Level‑2 继续禁止。
+
+### Tushare `stk_mins` 一分钟历史（当前首选，单日验收与对齐已通过）
+
+用户确认单独购买并启用了 A 股历史分钟产品后，只运行了一次冻结的四股、单会话验收，没有直接启动多年全市场下载。官方主合同使用 [`stk_mins`](https://tushare.pro/document/2?doc_id=370)，仓库频率 `1m` 显式映射为接口频率 `1min`，只请求 `ts_code,trade_time,open,high,low,close,vol,amount`。接口文档说明单次最多 8,000 行，`vol` 单位为股、`amount` 单位为元；Token 仍只从 `TUSHARE_TOKEN` 环境变量读取，不能写入代码、命令、日志或清单。
+
+真实验收固定为 2026‑07‑13 的 `600519/000001/300750/688981`。本地清单 `20260721T140021Z_tushare_1m_d57ea9d3.json` 的 SHA‑256 为 `a404aea025aec0335273d83d26cc39fe70e41e229da7aa1a8dd9e7752db9f2d0`；四份不可变 Parquet 均为 241 行，四股日 OHLC 相对误差全部为 0，成交额比率在 `0.9999999932–1.0000000031`，成交量相对本地“手”口径均为 100 倍，和官方“股”口径一致。跨克隆验收记录为 [`a_share_tushare_one_minute_source_acceptance_record.json`](a_share_tushare_one_minute_source_acceptance_record.json)（SHA‑256 `643f2177c80bfb77ba7bdbc84bd8cda3ad5feb222f1fc7309256f66436f75411`）。验收成功行由已安装 SDK 的 `pro_bar(freq=1min)` 内部委托 `stk_mins` 取得；随后适配器改为直接调用官方 `pro.stk_mins`，没有为了改调用方式重复下载已接受样本。
+
+四股验收样本与官方样例都呈现独立的 09:30 行，随后是 09:31–15:00 的结束标签分钟行，因此验收时冻结了 241 行来源网格。显式对齐清单 `20260721T140521Z_tushare_1m_alignment_89ec2deb.json` 的 SHA‑256 为 `2c8c85ba1155289d03c3ebc1175a4a2504bf8022b849087840777ee41586e2a0`：保留原始 241 行，并预注册把 09:30 合并进 09:31。全市场下载后的无收益来源诊断发现，这一语义不能稳定外推到所有股票‑会话：部分 09:30 行价格为正但成交量和成交额均为零，更像参考价占位；部分剩余分钟最高/最低价或首分钟开盘价也与独立本地原始日线超出冻结的 0.2% 容差。原始 241 行仍完整保留，但既不能在观察后改价或改开盘规则，也不能放宽阈值让失败会话进入覆盖率。
+
+全量无收益协议已经冻结为 [`a_share_tushare_one_minute_full_source_no_return_preregistration.json`](a_share_tushare_one_minute_full_source_no_return_preregistration.json)（SHA‑256 `ea0cbb8f2adc8f64a41627c4be1d62a6cc21dae3da755ffdf4d512996d974948`）。固定范围仍是 2019‑01‑01 至 2025‑12‑31，按 `factor_main_chinext_star` 点时区间估算共 1,699 个会话、5,396 只曾有效股票、7,751,950 个股票‑会话、最多 1,868,219,950 条来源行。每次只取一只股票、最多 33 个本地会话（最多 7,953 行）。冻结时的 237,628 次调用是允许跨日历年度连续分片的估算；可执行下载器为了让每个“股票 × 年度”分区能够独立验哈希和恢复，会在年度边界重新开始 33 日窗口，因此预检得到 255,955 次计划调用，多 18,327 次。安全限速固定为不超过 400 次/分钟，对应纯限速理论下限约 10.665 小时。按验收样本保守估计，单份压缩原始数据约 95.7–139.19 GiB，尚未计临时副本、规范特征、元数据和文件系统开销，因此全量开始前至少要求目标卷空闲 250 GiB。
+
+用户已经明确授权使用 `/Volumes/DIsk`，当前固定根目录是 `/Volumes/DIsk/qlib-a-share-tushare-1m`。真实无网络预检通过：Tushare SDK 与 Token 环境就绪，目标卷约有 1,719.3 GiB 空闲，计划 33,015 个年度分区；记录明确为 `network_request_issued=false`、`minute_rows_read=false` 和 `forward_return_fields_read=false`。先运行预检，再用同一个绝对路径启动或恢复：
+
+```bash
+python scripts/a_share_rich_data.py preflight-tushare-1m \
+  --data-root /Volumes/DIsk/qlib-a-share-tushare-1m
+python scripts/a_share_rich_data.py sync-tushare-1m \
+  --data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+  --allow-large
+```
+
+全量命令持有 `/Volumes/DIsk/qlib-a-share-tushare-1m/.a_share_tushare_1m.lock`，先验哈希并跳过已完成分区，再以四个工作线程共享 400 次/分钟限速。数据先写入固定隐藏目录 `.tushare_stk_mins_1m_2019_2025_ea0cbb8f.partial`；每个 Parquet 和侧车完成原子写入后才计入检查点，全部来源与覆盖门通过后才把整个目录原子改名发布。中断时不要删除隐藏目录或仅凭锁文件存在判断任务仍活跃；使用只读状态检查锁是否真实持有、已完成分区、调用数和行数：
+
+```bash
+python scripts/a_share_rich_data.py status \
+  --data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+  | jq '.selected_minute_source.full_history'
+```
+
+首次运行曾因 `600000` 在 2019‑01‑04 的分钟最低价 9.72 与本地日线 9.70 相差 0.02 元而在质量门安全停止；开/高/收、成交额与成交量单位均一致。修正后的处理不改变 0.2% 对账阈值：完整 241 行原始会话仍保存，但未通过日线对账的会话不进入可用覆盖率；若成交量不再是已验收的“股”口径仍立即硬失败。重启已经验哈希跳过首次并发完成的分区，证明恢复路径有效。首个 `SH600000/2019` 分区为 58,804 行，即 244 个来源完整会话，无缺日、重复或越界时间；其中 237 个会话通过日线对账，7 个价差会话被明确列出并排除。
+
+全量下载最终完成 33,015/33,015 个股票年度分区、255,955 次调用和 1,866,461,373 行来源数据；最终清单 SHA‑256 为 `9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f`。7,751,950 个预期股票‑会话中有 7,724,581 个精确 241 行网格（99.6469%），但只有 7,320,317 个同时通过冻结的日线对账；404,506 个完整网格因日线对账失败被排除。日覆盖率中位数为 97.0892%，通过 95% 门槛；P05 仅 82.5709%，未达到 90%，最差的 2020‑03‑13 为 67.1402%。566 个非重叠三日 cohort 和七个年份满足数量门槛，但不能覆盖 P05 失败。
+
+跨克隆终止审计是 [`a_share_tushare_one_minute_full_source_coverage_audit.json`](a_share_tushare_one_minute_full_source_coverage_audit.json)（SHA‑256 `5626c0f6523eeadd7739266f29a133b4e66852b1af0aebf84ef00ad88dadbfec`）。它明确记录原始快照保留、未改价、未放宽阈值、未读取分钟因子值或未来收益。不得重跑或续传同一 Tushare 全量协议，不得把原五因子协议改判为通过，也不得聚合、评分、选股、定仓、下单或据此采购 Level‑2。该审计形成时的下一路径是单独验收 QMT、RQData 或 JQData；后续用户另行授权的清洗分支只能作为新派生协议存在，不能反向修改这项终止结论。
+
+用户随后明确授权把来源质量诊断转成一条独立、非破坏性的清洗研究支线。原始快照、原五因子协议和上面的失败审计均保持不变；清洗不是把分钟价格改成日线价格，也不是放宽原门槛。第一层协议 [`a_share_tushare_one_minute_sentiment_cleaning_protocol.json`](a_share_tushare_one_minute_sentiment_cleaning_protocol.json)（SHA‑256 `f70c7da688ecb6d2e88cd86f4ec086a42b620e0c12025ee9263fe603abe3a2fe`）只保留 `late_return_30m`、`late_amount_share_30m`、`late_vwap_to_day_vwap_30m` 和 `intraday_realized_volatility`：09:30 零量零额行的价格不进入 240 根规范路径，开盘和高低价不参与这四个因子，`opening_gap_digestion` 明确排除。
+
+共同有效清洗快照包含 33,015 个派生分区、7,724,498 个股票‑会话，清单 SHA‑256 为 `453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de`。覆盖率中位数为 99.6865%、P05 为 99.1717%，最差会话仍有 98.1116%，566 个非重叠三日 cohort 覆盖七年，全部在读取收益之前通过。跨克隆结果是 [`a_share_tushare_one_minute_sentiment_cleaning_result.json`](a_share_tushare_one_minute_sentiment_cleaning_result.json)（SHA‑256 `2bd511045a1c9bc8a2b8d3bc566d4c0219c5764e8f1ae02c559125c99c6a4275`）。
+
+为了避免“四个因子必须同时有效”的保守掩码，第二层协议 [`a_share_tushare_one_minute_fieldwise_cleaning_protocol.json`](a_share_tushare_one_minute_fieldwise_cleaning_protocol.json)（SHA‑256 `51e4fbf399411f62d35cbdb81d78651b4ceab17934264db0146cef61554d2fd6`）在冻结后只回读由第一层质量计数预先选出的 190 个异常分区，未重扫其余原始数据，并且读取列严格限于时间、身份、收盘、成交量和成交额。它生成 325 行、与共同有效基表键完全不重合的异常覆盖层；没有加载来源开盘/最高/最低，也没有改写或插补任何值：
+
+| 因子 | 总可用股票‑会话 | 字段级新增 | 覆盖中位数 | 覆盖 P05 |
+| --- | ---: | ---: | ---: | ---: |
+| `late_return_30m` | 7,724,823 | 325 | 99.6884% | 99.1978% |
+| `late_amount_share_30m` | 7,724,758 | 260 | 99.6883% | 99.1941% |
+| `late_vwap_to_day_vwap_30m` | 7,724,498 | 0 | 99.6865% | 99.1717% |
+| `intraday_realized_volatility` | 7,724,823 | 325 | 99.6884% | 99.1978% |
+
+四个字段级覆盖门全部通过。异常层清单 SHA‑256 为 `06b5ffc2dac16f608d92e9eb7d93729800a2fa99e5727817caead3d698e19bd3`，Parquet SHA‑256 为 `046a5902c5fe3d6040df3a57185d445268cd025f6c922275363318123bc210c6`；跨克隆结果是 [`a_share_tushare_one_minute_fieldwise_cleaning_result.json`](a_share_tushare_one_minute_fieldwise_cleaning_result.json)（SHA‑256 `f0170519bb0ac8b49c7d48be9a65abd281e2b624e0360acdb63e1914dc429130`）。重建命令只复核固定哈希并返回已有清单；不会访问 Tushare 或读取收益：
+
+```bash
+python scripts/a_share_tushare_one_minute_sentiment_clean.py \
+  build-fieldwise-overlay \
+  --data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+  --workers 4
+```
+
+这一步证明的是“清洗后的四个因子有足够样本可以研究”，不是“因子有效”。当前仍未读取未来收益、训练模型、聚合、评分或选股。下一步必须先冻结绑定两层清洗清单的探索性研究协议，固定 2019–2025 时间切分、三日持有、Top‑3、成本、财务质量、上市满 20 日、逐因子门禁和组合规则；之后才允许一次性读取收益。
 
 ### CNInfo 补充更正披露负担（全历史分页稳定性终止）
 

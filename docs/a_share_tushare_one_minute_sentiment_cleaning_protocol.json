@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_one_minute_sentiment_cleaning_protocol",
+  "status": "frozen_after_source_quality_observation_before_sentiment_feature_materialization_or_returns",
+  "recorded_at": "2026-07-22T04:00:00Z",
+  "purpose": "Create a non-destructive, source-internal daily sentiment-feature candidate from the completed Tushare one-minute snapshot without changing the failed original protocol or reading forward returns.",
+  "source": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "snapshot_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "terminal_coverage_audit": {
+      "path": "docs/a_share_tushare_one_minute_full_source_coverage_audit.json",
+      "sha256": "5626c0f6523eeadd7739266f29a133b4e66852b1af0aebf84ef00ad88dadbfec"
+    },
+    "raw_rows_mutable": false
+  },
+  "cleaning_contract": {
+    "required_source_rows_per_complete_session": 241,
+    "required_canonical_bars_per_complete_session": 240,
+    "required_source_times": "09:30 plus 09:31-11:30 and 13:01-15:00",
+    "opening_row_rules": {
+      "zero_volume_and_zero_amount": "classify_as_reference_placeholder_and_drop_from_the_canonical_grid_without_using_its_ohlc",
+      "otherwise": "classify_as_active_auction_and_merge_into_09:31_using_09:30_open_the_two_row_high_low_envelope_09:31_close_and_summed_volume_amount"
+    },
+    "required_daily_reconciliation": {
+      "minute_close_to_local_raw_daily_close_max_relative_error": 0.002,
+      "minute_amount_to_local_daily_amount_max_relative_error": 0.005,
+      "minute_share_volume_to_local_daily_lot_volume_ratio": 100.0,
+      "volume_ratio_absolute_tolerance": 0.005
+    },
+    "daily_open_high_low_reconciliation_required": false,
+    "reason_open_high_low_are_not_required": "The four retained sentiment features do not use daily open, high, or low. Cross-provider opening-row and extrema differences are retained as source-quality evidence rather than edited or used to reject otherwise exact close/amount/volume paths.",
+    "fill_missing_duplicate_or_off_grid_rows": false,
+    "edit_or_substitute_source_prices": false
+  },
+  "features": [
+    {
+      "name": "late_return_30m",
+      "formula": "close_15_00 / close_14_30 - 1",
+      "direction_for_future_separate_research": "higher"
+    },
+    {
+      "name": "late_amount_share_30m",
+      "formula": "sum_amount_after_14_30 / sum_amount_full_session",
+      "direction_for_future_separate_research": "higher"
+    },
+    {
+      "name": "late_vwap_to_day_vwap_30m",
+      "formula": "late_amount/late_volume divided by day_amount/day_volume minus 1",
+      "direction_for_future_separate_research": "higher"
+    },
+    {
+      "name": "intraday_realized_volatility",
+      "formula": "sqrt(sum(square(diff(log(canonical_bar_close)))))",
+      "direction_for_future_separate_research": "lower"
+    }
+  ],
+  "excluded_feature": {
+    "name": "opening_gap_digestion",
+    "reason": "It depends on an opening price whose source semantics are not uniform across the completed full-market snapshot."
+  },
+  "output_contract": {
+    "one_daily_row_per_exact_reconciled_symbol_session": true,
+    "keep_quality_flags_and_opening_row_role": true,
+    "write_below_the_same_external_data_root": true,
+    "atomic_publish_after_all_partitions": true,
+    "resume_by_partition_hash": true
+  },
+  "coverage_gates": {
+    "denominator": "the_fingerprint_bound_active_pit_names_for_each_date_in_the_source_snapshot_manifest",
+    "minimum_median_eligible_session_coverage": 0.95,
+    "minimum_p05_eligible_session_coverage": 0.9,
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "failed_gate_policy": "publish_the_cleaning_audit_but_stop_before_any_forward_return_protocol"
+  },
+  "research_boundary": {
+    "forward_return_fields_read": false,
+    "existing_factor_returns_reused": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "promotion_allowed_from_cleaning_or_coverage_alone": false,
+    "future_return_research_requires_a_separate_fingerprint_bound_protocol": true
+  }
+}

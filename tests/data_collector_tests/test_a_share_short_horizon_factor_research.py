@@ -5784,7 +5784,7 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
     assert "`new_data`" in report
 
 
-def test_three_day_iteration_status_binds_terminal_ledger_and_qmt_next_step():
+def test_three_day_iteration_status_binds_tushare_failure_and_cleaning_pass():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
     assert len(terminal) == 27
@@ -5804,9 +5804,32 @@ def test_three_day_iteration_status_binds_terminal_ledger_and_qmt_next_step():
     assert status["decision"]["aggregation_allowed"] is False
     assert status["decision"]["selection_allowed"] is False
     assert status["selected_source_path"]["source"] == (
-        "qmt_xtquant_level1_one_minute_export_bridge"
+        "tushare_stk_mins_historical_one_minute"
     )
-    assert status["selected_source_path"]["real_acceptance_bundle_observed"] is False
+    assert status["selected_source_path"]["real_acceptance_rows_observed"] is True
+    assert status["selected_source_path"]["automatic_acceptance_passed"] is True
+    assert (
+        status["selected_source_path"]["explicit_time_and_volume_alignment_confirmed"]
+        is True
+    )
+    assert status["selected_source_path"]["full_history_snapshot_observed"] is True
+    assert status["selected_source_path"]["full_source_coverage_passed"] is False
+    assert status["selected_source_path"][
+        "full_source_p05_complete_session_coverage"
+    ] == pytest.approx(0.825708960635191)
+    assert status["selected_source_path"]["tushare_full_source_terminal"] is True
+    assert (
+        status["selected_source_path"][
+            "all_fieldwise_factor_coverage_gates_passed"
+        ]
+        is True
+    )
+    assert status["selected_source_path"]["retained_cleaned_factor_count"] == 4
+    assert status["selected_source_path"]["opening_gap_digestion_excluded"] is True
+    assert (
+        status["selected_source_path"]["cleaned_feature_forward_returns_read"]
+        is False
+    )
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -5816,7 +5839,11 @@ def test_three_day_iteration_status_binds_terminal_ledger_and_qmt_next_step():
     assert "当前迭代状态" in report
     assert "前沿之后另有 27 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
-    assert "真实四股验收包=尚未观察" in report
+    assert "Tushare 原五因子来源覆盖门仍未通过" in report
+    assert "保留 4 个因子并全部通过覆盖门" in report
+    assert "最小 P05 覆盖 99.17%" in report
+    assert "开盘缺口因子继续排除" in report
+    assert "尚未读取未来收益或训练模型" in report
     assert "Level2 继续延期" in report
 
 

@@ -197,7 +197,7 @@ def test_status_reports_external_baostock_storage_without_mutation(tmp_path):
     )
     preflight_path = (
         data_root
-        / "metadata/rich_data/preflights/20260714T222229Z_baostock_5m_preflight.json"
+        / "metadata/rich_data/preflights/20260714T222229Z_baostock_5m_preflight_test.json"
     )
     RICH.atomic_write_json(
         {
@@ -252,6 +252,14 @@ def test_status_reports_qmt_export_bridge_readiness_without_mutation(tmp_path):
     assert qmt["contract"]["fingerprint_valid"] is True
     assert qmt["exporter"]["exists"] is True
     assert qmt["exporter"]["operation"] == "export-acceptance"
+    assert qmt["handoff_packager"]["exists"] is True
+    assert qmt["handoff_packager"]["command_template"] == (
+        "python scripts/package_qmt_acceptance_handoff.py "
+        "--output data/handoffs/qmt-1m-acceptance-handoff-v1.zip"
+    )
+    assert qmt["handoff_packager"]["archive_member_count"] == 4
+    assert qmt["handoff_packager"]["provider_or_network_request_issued"] is False
+    assert qmt["handoff_packager"]["qmt_runtime_or_export_rows_read"] is False
     assert qmt["expected_bundle_manifest_filename"] == (
         "qmt_1m_acceptance_export.json"
     )
@@ -267,6 +275,71 @@ def test_status_reports_qmt_export_bridge_readiness_without_mutation(tmp_path):
     )
     assert qmt["process_lock"]["advisory_lock_currently_held"] is False
     assert sorted(path.relative_to(data_root) for path in data_root.rglob("*")) == before
+
+
+def test_status_reports_selected_tushare_minute_route_without_rows_or_network(
+    tmp_path,
+):
+    data_root = tmp_path / "rich-root"
+    data_root.mkdir()
+    before = sorted(path.relative_to(data_root) for path in data_root.rglob("*"))
+
+    payload = RICH.status_payload(data_root)
+    selected = payload["selected_minute_source"]
+    assert selected["source"] == "tushare_stk_mins_historical_one_minute"
+    assert selected["route_role"] == "terminal_source_coverage_failed"
+    assert selected["network_request_issued"] is False
+    assert selected["minute_rows_read"] is False
+    assert selected["token_environment_read"] is False
+    assert selected["source_acceptance_record"]["fingerprint_valid"] is True
+    assert selected["full_source_no_return_protocol"]["fingerprint_valid"] is True
+    assert selected["full_source_coverage_audit"]["fingerprint_valid"] is True
+    assert selected["local_acceptance_manifest"]["exists"] is True
+    assert selected["local_alignment_confirmation"]["exists"] is True
+    assert selected["automatic_acceptance_passed"] is True
+    assert selected["explicit_time_and_volume_alignment_confirmed"] is True
+    assert selected["full_history_snapshot_observed"] is False
+    assert selected["next_action"] == (
+        "tushare_full_source_terminal_do_not_redownload_restore_only_for_audit_and_select_a_replacement_source"
+    )
+    assert selected["full_history"]["checkpoint"] == {}
+    assert selected["full_history"]["minute_rows_read_by_status"] is False
+    assert selected["full_history"]["forward_return_fields_read_by_status"] is False
+    assert sorted(path.relative_to(data_root) for path in data_root.rglob("*")) == before
+
+
+def test_status_reports_tushare_one_minute_running_checkpoint(tmp_path):
+    data_root = tmp_path / "rich-root"
+    checkpoint_path = (
+        data_root
+        / "raw/a_share/rich/tushare/minutes/1m/snapshots"
+        / f".{RICH.TUSHARE_ONE_MINUTE_RUN_ID}.partial"
+        / ".metadata/checkpoint.json"
+    )
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_tushare_one_minute_resume_checkpoint",
+            "status": "running",
+            "updated_at": "2026-07-21T16:00:00+00:00",
+            "expected_partitions": 33015,
+            "completed_partitions": 100,
+            "resumed_partitions": 1,
+            "provider_calls_completed": 800,
+            "source_rows_stored": 5_849_793,
+        },
+        checkpoint_path,
+    )
+    lock_path = data_root / ".a_share_tushare_1m.lock"
+    with RICH.RichDataProcessLock(lock_path):
+        selected = RICH.tushare_one_minute_acceptance_status(data_root)
+    history = selected["full_history"]
+    assert history["process_lock"]["advisory_lock_currently_held"] is True
+    assert history["checkpoint"]["completed_partitions"] == 100
+    assert history["checkpoint"]["provider_calls_completed"] == 800
+    assert selected["next_action"] == (
+        "terminal_tushare_source_has_an_active_sync_stop_it_safely_do_not_start_another"
+    )
+    assert selected["minute_rows_read"] is False
 
 
 def test_qmt_status_distinguishes_rejection_success_and_alignment(tmp_path):
@@ -10299,18 +10372,305 @@ def test_minute_session_check_rejects_lunch_break_timestamp():
 def test_tushare_minute_request_uses_explicit_session_timestamps(monkeypatch):
     captured = {}
 
-    class FakeTushare:
+    class FakePro:
         @staticmethod
-        def pro_bar(**kwargs):
+        def stk_mins(**kwargs):
             captured.update(kwargs)
             return pd.DataFrame()
+
+    class FakeTushare:
+        @staticmethod
+        def pro_api():
+            return FakePro()
 
     monkeypatch.setattr(RICH, "_import_tushare", lambda: FakeTushare())
     RICH.fetch_tushare_minutes(
         "600519", dt.date(2026, 7, 13), dt.date(2026, 7, 13), "1m"
     )
+    assert captured["freq"] == "1min"
+    assert captured["fields"] == (
+        "ts_code,trade_time,open,high,low,close,vol,amount"
+    )
     assert captured["start_date"] == "2026-07-13 09:00:00"
     assert captured["end_date"] == "2026-07-13 17:00:00"
+
+
+def test_tushare_one_minute_leaf_windows_never_exceed_33_sessions():
+    calendar = pd.bdate_range("2025-01-02", periods=70)
+    task = (
+        "600519",
+        calendar[0].date().isoformat(),
+        calendar[-1].date().isoformat(),
+        2025,
+    )
+    windows = RICH.tushare_one_minute_leaf_windows(task, calendar)
+    assert windows == [
+        (calendar[0].date(), calendar[32].date()),
+        (calendar[33].date(), calendar[65].date()),
+        (calendar[66].date(), calendar[69].date()),
+    ]
+
+
+def test_tushare_one_minute_strict_source_mode_preserves_duplicate_rows():
+    raw = pd.DataFrame(
+        {
+            "ts_code": ["600519.SH", "600519.SH"],
+            "trade_time": ["2026-07-13 09:30:00", "2026-07-13 09:30:00"],
+            "open": [10.0, 10.0],
+            "high": [10.1, 10.1],
+            "low": [9.9, 9.9],
+            "close": [10.0, 10.0],
+            "vol": [100.0, 100.0],
+            "amount": [1000.0, 1000.0],
+        }
+    )
+    normalized = RICH.canonicalize_minute_bars(
+        raw,
+        "tushare",
+        "600519",
+        dt.date(2026, 7, 13),
+        dt.date(2026, 7, 13),
+        preserve_duplicates=True,
+        strict_source_rows=True,
+    )
+    assert len(normalized) == 2
+    assert normalized["datetime"].duplicated(keep=False).all()
+
+
+def test_tushare_one_minute_partition_accepts_only_exact_reconciled_241_grid(
+    monkeypatch,
+):
+    trade_date = pd.Timestamp("2026-07-13")
+    times = RICH.expected_tushare_one_minute_source_times()
+    close = pd.Series([10.0 + index * 0.001 for index in range(len(times))])
+    frame = pd.DataFrame(
+        {
+            "datetime": [
+                pd.Timestamp.combine(trade_date.date(), value) for value in times
+            ],
+            "symbol": "SH600519",
+            "source_symbol": "600519.SH",
+            "open": close,
+            "high": close + 0.01,
+            "low": close - 0.01,
+            "close": close,
+            "volume": 100.0,
+            "amount": close * 100.0,
+            "provider": "tushare",
+        }
+    )
+    monkeypatch.setattr(
+        RICH,
+        "minute_daily_reconciliation",
+        lambda value: {
+            "days": [
+                {
+                    "trade_date": "2026-07-13",
+                    "status": "passed",
+                    "inferred_volume_unit": "shares",
+                }
+            ]
+        },
+    )
+    quality = RICH.validate_tushare_one_minute_partition(
+        frame,
+        ("600519", "2026-07-13", "2026-07-13", 2026),
+        pd.DatetimeIndex([trade_date]),
+    )
+    assert quality["source_rows"] == 241
+    assert quality["complete_session_dates"] == ["2026-07-13"]
+    assert quality["daily_reconciled_complete_sessions"] == 1
+
+    monkeypatch.setattr(
+        RICH,
+        "minute_daily_reconciliation",
+        lambda value: {
+            "days": [
+                {
+                    "trade_date": "2026-07-13",
+                    "status": "failed",
+                    "inferred_volume_unit": "shares",
+                }
+            ]
+        },
+    )
+    unreconciled = RICH.validate_tushare_one_minute_partition(
+        frame,
+        ("600519", "2026-07-13", "2026-07-13", 2026),
+        pd.DatetimeIndex([trade_date]),
+    )
+    assert unreconciled["exact_source_grid_sessions"] == 1
+    assert unreconciled["daily_reconciled_complete_sessions"] == 0
+    assert unreconciled["daily_reconciliation_failed_session_dates"] == [
+        "2026-07-13"
+    ]
+
+    monkeypatch.setattr(
+        RICH,
+        "minute_daily_reconciliation",
+        lambda value: {
+            "days": [
+                {
+                    "trade_date": "2026-07-13",
+                    "status": "passed",
+                    "inferred_volume_unit": "lots",
+                }
+            ]
+        },
+    )
+    with pytest.raises(RICH.RichDataError, match="share-volume unit"):
+        RICH.validate_tushare_one_minute_partition(
+            frame,
+            ("600519", "2026-07-13", "2026-07-13", 2026),
+            pd.DatetimeIndex([trade_date]),
+        )
+
+
+def test_tushare_one_minute_terminal_coverage_audit_blocks_resync_before_provider(
+    tmp_path, monkeypatch
+):
+    audit = RICH.load_tushare_one_minute_full_source_coverage_audit()
+    assert audit["frozen_coverage_gate"]["gate_passed"] is False
+    assert audit["research_boundary"]["minute_factor_values_read"] is False
+    assert audit["research_boundary"]["forward_return_fields_read"] is False
+
+    def fail_provider(*args, **kwargs):
+        raise AssertionError("provider must not be reached after terminal coverage failure")
+
+    monkeypatch.setattr(RICH, "require_provider", fail_provider)
+    with pytest.raises(RICH.RichDataError, match="terminal after the frozen P05"):
+        RICH.sync_tushare_one_minute_history(
+            allow_large=True,
+            data_root=tmp_path / "external",
+        )
+
+
+def test_tushare_one_minute_checkpoint_resume_verifies_both_hashes(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(RICH, "TUSHARE_ONE_MINUTE_RUN_ID", "test-run")
+    monkeypatch.setattr(RICH, "TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256", "a" * 64)
+    task = ("600519", "2025-01-02", "2025-01-02", 2025)
+    data_path, sidecar_path = RICH.tushare_one_minute_partition_paths(tmp_path, task)
+    frame = complete_minute_frame("2025-01-02")
+    RICH.atomic_write_frame(frame, data_path)
+    RICH.atomic_write_json(
+        {
+            "kind": "a_share_tushare_one_minute_partition_checkpoint",
+            "protocol_sha256": "a" * 64,
+            "run_id": "test-run",
+            "code": "600519",
+            "year": 2025,
+            "requested_start": "2025-01-02",
+            "requested_end": "2025-01-02",
+            "provider_calls": 1,
+            "rows": len(frame),
+            "byte_sha256": RICH.file_digest(data_path),
+            "frame_sha256": RICH.frame_digest(frame),
+            "minute_factor_values_read": False,
+            "forward_return_fields_read": False,
+        },
+        sidecar_path,
+    )
+    resumed = RICH.load_completed_tushare_one_minute_partition(
+        task, partial_root=tmp_path
+    )
+    assert resumed is not None
+    data_path.write_bytes(data_path.read_bytes() + b"changed")
+    with pytest.raises(RICH.RichDataError, match="checkpoint changed"):
+        RICH.load_completed_tushare_one_minute_partition(task, partial_root=tmp_path)
+
+
+def test_tushare_one_minute_preflight_is_no_network_and_records_external_root(
+    tmp_path, monkeypatch
+):
+    files = []
+    for name in ("record.json", "spec.json", "accepted.json", "alignment.json"):
+        path = tmp_path / name
+        path.write_text("{}\n", encoding="utf-8")
+        files.append(path)
+    universe = tmp_path / "universe.txt"
+    universe.write_text("SH600519\t2025-01-02\t2025-01-02\n", encoding="utf-8")
+    calendar_file = tmp_path / "calendar.txt"
+    calendar_file.write_text("2025-01-02\n", encoding="utf-8")
+    frozen = {
+        "local_calendar_sessions": 1699,
+        "point_in_time_symbols_with_at_least_one_session": 5396,
+        "point_in_time_symbol_sessions": 7751950,
+        "expected_leaf_requests_at_33_sessions": 237628,
+        "maximum_complete_source_rows": 1868219950,
+        "maximum_complete_canonical_rows": 1860468000,
+    }
+    monkeypatch.setattr(
+        RICH,
+        "load_tushare_one_minute_source_chain",
+        lambda: {
+            "record_path": files[0],
+            "spec_path": files[1],
+            "acceptance_manifest_path": files[2],
+            "alignment_path": files[3],
+            "spec": {"frozen_preflight_estimate": frozen},
+        },
+    )
+    intervals = pd.DataFrame(
+        {
+            "instrument": ["SH600519"],
+            "start_date": pd.to_datetime(["2025-01-02"]),
+            "end_date": pd.to_datetime(["2025-01-02"]),
+        }
+    )
+    calendar = pd.DatetimeIndex([pd.Timestamp("2025-01-02")])
+    monkeypatch.setattr(RICH, "load_factor_universe_intervals", lambda path: intervals)
+    monkeypatch.setattr(RICH, "local_calendar_dates", lambda *args: calendar)
+    monkeypatch.setattr(
+        RICH,
+        "tushare_one_minute_partition_tasks",
+        lambda *args: [("600519", "2025-01-02", "2025-01-02", 2025)],
+    )
+    monkeypatch.setattr(
+        RICH,
+        "tushare_one_minute_preflight_counts",
+        lambda *args: {
+            "calendar_sessions": 1699,
+            "point_in_time_symbols": 5396,
+            "point_in_time_symbol_sessions": 7751950,
+            "yearly_storage_partitions": 1,
+            "leaf_requests": 237628,
+            "maximum_source_rows": 1868219950,
+            "maximum_canonical_rows": 1860468000,
+        },
+    )
+    monkeypatch.setattr(RICH, "DEFAULT_FACTOR_UNIVERSE", universe)
+    monkeypatch.setattr(RICH, "DEFAULT_LOCAL_CALENDAR", calendar_file)
+    monkeypatch.setattr(
+        RICH,
+        "provider_availability",
+        lambda provider: SimpleNamespace(
+            ready=True,
+            package="tushare",
+            package_installed=True,
+            required_environment=("TUSHARE_TOKEN",),
+            missing_environment=(),
+        ),
+    )
+    monkeypatch.setattr(RICH.importlib.metadata, "version", lambda package: "1.0")
+    monkeypatch.setattr(
+        RICH.shutil,
+        "disk_usage",
+        lambda path: SimpleNamespace(free=RICH.TUSHARE_ONE_MINUTE_MINIMUM_FREE_BYTES),
+    )
+    monkeypatch.setattr(
+        RICH,
+        "fetch_tushare_minutes",
+        lambda *args, **kwargs: pytest.fail("preflight must not issue a network call"),
+    )
+    data_root = tmp_path / "external"
+    result = RICH.write_tushare_one_minute_preflight(data_root=data_root)
+    record = RICH.json.loads(result.read_text())
+    assert record["status"] == "passed_before_network"
+    assert record["data_root"] == str(data_root.resolve())
+    assert record["network_request_issued"] is False
+    assert record["minute_rows_read"] is False
 
 
 def test_tushare_event_defaults_fit_3000_points_and_record_raw_duplicates(
@@ -10673,7 +11033,7 @@ def test_frozen_baostock_5m_factor_spec_rejects_direction_changes(tmp_path):
 
 
 def test_alignment_confirmation_requires_review_and_matching_semantics(tmp_path):
-    frame = complete_minute_frame()
+    frame = complete_minute_frame(provider="rqdata")
     snapshot_path = write_accepted_snapshot(tmp_path, frame)
     original_snapshot = snapshot_path.read_bytes()
     output = tmp_path / "alignment.json"
@@ -10774,6 +11134,87 @@ def test_alignment_confirmation_supports_exact_baostock_5m_grid(tmp_path):
     assert record["frequency"] == "5m"
     assert record["normalization_to_bar_end"] == "identity"
     assert record["complete_session_evidence"][0]["first_bar"].endswith("09:35:00")
+
+
+def test_tushare_alignment_merges_auction_into_first_end_bar(tmp_path):
+    continuous = complete_minute_frame()
+    auction = continuous.iloc[[0]].copy()
+    auction["datetime"] = pd.Timestamp("2026-07-13 09:30:00")
+    source = pd.concat([auction, continuous], ignore_index=True)
+    data_path = tmp_path / "tushare_241.parquet"
+    RICH.atomic_write_frame(source, data_path)
+    snapshot = {
+        "kind": "a_share_rich_data_snapshot",
+        "dataset": "minutes",
+        "provider": "tushare",
+        "frequency": "1m",
+        "prices": "raw_unadjusted",
+        "run_id": "accepted-tushare-1m-test",
+        "files": [
+            {
+                "path": str(data_path),
+                "sha256": RICH.frame_digest(source),
+                "acceptance": {
+                    "daily_reconciliation": {
+                        "status": "passed",
+                        "days": [
+                            {"status": "passed", "inferred_volume_unit": "shares"}
+                        ],
+                    }
+                },
+            }
+        ],
+        "acceptance_status": "automatic_checks_passed_pending_time_alignment",
+    }
+    snapshot_path = tmp_path / "accepted_tushare_1m.json"
+    RICH.atomic_write_json(snapshot, snapshot_path)
+    result = RICH.confirm_minute_alignment(
+        snapshot_path,
+        bar_label="end",
+        volume_unit="shares",
+        reviewed_boundaries=True,
+        output=tmp_path / "alignment_tushare_1m.json",
+    )
+    record = RICH.json.loads(result.read_text())
+    evidence = record["complete_session_evidence"][0]
+    assert record["opening_auction_policy"] == RICH.TUSHARE_OPENING_AUCTION_POLICY
+    assert evidence["source_bars"] == 241
+    assert evidence["canonical_bars"] == 240
+    assert evidence["source_first_bar"].endswith("09:30:00")
+    assert evidence["first_bar"].endswith("09:31:00")
+
+
+def test_tushare_features_conserve_auction_ohlcv_in_first_end_bar():
+    continuous = complete_minute_frame()
+    auction = continuous.iloc[[0]].copy()
+    auction["datetime"] = pd.Timestamp("2026-07-13 09:30:00")
+    auction["open"] = 9.8
+    auction["high"] = 10.2
+    auction["low"] = 9.7
+    auction["close"] = 9.9
+    auction["volume"] = 50.0
+    auction["amount"] = 495.0
+    source = pd.concat([auction, continuous], ignore_index=True)
+    trade_date = pd.Timestamp("2026-07-13")
+    previous = {"SH600519": {trade_date: 10.0}}
+    result = RICH.minute_feature_frame(
+        source,
+        bar_label="end",
+        previous_closes=previous,
+        opening_auction_policy=RICH.TUSHARE_OPENING_AUCTION_POLICY,
+    )
+    row = result.iloc[0]
+    late = continuous.loc[continuous["datetime"].dt.time > dt.time(14, 30)]
+    assert row["source_minute_bars"] == 241
+    assert row["minute_bars"] == 240
+    assert row["opening_auction_rows_merged"] == 1
+    assert row["minute_feature_eligible"]
+    assert row["opening_gap_digestion"] == pytest.approx(
+        continuous["close"].iloc[-1] / 9.8 - 1.0
+    )
+    assert row["late_amount_share_30m"] == pytest.approx(
+        late["amount"].sum() / source["amount"].sum()
+    )
 
 
 def test_minute_features_require_exact_complete_session_and_never_fill_gaps():
@@ -10881,7 +11322,7 @@ def test_previous_close_is_scaled_across_factor_change(tmp_path, monkeypatch):
 def test_feature_builder_binds_snapshot_alignment_and_frozen_spec(
     tmp_path, monkeypatch
 ):
-    frame = complete_minute_frame()
+    frame = complete_minute_frame(provider="rqdata")
     snapshot_path = write_accepted_snapshot(tmp_path, frame)
     alignment_path = RICH.confirm_minute_alignment(
         snapshot_path,

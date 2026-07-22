@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_daily_concordance_protocol",
+  "status": "frozen_before_new_tushare_daily_ohlcv_rows",
+  "recorded_at": "2026-07-22T05:00:00Z",
+  "purpose": "Download an immutable 2019-2025 Tushare unadjusted A-share daily snapshot to the already-authorized external data root and compare it with, without replacing, the accepted local BaoStock daily basis.",
+  "source": {
+    "provider": "tushare",
+    "interface": "daily",
+    "official_documentation": "https://tushare.pro/document/2?doc_id=27",
+    "prices": "raw_unadjusted",
+    "start_date": "2019-01-01",
+    "end_date": "2025-12-31",
+    "calendar": "the_1699_fingerprint_bound_local_sessions_in_the_requested_range",
+    "request_partition": "one_local_trade_date_per_call",
+    "fields_in_order": [
+      "ts_code",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "pre_close",
+      "change",
+      "pct_chg",
+      "vol",
+      "amount"
+    ],
+    "documented_volume_unit": "lots_of_100_shares",
+    "documented_amount_unit": "thousand_CNY",
+    "documented_maximum_rows_per_call": 6000,
+    "reaching_maximum_rows_policy": "reject_as_possible_truncation",
+    "minimum_seconds_between_calls": 0.18,
+    "maximum_planned_calls_per_minute": 333,
+    "transient_attempts_per_session": 3,
+    "credential_source": "TUSHARE_TOKEN_environment_variable_only",
+    "credential_value_logged_hashed_or_persisted": false
+  },
+  "acceptance": {
+    "trade_date": "2025-12-31",
+    "required_representative_codes": [
+      "600519.SH",
+      "000001.SZ",
+      "300750.SZ",
+      "688981.SH"
+    ],
+    "required_unique_key": [
+      "ts_code",
+      "trade_date"
+    ],
+    "required_positive_prices": true,
+    "required_nonnegative_volume_and_amount": true,
+    "required_ohlc_envelope": true,
+    "acceptance_rows_may_be_reused_in_full_snapshot": true
+  },
+  "storage": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "relative_root": "raw/a_share/rich/tushare/daily/snapshots",
+    "partition": "one_calendar_year_Parquet",
+    "preserve_raw_provider_rows": true,
+    "atomic_publish_after_all_years_and_coverage_checks": true,
+    "resume_by_year_checkpoint_hash": true,
+    "overwrite_existing_snapshot": false,
+    "process_lock_required": true,
+    "existing_baostock_daily_files_mutable": false
+  },
+  "comparison": {
+    "reference": "data/raw/a_share/daily_per_symbol_BaoStock_point_in_time_basis",
+    "reference_fields": [
+      "date",
+      "symbol",
+      "raw_open",
+      "raw_high",
+      "raw_low",
+      "raw_close",
+      "raw_volume",
+      "amount",
+      "daily_source",
+      "price_basis"
+    ],
+    "required_reference_source": "baostock",
+    "required_reference_price_basis": "close_known_raw_pct_chg_chain_v1",
+    "normalization": {
+      "Tushare_OHLC": "already_CNY_per_share_raw",
+      "Tushare_volume": "keep_documented_lots_for_direct_comparison_with_BaoStock_raw_volume",
+      "Tushare_amount": "multiply_documented_thousand_CNY_by_1000_for_direct_comparison_with_BaoStock_CNY"
+    },
+    "join_key": [
+      "symbol",
+      "trade_date"
+    ],
+    "reported_error_bands": [
+      0.0,
+      0.0005,
+      0.002,
+      0.005,
+      0.01
+    ],
+    "material_difference_definition": {
+      "OHLC_relative_error_greater_than": 0.002,
+      "volume_or_amount_relative_error_greater_than": 0.005
+    },
+    "summary_classification": {
+      "small": "common_key_coverage_at_least_0.99_and_each_OHLC_P99_relative_error_at_most_0.002_and_volume_amount_P99_relative_error_at_most_0.005",
+      "material": "otherwise"
+    },
+    "comparison_may_replace_or_mutate_the_active_daily_basis": false
+  },
+  "research_boundary": {
+    "forward_return_fields_read": false,
+    "factor_values_read": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "provider_switch_allowed_from_this_comparison_alone": false
+  }
+}

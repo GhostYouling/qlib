@@ -37,6 +37,7 @@ import re
 import shutil
 import sys
 import tempfile
+import threading
 import time
 import unicodedata
 import uuid
@@ -77,6 +78,29 @@ DEFAULT_MINUTE_FACTOR_SPEC = (
 )
 DEFAULT_QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_qmt_xtquant_one_minute_export_data_contract.json"
+)
+DEFAULT_TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_one_minute_source_acceptance_record.json"
+)
+DEFAULT_TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_one_minute_full_source_no_return_preregistration.json"
+)
+DEFAULT_TUSHARE_ONE_MINUTE_FULL_SOURCE_COVERAGE_AUDIT = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_one_minute_full_source_coverage_audit.json"
+)
+DEFAULT_TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_PROTOCOL = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_one_minute_fieldwise_cleaning_protocol.json"
+)
+DEFAULT_TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_RESULT = (
+    REPO_ROOT / "docs" / "a_share_tushare_one_minute_fieldwise_cleaning_result.json"
 )
 DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
@@ -426,6 +450,35 @@ TUSHARE_EVENT_KEY_FIELDS = {
 }
 MINUTE_FEATURE_EXPECTED_BARS = 240
 MINUTE_EXPECTED_BARS_BY_FREQUENCY = {"1m": 240, "5m": 48}
+TUSHARE_OPENING_AUCTION_POLICY = "merge_09_30_into_09_31"
+TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD_SHA256 = (
+    "643f2177c80bfb77ba7bdbc84bd8cda3ad5feb222f1fc7309256f66436f75411"
+)
+TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256 = (
+    "ea0cbb8f2adc8f64a41627c4be1d62a6cc21dae3da755ffdf4d512996d974948"
+)
+TUSHARE_ONE_MINUTE_FULL_SOURCE_COVERAGE_AUDIT_SHA256 = (
+    "5626c0f6523eeadd7739266f29a133b4e66852b1af0aebf84ef00ad88dadbfec"
+)
+TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_PROTOCOL_SHA256 = (
+    "51e4fbf399411f62d35cbdb81d78651b4ceab17934264db0146cef61554d2fd6"
+)
+TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_RESULT_SHA256 = (
+    "f0170519bb0ac8b49c7d48be9a65abd281e2b624e0360acdb63e1914dc429130"
+)
+TUSHARE_ONE_MINUTE_FIELDWISE_MANIFEST_SHA256 = (
+    "06b5ffc2dac16f608d92e9eb7d93729800a2fa99e5727817caead3d698e19bd3"
+)
+TUSHARE_ONE_MINUTE_MINIMUM_FREE_BYTES = 250 * 1024**3
+TUSHARE_ONE_MINUTE_MAX_SESSIONS_PER_REQUEST = 33
+TUSHARE_ONE_MINUTE_MAX_CALLS_PER_MINUTE = 400
+TUSHARE_ONE_MINUTE_MINIMUM_REQUEST_INTERVAL_SECONDS = (
+    60.0 / TUSHARE_ONE_MINUTE_MAX_CALLS_PER_MINUTE
+)
+TUSHARE_ONE_MINUTE_WORKERS = 4
+TUSHARE_ONE_MINUTE_PARTITION_RETRIES = 3
+TUSHARE_ONE_MINUTE_RETRY_BACKOFF_SECONDS = (1.0, 3.0)
+TUSHARE_ONE_MINUTE_RUN_ID = "tushare_stk_mins_1m_2019_2025_ea0cbb8f"
 MINUTE_FEATURE_NAMES = (
     "late_return_30m",
     "late_amount_share_30m",
@@ -1535,6 +1588,9 @@ def canonicalize_minute_bars(
     code: str,
     start: dt.date,
     end: dt.date,
+    *,
+    preserve_duplicates: bool = False,
+    strict_source_rows: bool = False,
 ) -> pd.DataFrame:
     """Normalize provider bars to a strict, unadjusted minute-bar contract.
 
@@ -1595,10 +1651,24 @@ def canonicalize_minute_bars(
     for field, column in resolved.items():
         assert column is not None
         result[field] = pd.to_numeric(normalized[column], errors="coerce")
+    incomplete = result[
+        ["datetime", "open", "high", "low", "close", "volume", "amount"]
+    ].isna().any(axis=1)
+    if strict_source_rows and incomplete.any():
+        raise RichDataError(
+            f"{provider} returned {int(incomplete.sum())} incomplete minute rows for {code}"
+        )
     start_timestamp = pd.Timestamp(start)
     end_timestamp = pd.Timestamp(end) + pd.Timedelta(days=1)
+    outside_range = (result["datetime"] < start_timestamp) | (
+        result["datetime"] >= end_timestamp
+    )
+    if strict_source_rows and outside_range.any():
+        raise RichDataError(
+            f"{provider} returned {int(outside_range.sum())} minute rows outside the request range for {code}"
+        )
     result = result.loc[
-        (result["datetime"] >= start_timestamp) & (result["datetime"] < end_timestamp)
+        ~outside_range
     ].copy()
     result = result.dropna(
         subset=["datetime", "open", "high", "low", "close", "volume", "amount"]
@@ -1616,9 +1686,9 @@ def canonicalize_minute_bars(
         raise RichDataError(
             f"{provider} returned {int(invalid_price.sum())} invalid minute bars for {code}"
         )
-    result = result.drop_duplicates(subset=["datetime"], keep="last").sort_values(
-        "datetime"
-    )
+    if not preserve_duplicates:
+        result = result.drop_duplicates(subset=["datetime"], keep="last")
+    result = result.sort_values("datetime", kind="stable")
     return result.reset_index(drop=True)
 
 
@@ -2090,19 +2160,35 @@ def download_baostock_5m_requests(
 def fetch_tushare_minutes(
     code: str, start: dt.date, end: dt.date, frequency: str
 ) -> pd.DataFrame:
-    """Fetch raw minute bars through Tushare's documented ``pro_bar`` wrapper."""
+    """Fetch raw minute bars through Tushare's documented ``stk_mins`` API."""
 
     ts = _import_tushare()
-    return ts.pro_bar(
-        ts_code=vendor_symbol(code, "tushare"),
-        asset="E",
-        adj=None,
-        freq=frequency,
-        # Tushare minute requests require time-of-day parameters and omit an
-        # end date supplied without a time component.
-        start_date=f"{start.isoformat()} 09:00:00",
-        end_date=f"{end.isoformat()} 17:00:00",
-    )
+    pro = ts.pro_api()
+    tushare_frequency = {
+        "1m": "1min",
+        "5m": "5min",
+        "15m": "15min",
+        "30m": "30min",
+        "60m": "60min",
+    }[frequency]
+    try:
+        result = pro.stk_mins(
+            ts_code=vendor_symbol(code, "tushare"),
+            freq=tushare_frequency,
+            # Tushare minute requests require time-of-day parameters and omit an
+            # end date supplied without a time component.
+            start_date=f"{start.isoformat()} 09:00:00",
+            end_date=f"{end.isoformat()} 17:00:00",
+            fields="ts_code,trade_time,open,high,low,close,vol,amount",
+        )
+    except Exception as exc:
+        raise RichDataError(
+            f"Tushare stk_mins request failed for {code} "
+            f"{start.isoformat()}..{end.isoformat()}: {safe_exception_text(exc)}"
+        ) from exc
+    if result is None:
+        return pd.DataFrame()
+    return result.copy()
 
 
 def fetch_jqdata_minutes(
@@ -14073,6 +14159,1284 @@ def manifest_path(path: Path) -> str:
         return str(path)
 
 
+def load_tushare_one_minute_source_chain() -> dict[str, Any]:
+    """Validate the frozen Tushare one-minute acceptance and bulk protocol."""
+
+    record_path = DEFAULT_TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD.resolve()
+    spec_path = DEFAULT_TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC.resolve()
+    if (
+        file_digest(record_path)
+        != TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD_SHA256
+    ):
+        raise RichDataError("Tushare one-minute acceptance record fingerprint mismatch")
+    if file_digest(spec_path) != TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256:
+        raise RichDataError("Tushare one-minute full-source protocol fingerprint mismatch")
+    record = load_json_record(
+        record_path, kind="a_share_tushare_one_minute_source_acceptance_record"
+    )
+    spec = load_json_record(
+        spec_path,
+        kind="a_share_tushare_one_minute_full_source_no_return_preregistration",
+    )
+    authorization = record.get("authorization") or {}
+    formal = record.get("formal_acceptance") or {}
+    alignment = record.get("explicit_alignment") or {}
+    boundary = record.get("research_boundary") or {}
+    request = spec.get("source_request_contract") or {}
+    normalization = spec.get("normalization_contract") or {}
+    storage = spec.get("immutable_storage_and_recovery") or {}
+    estimate = spec.get("frozen_preflight_estimate") or {}
+    gates = spec.get("source_and_feature_coverage_gates") or {}
+    actions = spec.get("allowed_next_actions") or {}
+    source_binding = spec.get("source_acceptance") or {}
+    if (
+        record.get("version") != 1
+        or record.get("status")
+        != "accepted_for_separate_full_source_no_return_protocol_only"
+        or authorization.get("user_confirmed_historical_minute_product_activated")
+        is not True
+        or authorization.get("credential_value_read_logged_hashed_or_persisted")
+        is not False
+        or formal.get("provider") != "tushare"
+        or formal.get("frequency") != "1m"
+        or formal.get("provider_frequency") != "1min"
+        or formal.get("trade_date") != "2026-07-13"
+        or formal.get("provider_call_count") != 4
+        or formal.get("provider_rows_observed") != 964
+        or alignment.get("status") != "passed_for_feature_research"
+        or alignment.get("bar_timestamp_label") != "end"
+        or alignment.get("opening_auction_policy")
+        != TUSHARE_OPENING_AUCTION_POLICY
+        or alignment.get("canonical_regular_session_bars") != 240
+        or boundary.get("forward_return_fields_read") is not False
+        or boundary.get(
+            "aggregation_current_scoring_selection_sizing_or_orders_allowed"
+        )
+        is not False
+        or spec.get("version") != 1
+        or spec.get("status")
+        != "frozen_after_source_acceptance_and_alignment_before_full_history_features_factor_values_prices_or_forward_returns"
+        or source_binding.get("sha256_at_protocol_freeze")
+        != TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD_SHA256
+        or request.get("provider") != "tushare"
+        or request.get("interface") != "stk_mins"
+        or request.get("frequency") != "1min"
+        or request.get("development_start") != "2019-01-01"
+        or request.get("development_end") != "2025-12-31"
+        or request.get("one_symbol_per_request") is not True
+        or request.get("maximum_local_sessions_per_request")
+        != TUSHARE_ONE_MINUTE_MAX_SESSIONS_PER_REQUEST
+        or request.get("maximum_complete_source_rows_per_request") != 7953
+        or request.get("provider_maximum_rows_per_request") != 8000
+        or request.get("maximum_calls_per_minute")
+        != TUSHARE_ONE_MINUTE_MAX_CALLS_PER_MINUTE
+        or request.get("permission_schema_contract_or_row_limit_error_retry")
+        is not False
+        or tuple(request.get("fields_in_order") or ())
+        != (
+            "ts_code",
+            "trade_time",
+            "open",
+            "high",
+            "low",
+            "close",
+            "vol",
+            "amount",
+        )
+        or normalization.get("expected_complete_source_rows") != 241
+        or normalization.get("expected_complete_canonical_rows") != 240
+        or normalization.get("opening_auction_policy")
+        != TUSHARE_OPENING_AUCTION_POLICY
+        or normalization.get("volume_unit") != "shares"
+        or normalization.get("amount_unit") != "CNY"
+        or storage.get("default_repository_data_root_allowed_for_full_sync")
+        is not False
+        or storage.get("minimum_free_space_before_network_gib") != 250
+        or storage.get("process_lock_required") is not True
+        or storage.get("explicit_allow_large_required") is not True
+        or estimate.get("local_calendar_sessions") != 1699
+        or estimate.get("point_in_time_symbols_with_at_least_one_session") != 5396
+        or estimate.get("point_in_time_symbol_sessions") != 7751950
+        or estimate.get("expected_leaf_requests_at_33_sessions") != 237628
+        or gates.get("minimum_median_source_row_coverage") != 0.95
+        or gates.get("minimum_p05_source_row_coverage") != 0.9
+        or gates.get("minimum_eligible_names_per_cross_section") != 50
+        or gates.get("minimum_non_overlapping_cohorts_before_any_return_protocol")
+        != 200
+        or gates.get("minimum_observed_calendar_years") != 5
+        or actions.get("start_full_sync_before_user_confirms_explicit_large_data_root")
+        is not False
+        or actions.get("read_forward_returns") is not False
+        or actions.get("aggregate_current_score_select_size_or_order") is not False
+        or spec.get("forward_return_fields_read") is not False
+    ):
+        raise RichDataError("Tushare one-minute source chain changed after freeze")
+
+    manifest_binding = formal.get("manifest") or {}
+    alignment_binding = alignment
+    acceptance_manifest_path = resolve_record_path(
+        str(manifest_binding.get("path") or "")
+    )
+    alignment_path = resolve_record_path(str(alignment_binding.get("path") or ""))
+    if (
+        not acceptance_manifest_path.is_file()
+        or file_digest(acceptance_manifest_path) != manifest_binding.get("sha256")
+    ):
+        raise RichDataError(
+            "Tushare one-minute accepted manifest is missing or changed; restore it and do not rerun acceptance"
+        )
+    if (
+        not alignment_path.is_file()
+        or file_digest(alignment_path) != alignment_binding.get("sha256")
+    ):
+        raise RichDataError(
+            "Tushare one-minute alignment is missing or changed; restore it and do not rerun acceptance"
+        )
+    context = spec.get("frozen_research_context") or {}
+    for key in (
+        "minute_factor_preregistration",
+        "accepted_price_basis",
+        "local_calendar",
+        "factor_source_universe",
+        "holding_universe",
+    ):
+        binding = context.get(key) or {}
+        path = resolve_record_path(str(binding.get("path") or ""))
+        if not path.is_file() or file_digest(path) != binding.get("sha256"):
+            raise RichDataError(
+                f"Tushare one-minute frozen local context changed: {key}"
+            )
+    return {
+        "record_path": record_path,
+        "record": record,
+        "spec_path": spec_path,
+        "spec": spec,
+        "acceptance_manifest_path": acceptance_manifest_path,
+        "alignment_path": alignment_path,
+    }
+
+
+def load_tushare_one_minute_full_source_coverage_audit() -> dict[str, Any]:
+    """Validate the terminal no-return decision for the completed full snapshot."""
+
+    path = DEFAULT_TUSHARE_ONE_MINUTE_FULL_SOURCE_COVERAGE_AUDIT.resolve()
+    if file_digest(path) != TUSHARE_ONE_MINUTE_FULL_SOURCE_COVERAGE_AUDIT_SHA256:
+        raise RichDataError(
+            "Tushare one-minute full-source coverage audit fingerprint mismatch"
+        )
+    audit = load_json_record(
+        path, kind="a_share_tushare_one_minute_full_source_coverage_audit"
+    )
+    source_chain = audit.get("source_chain") or {}
+    manifest = source_chain.get("external_snapshot_manifest") or {}
+    coverage = audit.get("frozen_coverage_gate") or {}
+    boundary = audit.get("research_boundary") or {}
+    decision = audit.get("decision") or {}
+    if (
+        audit.get("version") != 1
+        or audit.get("status")
+        != "terminal_full_source_coverage_failed_before_minute_factor_values_or_forward_returns"
+        or (source_chain.get("source_acceptance_record") or {}).get("sha256")
+        != TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD_SHA256
+        or (source_chain.get("full_source_no_return_protocol") or {}).get("sha256")
+        != TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256
+        or manifest.get("run_id") != TUSHARE_ONE_MINUTE_RUN_ID
+        or manifest.get("sha256")
+        != "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+        or coverage.get("observed_median_complete_session_coverage")
+        != 0.9708918249380677
+        or coverage.get("observed_p05_complete_session_coverage")
+        != 0.825708960635191
+        or coverage.get("failed_gate")
+        != "minimum_p05_complete_session_coverage"
+        or coverage.get("gate_passed") is not False
+        or boundary.get("raw_rows_edited") is not False
+        or boundary.get("coverage_threshold_changed") is not False
+        or boundary.get("minute_factor_values_read") is not False
+        or boundary.get("forward_return_fields_read") is not False
+        or boundary.get("feature_materialization_allowed") is not False
+        or boundary.get(
+            "aggregation_current_scoring_selection_sizing_or_orders_allowed"
+        )
+        is not False
+        or decision.get("tushare_full_source_accepted_for_feature_research")
+        is not False
+        or decision.get("rerun_or_resume_same_tushare_full_source_protocol")
+        is not False
+        or decision.get("materialize_frozen_minute_features") is not False
+    ):
+        raise RichDataError(
+            "Tushare one-minute full-source coverage audit changed after terminal decision"
+        )
+    return audit
+
+
+def tushare_one_minute_partition_tasks(
+    intervals: pd.DataFrame,
+    start: dt.date,
+    end: dt.date,
+) -> list[tuple[str, str, str, int]]:
+    """Create deterministic point-in-time symbol-year storage partitions."""
+
+    tasks: list[tuple[str, str, str, int]] = []
+    range_start = pd.Timestamp(start)
+    range_end = pd.Timestamp(end)
+    for row in intervals.itertuples(index=False):
+        interval_start = max(pd.Timestamp(row.start_date), range_start)
+        interval_end = min(pd.Timestamp(row.end_date), range_end)
+        if interval_start > interval_end:
+            continue
+        code = str(row.instrument)[2:]
+        for year in range(interval_start.year, interval_end.year + 1):
+            partition_start = max(
+                interval_start, pd.Timestamp(year=year, month=1, day=1)
+            )
+            partition_end = min(
+                interval_end, pd.Timestamp(year=year, month=12, day=31)
+            )
+            tasks.append(
+                (
+                    code,
+                    partition_start.date().isoformat(),
+                    partition_end.date().isoformat(),
+                    year,
+                )
+            )
+    keys = [(code, year) for code, _, _, year in tasks]
+    if len(keys) != len(set(keys)):
+        raise RichDataError(
+            "Tushare one-minute PIT tasks contain duplicate symbol-years"
+        )
+    return tasks
+
+
+def tushare_one_minute_leaf_windows(
+    task: tuple[str, str, str, int],
+    calendar: pd.DatetimeIndex,
+) -> list[tuple[dt.date, dt.date]]:
+    """Split one symbol-year into non-overlapping at-most-33-session calls."""
+
+    _, start_value, end_value, _ = task
+    sessions = calendar[
+        (calendar >= pd.Timestamp(start_value)) & (calendar <= pd.Timestamp(end_value))
+    ]
+    windows: list[tuple[dt.date, dt.date]] = []
+    for offset in range(0, len(sessions), TUSHARE_ONE_MINUTE_MAX_SESSIONS_PER_REQUEST):
+        chunk = sessions[
+            offset : offset + TUSHARE_ONE_MINUTE_MAX_SESSIONS_PER_REQUEST
+        ]
+        if len(chunk):
+            windows.append((chunk[0].date(), chunk[-1].date()))
+    return windows
+
+
+def tushare_one_minute_preflight_counts(
+    intervals: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    tasks: list[tuple[str, str, str, int]],
+) -> dict[str, int]:
+    """Reproduce the frozen full-source size and request counts without rows."""
+
+    active_symbols: set[str] = set()
+    symbol_sessions = 0
+    for row in intervals.itertuples(index=False):
+        left = int(calendar.searchsorted(pd.Timestamp(row.start_date), side="left"))
+        right = int(calendar.searchsorted(pd.Timestamp(row.end_date), side="right"))
+        if right > left:
+            active_symbols.add(str(row.instrument))
+            symbol_sessions += right - left
+    leaf_requests = sum(len(tushare_one_minute_leaf_windows(task, calendar)) for task in tasks)
+    return {
+        "calendar_sessions": int(len(calendar)),
+        "point_in_time_symbols": int(len(active_symbols)),
+        "point_in_time_symbol_sessions": int(symbol_sessions),
+        "yearly_storage_partitions": int(len(tasks)),
+        "leaf_requests": int(leaf_requests),
+        "maximum_source_rows": int(symbol_sessions * 241),
+        "maximum_canonical_rows": int(symbol_sessions * 240),
+    }
+
+
+def write_tushare_one_minute_preflight(
+    *,
+    data_root: Path,
+) -> Path:
+    """Write the selected external-root audit without provider or minute-row access."""
+
+    source_chain = load_tushare_one_minute_source_chain()
+    start = dt.date(2019, 1, 1)
+    end = dt.date(2025, 12, 31)
+    intervals = load_factor_universe_intervals(DEFAULT_FACTOR_UNIVERSE)
+    calendar = local_calendar_dates(start, end, DEFAULT_LOCAL_CALENDAR)
+    tasks = tushare_one_minute_partition_tasks(intervals, start, end)
+    counts = tushare_one_minute_preflight_counts(intervals, calendar, tasks)
+    frozen = source_chain["spec"]["frozen_preflight_estimate"]
+    expected = {
+        "calendar_sessions": int(frozen["local_calendar_sessions"]),
+        "point_in_time_symbols": int(
+            frozen["point_in_time_symbols_with_at_least_one_session"]
+        ),
+        "point_in_time_symbol_sessions": int(frozen["point_in_time_symbol_sessions"]),
+        "maximum_source_rows": int(frozen["maximum_complete_source_rows"]),
+        "maximum_canonical_rows": int(frozen["maximum_complete_canonical_rows"]),
+    }
+    if any(counts[key] != value for key, value in expected.items()):
+        raise RichDataError(
+            f"Tushare one-minute preflight counts changed after freeze: {counts}"
+        )
+    frozen_leaf_estimate = int(frozen["expected_leaf_requests_at_33_sessions"])
+    if counts["leaf_requests"] < frozen_leaf_estimate:
+        raise RichDataError(
+            "Tushare one-minute partition-safe request plan is below the frozen "
+            "cross-year lower-bound estimate"
+        )
+    resolved = data_root.expanduser().resolve()
+    if resolved == DATA_ROOT.resolve():
+        raise RichDataError(
+            "Tushare one-minute full history requires an explicit external --data-root"
+        )
+    resolved.mkdir(parents=True, exist_ok=True)
+    usage = shutil.disk_usage(resolved)
+    availability = provider_availability("tushare")
+    passed = (
+        usage.free >= TUSHARE_ONE_MINUTE_MINIMUM_FREE_BYTES
+        and availability.ready
+    )
+    partial_root = (
+        resolved
+        / "raw"
+        / "a_share"
+        / "rich"
+        / "tushare"
+        / "minutes"
+        / "1m"
+        / "snapshots"
+        / f".{TUSHARE_ONE_MINUTE_RUN_ID}.partial"
+    )
+    completed_sidecars = (
+        len(list((partial_root / ".metadata" / "partitions").rglob("*.json")))
+        if partial_root.exists()
+        else 0
+    )
+    run_id = new_run_id("tushare_1m_preflight")
+    payload = {
+        "schema_version": 1,
+        "kind": "a_share_tushare_one_minute_preflight",
+        "run_id": run_id,
+        "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "status": (
+            "passed_before_network"
+            if passed
+            else (
+                "blocked_missing_provider_readiness_before_network"
+                if not availability.ready
+                else "blocked_insufficient_disk_before_network"
+            )
+        ),
+        "data_root": str(resolved),
+        "filesystem_device": int(resolved.stat().st_dev),
+        "source_chain": {
+            "acceptance_record": {
+                "path": manifest_path(source_chain["record_path"]),
+                "sha256": TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD_SHA256,
+            },
+            "full_source_protocol": {
+                "path": manifest_path(source_chain["spec_path"]),
+                "sha256": TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256,
+            },
+            "acceptance_manifest": {
+                "path": manifest_path(source_chain["acceptance_manifest_path"]),
+                "sha256": file_digest(source_chain["acceptance_manifest_path"]),
+            },
+            "alignment_confirmation": {
+                "path": manifest_path(source_chain["alignment_path"]),
+                "sha256": file_digest(source_chain["alignment_path"]),
+            },
+        },
+        "provider_readiness": {
+            "package": availability.package,
+            "package_installed": availability.package_installed,
+            "sdk_version": (
+                importlib.metadata.version(availability.package)
+                if availability.package_installed
+                else None
+            ),
+            "required_environment": list(availability.required_environment),
+            "missing_environment": list(availability.missing_environment),
+            "credential_value_read_logged_hashed_or_persisted": False,
+        },
+        "development_start": start.isoformat(),
+        "development_end": end.isoformat(),
+        "request_protocol": {
+            "api": "stk_mins",
+            "frequency": "1min",
+            "maximum_sessions_per_request": TUSHARE_ONE_MINUTE_MAX_SESSIONS_PER_REQUEST,
+            "maximum_calls_per_minute": TUSHARE_ONE_MINUTE_MAX_CALLS_PER_MINUTE,
+            "workers": TUSHARE_ONE_MINUTE_WORKERS,
+            "planned_partition_safe_leaf_requests": counts["leaf_requests"],
+            "frozen_cross_year_leaf_request_estimate": frozen_leaf_estimate,
+            "additional_requests_for_symbol_year_recovery_boundaries": (
+                counts["leaf_requests"] - frozen_leaf_estimate
+            ),
+            "partition_safe_rate_limit_floor_hours": float(
+                counts["leaf_requests"]
+                / TUSHARE_ONE_MINUTE_MAX_CALLS_PER_MINUTE
+                / 60.0
+            ),
+            "request_count_variance_reason": (
+                "the frozen estimate batches each symbol continuously across calendar "
+                "years; the executable plan restarts 33-session leaves at each immutable "
+                "symbol-year recovery boundary"
+            ),
+        },
+        "counts": counts,
+        "universe": {
+            "path": manifest_path(DEFAULT_FACTOR_UNIVERSE.resolve()),
+            "sha256": file_digest(DEFAULT_FACTOR_UNIVERSE),
+        },
+        "calendar": {
+            "path": manifest_path(DEFAULT_LOCAL_CALENDAR.resolve()),
+            "sha256": file_digest(DEFAULT_LOCAL_CALENDAR),
+        },
+        "minimum_free_bytes": TUSHARE_ONE_MINUTE_MINIMUM_FREE_BYTES,
+        "observed_free_bytes": int(usage.free),
+        "observed_free_gib": float(usage.free / 1024**3),
+        "resume_state": {
+            "partial_root_exists": partial_root.exists(),
+            "completed_partition_sidecars": completed_sidecars,
+            "expected_partitions": counts["yearly_storage_partitions"],
+        },
+        "network_request_issued": False,
+        "minute_rows_read": False,
+        "factor_values_read": False,
+        "forward_return_fields_read": False,
+        "selection_or_promotion_allowed": False,
+    }
+    destination = (
+        resolved
+        / "metadata"
+        / "rich_data"
+        / "preflights"
+        / f"{run_id}.json"
+    )
+    atomic_write_json(payload, destination)
+    return destination
+
+
+class TushareOneMinuteRateLimiter:
+    """Enforce the frozen aggregate request rate across worker threads."""
+
+    def __init__(self, minimum_interval_seconds: float):
+        self.minimum_interval_seconds = minimum_interval_seconds
+        self._lock = threading.Lock()
+        self._next_start = 0.0
+
+    def wait(self) -> None:
+        """Reserve one request start and sleep outside the synchronization lock."""
+
+        with self._lock:
+            now = time.monotonic()
+            reserved = max(now, self._next_start)
+            self._next_start = reserved + self.minimum_interval_seconds
+        remaining = reserved - time.monotonic()
+        if remaining > 0.0:
+            time.sleep(remaining)
+
+
+def tushare_one_minute_nonretryable_error(exc: BaseException) -> bool:
+    """Classify permission/schema/contract failures that must never be retried."""
+
+    message = safe_exception_text(exc).casefold()
+    markers = (
+        "permission",
+        "权限",
+        "token",
+        "字段",
+        "field",
+        "参数",
+        "parameter",
+        "freq",
+        "frequency",
+        "row ceiling",
+        "row limit",
+        "8000",
+        "contract",
+        "schema",
+    )
+    return any(marker in message for marker in markers)
+
+
+def fetch_tushare_one_minute_leaf(
+    code: str,
+    start: dt.date,
+    end: dt.date,
+    *,
+    limiter: TushareOneMinuteRateLimiter,
+    stop_event: threading.Event,
+) -> pd.DataFrame:
+    """Fetch one frozen leaf with bounded transient-only retries."""
+
+    last_error: BaseException | None = None
+    for attempt in range(TUSHARE_ONE_MINUTE_PARTITION_RETRIES):
+        if stop_event.is_set():
+            raise RichDataError("Tushare one-minute synchronization stopped by peer failure")
+        limiter.wait()
+        try:
+            return fetch_tushare_minutes(code, start, end, "1m")
+        except Exception as exc:  # noqa: BLE001 - retry policy classifies provider failures.
+            last_error = exc
+            if tushare_one_minute_nonretryable_error(exc):
+                raise
+            if attempt + 1 >= TUSHARE_ONE_MINUTE_PARTITION_RETRIES:
+                raise
+            time.sleep(TUSHARE_ONE_MINUTE_RETRY_BACKOFF_SECONDS[attempt])
+    raise RichDataError(
+        "Tushare one-minute leaf failed without a terminal exception: "
+        f"{safe_exception_text(last_error) if last_error else 'unknown'}"
+    )
+
+
+def validate_tushare_one_minute_partition(
+    frame: pd.DataFrame,
+    task: tuple[str, str, str, int],
+    calendar: pd.DatetimeIndex,
+) -> dict[str, Any]:
+    """Validate one raw symbol-year and identify exact reconciled sessions."""
+
+    code, start_value, end_value, year = task
+    required = {
+        "datetime",
+        "symbol",
+        "source_symbol",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "provider",
+    }
+    if missing := sorted(required - set(frame.columns)):
+        raise RichDataError(
+            f"Tushare one-minute {code} {year} partition is missing columns: "
+            + ", ".join(missing)
+        )
+    partition_calendar = calendar[
+        (calendar >= pd.Timestamp(start_value)) & (calendar <= pd.Timestamp(end_value))
+    ]
+    expected_dates = {value.date().isoformat() for value in partition_calendar}
+    if frame.empty:
+        return {
+            "expected_sessions": int(len(partition_calendar)),
+            "observed_sessions": 0,
+            "source_rows": 0,
+            "complete_regular_sessions": 0,
+            "incomplete_observed_sessions": 0,
+            "missing_expected_sessions": int(len(partition_calendar)),
+            "duplicate_timestamp_rows": 0,
+            "off_grid_rows": 0,
+            "exact_source_grid_sessions": 0,
+            "daily_reconciled_complete_sessions": 0,
+            "daily_reconciliation_failed_sessions": 0,
+            "complete_session_dates": [],
+            "daily_reconciliation_failed_session_dates": [],
+        }
+    timestamps = pd.to_datetime(frame["datetime"], errors="coerce")
+    if timestamps.isna().any() or not timestamps.is_monotonic_increasing:
+        raise RichDataError(
+            f"Tushare one-minute {code} {year} partition has invalid or unsorted timestamps"
+        )
+    start_timestamp = pd.Timestamp(start_value)
+    end_timestamp = pd.Timestamp(end_value) + pd.Timedelta(days=1)
+    if timestamps.lt(start_timestamp).any() or timestamps.ge(end_timestamp).any():
+        raise RichDataError(
+            f"Tushare one-minute {code} {year} partition escaped its task range"
+        )
+    if (
+        set(frame["symbol"].astype(str)) != {qlib_symbol(code)}
+        or set(frame["source_symbol"].astype(str))
+        != {vendor_symbol(code, "tushare")}
+        or set(frame["provider"].astype(str)) != {"tushare"}
+    ):
+        raise RichDataError(
+            f"Tushare one-minute {code} {year} partition identity mismatch"
+        )
+    observed_dates = set(timestamps.dt.date.astype(str))
+    if not observed_dates.issubset(expected_dates):
+        raise RichDataError(
+            f"Tushare one-minute {code} {year} contains non-PIT-calendar dates"
+        )
+    duplicate_rows = int(timestamps.duplicated(keep=False).sum())
+    expected_times = expected_tushare_one_minute_source_times()
+    expected_time_set = set(expected_times)
+    off_grid_rows = int((~timestamps.dt.time.isin(expected_time_set)).sum())
+    reconciliation = minute_daily_reconciliation(frame)
+    reconciliation_by_date = {
+        str(item.get("trade_date")): item
+        for item in reconciliation.get("days") or []
+    }
+    exact_grid_dates: list[str] = []
+    reconciled_dates: list[str] = []
+    reconciliation_failed_dates: list[str] = []
+    work = frame.assign(_trade_date=timestamps.dt.normalize())
+    for trade_date, group in work.groupby("_trade_date", sort=True):
+        ordered = group.sort_values("datetime", kind="stable")
+        observed_times = tuple(pd.to_datetime(ordered["datetime"]).dt.time)
+        positive_activity = (
+            float(pd.to_numeric(ordered["volume"], errors="coerce").sum()) > 0.0
+            and float(pd.to_numeric(ordered["amount"], errors="coerce").sum()) > 0.0
+        )
+        if observed_times != expected_times or not positive_activity:
+            continue
+        date_value = trade_date.date().isoformat()
+        exact_grid_dates.append(date_value)
+        daily = reconciliation_by_date.get(date_value) or {}
+        if daily.get("inferred_volume_unit") != "shares":
+            raise RichDataError(
+                "Tushare one-minute exact source grid violated the accepted share-volume unit: "
+                f"{code} {date_value}"
+            )
+        if daily.get("status") == "passed":
+            reconciled_dates.append(date_value)
+        else:
+            reconciliation_failed_dates.append(date_value)
+    return {
+        "expected_sessions": int(len(partition_calendar)),
+        "observed_sessions": int(len(observed_dates)),
+        "source_rows": int(len(frame)),
+        "complete_regular_sessions": int(len(exact_grid_dates)),
+        "incomplete_observed_sessions": int(
+            len(observed_dates) - len(exact_grid_dates)
+        ),
+        "missing_expected_sessions": int(len(expected_dates - observed_dates)),
+        "duplicate_timestamp_rows": duplicate_rows,
+        "off_grid_rows": off_grid_rows,
+        "exact_source_grid_sessions": int(len(exact_grid_dates)),
+        "daily_reconciled_complete_sessions": int(len(reconciled_dates)),
+        "daily_reconciliation_failed_sessions": int(
+            len(reconciliation_failed_dates)
+        ),
+        "complete_session_dates": reconciled_dates,
+        "daily_reconciliation_failed_session_dates": reconciliation_failed_dates,
+    }
+
+
+def download_tushare_one_minute_partition(
+    task: tuple[str, str, str, int],
+    calendar: pd.DatetimeIndex,
+    *,
+    limiter: TushareOneMinuteRateLimiter,
+    stop_event: threading.Event,
+) -> tuple[pd.DataFrame, dict[str, Any], int]:
+    """Download and validate every frozen leaf for one symbol-year partition."""
+
+    code, _, _, _ = task
+    frames: list[pd.DataFrame] = []
+    provider_calls = 0
+    for leaf_start, leaf_end in tushare_one_minute_leaf_windows(task, calendar):
+        raw = fetch_tushare_one_minute_leaf(
+            code,
+            leaf_start,
+            leaf_end,
+            limiter=limiter,
+            stop_event=stop_event,
+        )
+        provider_calls += 1
+        if len(raw) >= 8000:
+            raise RichDataError(
+                "Tushare stk_mins response reached the possible truncation ceiling: "
+                f"{code} {leaf_start.isoformat()}..{leaf_end.isoformat()} rows={len(raw)}"
+            )
+        required_source = {
+            "ts_code",
+            "trade_time",
+            "open",
+            "high",
+            "low",
+            "close",
+            "vol",
+            "amount",
+        }
+        if not raw.empty:
+            if missing := sorted(required_source - set(raw.columns)):
+                raise RichDataError(
+                    "Tushare stk_mins response changed its frozen schema: "
+                    + ", ".join(missing)
+                )
+            if set(raw["ts_code"].astype(str)) != {vendor_symbol(code, "tushare")}:
+                raise RichDataError(
+                    f"Tushare stk_mins returned an unexpected symbol for {code}"
+                )
+        normalized = canonicalize_minute_bars(
+            raw,
+            "tushare",
+            code,
+            leaf_start,
+            leaf_end,
+            preserve_duplicates=True,
+            strict_source_rows=True,
+        )
+        if not normalized.empty:
+            frames.append(normalized)
+    if frames:
+        frame = (
+            pd.concat(frames, ignore_index=True)
+            .sort_values("datetime", kind="stable")
+            .reset_index(drop=True)
+        )
+    else:
+        frame = canonicalize_minute_bars(
+            pd.DataFrame(),
+            "tushare",
+            code,
+            dt.date.fromisoformat(task[1]),
+            dt.date.fromisoformat(task[2]),
+        )
+    quality = validate_tushare_one_minute_partition(frame, task, calendar)
+    return frame, quality, provider_calls
+
+
+def tushare_one_minute_partition_paths(
+    root: Path,
+    task: tuple[str, str, str, int],
+) -> tuple[Path, Path]:
+    """Return deterministic data and sidecar paths below a partial/final root."""
+
+    code, _, _, year = task
+    symbol = qlib_symbol(code).lower()
+    return (
+        root / symbol / f"{year}.parquet",
+        root / ".metadata" / "partitions" / symbol / f"{year}.json",
+    )
+
+
+def store_tushare_one_minute_partition(
+    task: tuple[str, str, str, int],
+    calendar: pd.DatetimeIndex,
+    *,
+    partial_root: Path,
+    final_root: Path,
+    limiter: TushareOneMinuteRateLimiter,
+    stop_event: threading.Event,
+) -> dict[str, Any]:
+    """Atomically publish one resumable symbol-year partition and sidecar."""
+
+    partial_data, partial_sidecar = tushare_one_minute_partition_paths(
+        partial_root, task
+    )
+    final_data, final_sidecar = tushare_one_minute_partition_paths(final_root, task)
+    if partial_sidecar.exists():
+        raise RichDataError(
+            f"Tushare one-minute completed sidecar unexpectedly resubmitted: {partial_sidecar}"
+        )
+    partial_data.unlink(missing_ok=True)
+    frame, quality, provider_calls = download_tushare_one_minute_partition(
+        task,
+        calendar,
+        limiter=limiter,
+        stop_event=stop_event,
+    )
+    atomic_write_frame(frame, partial_data)
+    record = {
+        "schema_version": 1,
+        "kind": "a_share_tushare_one_minute_partition_checkpoint",
+        "protocol_sha256": TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256,
+        "run_id": TUSHARE_ONE_MINUTE_RUN_ID,
+        "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "code": task[0],
+        "symbol": qlib_symbol(task[0]),
+        "year": task[3],
+        "requested_start": task[1],
+        "requested_end": task[2],
+        "provider_calls": provider_calls,
+        "path": str(final_data),
+        "sidecar_path": str(final_sidecar),
+        "rows": int(len(frame)),
+        "byte_sha256": file_digest(partial_data),
+        "frame_sha256": frame_digest(frame),
+        "quality": quality,
+        "minute_factor_values_read": False,
+        "forward_return_fields_read": False,
+    }
+    atomic_write_json(record, partial_sidecar)
+    return record
+
+
+def load_completed_tushare_one_minute_partition(
+    task: tuple[str, str, str, int],
+    *,
+    partial_root: Path,
+) -> dict[str, Any] | None:
+    """Hash-verify one completed checkpoint before skipping provider work."""
+
+    data_path, sidecar_path = tushare_one_minute_partition_paths(partial_root, task)
+    if not sidecar_path.exists():
+        data_path.unlink(missing_ok=True)
+        return None
+    record = load_json_record(
+        sidecar_path, kind="a_share_tushare_one_minute_partition_checkpoint"
+    )
+    if (
+        record.get("protocol_sha256")
+        != TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256
+        or record.get("run_id") != TUSHARE_ONE_MINUTE_RUN_ID
+        or record.get("code") != task[0]
+        or record.get("year") != task[3]
+        or record.get("requested_start") != task[1]
+        or record.get("requested_end") != task[2]
+        or record.get("minute_factor_values_read") is not False
+        or record.get("forward_return_fields_read") is not False
+        or not data_path.is_file()
+        or file_digest(data_path) != record.get("byte_sha256")
+    ):
+        raise RichDataError(
+            f"Tushare one-minute completed checkpoint changed: {sidecar_path}"
+        )
+    frame = pd.read_parquet(data_path)
+    if len(frame) != int(record.get("rows", -1)) or frame_digest(frame) != record.get(
+        "frame_sha256"
+    ):
+        raise RichDataError(
+            f"Tushare one-minute completed partition frame changed: {data_path}"
+        )
+    return record
+
+
+def tushare_one_minute_coverage_report(
+    intervals: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    records: list[dict[str, Any]],
+    spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Compute the frozen PIT source coverage without factor or return fields."""
+
+    active_counts = np.zeros(len(calendar), dtype=np.int64)
+    for row in intervals.itertuples(index=False):
+        left = int(calendar.searchsorted(pd.Timestamp(row.start_date), side="left"))
+        right = int(calendar.searchsorted(pd.Timestamp(row.end_date), side="right"))
+        if right > left:
+            active_counts[left:right] += 1
+    complete_by_date: dict[str, int] = {}
+    for record in records:
+        for value in (record.get("quality") or {}).get("complete_session_dates") or []:
+            complete_by_date[str(value)] = complete_by_date.get(str(value), 0) + 1
+    completed = np.asarray(
+        [complete_by_date.get(value.date().isoformat(), 0) for value in calendar],
+        dtype=np.int64,
+    )
+    if (completed > active_counts).any():
+        raise RichDataError(
+            "Tushare one-minute complete-session count exceeds the PIT universe"
+        )
+    ratios = np.divide(
+        completed,
+        active_counts,
+        out=np.full(len(calendar), np.nan, dtype=float),
+        where=active_counts > 0,
+    )
+    valid = ratios[np.isfinite(ratios)]
+    if not valid.size:
+        raise RichDataError("Tushare one-minute coverage has no active sessions")
+    gates = spec["source_and_feature_coverage_gates"]
+    minimum_names = int(gates["minimum_eligible_names_per_cross_section"])
+    indices = np.arange(0, max(len(calendar) - 3, 0), 3, dtype=int)
+    potential_cohorts = int((completed[indices] >= minimum_names).sum())
+    years = {
+        calendar[index].year
+        for index in indices
+        if completed[index] >= minimum_names
+    }
+    median = float(np.median(valid))
+    p05 = float(np.quantile(valid, 0.05))
+    passed = (
+        median >= float(gates["minimum_median_source_row_coverage"])
+        and p05 >= float(gates["minimum_p05_source_row_coverage"])
+        and potential_cohorts
+        >= int(gates["minimum_non_overlapping_cohorts_before_any_return_protocol"])
+        and len(years) >= int(gates["minimum_observed_calendar_years"])
+    )
+    return {
+        "calendar_sessions": int(len(calendar)),
+        "median_complete_session_coverage": median,
+        "p05_complete_session_coverage": p05,
+        "dates_with_at_least_fifty_complete_names": int(
+            (completed >= minimum_names).sum()
+        ),
+        "potential_non_overlapping_three_session_cohorts": potential_cohorts,
+        "observed_cohort_years": sorted(years),
+        "gate_passed_before_factor_values_or_prices": passed,
+        "daily": [
+            {
+                "trade_date": value.date().isoformat(),
+                "active_pit_names": int(active),
+                "complete_one_minute_names": int(complete),
+                "complete_session_coverage": (
+                    float(ratio) if np.isfinite(ratio) else None
+                ),
+            }
+            for value, active, complete, ratio in zip(
+                calendar, active_counts, completed, ratios, strict=True
+            )
+        ],
+    }
+
+
+def sync_tushare_one_minute_history(
+    *,
+    allow_large: bool,
+    data_root: Path,
+) -> Path:
+    """Resume and publish the frozen 2019-2025 Tushare one-minute source."""
+
+    terminal = load_tushare_one_minute_full_source_coverage_audit()
+    raise RichDataError(
+        "Tushare one-minute full source is terminal after the frozen P05 coverage "
+        "gate failed; preserve the snapshot, do not rerun or resume it, and select "
+        "a separately accepted replacement minute source; audit="
+        f"{DEFAULT_TUSHARE_ONE_MINUTE_FULL_SOURCE_COVERAGE_AUDIT}; "
+        f"status={terminal.get('status')}"
+    )
+
+    if not allow_large:
+        raise RichDataError(
+            "Tushare one-minute full history requires explicit --allow-large"
+        )
+    resolved = data_root.expanduser().resolve()
+    if resolved == DATA_ROOT.resolve():
+        raise RichDataError(
+            "Tushare one-minute full history requires an explicit external --data-root"
+        )
+    resolved.mkdir(parents=True, exist_ok=True)
+    lock_path = resolved / ".a_share_tushare_1m.lock"
+    with RichDataProcessLock(lock_path):
+        source_chain = load_tushare_one_minute_source_chain()
+        preflight_path = write_tushare_one_minute_preflight(data_root=resolved)
+        preflight = load_json_record(
+            preflight_path, kind="a_share_tushare_one_minute_preflight"
+        )
+        if preflight.get("status") != "passed_before_network":
+            raise RichDataError(
+                "Tushare one-minute full sync stopped before network: "
+                f"{preflight.get('status')}; audit={preflight_path}"
+            )
+        require_provider("tushare")
+        if int(resolved.stat().st_dev) != int(preflight["filesystem_device"]):
+            raise RichDataError(
+                "Tushare one-minute target filesystem changed after preflight"
+            )
+        start = dt.date(2019, 1, 1)
+        end = dt.date(2025, 12, 31)
+        intervals = load_factor_universe_intervals(DEFAULT_FACTOR_UNIVERSE)
+        calendar = local_calendar_dates(start, end, DEFAULT_LOCAL_CALENDAR)
+        tasks = tushare_one_minute_partition_tasks(intervals, start, end)
+        parent = (
+            resolved
+            / "raw"
+            / "a_share"
+            / "rich"
+            / "tushare"
+            / "minutes"
+            / "1m"
+            / "snapshots"
+        )
+        final_root = parent / TUSHARE_ONE_MINUTE_RUN_ID
+        partial_root = parent / f".{TUSHARE_ONE_MINUTE_RUN_ID}.partial"
+        runs_root = resolved / "metadata" / "rich_data" / "runs"
+        destination = runs_root / f"{TUSHARE_ONE_MINUTE_RUN_ID}.json"
+        if final_root.exists():
+            internal = final_root / "snapshot_manifest.json"
+            manifest = load_json_record(
+                internal, kind="a_share_rich_data_snapshot"
+            )
+            if (
+                manifest.get("dataset") != "tushare_one_minute_history"
+                or (manifest.get("full_source_protocol") or {}).get("sha256")
+                != TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256
+            ):
+                raise RichDataError(
+                    f"existing Tushare one-minute final snapshot is invalid: {final_root}"
+                )
+            if destination.exists() and file_digest(destination) != file_digest(internal):
+                raise RichDataError(
+                    "Tushare one-minute external run manifest conflicts with the final snapshot"
+                )
+            if not destination.exists():
+                atomic_write_json(manifest, destination)
+            return destination
+        partial_root.mkdir(parents=True, exist_ok=True)
+        checkpoint_path = partial_root / ".metadata" / "checkpoint.json"
+        completed: dict[tuple[str, int], dict[str, Any]] = {}
+        for task in tasks:
+            record = load_completed_tushare_one_minute_partition(
+                task, partial_root=partial_root
+            )
+            if record is not None:
+                completed[(task[0], task[3])] = record
+        initial_completed = len(completed)
+        completed_provider_calls = sum(
+            int(item["provider_calls"]) for item in completed.values()
+        )
+        completed_source_rows = sum(int(item["rows"]) for item in completed.values())
+        checkpoint = {
+            "schema_version": 1,
+            "kind": "a_share_tushare_one_minute_resume_checkpoint",
+            "run_id": TUSHARE_ONE_MINUTE_RUN_ID,
+            "protocol_sha256": TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256,
+            "updated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "status": "running",
+            "expected_partitions": int(len(tasks)),
+            "completed_partitions": int(len(completed)),
+            "resumed_partitions": int(initial_completed),
+            "provider_calls_completed": int(completed_provider_calls),
+            "source_rows_stored": int(completed_source_rows),
+            "forward_return_fields_read": False,
+        }
+        atomic_write_json(checkpoint, checkpoint_path)
+        pending_tasks = [
+            task for task in tasks if (task[0], task[3]) not in completed
+        ]
+        limiter = TushareOneMinuteRateLimiter(
+            TUSHARE_ONE_MINUTE_MINIMUM_REQUEST_INTERVAL_SECONDS
+        )
+        stop_event = threading.Event()
+        executor = concurrent.futures.ThreadPoolExecutor(
+            max_workers=TUSHARE_ONE_MINUTE_WORKERS
+        )
+        futures: dict[
+            concurrent.futures.Future[dict[str, Any]],
+            tuple[str, str, str, int],
+        ] = {}
+        iterator = iter(pending_tasks)
+
+        def submit_next() -> bool:
+            try:
+                task = next(iterator)
+            except StopIteration:
+                return False
+            future = executor.submit(
+                store_tushare_one_minute_partition,
+                task,
+                calendar,
+                partial_root=partial_root,
+                final_root=final_root,
+                limiter=limiter,
+                stop_event=stop_event,
+            )
+            futures[future] = task
+            return True
+
+        for _ in range(TUSHARE_ONE_MINUTE_WORKERS * 2):
+            if not submit_next():
+                break
+        try:
+            while futures:
+                done, _ = concurrent.futures.wait(
+                    futures,
+                    return_when=concurrent.futures.FIRST_COMPLETED,
+                )
+                for future in done:
+                    task = futures.pop(future)
+                    record = future.result()
+                    completed[(task[0], task[3])] = record
+                    completed_provider_calls += int(record["provider_calls"])
+                    completed_source_rows += int(record["rows"])
+                    checkpoint.update(
+                        {
+                            "updated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                            "completed_partitions": int(len(completed)),
+                            "provider_calls_completed": int(completed_provider_calls),
+                            "source_rows_stored": int(completed_source_rows),
+                        }
+                    )
+                    atomic_write_json(checkpoint, checkpoint_path)
+                    if len(completed) == 1 or len(completed) % 100 == 0:
+                        print(
+                            json.dumps(
+                                {
+                                    "tushare_1m_progress": {
+                                        "completed_partitions": len(completed),
+                                        "expected_partitions": len(tasks),
+                                        "provider_calls_completed": checkpoint[
+                                            "provider_calls_completed"
+                                        ],
+                                        "source_rows_stored": checkpoint[
+                                            "source_rows_stored"
+                                        ],
+                                    }
+                                },
+                                ensure_ascii=False,
+                            ),
+                            flush=True,
+                        )
+                    submit_next()
+        except Exception as exc:
+            stop_event.set()
+            for future in futures:
+                future.cancel()
+            executor.shutdown(wait=True, cancel_futures=True)
+            checkpoint.update(
+                {
+                    "updated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                    "status": "interrupted_resumable",
+                    "error_type": type(exc).__name__,
+                    "error": safe_exception_text(exc),
+                }
+            )
+            atomic_write_json(checkpoint, checkpoint_path)
+            raise
+        else:
+            executor.shutdown(wait=True)
+        if len(completed) != len(tasks):
+            raise RichDataError(
+                "Tushare one-minute synchronization ended without every partition"
+            )
+        records = [completed[(task[0], task[3])] for task in tasks]
+        expected_calls = int(preflight["counts"]["leaf_requests"])
+        observed_calls = int(sum(int(record["provider_calls"]) for record in records))
+        if observed_calls != expected_calls:
+            raise RichDataError(
+                "Tushare one-minute completed request count changed: "
+                f"{observed_calls} != {expected_calls}"
+            )
+        coverage = tushare_one_minute_coverage_report(
+            intervals, calendar, records, source_chain["spec"]
+        )
+        quality_totals = {
+            key: int(
+                sum(int((record.get("quality") or {}).get(key, 0)) for record in records)
+            )
+            for key in (
+                "expected_sessions",
+                "observed_sessions",
+                "source_rows",
+                "complete_regular_sessions",
+                "incomplete_observed_sessions",
+                "missing_expected_sessions",
+                "duplicate_timestamp_rows",
+                "off_grid_rows",
+                "exact_source_grid_sessions",
+                "daily_reconciled_complete_sessions",
+                "daily_reconciliation_failed_sessions",
+            )
+        }
+        files = []
+        for record in records:
+            quality = dict(record["quality"])
+            quality.pop("complete_session_dates", None)
+            files.append(
+                {
+                    "code": record["code"],
+                    "symbol": record["symbol"],
+                    "year": record["year"],
+                    "requested_start": record["requested_start"],
+                    "requested_end": record["requested_end"],
+                    "provider_calls": record["provider_calls"],
+                    "path": record["path"],
+                    "sidecar_path": record["sidecar_path"],
+                    "rows": record["rows"],
+                    "byte_sha256": record["byte_sha256"],
+                    "frame_sha256": record["frame_sha256"],
+                    "quality": quality,
+                }
+            )
+        manifest = {
+            "schema_version": 1,
+            "kind": "a_share_rich_data_snapshot",
+            "dataset": "tushare_one_minute_history",
+            "provider": "tushare",
+            "frequency": "1m",
+            "provider_frequency": "1min",
+            "prices": "raw_unadjusted",
+            "run_id": TUSHARE_ONE_MINUTE_RUN_ID,
+            "retrieved_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "requested_start": start.isoformat(),
+            "requested_end": end.isoformat(),
+            "data_root": str(resolved),
+            "source_acceptance": {
+                "path": manifest_path(source_chain["record_path"]),
+                "sha256": TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD_SHA256,
+            },
+            "full_source_protocol": {
+                "path": manifest_path(source_chain["spec_path"]),
+                "sha256": TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256,
+            },
+            "preflight": {
+                "path": str(preflight_path),
+                "sha256": file_digest(preflight_path),
+                "status": preflight["status"],
+                "filesystem_device": preflight["filesystem_device"],
+            },
+            "point_in_time_universe": {
+                "path": manifest_path(DEFAULT_FACTOR_UNIVERSE.resolve()),
+                "sha256": file_digest(DEFAULT_FACTOR_UNIVERSE),
+                "intervals": int(len(intervals)),
+            },
+            "local_calendar": {
+                "path": manifest_path(DEFAULT_LOCAL_CALENDAR.resolve()),
+                "sha256": file_digest(DEFAULT_LOCAL_CALENDAR),
+                "sessions": int(len(calendar)),
+            },
+            "source_request": {
+                "api": "stk_mins",
+                "fields": [
+                    "ts_code",
+                    "trade_time",
+                    "open",
+                    "high",
+                    "low",
+                    "close",
+                    "vol",
+                    "amount",
+                ],
+                "maximum_sessions_per_request": TUSHARE_ONE_MINUTE_MAX_SESSIONS_PER_REQUEST,
+                "maximum_calls_per_minute": TUSHARE_ONE_MINUTE_MAX_CALLS_PER_MINUTE,
+                "workers": TUSHARE_ONE_MINUTE_WORKERS,
+                "provider_calls": observed_calls,
+                "credentials_logged_or_stored": False,
+            },
+            "resume": {
+                "resumed_partitions": initial_completed,
+                "completed_partitions": len(records),
+                "partition_hashes_verified_before_skip": True,
+            },
+            "rows": quality_totals["source_rows"],
+            "normalization_quality": quality_totals,
+            "files": files,
+            "coverage": coverage,
+            "acceptance_status": (
+                "full_source_coverage_passed_pending_no_return_feature_materialization"
+                if coverage["gate_passed_before_factor_values_or_prices"]
+                else "full_source_coverage_failed_stop_before_factor_values_or_prices"
+            ),
+            "opening_auction_policy": TUSHARE_OPENING_AUCTION_POLICY,
+            "source_rows_preserved_before_240_bar_feature_normalization": True,
+            "daily_price_fields_read_only_for_source_reconciliation": [
+                "raw_open",
+                "raw_high",
+                "raw_low",
+                "raw_close",
+                "raw_volume",
+                "amount",
+                "price_basis",
+            ],
+            "minute_factor_values_read": False,
+            "forward_return_fields_read": False,
+            "selection_or_promotion_allowed": False,
+        }
+        checkpoint.update(
+            {
+                "updated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "status": "complete_pending_atomic_publish",
+                "completed_partitions": len(records),
+            }
+        )
+        atomic_write_json(checkpoint, checkpoint_path)
+        atomic_write_json(manifest, partial_root / "snapshot_manifest.json")
+        partial_root.replace(final_root)
+        atomic_write_json(manifest, destination)
+        return destination
+
+
 def write_minute_snapshot(
     provider: str,
     frequency: str,
@@ -14159,6 +15523,12 @@ def expected_minute_times(bar_label: str, frequency: str = "1m") -> tuple[dt.tim
     return tuple(value.time() for value in timestamps)
 
 
+def expected_tushare_one_minute_source_times() -> tuple[dt.time, ...]:
+    """Return Tushare's accepted auction-plus-continuous one-minute grid."""
+
+    return (dt.time(9, 30), *expected_minute_times("end", "1m"))
+
+
 def load_snapshot_frame(file_record: dict[str, Any]) -> pd.DataFrame:
     """Read and fingerprint one immutable snapshot file."""
 
@@ -14238,6 +15608,14 @@ def confirm_minute_alignment(
 
     expected_times = expected_minute_times(bar_label, frequency)
     expected_bars = MINUTE_EXPECTED_BARS_BY_FREQUENCY[frequency]
+    tushare_auction_grid = (
+        snapshot.get("provider") == "tushare" and frequency == "1m"
+    )
+    if tushare_auction_grid and bar_label != "end":
+        raise RichDataError(
+            "declared start-label convention conflicts with Tushare's accepted "
+            "09:30 auction plus 09:31-15:00 end-label grid"
+        )
     complete_session_evidence: list[dict[str, Any]] = []
     for file_record in files:
         frame = load_snapshot_frame(file_record)
@@ -14269,8 +15647,25 @@ def confirm_minute_alignment(
             )
         work = frame.assign(_datetime=timestamps, _trade_date=timestamps.dt.normalize())
         for trade_date, group in work.groupby("_trade_date", sort=True):
-            observed_times = tuple(group.sort_values("_datetime")["_datetime"].dt.time)
-            if len(observed_times) == expected_bars:
+            ordered = group.sort_values("_datetime")
+            observed_times = tuple(ordered["_datetime"].dt.time)
+            if tushare_auction_grid:
+                if observed_times != expected_tushare_one_minute_source_times():
+                    continue
+                complete_session_evidence.append(
+                    {
+                        "symbol": str(group["symbol"].iloc[0]),
+                        "trade_date": pd.Timestamp(trade_date).date().isoformat(),
+                        "source_bars": int(len(ordered)),
+                        "source_first_bar": ordered["_datetime"].iloc[0].isoformat(),
+                        "source_last_bar": ordered["_datetime"].iloc[-1].isoformat(),
+                        "canonical_bars": expected_bars,
+                        "first_bar": ordered["_datetime"].iloc[1].isoformat(),
+                        "last_bar": ordered["_datetime"].iloc[-1].isoformat(),
+                        "opening_auction_policy": TUSHARE_OPENING_AUCTION_POLICY,
+                    }
+                )
+            elif len(observed_times) == expected_bars:
                 if observed_times != expected_times:
                     raise RichDataError(
                         f"declared {bar_label}-label convention conflicts with a {expected_bars}-bar session on "
@@ -14319,6 +15714,9 @@ def confirm_minute_alignment(
             f"add_{interval_minutes}_minutes" if bar_label == "start" else "identity"
         ),
         "volume_unit": volume_unit,
+        "opening_auction_policy": (
+            TUSHARE_OPENING_AUCTION_POLICY if tushare_auction_grid else "none"
+        ),
         "reviewed_boundaries": True,
         "complete_session_evidence": complete_session_evidence,
         "source_acceptance_snapshot": {
@@ -14330,6 +15728,13 @@ def confirm_minute_alignment(
         "limitations": [
             "This confirms timestamp and volume-unit semantics only; it does not validate a factor or strategy.",
             "Missing or halted minute bars remain missing and must never be zero-filled.",
+            *(
+                [
+                    "Tushare's raw 09:30 opening-auction row is preserved in source snapshots and merged into the 09:31 end-labelled bar for the frozen 240-bar research grid; OHLC envelopes, volume, and amount are conserved."
+                ]
+                if tushare_auction_grid
+                else []
+            ),
             *(
                 [
                     "The QMT acceptance sample cannot be materialized into features; a separate fingerprint-bound full-source no-return protocol must be frozen first."
@@ -15174,6 +16579,7 @@ def minute_feature_frame(
     previous_closes: dict[str, dict[pd.Timestamp, float]],
     frequency: str = "1m",
     feature_names: tuple[str, ...] = MINUTE_FEATURE_NAMES,
+    opening_auction_policy: str = "none",
 ) -> pd.DataFrame:
     """Construct one frozen close-known intraday feature catalog without returns."""
 
@@ -15196,6 +16602,17 @@ def minute_feature_frame(
         raise RichDataError("bar label must be 'start' or 'end'")
     if frequency not in MINUTE_EXPECTED_BARS_BY_FREQUENCY:
         raise RichDataError(f"unsupported minute feature frequency: {frequency}")
+    if opening_auction_policy not in {"none", TUSHARE_OPENING_AUCTION_POLICY}:
+        raise RichDataError(
+            f"unsupported opening-auction policy: {opening_auction_policy}"
+        )
+    if opening_auction_policy == TUSHARE_OPENING_AUCTION_POLICY and (
+        frequency != "1m"
+        or set(frame["provider"].dropna().astype(str)) != {"tushare"}
+    ):
+        raise RichDataError(
+            "the 09:30 opening-auction merge is valid only for accepted Tushare 1m data"
+        )
     if len(feature_names) != 5:
         raise RichDataError(
             "minute feature catalog must contain exactly five ordered names"
@@ -15237,9 +16654,35 @@ def minute_feature_frame(
         ["symbol", "trade_date"], sort=True
     ):
         group = group.sort_values("bar_end", kind="stable")
+        source_minute_bars = int(len(group))
+        opening_auction_rows_merged = 0
+        opening_auction_contract_passed = opening_auction_policy == "none"
+        if opening_auction_policy == TUSHARE_OPENING_AUCTION_POLICY:
+            source_times = tuple(group["bar_end"].dt.time)
+            if source_times == expected_tushare_one_minute_source_times():
+                auction = group.iloc[0]
+                group = group.iloc[1:].copy()
+                first_index = group.index[0]
+                group.loc[first_index, "open"] = float(auction["open"])
+                group.loc[first_index, "high"] = max(
+                    float(auction["high"]), float(group.loc[first_index, "high"])
+                )
+                group.loc[first_index, "low"] = min(
+                    float(auction["low"]), float(group.loc[first_index, "low"])
+                )
+                group.loc[first_index, "volume"] = float(auction["volume"]) + float(
+                    group.loc[first_index, "volume"]
+                )
+                group.loc[first_index, "amount"] = float(auction["amount"]) + float(
+                    group.loc[first_index, "amount"]
+                )
+                opening_auction_rows_merged = 1
+                opening_auction_contract_passed = True
         observed_bar_ends = tuple(group["bar_end"].dt.time)
         complete = (
-            len(group) == expected_bars and observed_bar_ends == expected_bar_ends
+            opening_auction_contract_passed
+            and len(group) == expected_bars
+            and observed_bar_ends == expected_bar_ends
         )
         values = {name: float("nan") for name in feature_names}
         opening_gap_return = float("nan")
@@ -15291,7 +16734,9 @@ def minute_feature_frame(
                 "trade_date": pd.Timestamp(trade_date),
                 "provider": str(group["provider"].iloc[0]),
                 "bar_timestamp_label": bar_label,
+                "source_minute_bars": source_minute_bars,
                 "minute_bars": int(len(group)),
+                "opening_auction_rows_merged": opening_auction_rows_merged,
                 "complete_regular_session": bool(complete),
                 "minute_feature_eligible": bool(eligible),
                 "opening_gap_return": opening_gap_return,
@@ -15453,6 +16898,9 @@ def build_minute_features(
                 previous_closes=previous_closes,
                 frequency=frequency,
                 feature_names=feature_names,
+                opening_auction_policy=str(
+                    alignment.get("opening_auction_policy") or "none"
+                ),
             )
         )
     if not feature_frames:
@@ -34046,7 +35494,11 @@ def baostock_5m_storage_status(data_root: Path) -> dict[str, Any]:
             }
 
     _, latest_preflight_path = count_and_latest_path(
-        preflight_root.glob("*.json") if preflight_root.exists() else ()
+        (
+            preflight_root.glob("*_baostock_5m_preflight_*.json")
+            if preflight_root.exists()
+            else ()
+        )
     )
     latest_preflight: dict[str, Any] | None = None
     if latest_preflight_path is not None:
@@ -34092,6 +35544,9 @@ def qmt_xtquant_acceptance_status(data_root: Path) -> dict[str, Any]:
     alignments_root = resolved / "metadata" / "rich_data" / "alignments"
     contract_path = DEFAULT_QMT_XTQUANT_ONE_MINUTE_EXPORT_CONTRACT.resolve()
     exporter_path = (REPO_ROOT / "scripts" / "export_qmt_one_minute.py").resolve()
+    handoff_packager_path = (
+        REPO_ROOT / "scripts" / "package_qmt_acceptance_handoff.py"
+    ).resolve()
     contract_observed_sha256: str | None = None
     try:
         contract_observed_sha256 = file_digest(contract_path)
@@ -34164,7 +35619,11 @@ def qmt_xtquant_acceptance_status(data_root: Path) -> dict[str, Any]:
             alignment_confirmation_count += 1
             latest_alignment_confirmation = str(path.resolve())
 
-    if not contract_fingerprint_valid or not exporter_path.is_file():
+    if (
+        not contract_fingerprint_valid
+        or not exporter_path.is_file()
+        or not handoff_packager_path.is_file()
+    ):
         next_action = "repair_local_qmt_intake_infrastructure_before_export_or_import"
     elif invalid_record_count:
         next_action = "stop_and_repair_invalid_local_qmt_acceptance_record"
@@ -34197,6 +35656,17 @@ def qmt_xtquant_acceptance_status(data_root: Path) -> dict[str, Any]:
             "exists": exporter_path.is_file(),
             "operation": "export-acceptance",
         },
+        "handoff_packager": {
+            "path": str(handoff_packager_path),
+            "exists": handoff_packager_path.is_file(),
+            "command_template": (
+                "python scripts/package_qmt_acceptance_handoff.py "
+                "--output data/handoffs/qmt-1m-acceptance-handoff-v1.zip"
+            ),
+            "archive_member_count": 4,
+            "provider_or_network_request_issued": False,
+            "qmt_runtime_or_export_rows_read": False,
+        },
         "expected_bundle_manifest_filename": "qmt_1m_acceptance_export.json",
         "import_command_template": (
             "python scripts/a_share_rich_data.py acceptance-qmt-1m-export "
@@ -34219,6 +35689,302 @@ def qmt_xtquant_acceptance_status(data_root: Path) -> dict[str, Any]:
         "process_lock": advisory_lock_status(
             resolved / ".a_share_qmt_xtquant_1m_acceptance.lock"
         ),
+    }
+
+
+def tushare_one_minute_acceptance_status(data_root: Path) -> dict[str, Any]:
+    """Report the selected Tushare minute route without reading minute rows."""
+
+    resolved = data_root.expanduser().resolve()
+    record_path = DEFAULT_TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD.resolve()
+    protocol_path = DEFAULT_TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC.resolve()
+    record_valid = (
+        record_path.is_file()
+        and file_digest(record_path)
+        == TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD_SHA256
+    )
+    protocol_valid = (
+        protocol_path.is_file()
+        and file_digest(protocol_path) == TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256
+    )
+    coverage_audit_path = (
+        DEFAULT_TUSHARE_ONE_MINUTE_FULL_SOURCE_COVERAGE_AUDIT.resolve()
+    )
+    coverage_audit_valid = False
+    coverage_audit: dict[str, Any] = {}
+    try:
+        coverage_audit = load_tushare_one_minute_full_source_coverage_audit()
+        coverage_audit_valid = True
+    except Exception:  # noqa: BLE001 - status reports broken metadata without mutating it.
+        coverage_audit = {}
+    fieldwise_protocol_path = (
+        DEFAULT_TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_PROTOCOL.resolve()
+    )
+    fieldwise_result_path = (
+        DEFAULT_TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_RESULT.resolve()
+    )
+    fieldwise_protocol_valid = bool(
+        fieldwise_protocol_path.is_file()
+        and file_digest(fieldwise_protocol_path)
+        == TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_PROTOCOL_SHA256
+    )
+    fieldwise_result_valid = bool(
+        fieldwise_result_path.is_file()
+        and file_digest(fieldwise_result_path)
+        == TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_RESULT_SHA256
+    )
+    record: dict[str, Any] = {}
+    if record_valid:
+        try:
+            record = load_json_record(
+                record_path,
+                kind="a_share_tushare_one_minute_source_acceptance_record",
+            )
+        except Exception:  # noqa: BLE001 - status must remain read-only and value-minimized.
+            record_valid = False
+            record = {}
+
+    formal = record.get("formal_acceptance") or {}
+    manifest_binding = formal.get("manifest") or {}
+    alignment_binding = record.get("explicit_alignment") or {}
+    manifest_path = resolve_record_path(
+        str(manifest_binding.get("path") or "missing.json")
+    )
+    alignment_path = resolve_record_path(
+        str(alignment_binding.get("path") or "missing.json")
+    )
+    manifest_valid = (
+        record_valid
+        and manifest_path.is_file()
+        and file_digest(manifest_path) == manifest_binding.get("sha256")
+    )
+    alignment_valid = (
+        record_valid
+        and alignment_path.is_file()
+        and file_digest(alignment_path) == alignment_binding.get("sha256")
+    )
+    snapshots_root = (
+        resolved
+        / "raw"
+        / "a_share"
+        / "rich"
+        / "tushare"
+        / "minutes"
+        / "1m"
+        / "snapshots"
+    )
+    final_root = snapshots_root / TUSHARE_ONE_MINUTE_RUN_ID
+    partial_root = snapshots_root / f".{TUSHARE_ONE_MINUTE_RUN_ID}.partial"
+    final_manifest_path = final_root / "snapshot_manifest.json"
+    checkpoint_path = partial_root / ".metadata" / "checkpoint.json"
+    final_manifest_valid = False
+    final_acceptance_status = None
+    final_manifest_sha256 = None
+    final_manifest_matches_terminal_audit = False
+    final_coverage_summary: dict[str, Any] = {}
+    if final_manifest_path.is_file():
+        try:
+            final_manifest = load_json_record(
+                final_manifest_path, kind="a_share_rich_data_snapshot"
+            )
+            final_manifest_sha256 = file_digest(final_manifest_path)
+            final_manifest_valid = bool(
+                final_manifest.get("dataset") == "tushare_one_minute_history"
+                and (final_manifest.get("full_source_protocol") or {}).get("sha256")
+                == TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256
+            )
+            final_acceptance_status = final_manifest.get("acceptance_status")
+            coverage = final_manifest.get("coverage") or {}
+            final_coverage_summary = {
+                key: coverage.get(key)
+                for key in (
+                    "median_complete_session_coverage",
+                    "p05_complete_session_coverage",
+                    "potential_non_overlapping_three_session_cohorts",
+                    "observed_cohort_years",
+                    "gate_passed_before_factor_values_or_prices",
+                )
+            }
+            expected_manifest_sha256 = (
+                (
+                    (coverage_audit.get("source_chain") or {}).get(
+                        "external_snapshot_manifest"
+                    )
+                    or {}
+                ).get("sha256")
+            )
+            final_manifest_matches_terminal_audit = bool(
+                coverage_audit_valid
+                and final_manifest_sha256 == expected_manifest_sha256
+            )
+        except Exception:  # noqa: BLE001 - status reports invalid local metadata safely.
+            final_manifest_valid = False
+    fieldwise_manifest_path = (
+        resolved
+        / "derived/a_share/rich/tushare/minute_fieldwise_clean"
+        / f"{TUSHARE_ONE_MINUTE_RUN_ID}_fieldwise_clean_v2"
+        / "snapshot_manifest.json"
+    )
+    fieldwise_manifest_valid = bool(
+        fieldwise_protocol_valid
+        and fieldwise_result_valid
+        and fieldwise_manifest_path.is_file()
+        and file_digest(fieldwise_manifest_path)
+        == TUSHARE_ONE_MINUTE_FIELDWISE_MANIFEST_SHA256
+    )
+    checkpoint: dict[str, Any] = {}
+    if checkpoint_path.is_file():
+        try:
+            checkpoint = load_json_record(
+                checkpoint_path,
+                kind="a_share_tushare_one_minute_resume_checkpoint",
+            )
+        except Exception:  # noqa: BLE001 - status reports invalid local metadata safely.
+            checkpoint = {"status": "invalid_checkpoint_metadata"}
+    preflight_paths = sorted(
+        (resolved / "metadata" / "rich_data" / "preflights").glob(
+            "*_tushare_1m_preflight_*.json"
+        )
+    )
+    latest_preflight: dict[str, Any] = {}
+    if preflight_paths:
+        try:
+            preflight = load_json_record(
+                preflight_paths[-1], kind="a_share_tushare_one_minute_preflight"
+            )
+            latest_preflight = {
+                "path": str(preflight_paths[-1]),
+                "status": preflight.get("status"),
+                "observed_free_gib": preflight.get("observed_free_gib"),
+                "planned_partition_safe_leaf_requests": (
+                    preflight.get("request_protocol") or {}
+                ).get("planned_partition_safe_leaf_requests"),
+                "network_request_issued": preflight.get("network_request_issued"),
+            }
+        except Exception:  # noqa: BLE001 - status reports invalid local metadata safely.
+            latest_preflight = {
+                "path": str(preflight_paths[-1]),
+                "status": "invalid_preflight_metadata",
+            }
+    lock = advisory_lock_status(resolved / ".a_share_tushare_1m.lock")
+    if not record_valid or not protocol_valid or not coverage_audit_valid:
+        next_action = "stop_and_repair_tracked_tushare_minute_source_chain"
+    elif not manifest_valid or not alignment_valid:
+        next_action = (
+            "restore_immutable_accepted_snapshot_and_alignment_do_not_rerun_acceptance"
+        )
+    elif lock["advisory_lock_currently_held"]:
+        next_action = (
+            "terminal_tushare_source_has_an_active_sync_stop_it_safely_do_not_start_another"
+        )
+    elif final_manifest_path.is_file() and (
+        not final_manifest_valid or not final_manifest_matches_terminal_audit
+    ):
+        next_action = "stop_and_repair_terminal_tushare_full_source_manifest_binding"
+    elif fieldwise_manifest_valid:
+        next_action = (
+            "freeze_fingerprint_bound_four_factor_exploratory_research_protocol_before_forward_returns"
+        )
+    elif final_manifest_valid:
+        next_action = (
+            "tushare_original_source_gate_terminal_restore_or_build_only_the_authorized_fieldwise_clean_layer"
+        )
+    else:
+        next_action = (
+            "tushare_full_source_terminal_do_not_redownload_restore_only_for_audit_and_select_a_replacement_source"
+        )
+    return {
+        "source": "tushare_stk_mins_historical_one_minute",
+        "route_role": (
+            "fieldwise_cleaned_four_factor_research_candidate"
+            if fieldwise_manifest_valid
+            else "terminal_source_coverage_failed"
+        ),
+        "network_request_issued": False,
+        "minute_rows_read": False,
+        "token_environment_read": False,
+        "source_acceptance_record": {
+            "path": str(record_path),
+            "expected_sha256": TUSHARE_ONE_MINUTE_SOURCE_ACCEPTANCE_RECORD_SHA256,
+            "fingerprint_valid": record_valid,
+        },
+        "full_source_no_return_protocol": {
+            "path": str(protocol_path),
+            "expected_sha256": TUSHARE_ONE_MINUTE_FULL_SOURCE_SPEC_SHA256,
+            "fingerprint_valid": protocol_valid,
+        },
+        "full_source_coverage_audit": {
+            "path": str(coverage_audit_path),
+            "expected_sha256": TUSHARE_ONE_MINUTE_FULL_SOURCE_COVERAGE_AUDIT_SHA256,
+            "fingerprint_valid": coverage_audit_valid,
+            "status": coverage_audit.get("status"),
+        },
+        "fieldwise_cleaning": {
+            "protocol_path": str(fieldwise_protocol_path),
+            "protocol_fingerprint_valid": fieldwise_protocol_valid,
+            "result_path": str(fieldwise_result_path),
+            "result_fingerprint_valid": fieldwise_result_valid,
+            "manifest_path": str(fieldwise_manifest_path),
+            "manifest_fingerprint_valid": fieldwise_manifest_valid,
+            "retained_factor_count": 4 if fieldwise_result_valid else 0,
+            "all_factor_coverage_gates_passed": (
+                True if fieldwise_result_valid else False
+            ),
+            "minimum_factor_p05_coverage": (
+                0.9917170545277707 if fieldwise_result_valid else None
+            ),
+            "forward_return_fields_read_by_status": False,
+        },
+        "local_acceptance_manifest": {
+            "path": str(manifest_path),
+            "exists": manifest_path.is_file(),
+            "fingerprint_valid": manifest_valid,
+        },
+        "local_alignment_confirmation": {
+            "path": str(alignment_path),
+            "exists": alignment_path.is_file(),
+            "fingerprint_valid": alignment_valid,
+        },
+        "automatic_acceptance_passed": bool(
+            manifest_valid
+            and manifest_binding.get("acceptance_status")
+            == "automatic_checks_passed_pending_time_alignment"
+        ),
+        "explicit_time_and_volume_alignment_confirmed": bool(
+            alignment_valid
+            and alignment_binding.get("status") == "passed_for_feature_research"
+        ),
+        "full_history_snapshot_observed": final_manifest_valid,
+        "full_history": {
+            "run_id": TUSHARE_ONE_MINUTE_RUN_ID,
+            "final_manifest_path": str(final_manifest_path),
+            "final_manifest_valid": final_manifest_valid,
+            "final_manifest_sha256": final_manifest_sha256,
+            "final_manifest_matches_terminal_audit": (
+                final_manifest_matches_terminal_audit
+            ),
+            "acceptance_status": final_acceptance_status,
+            "coverage": final_coverage_summary or None,
+            "partial_root_exists": partial_root.exists(),
+            "checkpoint": {
+                key: checkpoint.get(key)
+                for key in (
+                    "status",
+                    "updated_at",
+                    "expected_partitions",
+                    "completed_partitions",
+                    "resumed_partitions",
+                    "provider_calls_completed",
+                    "source_rows_stored",
+                )
+                if key in checkpoint
+            },
+            "latest_preflight": latest_preflight or None,
+            "process_lock": lock,
+            "minute_rows_read_by_status": False,
+            "forward_return_fields_read_by_status": False,
+        },
+        "next_action": next_action,
     }
 
 
@@ -34258,6 +36024,9 @@ def status_payload(data_root: Path = DATA_ROOT) -> dict[str, Any]:
             str(latest_feature_run) if latest_feature_run else None
         ),
         "baostock_five_minute_storage": baostock_5m_storage_status(resolved_data_root),
+        "selected_minute_source": tushare_one_minute_acceptance_status(
+            resolved_data_root
+        ),
         "qmt_xtquant_one_minute_acceptance": qmt_xtquant_acceptance_status(
             resolved_data_root
         ),
@@ -37708,6 +39477,33 @@ def build_parser() -> argparse.ArgumentParser:
         help="publish the accepted snapshot below this local A-share data root",
     )
 
+    tushare_1m_preflight = subparsers.add_parser(
+        "preflight-tushare-1m",
+        help="audit the frozen 2019--2025 Tushare 1m source and external storage without network access",
+    )
+    tushare_1m_preflight.add_argument(
+        "--data-root",
+        type=Path,
+        required=True,
+        help="explicit external data root with at least 250 GiB free",
+    )
+
+    tushare_1m_history = subparsers.add_parser(
+        "sync-tushare-1m",
+        help="resume the frozen 2019--2025 PIT-universe Tushare one-minute snapshot",
+    )
+    tushare_1m_history.add_argument(
+        "--data-root",
+        type=Path,
+        required=True,
+        help="explicit external data root; completed symbol-year partitions are hash-verified on resume",
+    )
+    tushare_1m_history.add_argument(
+        "--allow-large",
+        action="store_true",
+        help="confirm the frozen large licensed request after the no-network preflight passes",
+    )
+
     subparsers.add_parser(
         "acceptance-baostock-5m",
         help="run the frozen four-symbol BaoStock five-minute acceptance",
@@ -38264,6 +40060,13 @@ def main(argv: list[str] | None = None) -> int:
             manifest = accept_qmt_xtquant_one_minute_export(
                 args.manifest, data_root=args.data_root
             )
+        elif args.command == "preflight-tushare-1m":
+            manifest = write_tushare_one_minute_preflight(data_root=args.data_root)
+        elif args.command == "sync-tushare-1m":
+            manifest = sync_tushare_one_minute_history(
+                allow_large=args.allow_large,
+                data_root=args.data_root,
+            )
         elif args.command == "acceptance-baostock-5m":
             manifest = sync_baostock_5m_acceptance()
         elif args.command == "preflight-baostock-5m":
@@ -38503,6 +40306,10 @@ def main(argv: list[str] | None = None) -> int:
         "build-minute-features": "stored_research_features",
         "acceptance-qmt-1m-export": (
             "stored_qmt_acceptance_pending_explicit_time_alignment"
+        ),
+        "preflight-tushare-1m": "stored_no_network_preflight",
+        "sync-tushare-1m": (
+            "stored_full_source_pending_no_return_feature_materialization"
         ),
         "acceptance-jqdata-moneyflow": "stored_entitlement_acceptance",
         "acceptance-baostock-5m": "stored_five_minute_acceptance",

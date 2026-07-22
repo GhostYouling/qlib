@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_daily_concordance_implementation_repair",
+  "status": "frozen_after_zero_partition_failure_before_retry",
+  "recorded_at": "2026-07-22T04:41:43Z",
+  "protocol": {
+    "path": "docs/a_share_tushare_daily_concordance_protocol.json",
+    "sha256": "acf72e28283405aee93e64f68d63470380d65fa8ccc64c588bfdf203f3914297",
+    "literal_recorded_at": "2026-07-22T05:00:00Z",
+    "timestamp_correction": "The literal recorded_at was mistakenly rounded forward. The unchanged protocol file was created at 2026-07-22T04:34:52Z, before the acceptance manifest was created at 2026-07-22T04:40:21Z. Preserve the original protocol bytes and use this record as the timestamp correction."
+  },
+  "failed_attempt": {
+    "scope": "first_full_source_request_before_any_year_checkpoint",
+    "persisted_year_partitions": 0,
+    "persisted_source_rows": 0,
+    "failure": "The implementation incorrectly required finite pre_close, change, and pct_chg even though those auxiliary fields are not used by the frozen OHLC-volume-amount provider comparison.",
+    "raw_response_persisted": false
+  },
+  "repair": {
+    "provider_interface_fields_dates_and_units_changed": false,
+    "OHLC_volume_or_amount_validation_relaxed": false,
+    "auxiliary_policy": "Coerce pre_close, change, and pct_chg to numeric, preserve provider nulls, and count them in each annual checkpoint and the final manifest.",
+    "comparison_fields_unchanged": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "same_request_plan_retry_allowed": true
+  },
+  "research_boundary": {
+    "forward_return_fields_read": false,
+    "factor_values_read": false,
+    "active_daily_provider_switched": false
+  }
+}
