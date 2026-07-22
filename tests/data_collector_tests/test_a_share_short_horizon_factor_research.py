@@ -5787,8 +5787,8 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
 def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
-    assert len(terminal) == 35
-    assert len({item["mechanism"] for item in terminal}) == 35
+    assert len(terminal) == 36
+    assert len({item["mechanism"] for item in terminal}) == 36
     assert {Path(item["record"]["path"]).name for item in terminal} == {
         path.name
         for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
@@ -5797,7 +5797,7 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         )
     }
     assert status["post_frontier_summary"] == {
-        "terminal_mechanism_count": 35,
+        "terminal_mechanism_count": 36,
         "admitted_factor_count": 0,
         "aggregation_candidate_count": 0,
     }
@@ -5977,6 +5977,33 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
     assert status["selected_source_path"][
         "intraday_return_sign_run_imbalance_terminal"
     ] is True
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_no_return_coverage_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_no_return_uniqueness_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.24791719752571797)
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_forward_returns_read"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_diagnostic_cohorts"
+    ] == 539
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_association_stability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_topk_viability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_dual_gate_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_volatility_resolution_terminal"
+    ] is True
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -5984,16 +6011,16 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         three_day_iteration_status=status,
     )
     assert "当前迭代状态" in report
-    assert "前沿之后另有 35 条机制已到达终止门禁" in report
+    assert "前沿之后另有 36 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
     assert "Tushare 原五因子来源覆盖门仍未通过" in report
     assert "字段级清洗层保留 4 个因子并全部通过覆盖门" in report
-    assert "前四因子和之后五个独立分钟机制的固定诊断均没有产生双门禁合格因子" in report
+    assert "前四因子和之后六个完成收益诊断的独立分钟机制均没有产生双门禁合格因子" in report
     assert "终点收盘位置又在无收益近同义门停止" in report
-    assert "收益符号连跑不平衡通过覆盖和十因子唯一性门" in report
-    assert "0.43940" in report
-    assert "平均 Rank IC 为 -0.00474" in report
-    assert "20 万元整手、双边 10bp 滑点累计为 -7.79%" in report
+    assert "全日波动率早晚分配通过覆盖和十一因子唯一性门" in report
+    assert "0.24792" in report
+    assert "平均 Rank IC 为 -0.01782" in report
+    assert "20 万元整手、双边 10bp 滑点累计为 -34.81%" in report
     assert "未训练模型" in report
     assert "Level2 继续延期" in report
 

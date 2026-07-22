@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "6e04a412a3541d7be03be6eaf4cbe4930477b036169fad9f978dc9597c1dccd0"
+    "668b04f5776f629edd53a496de018ba6ceda33a30c94dee343ef2ca1420dae32"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37342,7 +37342,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_intraday_return_sign_run_imbalance_terminal_rejection_zero_dual_gate_factors"
+        != "aggregation_blocked_after_intraday_volatility_resolution_terminal_rejection_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37350,7 +37350,7 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 35
+        or post_frontier.get("terminal_mechanism_count") != 36
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source")
@@ -37649,6 +37649,42 @@ def load_three_day_iteration_status(
         is not False
         or selected_source.get("intraday_return_sign_run_imbalance_terminal")
         is not True
+        or selected_source.get(
+            "intraday_volatility_resolution_candidate_manifest_sha256"
+        )
+        != "da7d0a455697833a188e9cade9c1393ba16e7fef019e5a07b6f209c6db5cbc41"
+        or selected_source.get(
+            "intraday_volatility_resolution_no_return_coverage_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_volatility_resolution_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_volatility_resolution_maximum_absolute_median_daily_rank_correlation"
+        )
+        != 0.24791719752571797
+        or selected_source.get(
+            "intraday_volatility_resolution_forward_returns_read"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_volatility_resolution_diagnostic_cohorts"
+        )
+        != 539
+        or selected_source.get(
+            "intraday_volatility_resolution_association_stability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_volatility_resolution_topk_viability_passed"
+        )
+        is not False
+        or selected_source.get("intraday_volatility_resolution_dual_gate_passed")
+        is not False
+        or selected_source.get("intraday_volatility_resolution_terminal")
+        is not True
         or selected_source.get("prior_qmt_route_retained_as_fallback_only")
         is not True
         or any(
@@ -37737,6 +37773,7 @@ def load_three_day_iteration_status(
         "intraday_upside_semivariance_share_research_record": "a_share_tushare_intraday_upside_semivariance_share_research_record",
         "intraday_terminal_close_location_research_record": "a_share_tushare_intraday_terminal_close_location_research_record",
         "intraday_return_sign_run_imbalance_research_record": "a_share_tushare_intraday_return_sign_run_imbalance_research_record",
+        "intraday_volatility_resolution_research_record": "a_share_tushare_intraday_volatility_resolution_research_record",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -37855,6 +37892,19 @@ def load_three_day_iteration_status(
     )
     return_sign_run_imbalance_boundary = (
         return_sign_run_imbalance_record.get("research_boundary") or {}
+    )
+    volatility_resolution_record = source_records[
+        "intraday_volatility_resolution_research_record"
+    ]
+    volatility_resolution_decision = volatility_resolution_record.get("decision") or {}
+    volatility_resolution_results = (
+        volatility_resolution_record.get("return_results") or {}
+    )
+    volatility_resolution_no_return = (
+        volatility_resolution_record.get("no_return_results") or {}
+    )
+    volatility_resolution_boundary = (
+        volatility_resolution_record.get("research_boundary") or {}
     )
     if (
         qmt_selection.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
@@ -38171,6 +38221,48 @@ def load_three_day_iteration_status(
         )
         is not False
         or return_sign_run_imbalance_boundary.get(
+            "training_or_model_fitting_performed"
+        )
+        is not False
+        or volatility_resolution_record.get("status")
+        != "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        or volatility_resolution_no_return.get(
+            "coverage_and_capacity_gate_passed"
+        )
+        is not True
+        or volatility_resolution_no_return.get(
+            "all_eleven_uniqueness_gates_passed"
+        )
+        is not True
+        or volatility_resolution_no_return.get(
+            "maximum_absolute_median_daily_rank_correlation_to_eleven_terminal_factors"
+        )
+        != 0.24791719752571797
+        or volatility_resolution_results.get("cohorts") != 539
+        or volatility_resolution_results.get("association_stability_gate_passed")
+        is not False
+        or volatility_resolution_results.get("topk_viability_gate_passed")
+        is not False
+        or volatility_resolution_results.get("dual_gate_passed") is not False
+        or volatility_resolution_results.get(
+            "pilot_net_cumulative_return_at_ten_bp_each_side"
+        )
+        != -0.3480823348201082
+        or volatility_resolution_decision.get(
+            "terminally_reject_exact_factor_direction"
+        )
+        is not True
+        or volatility_resolution_decision.get("aggregation_candidate_added")
+        is not False
+        or volatility_resolution_decision.get("aggregation_allowed") is not False
+        or volatility_resolution_decision.get("selection_allowed") is not False
+        or volatility_resolution_decision.get("level2_intake_justified")
+        is not False
+        or volatility_resolution_boundary.get(
+            "same_history_combination_return_evaluation_performed"
+        )
+        is not False
+        or volatility_resolution_boundary.get(
             "training_or_model_fitting_performed"
         )
         is not False
@@ -40054,7 +40146,22 @@ def render_three_day_research_report(
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
-                    if source.get("intraday_return_sign_run_imbalance_terminal"):
+                    if source.get("intraday_volatility_resolution_terminal"):
+                        next_external_action = (
+                            "四个清洗方向、七个此前分钟方向和全日波动率早晚分配较高方向均已"
+                            "终止；只研究预先登记的全新经济机制，或积累注册后真正未见的分钟"
+                            "样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子和之后六个完成收益诊断的独立分钟机制均"
+                            "没有产生双门禁合格因子；终点收盘位置又在无收益近同义门停止。"
+                            "最新的全日波动率早晚分配通过覆盖和十一因子唯一性门（最大绝对"
+                            "中位日秩相关 0.24792），但唯一一次 539-cohort 诊断平均 Rank IC"
+                            " 为 -0.01782；20 万元整手、双边 10bp 滑点累计为 -34.81%，"
+                            "稳定性和可执行 TopK 均未通过。未训练模型，Level2 继续延期。"
+                        )
+                    elif source.get("intraday_return_sign_run_imbalance_terminal"):
                         next_external_action = (
                             "四个清洗方向、两个午后路径方向、两个全日成交额形态方向、全日"
                             "上行半方差占比、终点收盘位置和收益符号连跑不平衡的较高方向均已"

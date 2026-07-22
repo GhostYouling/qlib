@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_intraday_return_sign_run_imbalance_terminal_rejection_zero_dual_gate_factors",
-  "recorded_at": "2026-07-22T19:00:57Z",
+  "status": "aggregation_blocked_after_intraday_volatility_resolution_terminal_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-22T20:00:02Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -300,10 +300,18 @@
         "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_research_record.json",
         "sha256": "ef325c59c061109248c360bcd836eea70ac4531dd29c1028bf74d5e599108139"
       }
+    },
+    {
+      "mechanism": "tushare_intraday_volatility_resolution_238m",
+      "terminal_gate": "association_stability_and_executable_topk",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_volatility_resolution_research_record.json",
+        "sha256": "b40e639937359ff5f25a783e2834e7488463f152314870642daa6d572d172dc5"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 35,
+    "terminal_mechanism_count": 36,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -384,6 +392,10 @@
     "intraday_return_sign_run_imbalance_research_record": {
       "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_research_record.json",
       "sha256": "ef325c59c061109248c360bcd836eea70ac4531dd29c1028bf74d5e599108139"
+    },
+    "intraday_volatility_resolution_research_record": {
+      "path": "docs/a_share_tushare_intraday_volatility_resolution_research_record.json",
+      "sha256": "b40e639937359ff5f25a783e2834e7488463f152314870642daa6d572d172dc5"
     },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
@@ -487,8 +499,18 @@
     "intraday_return_sign_run_imbalance_topk_viability_passed": false,
     "intraday_return_sign_run_imbalance_dual_gate_passed": false,
     "intraday_return_sign_run_imbalance_terminal": true,
+    "intraday_volatility_resolution_candidate_manifest_sha256": "da7d0a455697833a188e9cade9c1393ba16e7fef019e5a07b6f209c6db5cbc41",
+    "intraday_volatility_resolution_no_return_coverage_passed": true,
+    "intraday_volatility_resolution_no_return_uniqueness_passed": true,
+    "intraday_volatility_resolution_maximum_absolute_median_daily_rank_correlation": 0.24791719752571797,
+    "intraday_volatility_resolution_forward_returns_read": true,
+    "intraday_volatility_resolution_diagnostic_cohorts": 539,
+    "intraday_volatility_resolution_association_stability_passed": false,
+    "intraday_volatility_resolution_topk_viability_passed": false,
+    "intraday_volatility_resolution_dual_gate_passed": false,
+    "intraday_volatility_resolution_terminal": true,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "Retire the four exact cleaned historical directions and the exact higher-direction afternoon signed-amount-efficiency, afternoon drawdown-recovery-resilience, full-session amount-participation-entropy, full-session amount-profile serial-persistence, full-session upside-semivariance-share, terminal-close-location, and return-sign-run-imbalance mechanisms. Terminal close location stopped before returns as a late-VWAP near synonym; sign-run imbalance passed uniqueness but failed association and executable Top-3 gates, with the CNY 200,000 board-lot result turning negative by five basis points per side. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
+    "next_external_action": "Retire the four exact cleaned historical directions and the exact higher-direction afternoon signed-amount-efficiency, afternoon drawdown-recovery-resilience, full-session amount-participation-entropy, full-session amount-profile serial-persistence, full-session upside-semivariance-share, terminal-close-location, return-sign-run-imbalance, and intraday-volatility-resolution mechanisms. Volatility resolution passed coverage and all eleven uniqueness comparisons but failed association and executable Top-3 gates; its CNY 200,000 board-lot result lost 34.81% at ten basis points per side. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
   },
   "decision": {
     "aggregation_allowed": false,
