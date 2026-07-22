@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_terminal_close_location_research_record",
+  "status": "terminal_rejected_at_no_return_uniqueness_gate",
+  "recorded_at": "2026-07-22T18:00:23Z",
+  "purpose": "Record the fingerprint-bound construction, coverage, capacity, and nine-factor no-return uniqueness result for the Tushare full-session terminal-close-location mechanism without reading forward returns or mistaking high coverage for an independent strategy factor.",
+  "factor": {
+    "name": "intraday_terminal_close_location_240m",
+    "direction": "higher",
+    "formula": "(c_240 - min(c_1..c_240)) / (max(c_1..c_240) - min(c_1..c_240)), using the 240 continuous-session closes at 09:31-11:30 and 13:01-15:00",
+    "economic_hypothesis": "A stock that finishes near its strongest observed continuous-session minute close may retain terminal demand dominance from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "raw_open_high_low_volume_or_amount_used": false,
+    "standalone_09_30_row_excluded_from_formula": true,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_afternoon_efficiency_manifest_sha256": "e1184b04385d1b0d1eb1eb4a56ad6c21609c4387cf53324cbbb41c420cdb8ed5",
+    "prior_afternoon_recovery_manifest_sha256": "a94413ba437dce44ef17215cce42c2d62e5aefab376f345df525dec3fd7a9c45",
+    "prior_amount_entropy_manifest_sha256": "58c9a9c8f3991fa94a3e5289ed0a72333dfc037dae1e7f318de29eca4f207631",
+    "prior_amount_profile_serial_persistence_manifest_sha256": "8c362725187c9e6021e64a07feadc6958e4334c65642dca0e0dc1eb4fccf7186",
+    "prior_upside_semivariance_share_manifest_sha256": "81d121431a4ec79a839b592322ea1da22faf60191197ca1020f691d401bdab61",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_terminal_close_location/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_terminal_close_location_v1/snapshot_manifest.json",
+      "sha256": "69a66d063cb470702db5e8b256f0b4be0f54c847c3188578fe85fba6ba63441c",
+      "dataset_sha256": "da90792615fa120d07417c8d9d5a2d8660a16f7c5ea5cd2bb09b5cb724eeba00",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7695092,
+      "zero_close_range_rows": 29406,
+      "invalid_required_value_rows": 0,
+      "ieee_boundary_canonicalization_rows": 0,
+      "location_range_violation_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_terminal_close_location_no_return_preregistration.json",
+      "sha256": "f15e3743458cdc7d52b68be50210fb35a76d8c3f5a62ed6415785a16ed4f1ef4",
+      "factor_values_observed_before_registration": false,
+      "comparison_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260722T175938Z_intraday_terminal_close_location_no_return_audit.json",
+      "sha256": "1ff6a7b0b73192664145f97e2e9d66351b80fad20d4b8add19478d484ab559af",
+      "status": "terminal_rejected_at_no_return_uniqueness_gate",
+      "forward_return_fields_read": false
+    },
+    "diagnostic_preregistration_created": false,
+    "historical_return_diagnostic_created": false,
+    "historical_return_consumption_marker_created": false
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328066,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "comparison_factor_count": 9,
+    "maximum_absolute_median_daily_rank_correlation": 0.8401483476184668,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "failed_comparison_factor": "late_vwap_to_day_vwap_30m",
+    "failed_comparison_score_direction": "higher",
+    "failed_comparison_pairwise_sessions": 1623,
+    "median_daily_rank_correlation_to_failed_comparison": 0.8401483476184668,
+    "median_daily_rank_correlation_to_upside_semivariance_share": 0.4822288663108508,
+    "all_nine_uniqueness_gates_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "terminal_reason": "The exact higher terminal-close-location factor exceeded the frozen absolute median daily rank-correlation limit against the existing higher late-VWAP-to-day-VWAP factor, so it is a near-synonym under the preregistered no-return gate.",
+    "invert_reformulate_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "return_diagnostic_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "research_boundary": {
+    "coverage_proved_predictive_value": false,
+    "uniqueness_failure_is_not_return_evidence": true,
+    "daily_price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction near-synonym and preserve its builder and no-return evidence. Continue only with a genuinely distinct mechanism frozen before observing its candidate values, comparison values, or returns."
+  }
+}

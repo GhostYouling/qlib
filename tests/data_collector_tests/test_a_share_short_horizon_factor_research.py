@@ -5787,8 +5787,8 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
 def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
-    assert len(terminal) == 33
-    assert len({item["mechanism"] for item in terminal}) == 33
+    assert len(terminal) == 34
+    assert len({item["mechanism"] for item in terminal}) == 34
     assert {Path(item["record"]["path"]).name for item in terminal} == {
         path.name
         for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
@@ -5797,7 +5797,7 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         )
     }
     assert status["post_frontier_summary"] == {
-        "terminal_mechanism_count": 33,
+        "terminal_mechanism_count": 34,
         "admitted_factor_count": 0,
         "aggregation_candidate_count": 0,
     }
@@ -5929,6 +5929,27 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
     assert status["selected_source_path"][
         "intraday_upside_semivariance_share_terminal"
     ] is True
+    assert status["selected_source_path"][
+        "intraday_terminal_close_location_no_return_coverage_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_terminal_close_location_no_return_uniqueness_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_terminal_close_location_maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.8401483476184668)
+    assert status["selected_source_path"][
+        "intraday_terminal_close_location_failed_comparison_factor"
+    ] == "late_vwap_to_day_vwap_30m"
+    assert status["selected_source_path"][
+        "intraday_terminal_close_location_forward_returns_read"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_terminal_close_location_diagnostic_created"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_terminal_close_location_terminal"
+    ] is True
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -5936,7 +5957,7 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         three_day_iteration_status=status,
     )
     assert "当前迭代状态" in report
-    assert "前沿之后另有 33 条机制已到达终止门禁" in report
+    assert "前沿之后另有 34 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
     assert "Tushare 原五因子来源覆盖门仍未通过" in report
     assert "字段级清洗层保留 4 个因子并全部通过覆盖门" in report
@@ -5944,6 +5965,9 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
     assert "TopK 通过 0 个、双门禁通过 0 个" in report
     assert "午后资金加权方向效率、午后最大回撤恢复韧性、全日成交额参与熵、全日成交额序列持续性和全日上行半方差占比" in report
     assert "五个预登记的较高方向都未同时通过关联稳定性和可执行 TopK 门" in report
+    assert "全日终点收盘位置覆盖门通过" in report
+    assert "0.84015" in report
+    assert "超过冻结的 0.8 上限，因此在读取收益前终止" in report
     assert "开盘缺口因子继续排除" in report
     assert "未训练模型" in report
     assert "Level2 继续延期" in report

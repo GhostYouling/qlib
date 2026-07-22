@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_intraday_upside_semivariance_share_terminal_rejection_zero_dual_gate_factors",
-  "recorded_at": "2026-07-22T17:13:12Z",
+  "status": "aggregation_blocked_after_intraday_terminal_close_location_no_return_uniqueness_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-22T18:00:23Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -284,10 +284,18 @@
         "path": "docs/a_share_tushare_intraday_upside_semivariance_share_research_record.json",
         "sha256": "a878729da102b9c4216f08a5c89707f58093541d8512dce522371d43d0d505b2"
       }
+    },
+    {
+      "mechanism": "tushare_intraday_terminal_close_location_240m",
+      "terminal_gate": "no_return_uniqueness",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_terminal_close_location_research_record.json",
+        "sha256": "b5c0f740353e35df27d7f0390dbee7e500990fb4d7986550faadd632ab0ef0c9"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 33,
+    "terminal_mechanism_count": 34,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -360,6 +368,10 @@
     "intraday_upside_semivariance_share_research_record": {
       "path": "docs/a_share_tushare_intraday_upside_semivariance_share_research_record.json",
       "sha256": "a878729da102b9c4216f08a5c89707f58093541d8512dce522371d43d0d505b2"
+    },
+    "intraday_terminal_close_location_research_record": {
+      "path": "docs/a_share_tushare_intraday_terminal_close_location_research_record.json",
+      "sha256": "b5c0f740353e35df27d7f0390dbee7e500990fb4d7986550faadd632ab0ef0c9"
     },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
@@ -445,8 +457,16 @@
     "intraday_upside_semivariance_share_topk_viability_passed": false,
     "intraday_upside_semivariance_share_dual_gate_passed": false,
     "intraday_upside_semivariance_share_terminal": true,
+    "intraday_terminal_close_location_candidate_manifest_sha256": "69a66d063cb470702db5e8b256f0b4be0f54c847c3188578fe85fba6ba63441c",
+    "intraday_terminal_close_location_no_return_coverage_passed": true,
+    "intraday_terminal_close_location_no_return_uniqueness_passed": false,
+    "intraday_terminal_close_location_maximum_absolute_median_daily_rank_correlation": 0.8401483476184668,
+    "intraday_terminal_close_location_failed_comparison_factor": "late_vwap_to_day_vwap_30m",
+    "intraday_terminal_close_location_forward_returns_read": false,
+    "intraday_terminal_close_location_diagnostic_created": false,
+    "intraday_terminal_close_location_terminal": true,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "Retire the four exact cleaned historical directions and the exact higher-direction afternoon signed-amount-efficiency, afternoon drawdown-recovery-resilience, full-session amount-participation-entropy, full-session amount-profile serial-persistence, and full-session upside-semivariance-share mechanisms. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
+    "next_external_action": "Retire the four exact cleaned historical directions and the exact higher-direction afternoon signed-amount-efficiency, afternoon drawdown-recovery-resilience, full-session amount-participation-entropy, full-session amount-profile serial-persistence, full-session upside-semivariance-share, and full-session terminal-close-location mechanisms. The terminal-close-location factor stopped before returns because it was a near synonym of late-VWAP-to-day-VWAP. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, or retest these terminal factors, and do not purchase Level-2 to rescue them."
   },
   "decision": {
     "aggregation_allowed": false,
