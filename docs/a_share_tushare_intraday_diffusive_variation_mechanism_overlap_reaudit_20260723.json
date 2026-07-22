@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_diffusive_variation_mechanism_overlap_reaudit",
+  "status": "selected_intraday_diffusive_variation_ratio_before_candidate_values_comparison_values_or_forward_returns",
+  "recorded_at": "2026-07-22T23:26:03Z",
+  "purpose": "Reject a near-duplicate full-session directional-efficiency idea before values and select one economically distinct minute-path mechanism for the next ordered no-return audit.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "9f636eb1b6eee11afa5a064a977c99ecfce10b87ac3acb920047d0152e86072f",
+    "status": "aggregation_blocked_after_intraday_up_move_amount_share_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count": 39,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "overlap_inventory": {
+    "daily_path_efficiency": {
+      "name": "signed_efficiency_ratio_10",
+      "formula": "($close/Ref($close, 10) - 1) / Sum(Abs($close/Ref($close, 1) - 1), 10)",
+      "terminal_evidence": "The exact higher ten-session signed path-efficiency direction was already tested and rejected; changing only the sampling frequency is not economic independence."
+    },
+    "terminal_minute_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m"
+    ]
+  },
+  "rejected_before_value_observation": {
+    "name": "intraday_directional_efficiency_ratio_238m",
+    "proposed_formula": "sum(r_j) / sum(abs(r_j)) across the 238 within-half adjacent minute log returns",
+    "reason": "This is the same signed path-efficiency mechanism as terminal daily signed_efficiency_ratio_10 at a different sampling frequency, and it is also a price-only/full-session variant of the terminal afternoon amount-weighted directional-efficiency branch. Frequency and weighting removal do not establish a genuinely independent mechanism.",
+    "candidate_factor_values_observed": false,
+    "terminal_factor_comparison_values_observed": false,
+    "daily_prices_or_forward_returns_read": false,
+    "future_retest_or_reformulation_allowed": false
+  },
+  "selected_candidate": {
+    "name": "intraday_diffusive_variation_ratio_238m",
+    "direction": "higher",
+    "formula": "[(pi/2) * sum_h sum_{j=2..119} abs(r_hj) * abs(r_h,j-1)] / [sum_h sum_{j=1..119} r_hj^2], for h in morning and afternoon",
+    "mechanism": "The ratio of within-half realized bipower variation to realized variance measures whether quadratic variation is distributed through adjacent continuous moves rather than concentrated in isolated jumps.",
+    "hypothesis": "A high close-known ratio indicates smoother continuous price discovery and less isolated shock concentration, which may reduce immediate reversal risk and persist from the next open through the third close.",
+    "economic_distinction": "It is sign-blind and amount-free. It measures temporal concentration of absolute return magnitudes, not total volatility, morning-versus-afternoon allocation, positive-versus-negative semivariance, terminal position, sign runs, signed path efficiency, amount timing, or amount-return dependence.",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "standalone_09_30_excluded": true,
+    "cross_lunch_return_and_bipower_pair_excluded": true,
+    "candidate_factor_values_observed_before_selection": false,
+    "terminal_factor_comparison_values_observed_before_selection": false,
+    "daily_prices_or_forward_returns_read_before_selection": false
+  },
+  "decision": {
+    "freeze_separate_no_return_preregistration_before_candidate_values": true,
+    "coverage_capacity_and_all_fifteen_minute_factor_uniqueness_required_before_daily_prices": true,
+    "same_history_direction_formula_window_or_weight_search_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  }
+}
