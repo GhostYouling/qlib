@@ -299,6 +299,14 @@ def test_status_reports_selected_tushare_minute_route_without_rows_or_network(
     assert selected["automatic_acceptance_passed"] is True
     assert selected["explicit_time_and_volume_alignment_confirmed"] is True
     assert selected["full_history_snapshot_observed"] is False
+    assert selected["completed_research"]["terminal_chain_valid"] is True
+    assert selected["completed_research"]["aggregation_allowed"] is False
+    assert selected["completed_research"]["cleaned_four_factor_record"][
+        "fingerprint_valid"
+    ] is True
+    assert selected["completed_research"][
+        "afternoon_signed_amount_efficiency_record"
+    ]["fingerprint_valid"] is True
     assert selected["next_action"] == (
         "tushare_full_source_terminal_do_not_redownload_restore_only_for_audit_and_select_a_replacement_source"
     )

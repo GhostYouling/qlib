@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_afternoon_signed_amount_efficiency_research_record",
+  "status": "terminal_rejected_at_association_stability_and_executable_topk_gates",
+  "recorded_at": "2026-07-22T13:22:59Z",
+  "purpose": "Record the fingerprint-bound construction, repaired no-return admission, and single historical three-session return diagnostic for the Tushare afternoon amount-weighted directional-efficiency mechanism without mistaking coverage or weak aggregate Rank IC for a usable Top-3 strategy.",
+  "factor": {
+    "name": "afternoon_signed_amount_efficiency_120m",
+    "direction": "higher",
+    "formula": "sum(amount_t * log(close_t / close_previous_bar_end)) / sum(amount_t * abs(log(close_t / close_previous_bar_end))) for t=13:01..15:00, where 13:01 uses 11:30 as the previous bar end",
+    "economic_hypothesis": "A stock whose afternoon signed return path is more consistently supported by traded amount may retain short-horizon demand pressure.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "raw_open_high_low_or_volume_used": false,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_afternoon_signed_amount_efficiency/tushare_stk_mins_1m_2019_2025_ea0cbb8f_afternoon_signed_amount_efficiency_v1/snapshot_manifest.json",
+      "sha256": "e1184b04385d1b0d1eb1eb4a56ad6c21609c4387cf53324cbbb41c420cdb8ed5",
+      "dataset_sha256": "e580ce8bbcd7779256d344153def5d0587e1fd1ee8d59af63ef9e3d6a9254dd2",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7633609,
+      "zero_denominator_rows": 90889,
+      "invalid_required_value_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_afternoon_signed_amount_efficiency_no_return_preregistration.json",
+      "sha256": "072693166e96e228d734b3789db3613ea16d4fc87abfd35eb81edf1710f6d9b6",
+      "factor_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "quality_semantics_repair": {
+      "path": "docs/a_share_tushare_afternoon_signed_amount_efficiency_quality_semantics_repair.json",
+      "sha256": "2a22cd253249ec7e5574c77ae9e1ea9c9a0dadc717203d64c7198114fe5f87af",
+      "scope": "Reproduce repository-standard per-field point-in-time forward-fill after effective disclosure dates.",
+      "factor_or_gate_changed": false,
+      "forward_returns_read_before_repair": false
+    },
+    "superseded_no_return_audit": {
+      "path": "data/experiments/short_horizon/20260722T125941Z_afternoon_signed_amount_efficiency_no_return_audit.json",
+      "sha256": "963c378d67dd5dc749cb43de1352ec79bab6ead4b8cfecf23c1d3a592790a8a1",
+      "preserved": true,
+      "forward_returns_read": false
+    },
+    "corrected_no_return_audit": {
+      "path": "data/experiments/short_horizon/20260722T131733Z_afternoon_signed_amount_efficiency_no_return_audit.json",
+      "sha256": "a0203b564ba093d09cebe17ebcb36595e63b97f972a8c04bd29098198325ed7d",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_returns_read": false
+    },
+    "superseded_diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_afternoon_signed_amount_efficiency_diagnostic_preregistration.json",
+      "sha256": "7c5c9d7237e5afaa2d8c80b93f6daf99c873e4e9ff428440cc724b7040ccaed7",
+      "consumed": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_afternoon_signed_amount_efficiency_diagnostic_preregistration_v2.json",
+      "sha256": "3d050a7c303ffae8dd09e31a4010d9128611accc76aac7a6399a21192c7f9eda",
+      "forward_returns_read_before_registration": false
+    }
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1321007,
+    "median_coverage": 0.993715628486518,
+    "p05_coverage": 0.9821720008478169,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "maximum_absolute_median_daily_rank_correlation_to_four_terminal_factors": 0.5817546144749696,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "all_four_uniqueness_gates_passed": true
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260722T132214Z",
+      "path": "data/experiments/short_horizon/20260722T132214Z_factor_diagnostic.json",
+      "sha256": "06d14bc394b2e45a55f9939038926dac1940ec04ec74a8bca776c0d052dcb313"
+    },
+    "stability_audit": {
+      "run_id": "20260722T132234Z",
+      "path": "data/experiments/short_horizon/20260722T132234Z_factor_stability_audit.json",
+      "sha256": "a386f2c9e934e8a9b5d6885185be9d37fb51866a68d294ebbcfa1c0991812636"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260722T132234Z",
+      "path": "data/experiments/short_horizon/20260722T132234Z_factor_topk_viability_audit.json",
+      "sha256": "06a4c2a0ac56e739c8c835c8776c82218e9ebaeac4515e259c94e80c257b8046"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/tushare_afternoon_signed_amount_efficiency_v1_consumption.json",
+      "sha256": "db9830a134799857069d29e5dcbf55a5f45ededcddb5fcefa5753afcdc77f08c",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "return_results": {
+    "cohorts": 539,
+    "mean_rank_ic": 0.0019634344810706187,
+    "median_rank_ic": 0.0031532343249435868,
+    "positive_rank_ic_rate": 0.5139146567717996,
+    "mean_top3_minus_bottom3_gross_return": -0.0010214853618840008,
+    "years_with_nonpositive_mean_rank_ic": [
+      2019,
+      2020,
+      2021,
+      2024,
+      2025
+    ],
+    "association_stability_gate_passed": false,
+    "execution_aware_top3_net_cumulative_return": -0.709656942360783,
+    "execution_aware_top3_maximum_drawdown": -0.8850776412243985,
+    "years_with_nonpositive_execution_aware_return": [
+      2021,
+      2022,
+      2024,
+      2025
+    ],
+    "pilot_net_cumulative_return_at_ten_bp_each_side": -0.19773956213212496,
+    "pilot_maximum_drawdown": -0.27465260498520094,
+    "pilot_board_lot_affordability_rate": 0.9429109159347553,
+    "pilot_maximum_daily_amount_participation": 0.006584218736898086,
+    "pilot_terminal_unresolved_positions": 0,
+    "topk_viability_gate_passed": false,
+    "dual_gate_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "invert_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "terminal_reason": "The factor failed both the full association-stability gate and the executable Top-3 gate despite passing no-return coverage and uniqueness checks."
+  },
+  "research_boundary": {
+    "coverage_or_uniqueness_proved_predictive_value": false,
+    "weak_positive_overall_rank_ic_is_not_a_stable_top3_strategy": true,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction mechanism. Preserve the reusable minute-factor builder and ordered audit pattern, then propose a genuinely distinct mechanism and freeze it before observing values or returns; do not purchase Level-2 to rescue this result."
+  }
+}

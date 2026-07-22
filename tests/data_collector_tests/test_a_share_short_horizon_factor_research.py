@@ -5784,11 +5784,11 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
     assert "`new_data`" in report
 
 
-def test_three_day_iteration_status_binds_tushare_cleaned_factor_terminal_result():
+def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
-    assert len(terminal) == 28
-    assert len({item["mechanism"] for item in terminal}) == 28
+    assert len(terminal) == 29
+    assert len({item["mechanism"] for item in terminal}) == 29
     assert {Path(item["record"]["path"]).name for item in terminal} == {
         path.name
         for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
@@ -5797,7 +5797,7 @@ def test_three_day_iteration_status_binds_tushare_cleaned_factor_terminal_result
         )
     }
     assert status["post_frontier_summary"] == {
-        "terminal_mechanism_count": 28,
+        "terminal_mechanism_count": 29,
         "admitted_factor_count": 0,
         "aggregation_candidate_count": 0,
     }
@@ -5839,6 +5839,24 @@ def test_three_day_iteration_status_binds_tushare_cleaned_factor_terminal_result
     assert status["selected_source_path"][
         "cleaned_feature_dual_gate_qualified_factors"
     ] == []
+    assert status["selected_source_path"][
+        "afternoon_signed_amount_efficiency_no_return_coverage_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "afternoon_signed_amount_efficiency_no_return_uniqueness_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "afternoon_signed_amount_efficiency_association_stability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "afternoon_signed_amount_efficiency_topk_viability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "afternoon_signed_amount_efficiency_dual_gate_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "afternoon_signed_amount_efficiency_terminal"
+    ] is True
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -5846,12 +5864,14 @@ def test_three_day_iteration_status_binds_tushare_cleaned_factor_terminal_result
         three_day_iteration_status=status,
     )
     assert "当前迭代状态" in report
-    assert "前沿之后另有 28 条机制已到达终止门禁" in report
+    assert "前沿之后另有 29 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
     assert "Tushare 原五因子来源覆盖门仍未通过" in report
     assert "字段级清洗层保留 4 个因子并全部通过覆盖门" in report
     assert "唯一一次 539-cohort 诊断" in report
     assert "TopK 通过 0 个、双门禁通过 0 个" in report
+    assert "午后资金加权方向效率通过无收益覆盖与独立性门" in report
+    assert "仍同时未通过关联稳定性和可执行 TopK 门" in report
     assert "开盘缺口因子继续排除" in report
     assert "未训练模型" in report
     assert "Level2 继续延期" in report

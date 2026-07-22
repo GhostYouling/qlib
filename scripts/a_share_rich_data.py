@@ -102,6 +102,14 @@ DEFAULT_TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_PROTOCOL = (
 DEFAULT_TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_RESULT = (
     REPO_ROOT / "docs" / "a_share_tushare_one_minute_fieldwise_cleaning_result.json"
 )
+DEFAULT_TUSHARE_CLEANED_FOUR_FACTOR_RESEARCH_RECORD = (
+    REPO_ROOT / "docs" / "a_share_tushare_cleaned_four_factor_research_record.json"
+)
+DEFAULT_TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_afternoon_signed_amount_efficiency_research_record.json"
+)
 DEFAULT_JQDATA_MONEYFLOW_CONTRACT = (
     REPO_ROOT / "docs" / "a_share_jqdata_moneyflow_data_contract.json"
 )
@@ -468,6 +476,12 @@ TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_RESULT_SHA256 = (
 )
 TUSHARE_ONE_MINUTE_FIELDWISE_MANIFEST_SHA256 = (
     "06b5ffc2dac16f608d92e9eb7d93729800a2fa99e5727817caead3d698e19bd3"
+)
+TUSHARE_CLEANED_FOUR_FACTOR_RESEARCH_RECORD_SHA256 = (
+    "f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2"
+)
+TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD_SHA256 = (
+    "bd872c494f8dbfa7eed82e79a67d145a08e561dbdc5f36548f172fc79641cd1d"
 )
 TUSHARE_ONE_MINUTE_MINIMUM_FREE_BYTES = 250 * 1024**3
 TUSHARE_ONE_MINUTE_MAX_SESSIONS_PER_REQUEST = 33
@@ -35733,6 +35747,25 @@ def tushare_one_minute_acceptance_status(data_root: Path) -> dict[str, Any]:
         and file_digest(fieldwise_result_path)
         == TUSHARE_ONE_MINUTE_FIELDWISE_CLEANING_RESULT_SHA256
     )
+    cleaned_four_factor_record_path = (
+        DEFAULT_TUSHARE_CLEANED_FOUR_FACTOR_RESEARCH_RECORD.resolve()
+    )
+    afternoon_efficiency_record_path = (
+        DEFAULT_TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD.resolve()
+    )
+    cleaned_four_factor_record_valid = bool(
+        cleaned_four_factor_record_path.is_file()
+        and file_digest(cleaned_four_factor_record_path)
+        == TUSHARE_CLEANED_FOUR_FACTOR_RESEARCH_RECORD_SHA256
+    )
+    afternoon_efficiency_record_valid = bool(
+        afternoon_efficiency_record_path.is_file()
+        and file_digest(afternoon_efficiency_record_path)
+        == TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD_SHA256
+    )
+    minute_research_terminal_chain_valid = bool(
+        cleaned_four_factor_record_valid and afternoon_efficiency_record_valid
+    )
     record: dict[str, Any] = {}
     if record_valid:
         try:
@@ -35881,9 +35914,11 @@ def tushare_one_minute_acceptance_status(data_root: Path) -> dict[str, Any]:
         not final_manifest_valid or not final_manifest_matches_terminal_audit
     ):
         next_action = "stop_and_repair_terminal_tushare_full_source_manifest_binding"
+    elif fieldwise_manifest_valid and not minute_research_terminal_chain_valid:
+        next_action = "stop_and_repair_tracked_minute_research_terminal_chain"
     elif fieldwise_manifest_valid:
         next_action = (
-            "freeze_fingerprint_bound_four_factor_exploratory_research_protocol_before_forward_returns"
+            "continue_only_with_genuinely_distinct_preregistered_mechanism_or_unseen_post_registration_data"
         )
     elif final_manifest_valid:
         next_action = (
@@ -35896,9 +35931,13 @@ def tushare_one_minute_acceptance_status(data_root: Path) -> dict[str, Any]:
     return {
         "source": "tushare_stk_mins_historical_one_minute",
         "route_role": (
-            "fieldwise_cleaned_four_factor_research_candidate"
-            if fieldwise_manifest_valid
-            else "terminal_source_coverage_failed"
+            "terminal_minute_research_zero_dual_gate_factors"
+            if fieldwise_manifest_valid and minute_research_terminal_chain_valid
+            else (
+                "invalid_minute_research_terminal_chain"
+                if fieldwise_manifest_valid
+                else "terminal_source_coverage_failed"
+            )
         ),
         "network_request_issued": False,
         "minute_rows_read": False,
@@ -35934,6 +35973,26 @@ def tushare_one_minute_acceptance_status(data_root: Path) -> dict[str, Any]:
                 0.9917170545277707 if fieldwise_result_valid else None
             ),
             "forward_return_fields_read_by_status": False,
+        },
+        "completed_research": {
+            "cleaned_four_factor_record": {
+                "path": str(cleaned_four_factor_record_path),
+                "expected_sha256": TUSHARE_CLEANED_FOUR_FACTOR_RESEARCH_RECORD_SHA256,
+                "fingerprint_valid": cleaned_four_factor_record_valid,
+                "dual_gate_qualified_factors": [],
+            },
+            "afternoon_signed_amount_efficiency_record": {
+                "path": str(afternoon_efficiency_record_path),
+                "expected_sha256": TUSHARE_AFTERNOON_SIGNED_AMOUNT_EFFICIENCY_RESEARCH_RECORD_SHA256,
+                "fingerprint_valid": afternoon_efficiency_record_valid,
+                "association_stability_gate_passed": False,
+                "topk_viability_gate_passed": False,
+                "dual_gate_passed": False,
+            },
+            "terminal_chain_valid": minute_research_terminal_chain_valid,
+            "aggregation_allowed": False,
+            "current_scoring_or_selection_allowed": False,
+            "forward_return_values_read_by_status": False,
         },
         "local_acceptance_manifest": {
             "path": str(manifest_path),

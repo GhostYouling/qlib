@@ -1,0 +1,67 @@
+{
+  "kind": "a_share_tushare_afternoon_signed_amount_efficiency_quality_semantics_repair",
+  "version": 1,
+  "status": "frozen_after_pre_return_infrastructure_mismatch_before_corrected_no_return_audit",
+  "frozen_at": "2026-07-22T13:11:36Z",
+  "purpose": "Correct only the no-return quality-state materialization so it exactly matches the repository-standard attach_quality_asof semantics before any forward return is read.",
+  "bound_protocol": {
+    "path": "docs/a_share_tushare_afternoon_signed_amount_efficiency_no_return_preregistration.json",
+    "sha256": "072693166e96e228d734b3789db3613ea16d4fc87abfd35eb81edf1710f6d9b6"
+  },
+  "candidate_snapshot": {
+    "sha256": "e1184b04385d1b0d1eb1eb4a56ad6c21609c4387cf53324cbbb41c420cdb8ed5",
+    "dataset_sha256": "e580ce8bbcd7779256d344153def5d0587e1fd1ee8d59af63ef9e3d6a9254dd2"
+  },
+  "superseded_no_return_audit": {
+    "path": "data/experiments/short_horizon/20260722T125941Z_afternoon_signed_amount_efficiency_no_return_audit.json",
+    "sha256": "963c378d67dd5dc749cb43de1352ec79bab6ead4b8cfecf23c1d3a592790a8a1",
+    "reason": "Its custom no-price helper selected one latest fundamental event row and treated a missing field on that event as ineligible instead of reproducing the repository-standard per-field forward-fill across already-effective disclosures.",
+    "forward_return_fields_read": false
+  },
+  "superseded_diagnostic_preregistration": {
+    "path": "docs/a_share_tushare_afternoon_signed_amount_efficiency_diagnostic_preregistration.json",
+    "sha256": "7c5c9d7237e5afaa2d8c80b93f6daf99c873e4e9ff428440cc724b7040ccaed7",
+    "reason": "It is bound to the superseded no-return audit and therefore may not be consumed."
+  },
+  "failed_diagnostic_attempts": {
+    "attempt_count": 2,
+    "stopped_before_consumption_marker": true,
+    "stopped_before_forward_return_construction": true,
+    "diagnostic_artifact_written": false,
+    "observed_repository_standard_quality_listing_rows": 1331759,
+    "observed_superseded_no_return_quality_listing_rows": 1330780,
+    "quality_row_difference": 979,
+    "observed_repository_standard_candidate_eligible_rows": 1321007,
+    "observed_superseded_no_return_candidate_eligible_rows": 1320121,
+    "candidate_row_difference": 886,
+    "cohort_count_unchanged": 540,
+    "p05_eligible_names_unchanged": 138.0
+  },
+  "root_cause": {
+    "repository_standard": "attach_quality_asof places every already-effective disclosure on an instrument timeline and forward-fills each quality column separately; a later disclosure with one missing field does not erase an earlier already-known value for that field.",
+    "incorrect_helper": "quality_listing_eligible_keys selected the latest effective event row as an indivisible record and rejected the row when any required field on that event was missing.",
+    "example": "SZ002971 was quality-eligible from 2020-02-17 under the standard timeline because its earlier disclosed Q2 revenue_yoy and profit_yoy remained known even though the later Q3 row omitted those fields."
+  },
+  "only_authorized_repair": {
+    "implementation": "After the identical effective-date sort and same-effective-date last-record selection, forward-fill roe, net_profit, revenue_yoy, and profit_yoy separately within each instrument before mapping the latest effective state to holding dates.",
+    "factor_formula_changed": false,
+    "factor_direction_changed": false,
+    "candidate_snapshot_changed": false,
+    "holding_period_topk_cost_quality_listing_coverage_capacity_or_uniqueness_threshold_changed": false,
+    "comparison_catalog_changed": false,
+    "forward_return_read_allowed_during_repair_or_corrected_no_return_audit": false
+  },
+  "required_next_steps": [
+    "preserve the superseded audit and diagnostic preregistration",
+    "add an offline regression that reproduces per-field quality forward-fill",
+    "rerun the exact no-return coverage capacity and four-factor uniqueness audit with the corrected helper",
+    "freeze a new diagnostic preregistration bound to the corrected audit before any forward return construction"
+  ],
+  "prohibited": [
+    "delete_or_rewrite_the_superseded_evidence",
+    "change_the_factor_or_any_gate",
+    "use_the_observed_coverage_difference_as_a_filter",
+    "consume_the_superseded_diagnostic_preregistration",
+    "read_forward_returns_before_a_new_corrected_diagnostic_preregistration"
+  ]
+}
