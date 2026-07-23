@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Build and audit the preregistered amount-leading-next-return correlation.
+"""Build and audit the preregistered intraday diffusive-variation ratio.
 
-The candidate reads only minute identity, timestamp, close, and amount from
-the immutable Tushare source.  It correlates each earlier bar's log1p(amount)
-with the adjacent next-minute close return, separately preserving the morning
-and afternoon grids so neither 09:30 nor the lunch boundary enters.  Build and
-no-return audit never read a daily price or forward return, and terminal
-comparison values load only after coverage passes.
+The candidate reads only minute identity and close from the immutable Tushare
+source.  It divides within-half realized bipower variation by realized
+variance across 238 adjacent returns.  The build and ordered no-return audit
+never read a daily price or forward return, and prior terminal factor values
+load only after coverage and capacity pass.
 """
 
 from __future__ import annotations
@@ -33,11 +32,14 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-import a_share_tushare_intraday_volatility_resolution as previous
+import a_share_tushare_intraday_up_move_amount_share as previous  # noqa: E402
 
 
 foundation = previous.foundation
-sign_run = previous.previous
+amount_center = previous.previous
+amount_lead = previous.amount_lead
+volatility = previous.volatility
+sign_run = previous.sign_run
 terminal = previous.terminal
 upside = previous.upside
 profile = previous.profile
@@ -48,44 +50,47 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PREREGISTRATION = (
     REPO_ROOT
     / "docs"
-    / "a_share_tushare_intraday_amount_lead_return_correlation_no_return_preregistration.json"
+    / "a_share_tushare_intraday_diffusive_variation_ratio_no_return_preregistration.json"
 )
 PREREGISTRATION_SHA256 = (
-    "702046343e2e1e38c73095a125a6023b20d926fce47a3234c32264d4340fb730"
+    "db16eac2ed99dba863a94be9d9debd52c9bc62dbe291cb1faf7b9bfe7c2cf05f"
 )
 DEFAULT_DIAGNOSTIC_PREREGISTRATION = (
     REPO_ROOT
     / "docs"
-    / "a_share_tushare_intraday_amount_lead_return_correlation_diagnostic_preregistration.json"
+    / "a_share_tushare_intraday_diffusive_variation_ratio_diagnostic_preregistration.json"
 )
 DIAGNOSTIC_PREREGISTRATION_SHA256 = (
-    "64113fbd408a6770f0c7e3dd927f6f7b0e0f0fd56af7679fac341c29dea58f2c"
+    "ca16edb3a78bb47aa6f8795458eea33b82f58a0ddafb7236cf3c0426eb79cb12"
 )
 DEFAULT_TERMINAL_RECORD = (
     REPO_ROOT
     / "docs"
-    / "a_share_tushare_intraday_amount_lead_return_correlation_research_record.json"
+    / "a_share_tushare_intraday_diffusive_variation_ratio_research_record.json"
 )
 TERMINAL_RECORD_SHA256 = (
-    "6d19191b7c4d48b96decba444cc815d052f3f5ae4c1414ea290cf186a3384a01"
+    "c09e46bba9fe60dc611f6718dacf0b14928a8bd9f6d6b74835ac369e7c0ed086"
 )
 NO_RETURN_AUDIT_SHA256 = (
-    "d47db6b57b48dba58d83e9656eda8801f9d347f78babc3593d485063fd3d72de"
+    "e25ecaee8617825284b4134a718fc3a048870c8235abbd184fc58286bb4ab4f4"
 )
 CANDIDATE_MANIFEST_SHA256 = (
-    "505e15e5015973fb3d32fc881b8b2845c419da8f327ec8abe3a681949621e55f"
+    "ead71a5fc82e25b2b90467ea7e3a66070440c2eedb53b1beb78e14723a25074b"
+)
+CANDIDATE_DATASET_SHA256 = (
+    "28ae11c5f51e667dca1216851bb9e364d23af31d9f79f21686a4f14e78432372"
 )
 DIAGNOSTIC_SHA256 = (
-    "f459dba216b12a9ef0e8654f034ac8aaa9ac2188c30706ae819263cdee0d1d38"
+    "38b857b21df1ae001ddf73734f74d0fb884bbf822701c516aab593049c1271ce"
 )
 STABILITY_AUDIT_SHA256 = (
-    "70e213531b0216fb38a54b32557307a9080af238ec5c71de3036ba4bcec85a90"
+    "7c30f02442c698b522d35c131364a78f360c3d5f349b2ca57de40c4d65b14bd3"
 )
 TOPK_AUDIT_SHA256 = (
-    "fcba802b687cccfd57ffdeba51b7a891d3f934fb5e16e75f2efac69399ee1f68"
+    "6f7ecae484237edf6ae04430013d9faa2775a79063ab54ff50bf00fd6f9b987f"
 )
 CONSUMPTION_MARKER_SHA256 = (
-    "eb7117f72e6fab1a4c618b0f8f54c37a101b2e08b10b469373fb7301eeff7a41"
+    "d4f4720ee108c3553df8b6d44fc8524e0e23c0aad41962fe33d8deba53fa89fb"
 )
 RAW_MANIFEST_SHA256 = foundation.RAW_MANIFEST_SHA256
 JOINT_MANIFEST_SHA256 = foundation.JOINT_MANIFEST_SHA256
@@ -105,35 +110,45 @@ UPSIDE_SEMIVARIANCE_MANIFEST_SHA256 = upside.CANDIDATE_MANIFEST_SHA256
 UPSIDE_SEMIVARIANCE_DATASET_SHA256 = (
     "4745113ff183f44f9dfab2114a5ff161471d2a8fba9f3aa529a45e25e4638c0b"
 )
-TERMINAL_CLOSE_LOCATION_MANIFEST_SHA256 = previous.TERMINAL_CLOSE_LOCATION_MANIFEST_SHA256
+TERMINAL_CLOSE_LOCATION_MANIFEST_SHA256 = (
+    previous.TERMINAL_CLOSE_LOCATION_MANIFEST_SHA256
+)
 TERMINAL_CLOSE_LOCATION_DATASET_SHA256 = previous.TERMINAL_CLOSE_LOCATION_DATASET_SHA256
 RETURN_SIGN_RUN_IMBALANCE_MANIFEST_SHA256 = sign_run.CANDIDATE_MANIFEST_SHA256
 RETURN_SIGN_RUN_IMBALANCE_DATASET_SHA256 = (
     "265bb3da24be81ca1127028aecd5ffed79a7f9b35d094514bc7cc7b0cc01b20a"
 )
 CURRENT_STATUS_SHA256 = (
-    "668b04f5776f629edd53a496de018ba6ceda33a30c94dee343ef2ca1420dae32"
+    "9f636eb1b6eee11afa5a064a977c99ecfce10b87ac3acb920047d0152e86072f"
 )
-VOLATILITY_RESOLUTION_MANIFEST_SHA256 = previous.CANDIDATE_MANIFEST_SHA256
+AMOUNT_LEAD_RETURN_CORRELATION_MANIFEST_SHA256 = (
+    previous.AMOUNT_LEAD_RETURN_CORRELATION_MANIFEST_SHA256
+)
+AMOUNT_LEAD_RETURN_CORRELATION_DATASET_SHA256 = (
+    previous.AMOUNT_LEAD_RETURN_CORRELATION_DATASET_SHA256
+)
+AMOUNT_CENTER_OF_MASS_MANIFEST_SHA256 = previous.AMOUNT_CENTER_OF_MASS_MANIFEST_SHA256
+AMOUNT_CENTER_OF_MASS_DATASET_SHA256 = previous.AMOUNT_CENTER_OF_MASS_DATASET_SHA256
+UP_MOVE_AMOUNT_SHARE_MANIFEST_SHA256 = previous.CANDIDATE_MANIFEST_SHA256
+UP_MOVE_AMOUNT_SHARE_DATASET_SHA256 = previous.CANDIDATE_DATASET_SHA256
+VOLATILITY_RESOLUTION_MANIFEST_SHA256 = volatility.CANDIDATE_MANIFEST_SHA256
 VOLATILITY_RESOLUTION_DATASET_SHA256 = (
     "2e2131445a6f41ffd96c666e41d5faaa528291ea0b8419833e2b6a69dce8a468"
 )
 SOURCE_RUN_ID = foundation.SOURCE_RUN_ID
-OUTPUT_RUN_ID = f"{SOURCE_RUN_ID}_intraday_amount_lead_return_correlation_v1"
-FACTOR_NAME = "intraday_amount_lead_return_correlation_238p"
+OUTPUT_RUN_ID = f"{SOURCE_RUN_ID}_intraday_diffusive_variation_ratio_v1"
+FACTOR_NAME = "intraday_diffusive_variation_ratio_238m"
 FACTOR_FORMULA = (
-    "Corr(log1p(A_prev), R_next) over 238 within-half pairs, where A_prev "
-    "is the amount in the earlier minute bar and R_next=log(C_next/C_prev)"
+    "[(pi/2) * sum_h sum_{j=2..119} abs(r_hj) * abs(r_h,j-1)] / "
+    "[sum_h sum_{j=1..119} r_hj^2], h in {morning,afternoon}"
 )
 DIAGNOSTIC_PURPOSE = (
-    "single_preregistered_intraday_amount_lead_return_correlation_three_session_diagnostic"
+    "single_preregistered_intraday_diffusive_variation_ratio_three_session_diagnostic"
 )
-CONSUMPTION_FILENAME = (
-    "intraday_amount_lead_return_correlation_238p_historical_consumption.json"
-)
+CONSUMPTION_FILENAME = "intraday_diffusive_variation_ratio_238m_historical_consumption.json"
 COMPARISON_FACTORS = (*previous.COMPARISON_FACTORS, previous.FACTOR_NAME)
 COMPARISON_DIRECTIONS = (*previous.COMPARISON_DIRECTIONS, "higher")
-RAW_COLUMNS = ("datetime", "symbol", "provider", "close", "amount")
+RAW_COLUMNS = ("datetime", "symbol", "provider", "close")
 OUTPUT_COLUMNS = (
     "trade_date",
     "symbol",
@@ -144,9 +159,11 @@ OUTPUT_COLUMNS = (
 SOURCE_MINUTE_CODES = previous.SOURCE_MINUTE_CODES
 SOURCE_MINUTE_CODE_SET = previous.SOURCE_MINUTE_CODE_SET
 CONTINUOUS_MINUTE_CODES = previous.CONTINUOUS_MINUTE_CODES
+MORNING_MINUTE_CODES = tuple(code for code in CONTINUOUS_MINUTE_CODES if code <= 690)
+AFTERNOON_MINUTE_CODES = tuple(code for code in CONTINUOUS_MINUTE_CODES if code >= 781)
 
 
-class IntradayAmountLeadReturnCorrelationError(RuntimeError):
+class IntradayDiffusiveVariationRatioError(RuntimeError):
     """Raised when a frozen source, factor, or no-return gate is violated."""
 
 
@@ -160,7 +177,7 @@ def _require_file(path: Path, expected_sha256: str, label: str) -> None:
         raise FileNotFoundError(f"{label} does not exist: {path}")
     observed = foundation.file_digest(path)
     if observed != expected_sha256:
-        raise IntradayAmountLeadReturnCorrelationError(
+        raise IntradayDiffusiveVariationRatioError(
             f"{label} fingerprint mismatch: expected {expected_sha256}, got {observed}"
         )
 
@@ -181,10 +198,10 @@ def load_preregistration(path: Path = DEFAULT_PREREGISTRATION) -> dict[str, Any]
     """Load and enforce the exact protocol frozen before candidate values."""
 
     path = path.expanduser().resolve()
-    _require_file(path, PREREGISTRATION_SHA256, "intraday-amount-lead-return-correlation protocol")
+    _require_file(path, PREREGISTRATION_SHA256, "diffusive-variation protocol")
     spec = research.load_json_record(
         path,
-        kind="a_share_tushare_intraday_amount_lead_return_correlation_no_return_preregistration",
+        kind="a_share_tushare_intraday_diffusive_variation_ratio_no_return_preregistration",
     )
     previous_spec = previous.load_preregistration()
     current = spec.get("current_research_state") or {}
@@ -203,8 +220,8 @@ def load_preregistration(path: Path = DEFAULT_PREREGISTRATION) -> dict[str, Any]
         == "frozen_before_candidate_factor_values_comparison_values_or_forward_returns"
         and current.get("sha256") == CURRENT_STATUS_SHA256
         and current.get("status")
-        == "aggregation_blocked_after_intraday_volatility_resolution_terminal_rejection_zero_dual_gate_factors"
-        and current.get("terminal_mechanism_count_before_this_candidate") == 36
+        == "aggregation_blocked_after_intraday_up_move_amount_share_terminal_rejection_zero_dual_gate_factors"
+        and current.get("terminal_mechanism_count_before_this_candidate") == 39
         and current.get("topk_qualified_factor_count") == 0
         and current.get("dual_gate_qualified_factor_count") == 0
         and current.get("aggregation_allowed") is False
@@ -219,33 +236,33 @@ def load_preregistration(path: Path = DEFAULT_PREREGISTRATION) -> dict[str, Any]
             "high",
             "low",
             "volume",
+            "amount",
             "any_daily_price",
             "any_forward_return",
         }
         and grid.get("required_full_source_rows") == 241
         and grid.get("excluded_source_bar_end") == "09:30"
-        and grid.get("morning_bar_ends_start") == "09:31"
-        and grid.get("morning_bar_ends_end") == "11:30"
-        and grid.get("afternoon_bar_ends_start") == "13:01"
-        and grid.get("afternoon_bar_ends_end") == "15:00"
-        and grid.get("morning_close_and_amount_observations") == 120
-        and grid.get("afternoon_close_and_amount_observations") == 120
-        and grid.get("within_morning_lead_return_pairs") == 119
-        and grid.get("within_afternoon_lead_return_pairs") == 119
-        and grid.get("total_lead_return_pairs") == 238
-        and grid.get("lunch_break_pair_included") is False
+        and grid.get("morning_continuous_bar_ends") == "09:31-11:30"
+        and grid.get("afternoon_continuous_bar_ends") == "13:01-15:00"
+        and grid.get("continuous_closes") == 240
+        and grid.get("within_morning_adjacent_log_returns") == 119
+        and grid.get("within_afternoon_adjacent_log_returns") == 119
+        and grid.get("realized_variance_return_observations") == 238
+        and grid.get("within_morning_adjacent_absolute_return_products") == 118
+        and grid.get("within_afternoon_adjacent_absolute_return_products") == 118
+        and grid.get("bipower_product_observations") == 236
+        and grid.get("cross_lunch_return_or_bipower_pair_included") is False
+        and grid.get("standalone_09_30_row_included") is False
         and candidate.get("formula") == FACTOR_FORMULA
-        and validity.get("all_240_required_close_values_finite_and_strictly_positive")
+        and validity.get("all_240_continuous_closes_finite_and_strictly_positive")
         is True
-        and validity.get("all_240_required_amount_values_finite_and_nonnegative")
+        and validity.get("all_238_log_returns_finite") is True
+        and validity.get("strictly_positive_realized_variance_denominator_required")
         is True
-        and validity.get("all_238_within_half_next_minute_log_returns_finite")
-        is True
-        and validity.get("lunch_break_pair_excluded") is True
-        and validity.get("positive_centered_sum_of_squares_for_both_vectors_required") is True
-        and validity.get("finite_result_required") is True
-        and validity.get("allowed_closed_interval") == [-1, 1]
-        and validity.get("constant_preceding_amount_or_return_policy") == "missing"
+        and validity.get("bipower_variation_finite_and_nonnegative_required") is True
+        and validity.get("theoretical_closed_interval")
+        == [0, math.pi / 2.0]
+        and validity.get("zero_realized_variance_policy") == "missing"
         and validity.get("numerical_endpoint_canonicalization_tolerance") == 1e-12
         and validity.get(
             "statistical_clipping_imputation_winsorization_or_daily_substitution_allowed"
@@ -269,7 +286,7 @@ def load_preregistration(path: Path = DEFAULT_PREREGISTRATION) -> dict[str, Any]
         and uniqueness.get("minimum_pairwise_sessions_per_comparison") == 100
         and uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
         == 0.8
-        and uniqueness.get("all_twelve_comparisons_must_pass") is True
+        and uniqueness.get("all_fifteen_comparisons_must_pass") is True
         and boundary.get("candidate_factor_values_observed_before_registration")
         is False
         and boundary.get(
@@ -278,18 +295,16 @@ def load_preregistration(path: Path = DEFAULT_PREREGISTRATION) -> dict[str, Any]
         is False
         and boundary.get("forward_return_fields_read_before_registration") is False
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
-            "intraday-amount-lead-return-correlation protocol no longer matches its frozen definition"
+        raise IntradayDiffusiveVariationRatioError(
+            "diffusive-variation protocol no longer matches its frozen definition"
         )
     return spec
 
 
 def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
-    # The authoritative status is an append-only logical ledger stored at a
-    # stable path, so its bytes legitimately advance after this candidate is
-    # terminalized.  Preserve the preregistered predecessor fingerprint as
-    # historical evidence while validating the current ledger and every other
-    # immutable repository/PIT binding through the shared validator.
+    # The authoritative status is append-only at one stable path.  Keep the
+    # preregistered predecessor fingerprint as historical evidence while the
+    # shared validator checks the current ledger and PIT bindings.
     current_spec = dict(spec)
     current_link = dict(spec["current_research_state"])
     current_link["sha256"] = research.THREE_DAY_ITERATION_STATUS_SHA256
@@ -312,37 +327,13 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
     decision = state.get("decision") or {}
     predecessor_state = (
         state.get("status")
-        == "aggregation_blocked_after_intraday_volatility_resolution_terminal_rejection_zero_dual_gate_factors"
-        and summary.get("terminal_mechanism_count") == 36
-        and len(mechanisms) == 36
-        and (mechanisms[-1] if mechanisms else {}).get("mechanism")
-        == "tushare_intraday_volatility_resolution_238m"
-    )
-    terminal_state = (
-        state.get("status")
-        == "aggregation_blocked_after_intraday_amount_lead_return_correlation_terminal_rejection_zero_dual_gate_factors"
-        and summary.get("terminal_mechanism_count") == 37
-        and len(mechanisms) == 37
-        and (mechanisms[-1] if mechanisms else {}).get("mechanism")
-        == "tushare_intraday_amount_lead_return_correlation_238p"
-    )
-    direct_successor_state = (
-        state.get("status")
-        == "aggregation_blocked_after_intraday_amount_center_of_mass_terminal_rejection_zero_dual_gate_factors"
-        and summary.get("terminal_mechanism_count") == 38
-        and len(mechanisms) == 38
-        and (mechanisms[-1] if mechanisms else {}).get("mechanism")
-        == "tushare_intraday_amount_center_of_mass_240m"
-    )
-    second_successor_state = (
-        state.get("status")
         == "aggregation_blocked_after_intraday_up_move_amount_share_terminal_rejection_zero_dual_gate_factors"
         and summary.get("terminal_mechanism_count") == 39
         and len(mechanisms) == 39
         and (mechanisms[-1] if mechanisms else {}).get("mechanism")
         == "tushare_intraday_up_move_amount_share_238m"
     )
-    third_successor_state = (
+    terminal_state = (
         state.get("status")
         == "aggregation_blocked_after_intraday_diffusive_variation_ratio_terminal_rejection_zero_dual_gate_factors"
         and summary.get("terminal_mechanism_count") == 40
@@ -351,24 +342,18 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
         == "tushare_intraday_diffusive_variation_ratio_238m"
     )
     if not (
-        (
-            predecessor_state
-            or terminal_state
-                or direct_successor_state
-                or second_successor_state
-                or third_successor_state
-            )
+        (predecessor_state or terminal_state)
         and summary.get("admitted_factor_count") == 0
         and summary.get("aggregation_candidate_count") == 0
         and decision.get("aggregation_allowed") is False
         and decision.get("current_scoring_allowed") is False
         and decision.get("selection_allowed") is False
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
+        raise IntradayDiffusiveVariationRatioError(
             "authoritative three-day state changed after preregistration"
         )
     previous.load_terminal_record_if_present()
-    evidence["terminal_volatility_resolution_record"] = {
+    evidence["terminal_up_move_amount_share_record"] = {
         "path": str(previous.DEFAULT_TERMINAL_RECORD.resolve()),
         "sha256": previous.TERMINAL_RECORD_SHA256,
     }
@@ -383,11 +368,11 @@ def load_terminal_record_if_present() -> dict[str, Any] | None:
     _require_file(
         DEFAULT_TERMINAL_RECORD,
         TERMINAL_RECORD_SHA256,
-        "intraday-amount-lead-return-correlation research record",
+        "intraday-diffusive-variation-ratio research record",
     )
     record = research.load_json_record(
         DEFAULT_TERMINAL_RECORD,
-        kind="a_share_tushare_intraday_amount_lead_return_correlation_research_record",
+        kind="a_share_tushare_intraday_diffusive_variation_ratio_research_record",
     )
     protocol = (record.get("ordered_protocol") or {}).get(
         "no_return_preregistration"
@@ -397,6 +382,8 @@ def load_terminal_record_if_present() -> dict[str, Any] | None:
         "diagnostic_preregistration"
     ) or {}
     candidate = (record.get("source_chain") or {}).get("candidate_manifest") or {}
+    no_return = record.get("no_return_results") or {}
+    results = record.get("return_results") or {}
     artifacts = record.get("historical_artifacts") or {}
     decision = record.get("decision") or {}
     boundary = record.get("research_boundary") or {}
@@ -409,10 +396,23 @@ def load_terminal_record_if_present() -> dict[str, Any] | None:
         and audit.get("status")
         == "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration"
         and audit.get("forward_returns_read") is False
-        and diagnostic_protocol.get("sha256")
-        == DIAGNOSTIC_PREREGISTRATION_SHA256
-        and (artifacts.get("diagnostic") or {}).get("sha256")
-        == DIAGNOSTIC_SHA256
+        and diagnostic_protocol.get("sha256") == DIAGNOSTIC_PREREGISTRATION_SHA256
+        and no_return.get("coverage_and_capacity_gate_passed") is True
+        and no_return.get("comparison_factor_count") == 15
+        and no_return.get("all_fifteen_uniqueness_gates_passed") is True
+        and no_return.get(
+            "maximum_absolute_median_daily_rank_correlation_to_fifteen_terminal_factors"
+        )
+        == 0.3429077105616848
+        and results.get("cohorts") == 539
+        and results.get("association_stability_gate_passed") is False
+        and results.get("topk_viability_gate_passed") is False
+        and results.get("dual_gate_passed") is False
+        and results.get("execution_aware_top3_net_cumulative_return")
+        == -0.8559411398232839
+        and results.get("pilot_net_cumulative_return_at_ten_bp_each_side")
+        == -0.23238649620750873
+        and (artifacts.get("diagnostic") or {}).get("sha256") == DIAGNOSTIC_SHA256
         and (artifacts.get("stability_audit") or {}).get("sha256")
         == STABILITY_AUDIT_SHA256
         and (artifacts.get("topk_viability_audit") or {}).get("sha256")
@@ -421,67 +421,82 @@ def load_terminal_record_if_present() -> dict[str, Any] | None:
         == CONSUMPTION_MARKER_SHA256
         and decision.get("terminally_reject_exact_factor_direction") is True
         and decision.get("aggregation_candidate_added") is False
+        and decision.get("aggregation_allowed") is False
+        and decision.get("selection_allowed") is False
+        and decision.get("level2_intake_justified") is False
         and boundary.get("same_history_combination_return_evaluation_performed")
         is False
         and boundary.get("current_stock_list_generated") is False
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
-            "intraday-amount-lead-return-correlation research record is inconsistent"
+        raise IntradayDiffusiveVariationRatioError(
+            "intraday-diffusive-variation-ratio research record is inconsistent"
         )
     return record
 
 
-def _validate_volatility_resolution_manifest(
+def _validate_up_move_amount_share_manifest(
     spec: dict[str, Any], data_root: Path
 ) -> tuple[dict[str, Any], Path]:
     link = (spec.get("source_chain") or {}).get(
-        "volatility_resolution_comparison_manifest"
+        "up_move_amount_share_comparison_manifest"
     ) or {}
     path = (data_root / str(link.get("path_below_data_root"))).resolve()
     _require_file(
         path,
-        VOLATILITY_RESOLUTION_MANIFEST_SHA256,
-        "volatility-resolution manifest",
+        UP_MOVE_AMOUNT_SHARE_MANIFEST_SHA256,
+        "up-move-amount-share manifest",
     )
     manifest = research.load_json_record(
         path,
-        kind="a_share_tushare_intraday_volatility_resolution_snapshot",
+        kind="a_share_tushare_intraday_up_move_amount_share_snapshot",
     )
     if not (
         manifest.get("status")
         == "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
         and manifest.get("factor_name") == previous.FACTOR_NAME
         and manifest.get("factor_direction") == "higher"
-        and manifest.get("dataset_sha256")
-        == VOLATILITY_RESOLUTION_DATASET_SHA256
+        and manifest.get("dataset_sha256") == UP_MOVE_AMOUNT_SHARE_DATASET_SHA256
         and manifest.get("partitions") == 33_015
         and manifest.get("rows") == 7_724_498
         and manifest.get("eligible_rows") == 7_695_088
-        and (manifest.get("quality") or {}).get("zero_total_variance_rows")
+        and (manifest.get("quality") or {}).get(
+            "zero_nonzero_move_amount_denominator_rows"
+        )
         == 29_410
+        and (manifest.get("quality") or {}).get("invalid_required_close_rows") == 0
+        and (manifest.get("quality") or {}).get("invalid_required_amount_rows") == 0
         and (manifest.get("quality") or {}).get("invalid_required_value_rows") == 0
         and (manifest.get("quality") or {}).get("nonfinite_log_return_rows") == 0
         and (manifest.get("quality") or {}).get(
-            "volatility_resolution_range_violation_rows"
+            "nonfinite_amount_sum_or_result_rows"
         )
         == 0
+        and (manifest.get("quality") or {}).get(
+            "numerical_endpoint_canonicalization_rows"
+        )
+        == 0
+        and (manifest.get("quality") or {}).get(
+            "up_move_amount_share_range_violation_rows"
+        )
+        == 0
+        and manifest.get("source_close_read") is True
+        and manifest.get("source_amount_read") is True
+        and manifest.get("source_open_high_low_or_volume_read") is False
         and manifest.get("comparison_factor_values_read") is False
         and manifest.get("forward_return_fields_read") is False
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
-            "volatility-resolution manifest identity is rejected"
+        raise IntradayDiffusiveVariationRatioError(
+            "up-move-amount-share manifest identity is rejected"
         )
     return manifest, path
 
 
-def validate_external_chain(
-    spec: dict[str, Any], data_root: Path
-) -> tuple[Any, ...]:
+def validate_external_chain(spec: dict[str, Any], data_root: Path) -> tuple[Any, ...]:
     chain = previous.validate_external_chain(previous.load_preregistration(), data_root)
-    volatility, volatility_path = _validate_volatility_resolution_manifest(
+    up_move, up_move_path = _validate_up_move_amount_share_manifest(
         spec, data_root
     )
-    return (*chain, volatility, volatility_path)
+    return (*chain, up_move, up_move_path)
 
 
 def compute_partition_frame(
@@ -490,156 +505,157 @@ def compute_partition_frame(
     *,
     symbol: str,
 ) -> tuple[pd.DataFrame, dict[str, int]]:
-    """Correlate preceding log1p(amount) with the next within-half return."""
+    """Compute the frozen within-half bipower-to-realized-variance ratio."""
 
-    if missing := sorted(set(RAW_COLUMNS) - set(raw.columns)):
-        raise IntradayAmountLeadReturnCorrelationError(
-            "raw minute partition is missing columns: " + ", ".join(missing)
-        )
-    if missing := sorted({"trade_date", "symbol"} - set(base.columns)):
-        raise IntradayAmountLeadReturnCorrelationError(
-            "joint base partition is missing columns: " + ", ".join(missing)
+    if tuple(raw.columns) != RAW_COLUMNS:
+        raise IntradayDiffusiveVariationRatioError(
+            f"unexpected raw columns for {symbol}: {tuple(raw.columns)}"
         )
     empty_quality = {
         "base_rows": 0,
         "eligible_rows": 0,
-        "constant_preceding_amount_rows": 0,
-        "constant_next_return_rows": 0,
+        "zero_realized_variance_rows": 0,
+        "invalid_required_close_rows": 0,
         "invalid_required_value_rows": 0,
         "nonfinite_log_return_rows": 0,
-        "nonfinite_log1p_amount_rows": 0,
+        "nonfinite_realized_variance_or_bipower_rows": 0,
+        "nonfinite_ratio_rows": 0,
         "numerical_endpoint_canonicalization_rows": 0,
-        "amount_lead_return_correlation_range_violation_rows": 0,
+        "diffusive_variation_ratio_range_violation_rows": 0,
     }
+    if missing := sorted({"trade_date", "symbol"} - set(base.columns)):
+        raise IntradayDiffusiveVariationRatioError(
+            "joint base partition is missing columns: " + ", ".join(missing)
+        )
     if base.empty:
         return empty_output_frame(), empty_quality
-
-    symbol = symbol.upper()
     base_work = base[["trade_date", "symbol"]].copy()
     base_work["trade_date"] = pd.to_datetime(
         base_work["trade_date"], errors="coerce"
     ).dt.normalize()
     base_work["symbol"] = base_work["symbol"].astype(str).str.upper()
+    base_work = base_work.sort_values("trade_date", kind="stable").reset_index(
+        drop=True
+    )
     if (
         base_work["trade_date"].isna().any()
         or set(base_work["symbol"]) != {symbol}
         or base_work.duplicated(["trade_date", "symbol"]).any()
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
+        raise IntradayDiffusiveVariationRatioError(
             f"joint base identity is invalid for {symbol}"
         )
-    base_work = base_work.sort_values("trade_date", kind="stable").reset_index(drop=True)
-
-    raw_work = raw[list(RAW_COLUMNS)].copy()
-    raw_work["datetime"] = pd.to_datetime(raw_work["datetime"], errors="coerce")
-    if raw_work["datetime"].isna().any():
-        raise IntradayAmountLeadReturnCorrelationError(
-            f"raw timestamps are invalid for {symbol}"
+    if len(raw) == 0:
+        raise IntradayDiffusiveVariationRatioError(
+            f"raw source is empty for nonempty base partition {symbol}"
         )
-    raw_work["symbol"] = raw_work["symbol"].astype(str).str.upper()
-    raw_work["provider"] = raw_work["provider"].astype(str).str.lower()
-    if set(raw_work["symbol"]) != {symbol} or set(raw_work["provider"]) != {"tushare"}:
-        raise IntradayAmountLeadReturnCorrelationError(
-            f"raw identity is invalid for {symbol}"
-        )
-    raw_work["trade_date"] = raw_work["datetime"].dt.normalize()
-    raw_work = raw_work[raw_work["trade_date"].isin(base_work["trade_date"])].copy()
-    raw_work["minute_code"] = (
-        raw_work["datetime"].dt.hour * 60 + raw_work["datetime"].dt.minute
-    ).astype(np.int16)
-    raw_work["close"] = pd.to_numeric(raw_work["close"], errors="coerce")
-    raw_work["amount"] = pd.to_numeric(raw_work["amount"], errors="coerce")
-    raw_work = raw_work.sort_values(["trade_date", "datetime"], kind="stable")
-    stats = raw_work.groupby("trade_date", observed=True, sort=True).agg(
-        rows=("datetime", "size"),
-        unique_times=("minute_code", "nunique"),
-        on_grid=("minute_code", lambda values: values.isin(SOURCE_MINUTE_CODE_SET).sum()),
-    )
+    work = raw.copy()
+    work["datetime"] = pd.to_datetime(work["datetime"], errors="coerce")
+    work["symbol"] = work["symbol"].astype(str).str.upper()
+    work["provider"] = work["provider"].astype(str).str.lower()
+    work["close"] = pd.to_numeric(work["close"], errors="coerce")
     if (
-        len(stats) != len(base_work)
-        or not stats.index.equals(pd.DatetimeIndex(base_work["trade_date"]))
-        or not stats["rows"].eq(241).all()
-        or not stats["unique_times"].eq(241).all()
-        or not stats["on_grid"].eq(241).all()
+        work["datetime"].isna().any()
+        or set(work["symbol"].unique()) != {symbol}
+        or set(work["provider"].unique()) != {"tushare"}
+        or work.duplicated(["datetime"]).any()
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
-            f"raw source does not reproduce every joint-base 241-row grid for {symbol}"
+        raise IntradayDiffusiveVariationRatioError(
+            f"raw identity or timestamp violation for {symbol}"
         )
-    codes = raw_work["minute_code"].to_numpy().reshape(-1, 241)
-    if not np.array_equal(codes, np.broadcast_to(SOURCE_MINUTE_CODES, codes.shape)):
-        raise IntradayAmountLeadReturnCorrelationError(
-            f"raw source grid order changed for {symbol}"
+    work["trade_date"] = work["datetime"].dt.normalize()
+    work = work.loc[work["trade_date"].isin(base_work["trade_date"])].copy()
+    work["minute_code"] = work["datetime"].dt.hour * 60 + work["datetime"].dt.minute
+    source_counts = work.groupby("trade_date", sort=True, observed=True).size()
+    if not source_counts.eq(241).all():
+        raise IntradayDiffusiveVariationRatioError(
+            f"every source stock-day must retain the exact 241-row grid for {symbol}"
         )
-    if len(CONTINUOUS_MINUTE_CODES) != 240:
-        raise IntradayAmountLeadReturnCorrelationError(
-            "continuous close support changed"
-        )
-
-    closes = raw_work["close"].to_numpy(dtype=float).reshape(-1, 241)[:, 1:]
-    amounts = raw_work["amount"].to_numpy(dtype=float).reshape(-1, 241)[:, 1:]
-    required_valid = (
-        np.isfinite(closes).all(axis=1)
-        & (closes > 0.0).all(axis=1)
-        & np.isfinite(amounts).all(axis=1)
-        & (amounts >= 0.0).all(axis=1)
+    observed_codes = work.groupby("trade_date", sort=True, observed=True)[
+        "minute_code"
+    ].agg(lambda values: frozenset(int(value) for value in values))
+    if not observed_codes.eq(SOURCE_MINUTE_CODE_SET).all():
+        raise IntradayDiffusiveVariationRatioError(f"source minute grid changed for {symbol}")
+    continuous = work.loc[
+        work["minute_code"].isin(CONTINUOUS_MINUTE_CODES),
+        ["trade_date", "minute_code", "close"],
+    ].copy()
+    continuous["minute_code"] = pd.Categorical(
+        continuous["minute_code"], categories=CONTINUOUS_MINUTE_CODES, ordered=True
     )
-    morning_close = closes[:, :120]
-    afternoon_close = closes[:, 120:]
-    morning_amount = amounts[:, :120]
-    afternoon_amount = amounts[:, 120:]
+    continuous = continuous.sort_values(["trade_date", "minute_code"])
+    if len(MORNING_MINUTE_CODES) != 120 or len(AFTERNOON_MINUTE_CODES) != 120:
+        raise IntradayDiffusiveVariationRatioError("continuous minute grid is not 120+120")
+    closes = continuous["close"].to_numpy(dtype=float).reshape(-1, 2, 120)
+    required_closes_valid = np.isfinite(closes).all(axis=(1, 2)) & (closes > 0.0).all(
+        axis=(1, 2)
+    )
     with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
-        responses = np.concatenate(
-            (
-                np.diff(np.log(morning_close), axis=1),
-                np.diff(np.log(afternoon_close), axis=1),
-            ),
-            axis=1,
-        )
-        predictors = np.concatenate(
-            (
-                np.log1p(morning_amount[:, :-1]),
-                np.log1p(afternoon_amount[:, :-1]),
-            ),
-            axis=1,
-        )
-        predictor_centered = predictors - predictors.mean(axis=1, keepdims=True)
-        response_centered = responses - responses.mean(axis=1, keepdims=True)
-        predictor_ss = np.square(predictor_centered).sum(axis=1)
-        response_ss = np.square(response_centered).sum(axis=1)
-        cross_product = (predictor_centered * response_centered).sum(axis=1)
-        values = cross_product / np.sqrt(predictor_ss * response_ss)
-    finite_log_returns = np.isfinite(responses).all(axis=1)
-    finite_log1p_amount = np.isfinite(predictors).all(axis=1)
-    valid_inputs = required_valid & finite_log_returns & finite_log1p_amount
+        log_returns = np.diff(np.log(closes), axis=2)
+        realized_variance = np.square(log_returns).sum(axis=(1, 2))
+        absolute_returns = np.abs(log_returns)
+        bipower_variation = (math.pi / 2.0) * (
+            absolute_returns[:, :, 1:] * absolute_returns[:, :, :-1]
+        ).sum(axis=(1, 2))
+        values = bipower_variation / realized_variance
+    log_returns_finite = np.isfinite(log_returns).all(axis=(1, 2))
+    required_valid = required_closes_valid & log_returns_finite
+    finite_components = (
+        np.isfinite(realized_variance)
+        & np.isfinite(bipower_variation)
+        & (bipower_variation >= 0.0)
+    )
+    ratio_finite = np.isfinite(values)
     tolerance = 1e-12
-    near_low = valid_inputs & np.isfinite(values) & (values < -1.0) & (
-        values >= -1.0 - tolerance
+    upper = math.pi / 2.0
+    near_low = (
+        required_valid
+        & finite_components
+        & ratio_finite
+        & (realized_variance > 0.0)
+        & (values < 0.0)
+        & (values >= -tolerance)
     )
-    near_high = valid_inputs & np.isfinite(values) & (values > 1.0) & (
-        values <= 1.0 + tolerance
+    near_high = (
+        required_valid
+        & finite_components
+        & ratio_finite
+        & (realized_variance > 0.0)
+        & (values > upper)
+        & (values <= upper + tolerance)
     )
-    values = np.where(near_low, -1.0, np.where(near_high, 1.0, values))
+    values = np.where(near_low, 0.0, np.where(near_high, upper, values))
     range_violation = (
-        valid_inputs
-        & (predictor_ss > 0.0)
-        & (response_ss > 0.0)
+        required_valid
+        & finite_components
+        & (realized_variance > 0.0)
         & np.isfinite(values)
-        & ((values < -1.0) | (values > 1.0))
+        & ((values < 0.0) | (values > upper))
     )
     if range_violation.any():
-        raise IntradayAmountLeadReturnCorrelationError(
-            f"intraday amount-lead-return correlation escaped [-1, 1] for {symbol}"
+        raise IntradayDiffusiveVariationRatioError(
+            f"intraday diffusive variation ratio escaped [0, pi/2] for {symbol}"
         )
     eligible = (
-        valid_inputs
-        & (predictor_ss > 0.0)
-        & (response_ss > 0.0)
-        & np.isfinite(predictor_ss)
-        & np.isfinite(response_ss)
+        required_valid
+        & finite_components
+        & (realized_variance > 0.0)
         & np.isfinite(values)
-        & (values >= -1.0)
-        & (values <= 1.0)
+        & (values >= 0.0)
+        & (values <= upper)
     )
+    expected_dates = pd.Index(source_counts.index)
+    if (
+        base_work["trade_date"].isna().any()
+        or set(base_work["symbol"]) != {symbol}
+        or base_work["trade_date"].duplicated().any()
+        or not base_work["trade_date"]
+        .reset_index(drop=True)
+        .equals(pd.Series(expected_dates).reset_index(drop=True))
+    ):
+        raise IntradayDiffusiveVariationRatioError(
+            f"joint-clean base dates do not match raw dates for {symbol}"
+        )
     output = pd.DataFrame(
         {
             "trade_date": base_work["trade_date"],
@@ -652,32 +668,32 @@ def compute_partition_frame(
     return output, {
         "base_rows": int(len(output)),
         "eligible_rows": int(eligible.sum()),
-        "constant_preceding_amount_rows": int(
-            (valid_inputs & (predictor_ss == 0.0)).sum()
+        "zero_realized_variance_rows": int(
+            (required_valid & finite_components & (realized_variance == 0.0)).sum()
         ),
-        "constant_next_return_rows": int(
-            (valid_inputs & (response_ss == 0.0)).sum()
+        "invalid_required_close_rows": int((~required_closes_valid).sum()),
+        "invalid_required_value_rows": int((~required_closes_valid).sum()),
+        "nonfinite_log_return_rows": int((~log_returns_finite).sum()),
+        "nonfinite_realized_variance_or_bipower_rows": int(
+            (required_valid & ~finite_components).sum()
         ),
-        "invalid_required_value_rows": int((~required_valid).sum()),
-        "nonfinite_log_return_rows": int(
-            (required_valid & ~finite_log_returns).sum()
+        "nonfinite_ratio_rows": int(
+            (
+                required_valid
+                & finite_components
+                & (realized_variance > 0.0)
+                & ~ratio_finite
+            ).sum()
         ),
-        "nonfinite_log1p_amount_rows": int(
-            (required_valid & ~finite_log1p_amount).sum()
-        ),
-        "numerical_endpoint_canonicalization_rows": int(
-            (near_low | near_high).sum()
-        ),
-        "amount_lead_return_correlation_range_violation_rows": int(
-            range_violation.sum()
-        ),
+        "numerical_endpoint_canonicalization_rows": int((near_low | near_high).sum()),
+        "diffusive_variation_ratio_range_violation_rows": int(range_violation.sum()),
     }
 
 
 def output_root(data_root: Path) -> Path:
     return (
         data_root
-        / "derived/a_share/rich/tushare/minute_intraday_amount_lead_return_correlation"
+        / "derived/a_share/rich/tushare/minute_intraday_diffusive_variation_ratio"
         / OUTPUT_RUN_ID
     )
 
@@ -694,28 +710,29 @@ def _load_checkpoint(
     raw_path = Path(str(raw_record["path"]))
     base_path = Path(str(joint_record["path"]))
     valid = (
-        record.get("kind")
-        == "a_share_tushare_intraday_amount_lead_return_correlation_partition"
+        record.get("kind") == "a_share_tushare_intraday_diffusive_variation_ratio_partition"
         and record.get("protocol_sha256") == PREREGISTRATION_SHA256
         and record.get("raw_manifest_sha256") == RAW_MANIFEST_SHA256
         and record.get("joint_manifest_sha256") == JOINT_MANIFEST_SHA256
         and record.get("raw_source_byte_sha256") == raw_record.get("byte_sha256")
-        and record.get("joint_base_byte_sha256") == joint_record.get("output_byte_sha256")
+        and record.get("joint_base_byte_sha256")
+        == joint_record.get("output_byte_sha256")
         and paths.partial_data.is_file()
         and foundation.file_digest(raw_path) == raw_record.get("byte_sha256")
         and foundation.file_digest(base_path) == joint_record.get("output_byte_sha256")
-        and foundation.file_digest(paths.partial_data) == record.get("output_byte_sha256")
+        and foundation.file_digest(paths.partial_data)
+        == record.get("output_byte_sha256")
     )
     if not valid:
-        raise IntradayAmountLeadReturnCorrelationError(
-            f"completed intraday-amount-lead-return-correlation checkpoint changed: {paths.partial_sidecar}"
+        raise IntradayDiffusiveVariationRatioError(
+            f"completed diffusive-variation checkpoint changed: {paths.partial_sidecar}"
         )
     output = pd.read_parquet(paths.partial_data)
-    if len(output) != int(record.get("rows", -1)) or foundation.frame_digest(output) != record.get(
-        "output_frame_sha256"
-    ):
-        raise IntradayAmountLeadReturnCorrelationError(
-            f"completed intraday-amount-lead-return-correlation frame changed: {paths.partial_data}"
+    if len(output) != int(record.get("rows", -1)) or foundation.frame_digest(
+        output
+    ) != record.get("output_frame_sha256"):
+        raise IntradayDiffusiveVariationRatioError(
+            f"completed diffusive-variation frame changed: {paths.partial_data}"
         )
     dates = Counter(
         pd.to_datetime(output.loc[output[f"{FACTOR_NAME}_eligible"], "trade_date"])
@@ -740,20 +757,26 @@ def _process_partition(
     raw_path = Path(str(raw_record["path"]))
     base_path = Path(str(joint_record["path"]))
     if foundation.file_digest(raw_path) != raw_record.get("byte_sha256"):
-        raise IntradayAmountLeadReturnCorrelationError(f"raw partition changed: {raw_path}")
+        raise IntradayDiffusiveVariationRatioError(f"raw partition changed: {raw_path}")
     if foundation.file_digest(base_path) != joint_record.get("output_byte_sha256"):
-        raise IntradayAmountLeadReturnCorrelationError(f"joint-base partition changed: {base_path}")
+        raise IntradayDiffusiveVariationRatioError(
+            f"joint-base partition changed: {base_path}"
+        )
     raw = pd.read_parquet(raw_path, columns=list(RAW_COLUMNS))
     base = pd.read_parquet(base_path, columns=["trade_date", "symbol"])
     if len(raw) != int(raw_record.get("rows", -1)):
-        raise IntradayAmountLeadReturnCorrelationError(f"raw row count changed: {raw_path}")
+        raise IntradayDiffusiveVariationRatioError(f"raw row count changed: {raw_path}")
     if len(base) != int(joint_record.get("rows", -1)):
-        raise IntradayAmountLeadReturnCorrelationError(f"joint-base row count changed: {base_path}")
-    output, quality = compute_partition_frame(raw, base, symbol=str(joint_record["symbol"]))
+        raise IntradayDiffusiveVariationRatioError(
+            f"joint-base row count changed: {base_path}"
+        )
+    output, quality = compute_partition_frame(
+        raw, base, symbol=str(joint_record["symbol"])
+    )
     foundation.atomic_write_frame(output, paths.partial_data)
     record = {
         "schema_version": 1,
-        "kind": "a_share_tushare_intraday_amount_lead_return_correlation_partition",
+        "kind": "a_share_tushare_intraday_diffusive_variation_ratio_partition",
         "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "protocol_sha256": PREREGISTRATION_SHA256,
         "raw_manifest_sha256": RAW_MANIFEST_SHA256,
@@ -777,7 +800,7 @@ def _process_partition(
         "quality": quality,
         "source_fields_read": list(RAW_COLUMNS),
         "minute_price_fields_read": ["close"],
-        "minute_amount_fields_read": ["amount"],
+        "minute_amount_fields_read": [],
         "minute_open_high_low_or_volume_fields_read": [],
         "daily_price_fields_read": [],
         "comparison_factor_values_read": False,
@@ -801,7 +824,9 @@ def _process_symbol(
     records: list[dict[str, Any]] = []
     eligible_dates: Counter[str] = Counter()
     resumed = 0
-    for raw_record, joint_record in sorted(pairs, key=lambda pair: int(pair[1]["year"])):
+    for raw_record, joint_record in sorted(
+        pairs, key=lambda pair: int(pair[1]["year"])
+    ):
         record, dates, was_resumed = _process_partition(
             raw_record,
             joint_record,
@@ -826,45 +851,39 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
     final_manifest = final_root / "snapshot_manifest.json"
     if final_root.exists():
         if not final_manifest.is_file():
-            raise IntradayAmountLeadReturnCorrelationError(
-                f"published intraday-amount-lead-return-correlation root has no manifest: {final_root}"
+            raise IntradayDiffusiveVariationRatioError(
+                f"published diffusive-variation root has no manifest: {final_root}"
             )
         _require_file(
             final_manifest,
             CANDIDATE_MANIFEST_SHA256,
-            "published intraday-amount-lead-return-correlation manifest",
+            "published diffusive-variation manifest",
         )
         load_terminal_record_if_present()
         manifest = research.load_json_record(
             final_manifest,
-            kind="a_share_tushare_intraday_amount_lead_return_correlation_snapshot",
+            kind="a_share_tushare_intraday_diffusive_variation_ratio_snapshot",
         )
         if not (
             manifest.get("protocol_sha256") == PREREGISTRATION_SHA256
             and manifest.get("raw_manifest_sha256") == RAW_MANIFEST_SHA256
             and manifest.get("joint_manifest_sha256") == JOINT_MANIFEST_SHA256
             and manifest.get("output_run_id") == OUTPUT_RUN_ID
-            and manifest.get("dataset_sha256")
-            == "65f1d3c70da7f1f90154129d5ce4af7b3ddde7dae5b387ec5a38e8ea612f18ce"
+            and manifest.get("dataset_sha256") == CANDIDATE_DATASET_SHA256
             and manifest.get("partitions") == 33_015
             and manifest.get("rows") == 7_724_498
             and manifest.get("eligible_rows") == 7_695_088
-            and (manifest.get("quality") or {}).get("constant_next_return_rows")
+            and (manifest.get("quality") or {}).get("zero_realized_variance_rows")
             == 29_410
+            and (manifest.get("quality") or {}).get("invalid_required_close_rows") == 0
+            and (manifest.get("quality") or {}).get("invalid_required_value_rows") == 0
+            and (manifest.get("quality") or {}).get("nonfinite_log_return_rows") == 0
             and (manifest.get("quality") or {}).get(
-                "constant_preceding_amount_rows"
-            )
-            == 1
-            and (manifest.get("quality") or {}).get(
-                "invalid_required_value_rows"
-            )
-            == 0
-            and (manifest.get("quality") or {}).get(
-                "nonfinite_log_return_rows"
+                "nonfinite_realized_variance_or_bipower_rows"
             )
             == 0
             and (manifest.get("quality") or {}).get(
-                "nonfinite_log1p_amount_rows"
+                "nonfinite_ratio_rows"
             )
             == 0
             and (manifest.get("quality") or {}).get(
@@ -872,24 +891,33 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
             )
             == 0
             and (manifest.get("quality") or {}).get(
-                "amount_lead_return_correlation_range_violation_rows"
+                "diffusive_variation_ratio_range_violation_rows"
             )
             == 0
+            and manifest.get("source_close_read") is True
+            and manifest.get("source_amount_read") is False
+            and manifest.get("source_open_high_low_or_volume_read") is False
+            and manifest.get("cross_lunch_return_included") is False
+            and manifest.get("cross_lunch_bipower_pair_included") is False
             and manifest.get("forward_return_fields_read") is False
         ):
-            raise IntradayAmountLeadReturnCorrelationError(
-                f"published intraday-amount-lead-return-correlation snapshot changed: {final_root}"
+            raise IntradayDiffusiveVariationRatioError(
+                f"published diffusive-variation snapshot changed: {final_root}"
             )
         return final_manifest
     repository_evidence = validate_repository_chain(spec)
     chain = validate_external_chain(spec, data_root)
     raw, joint, raw_manifest_path, joint_manifest_path = chain[:4]
     if shutil.disk_usage(data_root).free < 5 * 1024**3:
-        raise IntradayAmountLeadReturnCorrelationError("external data root has less than 5 GiB free")
+        raise IntradayDiffusiveVariationRatioError(
+            "external data root has less than 5 GiB free"
+        )
 
     raw_records = list(raw.get("files") or [])
     joint_records = list(joint.get("files") or [])
-    raw_by_key = {(str(item["symbol"]), int(item["year"])): item for item in raw_records}
+    raw_by_key = {
+        (str(item["symbol"]), int(item["year"])): item for item in raw_records
+    }
     joint_by_key = {
         (str(item["symbol"]), int(item["year"])): item for item in joint_records
     }
@@ -898,7 +926,7 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
         or len(joint_by_key) != 33_015
         or set(raw_by_key) != set(joint_by_key)
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
+        raise IntradayDiffusiveVariationRatioError(
             "raw and joint-clean partition identities do not match exactly"
         )
     by_symbol: dict[str, list[tuple[dict[str, Any], dict[str, Any]]]] = {}
@@ -910,12 +938,12 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
             or Path(str(joint_record.get("source_path"))).resolve()
             != Path(str(raw_record.get("path"))).resolve()
         ):
-            raise IntradayAmountLeadReturnCorrelationError(
+            raise IntradayDiffusiveVariationRatioError(
                 f"joint-clean raw source binding changed for {key[0]}/{key[1]}"
             )
         by_symbol.setdefault(key[0], []).append((raw_record, joint_record))
 
-    lock_path = data_root / ".a_share_tushare_intraday_amount_lead_return_correlation.lock"
+    lock_path = data_root / ".a_share_tushare_intraday_diffusive_variation_ratio.lock"
     with foundation.ProcessLock(lock_path):
         partial_root.mkdir(parents=True, exist_ok=True)
         all_records: list[dict[str, Any]] = []
@@ -923,7 +951,7 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
         resumed = 0
         completed_symbols = 0
         print(
-            f"building {len(joint_records):,} intraday-amount-lead-return-correlation partitions "
+            f"building {len(joint_records):,} diffusive-variation partitions "
             f"across {len(by_symbol):,} symbols with {workers} workers",
             flush=True,
         )
@@ -945,7 +973,9 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
                     eligible_dates.update(dates)
                     resumed += resumed_count
                     completed_symbols += 1
-                    if completed_symbols % 25 == 0 or completed_symbols == len(by_symbol):
+                    if completed_symbols % 25 == 0 or completed_symbols == len(
+                        by_symbol
+                    ):
                         print(
                             f"progress symbols={completed_symbols:,}/{len(by_symbol):,} "
                             f"partitions={len(all_records):,}/{len(joint_records):,} "
@@ -958,11 +988,13 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
                     future.cancel()
                 raise
         if len(all_records) != 33_015:
-            raise IntradayAmountLeadReturnCorrelationError(
-                "not every source partition produced an intraday-amount-lead-return-correlation checkpoint"
+            raise IntradayDiffusiveVariationRatioError(
+                "not every source partition produced a diffusive-variation checkpoint"
             )
         _require_file(raw_manifest_path, RAW_MANIFEST_SHA256, "raw minute manifest")
-        _require_file(joint_manifest_path, JOINT_MANIFEST_SHA256, "joint-clean manifest")
+        _require_file(
+            joint_manifest_path, JOINT_MANIFEST_SHA256, "joint-clean manifest"
+        )
         all_records.sort(key=lambda item: (str(item["symbol"]), int(item["year"])))
         quality = foundation._aggregate_quality(all_records)
         dataset_payload = "\n".join(
@@ -971,7 +1003,7 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
         ).encode("utf-8")
         manifest = {
             "schema_version": 1,
-            "kind": "a_share_tushare_intraday_amount_lead_return_correlation_snapshot",
+            "kind": "a_share_tushare_intraday_diffusive_variation_ratio_snapshot",
             "status": "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness",
             "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
             "output_run_id": OUTPUT_RUN_ID,
@@ -992,10 +1024,13 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
             "eligible_names_by_date": dict(sorted(eligible_dates.items())),
             "source_fields_read": list(RAW_COLUMNS),
             "source_close_read": True,
-            "source_amount_read": True,
+            "source_amount_read": False,
             "source_open_high_low_or_volume_read": False,
             "standalone_09_30_row_excluded_from_formula": True,
-            "lunch_break_pair_excluded_from_formula": True,
+            "cross_lunch_return_included": False,
+            "cross_lunch_bipower_pair_included": False,
+            "realized_variance_return_observations": 238,
+            "bipower_product_observations": 236,
             "daily_price_fields_read": [],
             "comparison_factor_values_read": False,
             "forward_return_fields_read": False,
@@ -1016,7 +1051,9 @@ def verify_snapshot_files(
 ) -> dict[str, int]:
     records = list(manifest.get("files") or [])
     if len(records) != 33_015:
-        raise IntradayAmountLeadReturnCorrelationError("candidate snapshot partition count changed")
+        raise IntradayDiffusiveVariationRatioError(
+            "candidate snapshot partition count changed"
+        )
     partition_root = (manifest_path.parent / "partitions").resolve()
 
     def verify(record: dict[str, Any]) -> tuple[int, int, int]:
@@ -1024,7 +1061,7 @@ def verify_snapshot_files(
         try:
             path.relative_to(partition_root)
         except ValueError as exc:
-            raise IntradayAmountLeadReturnCorrelationError(
+            raise IntradayDiffusiveVariationRatioError(
                 f"candidate partition escapes its frozen root: {path}"
             ) from exc
         _require_file(path, str(record["output_byte_sha256"]), "candidate partition")
@@ -1048,9 +1085,13 @@ def verify_snapshot_files(
             eligible += partition_eligible
             byte_count += partition_bytes
             if index % 5000 == 0 or index == len(records):
-                print(f"verified candidate partitions {index}/{len(records)}", flush=True)
+                print(
+                    f"verified candidate partitions {index}/{len(records)}", flush=True
+                )
     if rows != manifest.get("rows") or eligible != manifest.get("eligible_rows"):
-        raise IntradayAmountLeadReturnCorrelationError("candidate snapshot aggregate counts changed")
+        raise IntradayDiffusiveVariationRatioError(
+            "candidate snapshot aggregate counts changed"
+        )
     return {
         "partitions_verified": len(records),
         "rows_verified": rows,
@@ -1060,14 +1101,18 @@ def verify_snapshot_files(
 
 
 def load_candidate_frame(manifest_path: Path, manifest: dict[str, Any]) -> pd.DataFrame:
-    dataset = pa_dataset.dataset(str(manifest_path.parent / "partitions"), format="parquet")
+    dataset = pa_dataset.dataset(
+        str(manifest_path.parent / "partitions"), format="parquet"
+    )
     table = dataset.to_table(columns=list(OUTPUT_COLUMNS), use_threads=True)
     frame = table.to_pandas(split_blocks=True, self_destruct=True)
     del table, dataset
     gc.collect()
     if len(frame) != int(manifest.get("rows", -1)):
-        raise IntradayAmountLeadReturnCorrelationError("candidate frame row count changed")
-    frame["trade_date"] = pd.to_datetime(frame["trade_date"], errors="coerce").dt.normalize()
+        raise IntradayDiffusiveVariationRatioError("candidate frame row count changed")
+    frame["trade_date"] = pd.to_datetime(
+        frame["trade_date"], errors="coerce"
+    ).dt.normalize()
     frame["symbol"] = frame["symbol"].astype(str).str.upper()
     frame[f"{FACTOR_NAME}_eligible"] = (
         frame[f"{FACTOR_NAME}_eligible"].astype("boolean").fillna(False).astype(bool)
@@ -1078,10 +1123,12 @@ def load_candidate_frame(manifest_path: Path, manifest: dict[str, Any]) -> pd.Da
         frame["trade_date"].isna().any()
         or frame.duplicated(["trade_date", "symbol"]).any()
         or not np.isfinite(frame.loc[eligible, FACTOR_NAME].to_numpy(dtype=float)).all()
-        or not frame.loc[eligible, FACTOR_NAME].between(-1.0, 1.0).all()
+        or not frame.loc[eligible, FACTOR_NAME].between(0.0, math.pi / 2.0).all()
         or frame.loc[~eligible, FACTOR_NAME].notna().any()
     ):
-        raise IntradayAmountLeadReturnCorrelationError("candidate frame values or keys are invalid")
+        raise IntradayDiffusiveVariationRatioError(
+            "candidate frame values or keys are invalid"
+        )
     frame["symbol"] = frame["symbol"].astype("category")
     return frame
 
@@ -1148,10 +1195,16 @@ def uniqueness_audit(
     sign_run_manifest_path: Path,
     volatility_manifest: dict[str, Any],
     volatility_manifest_path: Path,
+    amount_lead_manifest: dict[str, Any],
+    amount_lead_manifest_path: Path,
+    amount_center_manifest: dict[str, Any],
+    amount_center_manifest_path: Path,
+    up_move_manifest: dict[str, Any],
+    up_move_manifest_path: Path,
     spec: dict[str, Any],
     workers: int,
 ) -> dict[str, Any]:
-    print("coverage passed; loading twelve terminal comparison factors", flush=True)
+    print("coverage passed; loading fifteen terminal comparison factors", flush=True)
     efficiency_verification = foundation.verify_snapshot_files(
         efficiency_manifest, efficiency_manifest_path, workers
     )
@@ -1173,10 +1226,21 @@ def uniqueness_audit(
     sign_run_verification = sign_run.verify_snapshot_files(
         sign_run_manifest, sign_run_manifest_path, workers
     )
-    volatility_verification = previous.verify_snapshot_files(
+    volatility_verification = volatility.verify_snapshot_files(
         volatility_manifest, volatility_manifest_path, workers
     )
-    dataset = pa_dataset.dataset(str(joint_manifest_path.parent / "partitions"), format="parquet")
+    amount_lead_verification = amount_lead.verify_snapshot_files(
+        amount_lead_manifest, amount_lead_manifest_path, workers
+    )
+    amount_center_verification = amount_center.verify_snapshot_files(
+        amount_center_manifest, amount_center_manifest_path, workers
+    )
+    up_move_verification = previous.verify_snapshot_files(
+        up_move_manifest, up_move_manifest_path, workers
+    )
+    dataset = pa_dataset.dataset(
+        str(joint_manifest_path.parent / "partitions"), format="parquet"
+    )
     table = dataset.to_table(
         columns=["trade_date", "symbol", *recovery.BASE_COMPARISON_FACTORS],
         use_threads=True,
@@ -1193,7 +1257,7 @@ def uniqueness_audit(
         or comparisons["trade_date"].isna().any()
         or comparisons.duplicated(["trade_date", "symbol"]).any()
     ):
-        raise IntradayAmountLeadReturnCorrelationError("base comparison frame identity changed")
+        raise IntradayDiffusiveVariationRatioError("base comparison frame identity changed")
     efficiency = foundation.load_candidate_frame(
         efficiency_manifest_path, efficiency_manifest
     )[["trade_date", "symbol", foundation.FACTOR_NAME]]
@@ -1205,29 +1269,28 @@ def uniqueness_audit(
     )[["trade_date", "symbol", entropy.FACTOR_NAME]]
     profile_frame = profile.load_candidate_frame(
         profile_manifest_path, profile_manifest
-    )[
-        ["trade_date", "symbol", profile.FACTOR_NAME]
-    ]
-    upside_frame = upside.load_candidate_frame(
-        upside_manifest_path, upside_manifest
-    )[
+    )[["trade_date", "symbol", profile.FACTOR_NAME]]
+    upside_frame = upside.load_candidate_frame(upside_manifest_path, upside_manifest)[
         ["trade_date", "symbol", upside.FACTOR_NAME]
     ]
     terminal_frame = terminal.load_candidate_frame(
         terminal_manifest_path, terminal_manifest
-    )[
-        ["trade_date", "symbol", terminal.FACTOR_NAME]
-    ]
+    )[["trade_date", "symbol", terminal.FACTOR_NAME]]
     sign_run_frame = sign_run.load_candidate_frame(
         sign_run_manifest_path, sign_run_manifest
-    )[
-        ["trade_date", "symbol", sign_run.FACTOR_NAME]
-    ]
-    volatility_frame = previous.load_candidate_frame(
+    )[["trade_date", "symbol", sign_run.FACTOR_NAME]]
+    volatility_frame = volatility.load_candidate_frame(
         volatility_manifest_path, volatility_manifest
-    )[
-        ["trade_date", "symbol", previous.FACTOR_NAME]
-    ]
+    )[["trade_date", "symbol", volatility.FACTOR_NAME]]
+    amount_lead_frame = amount_lead.load_candidate_frame(
+        amount_lead_manifest_path, amount_lead_manifest
+    )[["trade_date", "symbol", amount_lead.FACTOR_NAME]]
+    amount_center_frame = amount_center.load_candidate_frame(
+        amount_center_manifest_path, amount_center_manifest
+    )[["trade_date", "symbol", amount_center.FACTOR_NAME]]
+    up_move_frame = previous.load_candidate_frame(
+        up_move_manifest_path, up_move_manifest
+    )[["trade_date", "symbol", previous.FACTOR_NAME]]
     for frame in (
         efficiency,
         recovery_frame,
@@ -1237,6 +1300,9 @@ def uniqueness_audit(
         terminal_frame,
         sign_run_frame,
         volatility_frame,
+        amount_lead_frame,
+        amount_center_frame,
+        up_move_frame,
     ):
         frame["symbol"] = frame["symbol"].astype(str)
     comparisons = (
@@ -1285,6 +1351,24 @@ def uniqueness_audit(
             how="left",
             validate="one_to_one",
         )
+        .merge(
+            amount_lead_frame,
+            on=["trade_date", "symbol"],
+            how="left",
+            validate="one_to_one",
+        )
+        .merge(
+            amount_center_frame,
+            on=["trade_date", "symbol"],
+            how="left",
+            validate="one_to_one",
+        )
+        .merge(
+            up_move_frame,
+            on=["trade_date", "symbol"],
+            how="left",
+            validate="one_to_one",
+        )
     )
     del (
         efficiency,
@@ -1295,6 +1379,9 @@ def uniqueness_audit(
         terminal_frame,
         sign_run_frame,
         volatility_frame,
+        amount_lead_frame,
+        amount_center_frame,
+        up_move_frame,
     )
     candidate_quality = candidate_quality.copy()
     candidate_quality["symbol"] = candidate_quality["symbol"].astype(str)
@@ -1315,7 +1402,9 @@ def uniqueness_audit(
         sessions = int(len(daily))
         median = float(daily["rank_correlation"].median()) if sessions else math.nan
         passed = bool(
-            sessions >= minimum_sessions and math.isfinite(median) and abs(median) < threshold
+            sessions >= minimum_sessions
+            and math.isfinite(median)
+            and abs(median) < threshold
         )
         results.append(
             {
@@ -1325,15 +1414,21 @@ def uniqueness_audit(
                 "minimum_pairwise_names_observed": (
                     int(daily["pairwise_names"].min()) if sessions else 0
                 ),
-                "median_daily_rank_correlation": median if math.isfinite(median) else None,
+                "median_daily_rank_correlation": median
+                if math.isfinite(median)
+                else None,
                 "absolute_median_daily_rank_correlation": (
                     abs(median) if math.isfinite(median) else None
                 ),
                 "daily_rank_correlation_p05": (
-                    float(daily["rank_correlation"].quantile(0.05)) if sessions else None
+                    float(daily["rank_correlation"].quantile(0.05))
+                    if sessions
+                    else None
                 ),
                 "daily_rank_correlation_p95": (
-                    float(daily["rank_correlation"].quantile(0.95)) if sessions else None
+                    float(daily["rank_correlation"].quantile(0.95))
+                    if sessions
+                    else None
                 ),
                 "daily_correlation_frame_sha256": (
                     research.dataframe_content_sha256(daily) if sessions else None
@@ -1346,7 +1441,7 @@ def uniqueness_audit(
         for item in results
         if item["absolute_median_daily_rank_correlation"] is not None
     ]
-    all_passed = len(results) == 12 and all(item["gate_passed"] for item in results)
+    all_passed = len(results) == 15 and all(item["gate_passed"] for item in results)
     return {
         "comparison_values_loaded_after_coverage_pass": True,
         "comparison_field_count": len(results),
@@ -1359,6 +1454,9 @@ def uniqueness_audit(
             "terminal_close_location": terminal_verification,
             "return_sign_run_imbalance": sign_run_verification,
             "volatility_resolution": volatility_verification,
+            "amount_lead_return_correlation": amount_lead_verification,
+            "amount_center_of_mass": amount_center_verification,
+            "up_move_amount_share": up_move_verification,
         },
         "minimum_pairwise_names_per_session": minimum_names,
         "minimum_pairwise_sessions_per_comparison": minimum_sessions,
@@ -1367,21 +1465,20 @@ def uniqueness_audit(
         "maximum_observed_absolute_median_daily_rank_correlation": (
             max(observed) if observed else None
         ),
-        "all_twelve_comparisons_passed": all_passed,
+        "all_fifteen_comparisons_passed": all_passed,
     }
 
 
 def _find_existing_audit(experiment_root: Path, manifest_sha256: str) -> Path | None:
     for path in sorted(
-        experiment_root.glob(
-            "*_intraday_amount_lead_return_correlation_no_return_audit.json"
-        )
+        experiment_root.glob("*_intraday_diffusive_variation_ratio_no_return_audit.json")
     ):
         record = research.load_json_record(path)
         if (
             record.get("kind")
-            == "a_share_tushare_intraday_amount_lead_return_correlation_no_return_audit"
-            and (record.get("candidate_snapshot") or {}).get("sha256") == manifest_sha256
+            == "a_share_tushare_intraday_diffusive_variation_ratio_no_return_audit"
+            and (record.get("candidate_snapshot") or {}).get("sha256")
+            == manifest_sha256
         ):
             return path
     return None
@@ -1408,7 +1505,7 @@ def run_no_return_audit(
         _require_file(audit_path, NO_RETURN_AUDIT_SHA256, "terminal no-return audit")
         audit = research.load_json_record(
             audit_path,
-            kind="a_share_tushare_intraday_amount_lead_return_correlation_no_return_audit",
+            kind="a_share_tushare_intraday_diffusive_variation_ratio_no_return_audit",
         )
         if not (
             audit.get("status")
@@ -1419,9 +1516,7 @@ def run_no_return_audit(
                 "gate_passed_before_comparison_values"
             )
             is True
-            and (audit.get("uniqueness") or {}).get(
-                "all_twelve_comparisons_passed"
-            )
+            and (audit.get("uniqueness") or {}).get("all_fifteen_comparisons_passed")
             is True
             and (audit.get("decision") or {}).get(
                 "separate_return_diagnostic_preregistration_allowed"
@@ -1429,7 +1524,7 @@ def run_no_return_audit(
             is True
             and audit.get("forward_return_fields_read") is False
         ):
-            raise IntradayAmountLeadReturnCorrelationError(
+            raise IntradayDiffusiveVariationRatioError(
                 "terminal no-return audit is inconsistent"
             )
         return audit_path
@@ -1456,6 +1551,12 @@ def run_no_return_audit(
         sign_run_manifest_path,
         volatility_manifest,
         volatility_manifest_path,
+        amount_lead_manifest,
+        amount_lead_manifest_path,
+        amount_center_manifest,
+        amount_center_manifest_path,
+        up_move_manifest,
+        up_move_manifest_path,
     ) = chain
     manifest_path = output_root(data_root) / "snapshot_manifest.json"
     if not manifest_path.is_file():
@@ -1464,7 +1565,7 @@ def run_no_return_audit(
         )
     manifest = research.load_json_record(
         manifest_path,
-        kind="a_share_tushare_intraday_amount_lead_return_correlation_snapshot",
+        kind="a_share_tushare_intraday_diffusive_variation_ratio_snapshot",
     )
     if not (
         manifest.get("status")
@@ -1472,29 +1573,40 @@ def run_no_return_audit(
         and manifest.get("protocol_sha256") == PREREGISTRATION_SHA256
         and manifest.get("raw_manifest_sha256") == RAW_MANIFEST_SHA256
         and manifest.get("joint_manifest_sha256") == JOINT_MANIFEST_SHA256
+        and manifest.get("dataset_sha256") == CANDIDATE_DATASET_SHA256
         and manifest.get("rows") == 7_724_498
         and manifest.get("eligible_rows") == 7_695_088
-        and (manifest.get("quality") or {}).get("constant_next_return_rows")
+        and (manifest.get("quality") or {}).get("zero_realized_variance_rows")
         == 29_410
-        and (manifest.get("quality") or {}).get("constant_preceding_amount_rows")
-        == 1
+        and (manifest.get("quality") or {}).get("invalid_required_close_rows") == 0
         and (manifest.get("quality") or {}).get("invalid_required_value_rows") == 0
         and (manifest.get("quality") or {}).get("nonfinite_log_return_rows") == 0
-        and (manifest.get("quality") or {}).get("nonfinite_log1p_amount_rows") == 0
         and (manifest.get("quality") or {}).get(
-            "amount_lead_return_correlation_range_violation_rows"
+            "nonfinite_realized_variance_or_bipower_rows"
+        )
+        == 0
+        and (manifest.get("quality") or {}).get("nonfinite_ratio_rows")
+        == 0
+        and (manifest.get("quality") or {}).get(
+            "numerical_endpoint_canonicalization_rows"
+        )
+        == 0
+        and (manifest.get("quality") or {}).get(
+            "diffusive_variation_ratio_range_violation_rows"
         )
         == 0
         and manifest.get("source_close_read") is True
-        and manifest.get("source_amount_read") is True
+        and manifest.get("source_amount_read") is False
         and manifest.get("source_open_high_low_or_volume_read") is False
+        and manifest.get("cross_lunch_return_included") is False
+        and manifest.get("cross_lunch_bipower_pair_included") is False
         and manifest.get("comparison_factor_values_read") is False
         and manifest.get("forward_return_fields_read") is False
     ):
-        raise IntradayAmountLeadReturnCorrelationError("candidate snapshot identity is rejected")
+        raise IntradayDiffusiveVariationRatioError("candidate snapshot identity is rejected")
     manifest_sha256 = foundation.file_digest(manifest_path)
     if manifest_sha256 != CANDIDATE_MANIFEST_SHA256:
-        raise IntradayAmountLeadReturnCorrelationError(
+        raise IntradayDiffusiveVariationRatioError(
             "candidate snapshot fingerprint changed: expected "
             f"{CANDIDATE_MANIFEST_SHA256}, got {manifest_sha256}"
         )
@@ -1510,7 +1622,7 @@ def run_no_return_audit(
     gc.collect()
     uniqueness: dict[str, Any] = {
         "comparison_values_loaded_after_coverage_pass": False,
-        "all_twelve_comparisons_passed": False,
+        "all_fifteen_comparisons_passed": False,
         "comparisons": [],
     }
     if coverage["gate_passed_before_comparison_values"]:
@@ -1533,6 +1645,12 @@ def run_no_return_audit(
             sign_run_manifest_path,
             volatility_manifest,
             volatility_manifest_path,
+            amount_lead_manifest,
+            amount_lead_manifest_path,
+            amount_center_manifest,
+            amount_center_manifest_path,
+            up_move_manifest,
+            up_move_manifest_path,
             spec,
             workers,
         )
@@ -1540,7 +1658,7 @@ def run_no_return_audit(
     gc.collect()
     passed = bool(
         coverage["gate_passed_before_comparison_values"]
-        and uniqueness["all_twelve_comparisons_passed"]
+        and uniqueness["all_fifteen_comparisons_passed"]
     )
     status = (
         "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration"
@@ -1553,10 +1671,10 @@ def run_no_return_audit(
     )
     audit = {
         "schema_version": 1,
-        "kind": "a_share_tushare_intraday_amount_lead_return_correlation_no_return_audit",
+        "kind": "a_share_tushare_intraday_diffusive_variation_ratio_no_return_audit",
         "status": status,
         "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "purpose": "ordered_candidate_coverage_capacity_then_twelve_terminal_factor_uniqueness_without_daily_prices_or_forward_returns",
+        "purpose": "ordered_candidate_coverage_capacity_then_fifteen_terminal_factor_uniqueness_without_daily_prices_or_forward_returns",
         "preregistration": {
             "path": str(DEFAULT_PREREGISTRATION.resolve()),
             "sha256": PREREGISTRATION_SHA256,
@@ -1581,6 +1699,9 @@ def run_no_return_audit(
             "terminal_close_location_manifest_sha256": TERMINAL_CLOSE_LOCATION_MANIFEST_SHA256,
             "return_sign_run_imbalance_manifest_sha256": RETURN_SIGN_RUN_IMBALANCE_MANIFEST_SHA256,
             "volatility_resolution_manifest_sha256": VOLATILITY_RESOLUTION_MANIFEST_SHA256,
+            "amount_lead_return_correlation_manifest_sha256": AMOUNT_LEAD_RETURN_CORRELATION_MANIFEST_SHA256,
+            "amount_center_of_mass_manifest_sha256": AMOUNT_CENTER_OF_MASS_MANIFEST_SHA256,
+            "up_move_amount_share_manifest_sha256": UP_MOVE_AMOUNT_SHARE_MANIFEST_SHA256,
             "repository_evidence": repository_evidence,
             "snapshot_file_verification": verification,
         },
@@ -1603,7 +1724,7 @@ def run_no_return_audit(
         },
         "source_fields_loaded": list(RAW_COLUMNS),
         "minute_price_fields_loaded": ["close"],
-        "minute_amount_fields_loaded": ["amount"],
+        "minute_amount_fields_loaded": [],
         "minute_open_high_low_or_volume_fields_loaded": [],
         "comparison_fields_loaded": (
             list(COMPARISON_FACTORS)
@@ -1618,8 +1739,7 @@ def run_no_return_audit(
     experiment_root.mkdir(parents=True, exist_ok=True)
     run_id = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     path = (
-        experiment_root
-        / f"{run_id}_intraday_amount_lead_return_correlation_no_return_audit.json"
+        experiment_root / f"{run_id}_intraday_diffusive_variation_ratio_no_return_audit.json"
     )
     foundation.atomic_write_json(audit, path)
     return path
@@ -1632,11 +1752,11 @@ def load_diagnostic_preregistration(
     _require_file(
         path,
         DIAGNOSTIC_PREREGISTRATION_SHA256,
-        "intraday-amount-lead-return-correlation diagnostic protocol",
+        "intraday diffusive-variation diagnostic protocol",
     )
     spec = research.load_json_record(
         path,
-        kind="a_share_tushare_intraday_amount_lead_return_correlation_diagnostic_preregistration",
+        kind="a_share_tushare_intraday_diffusive_variation_ratio_diagnostic_preregistration",
     )
     factor = spec.get("factor") or {}
     evidence = spec.get("no_return_evidence") or {}
@@ -1660,22 +1780,21 @@ def load_diagnostic_preregistration(
             "forward_returns_observed_before_this_diagnostic_preregistration"
         )
         is False
-        and (evidence.get("protocol") or {}).get("sha256")
-        == PREREGISTRATION_SHA256
+        and (evidence.get("protocol") or {}).get("sha256") == PREREGISTRATION_SHA256
         and "context_repair" not in evidence
         and snapshot.get("sha256") == CANDIDATE_MANIFEST_SHA256
-        and snapshot.get("dataset_sha256")
-        == "65f1d3c70da7f1f90154129d5ce4af7b3ddde7dae5b387ec5a38e8ea612f18ce"
+        and snapshot.get("dataset_sha256") == CANDIDATE_DATASET_SHA256
         and snapshot.get("partitions") == 33_015
         and snapshot.get("rows") == 7_724_498
         and snapshot.get("eligible_rows") == 7_695_088
-        and snapshot.get("constant_preceding_amount_rows") == 1
-        and snapshot.get("constant_next_return_rows") == 29_410
+        and snapshot.get("zero_realized_variance_rows") == 29_410
+        and snapshot.get("invalid_required_close_rows") == 0
         and snapshot.get("invalid_required_value_rows") == 0
         and snapshot.get("nonfinite_log_return_rows") == 0
-        and snapshot.get("nonfinite_log1p_amount_rows") == 0
+        and snapshot.get("nonfinite_realized_variance_or_bipower_rows") == 0
+        and snapshot.get("nonfinite_ratio_rows") == 0
         and snapshot.get("numerical_endpoint_canonicalization_rows") == 0
-        and snapshot.get("amount_lead_return_correlation_range_violation_rows") == 0
+        and snapshot.get("diffusive_variation_ratio_range_violation_rows") == 0
         and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
         and audit.get("forward_return_fields_read") is False
         and coverage.get("quality_listing_eligible_rows") == 1_331_759
@@ -1688,19 +1807,14 @@ def load_diagnostic_preregistration(
         and coverage.get("observed_calendar_years")
         == [2019, 2020, 2021, 2022, 2023, 2024, 2025]
         and coverage.get("gate_passed") is True
-        and uniqueness.get(
-            "maximum_allowed_absolute_median_daily_rank_correlation"
-        )
+        and uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
         == 0.8
-        and uniqueness.get(
-            "maximum_observed_absolute_median_daily_rank_correlation"
-        )
-        == 0.26475924224930525
+        and uniqueness.get("maximum_observed_absolute_median_daily_rank_correlation")
+        == 0.3429077105616848
         and tuple(comparison_medians) == COMPARISON_FACTORS
-        and uniqueness.get("all_twelve_comparisons_passed") is True
+        and uniqueness.get("all_fifteen_comparisons_passed") is True
         and holding.get("universe") == "buyable_main_chinext"
-        and holding.get("minimum_listing_sessions")
-        == research.MIN_LISTING_SESSIONS
+        and holding.get("minimum_listing_sessions") == research.MIN_LISTING_SESSIONS
         and holding.get("development_start") == "2019-01-01"
         and holding.get("development_end") == "2025-12-31"
         and holding.get("holding_period_trading_days") == 3
@@ -1710,15 +1824,13 @@ def load_diagnostic_preregistration(
         and holding.get("close_cost") == 0.00062
         and gates.get("minimum_non_overlapping_cohorts") == 200
         and gates.get("minimum_observed_calendar_years") == 5
-        and decision.get("same_history_combination_return_evaluation_allowed")
-        is False
-        and decision.get("current_scoring_selection_sizing_or_orders_allowed")
-        is False
+        and decision.get("same_history_combination_return_evaluation_allowed") is False
+        and decision.get("current_scoring_selection_sizing_or_orders_allowed") is False
         and boundary.get("forward_return_fields_read_before_registration") is False
         and boundary.get("training_or_model_fitting_performed") is False
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
-            "intraday-amount-lead-return-correlation diagnostic protocol no longer matches its frozen definition"
+        raise IntradayDiffusiveVariationRatioError(
+            "intraday diffusive-variation diagnostic protocol no longer matches its frozen definition"
         )
     return spec
 
@@ -1736,7 +1848,7 @@ def validate_diagnostic_source_chain(
     )
     manifest = research.load_json_record(
         manifest_path,
-        kind="a_share_tushare_intraday_amount_lead_return_correlation_snapshot",
+        kind="a_share_tushare_intraday_diffusive_variation_ratio_snapshot",
     )
     quality = manifest.get("quality") or {}
     if not (
@@ -1747,22 +1859,26 @@ def validate_diagnostic_source_chain(
         and manifest.get("partitions") == 33_015
         and manifest.get("rows") == 7_724_498
         and manifest.get("eligible_rows") == 7_695_088
-        and quality.get("constant_preceding_amount_rows") == 1
-        and quality.get("constant_next_return_rows") == 29_410
+        and quality.get("zero_realized_variance_rows") == 29_410
+        and quality.get("invalid_required_close_rows") == 0
         and quality.get("invalid_required_value_rows") == 0
         and quality.get("nonfinite_log_return_rows") == 0
-        and quality.get("nonfinite_log1p_amount_rows") == 0
+        and quality.get("nonfinite_realized_variance_or_bipower_rows") == 0
+        and quality.get("nonfinite_ratio_rows") == 0
         and quality.get("numerical_endpoint_canonicalization_rows") == 0
-        and quality.get("amount_lead_return_correlation_range_violation_rows") == 0
+        and quality.get("diffusive_variation_ratio_range_violation_rows") == 0
         and manifest.get("comparison_factor_values_read") is False
         and manifest.get("forward_return_fields_read") is False
         and manifest.get("source_fields_read") == list(RAW_COLUMNS)
         and manifest.get("source_close_read") is True
-        and manifest.get("source_amount_read") is True
+        and manifest.get("source_amount_read") is False
         and manifest.get("source_open_high_low_or_volume_read") is False
-        and manifest.get("lunch_break_pair_excluded_from_formula") is True
+        and manifest.get("cross_lunch_return_included") is False
+        and manifest.get("cross_lunch_bipower_pair_included") is False
+        and manifest.get("realized_variance_return_observations") == 238
+        and manifest.get("bipower_product_observations") == 236
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
+        raise IntradayDiffusiveVariationRatioError(
             "candidate snapshot conflicts with the diagnostic preregistration"
         )
     audit_link = no_return["ordered_audit"]
@@ -1770,7 +1886,7 @@ def validate_diagnostic_source_chain(
     _require_file(audit_path, NO_RETURN_AUDIT_SHA256, "ordered no-return audit")
     audit = research.load_json_record(
         audit_path,
-        kind="a_share_tushare_intraday_amount_lead_return_correlation_no_return_audit",
+        kind="a_share_tushare_intraday_diffusive_variation_ratio_no_return_audit",
     )
     if not (
         audit.get("status") == audit_link.get("status")
@@ -1780,9 +1896,7 @@ def validate_diagnostic_source_chain(
             "gate_passed_before_comparison_values"
         )
         is True
-        and (audit.get("uniqueness") or {}).get(
-            "all_twelve_comparisons_passed"
-        )
+        and (audit.get("uniqueness") or {}).get("all_fifteen_comparisons_passed")
         is True
         and (audit.get("decision") or {}).get(
             "separate_return_diagnostic_preregistration_allowed"
@@ -1791,7 +1905,7 @@ def validate_diagnostic_source_chain(
         and audit.get("daily_price_fields_loaded") == []
         and audit.get("forward_return_fields_read") is False
     ):
-        raise IntradayAmountLeadReturnCorrelationError(
+        raise IntradayDiffusiveVariationRatioError(
             "ordered no-return audit does not authorize the frozen diagnostic"
         )
     repository_evidence = validate_repository_chain(load_preregistration())
@@ -1804,9 +1918,7 @@ def validate_diagnostic_source_chain(
         _require_file(path, expected, name.replace("_", " "))
         repository_evidence[name] = {"path": str(path), "sha256": expected}
     quarterly_quality = spec["quarterly_quality"]
-    quality_manifest_path = _repository_path(
-        str(quarterly_quality["manifest_path"])
-    )
+    quality_manifest_path = _repository_path(str(quarterly_quality["manifest_path"]))
     _require_file(
         quality_manifest_path,
         str(quarterly_quality["manifest_sha256"]),
@@ -1827,14 +1939,14 @@ def validate_diagnostic_source_chain(
 def require_diagnostic_unconsumed(experiment_root: Path) -> None:
     marker = experiment_root / CONSUMPTION_FILENAME
     if marker.exists():
-        raise IntradayAmountLeadReturnCorrelationError(
-            f"intraday-amount-lead-return-correlation historical diagnostic is already consumed: {marker}"
+        raise IntradayDiffusiveVariationRatioError(
+            f"intraday diffusive-variation historical diagnostic is already consumed: {marker}"
         )
     for path in sorted(experiment_root.glob("*_factor_diagnostic.json")):
         record = research.load_json_record(path)
         if record.get("purpose") == DIAGNOSTIC_PURPOSE:
-            raise IntradayAmountLeadReturnCorrelationError(
-                f"intraday-amount-lead-return-correlation historical diagnostic already exists: {path}"
+            raise IntradayDiffusiveVariationRatioError(
+                f"intraday diffusive-variation historical diagnostic already exists: {path}"
             )
 
 
@@ -1872,7 +1984,7 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
     if candidate["trade_date"].min() < pd.Timestamp(start) or candidate[
         "trade_date"
     ].max() > pd.Timestamp(end):
-        raise IntradayAmountLeadReturnCorrelationError(
+        raise IntradayDiffusiveVariationRatioError(
             "candidate feature dates escape the frozen diagnostic window"
         )
     print("loading accepted daily execution and quality context", flush=True)
@@ -1920,7 +2032,7 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
     pilot_policy = research.load_pilot_execution_policy()
     marker_path = experiment_root / CONSUMPTION_FILENAME
     marker = {
-        "kind": "a_share_tushare_intraday_amount_lead_return_correlation_historical_consumption",
+        "kind": "a_share_tushare_intraday_diffusive_variation_ratio_historical_consumption",
         "status": "historical_forward_return_read_started",
         "started_at": research._timestamp(),
         "diagnostic_preregistration_path": str(
@@ -1984,7 +2096,7 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
             "listing_gate_applied_before_cross_sectional_ranking": True,
             "holding_period_trading_days": int(holding["holding_period_trading_days"]),
             "rebalancing": "non_overlapping_every_holding_period",
-            "signal_time": "full-session intraday-amount-lead-return-correlation factor known after signal-session close",
+            "signal_time": "full-session intraday diffusive-variation factor known after signal-session close",
             "same_session_trade_allowed": False,
             "entry": "next local trading-session open",
             "exit": "local close after holding_period_trading_days",
@@ -2023,10 +2135,13 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
             "coverage": coverage,
             "source_fields_read_for_factor": list(RAW_COLUMNS),
             "source_close_read_for_factor": True,
-            "source_amount_read_for_factor": True,
+            "source_amount_read_for_factor": False,
             "source_open_high_low_or_volume_read_for_factor": False,
             "standalone_09_30_row_excluded_from_formula": True,
-            "lunch_break_pair_excluded_from_formula": True,
+            "cross_lunch_return_included": False,
+            "cross_lunch_bipower_pair_included": False,
+            "realized_variance_return_observations": 238,
+            "bipower_product_observations": 236,
             "daily_prices_substituted_into_minute_rows": False,
             "forward_return_fields_stored_in_feature_source": False,
             "selection_or_promotion_allowed": False,
@@ -2101,11 +2216,12 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
     return destination
 
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
-    build_parser = subparsers.add_parser("build", help="Build the external candidate snapshot")
+    build_parser = subparsers.add_parser(
+        "build", help="Build the external candidate snapshot"
+    )
     build_parser.add_argument("--data-root", type=Path, required=True)
     build_parser.add_argument("--workers", type=int, default=4)
     audit_parser = subparsers.add_parser(

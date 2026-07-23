@@ -332,8 +332,21 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
         and (mechanisms[-1] if mechanisms else {}).get("mechanism")
         == "tushare_intraday_up_move_amount_share_238m"
     )
+    second_successor_state = (
+        state.get("status")
+        == "aggregation_blocked_after_intraday_diffusive_variation_ratio_terminal_rejection_zero_dual_gate_factors"
+        and summary.get("terminal_mechanism_count") == 40
+        and len(mechanisms) == 40
+        and (mechanisms[-1] if mechanisms else {}).get("mechanism")
+        == "tushare_intraday_diffusive_variation_ratio_238m"
+    )
     if not (
-        (predecessor_state or terminal_state or direct_successor_state)
+        (
+            predecessor_state
+            or terminal_state
+            or direct_successor_state
+            or second_successor_state
+        )
         and summary.get("admitted_factor_count") == 0
         and summary.get("aggregation_candidate_count") == 0
         and decision.get("aggregation_allowed") is False

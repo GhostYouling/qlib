@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_diffusive_variation_ratio_research_record",
+  "status": "terminal_rejected_at_association_stability_and_executable_topk_gates",
+  "recorded_at": "2026-07-23T00:21:06Z",
+  "purpose": "Record the fingerprint-bound construction, no-return admission, and single historical three-session return diagnostic for the Tushare intraday diffusive-variation ratio without mistaking coverage and uniqueness for predictive or executable value.",
+  "factor": {
+    "name": "intraday_diffusive_variation_ratio_238m",
+    "direction": "higher",
+    "formula": "[(pi/2) * sum_h sum_{j=2..119} abs(r_hj) * abs(r_h,j-1)] / [sum_h sum_{j=1..119} r_hj^2], h in {morning,afternoon}",
+    "economic_hypothesis": "A high value means that a larger share of within-session quadratic variation is represented by adjacent absolute-return products, consistent with more continuous diffusive price variation and fewer isolated jumps that might carry from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "raw_close_used": true,
+    "raw_open_high_low_volume_or_amount_used": false,
+    "standalone_09_30_row_excluded_from_formula": true,
+    "cross_lunch_return_or_bipower_pair_included": false,
+    "realized_variance_return_observations": 238,
+    "bipower_product_observations": 236,
+    "zero_realized_variance_policy": "missing",
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_up_move_amount_share_manifest_sha256": "d7d839c70c2289c9f05182de5ade655f31a0006c3871fcf9273cf17e2404d634",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_diffusive_variation_ratio/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_diffusive_variation_ratio_v1/snapshot_manifest.json",
+      "sha256": "ead71a5fc82e25b2b90467ea7e3a66070440c2eedb53b1beb78e14723a25074b",
+      "dataset_sha256": "28ae11c5f51e667dca1216851bb9e364d23af31d9f79f21686a4f14e78432372",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7695088,
+      "zero_realized_variance_rows": 29410,
+      "invalid_required_close_rows": 0,
+      "invalid_required_value_rows": 0,
+      "nonfinite_log_return_rows": 0,
+      "nonfinite_realized_variance_or_bipower_rows": 0,
+      "nonfinite_ratio_rows": 0,
+      "numerical_endpoint_canonicalization_rows": 0,
+      "diffusive_variation_ratio_range_violation_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_diffusive_variation_ratio_no_return_preregistration.json",
+      "sha256": "db16eac2ed99dba863a94be9d9debd52c9bc62dbe291cb1faf7b9bfe7c2cf05f",
+      "factor_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260723T001116Z_intraday_diffusive_variation_ratio_no_return_audit.json",
+      "sha256": "e25ecaee8617825284b4134a718fc3a048870c8235abbd184fc58286bb4ab4f4",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_returns_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_intraday_diffusive_variation_ratio_diagnostic_preregistration.json",
+      "sha256": "ca16edb3a78bb47aa6f8795458eea33b82f58a0ddafb7236cf3c0426eb79cb12",
+      "forward_returns_read_before_registration": false
+    }
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328065,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "comparison_factor_count": 15,
+    "maximum_absolute_median_daily_rank_correlation_to_fifteen_terminal_factors": 0.3429077105616848,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "nearest_comparison_factor": "intraday_amount_participation_entropy_240m",
+    "all_fifteen_uniqueness_gates_passed": true
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260723T001737Z",
+      "path": "data/experiments/short_horizon/20260723T001737Z_factor_diagnostic.json",
+      "sha256": "38b857b21df1ae001ddf73734f74d0fb884bbf822701c516aab593049c1271ce"
+    },
+    "stability_audit": {
+      "run_id": "20260723T001811Z",
+      "path": "data/experiments/short_horizon/20260723T001811Z_factor_stability_audit.json",
+      "sha256": "7c30f02442c698b522d35c131364a78f360c3d5f349b2ca57de40c4d65b14bd3"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260723T001811Z",
+      "path": "data/experiments/short_horizon/20260723T001811Z_factor_topk_viability_audit.json",
+      "sha256": "6f7ecae484237edf6ae04430013d9faa2775a79063ab54ff50bf00fd6f9b987f"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/intraday_diffusive_variation_ratio_238m_historical_consumption.json",
+      "sha256": "d4f4720ee108c3553df8b6d44fc8524e0e23c0aad41962fe33d8deba53fa89fb",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "return_results": {
+    "cohorts": 539,
+    "mean_rank_ic": -0.022508040256830272,
+    "median_rank_ic": -0.017017770427810924,
+    "positive_rank_ic_rate": 0.44155844155844154,
+    "mean_top3_minus_bottom3_gross_return": -0.001404233332135903,
+    "years_with_nonpositive_mean_rank_ic": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "association_stability_gate_passed": false,
+    "execution_aware_complete_signal_count": 533,
+    "execution_aware_top3_net_cumulative_return": -0.8559411398232839,
+    "execution_aware_top3_maximum_drawdown": -0.9157820418131066,
+    "years_with_nonpositive_execution_aware_return": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "pilot_net_cumulative_return_at_zero_bp_each_side": -0.1435351332813909,
+    "pilot_net_cumulative_return_at_five_bp_each_side": -0.18754255272545806,
+    "pilot_net_cumulative_return_at_ten_bp_each_side": -0.23238649620750873,
+    "pilot_net_cumulative_return_at_twenty_bp_each_side": -0.2996567875360726,
+    "pilot_maximum_drawdown_at_ten_bp_each_side": -0.26585677399923324,
+    "pilot_board_lot_affordability_rate": 0.8778195488721805,
+    "pilot_maximum_daily_amount_participation": 0.0007277373754723833,
+    "pilot_terminal_unresolved_positions": 0,
+    "topk_viability_gate_passed": false,
+    "dual_gate_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "invert_reformulate_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "terminal_reason": "The exact higher intraday diffusive-variation-ratio direction failed both association stability and executable Top-3 gates. Its mean and median Rank IC were negative, the normalized execution-aware ledger lost 85.59% with a 91.58% drawdown, and the CNY 200,000 board-lot ledger lost 23.24% at ten basis points per side while board-lot affordability was only 87.78%."
+  },
+  "research_boundary": {
+    "coverage_or_uniqueness_proved_predictive_value": false,
+    "negative_overall_historical_association_confirms_the_frozen_higher_direction_failed": true,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction diffusive-variation mechanism. Preserve the source-safe builder and ordered audit evidence, then freeze a genuinely distinct mechanism before observing its values or returns; do not invert the direction or purchase Level-2 to rescue this result."
+  }
+}
