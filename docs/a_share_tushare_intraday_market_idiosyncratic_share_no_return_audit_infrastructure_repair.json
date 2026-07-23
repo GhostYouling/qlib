@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_market_idiosyncratic_share_no_return_audit_infrastructure_repair",
+  "status": "completed_pre_return_infrastructure_repair_record",
+  "recorded_at": "2026-07-23T09:20:00Z",
+  "purpose": "Record two no-return audit infrastructure failures and the sole bounded implementation repair without changing the preregistered factor, direction, comparison catalog, order, or gates.",
+  "candidate": {
+    "name": "intraday_market_idiosyncratic_share_238m",
+    "direction": "higher",
+    "formula": "1 - Corr(r_i,t, mean(r_j,t for all valid j != i))^2 over the 238 within-half one-minute log returns"
+  },
+  "frozen_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_market_idiosyncratic_share_no_return_preregistration.json",
+      "sha256": "6f1f4108cd54357e94e44cee8793e917a2bc627af9da885af6d2b50b76c4078a"
+    },
+    "candidate_manifest_sha256": "954b71d571bcd89cbf4eae4eedad014091a9b40e6b2b083e0071cbf870634ef0",
+    "candidate_dataset_sha256": "e30578d063c16bafc77873e8d061d8b3985c4d3b9beb8a5994514db292f8c430",
+    "comparison_factor_count": 21,
+    "comparison_order_or_direction_changed": false,
+    "coverage_capacity_or_uniqueness_threshold_changed": false
+  },
+  "failed_attempts": [
+    {
+      "attempt": 1,
+      "failure": "recursive predecessor-chain comparison materialization exceeded available memory and the process exited with code 137",
+      "completed_audit_artifact_written": false,
+      "daily_price_fields_read": false,
+      "forward_return_fields_read": false,
+      "candidate_or_comparison_result_used_to_change_protocol": false
+    },
+    {
+      "attempt": 2,
+      "failure": "serial comparison loading repeatedly used numpy.isin on approximately 1.33 million compact stock-day keys and was manually interrupted before an audit artifact",
+      "completed_audit_artifact_written": false,
+      "daily_price_fields_read": false,
+      "forward_return_fields_read": false,
+      "candidate_or_comparison_result_used_to_change_protocol": false
+    }
+  ],
+  "authorized_implementation_repair": {
+    "load_one_comparison_factor_at_a_time": true,
+    "retain_only_compact_sorted_candidate_stock_day_keys_and_values": true,
+    "replace_repeated_numpy_isin_with_sorted_numpy_searchsorted_membership": true,
+    "verify_every_bound_comparison_partition_hash_before_use": true,
+    "factor_formula_changed": false,
+    "factor_direction_changed": false,
+    "comparison_catalog_changed": false,
+    "comparison_order_changed": false,
+    "gate_changed": false,
+    "date_horizon_topk_cost_quality_listing_or_execution_policy_changed": false
+  },
+  "successful_audit": {
+    "path": "data/experiments/short_horizon/20260723T081939Z_intraday_market_idiosyncratic_share_no_return_audit.json",
+    "sha256": "44e9a2279aebc55d265378aa8bf4dad4a562cc4c2438973925c638b89ec0b34b",
+    "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+    "comparison_factor_count": 21,
+    "all_comparisons_passed": true,
+    "daily_price_fields_read": false,
+    "forward_return_fields_read": false
+  },
+  "research_boundary": {
+    "repair_completed_before_diagnostic_preregistration_and_forward_return_read": true,
+    "repair_is_not_a_new_hypothesis_or_second_return_test": true,
+    "historical_return_diagnostic_count_authorized": 1,
+    "aggregation_scoring_selection_sizing_orders_or_level2_allowed": false
+  }
+}

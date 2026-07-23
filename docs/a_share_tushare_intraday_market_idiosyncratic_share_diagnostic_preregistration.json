@@ -1,0 +1,157 @@
+{
+  "kind": "a_share_tushare_intraday_market_idiosyncratic_share_diagnostic_preregistration",
+  "version": 1,
+  "status": "frozen_after_no_return_coverage_capacity_and_uniqueness_pass_before_first_forward_return_read",
+  "preregistered_at": "2026-07-23T08:20:19Z",
+  "purpose": "Run one historical three-session association and executable Top-3 diagnostic for the independently admitted intraday market-idiosyncratic share.",
+  "factor": {
+    "name": "intraday_market_idiosyncratic_share_238m",
+    "direction": "higher",
+    "formula": "1 - Corr(r_i,t, mean(r_j,t for all valid j != i))^2 over the 238 within-half one-minute log returns",
+    "signal_time": "after_signal_session_close",
+    "factor_values_observed_before_no_return_preregistration": false,
+    "forward_returns_observed_before_this_diagnostic_preregistration": false
+  },
+  "no_return_evidence": {
+    "protocol": {
+      "path": "docs/a_share_tushare_intraday_market_idiosyncratic_share_no_return_preregistration.json",
+      "sha256": "6f1f4108cd54357e94e44cee8793e917a2bc627af9da885af6d2b50b76c4078a"
+    },
+    "candidate_snapshot": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_market_idiosyncratic_share/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_market_idiosyncratic_share_v1/snapshot_manifest.json",
+      "sha256": "954b71d571bcd89cbf4eae4eedad014091a9b40e6b2b083e0071cbf870634ef0",
+      "dataset_sha256": "e30578d063c16bafc77873e8d061d8b3985c4d3b9beb8a5994514db292f8c430",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7695088,
+      "invalid_required_close_rows": 0,
+      "insufficient_leave_one_out_peer_rows": 0,
+      "constant_stock_return_vector_rows": 29410,
+      "constant_market_return_vector_rows": 0,
+      "nonfinite_correlation_rows": 0,
+      "endpoint_canonicalized_rows": 0,
+      "range_violation_rows": 0,
+      "market_benchmark_byte_sha256": "5437805f84c5c637904a62664cc3ec677e0155f5a215b0df7c38ed0cc35b88bf",
+      "market_benchmark_frame_sha256": "5412520f379a3d7584f18a0fd5a0b55fd8b68ed3a49d76ff6430a330eee9d4a1",
+      "market_benchmark_trade_dates": 1699,
+      "market_benchmark_minimum_valid_stock_count": 3549
+    },
+    "ordered_audit": {
+      "path": "data/experiments/short_horizon/20260723T081939Z_intraday_market_idiosyncratic_share_no_return_audit.json",
+      "sha256": "44e9a2279aebc55d265378aa8bf4dad4a562cc4c2438973925c638b89ec0b34b",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_return_fields_read": false
+    },
+    "coverage_and_capacity": {
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows_after_quality_and_listing": 1328065,
+      "median_coverage": 0.9983183851218558,
+      "p05_coverage": 0.9933708902303229,
+      "p05_eligible_names": 138,
+      "potential_non_overlapping_three_session_cohorts": 540,
+      "observed_calendar_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "gate_passed": true
+    },
+    "uniqueness": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.2656277856229116,
+      "comparison_medians": {
+        "late_return_30m": 0.01214389893662369,
+        "late_amount_share_30m": -0.021512759397345364,
+        "late_vwap_to_day_vwap_30m": 0.06784380667875814,
+        "intraday_realized_volatility": -0.17760275964727124,
+        "afternoon_signed_amount_efficiency_120m": 0.04672056325352454,
+        "afternoon_drawdown_recovery_resilience_120m": 0.020224126550523754,
+        "intraday_amount_participation_entropy_240m": -0.2656277856229116,
+        "intraday_amount_profile_serial_persistence_240m": -0.00917741172295497,
+        "intraday_upside_semivariance_share_239m": 0.059964757898420186,
+        "intraday_terminal_close_location_240m": 0.055637593496610654,
+        "intraday_return_sign_run_imbalance_238p": 0.060982699554064976,
+        "intraday_volatility_resolution_238m": -0.13014387171608227,
+        "intraday_amount_lead_return_correlation_238p": 0.03573797669706485,
+        "intraday_amount_center_of_mass_240m": 0.006913143016814245,
+        "intraday_up_move_amount_share_238m": 0.08144990340582023,
+        "intraday_diffusive_variation_ratio_238m": -0.15483835021102924,
+        "intraday_amount_volatility_coupling_238p": -0.06124277730125637,
+        "intraday_return_variance_entropy_238m": -0.08562386918268182,
+        "intraday_return_skewness_238m": 0.025100682006759332,
+        "intraday_bar_vwap_close_pressure_240m": 0.0697936691648796,
+        "intraday_price_update_share_238m": -0.17546699996222967
+      },
+      "all_twenty_one_comparisons_passed": true
+    }
+  },
+  "accepted_daily_price_basis": {
+    "path": "data/qlib/cn_a_share/price_basis.json",
+    "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "provider": "baostock"
+  },
+  "quarterly_quality": {
+    "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+    "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+    "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+    "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+    "availability": "strictly_next_local_session_after_announcement_date",
+    "quality_state_semantics": "after_effective_date_sort_and_dedup_forward_fill_roe_net_profit_revenue_yoy_and_profit_yoy_independently",
+    "maximum_age_days": 550
+  },
+  "holding_protocol": {
+    "universe": "buyable_main_chinext",
+    "minimum_listing_sessions": 20,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "signal_time": "after_signal_session_close",
+    "entry": "next_trading_session_open",
+    "exit": "third_trading_session_close",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062
+  },
+  "diagnostic_gates": {
+    "minimum_non_overlapping_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "association_gate": "overall_and_each_year_mean_rank_ic_positive; positive_rank_ic_share_above_0.5; top3_minus_bottom3_mean_gross_return_positive",
+    "topk_gate": "association_gate_passed; overall_and_each_year_execution_aware_top3_net_return_positive; maximum_drawdown_not_below_minus_0.20; pilot_execution_gate_passed",
+    "failed_factor_policy": "retire_without_inverting_reformulating_rewindowing_thresholding_subsetting_reweighting_or_retesting_on_2019_2025",
+    "single_use_policy": "write_a_consumption_marker_immediately_before_the_first_forward_return_construction_and_never_rerun_after_that_marker_exists"
+  },
+  "execution_policies": {
+    "prospective_execution": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "initial_capital_cny": 200000,
+      "buy_lot_size_shares": 100,
+      "primary_slippage_rate_each_side": 0.001,
+      "maximum_daily_amount_participation": 0.01
+    }
+  },
+  "post_diagnostic_decision": {
+    "if_either_full_gate_fails": "terminally_reject_this_exact_factor_direction",
+    "if_both_full_gates_pass": "admit_exactly_one_dual_gate_factor_but_keep_aggregation_blocked_until_at_least_two_economically_distinct_dual_gate_factors_exist",
+    "same_history_combination_return_evaluation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "future_only_paper_registration_required_before_any_current_use": true,
+    "level2_intake_justified_by_a_pass_or_failure": false
+  },
+  "research_boundary": {
+    "historical_window_is_exploratory_and_not_pristine_due_to_prior_research": true,
+    "forward_return_fields_read_before_registration": false,
+    "training_or_model_fitting_performed": false,
+    "investment_advice": false
+  }
+}

@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "3b4cf44a5ab13ae88c69651f4607cda14c9eb469575d40adea69257d9e146ab9"
+    "14e8edaf98c7f94a10f0c63e64d8af1d6e3bb1b45dac3c3bb9aabdf2cb83e2b1"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37336,7 +37336,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_intraday_price_update_share_terminal_rejection_zero_dual_gate_factors"
+        != "aggregation_blocked_after_intraday_market_idiosyncratic_share_terminal_rejection_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37344,7 +37344,7 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 45
+        or post_frontier.get("terminal_mechanism_count") != 46
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source") != "tushare_stk_mins_historical_one_minute"
@@ -37908,6 +37908,40 @@ def load_three_day_iteration_status(
         or selected_source.get("intraday_price_update_share_dual_gate_passed")
         is not False
         or selected_source.get("intraday_price_update_share_terminal") is not True
+        or selected_source.get(
+            "intraday_market_idiosyncratic_share_candidate_manifest_sha256"
+        )
+        != "954b71d571bcd89cbf4eae4eedad014091a9b40e6b2b083e0071cbf870634ef0"
+        or selected_source.get(
+            "intraday_market_idiosyncratic_share_no_return_coverage_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_market_idiosyncratic_share_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_market_idiosyncratic_share_maximum_absolute_median_daily_rank_correlation"
+        )
+        != 0.2656277856229116
+        or selected_source.get(
+            "intraday_market_idiosyncratic_share_forward_returns_read"
+        )
+        is not True
+        or selected_source.get("intraday_market_idiosyncratic_share_diagnostic_cohorts")
+        != 539
+        or selected_source.get(
+            "intraday_market_idiosyncratic_share_association_stability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_market_idiosyncratic_share_topk_viability_passed"
+        )
+        is not False
+        or selected_source.get("intraday_market_idiosyncratic_share_dual_gate_passed")
+        is not False
+        or selected_source.get("intraday_market_idiosyncratic_share_terminal")
+        is not True
         or selected_source.get("prior_qmt_route_retained_as_fallback_only") is not True
         or any(
             decision.get(field) is not False
@@ -38004,6 +38038,7 @@ def load_three_day_iteration_status(
         "intraday_return_variance_entropy_research_record": "a_share_tushare_intraday_return_variance_entropy_research_record",
         "intraday_return_skewness_research_record": "a_share_tushare_intraday_return_skewness_research_record",
         "intraday_price_update_share_research_record": "a_share_tushare_intraday_price_update_share_research_record",
+        "intraday_market_idiosyncratic_share_research_record": "a_share_tushare_intraday_market_idiosyncratic_share_research_record",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -38171,6 +38206,21 @@ def load_three_day_iteration_status(
     )
     price_update_share_boundary = (
         price_update_share_record.get("research_boundary") or {}
+    )
+    market_idiosyncratic_share_record = source_records[
+        "intraday_market_idiosyncratic_share_research_record"
+    ]
+    market_idiosyncratic_share_decision = (
+        market_idiosyncratic_share_record.get("decision") or {}
+    )
+    market_idiosyncratic_share_results = (
+        market_idiosyncratic_share_record.get("return_results") or {}
+    )
+    market_idiosyncratic_share_no_return = (
+        market_idiosyncratic_share_record.get("no_return_results") or {}
+    )
+    market_idiosyncratic_share_boundary = (
+        market_idiosyncratic_share_record.get("research_boundary") or {}
     )
     if (
         qmt_selection.get(
@@ -38632,9 +38682,103 @@ def load_three_day_iteration_status(
         or price_update_share_boundary.get("training_or_model_fitting_performed")
         is not False
         or price_update_share_boundary.get("current_stock_list_generated") is not False
+        or market_idiosyncratic_share_record.get("status")
+        != "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        or market_idiosyncratic_share_no_return.get("coverage_and_capacity_gate_passed")
+        is not True
+        or market_idiosyncratic_share_no_return.get("comparison_factor_count") != 21
+        or market_idiosyncratic_share_no_return.get(
+            "all_twenty_one_uniqueness_gates_passed"
+        )
+        is not True
+        or market_idiosyncratic_share_no_return.get(
+            "maximum_absolute_median_daily_rank_correlation_to_twenty_one_terminal_factors"
+        )
+        != 0.2656277856229116
+        or market_idiosyncratic_share_results.get("cohorts") != 539
+        or market_idiosyncratic_share_results.get("mean_rank_ic")
+        != -0.011522848933218546
+        or market_idiosyncratic_share_results.get("association_stability_gate_passed")
+        is not False
+        or market_idiosyncratic_share_results.get("topk_viability_gate_passed")
+        is not False
+        or market_idiosyncratic_share_results.get("dual_gate_passed") is not False
+        or market_idiosyncratic_share_results.get(
+            "execution_aware_top3_net_cumulative_return"
+        )
+        != -0.585483219525998
+        or market_idiosyncratic_share_results.get(
+            "execution_aware_top3_maximum_drawdown"
+        )
+        != -0.7893551168099013
+        or market_idiosyncratic_share_results.get(
+            "pilot_net_cumulative_return_at_ten_bp_each_side"
+        )
+        != -0.18375337712907258
+        or market_idiosyncratic_share_results.get("pilot_board_lot_affordability_rate")
+        != 0.931077694235589
+        or market_idiosyncratic_share_results.get(
+            "pilot_maximum_daily_amount_participation"
+        )
+        != 0.010161411961011476
+        or market_idiosyncratic_share_decision.get(
+            "terminally_reject_exact_factor_direction"
+        )
+        is not True
+        or market_idiosyncratic_share_decision.get("aggregation_candidate_added")
+        is not False
+        or market_idiosyncratic_share_decision.get("aggregation_allowed") is not False
+        or market_idiosyncratic_share_decision.get("selection_allowed") is not False
+        or market_idiosyncratic_share_decision.get("level2_intake_justified")
+        is not False
+        or market_idiosyncratic_share_boundary.get(
+            "same_history_combination_return_evaluation_performed"
+        )
+        is not False
+        or market_idiosyncratic_share_boundary.get(
+            "training_or_model_fitting_performed"
+        )
+        is not False
+        or market_idiosyncratic_share_boundary.get("current_stock_list_generated")
+        is not False
     ):
         raise ValueError("three-day iteration status source decision changed")
     return status
+
+
+def terminal_mechanism_is_preserved_in_append_only_status(
+    status: dict[str, Any],
+    *,
+    mechanism: str,
+    terminal_ordinal: int,
+) -> bool:
+    """Confirm that a prior terminal mechanism remains at its frozen ledger slot."""
+
+    summary = status.get("post_frontier_summary") or {}
+    mechanisms = list(status.get("post_frontier_terminal_mechanisms") or [])
+    decision = status.get("decision") or {}
+    observed_count = summary.get("terminal_mechanism_count")
+    return bool(
+        isinstance(terminal_ordinal, int)
+        and terminal_ordinal > 0
+        and isinstance(observed_count, int)
+        and observed_count >= terminal_ordinal
+        and len(mechanisms) == observed_count
+        and mechanisms[terminal_ordinal - 1].get("mechanism") == mechanism
+        and summary.get("admitted_factor_count") == 0
+        and summary.get("aggregation_candidate_count") == 0
+        and all(
+            decision.get(field) is False
+            for field in (
+                "aggregation_allowed",
+                "current_scoring_allowed",
+                "selection_allowed",
+                "sizing_allowed",
+                "orders_allowed",
+                "level2_intake_justified",
+            )
+        )
+    )
 
 
 def load_execution_tail_realism_audit(
@@ -40545,7 +40689,25 @@ def render_three_day_research_report(
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
-                    if source.get("intraday_price_update_share_terminal"):
+                    if source.get("intraday_market_idiosyncratic_share_terminal"):
+                        next_external_action = (
+                            "四个清洗方向、十六个完成收益诊断的独立分钟方向、终点收盘位置"
+                            "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"
+                            "或积累注册后真正未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子和之后十六个完成收益诊断的独立分钟机制均"
+                            "没有产生双门禁合格因子；终点收盘位置和收益偏度另在无收益近同义门"
+                            "停止。最新的 238 分钟收益留一法市场特异份额通过覆盖、容量和二十"
+                            "一个因子唯一性门（最大绝对中位日秩相关 0.26563），但唯一一次 "
+                            "539-cohort 诊断平均 Rank IC 为 -0.01152，只有 47.50% 的 cohort"
+                            " 为正，七年中六年年度 IC 非正。标准化执行感知累计 -58.55%、"
+                            "最大回撤 -78.94%；20 万元整手、双边 10bp 滑点累计 -18.38%，"
+                            "最大成交额参与率 1.0161% 超过冻结的 1% 上限。稳定性和可执行 "
+                            "TopK 均未通过，未训练模型，没有评分或选股；Level2 继续延期。"
+                        )
+                    elif source.get("intraday_price_update_share_terminal"):
                         next_external_action = (
                             "四个清洗方向、十五个完成收益诊断的独立分钟方向、终点收盘位置"
                             "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"

@@ -290,8 +290,15 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
             == "tushare_intraday_price_update_share_238m"
         )
     )
+    append_only_successor_state = (
+        research.terminal_mechanism_is_preserved_in_append_only_status(
+            state,
+            mechanism="tushare_intraday_return_skewness_238m",
+            terminal_ordinal=43,
+        )
+    )
     if not (
-        (predecessor_state or terminal_state)
+        (predecessor_state or terminal_state or append_only_successor_state)
         and summary.get("admitted_factor_count") == 0
         and summary.get("aggregation_candidate_count") == 0
         and decision.get("aggregation_allowed") is False

@@ -5787,8 +5787,8 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
 def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
-    assert len(terminal) == 45
-    assert len({item["mechanism"] for item in terminal}) == 45
+    assert len(terminal) == 46
+    assert len({item["mechanism"] for item in terminal}) == 46
     assert {Path(item["record"]["path"]).name for item in terminal} == {
         path.name
         for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
@@ -5797,7 +5797,7 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         ).startswith(("terminal_", "rejected_"))
     }
     assert status["post_frontier_summary"] == {
-        "terminal_mechanism_count": 45,
+        "terminal_mechanism_count": 46,
         "admitted_factor_count": 0,
         "aggregation_candidate_count": 0,
     }
@@ -6568,6 +6568,61 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
     assert (
         status["selected_source_path"]["intraday_price_update_share_terminal"] is True
     )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_idiosyncratic_share_candidate_manifest_sha256"
+        ]
+        == "954b71d571bcd89cbf4eae4eedad014091a9b40e6b2b083e0071cbf870634ef0"
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_idiosyncratic_share_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_idiosyncratic_share_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert status["selected_source_path"][
+        "intraday_market_idiosyncratic_share_maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.2656277856229116)
+    assert (
+        status["selected_source_path"][
+            "intraday_market_idiosyncratic_share_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_idiosyncratic_share_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_idiosyncratic_share_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_idiosyncratic_share_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_idiosyncratic_share_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_market_idiosyncratic_share_terminal"]
+        is True
+    )
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -6575,22 +6630,24 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         three_day_iteration_status=status,
     )
     assert "当前迭代状态" in report
-    assert "前沿之后另有 45 条机制已到达终止门禁" in report
+    assert "前沿之后另有 46 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
     assert "Tushare 原五因子来源覆盖门仍未通过" in report
     assert "字段级清洗层保留 4 个因子并全部通过覆盖门" in report
     assert (
-        "前四因子和之后十五个完成收益诊断的独立分钟机制均没有产生双门禁合格因子"
+        "前四因子和之后十六个完成收益诊断的独立分钟机制均没有产生双门禁合格因子"
         in report
     )
     assert "终点收盘位置和收益偏度另在无收益近同义门停止" in report
-    assert "238 对午别相邻分钟价格更新占比通过覆盖、容量和二十因子唯一性门" in report
-    assert "0.56244" in report
-    assert "平均 Rank IC 为 -0.02774" in report
-    assert "标准化执行感知累计 +415.13%" in report
-    assert "最大回撤 -48.24%" in report
-    assert "20 万元整手、双边 10bp 滑点累计 -1.38%" in report
-    assert "整手机会可负担率仅 19.70%" in report
+    assert (
+        "238 分钟收益留一法市场特异份额通过覆盖、容量和二十一个因子唯一性门" in report
+    )
+    assert "0.26563" in report
+    assert "平均 Rank IC 为 -0.01152" in report
+    assert "标准化执行感知累计 -58.55%" in report
+    assert "最大回撤 -78.94%" in report
+    assert "20 万元整手、双边 10bp 滑点累计 -18.38%" in report
+    assert "最大成交额参与率 1.0161%" in report
     assert "稳定性和可执行 TopK 均未通过" in report
     assert "未训练模型" in report
     assert "Level2 继续延期" in report

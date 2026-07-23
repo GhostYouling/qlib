@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_market_idiosyncratic_share_mechanism_overlap_reaudit",
+  "status": "selected_intraday_market_idiosyncratic_share_before_candidate_values_comparison_values_or_forward_returns",
+  "recorded_at": "2026-07-23T06:41:10Z",
+  "purpose": "Reject univariate price-path, return-distribution, activity-profile, lead-lag, and window variants before values and select one economically distinct cross-sectional same-minute information-isolation mechanism for the next ordered no-return audit.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "3b4cf44a5ab13ae88c69651f4607cda14c9eb469575d40adea69257d9e146ab9",
+    "status": "aggregation_blocked_after_intraday_price_update_share_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count": 45,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "overlap_inventory": {
+    "terminal_minute_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_return_variance_entropy_238m",
+      "intraday_return_skewness_238m",
+      "intraday_bar_vwap_close_pressure_240m",
+      "intraday_price_update_share_238m"
+    ],
+    "closest_existing_mechanisms": {
+      "intraday_realized_volatility": "Measures the total squared magnitude of one stock's minute returns. The selected candidate instead asks what share of that stock's same-minute path is not linearly synchronized with a leave-one-out equal-weight market path.",
+      "intraday_diffusive_variation_ratio_238m": "Measures one stock's bipower variation relative to its realized variance. The selected candidate depends on contemporaneous returns of other stocks and is not determined by the candidate stock's univariate variation shape.",
+      "intraday_return_variance_entropy_238m": "Measures how one stock's squared variation is allocated through time. The selected candidate measures cross-stock synchronization at matched minute positions and is invariant to a common positive rescaling of either return vector.",
+      "intraday_return_skewness_238m": "Measures the signed third moment of one stock's returns. The selected candidate squares a cross-vector correlation, uses no third moment, and does not prefer positive over negative stock-market co-movement.",
+      "intraday_price_update_share_238m": "Measures how often one stock's close changes. The selected candidate can differ for two stocks with identical update masks because their changed prices may align differently with the leave-one-out market path.",
+      "daily_market_breadth_or_regime_filters": "Those are one common close-known market state shared by every stock on a date. The selected candidate is stock-specific because every stock has its own return vector and its own leave-one-out market vector."
+    }
+  },
+  "rejected_before_value_observation": [
+    {
+      "name": "market_synchronization_or_r_squared_direction",
+      "proposed_formula": "corr(stock_return, leave_one_out_market_return)^2",
+      "reason": "This is the exact inverse ranking of the selected idiosyncratic share and is permanently rejected before values."
+    },
+    {
+      "name": "signed_market_correlation_or_beta",
+      "proposed_formula": "corr(stock_return, market_return) or OLS beta",
+      "reason": "Signed direction or scale exposure is a different, post-hoc choice. The selected mechanism fixes the intercept-adjusted unexplained share 1-corr^2."
+    },
+    {
+      "name": "index_industry_size_or_board_benchmark",
+      "proposed_formula": "Replace the frozen leave-one-out all-source-stock mean with an index, industry, size, exchange, board, or selected peer group",
+      "reason": "Benchmark selection would introduce a tunable universe and reopen subgroup search."
+    },
+    {
+      "name": "weighted_winsorized_or_robust_market_path",
+      "proposed_formula": "Value-weight, amount-weight, volume-weight, volatility-weight, trim, winsorize, or median-aggregate peer returns",
+      "reason": "The benchmark is fixed as the equal-weight arithmetic mean of all other valid source-stock returns at the same minute."
+    },
+    {
+      "name": "morning_afternoon_opening_late_lunch_or_0930_variant",
+      "proposed_formula": "Compute the same statistic on a selected subwindow, include 09:30, or include the lunch boundary",
+      "reason": "Window selection is formula search; 09:30 has known placeholder ambiguity and the lunch boundary is not a one-minute interval."
+    },
+    {
+      "name": "lagged_leading_or_shifted_market_path",
+      "proposed_formula": "Correlate the stock return with an earlier or later market minute",
+      "reason": "Lead-lag selection changes the economic mechanism and creates 238 possible alignment searches."
+    },
+    {
+      "name": "market_neutral_residual_moments_or_terminal_residual_return",
+      "proposed_formula": "Use residual volatility, skewness, entropy, path return, terminal residual, or another statistic after the market regression",
+      "reason": "Those reopen already-consumed univariate moment, path, and terminal-position families after residualization."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_market_idiosyncratic_share_238m",
+    "direction": "higher",
+    "formula": "1 - Corr(r_i,t, mean(r_j,t for all valid j != i))^2 over the 238 within-half one-minute log returns",
+    "bar_grid": "Use 119 adjacent log returns from the 120 closes at 09:31-11:30 plus 119 adjacent log returns from the 120 closes at 13:01-15:00. Exclude standalone 09:30 and the 11:30-to-13:01 lunch boundary.",
+    "peer_pool": "For each trade date and within-half return position, use every other stock-day present in the immutable joint-clean base with a finite return at that exact position. The candidate stock is removed algebraically before the equal-weight mean.",
+    "minimum_leave_one_out_peers_per_position": 50,
+    "mechanism": "The factor estimates the share of a stock's minute-return variation not linearly synchronized with the contemporaneous broad-market price-discovery path.",
+    "hypothesis": "A high close-known value indicates more firm-specific rather than crowded systematic price discovery, whose information may continue from the next open through the third close.",
+    "economic_distinction": "Every prior minute candidate can be computed from one stock-day alone. This candidate cannot: changing other stocks' same-minute paths changes its value while leaving the candidate stock's close path unchanged. It reads no amount, volume, source open/high/low, daily price, index level, industry label, or forward return.",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "standalone_09_30_excluded": true,
+    "lunch_boundary_excluded": true,
+    "source_open_high_low_volume_amount_excluded": true,
+    "candidate_factor_values_observed_before_selection": false,
+    "terminal_factor_comparison_values_observed_before_selection": false,
+    "daily_prices_or_forward_returns_read_before_selection": false
+  },
+  "rejected_formula_search": {
+    "inverse_synchronization_direction_allowed": false,
+    "signed_correlation_beta_or_residual_statistic_substitution_allowed": false,
+    "index_industry_size_board_or_selected_peer_benchmark_allowed": false,
+    "value_amount_volume_volatility_or_other_peer_weighting_allowed": false,
+    "trim_median_winsorization_clipping_or_robust_regression_allowed": false,
+    "morning_afternoon_opening_late_lunch_0930_or_other_window_variant_allowed": false,
+    "lag_lead_shift_or_return_position_realignment_allowed": false,
+    "threshold_subset_filter_year_selection_reweighting_or_retest_allowed": false
+  },
+  "decision": {
+    "freeze_separate_no_return_preregistration_before_candidate_values": true,
+    "coverage_capacity_and_all_twenty_one_minute_factor_uniqueness_required_before_daily_prices": true,
+    "same_history_direction_formula_window_benchmark_weighting_threshold_transform_or_residual_search_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  }
+}

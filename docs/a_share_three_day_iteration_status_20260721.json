@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_intraday_price_update_share_terminal_rejection_zero_dual_gate_factors",
-  "recorded_at": "2026-07-23T06:22:10Z",
+  "status": "aggregation_blocked_after_intraday_market_idiosyncratic_share_terminal_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-23T09:22:00Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -380,10 +380,18 @@
         "path": "docs/a_share_tushare_intraday_price_update_share_research_record.json",
         "sha256": "ae24ac70ae3365776b68414f5fc615786bee67e4329d28c04ad621be894447f0"
       }
+    },
+    {
+      "mechanism": "tushare_intraday_market_idiosyncratic_share_238m",
+      "terminal_gate": "association_stability_and_executable_topk",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_market_idiosyncratic_share_research_record.json",
+        "sha256": "cb6829903b5cc4254bb1965e9308fdff5902ce420467a3a552a5484091a22b61"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 45,
+    "terminal_mechanism_count": 46,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -504,6 +512,10 @@
     "intraday_price_update_share_research_record": {
       "path": "docs/a_share_tushare_intraday_price_update_share_research_record.json",
       "sha256": "ae24ac70ae3365776b68414f5fc615786bee67e4329d28c04ad621be894447f0"
+    },
+    "intraday_market_idiosyncratic_share_research_record": {
+      "path": "docs/a_share_tushare_intraday_market_idiosyncratic_share_research_record.json",
+      "sha256": "cb6829903b5cc4254bb1965e9308fdff5902ce420467a3a552a5484091a22b61"
     },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
@@ -705,8 +717,18 @@
     "intraday_price_update_share_topk_viability_passed": false,
     "intraday_price_update_share_dual_gate_passed": false,
     "intraday_price_update_share_terminal": true,
+    "intraday_market_idiosyncratic_share_candidate_manifest_sha256": "954b71d571bcd89cbf4eae4eedad014091a9b40e6b2b083e0071cbf870634ef0",
+    "intraday_market_idiosyncratic_share_no_return_coverage_passed": true,
+    "intraday_market_idiosyncratic_share_no_return_uniqueness_passed": true,
+    "intraday_market_idiosyncratic_share_maximum_absolute_median_daily_rank_correlation": 0.2656277856229116,
+    "intraday_market_idiosyncratic_share_forward_returns_read": true,
+    "intraday_market_idiosyncratic_share_diagnostic_cohorts": 539,
+    "intraday_market_idiosyncratic_share_association_stability_passed": false,
+    "intraday_market_idiosyncratic_share_topk_viability_passed": false,
+    "intraday_market_idiosyncratic_share_dual_gate_passed": false,
+    "intraday_market_idiosyncratic_share_terminal": true,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "Retire the four exact cleaned historical directions and every later terminal minute mechanism through exact higher intraday price-update share. The latest candidate passed coverage, capacity, and all twenty uniqueness comparisons, but failed both fixed three-session return gates: pooled mean Rank IC was -0.027741 with 2021-2025 annual mean IC non-positive, normalized execution-aware Top-3 return was +415.13% but maximum drawdown was -48.24% and 2022 was negative, and the CNY 200,000 board-lot ledger returned -1.38% at ten basis points per side with only 19.70% slot affordability. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, combine, current-score, or retest terminal factors, and do not purchase Level-2 to rescue them."
+    "next_external_action": "Retire the four exact cleaned historical directions and every later terminal minute mechanism through exact higher intraday market-idiosyncratic share. The latest candidate passed coverage, capacity, and all twenty-one uniqueness comparisons, but failed both fixed three-session return gates: pooled mean Rank IC was -0.011523, only 47.50% of cohorts were positive, six of seven annual mean IC values were non-positive, normalized execution-aware Top-3 return was -58.55% with -78.94% maximum drawdown, and the CNY 200,000 board-lot ledger returned -18.38% at ten basis points per side while maximum amount participation reached 1.0161%. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rebenchmark, rewindow, threshold, subset, reweight, combine, current-score, or retest terminal factors, and do not purchase Level-2 to rescue them."
   },
   "decision": {
     "aggregation_allowed": false,

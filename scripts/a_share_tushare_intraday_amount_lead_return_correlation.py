@@ -380,6 +380,13 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
             == "tushare_intraday_bar_vwap_close_pressure_240m"
         )
     )
+    append_only_successor_state = (
+        research.terminal_mechanism_is_preserved_in_append_only_status(
+            state,
+            mechanism="tushare_intraday_amount_lead_return_correlation_238p",
+            terminal_ordinal=37,
+        )
+    )
     if not (
         (
             predecessor_state
@@ -389,6 +396,7 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
             or third_successor_state
             or fourth_successor_state
             or fifth_successor_state
+            or append_only_successor_state
         )
         and summary.get("admitted_factor_count") == 0
         and summary.get("aggregation_candidate_count") == 0
