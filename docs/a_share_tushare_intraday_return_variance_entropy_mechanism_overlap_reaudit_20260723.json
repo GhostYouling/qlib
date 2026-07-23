@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_return_variance_entropy_mechanism_overlap_reaudit",
+  "status": "selected_intraday_return_variance_entropy_before_candidate_values_comparison_values_or_forward_returns",
+  "recorded_at": "2026-07-23T01:39:46Z",
+  "purpose": "Reject volatility-magnitude, directional-semivariance, and concentration-statistic variants before values and select one economically distinct scale-free price-discovery dispersion mechanism for the next ordered no-return audit.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "b76afa9c06ea60fe69dfd2a9fe4b09ce9850303601d3a702ceff71ccdc38d415",
+    "status": "aggregation_blocked_after_intraday_amount_volatility_coupling_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count": 41,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "overlap_inventory": {
+    "terminal_minute_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_amount_volatility_coupling_238p"
+    ],
+    "closest_existing_mechanisms": {
+      "intraday_realized_volatility": "Total squared-return magnitude; it is scale-sensitive and does not describe how that variance is distributed across the session's valid minute returns.",
+      "intraday_volatility_resolution_238m": "Morning-versus-afternoon allocation of squared returns; it collapses each half to one sum rather than measuring within-session dispersion over all return observations.",
+      "intraday_diffusive_variation_ratio_238m": "Adjacent bipower variation divided by realized variance; it measures local path continuity, not the Shannon dispersion of individual squared-return contributions.",
+      "intraday_amount_participation_entropy_240m": "Shannon dispersion of CNY traded amount across bars; it is price-free and its probability mass comes from amount rather than squared returns.",
+      "intraday_upside_semivariance_share_239m": "Directional share of squared variation; it distinguishes positive from negative moves instead of measuring direction-blind variance dispersion.",
+      "intraday_amount_volatility_coupling_238p": "Cross-minute correlation between amount and absolute return magnitude; it requires amount and does not measure the marginal distribution of variance contributions."
+    }
+  },
+  "rejected_before_value_observation": [
+    {
+      "name": "intraday_return_variance_concentration_hhi_or_max_share",
+      "proposed_formula": "Herfindahl concentration or maximum squared-return share across the same 238 returns",
+      "reason": "These are alternative concentration transforms of the same frozen variance-distribution mechanism and would create post-result statistic search."
+    },
+    {
+      "name": "intraday_absolute_return_entropy",
+      "proposed_formula": "Shannon entropy of absolute-return shares instead of squared-return shares",
+      "reason": "Changing the contribution power is a same-mechanism transform search; squared returns are selected because they exactly partition realized variance."
+    },
+    {
+      "name": "signed_upside_or_downside_variance_entropy",
+      "proposed_formula": "Separate entropy for positive or negative returns or combine their difference",
+      "reason": "Direction splitting overlaps the terminal upside-semivariance and sign-composition mechanisms."
+    },
+    {
+      "name": "morning_afternoon_or_late_variance_entropy",
+      "proposed_formula": "Compute entropy separately on a selected intraday window",
+      "reason": "Window selection overlaps the terminal volatility-resolution mechanism and invites time-window search."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_return_variance_entropy_238m",
+    "direction": "higher",
+    "formula": "-sum(q_j * log(q_j)) / log(238), where q_j = r_j^2 / sum(r_k^2) across the 238 within-half adjacent minute log returns and zero q contributes zero",
+    "return_grid": "Use 119 adjacent returns inside 09:31-11:30 and 119 inside 13:01-15:00. Exclude the standalone 09:30 row and the 11:30-to-13:01 cross-lunch transition.",
+    "mechanism": "Variance entropy measures whether close-known intraday price discovery was distributed continuously across many observations instead of being dominated by one or a few isolated jumps.",
+    "hypothesis": "A high close-known entropy value indicates broad, repeated information assimilation rather than a fragile single-bar shock, which may be more likely to persist from the next open through the third close.",
+    "economic_distinction": "It is direction-blind, amount-free, and invariant to multiplying every within-day return by a common scale. It measures the distributional breadth of realized-variance contributions, not total volatility, half-day allocation, adjacent-return continuity, return sign, amount distribution, or amount-return dependence.",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "standalone_09_30_excluded": true,
+    "cross_lunch_return_excluded": true,
+    "candidate_factor_values_observed_before_selection": false,
+    "terminal_factor_comparison_values_observed_before_selection": false,
+    "daily_prices_or_forward_returns_read_before_selection": false
+  },
+  "rejected_formula_search": {
+    "lower_direction_or_one_minus_entropy_allowed": false,
+    "squared_return_power_or_entropy_family_transform_allowed": false,
+    "signed_semivariance_or_amount_weighting_allowed": false,
+    "morning_afternoon_late_window_threshold_or_09_30_variants_allowed": false,
+    "cross_lunch_return_inclusion_allowed": false,
+    "winsorization_clipping_imputation_or_daily_substitution_allowed": false
+  },
+  "decision": {
+    "freeze_separate_no_return_preregistration_before_candidate_values": true,
+    "coverage_capacity_and_all_seventeen_minute_factor_uniqueness_required_before_daily_prices": true,
+    "same_history_direction_formula_window_power_or_transform_search_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  }
+}
