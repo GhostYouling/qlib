@@ -337,11 +337,11 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
     )
     terminal_state = (
         state.get("status")
-        == "aggregation_blocked_after_intraday_amount_volatility_coupling_terminal_rejection_zero_dual_gate_factors"
-        and summary.get("terminal_mechanism_count") == 41
-        and len(mechanisms) == 41
+        == "aggregation_blocked_after_intraday_return_variance_entropy_terminal_rejection_zero_dual_gate_factors"
+        and summary.get("terminal_mechanism_count") == 42
+        and len(mechanisms) == 42
         and (mechanisms[-1] if mechanisms else {}).get("mechanism")
-        == "tushare_intraday_amount_volatility_coupling_238p"
+        == "tushare_intraday_return_variance_entropy_238m"
     )
     if not (
         (predecessor_state or terminal_state)

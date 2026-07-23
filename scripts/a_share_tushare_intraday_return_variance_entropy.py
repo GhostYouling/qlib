@@ -70,7 +70,9 @@ DEFAULT_TERMINAL_RECORD = (
     / "docs"
     / "a_share_tushare_intraday_return_variance_entropy_research_record.json"
 )
-TERMINAL_RECORD_SHA256 = ""
+TERMINAL_RECORD_SHA256 = (
+    "7f79ff0b09a132bcd6af0e1a4c6401de58105cf0c778c6625dada71ba11b07f1"
+)
 NO_RETURN_AUDIT_SHA256 = (
     "8c1c7a1f32de94125ee524a6185e5297bdd423fcaf6034eebbab7b5a227e3d14"
 )
@@ -80,10 +82,18 @@ CANDIDATE_MANIFEST_SHA256 = (
 CANDIDATE_DATASET_SHA256 = (
     "e49b7856b59dd5c24eaeb4a6748066dd0e42c2636495325d7b961d1844eb6775"
 )
-DIAGNOSTIC_SHA256 = ""
-STABILITY_AUDIT_SHA256 = ""
-TOPK_AUDIT_SHA256 = ""
-CONSUMPTION_MARKER_SHA256 = ""
+DIAGNOSTIC_SHA256 = (
+    "2b4a51c3f540258c7712ce637bef52d3a002104ca915f20e09c5a25a7d6f5b7a"
+)
+STABILITY_AUDIT_SHA256 = (
+    "42b9fec6621443b7716d1690cb1f94f08443b2963e6c21024d7de251b83a0e1d"
+)
+TOPK_AUDIT_SHA256 = (
+    "5c8be84690d5cc4d03c575706e9a7036f0a51de40149ef5102d91d6b62171551"
+)
+CONSUMPTION_MARKER_SHA256 = (
+    "186f65abe7d60d03a6a69f59461cedca02306341023f157dc41032b6507e8745"
+)
 RAW_MANIFEST_SHA256 = foundation.RAW_MANIFEST_SHA256
 JOINT_MANIFEST_SHA256 = foundation.JOINT_MANIFEST_SHA256
 AFTERNOON_EFFICIENCY_MANIFEST_SHA256 = previous.AFTERNOON_EFFICIENCY_MANIFEST_SHA256
@@ -385,7 +395,7 @@ def load_terminal_record_if_present() -> dict[str, Any] | None:
     boundary = record.get("research_boundary") or {}
     if not (
         record.get("status")
-        == "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        == "terminal_rejected_at_executable_topk_gate_despite_association_stability_pass"
         and protocol.get("sha256") == PREREGISTRATION_SHA256
         and candidate.get("sha256") == CANDIDATE_MANIFEST_SHA256
         and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
@@ -394,21 +404,21 @@ def load_terminal_record_if_present() -> dict[str, Any] | None:
         and audit.get("forward_returns_read") is False
         and diagnostic_protocol.get("sha256") == DIAGNOSTIC_PREREGISTRATION_SHA256
         and no_return.get("coverage_and_capacity_gate_passed") is True
-        and no_return.get("comparison_factor_count") == 16
-        and no_return.get("all_sixteen_uniqueness_gates_passed") is True
+        and no_return.get("comparison_factor_count") == 17
+        and no_return.get("all_seventeen_uniqueness_gates_passed") is True
         and no_return.get(
-            "maximum_absolute_median_daily_rank_correlation_to_sixteen_terminal_factors"
+            "maximum_absolute_median_daily_rank_correlation_to_seventeen_terminal_factors"
         )
-        == 0.3417657619225368
+        == 0.49458401211809416
         and results.get("cohorts") == 539
-        and results.get("mean_rank_ic") == -0.017633438038861565
-        and results.get("association_stability_gate_passed") is False
+        and results.get("mean_rank_ic") == 0.020849099733831176
+        and results.get("association_stability_gate_passed") is True
         and results.get("topk_viability_gate_passed") is False
         and results.get("dual_gate_passed") is False
         and results.get("execution_aware_top3_net_cumulative_return")
-        == 0.0759039836633788
+        == 0.13662313263284176
         and results.get("pilot_net_cumulative_return_at_ten_bp_each_side")
-        == -0.06216215256211344
+        == -0.08498664764547914
         and (artifacts.get("diagnostic") or {}).get("sha256") == DIAGNOSTIC_SHA256
         and (artifacts.get("stability_audit") or {}).get("sha256")
         == STABILITY_AUDIT_SHA256

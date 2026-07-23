@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "b76afa9c06ea60fe69dfd2a9fe4b09ce9850303601d3a702ceff71ccdc38d415"
+    "730ab664a45dfa939e553966704f59cd048a790cf43d0804557d324b0c57dd3e"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37342,7 +37342,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_intraday_amount_volatility_coupling_terminal_rejection_zero_dual_gate_factors"
+        != "aggregation_blocked_after_intraday_return_variance_entropy_terminal_rejection_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37350,7 +37350,7 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 41
+        or post_frontier.get("terminal_mechanism_count") != 42
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source")
@@ -37864,6 +37864,38 @@ def load_three_day_iteration_status(
         is not False
         or selected_source.get("intraday_amount_volatility_coupling_terminal")
         is not True
+        or selected_source.get(
+            "intraday_return_variance_entropy_candidate_manifest_sha256"
+        )
+        != "f1905de2c51540d55369b8c84117f63bfd509db31dad79c933c90559d880556c"
+        or selected_source.get(
+            "intraday_return_variance_entropy_no_return_coverage_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_return_variance_entropy_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_return_variance_entropy_maximum_absolute_median_daily_rank_correlation"
+        )
+        != 0.49458401211809416
+        or selected_source.get("intraday_return_variance_entropy_forward_returns_read")
+        is not True
+        or selected_source.get("intraday_return_variance_entropy_diagnostic_cohorts")
+        != 539
+        or selected_source.get(
+            "intraday_return_variance_entropy_association_stability_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_return_variance_entropy_topk_viability_passed"
+        )
+        is not False
+        or selected_source.get("intraday_return_variance_entropy_dual_gate_passed")
+        is not False
+        or selected_source.get("intraday_return_variance_entropy_terminal")
+        is not True
         or selected_source.get("prior_qmt_route_retained_as_fallback_only")
         is not True
         or any(
@@ -37958,6 +37990,7 @@ def load_three_day_iteration_status(
         "intraday_up_move_amount_share_research_record": "a_share_tushare_intraday_up_move_amount_share_research_record",
         "intraday_diffusive_variation_ratio_research_record": "a_share_tushare_intraday_diffusive_variation_ratio_research_record",
         "intraday_amount_volatility_coupling_research_record": "a_share_tushare_intraday_amount_volatility_coupling_research_record",
+        "intraday_return_variance_entropy_research_record": "a_share_tushare_intraday_return_variance_entropy_research_record",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -40457,7 +40490,25 @@ def render_three_day_research_report(
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
-                    if source.get("intraday_amount_volatility_coupling_terminal"):
+                    if source.get("intraday_return_variance_entropy_terminal"):
+                        next_external_action = (
+                            "四个清洗方向、十三个完成收益诊断的独立分钟方向和终点收盘位置"
+                            "方向均已终止；只研究预先登记的全新经济机制，或积累注册后真正"
+                            "未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子和之后十三个完成收益诊断的独立分钟机制均"
+                            "没有产生双门禁合格因子；终点收盘位置另在无收益近同义门停止。"
+                            "最新的日内收益方差熵通过覆盖和十七因子唯一性门（最大绝对中位"
+                            "日秩相关 0.49458），唯一一次 539-cohort 诊断平均 Rank IC 为 "
+                            "+0.02085，且七个年份均为正，完整关联稳定性门通过；但执行感知"
+                            "累计 +13.66%、最大回撤 -45.27%，且 2019、2020、2023 为负。"
+                            "20 万元整手、双边 10bp 滑点累计为 -8.50%，整手机会可负担率"
+                            "97.94%，最大成交额参与率仅 0.0680%。可执行 TopK 未通过，故双"
+                            "门禁仍为空；未训练模型，Level2 继续延期。"
+                        )
+                    elif source.get("intraday_amount_volatility_coupling_terminal"):
                         next_external_action = (
                             "四个清洗方向、十二个完成收益诊断的独立分钟方向和终点收盘位置"
                             "方向均已终止；只研究预先登记的全新经济机制，或积累注册后真正"

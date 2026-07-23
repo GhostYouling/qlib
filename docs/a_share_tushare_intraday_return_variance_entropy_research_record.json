@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_return_variance_entropy_research_record",
+  "status": "terminal_rejected_at_executable_topk_gate_despite_association_stability_pass",
+  "recorded_at": "2026-07-23T02:42:31Z",
+  "purpose": "Record the fingerprint-bound construction, no-return admission, and single historical three-session return diagnostic for the Tushare intraday return-variance entropy without mistaking association stability for executable Top-3 value.",
+  "factor": {
+    "name": "intraday_return_variance_entropy_238m",
+    "direction": "higher",
+    "formula": "-Sum(q_hj * log(q_hj)) / log(238), q_hj = log(close_hj/close_h,j-1)^2 / Sum_all_238(log(close/previous_close)^2), h in {morning,afternoon}, j=2..120",
+    "economic_hypothesis": "A high value means that within-half realized variance was spread broadly across many minute returns rather than concentrated in one or a few jumps, consistent with repeated price discovery that might persist from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "raw_close_used": true,
+    "raw_open_high_low_volume_or_amount_used": false,
+    "standalone_09_30_row_excluded_from_formula": true,
+    "cross_lunch_return_included": false,
+    "within_half_log_return_observations": 238,
+    "variance_contribution_support_positions": 238,
+    "zero_variance_contributions_retained_in_entropy_support": true,
+    "zero_total_realized_variance_policy": "missing",
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_amount_volatility_coupling_manifest_sha256": "ffe853163c8acfe7cb7accd8dde69ad15768160d8346386a849978f845215600",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_return_variance_entropy/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_return_variance_entropy_v1/snapshot_manifest.json",
+      "sha256": "f1905de2c51540d55369b8c84117f63bfd509db31dad79c933c90559d880556c",
+      "dataset_sha256": "e49b7856b59dd5c24eaeb4a6748066dd0e42c2636495325d7b961d1844eb6775",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7695088,
+      "zero_realized_variance_rows": 29410,
+      "invalid_required_close_rows": 0,
+      "invalid_required_value_rows": 0,
+      "nonfinite_log_return_rows": 0,
+      "nonfinite_entropy_component_rows": 0,
+      "nonfinite_entropy_rows": 0,
+      "numerical_endpoint_canonicalization_rows": 0,
+      "return_variance_entropy_range_violation_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_return_variance_entropy_no_return_preregistration.json",
+      "sha256": "0493b2855e9e9c8d01e3a233cf5e7198fbb8b8ae303cf4f3d1d02be488cce5d3",
+      "factor_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260723T023219Z_intraday_return_variance_entropy_no_return_audit.json",
+      "sha256": "8c1c7a1f32de94125ee524a6185e5297bdd423fcaf6034eebbab7b5a227e3d14",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_returns_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_intraday_return_variance_entropy_diagnostic_preregistration.json",
+      "sha256": "1dc70c8b1b4075dcecbf9a03440da5e7054e582ec6c8abab3587a4539aec67b4",
+      "forward_returns_read_before_registration": false
+    }
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328065,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "comparison_factor_count": 17,
+    "maximum_absolute_median_daily_rank_correlation_to_seventeen_terminal_factors": 0.49458401211809416,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "nearest_comparison_factor": "intraday_volatility_resolution_238m",
+    "all_seventeen_uniqueness_gates_passed": true
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260723T024057Z",
+      "path": "data/experiments/short_horizon/20260723T024057Z_factor_diagnostic.json",
+      "sha256": "2b4a51c3f540258c7712ce637bef52d3a002104ca915f20e09c5a25a7d6f5b7a"
+    },
+    "stability_audit": {
+      "run_id": "20260723T024129Z",
+      "path": "data/experiments/short_horizon/20260723T024129Z_factor_stability_audit.json",
+      "sha256": "42b9fec6621443b7716d1690cb1f94f08443b2963e6c21024d7de251b83a0e1d"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260723T024130Z",
+      "path": "data/experiments/short_horizon/20260723T024130Z_factor_topk_viability_audit.json",
+      "sha256": "5c8be84690d5cc4d03c575706e9a7036f0a51de40149ef5102d91d6b62171551"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/intraday_return_variance_entropy_238m_historical_consumption.json",
+      "sha256": "186f65abe7d60d03a6a69f59461cedca02306341023f157dc41032b6507e8745",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "return_results": {
+    "cohorts": 539,
+    "mean_rank_ic": 0.020849099733831176,
+    "median_rank_ic": 0.022411315593566593,
+    "positive_rank_ic_rate": 0.5899814471243042,
+    "mean_top3_minus_bottom3_gross_return": 0.0037420356967132226,
+    "years_with_nonpositive_mean_rank_ic": [],
+    "association_stability_gate_passed": true,
+    "execution_aware_complete_signal_count": 533,
+    "execution_aware_top3_net_cumulative_return": 0.13662313263284176,
+    "execution_aware_top3_maximum_drawdown": -0.4526797198587893,
+    "years_with_nonpositive_execution_aware_return": [
+      2019,
+      2020,
+      2023
+    ],
+    "pilot_net_cumulative_return_at_zero_bp_each_side": 0.06137493041522757,
+    "pilot_net_cumulative_return_at_five_bp_each_side": -0.016955353480429647,
+    "pilot_net_cumulative_return_at_ten_bp_each_side": -0.08498664764547914,
+    "pilot_net_cumulative_return_at_twenty_bp_each_side": -0.21325485371620778,
+    "pilot_maximum_drawdown_at_ten_bp_each_side": -0.12332768867757316,
+    "pilot_board_lot_affordability_rate": 0.9793621013133208,
+    "pilot_maximum_daily_amount_participation": 0.0006799940060439382,
+    "pilot_terminal_unresolved_positions": 0,
+    "topk_viability_gate_passed": false,
+    "dual_gate_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "invert_reformulate_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "terminal_reason": "The exact higher intraday return-variance entropy passed the full association-stability gate, but it failed executable Top-3 viability. The normalized execution-aware ledger gained 13.66% yet suffered a 45.27% drawdown and lost in 2019, 2020, and 2023. The CNY 200,000 board-lot ledger lost 8.50% at ten basis points per side despite 97.94% affordability and only 0.0680% maximum daily-amount participation."
+  },
+  "research_boundary": {
+    "coverage_or_uniqueness_proved_predictive_value": false,
+    "positive_historical_association_without_executable_topk_does_not_authorize_use": true,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction return-variance entropy on 2019-2025. Preserve its association pass as mechanism evidence, but do not invert, reformulate, re-window, threshold, subset, combine, current-score, select, size, order, or purchase Level-2 to rescue the failed Top-3 execution gate. Freeze a genuinely distinct mechanism before observing any new candidate values or returns."
+  }
+}

@@ -112,6 +112,31 @@ def test_diagnostic_protocol_binds_passed_no_return_evidence():
     ] is False
 
 
+def test_terminal_record_preserves_association_pass_and_topk_rejection():
+    record = RESEARCH.load_terminal_record_if_present()
+    assert record is not None
+    assert record["status"] == (
+        "terminal_rejected_at_executable_topk_gate_despite_association_stability_pass"
+    )
+    assert record["no_return_results"]["comparison_factor_count"] == 17
+    assert record["no_return_results"][
+        "all_seventeen_uniqueness_gates_passed"
+    ] is True
+    assert record["return_results"]["cohorts"] == 539
+    assert record["return_results"]["mean_rank_ic"] == pytest.approx(
+        0.020849099733831176
+    )
+    assert record["return_results"]["association_stability_gate_passed"] is True
+    assert record["return_results"]["topk_viability_gate_passed"] is False
+    assert record["return_results"]["dual_gate_passed"] is False
+    assert record["return_results"][
+        "execution_aware_top3_net_cumulative_return"
+    ] == pytest.approx(0.13662313263284176)
+    assert record["return_results"][
+        "pilot_net_cumulative_return_at_ten_bp_each_side"
+    ] == pytest.approx(-0.08498664764547914)
+
+
 def test_uniform_squared_returns_have_unit_entropy():
     signs = np.where(np.arange(238).reshape(2, 119) % 2 == 0, 1.0, -1.0)
     output, quality = compute(signs * 0.001)
