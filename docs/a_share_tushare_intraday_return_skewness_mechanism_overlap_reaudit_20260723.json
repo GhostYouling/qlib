@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_return_skewness_mechanism_overlap_reaudit",
+  "status": "selected_intraday_return_skewness_before_candidate_values_comparison_values_or_forward_returns",
+  "recorded_at": "2026-07-23T03:02:53Z",
+  "purpose": "Select one signed higher-moment price-discovery mechanism after rejecting same-mechanism variance-concentration, sign-run, window, and tail-statistic searches before any new candidate value, comparison value, daily price, or forward return is read.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "730ab664a45dfa939e553966704f59cd048a790cf43d0804557d324b0c57dd3e",
+    "status": "aggregation_blocked_after_intraday_return_variance_entropy_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count": 42,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "overlap_inventory": {
+    "terminal_minute_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_return_variance_entropy_238m"
+    ],
+    "closest_existing_mechanisms": {
+      "intraday_return_variance_entropy_238m": "Direction-blind Shannon dispersion of squared-return contributions. Skewness instead keeps the sign of centered returns and measures third-moment asymmetry, not variance breadth.",
+      "intraday_upside_semivariance_share_239m": "Positive squared variation divided by total squared variation. It is a second-moment sign allocation and includes the lunch transition, whereas the selected candidate is a centered standardized third moment over the 238 within-half returns.",
+      "intraday_return_sign_run_imbalance_238p": "Sequential imbalance of same-sign pairs with magnitudes discarded. Skewness ignores ordering and retains signed magnitude asymmetry.",
+      "intraday_diffusive_variation_ratio_238m": "Adjacent absolute-return products divided by realized variance. It measures path continuity and jump dominance without retaining positive-versus-negative tail asymmetry.",
+      "intraday_terminal_close_location_240m": "Terminal close location in the intraday close range. It is a path endpoint statistic rather than a distributional third moment.",
+      "intraday_realized_volatility": "Total return magnitude. Skewness is invariant to a common positive rescaling of all within-day returns and does not measure total variance."
+    }
+  },
+  "rejected_before_value_observation": [
+    {
+      "name": "intraday_return_kurtosis_or_tail_index",
+      "proposed_formula": "Fourth standardized moment, tail quantile, maximum standardized return, or positive/negative tail-count family",
+      "reason": "These create an unrestricted tail-statistic search and the direction-blind variants overlap the consumed variance-entropy and diffusive-variation mechanisms."
+    },
+    {
+      "name": "morning_afternoon_or_late_return_skewness",
+      "proposed_formula": "Compute skewness on a selected half-session or late-session window",
+      "reason": "Window selection would reuse the same higher-moment mechanism after observing a full-session result and overlap existing half-day timing mechanisms."
+    },
+    {
+      "name": "upside_downside_or_absolute_return_skewness",
+      "proposed_formula": "Split signs, use absolute returns, or combine separate positive and negative tail statistics",
+      "reason": "Sign splitting overlaps the terminal upside-semivariance and sign-composition branches; absolute-return skewness removes the selected signed mechanism."
+    },
+    {
+      "name": "bias_corrected_winsorized_or_rank_skewness",
+      "proposed_formula": "Fisher finite-sample correction, winsorization, clipping, quantile replacement, or rank-based skew",
+      "reason": "All stock-days have the same 238 observations, so finite-sample correction is a common positive multiplier; the other choices are post-result transform searches."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_return_skewness_238m",
+    "direction": "higher",
+    "formula": "m3 / m2^(3/2), where mean_r = Sum(r_j)/238, m2 = Sum((r_j-mean_r)^2)/238, m3 = Sum((r_j-mean_r)^3)/238, across the 238 within-half adjacent minute log returns",
+    "return_grid": "Use 119 adjacent returns inside 09:31-11:30 and 119 inside 13:01-15:00. Exclude the standalone 09:30 row and the 11:30-to-13:01 cross-lunch transition.",
+    "mechanism": "Return skewness measures whether close-known intraday price updates have a heavier positive or negative signed tail after centering and variance standardization.",
+    "hypothesis": "A high close-known skewness value indicates that unusually large signed price updates were tilted toward informed demand rather than informed supply, which may persist from the next open through the third close.",
+    "economic_distinction": "The candidate is amount-free, order-insensitive, centered, and scale-invariant. It measures signed third-moment asymmetry, not total volatility, variance entropy, half-day variance allocation, adjacent-return continuity, sign runs, terminal location, amount distribution, or amount-return dependence.",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "standalone_09_30_excluded": true,
+    "cross_lunch_return_excluded": true,
+    "candidate_factor_values_observed_before_selection": false,
+    "terminal_factor_comparison_values_observed_before_selection": false,
+    "daily_prices_or_forward_returns_read_before_selection": false
+  },
+  "rejected_formula_search": {
+    "lower_direction_or_negative_skewness_allowed": false,
+    "kurtosis_tail_quantile_max_return_or_other_higher_moment_search_allowed": false,
+    "signed_subsample_absolute_return_or_semivariance_transform_allowed": false,
+    "morning_afternoon_late_window_threshold_or_09_30_variants_allowed": false,
+    "cross_lunch_return_inclusion_allowed": false,
+    "winsorization_clipping_imputation_bias_correction_or_daily_substitution_allowed": false
+  },
+  "decision": {
+    "freeze_separate_no_return_preregistration_before_candidate_values": true,
+    "coverage_capacity_and_all_eighteen_minute_factor_uniqueness_required_before_daily_prices": true,
+    "same_history_direction_formula_window_moment_or_transform_search_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  }
+}
