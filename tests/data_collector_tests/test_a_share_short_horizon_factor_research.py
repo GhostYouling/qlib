@@ -5787,8 +5787,8 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
 def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
-    assert len(terminal) == 43
-    assert len({item["mechanism"] for item in terminal}) == 43
+    assert len(terminal) == 44
+    assert len({item["mechanism"] for item in terminal}) == 44
     assert {Path(item["record"]["path"]).name for item in terminal} == {
         path.name
         for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
@@ -5797,7 +5797,7 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         )
     }
     assert status["post_frontier_summary"] == {
-        "terminal_mechanism_count": 43,
+        "terminal_mechanism_count": 44,
         "admitted_factor_count": 0,
         "aggregation_candidate_count": 0,
     }
@@ -6187,6 +6187,33 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
     assert status["selected_source_path"][
         "intraday_return_skewness_terminal"
     ] is True
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_no_return_coverage_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_no_return_uniqueness_passed"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.48840728016858326)
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_forward_returns_read"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_diagnostic_cohorts"
+    ] == 539
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_association_stability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_topk_viability_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_dual_gate_passed"
+    ] is False
+    assert status["selected_source_path"][
+        "intraday_bar_vwap_close_pressure_terminal"
+    ] is True
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -6194,18 +6221,18 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         three_day_iteration_status=status,
     )
     assert "当前迭代状态" in report
-    assert "前沿之后另有 43 条机制已到达终止门禁" in report
+    assert "前沿之后另有 44 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
     assert "Tushare 原五因子来源覆盖门仍未通过" in report
     assert "字段级清洗层保留 4 个因子并全部通过覆盖门" in report
-    assert "前四因子和之后十三个完成收益诊断的独立分钟机制均没有产生双门禁合格因子" in report
-    assert "终点收盘位置另在无收益近同义门停止" in report
-    assert "全日分午别 238 个收益偏度通过覆盖和容量门" in report
-    assert "+0.86255" in report
-    assert "超过冻结的 0.8 上限" in report
-    assert "其余 17 项比较均通过" in report
-    assert "读取日线价格或三日收益前终止" in report
-    assert "没有创建收益诊断" in report
+    assert "前四因子和之后十四个完成收益诊断的独立分钟机制均没有产生双门禁合格因子" in report
+    assert "终点收盘位置和收益偏度另在无收益近同义门停止" in report
+    assert "全日分钟收盘相对同分钟 VWAP 压力通过覆盖、容量和十九因子唯一性门" in report
+    assert "0.48841" in report
+    assert "平均 Rank IC 为 -0.00244" in report
+    assert "执行感知累计 -81.37%" in report
+    assert "20 万元整手、双边 10bp 滑点累计 -26.16%" in report
+    assert "稳定性和可执行 TopK 均未通过" in report
     assert "未训练模型" in report
     assert "Level2 继续延期" in report
 

@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_intraday_return_skewness_no_return_uniqueness_rejection_zero_dual_gate_factors",
-  "recorded_at": "2026-07-23T03:54:35Z",
+  "status": "aggregation_blocked_after_intraday_bar_vwap_close_pressure_terminal_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-23T05:06:30Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -364,10 +364,18 @@
         "path": "docs/a_share_tushare_intraday_return_skewness_research_record.json",
         "sha256": "2a58052992102b08e9310e9521b946ddc0382c3d07b2fa06f9a21eef546b879b"
       }
+    },
+    {
+      "mechanism": "tushare_intraday_bar_vwap_close_pressure_240m",
+      "terminal_gate": "association_stability_and_executable_topk",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_bar_vwap_close_pressure_research_record.json",
+        "sha256": "135e56d0b2389f17f262bdbe39ef125de98eb3feffba69ea1e7aadc9bc8bbe26"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 43,
+    "terminal_mechanism_count": 44,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -480,6 +488,10 @@
     "intraday_return_skewness_research_record": {
       "path": "docs/a_share_tushare_intraday_return_skewness_research_record.json",
       "sha256": "2a58052992102b08e9310e9521b946ddc0382c3d07b2fa06f9a21eef546b879b"
+    },
+    "intraday_bar_vwap_close_pressure_research_record": {
+      "path": "docs/a_share_tushare_intraday_bar_vwap_close_pressure_research_record.json",
+      "sha256": "135e56d0b2389f17f262bdbe39ef125de98eb3feffba69ea1e7aadc9bc8bbe26"
     },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
@@ -661,8 +673,18 @@
     "intraday_return_skewness_forward_returns_read": false,
     "intraday_return_skewness_diagnostic_created": false,
     "intraday_return_skewness_terminal": true,
+    "intraday_bar_vwap_close_pressure_candidate_manifest_sha256": "dd5d541fb0ab99a5663ba00431eb0bac45f2975480bd681719fbb0d3eb799259",
+    "intraday_bar_vwap_close_pressure_no_return_coverage_passed": true,
+    "intraday_bar_vwap_close_pressure_no_return_uniqueness_passed": true,
+    "intraday_bar_vwap_close_pressure_maximum_absolute_median_daily_rank_correlation": 0.48840728016858326,
+    "intraday_bar_vwap_close_pressure_forward_returns_read": true,
+    "intraday_bar_vwap_close_pressure_diagnostic_cohorts": 539,
+    "intraday_bar_vwap_close_pressure_association_stability_passed": false,
+    "intraday_bar_vwap_close_pressure_topk_viability_passed": false,
+    "intraday_bar_vwap_close_pressure_dual_gate_passed": false,
+    "intraday_bar_vwap_close_pressure_terminal": true,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "Retire the four exact cleaned historical directions and every later terminal minute mechanism through exact higher intraday return skewness. The latest skewness candidate passed coverage and capacity without daily prices or forward returns, but failed the frozen all-eighteen uniqueness gate because its median daily rank correlation with higher intraday upside-semivariance share was +0.862555 versus the 0.8 limit. No return diagnostic was registered or run. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, combine, current-score, or retest terminal factors, and do not purchase Level-2 to rescue them."
+    "next_external_action": "Retire the four exact cleaned historical directions and every later terminal minute mechanism through exact higher intraday bar-VWAP close pressure. The latest candidate passed coverage, capacity, and all nineteen uniqueness comparisons, but failed both fixed three-session return gates: pooled mean Rank IC was -0.002436, normalized execution-aware Top-3 return was -81.37% with -91.88% drawdown, and the CNY 200,000 board-lot ledger returned -26.16% at ten basis points per side. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, combine, current-score, or retest terminal factors, and do not purchase Level-2 to rescue them."
   },
   "decision": {
     "aggregation_allowed": false,

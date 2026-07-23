@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "10e416a79f9deb17272fc297c7e192e302a3232b3f11c3f49c146964e3595989"
+    "a798361d6f8a3796088d4ed4b91e8f35a7426a55f3ecf9ec340422c1bc184e77"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -37342,7 +37342,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_intraday_return_skewness_no_return_uniqueness_rejection_zero_dual_gate_factors"
+        != "aggregation_blocked_after_intraday_bar_vwap_close_pressure_terminal_rejection_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37350,7 +37350,7 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 43
+        or post_frontier.get("terminal_mechanism_count") != 44
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
         or selected_source.get("source")
@@ -37921,6 +37921,44 @@ def load_three_day_iteration_status(
         or selected_source.get("intraday_return_skewness_diagnostic_created")
         is not False
         or selected_source.get("intraday_return_skewness_terminal") is not True
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_candidate_manifest_sha256"
+        )
+        != "dd5d541fb0ab99a5663ba00431eb0bac45f2975480bd681719fbb0d3eb799259"
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_no_return_coverage_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_maximum_absolute_median_daily_rank_correlation"
+        )
+        != 0.48840728016858326
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_forward_returns_read"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_diagnostic_cohorts"
+        )
+        != 539
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_association_stability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_topk_viability_passed"
+        )
+        is not False
+        or selected_source.get(
+            "intraday_bar_vwap_close_pressure_dual_gate_passed"
+        )
+        is not False
+        or selected_source.get("intraday_bar_vwap_close_pressure_terminal")
+        is not True
         or selected_source.get("prior_qmt_route_retained_as_fallback_only")
         is not True
         or any(
@@ -40516,7 +40554,26 @@ def render_three_day_research_report(
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
-                    if source.get("intraday_return_skewness_terminal"):
+                    if source.get(
+                        "intraday_bar_vwap_close_pressure_terminal"
+                    ):
+                        next_external_action = (
+                            "四个清洗方向、十四个完成收益诊断的独立分钟方向、终点收盘位置"
+                            "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"
+                            "或积累注册后真正未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子和之后十四个完成收益诊断的独立分钟机制均"
+                            "没有产生双门禁合格因子；终点收盘位置和收益偏度另在无收益近同义门"
+                            "停止。最新的全日分钟收盘相对同分钟 VWAP 压力通过覆盖、容量和十九"
+                            "因子唯一性门（最大绝对中位日秩相关 0.48841），但唯一一次 539-"
+                            "cohort 诊断平均 Rank IC 为 -0.00244，2019、2022、2024、2025 "
+                            "年度 IC 非正；执行感知累计 -81.37%、最大回撤 -91.88%。20 万元"
+                            "整手、双边 10bp 滑点累计 -26.16%、最大回撤 -31.98%。稳定性和"
+                            "可执行 TopK 均未通过，未训练模型，没有评分或选股；Level2 继续延期。"
+                        )
+                    elif source.get("intraday_return_skewness_terminal"):
                         next_external_action = (
                             "四个清洗方向、十三个完成收益诊断的独立分钟方向、终点收盘位置"
                             "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"

@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_bar_vwap_close_pressure_mechanism_overlap_reaudit",
+  "status": "selected_intraday_bar_vwap_close_pressure_before_candidate_values_comparison_values_or_forward_returns",
+  "recorded_at": "2026-07-23T04:08:38Z",
+  "purpose": "Reject already-consumed return-serial, signed-efficiency, price-impact-ratio, and window variants before values and select one economically distinct within-bar transaction-price-pressure mechanism for the next ordered no-return audit.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "10e416a79f9deb17272fc297c7e192e302a3232b3f11c3f49c146964e3595989",
+    "status": "aggregation_blocked_after_intraday_return_skewness_no_return_uniqueness_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count": 43,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "overlap_inventory": {
+    "terminal_minute_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_return_variance_entropy_238m",
+      "intraday_return_skewness_238m"
+    ],
+    "closest_existing_mechanisms": {
+      "late_vwap_to_day_vwap_30m": "Compares the aggregate final-30-minute VWAP level with the aggregate full-day VWAP level. The selected candidate instead compares each active minute close with that same minute's transaction VWAP and then aggregates those within-bar signed gaps over the full session.",
+      "afternoon_signed_amount_efficiency_120m": "Weights adjacent close-to-close returns by destination-bar amount in the afternoon. The selected candidate has no previous-close return and measures close versus same-bar executed average price.",
+      "intraday_up_move_amount_share_238m": "Allocates amount according to the sign of adjacent close-to-close returns. The selected candidate can be positive or negative even when the adjacent return is zero because its reference is the same bar's VWAP.",
+      "intraday_amount_volatility_coupling_238p": "Correlates amount magnitude with absolute adjacent-return magnitude across minutes. The selected candidate is signed, uses the within-bar close-to-VWAP gap, and is an amount-weighted mean rather than a cross-minute correlation.",
+      "intraday_realized_volatility": "Measures total adjacent-return magnitude and does not use same-bar transaction VWAP.",
+      "intraday_return_skewness_238m": "Measures the third central moment of adjacent returns and is independent of transaction amount and volume."
+    }
+  },
+  "rejected_before_value_observation": [
+    {
+      "name": "intraday_return_autocorrelation",
+      "proposed_formula": "First-order correlation between adjacent within-half minute returns",
+      "reason": "The terminal return-sign-run preregistration already rejected lagged return autocorrelation as same-mechanism formula search, so it cannot be reopened as a new candidate."
+    },
+    {
+      "name": "intraday_realized_volatility_to_amount_or_amihud_ratio",
+      "proposed_formula": "Total absolute or squared minute return divided by session amount",
+      "reason": "The amount-volatility-coupling mechanism audit already rejected this scale-sensitive overlap with realized volatility, daily liquidity, and size."
+    },
+    {
+      "name": "full_session_directional_efficiency",
+      "proposed_formula": "Net minute return divided by total absolute minute return, with or without amount weights",
+      "reason": "The diffusive-variation mechanism audit already rejected this as a sampling-frequency and weighting variant of terminal daily and afternoon signed-efficiency factors."
+    },
+    {
+      "name": "absolute_or_squared_bar_vwap_dislocation",
+      "proposed_formula": "Mean absolute or squared log close-to-same-bar-VWAP gap",
+      "reason": "Discarding sign changes the selected buyer-versus-seller pressure mechanism into a liquidity-noise statistic and creates direction search against already-terminal volatility and liquidity branches."
+    },
+    {
+      "name": "morning_afternoon_late_or_opening_bar_vwap_pressure",
+      "proposed_formula": "Compute the same signed close-to-bar-VWAP gap on a selected subwindow or include the ambiguous 09:30 row",
+      "reason": "Window selection is formula search and 09:30 has known zero-activity placeholder ambiguity."
+    },
+    {
+      "name": "source_high_low_close_location",
+      "proposed_formula": "Use source minute high or low to locate the close inside each bar",
+      "reason": "Historical source high and low fields failed the original daily reconciliation and are forbidden for this cleaned branch."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_bar_vwap_close_pressure_240m",
+    "direction": "higher",
+    "formula": "Sum(amount_t * log(close_t / (amount_t / volume_t))) / Sum(amount_t) over active bars t at 09:31-11:30 and 13:01-15:00",
+    "activity_rule": "A bar is active only when both normalized share volume and CNY amount are strictly positive. A zero-volume and zero-amount bar receives zero weight. A one-sided zero or any negative/nonfinite required value makes the stock-day ineligible.",
+    "mechanism": "Within-bar close pressure measures whether economically weighted active minutes ended above or below their own executed average transaction price, isolating buyer-versus-seller urgency near minute closes.",
+    "hypothesis": "A high close-known value indicates repeated buyer urgency within active bars, with transaction-weighted closes above same-bar VWAP, which may persist from the next open through the third close.",
+    "economic_distinction": "The candidate uses the same-minute transaction-price reference rather than a previous close, a daily VWAP, a path endpoint, or a return-distribution moment. It is invariant to a common positive rescaling of all amounts and to the stock's absolute price scale, while retaining the sign of within-bar execution pressure.",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "standalone_09_30_excluded": true,
+    "source_open_high_low_excluded": true,
+    "candidate_factor_values_observed_before_selection": false,
+    "terminal_factor_comparison_values_observed_before_selection": false,
+    "daily_prices_or_forward_returns_read_before_selection": false
+  },
+  "rejected_formula_search": {
+    "lower_direction_sign_inversion_or_absolute_gap_allowed": false,
+    "equal_weight_volume_weight_rank_weight_or_return_weight_substitution_allowed": false,
+    "morning_afternoon_late_opening_threshold_or_minimum_active_bar_variants_allowed": false,
+    "source_open_high_low_daily_vwap_or_daily_price_substitution_allowed": false,
+    "clipping_winsorization_imputation_or_invalid_activity_pair_repair_allowed": false
+  },
+  "decision": {
+    "freeze_separate_no_return_preregistration_before_candidate_values": true,
+    "coverage_capacity_and_all_nineteen_minute_factor_uniqueness_required_before_daily_prices": true,
+    "same_history_direction_formula_window_weighting_or_transform_search_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  }
+}
