@@ -68,7 +68,9 @@ DEFAULT_TERMINAL_RECORD = (
     / "docs"
     / "a_share_tushare_intraday_amount_volatility_coupling_research_record.json"
 )
-TERMINAL_RECORD_SHA256 = ""
+TERMINAL_RECORD_SHA256 = (
+    "3c6803bd073f6afa35501e4ee766b235d588a496311f610a9e58e794bfef647f"
+)
 NO_RETURN_AUDIT_SHA256 = (
     "88627b1cc3c5debcc61651d273d2dccefee56affdb849746389cdede79abbb50"
 )
@@ -78,10 +80,18 @@ CANDIDATE_MANIFEST_SHA256 = (
 CANDIDATE_DATASET_SHA256 = (
     "b74f30139ae9529700e91e2e019e769ae8b38086dc27866798e2b41dbec22f06"
 )
-DIAGNOSTIC_SHA256 = ""
-STABILITY_AUDIT_SHA256 = ""
-TOPK_AUDIT_SHA256 = ""
-CONSUMPTION_MARKER_SHA256 = ""
+DIAGNOSTIC_SHA256 = (
+    "0240fe6d362e550446edd78eb43e70b14df630c6b93d2c31d459738c5c0d761a"
+)
+STABILITY_AUDIT_SHA256 = (
+    "db34499cb198dc797a67e1c4e38dac751adeddfb02208ecafadbcd6107f9f977"
+)
+TOPK_AUDIT_SHA256 = (
+    "6be765ab763d8f500c27620a79022c477e9325cc8322a95b93f1962de678c634"
+)
+CONSUMPTION_MARKER_SHA256 = (
+    "8dbe497566f923c0e5c6fb30f18ce4b7f32bded900d237b534fc4e85fe3485c6"
+)
 RAW_MANIFEST_SHA256 = foundation.RAW_MANIFEST_SHA256
 JOINT_MANIFEST_SHA256 = foundation.JOINT_MANIFEST_SHA256
 AFTERNOON_EFFICIENCY_MANIFEST_SHA256 = previous.AFTERNOON_EFFICIENCY_MANIFEST_SHA256
@@ -389,20 +399,21 @@ def load_terminal_record_if_present() -> dict[str, Any] | None:
         and audit.get("forward_returns_read") is False
         and diagnostic_protocol.get("sha256") == DIAGNOSTIC_PREREGISTRATION_SHA256
         and no_return.get("coverage_and_capacity_gate_passed") is True
-        and no_return.get("comparison_factor_count") == 15
+        and no_return.get("comparison_factor_count") == 16
         and no_return.get("all_sixteen_uniqueness_gates_passed") is True
         and no_return.get(
             "maximum_absolute_median_daily_rank_correlation_to_sixteen_terminal_factors"
         )
-        == 0.3429077105616848
+        == 0.3417657619225368
         and results.get("cohorts") == 539
+        and results.get("mean_rank_ic") == -0.017633438038861565
         and results.get("association_stability_gate_passed") is False
         and results.get("topk_viability_gate_passed") is False
         and results.get("dual_gate_passed") is False
         and results.get("execution_aware_top3_net_cumulative_return")
-        == -0.8559411398232839
+        == 0.0759039836633788
         and results.get("pilot_net_cumulative_return_at_ten_bp_each_side")
-        == -0.23238649620750873
+        == -0.06216215256211344
         and (artifacts.get("diagnostic") or {}).get("sha256") == DIAGNOSTIC_SHA256
         and (artifacts.get("stability_audit") or {}).get("sha256")
         == STABILITY_AUDIT_SHA256

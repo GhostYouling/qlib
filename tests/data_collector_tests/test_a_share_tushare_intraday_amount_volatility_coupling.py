@@ -112,6 +112,51 @@ def test_repository_chain_accepts_preregistered_predecessor_state():
     )
 
 
+def test_diagnostic_protocol_binds_passed_no_return_evidence():
+    spec = RESEARCH.load_diagnostic_preregistration()
+    evidence = spec["no_return_evidence"]
+    snapshot = evidence["candidate_snapshot"]
+    uniqueness = evidence["uniqueness"]
+    assert evidence["protocol"]["sha256"] == RESEARCH.PREREGISTRATION_SHA256
+    assert snapshot["sha256"] == RESEARCH.CANDIDATE_MANIFEST_SHA256
+    assert snapshot["eligible_rows"] == 7_695_088
+    assert snapshot["constant_absolute_return_rows"] == 29_410
+    assert snapshot["constant_log1p_amount_rows"] == 0
+    assert evidence["ordered_audit"]["sha256"] == RESEARCH.NO_RETURN_AUDIT_SHA256
+    assert evidence["coverage_and_capacity"]["gate_passed"] is True
+    assert uniqueness["all_sixteen_comparisons_passed"] is True
+    assert len(uniqueness["comparison_medians"]) == 16
+    assert spec["research_boundary"][
+        "forward_return_fields_read_before_registration"
+    ] is False
+
+
+def test_terminal_record_binds_single_diagnostic_and_rejection():
+    record = RESEARCH.load_terminal_record_if_present()
+    assert record is not None
+    assert record["status"] == (
+        "terminal_rejected_at_association_stability_and_executable_topk_gates"
+    )
+    assert record["no_return_results"]["comparison_factor_count"] == 16
+    assert record["no_return_results"][
+        "all_sixteen_uniqueness_gates_passed"
+    ] is True
+    assert record["return_results"]["cohorts"] == 539
+    assert record["return_results"]["mean_rank_ic"] == pytest.approx(
+        -0.017633438038861565
+    )
+    assert record["return_results"][
+        "execution_aware_top3_net_cumulative_return"
+    ] == pytest.approx(0.0759039836633788)
+    assert record["return_results"][
+        "pilot_net_cumulative_return_at_ten_bp_each_side"
+    ] == pytest.approx(-0.06216215256211344)
+    assert record["return_results"]["association_stability_gate_passed"] is False
+    assert record["return_results"]["topk_viability_gate_passed"] is False
+    assert record["decision"]["aggregation_candidate_added"] is False
+    assert record["decision"]["selection_allowed"] is False
+
+
 def test_perfect_positive_coupling():
     output, quality = compute(1.0)
     assert output.loc[0, RESEARCH.FACTOR_NAME] == pytest.approx(1.0)
