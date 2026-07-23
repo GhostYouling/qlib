@@ -92,6 +92,26 @@ def test_repository_chain_accepts_preregistered_predecessor_state():
     )
 
 
+def test_diagnostic_protocol_binds_passed_no_return_evidence():
+    spec = RESEARCH.load_diagnostic_preregistration()
+    evidence = spec["no_return_evidence"]
+    snapshot = evidence["candidate_snapshot"]
+    uniqueness = evidence["uniqueness"]
+    assert evidence["protocol"]["sha256"] == RESEARCH.PREREGISTRATION_SHA256
+    assert snapshot["sha256"] == RESEARCH.CANDIDATE_MANIFEST_SHA256
+    assert snapshot["dataset_sha256"] == RESEARCH.CANDIDATE_DATASET_SHA256
+    assert snapshot["eligible_rows"] == 7_695_088
+    assert snapshot["zero_realized_variance_rows"] == 29_410
+    assert evidence["ordered_audit"]["sha256"] == RESEARCH.NO_RETURN_AUDIT_SHA256
+    assert evidence["coverage_and_capacity"]["gate_passed"] is True
+    assert uniqueness["all_seventeen_comparisons_passed"] is True
+    assert len(uniqueness["comparison_medians"]) == 17
+    assert tuple(uniqueness["comparison_medians"]) == RESEARCH.COMPARISON_FACTORS
+    assert spec["research_boundary"][
+        "forward_return_fields_read_before_registration"
+    ] is False
+
+
 def test_uniform_squared_returns_have_unit_entropy():
     signs = np.where(np.arange(238).reshape(2, 119) % 2 == 0, 1.0, -1.0)
     output, quality = compute(signs * 0.001)

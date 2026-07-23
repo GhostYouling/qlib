@@ -62,14 +62,18 @@ DEFAULT_DIAGNOSTIC_PREREGISTRATION = (
     / "docs"
     / "a_share_tushare_intraday_return_variance_entropy_diagnostic_preregistration.json"
 )
-DIAGNOSTIC_PREREGISTRATION_SHA256 = ""
+DIAGNOSTIC_PREREGISTRATION_SHA256 = (
+    "1dc70c8b1b4075dcecbf9a03440da5e7054e582ec6c8abab3587a4539aec67b4"
+)
 DEFAULT_TERMINAL_RECORD = (
     REPO_ROOT
     / "docs"
     / "a_share_tushare_intraday_return_variance_entropy_research_record.json"
 )
 TERMINAL_RECORD_SHA256 = ""
-NO_RETURN_AUDIT_SHA256 = ""
+NO_RETURN_AUDIT_SHA256 = (
+    "8c1c7a1f32de94125ee524a6185e5297bdd423fcaf6034eebbab7b5a227e3d14"
+)
 CANDIDATE_MANIFEST_SHA256 = (
     "f1905de2c51540d55369b8c84117f63bfd509db31dad79c933c90559d880556c"
 )
@@ -1843,15 +1847,14 @@ def load_diagnostic_preregistration(
         and snapshot.get("partitions") == 33_015
         and snapshot.get("rows") == 7_724_498
         and snapshot.get("eligible_rows") == 7_695_088
-        and snapshot.get("constant_absolute_return_rows") == 29_410
-        and snapshot.get("constant_log1p_amount_rows") == 0
+        and snapshot.get("zero_realized_variance_rows") == 29_410
         and snapshot.get("invalid_required_close_rows") == 0
-        and snapshot.get("invalid_destination_amount_rows") == 0
         and snapshot.get("invalid_required_value_rows") == 0
-        and snapshot.get("nonfinite_log_return_or_log1p_amount_rows") == 0
-        and snapshot.get("nonfinite_correlation_rows") == 0
+        and snapshot.get("nonfinite_log_return_rows") == 0
+        and snapshot.get("nonfinite_entropy_component_rows") == 0
+        and snapshot.get("nonfinite_entropy_rows") == 0
         and snapshot.get("numerical_endpoint_canonicalization_rows") == 0
-        and snapshot.get("amount_volatility_coupling_range_violation_rows") == 0
+        and snapshot.get("return_variance_entropy_range_violation_rows") == 0
         and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
         and audit.get("forward_return_fields_read") is False
         and coverage.get("quality_listing_eligible_rows") == 1_331_759
@@ -1867,9 +1870,9 @@ def load_diagnostic_preregistration(
         and uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
         == 0.8
         and uniqueness.get("maximum_observed_absolute_median_daily_rank_correlation")
-        == 0.3417657619225368
+        == 0.49458401211809416
         and tuple(comparison_medians) == COMPARISON_FACTORS
-        and uniqueness.get("all_sixteen_comparisons_passed") is True
+        and uniqueness.get("all_seventeen_comparisons_passed") is True
         and holding.get("universe") == "buyable_main_chinext"
         and holding.get("minimum_listing_sessions") == research.MIN_LISTING_SESSIONS
         and holding.get("development_start") == "2019-01-01"
@@ -1916,25 +1919,25 @@ def validate_diagnostic_source_chain(
         and manifest.get("partitions") == 33_015
         and manifest.get("rows") == 7_724_498
         and manifest.get("eligible_rows") == 7_695_088
-        and quality.get("constant_absolute_return_rows") == 29_410
-        and quality.get("constant_log1p_amount_rows") == 0
+        and quality.get("zero_realized_variance_rows") == 29_410
         and quality.get("invalid_required_close_rows") == 0
-        and quality.get("invalid_destination_amount_rows") == 0
         and quality.get("invalid_required_value_rows") == 0
-        and quality.get("nonfinite_log_return_or_log1p_amount_rows") == 0
-        and quality.get("nonfinite_correlation_rows") == 0
+        and quality.get("nonfinite_log_return_rows") == 0
+        and quality.get("nonfinite_entropy_component_rows") == 0
+        and quality.get("nonfinite_entropy_rows") == 0
         and quality.get("numerical_endpoint_canonicalization_rows") == 0
-        and quality.get("amount_volatility_coupling_range_violation_rows") == 0
+        and quality.get("return_variance_entropy_range_violation_rows") == 0
         and manifest.get("comparison_factor_values_read") is False
         and manifest.get("forward_return_fields_read") is False
         and manifest.get("source_fields_read") == list(RAW_COLUMNS)
         and manifest.get("source_close_read") is True
-        and manifest.get("source_amount_read") is True
+        and manifest.get("source_amount_read") is False
         and manifest.get("source_open_high_low_or_volume_read") is False
         and manifest.get("cross_lunch_return_included") is False
-        and manifest.get("destination_amount_pairing")
-        == "within_half_return_to_same_destination_bar"
-        and manifest.get("return_amount_pair_observations") == 238
+        and manifest.get("variance_contribution_support_positions") == 238
+        and manifest.get("within_half_log_return_observations") == 238
+        and manifest.get("zero_variance_contributions_retained_in_entropy_support")
+        is True
     ):
         raise IntradayReturnVarianceEntropyError(
             "candidate snapshot conflicts with the diagnostic preregistration"
@@ -1954,7 +1957,7 @@ def validate_diagnostic_source_chain(
             "gate_passed_before_comparison_values"
         )
         is True
-        and (audit.get("uniqueness") or {}).get("all_sixteen_comparisons_passed")
+        and (audit.get("uniqueness") or {}).get("all_seventeen_comparisons_passed")
         is True
         and (audit.get("decision") or {}).get(
             "separate_return_diagnostic_preregistration_allowed"
@@ -2193,12 +2196,13 @@ def run_diagnostic(args: argparse.Namespace) -> Path:
             "coverage": coverage,
             "source_fields_read_for_factor": list(RAW_COLUMNS),
             "source_close_read_for_factor": True,
-            "source_amount_read_for_factor": True,
+            "source_amount_read_for_factor": False,
             "source_open_high_low_or_volume_read_for_factor": False,
             "standalone_09_30_row_excluded_from_formula": True,
             "cross_lunch_return_included": False,
-            "destination_amount_pairing": "within_half_return_to_same_destination_bar",
-            "return_amount_pair_observations": 238,
+            "variance_contribution_support_positions": 238,
+            "within_half_log_return_observations": 238,
+            "zero_variance_contributions_retained_in_entropy_support": True,
             "daily_prices_substituted_into_minute_rows": False,
             "forward_return_fields_stored_in_feature_source": False,
             "selection_or_promotion_allowed": False,
