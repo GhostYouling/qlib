@@ -43,8 +43,19 @@ DEFAULT_PREREGISTRATION = (
     / "docs"
     / "a_share_tushare_intraday_return_skewness_no_return_preregistration.json"
 )
+DEFAULT_TERMINAL_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_intraday_return_skewness_research_record.json"
+)
 PREREGISTRATION_SHA256 = (
     "b7d20fade0436e706cbefc9abdf909f8b9ec7e2e565516af722ebda9864a3936"
+)
+TERMINAL_RECORD_SHA256 = (
+    "2a58052992102b08e9310e9521b946ddc0382c3d07b2fa06f9a21eef546b879b"
+)
+NO_RETURN_AUDIT_SHA256 = (
+    "812f3c95d953218ad0e93c8eca6847127b53ca9b041e06b083f02418443dc59b"
 )
 MECHANISM_AUDIT_SHA256 = (
     "e87d343ff41a32ee19497767420a4a01dd4a00e902f12842d3da8824dfc416c0"
@@ -240,17 +251,26 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
     mechanisms = list(state.get("post_frontier_terminal_mechanisms") or [])
     summary = state.get("post_frontier_summary") or {}
     decision = state.get("decision") or {}
-    if not (
-        foundation.file_digest(
-            REPO_ROOT / str(spec["current_research_state"]["path"])
-        )
-        == CURRENT_STATUS_SHA256
-        and state.get("status")
+    predecessor_state = (
+        state.get("status")
         == "aggregation_blocked_after_intraday_return_variance_entropy_terminal_rejection_zero_dual_gate_factors"
         and summary.get("terminal_mechanism_count") == 42
         and len(mechanisms) == 42
-        and (mechanisms[-1] if mechanisms else {}).get("mechanism")
+        and mechanisms[-1].get("mechanism")
         == "tushare_intraday_return_variance_entropy_238m"
+    )
+    terminal_state = (
+        state.get("status")
+        == "aggregation_blocked_after_intraday_return_skewness_no_return_uniqueness_rejection_zero_dual_gate_factors"
+        and summary.get("terminal_mechanism_count") == 43
+        and len(mechanisms) == 43
+        and mechanisms[-2].get("mechanism")
+        == "tushare_intraday_return_variance_entropy_238m"
+        and mechanisms[-1].get("mechanism")
+        == "tushare_intraday_return_skewness_238m"
+    )
+    if not (
+        (predecessor_state or terminal_state)
         and summary.get("admitted_factor_count") == 0
         and summary.get("aggregation_candidate_count") == 0
         and decision.get("aggregation_allowed") is False
@@ -274,6 +294,7 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
         ),
         "sha256": CURRENT_STATUS_SHA256,
         "terminal_mechanism_count_before_this_candidate": 42,
+        "historical_binding_not_reinterpreted_as_current_file_bytes": True,
     }
     evidence["return_variance_entropy_terminal_record"] = {
         "path": str(previous.DEFAULT_TERMINAL_RECORD.resolve()),
@@ -284,6 +305,61 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
         "sha256": MECHANISM_AUDIT_SHA256,
     }
     return evidence
+
+
+def load_terminal_record_if_present() -> dict[str, Any] | None:
+    """Validate the immutable terminal record when this branch is closed."""
+
+    if not DEFAULT_TERMINAL_RECORD.is_file():
+        return None
+    _require_file(
+        DEFAULT_TERMINAL_RECORD,
+        TERMINAL_RECORD_SHA256,
+        "intraday-return-skewness research record",
+    )
+    record = research.load_json_record(
+        DEFAULT_TERMINAL_RECORD,
+        kind="a_share_tushare_intraday_return_skewness_research_record",
+    )
+    protocol = (record.get("ordered_protocol") or {}).get(
+        "no_return_preregistration"
+    ) or {}
+    audit = (record.get("ordered_protocol") or {}).get("no_return_audit") or {}
+    candidate = (record.get("source_chain") or {}).get("candidate_manifest") or {}
+    results = record.get("no_return_results") or {}
+    decision = record.get("decision") or {}
+    boundary = record.get("research_boundary") or {}
+    if not (
+        record.get("status") == "terminal_rejected_at_no_return_uniqueness_gate"
+        and protocol.get("sha256") == PREREGISTRATION_SHA256
+        and candidate.get("sha256") == CANDIDATE_MANIFEST_SHA256
+        and candidate.get("dataset_sha256") == CANDIDATE_DATASET_SHA256
+        and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
+        and audit.get("status") == "terminal_rejected_at_no_return_uniqueness_gate"
+        and audit.get("daily_price_fields_loaded") == []
+        and audit.get("forward_return_fields_read") is False
+        and results.get("coverage_and_capacity_gate_passed") is True
+        and results.get("comparison_factor_count") == 18
+        and results.get("passed_comparison_factor_count") == 17
+        and results.get("maximum_absolute_median_daily_rank_correlation")
+        == 0.8625548973627292
+        and results.get("failed_comparison_factor")
+        == "intraday_upside_semivariance_share_239m"
+        and results.get("all_eighteen_uniqueness_gates_passed") is False
+        and decision.get("terminally_reject_exact_factor_direction") is True
+        and decision.get("return_diagnostic_allowed") is False
+        and decision.get("aggregation_candidate_added") is False
+        and decision.get("aggregation_allowed") is False
+        and decision.get("selection_allowed") is False
+        and decision.get("level2_intake_justified") is False
+        and boundary.get("daily_price_fields_loaded") == []
+        and boundary.get("forward_return_fields_read") is False
+        and boundary.get("training_or_model_fitting_performed") is False
+    ):
+        raise IntradayReturnSkewnessError(
+            "intraday-return-skewness research record is inconsistent"
+        )
+    return record
 
 
 def _validate_entropy_manifest(
@@ -729,6 +805,7 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
             CANDIDATE_MANIFEST_SHA256,
             "published return-skewness manifest",
         )
+        load_terminal_record_if_present()
         manifest = research.load_json_record(final_manifest)
         _validate_snapshot_manifest(
             manifest, require_fingerprint_constants=True
@@ -1285,6 +1362,50 @@ def run_no_return_audit(
     data_root = data_root.expanduser().resolve()
     experiment_root = experiment_root.expanduser().resolve()
     spec = load_preregistration()
+    terminal_record = load_terminal_record_if_present()
+    if terminal_record is not None:
+        manifest_path = output_root(data_root) / "snapshot_manifest.json"
+        _require_file(
+            manifest_path,
+            CANDIDATE_MANIFEST_SHA256,
+            "terminal candidate snapshot manifest",
+        )
+        audit_link = (terminal_record.get("ordered_protocol") or {}).get(
+            "no_return_audit"
+        ) or {}
+        audit_path = _repository_path(str(audit_link.get("path", "")))
+        _require_file(
+            audit_path,
+            NO_RETURN_AUDIT_SHA256,
+            "terminal no-return audit",
+        )
+        audit = research.load_json_record(
+            audit_path,
+            kind="a_share_tushare_intraday_return_skewness_no_return_audit",
+        )
+        if not (
+            audit.get("status") == "terminal_rejected_at_no_return_uniqueness_gate"
+            and (audit.get("candidate_snapshot") or {}).get("sha256")
+            == CANDIDATE_MANIFEST_SHA256
+            and (audit.get("coverage_and_capacity") or {}).get(
+                "gate_passed_before_comparison_values"
+            )
+            is True
+            and (audit.get("uniqueness") or {}).get(
+                "all_eighteen_comparisons_passed"
+            )
+            is False
+            and (audit.get("decision") or {}).get(
+                "separate_return_diagnostic_preregistration_allowed"
+            )
+            is False
+            and audit.get("daily_price_fields_loaded") == []
+            and audit.get("forward_return_fields_read") is False
+        ):
+            raise IntradayReturnSkewnessError(
+                "terminal no-return audit is inconsistent"
+            )
+        return audit_path
     repository_evidence = validate_repository_chain(spec)
     chain = validate_external_chain(spec, data_root)
     joint = chain[1]

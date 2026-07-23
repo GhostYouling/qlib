@@ -1,8 +1,8 @@
 {
   "version": 1,
   "kind": "a_share_three_day_iteration_status",
-  "status": "aggregation_blocked_after_intraday_return_variance_entropy_terminal_rejection_zero_dual_gate_factors",
-  "recorded_at": "2026-07-23T02:42:31Z",
+  "status": "aggregation_blocked_after_intraday_return_skewness_no_return_uniqueness_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-23T03:54:35Z",
   "purpose": "Provide one fingerprint-bound machine-readable state for the fixed three-session research loop so stability-only factors, terminal mechanisms, and source-readiness work cannot be mistaken for aggregation or stock-selection permission.",
   "fixed_strategy": {
     "price_basis": "close_known_raw_pct_chg_chain_v1",
@@ -356,10 +356,18 @@
         "path": "docs/a_share_tushare_intraday_return_variance_entropy_research_record.json",
         "sha256": "7f79ff0b09a132bcd6af0e1a4c6401de58105cf0c778c6625dada71ba11b07f1"
       }
+    },
+    {
+      "mechanism": "tushare_intraday_return_skewness_238m",
+      "terminal_gate": "no_return_uniqueness",
+      "record": {
+        "path": "docs/a_share_tushare_intraday_return_skewness_research_record.json",
+        "sha256": "2a58052992102b08e9310e9521b946ddc0382c3d07b2fa06f9a21eef546b879b"
+      }
     }
   ],
   "post_frontier_summary": {
-    "terminal_mechanism_count": 42,
+    "terminal_mechanism_count": 43,
     "admitted_factor_count": 0,
     "aggregation_candidate_count": 0
   },
@@ -468,6 +476,10 @@
     "intraday_return_variance_entropy_research_record": {
       "path": "docs/a_share_tushare_intraday_return_variance_entropy_research_record.json",
       "sha256": "7f79ff0b09a132bcd6af0e1a4c6401de58105cf0c778c6625dada71ba11b07f1"
+    },
+    "intraday_return_skewness_research_record": {
+      "path": "docs/a_share_tushare_intraday_return_skewness_research_record.json",
+      "sha256": "2a58052992102b08e9310e9521b946ddc0382c3d07b2fa06f9a21eef546b879b"
     },
     "direct_stk_mins_adapter_implemented": true,
     "real_acceptance_rows_observed": true,
@@ -641,8 +653,16 @@
     "intraday_return_variance_entropy_topk_viability_passed": false,
     "intraday_return_variance_entropy_dual_gate_passed": false,
     "intraday_return_variance_entropy_terminal": true,
+    "intraday_return_skewness_candidate_manifest_sha256": "f4ff8ec91db7e86a56113ca3dab507f19537392c26de4912095aeed9b4f8c392",
+    "intraday_return_skewness_no_return_coverage_passed": true,
+    "intraday_return_skewness_no_return_uniqueness_passed": false,
+    "intraday_return_skewness_maximum_absolute_median_daily_rank_correlation": 0.8625548973627292,
+    "intraday_return_skewness_failed_comparison_factor": "intraday_upside_semivariance_share_239m",
+    "intraday_return_skewness_forward_returns_read": false,
+    "intraday_return_skewness_diagnostic_created": false,
+    "intraday_return_skewness_terminal": true,
     "prior_qmt_route_retained_as_fallback_only": true,
-    "next_external_action": "Retire the four exact cleaned historical directions and every later consumed minute mechanism through the exact higher intraday return-variance entropy. The latest entropy candidate passed coverage, all seventeen uniqueness comparisons, and the full association-stability gate: mean Rank IC was +0.02085 and every 2019-2025 annual mean IC was positive. It nevertheless failed executable Top-3 viability: the normalized ledger gained 13.66% but drew down 45.27% and lost in 2019, 2020, and 2023; the CNY 200,000 board-lot result lost 8.50% at ten basis points per side. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, combine, current-score, or retest terminal factors, and do not purchase Level-2 to rescue them."
+    "next_external_action": "Retire the four exact cleaned historical directions and every later terminal minute mechanism through exact higher intraday return skewness. The latest skewness candidate passed coverage and capacity without daily prices or forward returns, but failed the frozen all-eighteen uniqueness gate because its median daily rank correlation with higher intraday upside-semivariance share was +0.862555 versus the 0.8 limit. No return diagnostic was registered or run. Continue only with a genuinely distinct preregistered mechanism or genuinely unseen post-registration minute observations; do not invert, reformulate, rewindow, threshold, subset, reweight, combine, current-score, or retest terminal factors, and do not purchase Level-2 to rescue them."
   },
   "decision": {
     "aggregation_allowed": false,

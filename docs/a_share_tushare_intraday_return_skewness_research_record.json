@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_return_skewness_research_record",
+  "status": "terminal_rejected_at_no_return_uniqueness_gate",
+  "recorded_at": "2026-07-23T03:52:00Z",
+  "purpose": "Record the fingerprint-bound construction, coverage, capacity, and eighteen-factor no-return uniqueness result for the Tushare within-half intraday return-skewness mechanism without reading daily prices or forward returns or mistaking a higher-moment reformulation for an independent strategy factor.",
+  "factor": {
+    "name": "intraday_return_skewness_238m",
+    "direction": "higher",
+    "formula": "m3 / m2^(3/2), mean_r = Sum(r_hj)/238, m2 = Sum((r_hj-mean_r)^2)/238, m3 = Sum((r_hj-mean_r)^3)/238, r_hj = log(close_hj/close_h,j-1), h in {morning,afternoon}, j=2..120",
+    "economic_hypothesis": "A high value means the signed tail of within-half intraday price updates was tilted toward unusually large positive moves after centering and variance standardization, consistent with informed demand that may persist from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "raw_open_high_low_volume_or_amount_used": false,
+    "standalone_09_30_row_excluded_from_formula": true,
+    "cross_lunch_return_excluded_from_formula": true,
+    "fisher_finite_sample_bias_correction_applied": false,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_return_variance_entropy_manifest_sha256": "f1905de2c51540d55369b8c84117f63bfd509db31dad79c933c90559d880556c",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_return_skewness/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_return_skewness_v1/snapshot_manifest.json",
+      "sha256": "f4ff8ec91db7e86a56113ca3dab507f19537392c26de4912095aeed9b4f8c392",
+      "dataset_sha256": "f9bcf84e41e7607a4a7891ef3de822ff8fa602e952b0a22d73ed51fedfacd13a",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7695088,
+      "zero_second_centered_moment_rows": 29410,
+      "invalid_required_close_rows": 0,
+      "invalid_required_value_rows": 0,
+      "nonfinite_log_return_rows": 0,
+      "nonfinite_second_centered_moment_rows": 0,
+      "nonfinite_third_centered_moment_rows": 0,
+      "nonfinite_standardized_skewness_rows": 0
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "mechanism_overlap_reaudit": {
+      "path": "docs/a_share_tushare_intraday_return_skewness_mechanism_overlap_reaudit_20260723.json",
+      "sha256": "e87d343ff41a32ee19497767420a4a01dd4a00e902f12842d3da8824dfc416c0",
+      "candidate_values_observed": false,
+      "comparison_values_observed": false,
+      "forward_returns_read": false
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_return_skewness_no_return_preregistration.json",
+      "sha256": "b7d20fade0436e706cbefc9abdf909f8b9ec7e2e565516af722ebda9864a3936",
+      "factor_values_observed_before_registration": false,
+      "comparison_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260723T035200Z_intraday_return_skewness_no_return_audit.json",
+      "sha256": "812f3c95d953218ad0e93c8eca6847127b53ca9b041e06b083f02418443dc59b",
+      "status": "terminal_rejected_at_no_return_uniqueness_gate",
+      "daily_price_fields_loaded": [],
+      "forward_return_fields_read": false
+    },
+    "diagnostic_preregistration_created": false,
+    "historical_return_diagnostic_created": false,
+    "historical_return_consumption_marker_created": false
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328065,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "comparison_factor_count": 18,
+    "passed_comparison_factor_count": 17,
+    "maximum_absolute_median_daily_rank_correlation": 0.8625548973627292,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "failed_comparison_factor": "intraday_upside_semivariance_share_239m",
+    "failed_comparison_score_direction": "higher",
+    "failed_comparison_pairwise_sessions": 1623,
+    "median_daily_rank_correlation_to_failed_comparison": 0.8625548973627292,
+    "median_daily_rank_correlation_to_return_variance_entropy": -0.29387141478437856,
+    "all_eighteen_uniqueness_gates_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "terminal_reason": "The exact higher standardized return-skewness factor exceeded the frozen absolute median daily rank-correlation limit against the existing higher upside-semivariance-share factor, so its signed third-moment formulation is a near-synonym under the preregistered no-return gate.",
+    "invert_reformulate_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "return_diagnostic_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "research_boundary": {
+    "coverage_proved_predictive_value": false,
+    "uniqueness_failure_is_not_return_evidence": true,
+    "daily_price_fields_loaded": [],
+    "forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction near-synonym and preserve its builder and no-return evidence. Continue only with a genuinely distinct mechanism frozen before observing its candidate values, comparison values, or returns."
+  }
+}

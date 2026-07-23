@@ -341,12 +341,24 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
         == "tushare_intraday_amount_volatility_coupling_238p"
     )
     terminal_state = (
-        state.get("status")
-        == "aggregation_blocked_after_intraday_return_variance_entropy_terminal_rejection_zero_dual_gate_factors"
-        and summary.get("terminal_mechanism_count") == 42
-        and len(mechanisms) == 42
-        and (mechanisms[-1] if mechanisms else {}).get("mechanism")
-        == "tushare_intraday_return_variance_entropy_238m"
+        (
+            state.get("status")
+            == "aggregation_blocked_after_intraday_return_variance_entropy_terminal_rejection_zero_dual_gate_factors"
+            and summary.get("terminal_mechanism_count") == 42
+            and len(mechanisms) == 42
+            and (mechanisms[-1] if mechanisms else {}).get("mechanism")
+            == "tushare_intraday_return_variance_entropy_238m"
+        )
+        or (
+            state.get("status")
+            == "aggregation_blocked_after_intraday_return_skewness_no_return_uniqueness_rejection_zero_dual_gate_factors"
+            and summary.get("terminal_mechanism_count") == 43
+            and len(mechanisms) == 43
+            and mechanisms[-2].get("mechanism")
+            == "tushare_intraday_return_variance_entropy_238m"
+            and mechanisms[-1].get("mechanism")
+            == "tushare_intraday_return_skewness_238m"
+        )
     )
     if not (
         (predecessor_state or terminal_state)

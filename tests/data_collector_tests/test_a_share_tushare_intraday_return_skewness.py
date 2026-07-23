@@ -101,6 +101,27 @@ def test_repository_chain_binds_entropy_terminal_state():
     ] == RESEARCH.MECHANISM_AUDIT_SHA256
 
 
+def test_terminal_record_stops_before_daily_prices_or_returns():
+    record = RESEARCH.load_terminal_record_if_present()
+    assert record is not None
+    assert record["status"] == "terminal_rejected_at_no_return_uniqueness_gate"
+    results = record["no_return_results"]
+    assert results["coverage_and_capacity_gate_passed"] is True
+    assert results["comparison_factor_count"] == 18
+    assert results["passed_comparison_factor_count"] == 17
+    assert results["failed_comparison_factor"] == (
+        "intraday_upside_semivariance_share_239m"
+    )
+    assert results[
+        "maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.8625548973627292)
+    assert results["all_eighteen_uniqueness_gates_passed"] is False
+    assert record["decision"]["return_diagnostic_allowed"] is False
+    assert record["decision"]["aggregation_candidate_added"] is False
+    assert record["research_boundary"]["daily_price_fields_loaded"] == []
+    assert record["research_boundary"]["forward_return_fields_read"] is False
+
+
 def test_one_positive_tail_move_has_positive_population_skewness():
     moves = np.zeros((2, 119))
     moves[0, 0] = 0.01
