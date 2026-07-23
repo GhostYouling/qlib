@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_price_update_share_mechanism_overlap_reaudit",
+  "status": "selected_intraday_price_update_share_before_candidate_values_comparison_values_or_forward_returns",
+  "recorded_at": "2026-07-23T05:24:40Z",
+  "purpose": "Reject already-consumed return-direction, return-magnitude, return-order, transaction-weight, and window variants before values and select one economically distinct price-update-continuity mechanism for the next ordered no-return audit.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "a798361d6f8a3796088d4ed4b91e8f35a7426a55f3ecf9ec340422c1bc184e77",
+    "status": "aggregation_blocked_after_intraday_bar_vwap_close_pressure_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count": 44,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "overlap_inventory": {
+    "terminal_minute_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_return_variance_entropy_238m",
+      "intraday_return_skewness_238m",
+      "intraday_bar_vwap_close_pressure_240m"
+    ],
+    "closest_existing_mechanisms": {
+      "intraday_realized_volatility": "Uses the squared magnitudes of minute returns. The selected candidate ignores every nonzero return magnitude and records only whether the close changed.",
+      "intraday_return_variance_entropy_238m": "Uses the distribution of squared return magnitudes across time. The selected candidate treats every price update identically regardless of its size or time position.",
+      "intraday_return_sign_run_imbalance_238p": "Uses the order and direction of adjacent return signs. The selected candidate discards positive versus negative direction and ignores run order.",
+      "intraday_up_move_amount_share_238m": "Allocates destination-bar amount by the sign of nonzero price moves. The selected candidate reads no amount and gives every within-half minute pair equal weight.",
+      "intraday_amount_profile_serial_persistence_240m": "Measures persistence in the amount path without using close changes. The selected candidate measures close-update continuity without reading amount.",
+      "intraday_bar_vwap_close_pressure_240m": "Measures signed close-to-same-bar-VWAP gaps using volume and amount. The selected candidate has no transaction-price reference, no activity weight, and no volume or amount field."
+    }
+  },
+  "rejected_before_value_observation": [
+    {
+      "name": "zero_return_share_or_staleness",
+      "proposed_formula": "One minus the selected nonzero price-update share",
+      "reason": "This is the exact inverse direction of the selected candidate and is permanently rejected before values."
+    },
+    {
+      "name": "signed_positive_or_negative_update_share",
+      "proposed_formula": "Count only positive or only negative minute close changes",
+      "reason": "Direction selection overlaps the terminal upside-semivariance, sign-run, and up-move-amount mechanisms and would create post-hoc direction search."
+    },
+    {
+      "name": "magnitude_thresholded_update_share",
+      "proposed_formula": "Count a price update only when its absolute return exceeds an epsilon or tick threshold",
+      "reason": "A threshold introduces return magnitude and a tunable cutoff; the selected mechanism is exact close equality with no tolerance."
+    },
+    {
+      "name": "amount_or_volume_weighted_update_share",
+      "proposed_formula": "Weight each price update by destination-bar amount or volume",
+      "reason": "Weighting would reopen terminal amount-allocation and amount-volatility mechanisms."
+    },
+    {
+      "name": "morning_afternoon_opening_late_or_lunch_update_share",
+      "proposed_formula": "Compute the same update statistic on a selected subwindow, include 09:30, or include the lunch boundary",
+      "reason": "Window selection is formula search; 09:30 has known placeholder ambiguity and the lunch boundary is not a one-minute price-update interval."
+    },
+    {
+      "name": "longest_unchanged_run_or_update_run",
+      "proposed_formula": "Use the maximum duration of a flat or updating close sequence",
+      "reason": "Run-length selection changes the mechanism into an order statistic and overlaps the consumed sign-run family."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_price_update_share_238m",
+    "direction": "higher",
+    "formula": "Count(close_hj != close_h,j-1 for h in {morning, afternoon}, j=2..120) / 238",
+    "bar_grid": "Use the 120 closes at 09:31-11:30 and the 120 closes at 13:01-15:00. Form 119 adjacent pairs inside each half, exclude standalone 09:30 and the 11:30-to-13:01 lunch boundary.",
+    "equality_rule": "Use exact equality of the normalized source close values after finite-positive validation. No epsilon, tick threshold, rounding, or tolerance is allowed.",
+    "mechanism": "Price-update continuity measures how often the close incorporates a new transaction price from one minute to the next rather than remaining stale.",
+    "hypothesis": "A high close-known value indicates continuous price discovery and lower price staleness, which may improve the persistence and executability of cross-sectional information from the next open through the third close.",
+    "economic_distinction": "The candidate is invariant to the size and sign of every nonzero return and to any common positive price rescaling. It uses no amount, volume, source open/high/low, transaction VWAP, daily price, or forward return. Permuting nonzero return magnitudes without changing which pairs are zero leaves it unchanged.",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "standalone_09_30_excluded": true,
+    "lunch_boundary_excluded": true,
+    "source_open_high_low_volume_amount_excluded": true,
+    "candidate_factor_values_observed_before_selection": false,
+    "terminal_factor_comparison_values_observed_before_selection": false,
+    "daily_prices_or_forward_returns_read_before_selection": false
+  },
+  "rejected_formula_search": {
+    "inverse_staleness_direction_allowed": false,
+    "positive_negative_or_signed_update_substitution_allowed": false,
+    "epsilon_tick_rounding_or_magnitude_threshold_allowed": false,
+    "amount_volume_return_or_time_weighting_allowed": false,
+    "morning_afternoon_opening_late_lunch_or_other_window_variant_allowed": false,
+    "run_length_transition_count_or_order_statistic_substitution_allowed": false,
+    "clipping_winsorization_imputation_or_invalid_close_repair_allowed": false
+  },
+  "decision": {
+    "freeze_separate_no_return_preregistration_before_candidate_values": true,
+    "coverage_capacity_and_all_twenty_minute_factor_uniqueness_required_before_daily_prices": true,
+    "same_history_direction_formula_window_weighting_threshold_or_transform_search_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  }
+}
