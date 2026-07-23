@@ -284,7 +284,7 @@ DEFAULT_THREE_DAY_ITERATION_STATUS = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
 THREE_DAY_ITERATION_STATUS_SHA256 = (
-    "a798361d6f8a3796088d4ed4b91e8f35a7426a55f3ecf9ec340422c1bc184e77"
+    "3b4cf44a5ab13ae88c69651f4607cda14c9eb469575d40adea69257d9e146ab9"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -10136,9 +10136,9 @@ def minute_combination_holdout_capacity(
         "calendar_sessions": int(len(calendar)),
         "potential_rebalance_dates": int(len(rebalances)),
         "potential_complete_topk_cohorts": int(len(executable)),
-        "minimum_names_on_potential_cohort": int(executable.min())
-        if len(executable)
-        else 0,
+        "minimum_names_on_potential_cohort": (
+            int(executable.min()) if len(executable) else 0
+        ),
         "minimum_required_holdout_cohorts": MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS,
         "capacity_gate_passed": bool(
             len(executable) >= MINUTE_COMBINATION_MIN_HOLDOUT_COHORTS
@@ -17339,13 +17339,13 @@ def attach_directional_minute_factors(
         "quality_and_minute_eligible_rows": int(minute_eligible.sum()),
         "factor_rank_eligible_rows": int(rank_eligible.sum()),
         "factor_rank_eligible_dates": int(len(cross_section_dates)),
-        "eligible_names_per_date_min": int(eligible_counts.min())
-        if len(eligible_counts)
-        else 0,
+        "eligible_names_per_date_min": (
+            int(eligible_counts.min()) if len(eligible_counts) else 0
+        ),
         "eligible_names_per_date_p05": eligible_names_p05,
-        "eligible_names_per_date_median": float(eligible_counts.median())
-        if len(eligible_counts)
-        else 0.0,
+        "eligible_names_per_date_median": (
+            float(eligible_counts.median()) if len(eligible_counts) else 0.0
+        ),
         "median_source_row_coverage": median_source_coverage,
         "p05_source_row_coverage": p05_source_coverage,
         "median_complete_feature_eligible_coverage": median_eligible_coverage,
@@ -17837,12 +17837,14 @@ def evaluate_candidate(
         "regime_filter": regime_filter,
         "close_loss_cap": close_loss_cap,
         "max_pairwise_correlation": max_pairwise_correlation,
-        "correlation_lookback": correlation_lookback
-        if max_pairwise_correlation is not None
-        else None,
-        "diversification_candidate_pool": diversification_candidate_pool
-        if max_pairwise_correlation is not None
-        else None,
+        "correlation_lookback": (
+            correlation_lookback if max_pairwise_correlation is not None else None
+        ),
+        "diversification_candidate_pool": (
+            diversification_candidate_pool
+            if max_pairwise_correlation is not None
+            else None
+        ),
         "min_volatility_low_20": min_volatility_low_20,
         "min_amplitude_low": min_amplitude_low,
         "max_entry_gap": max_entry_gap,
@@ -17897,9 +17899,9 @@ def evaluate_candidate(
     summary["development_stability"] = {
         "calendar_year_count": len(year_returns),
         "positive_calendar_year_count": sum(value > 0.0 for value in year_returns),
-        "worst_calendar_year_net_cumulative_return": min(year_returns)
-        if year_returns
-        else None,
+        "worst_calendar_year_net_cumulative_return": (
+            min(year_returns) if year_returns else None
+        ),
         "selection_score": stability_score,
         "max_drawdown_cap": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
         "passes_max_drawdown_cap": strict_stability_score is not None,
@@ -18085,12 +18087,12 @@ def basket_correlation_rows(
                 "signal_date": signal_date,
                 "basket_size": len(names),
                 "valid_return_days": int(len(window)),
-                "mean_pairwise_correlation": float(values.mean())
-                if len(values)
-                else np.nan,
-                "max_pairwise_correlation": float(values.max())
-                if len(values)
-                else np.nan,
+                "mean_pairwise_correlation": (
+                    float(values.mean()) if len(values) else np.nan
+                ),
+                "max_pairwise_correlation": (
+                    float(values.max()) if len(values) else np.nan
+                ),
             }
         )
     return pd.DataFrame(rows, columns=columns)
@@ -18112,25 +18114,23 @@ def summarize_basket_correlation(
         "basket_count": int(len(rows)),
         "valid_correlation_basket_count": int(len(valid)),
         "required_return_days": lookback_days,
-        "mean_pairwise_correlation": float(valid["mean_pairwise_correlation"].mean())
-        if len(valid)
-        else None,
-        "median_pairwise_correlation": float(
-            valid["mean_pairwise_correlation"].median()
-        )
-        if len(valid)
-        else None,
-        "mean_max_pairwise_correlation": float(valid["max_pairwise_correlation"].mean())
-        if len(valid)
-        else None,
-        "max_pairwise_correlation_p90": float(
-            valid["max_pairwise_correlation"].quantile(0.90)
-        )
-        if len(valid)
-        else None,
-        "max_pairwise_correlation_max": float(valid["max_pairwise_correlation"].max())
-        if len(valid)
-        else None,
+        "mean_pairwise_correlation": (
+            float(valid["mean_pairwise_correlation"].mean()) if len(valid) else None
+        ),
+        "median_pairwise_correlation": (
+            float(valid["mean_pairwise_correlation"].median()) if len(valid) else None
+        ),
+        "mean_max_pairwise_correlation": (
+            float(valid["max_pairwise_correlation"].mean()) if len(valid) else None
+        ),
+        "max_pairwise_correlation_p90": (
+            float(valid["max_pairwise_correlation"].quantile(0.90))
+            if len(valid)
+            else None
+        ),
+        "max_pairwise_correlation_max": (
+            float(valid["max_pairwise_correlation"].max()) if len(valid) else None
+        ),
     }
     cohort_returns = rounds[["signal_date", "net_return"]].copy()
     joined = valid.merge(cohort_returns, on="signal_date", how="inner")
@@ -18147,21 +18147,25 @@ def summarize_basket_correlation(
             "at_or_above_count": int(
                 (joined["max_pairwise_correlation"] >= threshold).sum()
             ),
-            "at_or_above_mean_three_day_net_return": float(
-                joined.loc[
-                    joined["max_pairwise_correlation"] >= threshold, "net_return"
-                ].mean()
-            )
-            if (joined["max_pairwise_correlation"] >= threshold).any()
-            else None,
+            "at_or_above_mean_three_day_net_return": (
+                float(
+                    joined.loc[
+                        joined["max_pairwise_correlation"] >= threshold, "net_return"
+                    ].mean()
+                )
+                if (joined["max_pairwise_correlation"] >= threshold).any()
+                else None
+            ),
             "below_count": int((joined["max_pairwise_correlation"] < threshold).sum()),
-            "below_mean_three_day_net_return": float(
-                joined.loc[
-                    joined["max_pairwise_correlation"] < threshold, "net_return"
-                ].mean()
-            )
-            if (joined["max_pairwise_correlation"] < threshold).any()
-            else None,
+            "below_mean_three_day_net_return": (
+                float(
+                    joined.loc[
+                        joined["max_pairwise_correlation"] < threshold, "net_return"
+                    ].mean()
+                )
+                if (joined["max_pairwise_correlation"] < threshold).any()
+                else None
+            ),
         }
         for threshold in CORRELATION_DIAGNOSTIC_THRESHOLDS
     ]
@@ -18357,9 +18361,11 @@ def return_metrics(
             equity.iloc[-1] ** (periods_per_year / len(rounds)) - 1.0
         ),
         "annualized_volatility": annualized_volatility,
-        "sharpe_like": float(net.mean() / net.std(ddof=0) * math.sqrt(periods_per_year))
-        if net.std(ddof=0)
-        else None,
+        "sharpe_like": (
+            float(net.mean() / net.std(ddof=0) * math.sqrt(periods_per_year))
+            if net.std(ddof=0)
+            else None
+        ),
         "max_drawdown": float(drawdown.min()),
         "win_rate": float((net > 0).mean()),
         "median_holdings": float(rounds["holdings"].median()),
@@ -25838,8 +25844,7 @@ def load_eastmoney_monetary_funds_asset_intensity_no_return_preregistration(
         or full.get("maximum_new_provider_calls") != 540
         or full.get("minimum_complete_identity_active_holding_coverage_per_report_date")
         != 0.85
-        or full.get("minimum_median_complete_identity_active_holding_coverage")
-        != 0.95
+        or full.get("minimum_median_complete_identity_active_holding_coverage") != 0.95
         or full.get("minimum_valid_factor_active_holding_coverage_per_report_date")
         != 0.75
         or full.get("minimum_median_valid_factor_active_holding_coverage") != 0.95
@@ -25901,19 +25906,18 @@ def load_eastmoney_monetary_funds_asset_intensity_no_return_preregistration(
             )
     accepted = source.get("accepted_frame") or {}
     accepted_path = resolve_repository_record_path(str(accepted.get("path") or ""))
-    if (
-        not accepted_path.exists()
-        or file_sha256(accepted_path) != accepted.get("file_sha256")
+    if not accepted_path.exists() or file_sha256(accepted_path) != accepted.get(
+        "file_sha256"
     ):
         raise ValueError("Eastmoney monetary-funds accepted frame changed")
     for label, link in (spec.get("local_context") or {}).items():
-        linked_path = resolve_repository_record_path(str((link or {}).get("path") or ""))
+        linked_path = resolve_repository_record_path(
+            str((link or {}).get("path") or "")
+        )
         if not linked_path.exists() or file_sha256(linked_path) != (link or {}).get(
             "sha256"
         ):
-            raise ValueError(
-                f"Eastmoney monetary-funds local context changed: {label}"
-            )
+            raise ValueError(f"Eastmoney monetary-funds local context changed: {label}")
         manifest_value = (link or {}).get("manifest_path")
         manifest_sha = (link or {}).get("manifest_sha256")
         if manifest_value or manifest_sha:
@@ -25958,9 +25962,7 @@ def load_eastmoney_monetary_funds_asset_intensity_full_source_record(
         or record.get("forward_return_fields_read") is not False
         or record.get("selection_or_promotion_allowed") is not False
     ):
-        raise ValueError(
-            "Eastmoney monetary-funds full-source record is inconsistent"
-        )
+        raise ValueError("Eastmoney monetary-funds full-source record is inconsistent")
     return record
 
 
@@ -26036,9 +26038,7 @@ def load_eastmoney_monetary_funds_asset_intensity_research_record(
         or record.get("forward_return_fields_read") is not False
         or record.get("selection_or_promotion_allowed") is not False
     ):
-        raise ValueError(
-            "Eastmoney monetary-funds terminal research record changed"
-        )
+        raise ValueError("Eastmoney monetary-funds terminal research record changed")
     for label, expected_hash in expected_links.items():
         link = evidence.get(label) or {}
         linked_path = resolve_repository_record_path(str(link.get("path") or ""))
@@ -26052,9 +26052,7 @@ def load_eastmoney_monetary_funds_asset_intensity_research_record(
             )
     terminal_path = resolve_repository_record_path(str(terminal.get("path") or ""))
     if terminal_path.exists() and file_sha256(terminal_path) != terminal["sha256"]:
-        raise ValueError(
-            "Eastmoney monetary-funds terminal no-return audit changed"
-        )
+        raise ValueError("Eastmoney monetary-funds terminal no-return audit changed")
     return record
 
 
@@ -26139,8 +26137,7 @@ def validate_eastmoney_monetary_funds_asset_intensity_full_snapshot(
             errors="coerce",
         )
         if (
-            tuple(frame.columns)
-            != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
+            tuple(frame.columns) != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COLUMNS
             or len(frame) != int(item["rows"])
             or content_hash != item["sha256"]
             or frame[["instrument", "report_date", "announcement_date"]]
@@ -26191,9 +26188,7 @@ def validate_eastmoney_monetary_funds_asset_intensity_full_snapshot(
             }
         )
     events = pd.concat(frames, ignore_index=True)
-    if len(events) != 114418 or events.duplicated(
-        ["instrument", "report_date"]
-    ).any():
+    if len(events) != 114418 or events.duplicated(["instrument", "report_date"]).any():
         raise ValueError("Eastmoney monetary-funds full event aggregate changed")
     return events, {
         "manifest": {
@@ -26311,18 +26306,26 @@ def materialize_eastmoney_monetary_funds_asset_intensity_sessions(
             effective = pd.to_datetime(history["event_effective_date"]).to_numpy(
                 dtype="datetime64[ns]"
             )
-            cumulative_latest = pd.to_datetime(history["report_date"]).cummax().to_numpy(
-                dtype="datetime64[ns]"
+            cumulative_latest = (
+                pd.to_datetime(history["report_date"])
+                .cummax()
+                .to_numpy(dtype="datetime64[ns]")
             )
-            positions = np.searchsorted(
-                effective,
-                pd.to_datetime(active["datetime"]).to_numpy(dtype="datetime64[ns]"),
-                side="right",
-            ) - 1
+            positions = (
+                np.searchsorted(
+                    effective,
+                    pd.to_datetime(active["datetime"]).to_numpy(dtype="datetime64[ns]"),
+                    side="right",
+                )
+                - 1
+            )
             expected_latest = cumulative_latest[positions]
-            keep = pd.to_datetime(active["monetary_funds_report_date"]).to_numpy(
-                dtype="datetime64[ns]"
-            ) == expected_latest
+            keep = (
+                pd.to_datetime(active["monetary_funds_report_date"]).to_numpy(
+                    dtype="datetime64[ns]"
+                )
+                == expected_latest
+            )
             superseded += int((~keep).sum())
             retained.append(active.loc[keep])
         expanded = pd.concat(retained, ignore_index=True)
@@ -26337,9 +26340,9 @@ def materialize_eastmoney_monetary_funds_asset_intensity_sessions(
         ).drop_duplicates(["instrument", "datetime"], keep="last")
     if (
         expanded.duplicated(["instrument", "datetime"]).any()
-        or not expanded["event_age_calendar_days"].between(
-            1, maximum_factor_age_days
-        ).all()
+        or not expanded["event_age_calendar_days"]
+        .between(1, maximum_factor_age_days)
+        .all()
         or not expanded["event_effective_date"].le(expanded["datetime"]).all()
     ):
         raise ValueError("Eastmoney monetary-funds event materialization is invalid")
@@ -26564,9 +26567,7 @@ def load_eastmoney_monetary_funds_asset_intensity_comparisons(
     qlib.init(provider_uri=str(provider_uri), region="cn", kernels=1)
     expressions = {
         "free_float_cap_proxy": "$amount/$turnover",
-        "liquidity_5": complete_rolling_window_expression(
-            "Mean($turnover, 5)", 4
-        ),
+        "liquidity_5": complete_rolling_window_expression("Mean($turnover, 5)", 4),
     }
     instruments = sorted(keys["instrument"].astype(str).unique())
     start = pd.to_datetime(keys["datetime"]).min()
@@ -26612,11 +26613,14 @@ def load_eastmoney_monetary_funds_asset_intensity_comparisons(
             *EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COMPARISON_FIELDS,
         ],
     ]
-    if tuple(
-        field
-        for field in EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COMPARISON_FIELDS
-        if field in comparison.columns
-    ) != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COMPARISON_FIELDS:
+    if (
+        tuple(
+            field
+            for field in EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COMPARISON_FIELDS
+            if field in comparison.columns
+        )
+        != EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COMPARISON_FIELDS
+    ):
         raise ValueError("Eastmoney monetary-funds comparison catalog changed")
     return comparison, {
         "fields_loaded": list(
@@ -26653,9 +26657,7 @@ def summarize_eastmoney_monetary_funds_asset_intensity_uniqueness(
     fields = EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_COMPARISON_FIELDS
     if tuple(contract.get("comparison_factors") or ()) != fields:
         raise ValueError("Eastmoney monetary-funds uniqueness catalog changed")
-    merged = candidate_sessions.loc[
-        :, ["datetime", "instrument", factor]
-    ].merge(
+    merged = candidate_sessions.loc[:, ["datetime", "instrument", factor]].merge(
         comparison_frame,
         on=["datetime", "instrument"],
         how="left",
@@ -26671,9 +26673,7 @@ def summarize_eastmoney_monetary_funds_asset_intensity_uniqueness(
         values = merged.loc[:, ["datetime", "instrument", factor, field]].copy()
         values[factor] = pd.to_numeric(values[factor], errors="coerce")
         values[field] = pd.to_numeric(values[field], errors="coerce")
-        values = values.loc[
-            np.isfinite(values[factor]) & np.isfinite(values[field])
-        ]
+        values = values.loc[np.isfinite(values[factor]) & np.isfinite(values[field])]
         correlations: list[float] = []
         counts: list[int] = []
         for _, daily in values.groupby("datetime", sort=True):
@@ -26715,9 +26715,11 @@ def summarize_eastmoney_monetary_funds_asset_intensity_uniqueness(
     passed = all(item["comparison_uniqueness_gate_passed"] for item in results)
     nearest = max(
         results,
-        key=lambda item: item["absolute_median_daily_rank_correlation"]
-        if item["absolute_median_daily_rank_correlation"] is not None
-        else -1.0,
+        key=lambda item: (
+            item["absolute_median_daily_rank_correlation"]
+            if item["absolute_median_daily_rank_correlation"] is not None
+            else -1.0
+        ),
     )
     return {
         "factor": factor,
@@ -26905,14 +26907,10 @@ def run_eastmoney_monetary_funds_asset_intensity_no_return_audit(
         )
     run_id = _timestamp()
     audit = {
-        "kind": (
-            "a_share_eastmoney_monetary_funds_asset_intensity_no_return_audit"
-        ),
+        "kind": ("a_share_eastmoney_monetary_funds_asset_intensity_no_return_audit"),
         "run_id": run_id,
         "status": "completed",
-        "purpose": (
-            EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_AUDIT_PURPOSE
-        ),
+        "purpose": (EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_AUDIT_PURPOSE),
         "preregistration": {
             "path": str(
                 DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_NO_RETURN_SPEC.resolve()
@@ -28778,9 +28776,7 @@ def summarize_eastmoney_related_party_transaction_sparsity_uniqueness(
                 "absolute_median_correlation_gate_status": (
                     "passed"
                     if enough and below
-                    else "failed"
-                    if enough
-                    else "not_applicable_insufficient_overlap"
+                    else "failed" if enough else "not_applicable_insufficient_overlap"
                 ),
                 "sparse_uniqueness_gate_passed": bool(not enough or below),
             }
@@ -33989,12 +33985,12 @@ def factor_stability_decision(
         "metrics": {
             "cohorts": cohorts,
             "mean_rank_ic": None if mean_rank_ic is None else float(mean_rank_ic),
-            "positive_rank_ic_rate": None
-            if positive_rank_ic_rate is None
-            else float(positive_rank_ic_rate),
-            "mean_top_minus_bottom_gross_return": None
-            if spread is None
-            else float(spread),
+            "positive_rank_ic_rate": (
+                None if positive_rank_ic_rate is None else float(positive_rank_ic_rate)
+            ),
+            "mean_top_minus_bottom_gross_return": (
+                None if spread is None else float(spread)
+            ),
         },
         "criteria": {
             "minimum_calendar_years": minimum_calendar_years,
@@ -34305,9 +34301,9 @@ def summarize_development_window(
         "development_stability": {
             "calendar_year_count": len(year_returns),
             "positive_calendar_year_count": sum(value > 0.0 for value in year_returns),
-            "worst_calendar_year_net_cumulative_return": min(year_returns)
-            if year_returns
-            else None,
+            "worst_calendar_year_net_cumulative_return": (
+                min(year_returns) if year_returns else None
+            ),
             "selection_score": stability_score,
             "max_drawdown_cap": STRICT_DEVELOPMENT_MAX_DRAWDOWN,
             "passes_max_drawdown_cap": strict_stability_score is not None,
@@ -34388,9 +34384,9 @@ def walk_forward_fold_result(
                 if winner_summary is not None
                 else None
             ),
-            "winner_training": winner_summary["development"]
-            if winner_summary is not None
-            else None,
+            "winner_training": (
+                winner_summary["development"] if winner_summary is not None else None
+            ),
             "winner_training_stability": (
                 winner_summary["development_stability"]
                 if winner_summary is not None
@@ -34893,9 +34889,11 @@ def build_iteration_record(
         },
         "initial_test": winner["test"],
         "promotion": {
-            "status": "passed_initial_test"
-            if passed and promotion_eligible
-            else "research_only_not_promoted",
+            "status": (
+                "passed_initial_test"
+                if passed and promotion_eligible
+                else "research_only_not_promoted"
+            ),
             "eligible_for_promotion": promotion_eligible,
             "criteria": {
                 "minimum_test_cohorts": 20,
@@ -35761,9 +35759,7 @@ def _shadow_observation_rows(
                 "status": (
                     "价格基准失效"
                     if not basis_valid
-                    else "已暂停"
-                    if iteration_id in suspended
-                    else "前瞻观察中"
+                    else "已暂停" if iteration_id in suspended else "前瞻观察中"
                 ),
                 "signals": len(candidate_signals),
                 "settlements": len(candidate_settlements),
@@ -36137,9 +36133,7 @@ def load_factor_diagnostics(
         evidence_status = (
             "invalidated"
             if ranking and not valid_ranking
-            else "partially_invalidated"
-            if invalidated_factors
-            else "valid"
+            else "partially_invalidated" if invalidated_factors else "valid"
         )
         diagnostics.append(
             {
@@ -36178,11 +36172,15 @@ def load_factor_diagnostics(
                 "invalidation_reason": str(
                     (invalidation or {}).get(
                         "reason",
-                        "diagnostic used the legacy mixed qfq/raw-VWAP basis without restoration factors"
-                        if price_basis_invalid
-                        else "pre-complete-window diagnostic rows used Qlib partial rolling values"
-                        if semantic_invalid_factors
-                        else "",
+                        (
+                            "diagnostic used the legacy mixed qfq/raw-VWAP basis without restoration factors"
+                            if price_basis_invalid
+                            else (
+                                "pre-complete-window diagnostic rows used Qlib partial rolling values"
+                                if semantic_invalid_factors
+                                else ""
+                            )
+                        ),
                     )
                 ),
                 "replacement_run_id": str(
@@ -36238,9 +36236,7 @@ def load_factor_stability_audits(experiment_root: Path) -> list[dict[str, Any]]:
         input_status = (
             "invalidated"
             if decisions and invalid_factor_count == len(decisions)
-            else "partially_invalidated"
-            if invalid_factor_count
-            else "valid"
+            else "partially_invalidated" if invalid_factor_count else "valid"
         )
         audits.append(
             {
@@ -36300,9 +36296,7 @@ def load_factor_topk_viability_audits(experiment_root: Path) -> list[dict[str, A
         input_status = (
             "invalidated"
             if decisions and invalid_factor_count == len(decisions)
-            else "partially_invalidated"
-            if invalid_factor_count
-            else "valid"
+            else "partially_invalidated" if invalid_factor_count else "valid"
         )
         audits.append(
             {
@@ -37342,7 +37336,7 @@ def load_three_day_iteration_status(
     if (
         status.get("version") != 1
         or status.get("status")
-        != "aggregation_blocked_after_intraday_bar_vwap_close_pressure_terminal_rejection_zero_dual_gate_factors"
+        != "aggregation_blocked_after_intraday_price_update_share_terminal_rejection_zero_dual_gate_factors"
         or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
         or fixed.get("holding_period_local_sessions") != 3
         or fixed.get("topk") != 3
@@ -37350,11 +37344,10 @@ def load_three_day_iteration_status(
         or frontier_binding.get("stability_qualified_factor_count") != 7
         or frontier_binding.get("topk_qualified_factor_count") != 0
         or frontier_binding.get("dual_gate_qualified_factor_count") != 0
-        or post_frontier.get("terminal_mechanism_count") != 44
+        or post_frontier.get("terminal_mechanism_count") != 45
         or post_frontier.get("admitted_factor_count") != 0
         or post_frontier.get("aggregation_candidate_count") != 0
-        or selected_source.get("source")
-        != "tushare_stk_mins_historical_one_minute"
+        or selected_source.get("source") != "tushare_stk_mins_historical_one_minute"
         or selected_source.get("direct_stk_mins_adapter_implemented") is not True
         or selected_source.get("real_acceptance_rows_observed") is not True
         or selected_source.get("automatic_acceptance_passed") is not True
@@ -37392,14 +37385,11 @@ def load_three_day_iteration_status(
             "intraday_realized_volatility",
         ]
         or selected_source.get("opening_gap_digestion_excluded") is not True
-        or selected_source.get("all_fieldwise_factor_coverage_gates_passed")
-        is not True
+        or selected_source.get("all_fieldwise_factor_coverage_gates_passed") is not True
         or selected_source.get("minimum_fieldwise_factor_p05_coverage")
         != 0.9917170545277707
         or selected_source.get("cleaned_feature_forward_returns_read") is not True
-        or selected_source.get(
-            "cleaned_feature_training_or_model_fitting_performed"
-        )
+        or selected_source.get("cleaned_feature_training_or_model_fitting_performed")
         is not False
         or selected_source.get("cleaned_feature_diagnostic_cohorts") != 539
         or selected_source.get("cleaned_feature_stability_qualified_factors")
@@ -37423,9 +37413,7 @@ def load_three_day_iteration_status(
             "afternoon_signed_amount_efficiency_forward_returns_read"
         )
         is not True
-        or selected_source.get(
-            "afternoon_signed_amount_efficiency_diagnostic_cohorts"
-        )
+        or selected_source.get("afternoon_signed_amount_efficiency_diagnostic_cohorts")
         != 539
         or selected_source.get(
             "afternoon_signed_amount_efficiency_association_stability_passed"
@@ -37435,9 +37423,7 @@ def load_three_day_iteration_status(
             "afternoon_signed_amount_efficiency_topk_viability_passed"
         )
         is not False
-        or selected_source.get(
-            "afternoon_signed_amount_efficiency_dual_gate_passed"
-        )
+        or selected_source.get("afternoon_signed_amount_efficiency_dual_gate_passed")
         is not False
         or selected_source.get("afternoon_signed_amount_efficiency_terminal")
         is not True
@@ -37473,9 +37459,7 @@ def load_three_day_iteration_status(
             "afternoon_drawdown_recovery_resilience_dual_gate_passed"
         )
         is not False
-        or selected_source.get(
-            "afternoon_drawdown_recovery_resilience_terminal"
-        )
+        or selected_source.get("afternoon_drawdown_recovery_resilience_terminal")
         is not True
         or selected_source.get(
             "intraday_amount_participation_entropy_candidate_manifest_sha256"
@@ -37505,9 +37489,7 @@ def load_three_day_iteration_status(
             "intraday_amount_participation_entropy_topk_viability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_amount_participation_entropy_dual_gate_passed"
-        )
+        or selected_source.get("intraday_amount_participation_entropy_dual_gate_passed")
         is not False
         or selected_source.get("intraday_amount_participation_entropy_terminal")
         is not True
@@ -37543,9 +37525,7 @@ def load_three_day_iteration_status(
             "intraday_amount_profile_serial_persistence_dual_gate_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_amount_profile_serial_persistence_terminal"
-        )
+        or selected_source.get("intraday_amount_profile_serial_persistence_terminal")
         is not True
         or selected_source.get(
             "intraday_upside_semivariance_share_candidate_manifest_sha256"
@@ -37563,9 +37543,7 @@ def load_three_day_iteration_status(
             "intraday_upside_semivariance_share_forward_returns_read"
         )
         is not True
-        or selected_source.get(
-            "intraday_upside_semivariance_share_diagnostic_cohorts"
-        )
+        or selected_source.get("intraday_upside_semivariance_share_diagnostic_cohorts")
         != 539
         or selected_source.get(
             "intraday_upside_semivariance_share_association_stability_passed"
@@ -37575,9 +37553,7 @@ def load_three_day_iteration_status(
             "intraday_upside_semivariance_share_topk_viability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_upside_semivariance_share_dual_gate_passed"
-        )
+        or selected_source.get("intraday_upside_semivariance_share_dual_gate_passed")
         is not False
         or selected_source.get("intraday_upside_semivariance_share_terminal")
         is not True
@@ -37601,16 +37577,11 @@ def load_three_day_iteration_status(
             "intraday_terminal_close_location_failed_comparison_factor"
         )
         != "late_vwap_to_day_vwap_30m"
-        or selected_source.get(
-            "intraday_terminal_close_location_forward_returns_read"
-        )
+        or selected_source.get("intraday_terminal_close_location_forward_returns_read")
         is not False
-        or selected_source.get(
-            "intraday_terminal_close_location_diagnostic_created"
-        )
+        or selected_source.get("intraday_terminal_close_location_diagnostic_created")
         is not False
-        or selected_source.get("intraday_terminal_close_location_terminal")
-        is not True
+        or selected_source.get("intraday_terminal_close_location_terminal") is not True
         or selected_source.get(
             "intraday_return_sign_run_imbalance_candidate_manifest_sha256"
         )
@@ -37631,9 +37602,7 @@ def load_three_day_iteration_status(
             "intraday_return_sign_run_imbalance_forward_returns_read"
         )
         is not True
-        or selected_source.get(
-            "intraday_return_sign_run_imbalance_diagnostic_cohorts"
-        )
+        or selected_source.get("intraday_return_sign_run_imbalance_diagnostic_cohorts")
         != 539
         or selected_source.get(
             "intraday_return_sign_run_imbalance_association_stability_passed"
@@ -37643,9 +37612,7 @@ def load_three_day_iteration_status(
             "intraday_return_sign_run_imbalance_topk_viability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_return_sign_run_imbalance_dual_gate_passed"
-        )
+        or selected_source.get("intraday_return_sign_run_imbalance_dual_gate_passed")
         is not False
         or selected_source.get("intraday_return_sign_run_imbalance_terminal")
         is not True
@@ -37665,26 +37632,19 @@ def load_three_day_iteration_status(
             "intraday_volatility_resolution_maximum_absolute_median_daily_rank_correlation"
         )
         != 0.24791719752571797
-        or selected_source.get(
-            "intraday_volatility_resolution_forward_returns_read"
-        )
+        or selected_source.get("intraday_volatility_resolution_forward_returns_read")
         is not True
-        or selected_source.get(
-            "intraday_volatility_resolution_diagnostic_cohorts"
-        )
+        or selected_source.get("intraday_volatility_resolution_diagnostic_cohorts")
         != 539
         or selected_source.get(
             "intraday_volatility_resolution_association_stability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_volatility_resolution_topk_viability_passed"
-        )
+        or selected_source.get("intraday_volatility_resolution_topk_viability_passed")
         is not False
         or selected_source.get("intraday_volatility_resolution_dual_gate_passed")
         is not False
-        or selected_source.get("intraday_volatility_resolution_terminal")
-        is not True
+        or selected_source.get("intraday_volatility_resolution_terminal") is not True
         or selected_source.get(
             "intraday_amount_lead_return_correlation_candidate_manifest_sha256"
         )
@@ -37721,9 +37681,7 @@ def load_three_day_iteration_status(
             "intraday_amount_lead_return_correlation_dual_gate_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_amount_lead_return_correlation_terminal"
-        )
+        or selected_source.get("intraday_amount_lead_return_correlation_terminal")
         is not True
         or selected_source.get(
             "intraday_amount_center_of_mass_candidate_manifest_sha256"
@@ -37749,14 +37707,11 @@ def load_three_day_iteration_status(
             "intraday_amount_center_of_mass_association_stability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_amount_center_of_mass_topk_viability_passed"
-        )
+        or selected_source.get("intraday_amount_center_of_mass_topk_viability_passed")
         is not False
         or selected_source.get("intraday_amount_center_of_mass_dual_gate_passed")
         is not False
-        or selected_source.get("intraday_amount_center_of_mass_terminal")
-        is not True
+        or selected_source.get("intraday_amount_center_of_mass_terminal") is not True
         or selected_source.get(
             "intraday_up_move_amount_share_candidate_manifest_sha256"
         )
@@ -37781,9 +37736,7 @@ def load_three_day_iteration_status(
             "intraday_up_move_amount_share_association_stability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_up_move_amount_share_topk_viability_passed"
-        )
+        or selected_source.get("intraday_up_move_amount_share_topk_viability_passed")
         is not False
         or selected_source.get("intraday_up_move_amount_share_dual_gate_passed")
         is not False
@@ -37808,9 +37761,7 @@ def load_three_day_iteration_status(
             "intraday_diffusive_variation_ratio_forward_returns_read"
         )
         is not True
-        or selected_source.get(
-            "intraday_diffusive_variation_ratio_diagnostic_cohorts"
-        )
+        or selected_source.get("intraday_diffusive_variation_ratio_diagnostic_cohorts")
         != 539
         or selected_source.get(
             "intraday_diffusive_variation_ratio_association_stability_passed"
@@ -37820,9 +37771,7 @@ def load_three_day_iteration_status(
             "intraday_diffusive_variation_ratio_topk_viability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_diffusive_variation_ratio_dual_gate_passed"
-        )
+        or selected_source.get("intraday_diffusive_variation_ratio_dual_gate_passed")
         is not False
         or selected_source.get("intraday_diffusive_variation_ratio_terminal")
         is not True
@@ -37846,9 +37795,7 @@ def load_three_day_iteration_status(
             "intraday_amount_volatility_coupling_forward_returns_read"
         )
         is not True
-        or selected_source.get(
-            "intraday_amount_volatility_coupling_diagnostic_cohorts"
-        )
+        or selected_source.get("intraday_amount_volatility_coupling_diagnostic_cohorts")
         != 539
         or selected_source.get(
             "intraday_amount_volatility_coupling_association_stability_passed"
@@ -37858,9 +37805,7 @@ def load_three_day_iteration_status(
             "intraday_amount_volatility_coupling_topk_viability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_amount_volatility_coupling_dual_gate_passed"
-        )
+        or selected_source.get("intraday_amount_volatility_coupling_dual_gate_passed")
         is not False
         or selected_source.get("intraday_amount_volatility_coupling_terminal")
         is not True
@@ -37888,33 +37833,22 @@ def load_three_day_iteration_status(
             "intraday_return_variance_entropy_association_stability_passed"
         )
         is not True
-        or selected_source.get(
-            "intraday_return_variance_entropy_topk_viability_passed"
-        )
+        or selected_source.get("intraday_return_variance_entropy_topk_viability_passed")
         is not False
         or selected_source.get("intraday_return_variance_entropy_dual_gate_passed")
         is not False
-        or selected_source.get("intraday_return_variance_entropy_terminal")
-        is not True
-        or selected_source.get(
-            "intraday_return_skewness_candidate_manifest_sha256"
-        )
+        or selected_source.get("intraday_return_variance_entropy_terminal") is not True
+        or selected_source.get("intraday_return_skewness_candidate_manifest_sha256")
         != "f4ff8ec91db7e86a56113ca3dab507f19537392c26de4912095aeed9b4f8c392"
-        or selected_source.get(
-            "intraday_return_skewness_no_return_coverage_passed"
-        )
+        or selected_source.get("intraday_return_skewness_no_return_coverage_passed")
         is not True
-        or selected_source.get(
-            "intraday_return_skewness_no_return_uniqueness_passed"
-        )
+        or selected_source.get("intraday_return_skewness_no_return_uniqueness_passed")
         is not False
         or selected_source.get(
             "intraday_return_skewness_maximum_absolute_median_daily_rank_correlation"
         )
         != 0.8625548973627292
-        or selected_source.get(
-            "intraday_return_skewness_failed_comparison_factor"
-        )
+        or selected_source.get("intraday_return_skewness_failed_comparison_factor")
         != "intraday_upside_semivariance_share_239m"
         or selected_source.get("intraday_return_skewness_forward_returns_read")
         is not False
@@ -37937,30 +37871,44 @@ def load_three_day_iteration_status(
             "intraday_bar_vwap_close_pressure_maximum_absolute_median_daily_rank_correlation"
         )
         != 0.48840728016858326
-        or selected_source.get(
-            "intraday_bar_vwap_close_pressure_forward_returns_read"
-        )
+        or selected_source.get("intraday_bar_vwap_close_pressure_forward_returns_read")
         is not True
-        or selected_source.get(
-            "intraday_bar_vwap_close_pressure_diagnostic_cohorts"
-        )
+        or selected_source.get("intraday_bar_vwap_close_pressure_diagnostic_cohorts")
         != 539
         or selected_source.get(
             "intraday_bar_vwap_close_pressure_association_stability_passed"
         )
         is not False
+        or selected_source.get("intraday_bar_vwap_close_pressure_topk_viability_passed")
+        is not False
+        or selected_source.get("intraday_bar_vwap_close_pressure_dual_gate_passed")
+        is not False
+        or selected_source.get("intraday_bar_vwap_close_pressure_terminal") is not True
+        or selected_source.get("intraday_price_update_share_candidate_manifest_sha256")
+        != "3081777797bae9983da3c7d943eb4bb886dbf3ff383c7da06e859d57fb7cf7b3"
+        or selected_source.get("intraday_price_update_share_no_return_coverage_passed")
+        is not True
         or selected_source.get(
-            "intraday_bar_vwap_close_pressure_topk_viability_passed"
+            "intraday_price_update_share_no_return_uniqueness_passed"
+        )
+        is not True
+        or selected_source.get(
+            "intraday_price_update_share_maximum_absolute_median_daily_rank_correlation"
+        )
+        != 0.5624389859948865
+        or selected_source.get("intraday_price_update_share_forward_returns_read")
+        is not True
+        or selected_source.get("intraday_price_update_share_diagnostic_cohorts") != 539
+        or selected_source.get(
+            "intraday_price_update_share_association_stability_passed"
         )
         is not False
-        or selected_source.get(
-            "intraday_bar_vwap_close_pressure_dual_gate_passed"
-        )
+        or selected_source.get("intraday_price_update_share_topk_viability_passed")
         is not False
-        or selected_source.get("intraday_bar_vwap_close_pressure_terminal")
-        is not True
-        or selected_source.get("prior_qmt_route_retained_as_fallback_only")
-        is not True
+        or selected_source.get("intraday_price_update_share_dual_gate_passed")
+        is not False
+        or selected_source.get("intraday_price_update_share_terminal") is not True
+        or selected_source.get("prior_qmt_route_retained_as_fallback_only") is not True
         or any(
             decision.get(field) is not False
             for field in (
@@ -38055,6 +38003,7 @@ def load_three_day_iteration_status(
         "intraday_amount_volatility_coupling_research_record": "a_share_tushare_intraday_amount_volatility_coupling_research_record",
         "intraday_return_variance_entropy_research_record": "a_share_tushare_intraday_return_variance_entropy_research_record",
         "intraday_return_skewness_research_record": "a_share_tushare_intraday_return_skewness_research_record",
+        "intraday_price_update_share_research_record": "a_share_tushare_intraday_price_update_share_research_record",
     }
     source_records: dict[str, dict[str, Any]] = {}
     for key, kind in source_bindings.items():
@@ -38065,15 +38014,15 @@ def load_three_day_iteration_status(
                 f"three-day iteration status {key.replace('_', ' ')} fingerprint changed"
             )
         source_records[key] = load_json_record(record_path, kind=kind)
-    qmt_selection = source_records["prior_qmt_selection_audit"].get(
-        "implementation_decision"
-    ) or {}
-    qmt_contract = source_records["prior_qmt_data_contract"].get(
-        "next_stage_policy"
-    ) or {}
-    minute_permission = source_records["pre_purchase_tushare_permission_audit"].get(
-        "decision"
-    ) or {}
+    qmt_selection = (
+        source_records["prior_qmt_selection_audit"].get("implementation_decision") or {}
+    )
+    qmt_contract = (
+        source_records["prior_qmt_data_contract"].get("next_stage_policy") or {}
+    )
+    minute_permission = (
+        source_records["pre_purchase_tushare_permission_audit"].get("decision") or {}
+    )
     minute_acceptance = source_records["source_acceptance_record"]
     acceptance_authorization = minute_acceptance.get("authorization") or {}
     acceptance_boundary = minute_acceptance.get("research_boundary") or {}
@@ -38083,12 +38032,9 @@ def load_three_day_iteration_status(
     full_source_coverage = full_source_coverage_audit.get("frozen_coverage_gate") or {}
     full_source_boundary = full_source_coverage_audit.get("research_boundary") or {}
     full_source_decision = full_source_coverage_audit.get("decision") or {}
-    full_source_manifest = (
-        (full_source_coverage_audit.get("source_chain") or {}).get(
-            "external_snapshot_manifest"
-        )
-        or {}
-    )
+    full_source_manifest = (full_source_coverage_audit.get("source_chain") or {}).get(
+        "external_snapshot_manifest"
+    ) or {}
     joint_cleaning_protocol = source_records["joint_cleaning_protocol"]
     joint_cleaning_result = source_records["joint_cleaning_result"]
     fieldwise_cleaning_protocol = source_records["fieldwise_cleaning_protocol"]
@@ -38215,15 +38161,32 @@ def load_three_day_iteration_status(
     amount_center_of_mass_boundary = (
         amount_center_of_mass_record.get("research_boundary") or {}
     )
+    price_update_share_record = source_records[
+        "intraday_price_update_share_research_record"
+    ]
+    price_update_share_decision = price_update_share_record.get("decision") or {}
+    price_update_share_results = price_update_share_record.get("return_results") or {}
+    price_update_share_no_return = (
+        price_update_share_record.get("no_return_results") or {}
+    )
+    price_update_share_boundary = (
+        price_update_share_record.get("research_boundary") or {}
+    )
     if (
-        qmt_selection.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
+        qmt_selection.get(
+            "aggregation_current_scoring_selection_sizing_or_orders_allowed"
+        )
         is not False
         or qmt_selection.get("level2_intake_justified") is not False
-        or qmt_contract.get("aggregation_current_scoring_selection_sizing_orders_or_level2_allowed")
+        or qmt_contract.get(
+            "aggregation_current_scoring_selection_sizing_orders_or_level2_allowed"
+        )
         is not False
         or minute_permission.get("selected_source_path")
         != "qmt_xtquant_level1_one_minute_export_bridge"
-        or minute_permission.get("aggregation_current_scoring_selection_sizing_or_orders_allowed")
+        or minute_permission.get(
+            "aggregation_current_scoring_selection_sizing_or_orders_allowed"
+        )
         is not False
         or minute_permission.get("level2_intake_justified") is not False
         or minute_acceptance.get("status")
@@ -38261,16 +38224,11 @@ def load_three_day_iteration_status(
         or full_source_boundary.get("minute_factor_values_read") is not False
         or full_source_boundary.get("forward_return_fields_read") is not False
         or full_source_boundary.get("feature_materialization_allowed") is not False
-        or full_source_decision.get(
-            "tushare_full_source_accepted_for_feature_research"
-        )
+        or full_source_decision.get("tushare_full_source_accepted_for_feature_research")
         is not False
-        or full_source_decision.get(
-            "rerun_or_resume_same_tushare_full_source_protocol"
-        )
+        or full_source_decision.get("rerun_or_resume_same_tushare_full_source_protocol")
         is not False
-        or full_source_decision.get("materialize_frozen_minute_features")
-        is not False
+        or full_source_decision.get("materialize_frozen_minute_features") is not False
         or joint_cleaning_protocol.get("status")
         != "frozen_after_source_quality_observation_before_sentiment_feature_materialization_or_returns"
         or (joint_cleaning_protocol.get("research_boundary") or {}).get(
@@ -38294,13 +38252,16 @@ def load_three_day_iteration_status(
         or fieldwise_processing.get("exception_partitions_read") != 190
         or fieldwise_processing.get("overlay_symbol_sessions") != 325
         or fieldwise_processing.get("source_open_high_low_loaded") is not False
-        or set(fieldwise_coverage) != {
+        or set(fieldwise_coverage)
+        != {
             "late_return_30m",
             "late_amount_share_30m",
             "late_vwap_to_day_vwap_30m",
             "intraday_realized_volatility",
         }
-        or any(item.get("gate_passed") is not True for item in fieldwise_coverage.values())
+        or any(
+            item.get("gate_passed") is not True for item in fieldwise_coverage.values()
+        )
         or fieldwise_interpretation.get(
             "all_four_factor_specific_coverage_gates_passed"
         )
@@ -38322,8 +38283,7 @@ def load_three_day_iteration_status(
         != "terminal_zero_dual_gate_factors_no_aggregation"
         or cleaned_four_factor_decision.get("association_stability_qualified_factors")
         != ["intraday_realized_volatility"]
-        or cleaned_four_factor_decision.get("topk_viability_qualified_factors")
-        != []
+        or cleaned_four_factor_decision.get("topk_viability_qualified_factors") != []
         or cleaned_four_factor_decision.get("dual_gate_qualified_factors") != []
         or cleaned_four_factor_decision.get("aggregation_allowed") is not False
         or cleaned_four_factor_decision.get("current_scoring_allowed") is not False
@@ -38341,15 +38301,11 @@ def load_three_day_iteration_status(
         or afternoon_efficiency_results.get("cohorts") != 539
         or afternoon_efficiency_results.get("association_stability_gate_passed")
         is not False
-        or afternoon_efficiency_results.get("topk_viability_gate_passed")
-        is not False
+        or afternoon_efficiency_results.get("topk_viability_gate_passed") is not False
         or afternoon_efficiency_results.get("dual_gate_passed") is not False
-        or afternoon_efficiency_decision.get(
-            "terminally_reject_exact_factor_direction"
-        )
+        or afternoon_efficiency_decision.get("terminally_reject_exact_factor_direction")
         is not True
-        or afternoon_efficiency_decision.get("aggregation_candidate_added")
-        is not False
+        or afternoon_efficiency_decision.get("aggregation_candidate_added") is not False
         or afternoon_efficiency_decision.get("aggregation_allowed") is not False
         or afternoon_efficiency_decision.get("selection_allowed") is not False
         or afternoon_efficiency_decision.get("level2_intake_justified") is not False
@@ -38364,12 +38320,9 @@ def load_three_day_iteration_status(
         or afternoon_recovery_results.get("cohorts") != 539
         or afternoon_recovery_results.get("association_stability_gate_passed")
         is not False
-        or afternoon_recovery_results.get("topk_viability_gate_passed")
-        is not False
+        or afternoon_recovery_results.get("topk_viability_gate_passed") is not False
         or afternoon_recovery_results.get("dual_gate_passed") is not False
-        or afternoon_recovery_decision.get(
-            "terminally_reject_exact_factor_direction"
-        )
+        or afternoon_recovery_decision.get("terminally_reject_exact_factor_direction")
         is not True
         or afternoon_recovery_decision.get("aggregation_candidate_added") is not False
         or afternoon_recovery_decision.get("aggregation_allowed") is not False
@@ -38384,8 +38337,7 @@ def load_three_day_iteration_status(
         or amount_entropy_record.get("status")
         != "terminal_rejected_at_association_stability_and_executable_topk_gates"
         or amount_entropy_results.get("cohorts") != 539
-        or amount_entropy_results.get("association_stability_gate_passed")
-        is not False
+        or amount_entropy_results.get("association_stability_gate_passed") is not False
         or amount_entropy_results.get("topk_viability_gate_passed") is not False
         or amount_entropy_results.get("dual_gate_passed") is not False
         or amount_entropy_decision.get("terminally_reject_exact_factor_direction")
@@ -38403,9 +38355,7 @@ def load_three_day_iteration_status(
         or amount_profile_persistence_record.get("status")
         != "terminal_rejected_at_association_stability_and_executable_topk_gates"
         or amount_profile_persistence_results.get("cohorts") != 539
-        or amount_profile_persistence_results.get(
-            "association_stability_gate_passed"
-        )
+        or amount_profile_persistence_results.get("association_stability_gate_passed")
         is not False
         or amount_profile_persistence_results.get("topk_viability_gate_passed")
         is not False
@@ -38416,8 +38366,7 @@ def load_three_day_iteration_status(
         is not True
         or amount_profile_persistence_decision.get("aggregation_candidate_added")
         is not False
-        or amount_profile_persistence_decision.get("aggregation_allowed")
-        is not False
+        or amount_profile_persistence_decision.get("aggregation_allowed") is not False
         or amount_profile_persistence_decision.get("selection_allowed") is not False
         or amount_profile_persistence_decision.get("level2_intake_justified")
         is not False
@@ -38434,15 +38383,11 @@ def load_three_day_iteration_status(
         or upside_semivariance_results.get("cohorts") != 539
         or upside_semivariance_results.get("association_stability_gate_passed")
         is not False
-        or upside_semivariance_results.get("topk_viability_gate_passed")
-        is not False
+        or upside_semivariance_results.get("topk_viability_gate_passed") is not False
         or upside_semivariance_results.get("dual_gate_passed") is not False
-        or upside_semivariance_decision.get(
-            "terminally_reject_exact_factor_direction"
-        )
+        or upside_semivariance_decision.get("terminally_reject_exact_factor_direction")
         is not True
-        or upside_semivariance_decision.get("aggregation_candidate_added")
-        is not False
+        or upside_semivariance_decision.get("aggregation_candidate_added") is not False
         or upside_semivariance_decision.get("aggregation_allowed") is not False
         or upside_semivariance_decision.get("selection_allowed") is not False
         or upside_semivariance_decision.get("level2_intake_justified") is not False
@@ -38454,9 +38399,7 @@ def load_three_day_iteration_status(
         is not False
         or terminal_close_location_record.get("status")
         != "terminal_rejected_at_no_return_uniqueness_gate"
-        or terminal_close_location_results.get(
-            "coverage_and_capacity_gate_passed"
-        )
+        or terminal_close_location_results.get("coverage_and_capacity_gate_passed")
         is not True
         or terminal_close_location_results.get("comparison_factor_count") != 9
         or terminal_close_location_results.get(
@@ -38481,32 +38424,23 @@ def load_three_day_iteration_status(
         is not False
         or terminal_close_location_decision.get("aggregation_allowed") is not False
         or terminal_close_location_decision.get("selection_allowed") is not False
-        or terminal_close_location_decision.get("level2_intake_justified")
-        is not False
+        or terminal_close_location_decision.get("level2_intake_justified") is not False
         or terminal_close_location_boundary.get("forward_return_fields_read")
         is not False
-        or terminal_close_location_boundary.get(
-            "training_or_model_fitting_performed"
-        )
+        or terminal_close_location_boundary.get("training_or_model_fitting_performed")
         is not False
         or return_sign_run_imbalance_record.get("status")
         != "terminal_rejected_at_association_stability_and_executable_topk_gates"
-        or return_sign_run_imbalance_no_return.get(
-            "coverage_and_capacity_gate_passed"
-        )
+        or return_sign_run_imbalance_no_return.get("coverage_and_capacity_gate_passed")
         is not True
-        or return_sign_run_imbalance_no_return.get(
-            "all_ten_uniqueness_gates_passed"
-        )
+        or return_sign_run_imbalance_no_return.get("all_ten_uniqueness_gates_passed")
         is not True
         or return_sign_run_imbalance_no_return.get(
             "maximum_absolute_median_daily_rank_correlation_to_ten_terminal_factors"
         )
         != 0.4393974730067088
         or return_sign_run_imbalance_results.get("cohorts") != 539
-        or return_sign_run_imbalance_results.get(
-            "association_stability_gate_passed"
-        )
+        or return_sign_run_imbalance_results.get("association_stability_gate_passed")
         is not False
         or return_sign_run_imbalance_results.get("topk_viability_gate_passed")
         is not False
@@ -38529,19 +38463,13 @@ def load_three_day_iteration_status(
             "same_history_combination_return_evaluation_performed"
         )
         is not False
-        or return_sign_run_imbalance_boundary.get(
-            "training_or_model_fitting_performed"
-        )
+        or return_sign_run_imbalance_boundary.get("training_or_model_fitting_performed")
         is not False
         or volatility_resolution_record.get("status")
         != "terminal_rejected_at_association_stability_and_executable_topk_gates"
-        or volatility_resolution_no_return.get(
-            "coverage_and_capacity_gate_passed"
-        )
+        or volatility_resolution_no_return.get("coverage_and_capacity_gate_passed")
         is not True
-        or volatility_resolution_no_return.get(
-            "all_eleven_uniqueness_gates_passed"
-        )
+        or volatility_resolution_no_return.get("all_eleven_uniqueness_gates_passed")
         is not True
         or volatility_resolution_no_return.get(
             "maximum_absolute_median_daily_rank_correlation_to_eleven_terminal_factors"
@@ -38550,8 +38478,7 @@ def load_three_day_iteration_status(
         or volatility_resolution_results.get("cohorts") != 539
         or volatility_resolution_results.get("association_stability_gate_passed")
         is not False
-        or volatility_resolution_results.get("topk_viability_gate_passed")
-        is not False
+        or volatility_resolution_results.get("topk_viability_gate_passed") is not False
         or volatility_resolution_results.get("dual_gate_passed") is not False
         or volatility_resolution_results.get(
             "pilot_net_cumulative_return_at_ten_bp_each_side"
@@ -38565,15 +38492,12 @@ def load_three_day_iteration_status(
         is not False
         or volatility_resolution_decision.get("aggregation_allowed") is not False
         or volatility_resolution_decision.get("selection_allowed") is not False
-        or volatility_resolution_decision.get("level2_intake_justified")
-        is not False
+        or volatility_resolution_decision.get("level2_intake_justified") is not False
         or volatility_resolution_boundary.get(
             "same_history_combination_return_evaluation_performed"
         )
         is not False
-        or volatility_resolution_boundary.get(
-            "training_or_model_fitting_performed"
-        )
+        or volatility_resolution_boundary.get("training_or_model_fitting_performed")
         is not False
         or amount_lead_return_correlation_record.get("status")
         != "terminal_rejected_at_association_stability_and_executable_topk_gates"
@@ -38581,8 +38505,7 @@ def load_three_day_iteration_status(
             "coverage_and_capacity_gate_passed"
         )
         is not True
-        or amount_lead_return_correlation_no_return.get("comparison_factor_count")
-        != 12
+        or amount_lead_return_correlation_no_return.get("comparison_factor_count") != 12
         or amount_lead_return_correlation_no_return.get(
             "all_twelve_uniqueness_gates_passed"
         )
@@ -38598,8 +38521,7 @@ def load_three_day_iteration_status(
         is not False
         or amount_lead_return_correlation_results.get("topk_viability_gate_passed")
         is not False
-        or amount_lead_return_correlation_results.get("dual_gate_passed")
-        is not False
+        or amount_lead_return_correlation_results.get("dual_gate_passed") is not False
         or amount_lead_return_correlation_results.get(
             "execution_aware_top3_net_cumulative_return"
         )
@@ -38616,8 +38538,7 @@ def load_three_day_iteration_status(
         is not False
         or amount_lead_return_correlation_decision.get("aggregation_allowed")
         is not False
-        or amount_lead_return_correlation_decision.get("selection_allowed")
-        is not False
+        or amount_lead_return_correlation_decision.get("selection_allowed") is not False
         or amount_lead_return_correlation_decision.get("level2_intake_justified")
         is not False
         or amount_lead_return_correlation_boundary.get(
@@ -38635,9 +38556,7 @@ def load_three_day_iteration_status(
         or amount_center_of_mass_no_return.get("coverage_and_capacity_gate_passed")
         is not True
         or amount_center_of_mass_no_return.get("comparison_factor_count") != 13
-        or amount_center_of_mass_no_return.get(
-            "all_thirteen_uniqueness_gates_passed"
-        )
+        or amount_center_of_mass_no_return.get("all_thirteen_uniqueness_gates_passed")
         is not True
         or amount_center_of_mass_no_return.get(
             "maximum_absolute_median_daily_rank_correlation_to_thirteen_terminal_factors"
@@ -38646,8 +38565,7 @@ def load_three_day_iteration_status(
         or amount_center_of_mass_results.get("cohorts") != 539
         or amount_center_of_mass_results.get("association_stability_gate_passed")
         is not False
-        or amount_center_of_mass_results.get("topk_viability_gate_passed")
-        is not False
+        or amount_center_of_mass_results.get("topk_viability_gate_passed") is not False
         or amount_center_of_mass_results.get("dual_gate_passed") is not False
         or amount_center_of_mass_results.get(
             "execution_aware_top3_net_cumulative_return"
@@ -38674,6 +38592,46 @@ def load_three_day_iteration_status(
         is not False
         or amount_center_of_mass_boundary.get("current_stock_list_generated")
         is not False
+        or price_update_share_record.get("status")
+        != "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        or price_update_share_no_return.get("coverage_and_capacity_gate_passed")
+        is not True
+        or price_update_share_no_return.get("comparison_factor_count") != 20
+        or price_update_share_no_return.get("all_twenty_uniqueness_gates_passed")
+        is not True
+        or price_update_share_no_return.get(
+            "maximum_absolute_median_daily_rank_correlation_to_twenty_terminal_factors"
+        )
+        != 0.5624389859948865
+        or price_update_share_results.get("cohorts") != 539
+        or price_update_share_results.get("mean_rank_ic") != -0.027741031269307864
+        or price_update_share_results.get("association_stability_gate_passed")
+        is not False
+        or price_update_share_results.get("topk_viability_gate_passed") is not False
+        or price_update_share_results.get("dual_gate_passed") is not False
+        or price_update_share_results.get("execution_aware_top3_net_cumulative_return")
+        != 4.151344445674202
+        or price_update_share_results.get("execution_aware_top3_maximum_drawdown")
+        != -0.4824320686101875
+        or price_update_share_results.get(
+            "pilot_net_cumulative_return_at_ten_bp_each_side"
+        )
+        != -0.01381171680384985
+        or price_update_share_results.get("pilot_board_lot_affordability_rate")
+        != 0.19699812382739212
+        or price_update_share_decision.get("terminally_reject_exact_factor_direction")
+        is not True
+        or price_update_share_decision.get("aggregation_candidate_added") is not False
+        or price_update_share_decision.get("aggregation_allowed") is not False
+        or price_update_share_decision.get("selection_allowed") is not False
+        or price_update_share_decision.get("level2_intake_justified") is not False
+        or price_update_share_boundary.get(
+            "same_history_combination_return_evaluation_performed"
+        )
+        is not False
+        or price_update_share_boundary.get("training_or_model_fitting_performed")
+        is not False
+        or price_update_share_boundary.get("current_stock_list_generated") is not False
     ):
         raise ValueError("three-day iteration status source decision changed")
     return status
@@ -38809,9 +38767,9 @@ def load_candidate_overlap_audits(experiment_root: Path) -> list[dict[str, Any]]
                 or inferred_test_use,
                 "pair_count": len(pairs),
                 "mean_jaccard": float(np.mean(jaccards)) if jaccards else None,
-                "maximum_return_correlation": float(max(correlations))
-                if correlations
-                else None,
+                "maximum_return_correlation": (
+                    float(max(correlations)) if correlations else None
+                ),
                 "path": str(path.resolve()),
             }
         )
@@ -39152,8 +39110,9 @@ def render_three_day_research_report(
     quarterly_event_capacity_audits: list[dict[str, Any]] | None = None,
     jqdata_moneyflow_capacity_audits: list[dict[str, Any]] | None = None,
     tushare_daily_pb_no_return_audits: list[dict[str, Any]] | None = None,
-    tushare_contract_liability_backlog_no_return_audits: list[dict[str, Any]]
-    | None = None,
+    tushare_contract_liability_backlog_no_return_audits: (
+        list[dict[str, Any]] | None
+    ) = None,
     sparse_announcement_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_capacity_audits: list[dict[str, Any]] | None = None,
     institutional_survey_timing_capacity_audits: list[dict[str, Any]] | None = None,
@@ -39418,12 +39377,16 @@ def render_three_day_research_report(
                     }.get(audit.get("input_evidence_status"), "有效"),
                     count=audit["factor_count"],
                     qualified=qualified,
-                    years=audit["minimum_calendar_years"]
-                    if audit["minimum_calendar_years"] is not None
-                    else "—",
-                    cohorts=audit["minimum_cohorts"]
-                    if audit["minimum_cohorts"] is not None
-                    else "—",
+                    years=(
+                        audit["minimum_calendar_years"]
+                        if audit["minimum_calendar_years"] is not None
+                        else "—"
+                    ),
+                    cohorts=(
+                        audit["minimum_cohorts"]
+                        if audit["minimum_cohorts"] is not None
+                        else "—"
+                    ),
                 )
             )
         lines.append("")
@@ -39474,9 +39437,11 @@ def render_three_day_research_report(
         for item in minute_combination_holdouts:
             conclusion = conclusions.get(
                 item["status"],
-                "条件门禁通过（仍仅研究）"
-                if item["holdout_gate_passed"]
-                else "条件门禁失败，停止",
+                (
+                    "条件门禁通过（仍仅研究）"
+                    if item["holdout_gate_passed"]
+                    else "条件门禁失败，停止"
+                ),
             )
             lines.append(
                 "| {run_id} | {diagnostic} | {factors} | {start} 至 {end} | {cohorts} | {net} | {mdd} | {forward} | {conclusion} |".format(
@@ -39557,9 +39522,11 @@ def render_three_day_research_report(
                     cohorts=holdout["cohorts"],
                     mean_ic="—" if mean_ic is None else f"{float(mean_ic):.4f}",
                     spread="—" if spread is None else _percent(float(spread)),
-                    supportive="方向一致（仍不可晋级）"
-                    if holdout["supportive"]
-                    else "不支持（停止）",
+                    supportive=(
+                        "方向一致（仍不可晋级）"
+                        if holdout["supportive"]
+                        else "不支持（停止）"
+                    ),
                 )
             )
         lines.append("")
@@ -39619,9 +39586,11 @@ def render_three_day_research_report(
                     candidates=audit["candidate_count"],
                     cohorts=audit["development_cohort_count"],
                     winner=audit["winner"],
-                    frequency="—"
-                    if winner_frequency is None
-                    else _percent(float(winner_frequency)),
+                    frequency=(
+                        "—"
+                        if winner_frequency is None
+                        else _percent(float(winner_frequency))
+                    ),
                     p_value="—" if p_value is None else f"{float(p_value):.4f}",
                     convention=audit["drawdown_convention"],
                     replicates=audit["replicates"],
@@ -39652,9 +39621,11 @@ def render_three_day_research_report(
                     cohorts=audit["event_cohorts"],
                     net=_percent(audit["net_cumulative_return"]),
                     mdd=_percent(audit["max_drawdown"]),
-                    conclusion="通过（仍不可直接选股）"
-                    if audit["passed"]
-                    else "不通过（停止）",
+                    conclusion=(
+                        "通过（仍不可直接选股）"
+                        if audit["passed"]
+                        else "不通过（停止）"
+                    ),
                     uses_test="是（无效记录）" if audit["test_period_used"] else "否",
                 )
             )
@@ -39681,9 +39652,11 @@ def render_three_day_research_report(
                     cohorts=audit["event_cohorts"],
                     net=_percent(audit["net_cumulative_return"]),
                     mdd=_percent(audit["max_drawdown"]),
-                    conclusion="通过（仍不可直接选股）"
-                    if audit["passed"]
-                    else "不通过（停止）",
+                    conclusion=(
+                        "通过（仍不可直接选股）"
+                        if audit["passed"]
+                        else "不通过（停止）"
+                    ),
                     uses_test="是（无效记录）" if audit["test_period_used"] else "否",
                 )
             )
@@ -39709,12 +39682,14 @@ def render_three_day_research_report(
                     end=audit["calendar_end"],
                     cohorts=audit["complete_cohorts"],
                     minimum=audit["minimum_cohorts"],
-                    decision="通过容量门（仍需预注册）"
-                    if audit["passed"]
-                    else "容量不足（停止）",
-                    returns="是（无效）"
-                    if audit["forward_return_fields_read"]
-                    else "否",
+                    decision=(
+                        "通过容量门（仍需预注册）"
+                        if audit["passed"]
+                        else "容量不足（停止）"
+                    ),
+                    returns=(
+                        "是（无效）" if audit["forward_return_fields_read"] else "否"
+                    ),
                 )
             )
         lines.append("")
@@ -39874,12 +39849,16 @@ def render_three_day_research_report(
                         cohorts=row["complete_cohorts"],
                         minimum=audit["minimum_cohorts"],
                         factor_result="通过" if row["factor_passed"] else "不足",
-                        source_result="允许固定重建"
-                        if row["source_admitted"]
-                        else "停止，不读收益",
-                        returns="是（无效）"
-                        if audit["forward_return_fields_read"]
-                        else "否",
+                        source_result=(
+                            "允许固定重建"
+                            if row["source_admitted"]
+                            else "停止，不读收益"
+                        ),
+                        returns=(
+                            "是（无效）"
+                            if audit["forward_return_fields_read"]
+                            else "否"
+                        ),
                     )
                 )
         lines.append("")
@@ -39911,9 +39890,11 @@ def render_three_day_research_report(
                             if audit["source_admitted"]
                             else "停止，不读收益"
                         ),
-                        returns="是（无效）"
-                        if audit["forward_return_fields_read"]
-                        else "否",
+                        returns=(
+                            "是（无效）"
+                            if audit["forward_return_fields_read"]
+                            else "否"
+                        ),
                     )
                 )
         lines.append("")
@@ -39944,9 +39925,11 @@ def render_three_day_research_report(
                             if audit["source_admitted"]
                             else "容量不足，停止"
                         ),
-                        returns="是（无效）"
-                        if audit["forward_return_fields_read"]
-                        else "否",
+                        returns=(
+                            "是（无效）"
+                            if audit["forward_return_fields_read"]
+                            else "否"
+                        ),
                     )
                 )
         lines.append("")
@@ -39977,9 +39960,11 @@ def render_three_day_research_report(
                             if audit["source_admitted"]
                             else "容量不足，停止"
                         ),
-                        returns="是（无效）"
-                        if audit["forward_return_fields_read"]
-                        else "否",
+                        returns=(
+                            "是（无效）"
+                            if audit["forward_return_fields_read"]
+                            else "否"
+                        ),
                     )
                 )
         lines.append("")
@@ -40156,9 +40141,11 @@ def render_three_day_research_report(
                     pairs=audit["pair_count"],
                     start=audit["calendar_start"],
                     end=audit["calendar_end"],
-                    uses_test="是（仅描述）"
-                    if audit["test_period_used_for_pair_assessment"]
-                    else "否",
+                    uses_test=(
+                        "是（仅描述）"
+                        if audit["test_period_used_for_pair_assessment"]
+                        else "否"
+                    ),
                     jaccard=mean_jaccard,
                     correlation=correlation,
                 )
@@ -40451,9 +40438,11 @@ def render_three_day_research_report(
                         signals=row["signals"],
                         settlements=row["settlements"],
                         pending=row["pending"],
-                        net_return=_percent(row["net_cumulative_return"])
-                        if row["settlements"]
-                        else "—",
+                        net_return=(
+                            _percent(row["net_cumulative_return"])
+                            if row["settlements"]
+                            else "—"
+                        ),
                     )
                 )
             lines.append("")
@@ -40531,9 +40520,11 @@ def render_three_day_research_report(
                         signals=row["signals"],
                         settlements=row["settlements"],
                         pending=row["pending"],
-                        net_return=_percent(row["net_cumulative_return"])
-                        if row["settlements"]
-                        else "—",
+                        net_return=(
+                            _percent(row["net_cumulative_return"])
+                            if row["settlements"]
+                            else "—"
+                        ),
                     )
                 )
             lines.append("")
@@ -40554,9 +40545,25 @@ def render_three_day_research_report(
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
-                    if source.get(
-                        "intraday_bar_vwap_close_pressure_terminal"
-                    ):
+                    if source.get("intraday_price_update_share_terminal"):
+                        next_external_action = (
+                            "四个清洗方向、十五个完成收益诊断的独立分钟方向、终点收盘位置"
+                            "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"
+                            "或积累注册后真正未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子和之后十五个完成收益诊断的独立分钟机制均"
+                            "没有产生双门禁合格因子；终点收盘位置和收益偏度另在无收益近同义门"
+                            "停止。最新的 238 对午别相邻分钟价格更新占比通过覆盖、容量和二十"
+                            "因子唯一性门（最大绝对中位日秩相关 0.56244），但唯一一次 539-"
+                            "cohort 诊断平均 Rank IC 为 -0.02774，2021—2025 年度 IC 非正。"
+                            "标准化执行感知累计 +415.13%，但最大回撤 -48.24% 且 2022 年"
+                            "为负；20 万元整手、双边 10bp 滑点累计 -1.38%，整手机会可负担率"
+                            "仅 19.70%。稳定性和可执行 TopK 均未通过，未训练模型，没有评分"
+                            "或选股；Level2 继续延期。"
+                        )
+                    elif source.get("intraday_bar_vwap_close_pressure_terminal"):
                         next_external_action = (
                             "四个清洗方向、十四个完成收益诊断的独立分钟方向、终点收盘位置"
                             "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"
@@ -40674,9 +40681,7 @@ def render_three_day_research_report(
                             "成交额参与率 1.0619% 超过冻结的 1% 上限。稳定性和可执行 TopK "
                             "均未通过，未训练模型，Level2 继续延期。"
                         )
-                    elif source.get(
-                        "intraday_amount_lead_return_correlation_terminal"
-                    ):
+                    elif source.get("intraday_amount_lead_return_correlation_terminal"):
                         next_external_action = (
                             "四个清洗方向、八个完成收益诊断的独立分钟方向和终点收盘位置"
                             "方向均已终止；只研究预先登记的全新经济机制，或积累注册后真正"
@@ -40791,9 +40796,7 @@ def render_three_day_research_report(
                             "诊断；三个预登记的较高方向都未同时通过关联稳定性和可执行 TopK "
                             "门。开盘缺口因子继续排除，未训练模型，Level2 继续延期。"
                         )
-                    elif source.get(
-                        "afternoon_drawdown_recovery_resilience_terminal"
-                    ):
+                    elif source.get("afternoon_drawdown_recovery_resilience_terminal"):
                         next_external_action = (
                             "四个清洗方向、午后资金加权方向效率较高方向和午后最大回撤恢复"
                             "韧性较高方向均已终止；只研究预先登记的全新经济机制，或积累注册后"
@@ -41444,9 +41447,11 @@ def run_candidate_overlap_audit(args: argparse.Namespace) -> dict[str, Any]:
         "run_id": run_id,
         "status": "completed",
         "purpose": "candidate_overlap_research_only_not_investment_advice",
-        "candidate_library": args.candidate_library
-        if not getattr(args, "candidate_spec", None)
-        else None,
+        "candidate_library": (
+            args.candidate_library
+            if not getattr(args, "candidate_spec", None)
+            else None
+        ),
         "candidate_libraries": sorted({library_id for _, library_id, _ in references}),
         "candidates": [
             {
@@ -43463,8 +43468,7 @@ def load_eastmoney_related_party_transaction_sparsity_diagnostic_preregistration
         linked_path = resolve_repository_record_path(str(link["path"]))
         if not linked_path.exists() or file_sha256(linked_path) != link["sha256"]:
             raise ValueError(
-                "Eastmoney related-party sparsity diagnostic source changed: "
-                + label
+                "Eastmoney related-party sparsity diagnostic source changed: " + label
             )
     quality = snapshots["quarterly_quality"]
     quality_manifest = resolve_repository_record_path(quality["manifest_path"])
@@ -43477,15 +43481,12 @@ def load_eastmoney_related_party_transaction_sparsity_diagnostic_preregistration
         linked_path = resolve_repository_record_path(str(link["path"]))
         if not linked_path.exists() or file_sha256(linked_path) != link["sha256"]:
             raise ValueError(
-                "Eastmoney related-party sparsity no-return evidence changed: "
-                + label
+                "Eastmoney related-party sparsity no-return evidence changed: " + label
             )
     audit = load_json_record(resolve_repository_record_path(no_return["audit"]["path"]))
     record = load_json_record(
         resolve_repository_record_path(no_return["record"]["path"]),
-        kind=(
-            "a_share_eastmoney_related_party_transaction_sparsity_no_return_record"
-        ),
+        kind=("a_share_eastmoney_related_party_transaction_sparsity_no_return_record"),
     )
     if (
         audit.get("status") != "completed"
@@ -43522,8 +43523,7 @@ def load_eastmoney_related_party_transaction_sparsity_diagnostic_record(
     record = load_json_record(
         path,
         kind=(
-            "a_share_eastmoney_related_party_transaction_sparsity_"
-            "diagnostic_record"
+            "a_share_eastmoney_related_party_transaction_sparsity_" "diagnostic_record"
         ),
     )
     evidence = record.get("evidence_chain") or {}
@@ -43703,9 +43703,7 @@ def run_eastmoney_related_party_transaction_sparsity_diagnostic(
         load_eastmoney_related_party_transaction_sparsity_diagnostic_preregistration()
     )
     events, source_evidence = (
-        validate_eastmoney_related_party_transaction_sparsity_diagnostic_sources(
-            spec
-        )
+        validate_eastmoney_related_party_transaction_sparsity_diagnostic_sources(spec)
     )
     contract = spec["run_contract"]
     snapshots = spec["source_snapshots"]
@@ -46614,9 +46612,12 @@ def extract_tail_execution_occurrences(
     frame = pd.DataFrame(rows)
     if frame.empty:
         raise ValueError("tail execution audit has no stored selected occurrences")
-    return frame.sort_values(
-        ["branch", "factor", "signal_date", "instrument"], kind="stable"
-    ).reset_index(drop=True), lineage
+    return (
+        frame.sort_values(
+            ["branch", "factor", "signal_date", "instrument"], kind="stable"
+        ).reset_index(drop=True),
+        lineage,
+    )
 
 
 def load_tail_execution_quotes(
@@ -46678,9 +46679,12 @@ def load_tail_execution_quotes(
     ).normalize()
     if calendar.empty or pd.isna(calendar).any():
         raise ValueError("tail execution audit local calendar is invalid")
-    return quotes.sort_values(["datetime", "instrument"], kind="stable").reset_index(
-        drop=True
-    ), calendar.unique().sort_values()
+    return (
+        quotes.sort_values(["datetime", "instrument"], kind="stable").reset_index(
+            drop=True
+        ),
+        calendar.unique().sort_values(),
+    )
 
 
 def _valid_execution_ohlc(quote: dict[str, Any] | None) -> bool:
@@ -47190,7 +47194,9 @@ def simulate_pilot_execution_topk(
         (pilot_policy.get("bindings") or {}).get("research_execution_policy") or {}
     ).get("sha256") != PROSPECTIVE_EXECUTION_POLICY_SHA256 or int(
         portfolio["topk"]
-    ) != int(execution_strategy["topk"]):
+    ) != int(
+        execution_strategy["topk"]
+    ):
         raise ValueError("pilot execution policy is not bound to the research ledger")
 
     hold_days = int(execution_strategy["holding_period_trading_days"])
@@ -48809,18 +48815,22 @@ def run_basket_correlation_audit(args: argparse.Namespace) -> dict[str, Any]:
                 "signal_date": row.signal_date.date().isoformat(),
                 "basket_size": int(row.basket_size),
                 "valid_return_days": int(row.valid_return_days),
-                "mean_pairwise_correlation": None
-                if pd.isna(row.mean_pairwise_correlation)
-                else float(row.mean_pairwise_correlation),
-                "max_pairwise_correlation": None
-                if pd.isna(row.max_pairwise_correlation)
-                else float(row.max_pairwise_correlation),
-                "three_day_net_return": None
-                if pd.isna(row.net_return)
-                else float(row.net_return),
-                "regime_active": bool(row.regime_active)
-                if pd.notna(row.regime_active)
-                else False,
+                "mean_pairwise_correlation": (
+                    None
+                    if pd.isna(row.mean_pairwise_correlation)
+                    else float(row.mean_pairwise_correlation)
+                ),
+                "max_pairwise_correlation": (
+                    None
+                    if pd.isna(row.max_pairwise_correlation)
+                    else float(row.max_pairwise_correlation)
+                ),
+                "three_day_net_return": (
+                    None if pd.isna(row.net_return) else float(row.net_return)
+                ),
+                "regime_active": (
+                    bool(row.regime_active) if pd.notna(row.regime_active) else False
+                ),
             }
             for row in cohort_rows.itertuples(index=False)
         ],
@@ -51083,9 +51093,7 @@ def parse_args() -> argparse.Namespace:
     )
     eastmoney_monetary_funds_no_return_parser.add_argument(
         "--manifest",
-        default=str(
-            DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_MANIFEST
-        ),
+        default=str(DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_MANIFEST),
         help="the sole accepted 2019-2025 monetary-funds full source manifest",
     )
     eastmoney_monetary_funds_no_return_parser.add_argument(
@@ -52054,10 +52062,7 @@ def main() -> int:
         report = run_tushare_free_float_scarcity_no_return_audit(args)
     elif args.command == "eastmoney-balance-sheet-resilience-no-return-audit":
         report = run_eastmoney_balance_sheet_resilience_no_return_audit(args)
-    elif (
-        args.command
-        == "eastmoney-monetary-funds-asset-intensity-no-return-audit"
-    ):
+    elif args.command == "eastmoney-monetary-funds-asset-intensity-no-return-audit":
         report = run_eastmoney_monetary_funds_asset_intensity_no_return_audit(args)
     elif args.command == "eastmoney-core-profit-consistency-no-return-audit":
         report = run_eastmoney_core_profit_consistency_no_return_audit(args)

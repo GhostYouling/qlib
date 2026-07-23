@@ -81,6 +81,64 @@ def test_preregistration_freezes_update_share_before_values():
     )
 
 
+def test_diagnostic_protocol_binds_passed_no_return_evidence():
+    spec = RESEARCH.load_diagnostic_preregistration()
+    evidence = spec["no_return_evidence"]
+    snapshot = evidence["candidate_snapshot"]
+    uniqueness = evidence["uniqueness"]
+    assert evidence["protocol"]["sha256"] == RESEARCH.PREREGISTRATION_SHA256
+    assert snapshot["sha256"] == RESEARCH.CANDIDATE_MANIFEST_SHA256
+    assert snapshot["dataset_sha256"] == RESEARCH.CANDIDATE_DATASET_SHA256
+    assert snapshot["eligible_rows"] == RESEARCH.EXPECTED_ELIGIBLE_ROWS
+    assert snapshot["exact_price_update_pairs"] == 1_177_277_526
+    assert snapshot["exact_unchanged_price_pairs"] == 661_152_998
+    assert evidence["ordered_audit"]["sha256"] == RESEARCH.NO_RETURN_AUDIT_SHA256
+    assert evidence["coverage_and_capacity"]["gate_passed"] is True
+    assert uniqueness["all_twenty_comparisons_passed"] is True
+    assert len(uniqueness["comparison_medians"]) == 20
+    assert tuple(uniqueness["comparison_medians"]) == RESEARCH.COMPARISON_FACTORS
+    assert (
+        spec["research_boundary"]["forward_return_fields_read_before_registration"]
+        is False
+    )
+
+
+def test_diagnostic_single_use_guard_rejects_existing_marker(tmp_path):
+    marker = tmp_path / RESEARCH.CONSUMPTION_FILENAME
+    marker.write_text("{}\n", encoding="utf-8")
+    with pytest.raises(
+        RESEARCH.IntradayPriceUpdateShareError,
+        match="already consumed",
+    ):
+        RESEARCH.require_diagnostic_unconsumed(tmp_path)
+
+
+def test_terminal_record_binds_single_diagnostic_and_both_failed_gates():
+    record = RESEARCH.load_terminal_record_if_present()
+    assert record is not None
+    no_return = record["no_return_results"]
+    results = record["return_results"]
+    artifacts = record["historical_artifacts"]
+    assert no_return["comparison_factor_count"] == 20
+    assert no_return["all_twenty_uniqueness_gates_passed"] is True
+    assert results["cohorts"] == 539
+    assert results["mean_rank_ic"] == pytest.approx(-0.027741031269307864)
+    assert results["association_stability_gate_passed"] is False
+    assert results["topk_viability_gate_passed"] is False
+    assert results["execution_aware_top3_net_cumulative_return"] == pytest.approx(
+        4.151344445674202
+    )
+    assert results["pilot_net_cumulative_return_at_ten_bp_each_side"] == pytest.approx(
+        -0.01381171680384985
+    )
+    assert artifacts["diagnostic"]["sha256"] == RESEARCH.DIAGNOSTIC_SHA256
+    assert (
+        artifacts["single_use_consumption_marker"]["sha256"]
+        == RESEARCH.CONSUMPTION_MARKER_SHA256
+    )
+    assert record["decision"]["aggregation_allowed"] is False
+
+
 def test_constant_close_day_is_valid_zero():
     output, quality = compute(source_frame())
     assert output.loc[0, RESEARCH.FACTOR_NAME] == pytest.approx(0.0)

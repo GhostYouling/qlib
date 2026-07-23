@@ -2176,9 +2176,9 @@ def test_insider_open_market_contract_is_fingerprint_frozen(tmp_path):
     changed = json.loads(
         RESEARCH.DEFAULT_INSIDER_OPEN_MARKET_DATA_CONTRACT.read_text(encoding="utf-8")
     )
-    changed["point_in_time_policy"]["conservative_availability"] = (
-        "close of the second local trading session strictly after TDATE"
-    )
+    changed["point_in_time_policy"][
+        "conservative_availability"
+    ] = "close of the second local trading session strictly after TDATE"
     changed_path = tmp_path / "changed_insider_contract.json"
     write_json_record(changed_path, changed)
     with pytest.raises(ValueError, match="fingerprint mismatch"):
@@ -2720,9 +2720,9 @@ def test_public_five_minute_source_rejection_is_frozen_and_rendered(tmp_path):
             encoding="utf-8"
         )
     )
-    changed["sources"]["sina"]["observations"]["successful_maximum_depth_observed"] = (
-        2000
-    )
+    changed["sources"]["sina"]["observations"][
+        "successful_maximum_depth_observed"
+    ] = 2000
     changed_path = tmp_path / "changed_public_five_minute_availability.json"
     write_json_record(changed_path, changed)
     with pytest.raises(ValueError, match="fingerprint mismatch"):
@@ -5787,17 +5787,17 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
 def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
-    assert len(terminal) == 44
-    assert len({item["mechanism"] for item in terminal}) == 44
+    assert len(terminal) == 45
+    assert len({item["mechanism"] for item in terminal}) == 45
     assert {Path(item["record"]["path"]).name for item in terminal} == {
         path.name
         for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
-        if str(json.loads(path.read_text(encoding="utf-8")).get("status", "")).startswith(
-            ("terminal_", "rejected_")
-        )
+        if str(
+            json.loads(path.read_text(encoding="utf-8")).get("status", "")
+        ).startswith(("terminal_", "rejected_"))
     }
     assert status["post_frontier_summary"] == {
-        "terminal_mechanism_count": 44,
+        "terminal_mechanism_count": 45,
         "admitted_factor_count": 0,
         "aggregation_candidate_count": 0,
     }
@@ -5819,401 +5819,755 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
     ] == pytest.approx(0.825708960635191)
     assert status["selected_source_path"]["tushare_full_source_terminal"] is True
     assert (
-        status["selected_source_path"][
-            "all_fieldwise_factor_coverage_gates_passed"
-        ]
+        status["selected_source_path"]["all_fieldwise_factor_coverage_gates_passed"]
         is True
     )
     assert status["selected_source_path"]["retained_cleaned_factor_count"] == 4
     assert status["selected_source_path"]["opening_gap_digestion_excluded"] is True
     assert (
-        status["selected_source_path"]["cleaned_feature_forward_returns_read"]
-        is True
+        status["selected_source_path"]["cleaned_feature_forward_returns_read"] is True
     )
     assert status["selected_source_path"][
         "cleaned_feature_stability_qualified_factors"
     ] == ["intraday_realized_volatility"]
-    assert status["selected_source_path"][
-        "cleaned_feature_topk_qualified_factors"
-    ] == []
-    assert status["selected_source_path"][
-        "cleaned_feature_dual_gate_qualified_factors"
-    ] == []
-    assert status["selected_source_path"][
-        "afternoon_signed_amount_efficiency_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "afternoon_signed_amount_efficiency_no_return_uniqueness_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "afternoon_signed_amount_efficiency_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "afternoon_signed_amount_efficiency_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "afternoon_signed_amount_efficiency_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "afternoon_signed_amount_efficiency_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "afternoon_drawdown_recovery_resilience_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "afternoon_drawdown_recovery_resilience_no_return_uniqueness_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "afternoon_drawdown_recovery_resilience_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "afternoon_drawdown_recovery_resilience_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "afternoon_drawdown_recovery_resilience_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "afternoon_drawdown_recovery_resilience_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_participation_entropy_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_participation_entropy_no_return_uniqueness_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_participation_entropy_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_participation_entropy_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_participation_entropy_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_participation_entropy_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_profile_serial_persistence_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_profile_serial_persistence_no_return_uniqueness_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_profile_serial_persistence_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_profile_serial_persistence_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_profile_serial_persistence_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_profile_serial_persistence_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_upside_semivariance_share_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_upside_semivariance_share_no_return_uniqueness_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_upside_semivariance_share_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_upside_semivariance_share_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_upside_semivariance_share_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_upside_semivariance_share_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_terminal_close_location_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_terminal_close_location_no_return_uniqueness_passed"
-    ] is False
+    assert (
+        status["selected_source_path"]["cleaned_feature_topk_qualified_factors"] == []
+    )
+    assert (
+        status["selected_source_path"]["cleaned_feature_dual_gate_qualified_factors"]
+        == []
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_signed_amount_efficiency_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_signed_amount_efficiency_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_signed_amount_efficiency_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_signed_amount_efficiency_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_signed_amount_efficiency_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["afternoon_signed_amount_efficiency_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_drawdown_recovery_resilience_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_drawdown_recovery_resilience_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_drawdown_recovery_resilience_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_drawdown_recovery_resilience_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_drawdown_recovery_resilience_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "afternoon_drawdown_recovery_resilience_terminal"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_participation_entropy_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_participation_entropy_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_participation_entropy_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_participation_entropy_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_participation_entropy_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_amount_participation_entropy_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_profile_serial_persistence_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_profile_serial_persistence_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_profile_serial_persistence_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_profile_serial_persistence_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_profile_serial_persistence_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_profile_serial_persistence_terminal"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_upside_semivariance_share_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_upside_semivariance_share_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_upside_semivariance_share_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_upside_semivariance_share_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_upside_semivariance_share_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_upside_semivariance_share_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_terminal_close_location_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_terminal_close_location_no_return_uniqueness_passed"
+        ]
+        is False
+    )
     assert status["selected_source_path"][
         "intraday_terminal_close_location_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.8401483476184668)
-    assert status["selected_source_path"][
-        "intraday_terminal_close_location_failed_comparison_factor"
-    ] == "late_vwap_to_day_vwap_30m"
-    assert status["selected_source_path"][
-        "intraday_terminal_close_location_forward_returns_read"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_terminal_close_location_diagnostic_created"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_terminal_close_location_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_sign_run_imbalance_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_sign_run_imbalance_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_terminal_close_location_failed_comparison_factor"
+        ]
+        == "late_vwap_to_day_vwap_30m"
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_terminal_close_location_forward_returns_read"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_terminal_close_location_diagnostic_created"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_terminal_close_location_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_sign_run_imbalance_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_sign_run_imbalance_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_return_sign_run_imbalance_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.4393974730067088)
-    assert status["selected_source_path"][
-        "intraday_return_sign_run_imbalance_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_sign_run_imbalance_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_return_sign_run_imbalance_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_return_sign_run_imbalance_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_return_sign_run_imbalance_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_return_sign_run_imbalance_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_volatility_resolution_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_volatility_resolution_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_return_sign_run_imbalance_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_sign_run_imbalance_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_sign_run_imbalance_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_sign_run_imbalance_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_sign_run_imbalance_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_return_sign_run_imbalance_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_volatility_resolution_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_volatility_resolution_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_volatility_resolution_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.24791719752571797)
-    assert status["selected_source_path"][
-        "intraday_volatility_resolution_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_volatility_resolution_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_volatility_resolution_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_volatility_resolution_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_volatility_resolution_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_volatility_resolution_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_lead_return_correlation_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_lead_return_correlation_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_volatility_resolution_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_volatility_resolution_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_volatility_resolution_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_volatility_resolution_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_volatility_resolution_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_volatility_resolution_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_lead_return_correlation_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_lead_return_correlation_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_amount_lead_return_correlation_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.26475924224930525)
-    assert status["selected_source_path"][
-        "intraday_amount_lead_return_correlation_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_lead_return_correlation_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_amount_lead_return_correlation_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_lead_return_correlation_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_lead_return_correlation_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_lead_return_correlation_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_center_of_mass_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_center_of_mass_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_lead_return_correlation_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_lead_return_correlation_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_lead_return_correlation_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_lead_return_correlation_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_lead_return_correlation_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_lead_return_correlation_terminal"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_center_of_mass_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_center_of_mass_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_amount_center_of_mass_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.6360938977263315)
-    assert status["selected_source_path"][
-        "intraday_amount_center_of_mass_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_center_of_mass_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_amount_center_of_mass_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_center_of_mass_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_center_of_mass_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_center_of_mass_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_up_move_amount_share_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_up_move_amount_share_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_center_of_mass_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_center_of_mass_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_center_of_mass_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_center_of_mass_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_center_of_mass_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_amount_center_of_mass_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_up_move_amount_share_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_up_move_amount_share_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_up_move_amount_share_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.5773278922327905)
-    assert status["selected_source_path"][
-        "intraday_up_move_amount_share_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_up_move_amount_share_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_up_move_amount_share_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_up_move_amount_share_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_up_move_amount_share_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_up_move_amount_share_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_diffusive_variation_ratio_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_diffusive_variation_ratio_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_up_move_amount_share_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_up_move_amount_share_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_up_move_amount_share_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_up_move_amount_share_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_up_move_amount_share_dual_gate_passed"]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_up_move_amount_share_terminal"] is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_diffusive_variation_ratio_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_diffusive_variation_ratio_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_diffusive_variation_ratio_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.3429077105616848)
-    assert status["selected_source_path"][
-        "intraday_diffusive_variation_ratio_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_diffusive_variation_ratio_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_diffusive_variation_ratio_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_diffusive_variation_ratio_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_diffusive_variation_ratio_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_diffusive_variation_ratio_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_volatility_coupling_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_volatility_coupling_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_diffusive_variation_ratio_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_diffusive_variation_ratio_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_diffusive_variation_ratio_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_diffusive_variation_ratio_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_diffusive_variation_ratio_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_diffusive_variation_ratio_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_volatility_coupling_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_volatility_coupling_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_amount_volatility_coupling_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.3417657619225368)
-    assert status["selected_source_path"][
-        "intraday_amount_volatility_coupling_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_amount_volatility_coupling_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_amount_volatility_coupling_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_volatility_coupling_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_volatility_coupling_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_amount_volatility_coupling_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_variance_entropy_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_variance_entropy_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_volatility_coupling_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_volatility_coupling_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_volatility_coupling_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_volatility_coupling_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_amount_volatility_coupling_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_amount_volatility_coupling_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_variance_entropy_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_variance_entropy_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_return_variance_entropy_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.49458401211809416)
-    assert status["selected_source_path"][
-        "intraday_return_variance_entropy_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_variance_entropy_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_return_variance_entropy_association_stability_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_variance_entropy_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_return_variance_entropy_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_return_variance_entropy_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_skewness_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_return_skewness_no_return_uniqueness_passed"
-    ] is False
+    assert (
+        status["selected_source_path"][
+            "intraday_return_variance_entropy_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_variance_entropy_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_variance_entropy_association_stability_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_variance_entropy_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_variance_entropy_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_return_variance_entropy_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_skewness_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_return_skewness_no_return_uniqueness_passed"
+        ]
+        is False
+    )
     assert status["selected_source_path"][
         "intraday_return_skewness_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.8625548973627292)
-    assert status["selected_source_path"][
-        "intraday_return_skewness_failed_comparison_factor"
-    ] == "intraday_upside_semivariance_share_239m"
-    assert status["selected_source_path"][
-        "intraday_return_skewness_forward_returns_read"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_return_skewness_diagnostic_created"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_return_skewness_terminal"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_bar_vwap_close_pressure_no_return_coverage_passed"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_bar_vwap_close_pressure_no_return_uniqueness_passed"
-    ] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_return_skewness_failed_comparison_factor"
+        ]
+        == "intraday_upside_semivariance_share_239m"
+    )
+    assert (
+        status["selected_source_path"]["intraday_return_skewness_forward_returns_read"]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_return_skewness_diagnostic_created"]
+        is False
+    )
+    assert status["selected_source_path"]["intraday_return_skewness_terminal"] is True
+    assert (
+        status["selected_source_path"][
+            "intraday_bar_vwap_close_pressure_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_bar_vwap_close_pressure_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
         "intraday_bar_vwap_close_pressure_maximum_absolute_median_daily_rank_correlation"
     ] == pytest.approx(0.48840728016858326)
+    assert (
+        status["selected_source_path"][
+            "intraday_bar_vwap_close_pressure_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_bar_vwap_close_pressure_diagnostic_cohorts"
+        ]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_bar_vwap_close_pressure_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_bar_vwap_close_pressure_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_bar_vwap_close_pressure_dual_gate_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_bar_vwap_close_pressure_terminal"]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_price_update_share_candidate_manifest_sha256"
+        ]
+        == "3081777797bae9983da3c7d943eb4bb886dbf3ff383c7da06e859d57fb7cf7b3"
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_price_update_share_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_price_update_share_no_return_uniqueness_passed"
+        ]
+        is True
+    )
     assert status["selected_source_path"][
-        "intraday_bar_vwap_close_pressure_forward_returns_read"
-    ] is True
-    assert status["selected_source_path"][
-        "intraday_bar_vwap_close_pressure_diagnostic_cohorts"
-    ] == 539
-    assert status["selected_source_path"][
-        "intraday_bar_vwap_close_pressure_association_stability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_bar_vwap_close_pressure_topk_viability_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_bar_vwap_close_pressure_dual_gate_passed"
-    ] is False
-    assert status["selected_source_path"][
-        "intraday_bar_vwap_close_pressure_terminal"
-    ] is True
+        "intraday_price_update_share_maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.5624389859948865)
+    assert (
+        status["selected_source_path"][
+            "intraday_price_update_share_forward_returns_read"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"]["intraday_price_update_share_diagnostic_cohorts"]
+        == 539
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_price_update_share_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_price_update_share_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_price_update_share_dual_gate_passed"]
+        is False
+    )
+    assert (
+        status["selected_source_path"]["intraday_price_update_share_terminal"] is True
+    )
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -6221,17 +6575,22 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         three_day_iteration_status=status,
     )
     assert "当前迭代状态" in report
-    assert "前沿之后另有 44 条机制已到达终止门禁" in report
+    assert "前沿之后另有 45 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
     assert "Tushare 原五因子来源覆盖门仍未通过" in report
     assert "字段级清洗层保留 4 个因子并全部通过覆盖门" in report
-    assert "前四因子和之后十四个完成收益诊断的独立分钟机制均没有产生双门禁合格因子" in report
+    assert (
+        "前四因子和之后十五个完成收益诊断的独立分钟机制均没有产生双门禁合格因子"
+        in report
+    )
     assert "终点收盘位置和收益偏度另在无收益近同义门停止" in report
-    assert "全日分钟收盘相对同分钟 VWAP 压力通过覆盖、容量和十九因子唯一性门" in report
-    assert "0.48841" in report
-    assert "平均 Rank IC 为 -0.00244" in report
-    assert "执行感知累计 -81.37%" in report
-    assert "20 万元整手、双边 10bp 滑点累计 -26.16%" in report
+    assert "238 对午别相邻分钟价格更新占比通过覆盖、容量和二十因子唯一性门" in report
+    assert "0.56244" in report
+    assert "平均 Rank IC 为 -0.02774" in report
+    assert "标准化执行感知累计 +415.13%" in report
+    assert "最大回撤 -48.24%" in report
+    assert "20 万元整手、双边 10bp 滑点累计 -1.38%" in report
+    assert "整手机会可负担率仅 19.70%" in report
     assert "稳定性和可执行 TopK 均未通过" in report
     assert "未训练模型" in report
     assert "Level2 继续延期" in report
@@ -6240,8 +6599,7 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
 def test_three_day_iteration_status_rejects_untracked_copy(tmp_path):
     copied = tmp_path / "iteration-status.json"
     copied.write_text(
-        RESEARCH.DEFAULT_THREE_DAY_ITERATION_STATUS.read_text(encoding="utf-8")
-        + "\n",
+        RESEARCH.DEFAULT_THREE_DAY_ITERATION_STATUS.read_text(encoding="utf-8") + "\n",
         encoding="utf-8",
     )
     with pytest.raises(ValueError, match="fingerprint mismatch"):
@@ -7096,9 +7454,9 @@ def test_pure_factor_aggregation_reproduces_the_diagnostic_topk_timing_and_costs
                     "open": 100.0,
                     # Each signal's one-day exit has the same increasing
                     # return ordering as the close-known factor ranks.
-                    "close": 100.0
-                    if date_position == 0
-                    else 100.0 + instrument_position,
+                    "close": (
+                        100.0 if date_position == 0 else 100.0 + instrument_position
+                    ),
                     "quality_eligible": True,
                     "amplitude_low": (instrument_position + 1) / 6.0,
                 }
@@ -8401,9 +8759,9 @@ def test_quarterly_profit_acceleration_event_uses_only_newly_effective_positive_
                     "open": 10.0,
                     "close": 11.0 if position == 3 else 10.0,
                     "quality_eligible": True,
-                    "quality_effective_date": date
-                    if newly_effective
-                    else dates[0] - pd.Timedelta(days=1),
+                    "quality_effective_date": (
+                        date if newly_effective else dates[0] - pd.Timedelta(days=1)
+                    ),
                     "profit_yoy_acceleration": acceleration,
                 }
             )
@@ -9343,7 +9701,9 @@ def test_eastmoney_balance_sheet_capacity_drops_overlapping_audit_dates(monkeypa
 
 
 def test_eastmoney_related_party_sparsity_no_return_source_chain_is_frozen():
-    spec = RESEARCH.load_eastmoney_related_party_transaction_sparsity_no_return_preregistration()
+    spec = (
+        RESEARCH.load_eastmoney_related_party_transaction_sparsity_no_return_preregistration()
+    )
     events, evidence = (
         RESEARCH.validate_eastmoney_related_party_transaction_sparsity_full_snapshot(
             RESEARCH.DEFAULT_EASTMONEY_RELATED_PARTY_TRANSACTION_SPARSITY_FULL_MANIFEST,
@@ -9729,9 +10089,7 @@ def test_eastmoney_monetary_funds_no_return_source_chain_is_frozen():
     spec = (
         RESEARCH.load_eastmoney_monetary_funds_asset_intensity_no_return_preregistration()
     )
-    record = (
-        RESEARCH.load_eastmoney_monetary_funds_asset_intensity_full_source_record()
-    )
+    record = RESEARCH.load_eastmoney_monetary_funds_asset_intensity_full_source_record()
     events, evidence = (
         RESEARCH.validate_eastmoney_monetary_funds_asset_intensity_full_snapshot(
             RESEARCH.DEFAULT_EASTMONEY_MONETARY_FUNDS_ASSET_INTENSITY_FULL_MANIFEST,
@@ -9756,9 +10114,7 @@ def test_eastmoney_monetary_funds_no_return_source_chain_is_frozen():
 def test_eastmoney_monetary_funds_terminal_record_guards_before_source_chain(
     tmp_path, monkeypatch
 ):
-    record = (
-        RESEARCH.load_eastmoney_monetary_funds_asset_intensity_research_record()
-    )
+    record = RESEARCH.load_eastmoney_monetary_funds_asset_intensity_research_record()
     assert record["no_return_capacity_result"]["potential_complete_cohorts"] == 114
     assert record["no_return_capacity_result"]["minimum_required_cohorts"] == 200
     assert record["downstream_gates"]["comparison_fields_loaded"] == []
@@ -9776,9 +10132,7 @@ def test_eastmoney_monetary_funds_terminal_record_guards_before_source_chain(
         provider_uri=str(tmp_path / "provider"),
     )
     with pytest.raises(ValueError, match="terminal after the no-return capacity"):
-        RESEARCH.run_eastmoney_monetary_funds_asset_intensity_no_return_audit(
-            args
-        )
+        RESEARCH.run_eastmoney_monetary_funds_asset_intensity_no_return_audit(args)
 
 
 def test_eastmoney_monetary_funds_materialization_uses_announcement_age_and_newest_report():
@@ -9823,9 +10177,9 @@ def test_eastmoney_monetary_funds_materialization_uses_announcement_age_and_newe
         )
     )
     assert materialized["datetime"].tolist() == list(calendar[1:4])
-    assert materialized["monetary_funds_report_date"].eq(
-        pd.Timestamp("2024-06-30")
-    ).all()
+    assert (
+        materialized["monetary_funds_report_date"].eq(pd.Timestamp("2024-06-30")).all()
+    )
     assert materialized[factor].tolist() == pytest.approx([0.2, 0.2, 0.2])
     assert materialized["event_age_calendar_days"].tolist() == [1, 2, 3]
     assert materialized["log_total_assets"].tolist() == pytest.approx(
@@ -9881,12 +10235,8 @@ def test_eastmoney_monetary_funds_quality_join_keeps_both_report_dates():
         )
     )
     assert len(eligible) >= 1
-    assert eligible["monetary_funds_report_date"].eq(
-        pd.Timestamp("2024-12-31")
-    ).all()
-    assert pd.to_datetime(eligible["report_date"]).eq(
-        pd.Timestamp("2024-09-30")
-    ).all()
+    assert eligible["monetary_funds_report_date"].eq(pd.Timestamp("2024-12-31")).all()
+    assert pd.to_datetime(eligible["report_date"]).eq(pd.Timestamp("2024-09-30")).all()
     assert audit["quality_and_listing_eligible_rows"] == len(eligible)
     assert audit["price_fields_loaded"] == []
 
@@ -9940,10 +10290,8 @@ def test_eastmoney_monetary_funds_uniqueness_rejects_raw_cash_synonym():
     assert independent["uniqueness_gate_passed"] is True
     synonym = comparison.copy()
     synonym["log1p_monetary_funds"] = candidate[factor].to_numpy()
-    rejected = (
-        RESEARCH.summarize_eastmoney_monetary_funds_asset_intensity_uniqueness(
-            candidate, synonym, contract=contract
-        )
+    rejected = RESEARCH.summarize_eastmoney_monetary_funds_asset_intensity_uniqueness(
+        candidate, synonym, contract=contract
     )
     result = next(
         item
@@ -9972,9 +10320,7 @@ def test_eastmoney_monetary_funds_capacity_failure_skips_comparisons(
     calendar_path.parent.mkdir(parents=True)
     holding_path.parent.mkdir(parents=True)
     calendar_path.write_text("2025-01-02\n2025-01-03\n", encoding="utf-8")
-    holding_path.write_text(
-        "SH600519\t2020-01-01\t2026-12-31\n", encoding="utf-8"
-    )
+    holding_path.write_text("SH600519\t2020-01-01\t2026-12-31\n", encoding="utf-8")
     quality_path = tmp_path / "quality.parquet"
     quality_path.write_bytes(b"offline-test")
     spec["local_context"]["local_calendar"]["sha256"] = RESEARCH.file_sha256(
@@ -10048,9 +10394,7 @@ def test_eastmoney_monetary_funds_capacity_failure_skips_comparisons(
         experiment_root=str(tmp_path / "experiments"),
         provider_uri=str(provider),
     )
-    result = RESEARCH.run_eastmoney_monetary_funds_asset_intensity_no_return_audit(
-        args
-    )
+    result = RESEARCH.run_eastmoney_monetary_funds_asset_intensity_no_return_audit(args)
     audit = json.loads(Path(result["audit_path"]).read_text())
     assert audit["capacity_gate_passed"] is False
     assert audit["uniqueness"] is None

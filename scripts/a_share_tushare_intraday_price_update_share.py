@@ -46,6 +46,33 @@ DEFAULT_PREREGISTRATION = (
 PREREGISTRATION_SHA256 = (
     "9a84bb0d0d86d61ba64b8dffbf6854cea708936c43aa9ae6f494e73b56db13fc"
 )
+DEFAULT_DIAGNOSTIC_PREREGISTRATION = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_intraday_price_update_share_diagnostic_preregistration.json"
+)
+DIAGNOSTIC_PREREGISTRATION_SHA256 = (
+    "7f32f0ebbd027a86de5f94aceced9ab94a39dd775073c437181a090940bb2177"
+)
+DEFAULT_TERMINAL_RECORD = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_intraday_price_update_share_research_record.json"
+)
+TERMINAL_RECORD_SHA256 = (
+    "ae24ac70ae3365776b68414f5fc615786bee67e4329d28c04ad621be894447f0"
+)
+NO_RETURN_AUDIT_SHA256 = (
+    "fd07ea6c811c0158f90f4c8e258146242e2f9c1efff99b1977a8e30cad356969"
+)
+DIAGNOSTIC_SHA256 = "d47068033c17c575a841ae3de7e4a6cd274d163460cb7b7e8f46ffdb8c338a8d"
+STABILITY_AUDIT_SHA256 = (
+    "d6631f223370258edc83f0eebca4d846ddcd45a9bd34ca3059647c5c7b9b4755"
+)
+TOPK_AUDIT_SHA256 = "601f18ed56d5d0959eb95a80115b497cbaf1b7fff248d15b576fedd4a1c658d1"
+CONSUMPTION_MARKER_SHA256 = (
+    "a2a6838314fd1543dfa4e0fc7fc704a808bf7ba7e79e839d64efa4c20387dab3"
+)
 DEFAULT_MECHANISM_AUDIT = (
     REPO_ROOT
     / "docs"
@@ -60,6 +87,9 @@ DEFAULT_CURRENT_STATUS = (
 CURRENT_STATUS_SHA256 = (
     "a798361d6f8a3796088d4ed4b91e8f35a7426a55f3ecf9ec340422c1bc184e77"
 )
+TERMINAL_CURRENT_STATUS_SHA256 = (
+    "3b4cf44a5ab13ae88c69651f4607cda14c9eb469575d40adea69257d9e146ab9"
+)
 PREVIOUS_TERMINAL_RECORD_SHA256 = previous.TERMINAL_RECORD_SHA256
 PREVIOUS_MANIFEST_SHA256 = previous.CANDIDATE_MANIFEST_SHA256
 PREVIOUS_DATASET_SHA256 = previous.CANDIDATE_DATASET_SHA256
@@ -71,6 +101,10 @@ FACTOR_NAME = "intraday_price_update_share_238m"
 FACTOR_FORMULA = (
     "Count(close_hj != close_h,j-1 for h in {morning, afternoon}, " "j=2..120) / 238"
 )
+DIAGNOSTIC_PURPOSE = (
+    "single_preregistered_intraday_price_update_share_three_session_diagnostic"
+)
+CONSUMPTION_FILENAME = "intraday_price_update_share_238m_historical_consumption.json"
 COMPARISON_FACTORS = (*previous.COMPARISON_FACTORS, previous.FACTOR_NAME)
 COMPARISON_DIRECTIONS = (*previous.COMPARISON_DIRECTIONS, "higher")
 RAW_COLUMNS = ("datetime", "symbol", "provider", "close")
@@ -225,11 +259,10 @@ def load_preregistration(
 
 
 def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
-    """Validate current state and the immediate terminal predecessor."""
+    """Validate the append-only state and immediate terminal predecessor."""
 
     evidence: dict[str, Any] = {}
     links = {
-        "current_research_state": spec["current_research_state"],
         "mechanism_overlap_reaudit": spec["source_chain"]["mechanism_overlap_reaudit"],
         "prior_no_return_protocol": spec["source_chain"]["prior_no_return_protocol"],
         "prior_terminal_record": spec["source_chain"]["prior_terminal_record"],
@@ -239,26 +272,66 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
         expected = str(link["sha256"])
         _require_file(path, expected, name.replace("_", " "))
         evidence[name] = {"path": str(path), "sha256": expected}
-    state = research.load_json_record(
-        DEFAULT_CURRENT_STATUS, kind="a_share_three_day_iteration_status"
+    _require_file(
+        DEFAULT_CURRENT_STATUS,
+        TERMINAL_CURRENT_STATUS_SHA256,
+        "authoritative three-day research state",
     )
+    state = research.load_three_day_iteration_status()
     summary = state.get("post_frontier_summary") or {}
     terminal = list(state.get("post_frontier_terminal_mechanisms") or [])
-    if not (
+    decision = state.get("decision") or {}
+    predecessor_state = (
         state.get("status")
         == "aggregation_blocked_after_intraday_bar_vwap_close_pressure_terminal_rejection_zero_dual_gate_factors"
         and summary.get("terminal_mechanism_count") == 44
-        and summary.get("admitted_factor_count") == 0
-        and summary.get("aggregation_candidate_count") == 0
         and len(terminal) == 44
         and terminal[-1].get("mechanism")
         == "tushare_intraday_bar_vwap_close_pressure_240m"
         and (terminal[-1].get("record") or {}).get("sha256")
         == PREVIOUS_TERMINAL_RECORD_SHA256
-        and (state.get("decision") or {}).get("aggregation_allowed") is False
+    )
+    terminal_state = (
+        state.get("status")
+        == "aggregation_blocked_after_intraday_price_update_share_terminal_rejection_zero_dual_gate_factors"
+        and summary.get("terminal_mechanism_count") == 45
+        and len(terminal) == 45
+        and terminal[-2].get("mechanism")
+        == "tushare_intraday_bar_vwap_close_pressure_240m"
+        and terminal[-1].get("mechanism") == "tushare_intraday_price_update_share_238m"
+        and (terminal[-1].get("record") or {}).get("sha256") == TERMINAL_RECORD_SHA256
+    )
+    if not (
+        (predecessor_state or terminal_state)
+        and summary.get("admitted_factor_count") == 0
+        and summary.get("aggregation_candidate_count") == 0
+        and decision.get("aggregation_allowed") is False
+        and decision.get("current_scoring_allowed") is False
+        and decision.get("selection_allowed") is False
     ):
-        raise IntradayPriceUpdateShareError("current research state changed")
-    previous.load_terminal_record_if_present()
+        raise IntradayPriceUpdateShareError(
+            "authoritative three-day state changed after preregistration"
+        )
+    predecessor = previous.load_terminal_record_if_present()
+    if predecessor is None:
+        raise IntradayPriceUpdateShareError(
+            "bar-VWAP pressure terminal record is required"
+        )
+    evidence["preregistered_current_research_state"] = {
+        "path": str(_repository_path(str(spec["current_research_state"]["path"]))),
+        "sha256": CURRENT_STATUS_SHA256,
+        "terminal_mechanism_count_before_this_candidate": 44,
+        "historical_binding_not_reinterpreted_as_current_file_bytes": True,
+    }
+    evidence["authoritative_current_research_state"] = {
+        "path": str(DEFAULT_CURRENT_STATUS.resolve()),
+        "sha256": TERMINAL_CURRENT_STATUS_SHA256,
+        "terminal_mechanism_count": int(summary["terminal_mechanism_count"]),
+    }
+    evidence["bar_vwap_close_pressure_terminal_record"] = {
+        "path": str(previous.DEFAULT_TERMINAL_RECORD.resolve()),
+        "sha256": PREVIOUS_TERMINAL_RECORD_SHA256,
+    }
     context = spec.get("point_in_time_context") or {}
     for name in ("source_universe", "holding_universe", "calendar"):
         link = context.get(name) or {}
@@ -279,6 +352,85 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
             "sha256": expected,
         }
     return evidence
+
+
+def load_terminal_record_if_present() -> dict[str, Any] | None:
+    """Validate the immutable terminal record once this candidate is closed."""
+
+    if not DEFAULT_TERMINAL_RECORD.is_file():
+        return None
+    _require_file(
+        DEFAULT_TERMINAL_RECORD,
+        TERMINAL_RECORD_SHA256,
+        "price-update-share research record",
+    )
+    record = research.load_json_record(
+        DEFAULT_TERMINAL_RECORD,
+        kind="a_share_tushare_intraday_price_update_share_research_record",
+    )
+    protocol = (record.get("ordered_protocol") or {}).get(
+        "no_return_preregistration"
+    ) or {}
+    audit = (record.get("ordered_protocol") or {}).get("no_return_audit") or {}
+    diagnostic_protocol = (record.get("ordered_protocol") or {}).get(
+        "diagnostic_preregistration"
+    ) or {}
+    candidate = (record.get("source_chain") or {}).get("candidate_manifest") or {}
+    no_return = record.get("no_return_results") or {}
+    results = record.get("return_results") or {}
+    artifacts = record.get("historical_artifacts") or {}
+    decision = record.get("decision") or {}
+    boundary = record.get("research_boundary") or {}
+    if not (
+        record.get("status")
+        == "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        and protocol.get("sha256") == PREREGISTRATION_SHA256
+        and candidate.get("sha256") == CANDIDATE_MANIFEST_SHA256
+        and candidate.get("dataset_sha256") == CANDIDATE_DATASET_SHA256
+        and candidate.get("eligible_rows") == EXPECTED_ELIGIBLE_ROWS
+        and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
+        and audit.get("status")
+        == "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration"
+        and audit.get("forward_returns_read") is False
+        and diagnostic_protocol.get("sha256") == DIAGNOSTIC_PREREGISTRATION_SHA256
+        and no_return.get("coverage_and_capacity_gate_passed") is True
+        and no_return.get("comparison_factor_count") == 20
+        and no_return.get("all_twenty_uniqueness_gates_passed") is True
+        and no_return.get(
+            "maximum_absolute_median_daily_rank_correlation_to_twenty_terminal_factors"
+        )
+        == 0.5624389859948865
+        and results.get("cohorts") == 539
+        and results.get("mean_rank_ic") == -0.027741031269307864
+        and results.get("association_stability_gate_passed") is False
+        and results.get("topk_viability_gate_passed") is False
+        and results.get("dual_gate_passed") is False
+        and results.get("execution_aware_top3_net_cumulative_return")
+        == 4.151344445674202
+        and results.get("execution_aware_top3_maximum_drawdown") == -0.4824320686101875
+        and results.get("pilot_net_cumulative_return_at_ten_bp_each_side")
+        == -0.01381171680384985
+        and results.get("pilot_board_lot_affordability_rate") == 0.19699812382739212
+        and (artifacts.get("diagnostic") or {}).get("sha256") == DIAGNOSTIC_SHA256
+        and (artifacts.get("stability_audit") or {}).get("sha256")
+        == STABILITY_AUDIT_SHA256
+        and (artifacts.get("topk_viability_audit") or {}).get("sha256")
+        == TOPK_AUDIT_SHA256
+        and (artifacts.get("single_use_consumption_marker") or {}).get("sha256")
+        == CONSUMPTION_MARKER_SHA256
+        and decision.get("terminally_reject_exact_factor_direction") is True
+        and decision.get("aggregation_candidate_added") is False
+        and decision.get("aggregation_allowed") is False
+        and decision.get("selection_allowed") is False
+        and decision.get("level2_intake_justified") is False
+        and boundary.get("same_history_combination_return_evaluation_performed")
+        is False
+        and boundary.get("current_stock_list_generated") is False
+    ):
+        raise IntradayPriceUpdateShareError(
+            "price-update-share research record is inconsistent"
+        )
+    return record
 
 
 def _validate_previous_manifest(
@@ -668,6 +820,7 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
         )
         manifest = research.load_json_record(final_manifest)
         _validate_snapshot_manifest(manifest, require_fingerprint_constants=True)
+        load_terminal_record_if_present()
         return final_manifest
     repository_evidence = validate_repository_chain(spec)
     chain = validate_external_chain(spec, data_root)
@@ -1127,6 +1280,7 @@ def run_no_return_audit(
     manifest_sha256 = foundation.file_digest(manifest_path)
     existing = _find_existing_audit(experiment_root, manifest_sha256)
     if existing is not None:
+        load_terminal_record_if_present()
         return existing
     verification = verify_snapshot_files(manifest, manifest_path, workers)
     candidate = load_candidate_frame(manifest_path, manifest)
@@ -1223,6 +1377,532 @@ def run_no_return_audit(
     return path
 
 
+def load_diagnostic_preregistration(
+    path: Path = DEFAULT_DIAGNOSTIC_PREREGISTRATION,
+) -> dict[str, Any]:
+    """Load the frozen single-use return diagnostic protocol."""
+
+    path = path.expanduser().resolve()
+    _require_file(
+        path,
+        DIAGNOSTIC_PREREGISTRATION_SHA256,
+        "price-update-share diagnostic protocol",
+    )
+    spec = research.load_json_record(
+        path,
+        kind=(
+            "a_share_tushare_intraday_price_update_share_" "diagnostic_preregistration"
+        ),
+    )
+    factor = spec.get("factor") or {}
+    evidence = spec.get("no_return_evidence") or {}
+    snapshot = evidence.get("candidate_snapshot") or {}
+    audit = evidence.get("ordered_audit") or {}
+    coverage = evidence.get("coverage_and_capacity") or {}
+    uniqueness = evidence.get("uniqueness") or {}
+    holding = spec.get("holding_protocol") or {}
+    gates = spec.get("diagnostic_gates") or {}
+    decision = spec.get("post_diagnostic_decision") or {}
+    boundary = spec.get("research_boundary") or {}
+    comparison_medians = uniqueness.get("comparison_medians") or {}
+    quality_expectations = {
+        "exact_price_update_pairs": 1_177_277_526,
+        "exact_unchanged_price_pairs": 661_152_998,
+        "invalid_required_close_rows": 0,
+        "nonfinite_update_share_rows": 0,
+        "range_violation_rows": 0,
+    }
+    if not (
+        spec.get("version") == 1
+        and spec.get("status")
+        == "frozen_after_no_return_coverage_capacity_and_uniqueness_pass_before_first_forward_return_read"
+        and factor.get("name") == FACTOR_NAME
+        and factor.get("direction") == "higher"
+        and factor.get("formula") == FACTOR_FORMULA
+        and factor.get(
+            "forward_returns_observed_before_this_diagnostic_preregistration"
+        )
+        is False
+        and (evidence.get("protocol") or {}).get("sha256") == PREREGISTRATION_SHA256
+        and snapshot.get("sha256") == CANDIDATE_MANIFEST_SHA256
+        and snapshot.get("dataset_sha256") == CANDIDATE_DATASET_SHA256
+        and snapshot.get("partitions") == 33_015
+        and snapshot.get("rows") == 7_724_498
+        and snapshot.get("eligible_rows") == EXPECTED_ELIGIBLE_ROWS
+        and all(
+            snapshot.get(name) == value for name, value in quality_expectations.items()
+        )
+        and audit.get("sha256") == NO_RETURN_AUDIT_SHA256
+        and audit.get("forward_return_fields_read") is False
+        and coverage.get("quality_listing_eligible_rows") == 1_331_759
+        and coverage.get("candidate_eligible_rows_after_quality_and_listing")
+        == 1_330_171
+        and coverage.get("median_coverage") == 0.9994517542211769
+        and coverage.get("p05_coverage") == 0.9956886515772271
+        and coverage.get("p05_eligible_names") == 138
+        and coverage.get("potential_non_overlapping_three_session_cohorts") == 540
+        and coverage.get("observed_calendar_years")
+        == [2019, 2020, 2021, 2022, 2023, 2024, 2025]
+        and coverage.get("gate_passed") is True
+        and uniqueness.get("maximum_allowed_absolute_median_daily_rank_correlation")
+        == 0.8
+        and uniqueness.get("maximum_observed_absolute_median_daily_rank_correlation")
+        == 0.5624389859948865
+        and tuple(comparison_medians) == COMPARISON_FACTORS
+        and uniqueness.get("all_twenty_comparisons_passed") is True
+        and holding.get("universe") == "buyable_main_chinext"
+        and holding.get("minimum_listing_sessions") == research.MIN_LISTING_SESSIONS
+        and holding.get("development_start") == "2019-01-01"
+        and holding.get("development_end") == "2025-12-31"
+        and holding.get("holding_period_trading_days") == 3
+        and holding.get("non_overlapping_cohorts") is True
+        and holding.get("topk") == 3
+        and holding.get("open_cost") == 0.00012
+        and holding.get("close_cost") == 0.00062
+        and gates.get("minimum_non_overlapping_cohorts") == 200
+        and gates.get("minimum_observed_calendar_years") == 5
+        and decision.get("same_history_combination_return_evaluation_allowed") is False
+        and decision.get("current_scoring_selection_sizing_or_orders_allowed") is False
+        and boundary.get("forward_return_fields_read_before_registration") is False
+        and boundary.get("training_or_model_fitting_performed") is False
+    ):
+        raise IntradayPriceUpdateShareError(
+            "price-update-share diagnostic protocol no longer matches its frozen "
+            "definition"
+        )
+    return spec
+
+
+def validate_diagnostic_source_chain(
+    spec: dict[str, Any], data_root: Path
+) -> tuple[dict[str, Any], dict[str, Any], Path, Path, dict[str, Any]]:
+    """Reproduce immutable no-return evidence before reading daily prices."""
+
+    no_return = spec["no_return_evidence"]
+    protocol_path = _repository_path(str(no_return["protocol"]["path"]))
+    _require_file(protocol_path, PREREGISTRATION_SHA256, "no-return protocol")
+    snapshot_link = no_return["candidate_snapshot"]
+    manifest_path = (data_root / str(snapshot_link["path_below_data_root"])).resolve()
+    _require_file(
+        manifest_path,
+        CANDIDATE_MANIFEST_SHA256,
+        "candidate snapshot manifest",
+    )
+    manifest = research.load_json_record(
+        manifest_path,
+        kind="a_share_tushare_intraday_price_update_share_snapshot",
+    )
+    quality = manifest.get("quality") or {}
+    if not (
+        manifest.get("status")
+        == "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
+        and manifest.get("protocol_sha256") == PREREGISTRATION_SHA256
+        and manifest.get("dataset_sha256") == snapshot_link.get("dataset_sha256")
+        and manifest.get("partitions") == 33_015
+        and manifest.get("rows") == 7_724_498
+        and manifest.get("eligible_rows") == EXPECTED_ELIGIBLE_ROWS
+        and quality.get("exact_price_update_pairs") == 1_177_277_526
+        and quality.get("exact_unchanged_price_pairs") == 661_152_998
+        and quality.get("invalid_required_close_rows") == 0
+        and quality.get("nonfinite_update_share_rows") == 0
+        and quality.get("range_violation_rows") == 0
+        and manifest.get("comparison_factor_values_read") is False
+        and manifest.get("daily_price_fields_read") == []
+        and manifest.get("forward_return_fields_read") is False
+        and manifest.get("source_fields_read") == list(RAW_COLUMNS)
+        and manifest.get("source_close_read") is True
+        and manifest.get("source_open_high_low_read") is False
+        and manifest.get("source_volume_or_amount_read") is False
+        and manifest.get("standalone_09_30_row_excluded_from_formula") is True
+        and manifest.get("lunch_boundary_excluded_from_formula") is True
+        and manifest.get("exact_close_equality_without_tolerance") is True
+        and manifest.get("fixed_pair_denominator") == 238
+        and manifest.get("constant_close_day_policy") == "valid_zero"
+    ):
+        raise IntradayPriceUpdateShareError(
+            "candidate snapshot conflicts with the diagnostic preregistration"
+        )
+    audit_link = no_return["ordered_audit"]
+    audit_path = _repository_path(str(audit_link["path"]))
+    _require_file(audit_path, NO_RETURN_AUDIT_SHA256, "ordered no-return audit")
+    audit = research.load_json_record(
+        audit_path,
+        kind="a_share_tushare_intraday_price_update_share_no_return_audit",
+    )
+    if not (
+        audit.get("status") == audit_link.get("status")
+        and (audit.get("candidate_snapshot") or {}).get("sha256")
+        == CANDIDATE_MANIFEST_SHA256
+        and (audit.get("coverage_and_capacity") or {}).get(
+            "gate_passed_before_comparison_values"
+        )
+        is True
+        and (audit.get("uniqueness") or {}).get("all_twenty_comparisons_passed") is True
+        and (audit.get("decision") or {}).get(
+            "separate_return_diagnostic_preregistration_allowed"
+        )
+        is True
+        and audit.get("daily_price_fields_loaded") == []
+        and audit.get("forward_return_fields_read") is False
+    ):
+        raise IntradayPriceUpdateShareError(
+            "ordered no-return audit does not authorize the frozen diagnostic"
+        )
+    repository_evidence = validate_repository_chain(load_preregistration())
+    for name, link in (
+        ("accepted_daily_price_basis", spec["accepted_daily_price_basis"]),
+        ("quarterly_quality", spec["quarterly_quality"]),
+    ):
+        path = _repository_path(str(link["path"]))
+        expected = str(link["sha256"])
+        _require_file(path, expected, name.replace("_", " "))
+        repository_evidence[name] = {
+            "path": str(path),
+            "sha256": expected,
+        }
+    quarterly_quality = spec["quarterly_quality"]
+    quality_manifest_path = _repository_path(str(quarterly_quality["manifest_path"]))
+    _require_file(
+        quality_manifest_path,
+        str(quarterly_quality["manifest_sha256"]),
+        "quarterly quality manifest",
+    )
+    repository_evidence["quarterly_quality_manifest"] = {
+        "path": str(quality_manifest_path),
+        "sha256": str(quarterly_quality["manifest_sha256"]),
+    }
+    for name, link in spec["execution_policies"].items():
+        path = _repository_path(str(link["path"]))
+        expected = str(link["sha256"])
+        _require_file(path, expected, name.replace("_", " "))
+        repository_evidence[name] = {
+            "path": str(path),
+            "sha256": expected,
+        }
+    return manifest, audit, manifest_path, audit_path, repository_evidence
+
+
+def require_diagnostic_unconsumed(experiment_root: Path) -> None:
+    """Reject a second read of this candidate's historical returns."""
+
+    marker = experiment_root / CONSUMPTION_FILENAME
+    if marker.exists():
+        raise IntradayPriceUpdateShareError(
+            "price-update-share historical diagnostic is already consumed: " f"{marker}"
+        )
+    for path in sorted(experiment_root.glob("*_factor_diagnostic.json")):
+        record = research.load_json_record(path)
+        if record.get("purpose") == DIAGNOSTIC_PURPOSE:
+            raise IntradayPriceUpdateShareError(
+                "price-update-share historical diagnostic already exists: " f"{path}"
+            )
+
+
+def attach_ranked_candidate(
+    market: pd.DataFrame,
+    candidate: pd.DataFrame,
+    diagnostic_spec: dict[str, Any],
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Reuse the accepted ranking path with the candidate's bound field name."""
+
+    prior_factor_name = foundation.FACTOR_NAME
+    foundation.FACTOR_NAME = FACTOR_NAME
+    try:
+        return foundation.attach_ranked_candidate(
+            market,
+            candidate,
+            diagnostic_spec,
+        )
+    finally:
+        foundation.FACTOR_NAME = prior_factor_name
+
+
+def run_diagnostic(args: argparse.Namespace) -> Path:
+    """Consume the only authorized 2019-2025 three-session return diagnostic."""
+
+    data_root = Path(args.data_root).expanduser().resolve()
+    provider_uri = Path(args.provider_uri).expanduser().resolve()
+    fundamentals_path = Path(args.fundamentals).expanduser().resolve()
+    experiment_root = Path(args.experiment_root).expanduser().resolve()
+    experiment_root.mkdir(parents=True, exist_ok=True)
+    require_diagnostic_unconsumed(experiment_root)
+    spec = load_diagnostic_preregistration()
+    (
+        manifest,
+        no_return_audit,
+        manifest_path,
+        audit_path,
+        repository_evidence,
+    ) = validate_diagnostic_source_chain(spec, data_root)
+    verification = verify_snapshot_files(
+        manifest,
+        manifest_path,
+        int(args.verification_workers),
+    )
+    candidate = load_candidate_frame(manifest_path, manifest)
+    holding = spec["holding_protocol"]
+    start = str(holding["development_start"])
+    end = str(holding["development_end"])
+    if candidate["trade_date"].min() < pd.Timestamp(start) or candidate[
+        "trade_date"
+    ].max() > pd.Timestamp(end):
+        raise IntradayPriceUpdateShareError(
+            "candidate feature dates escape the frozen diagnostic window"
+        )
+    print("loading accepted daily execution and quality context", flush=True)
+    price_basis = research.research_price_basis_metadata(provider_uri)
+    fundamentals = research.load_fundamentals(fundamentals_path)
+    market = research.load_market_execution_data(
+        provider_uri,
+        start,
+        end,
+        int(args.batch_size),
+    )
+    market = research.attach_quality_asof(
+        market,
+        fundamentals,
+        max_age_days=int(spec["quarterly_quality"]["maximum_age_days"]),
+    )
+    del fundamentals
+    gc.collect()
+    quality_counts = {
+        "fundamental_eligible_rows_before_listing_gate": int(
+            market["fundamental_quality_eligible"].fillna(False).sum()
+        ),
+        "eligible_rows_after_listing_gate": int(
+            market["quality_eligible"].fillna(False).sum()
+        ),
+        "fundamental_rows_excluded_by_listing_gate": int(
+            (
+                market["fundamental_quality_eligible"].fillna(False)
+                & ~market["listing_seasoning_eligible"].fillna(False)
+            ).sum()
+        ),
+    }
+    market_rows = int(len(market))
+    market_start = market["datetime"].min().date().isoformat()
+    market_end = market["datetime"].max().date().isoformat()
+    ranked, coverage = attach_ranked_candidate(market, candidate, spec)
+    del market, candidate
+    gc.collect()
+
+    execution_policy = research.load_prospective_execution_policy()
+    research.require_prospective_execution_policy_compatibility(
+        execution_policy,
+        hold_days=int(holding["holding_period_trading_days"]),
+        topk=int(holding["topk"]),
+        open_cost=float(holding["open_cost"]),
+        close_cost=float(holding["close_cost"]),
+    )
+    pilot_policy = research.load_pilot_execution_policy()
+    marker_path = experiment_root / CONSUMPTION_FILENAME
+    marker = {
+        "kind": "a_share_tushare_intraday_price_update_share_historical_consumption",
+        "status": "historical_forward_return_read_started",
+        "started_at": research._timestamp(),
+        "diagnostic_preregistration_path": str(
+            DEFAULT_DIAGNOSTIC_PREREGISTRATION.resolve()
+        ),
+        "diagnostic_preregistration_sha256": DIAGNOSTIC_PREREGISTRATION_SHA256,
+        "candidate_manifest_sha256": CANDIDATE_MANIFEST_SHA256,
+        "no_return_audit_sha256": NO_RETURN_AUDIT_SHA256,
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
+    }
+    research._atomic_write_text(
+        marker_path,
+        json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
+    )
+    print(
+        "no-return gates reproduced; beginning the single authorized "
+        "forward-return read",
+        flush=True,
+    )
+    forward_returns = research.forward_factor_return_frame(
+        ranked,
+        int(holding["holding_period_trading_days"]),
+    )
+    summaries = research.summarize_factor_diagnostics(
+        forward_returns,
+        [FACTOR_NAME],
+        hold_days=int(holding["holding_period_trading_days"]),
+        topk=int(holding["topk"]),
+        open_cost=float(holding["open_cost"]),
+        close_cost=float(holding["close_cost"]),
+    )
+    del forward_returns
+    gc.collect()
+    summary = (
+        summaries[0]
+        if summaries
+        else research.unavailable_factor_diagnostic_summary(
+            FACTOR_NAME,
+            int(holding["holding_period_trading_days"]),
+        )
+    )
+    print("simulating normalized and CNY 200,000 execution policies", flush=True)
+    summary["execution_aware_topk"] = research.simulate_prospective_execution_topk(
+        ranked,
+        FACTOR_NAME,
+        policy=execution_policy,
+    )
+    summary["pilot_execution_topk"] = research.simulate_pilot_execution_topk(
+        ranked,
+        FACTOR_NAME,
+        execution_policy=execution_policy,
+        pilot_policy=pilot_policy,
+    )
+    del ranked
+    gc.collect()
+    run_id = research._timestamp()
+    diagnostic = {
+        "run_id": run_id,
+        "status": "completed",
+        "purpose": DIAGNOSTIC_PURPOSE,
+        "factor_catalog": [FACTOR_NAME],
+        "factor_directions": {FACTOR_NAME: "higher"},
+        "strategy_timing": {
+            "universe": holding["universe"],
+            "minimum_listing_sessions": research.MIN_LISTING_SESSIONS,
+            "listing_gate_applied_before_cross_sectional_ranking": True,
+            "holding_period_trading_days": int(holding["holding_period_trading_days"]),
+            "rebalancing": "non_overlapping_every_holding_period",
+            "signal_time": (
+                "full-session exact minute-close price-update-share factor "
+                "known after signal-session close"
+            ),
+            "same_session_trade_allowed": False,
+            "entry": "next local trading-session open",
+            "exit": "local close after holding_period_trading_days",
+            "diagnostic_topk": int(holding["topk"]),
+            "open_cost": float(holding["open_cost"]),
+            "close_cost": float(holding["close_cost"]),
+            "parameters_read_from_preregistration": True,
+        },
+        "quality_gate": {
+            "source": str(fundamentals_path),
+            "sha256": research.file_sha256(fundamentals_path),
+            "effective_date": (
+                "strictly next local trading session after announcement_date"
+            ),
+            "quality_state_semantics": spec["quarterly_quality"][
+                "quality_state_semantics"
+            ],
+            "max_quality_age_days": int(spec["quarterly_quality"]["maximum_age_days"]),
+            **quality_counts,
+        },
+        "minute_factor": {
+            "provider": "tushare",
+            "frequency": "1m",
+            "name": FACTOR_NAME,
+            "direction": "higher",
+            "formula": spec["factor"]["formula"],
+            "candidate_manifest": {
+                "path": str(manifest_path),
+                "sha256": CANDIDATE_MANIFEST_SHA256,
+                "dataset_sha256": manifest["dataset_sha256"],
+                "verification": verification,
+            },
+            "no_return_audit": {
+                "path": str(audit_path),
+                "sha256": NO_RETURN_AUDIT_SHA256,
+                "status": no_return_audit["status"],
+            },
+            "coverage": coverage,
+            "source_fields_read_for_factor": list(RAW_COLUMNS),
+            "source_close_read_for_factor": True,
+            "source_volume_or_amount_read_for_factor": False,
+            "source_open_high_low_read_for_factor": False,
+            "standalone_09_30_row_excluded_from_formula": True,
+            "lunch_boundary_excluded_from_formula": True,
+            "selected_close_count": 240,
+            "within_half_adjacent_pair_count": 238,
+            "exact_close_equality_without_tolerance": True,
+            "fixed_pair_denominator": 238,
+            "constant_close_day_policy": "valid_zero",
+            "daily_prices_substituted_into_minute_rows": False,
+            "forward_return_fields_stored_in_feature_source": False,
+            "selection_or_promotion_allowed": False,
+        },
+        "data": {
+            "provider_uri": str(provider_uri),
+            **price_basis,
+            "calendar_start": market_start,
+            "calendar_end": market_end,
+            "development_start": start,
+            "development_end": end,
+            "market_rows": market_rows,
+            "eligible_rows": quality_counts["eligible_rows_after_listing_gate"],
+            "minimum_listing_sessions": research.MIN_LISTING_SESSIONS,
+            "test_period_used_for_factor_design": False,
+        },
+        "prospective_execution_policy": {
+            "path": str(research.DEFAULT_PROSPECTIVE_EXECUTION_POLICY),
+            "sha256": research.PROSPECTIVE_EXECUTION_POLICY_SHA256,
+            "frozen_at": execution_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+        },
+        "pilot_execution_policy": {
+            "path": str(research.DEFAULT_PILOT_EXECUTION_POLICY),
+            "sha256": research.PILOT_EXECUTION_POLICY_SHA256,
+            "frozen_at": pilot_policy["frozen_at"],
+            "applied_to_every_reported_factor": True,
+            "initial_capital_cny": 200000.0,
+            "buy_lot_size_shares": 100,
+            "primary_slippage_rate_each_side": 0.001,
+            "maximum_daily_amount_participation": 0.01,
+        },
+        "preregistration": {
+            "path": str(DEFAULT_DIAGNOSTIC_PREREGISTRATION.resolve()),
+            "sha256": DIAGNOSTIC_PREREGISTRATION_SHA256,
+            "preregistered_at": spec["preregistered_at"],
+            "factor_returns_observed_before_registration": False,
+            "single_use_marker": str(marker_path),
+        },
+        "repository_evidence": repository_evidence,
+        "ranking_by_development_rank_ic": [summary],
+        "post_diagnostic_decision": spec["post_diagnostic_decision"],
+        "forward_return_fields_read": True,
+        "selection_or_promotion_allowed": False,
+        "limitations": [
+            "This is an exploratory 2019-2025 diagnostic, not a pristine "
+            "holdout and not investment advice.",
+            "Only the higher direction frozen before this return read was "
+            "evaluated.",
+            "A failure may not be inverted, reformulated, re-windowed, "
+            "thresholded, or retested on this history.",
+            "A pass admits only one factor and cannot satisfy the two-factor "
+            "aggregation minimum by itself.",
+            "Daily execution bars cannot reconstruct exact queue priority, "
+            "partial fills, or realized market impact.",
+        ],
+    }
+    destination = experiment_root / f"{run_id}_factor_diagnostic.json"
+    research._atomic_write_text(
+        destination,
+        json.dumps(
+            diagnostic,
+            ensure_ascii=False,
+            indent=2,
+            default=research._json_default,
+        )
+        + "\n",
+    )
+    marker.update(
+        {
+            "status": "historical_diagnostic_completed",
+            "completed_at": research._timestamp(),
+            "diagnostic_path": str(destination),
+            "diagnostic_sha256": research.file_sha256(destination),
+        }
+    )
+    research._atomic_write_text(
+        marker_path,
+        json.dumps(marker, ensure_ascii=False, indent=2) + "\n",
+    )
+    return destination
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -1242,6 +1922,32 @@ def parse_args() -> argparse.Namespace:
         default=REPO_ROOT / "data/experiments/short_horizon",
     )
     audit_parser.add_argument("--workers", type=int, default=8)
+    diagnose_parser = subparsers.add_parser(
+        "diagnose",
+        help="Consume the single preregistered three-session diagnostic",
+    )
+    diagnose_parser.add_argument("--data-root", type=Path, required=True)
+    diagnose_parser.add_argument(
+        "--provider-uri",
+        type=Path,
+        default=REPO_ROOT / "data/qlib/cn_a_share",
+    )
+    diagnose_parser.add_argument(
+        "--fundamentals",
+        type=Path,
+        default=(REPO_ROOT / "data/raw/a_share/fundamentals/quarterly_quality.parquet"),
+    )
+    diagnose_parser.add_argument(
+        "--experiment-root",
+        type=Path,
+        default=REPO_ROOT / "data/experiments/short_horizon",
+    )
+    diagnose_parser.add_argument("--batch-size", type=int, default=250)
+    diagnose_parser.add_argument(
+        "--verification-workers",
+        type=int,
+        default=8,
+    )
     return parser.parse_args()
 
 
@@ -1249,12 +1955,14 @@ def main() -> int:
     args = parse_args()
     if args.command == "build":
         path = build_snapshot(data_root=args.data_root, workers=args.workers)
-    else:
+    elif args.command == "audit":
         path = run_no_return_audit(
             data_root=args.data_root,
             experiment_root=args.experiment_root,
             workers=args.workers,
         )
+    else:
+        path = run_diagnostic(args)
     print(json.dumps({"status": "ok", "path": str(path)}, ensure_ascii=False))
     return 0
 

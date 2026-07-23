@@ -1,0 +1,150 @@
+{
+  "kind": "a_share_tushare_intraday_price_update_share_diagnostic_preregistration",
+  "version": 1,
+  "status": "frozen_after_no_return_coverage_capacity_and_uniqueness_pass_before_first_forward_return_read",
+  "preregistered_at": "2026-07-23T06:13:13Z",
+  "purpose": "Run one historical three-session association and executable Top-3 diagnostic for the independently admitted intraday price-update share.",
+  "factor": {
+    "name": "intraday_price_update_share_238m",
+    "direction": "higher",
+    "formula": "Count(close_hj != close_h,j-1 for h in {morning, afternoon}, j=2..120) / 238",
+    "signal_time": "after_signal_session_close",
+    "factor_values_observed_before_no_return_preregistration": false,
+    "forward_returns_observed_before_this_diagnostic_preregistration": false
+  },
+  "no_return_evidence": {
+    "protocol": {
+      "path": "docs/a_share_tushare_intraday_price_update_share_no_return_preregistration.json",
+      "sha256": "9a84bb0d0d86d61ba64b8dffbf6854cea708936c43aa9ae6f494e73b56db13fc"
+    },
+    "candidate_snapshot": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_price_update_share/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_price_update_share_v1/snapshot_manifest.json",
+      "sha256": "3081777797bae9983da3c7d943eb4bb886dbf3ff383c7da06e859d57fb7cf7b3",
+      "dataset_sha256": "7b3b471caf30e7162074f7882e8ae1b2b9e56ab87748dfcfb49b5e66b986d10b",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7724498,
+      "exact_price_update_pairs": 1177277526,
+      "exact_unchanged_price_pairs": 661152998,
+      "invalid_required_close_rows": 0,
+      "nonfinite_update_share_rows": 0,
+      "range_violation_rows": 0
+    },
+    "ordered_audit": {
+      "path": "data/experiments/short_horizon/20260723T061227Z_intraday_price_update_share_no_return_audit.json",
+      "sha256": "fd07ea6c811c0158f90f4c8e258146242e2f9c1efff99b1977a8e30cad356969",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_return_fields_read": false
+    },
+    "coverage_and_capacity": {
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows_after_quality_and_listing": 1330171,
+      "median_coverage": 0.9994517542211769,
+      "p05_coverage": 0.9956886515772271,
+      "p05_eligible_names": 138,
+      "potential_non_overlapping_three_session_cohorts": 540,
+      "observed_calendar_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "gate_passed": true
+    },
+    "uniqueness": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.5624389859948865,
+      "comparison_medians": {
+        "late_return_30m": 0.00034480286046391546,
+        "late_amount_share_30m": -0.14852999394567984,
+        "late_vwap_to_day_vwap_30m": -0.0048452832237850674,
+        "intraday_realized_volatility": -0.3162758163055865,
+        "afternoon_signed_amount_efficiency_120m": 0.05579399186230919,
+        "afternoon_drawdown_recovery_resilience_120m": -0.04478329980760632,
+        "intraday_amount_participation_entropy_240m": 0.4702174791333107,
+        "intraday_amount_profile_serial_persistence_240m": 0.3477850476361536,
+        "intraday_upside_semivariance_share_239m": 0.07429085742159088,
+        "intraday_terminal_close_location_240m": -0.00876266747394187,
+        "intraday_return_sign_run_imbalance_238p": -0.09636597076434021,
+        "intraday_volatility_resolution_238m": 0.3108167174283281,
+        "intraday_amount_lead_return_correlation_238p": -0.039161383267363216,
+        "intraday_amount_center_of_mass_240m": -0.11092703837183228,
+        "intraday_up_move_amount_share_238m": 0.020344862715921216,
+        "intraday_diffusive_variation_ratio_238m": 0.5624389859948865,
+        "intraday_amount_volatility_coupling_238p": 0.16074985433036798,
+        "intraday_return_variance_entropy_238m": -0.14297462500041597,
+        "intraday_return_skewness_238m": 0.05283190028743064,
+        "intraday_bar_vwap_close_pressure_240m": -0.04056609411755462
+      },
+      "all_twenty_comparisons_passed": true
+    }
+  },
+  "accepted_daily_price_basis": {
+    "path": "data/qlib/cn_a_share/price_basis.json",
+    "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "provider": "baostock"
+  },
+  "quarterly_quality": {
+    "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+    "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+    "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+    "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+    "availability": "strictly_next_local_session_after_announcement_date",
+    "quality_state_semantics": "after_effective_date_sort_and_dedup_forward_fill_roe_net_profit_revenue_yoy_and_profit_yoy_independently",
+    "maximum_age_days": 550
+  },
+  "holding_protocol": {
+    "universe": "buyable_main_chinext",
+    "minimum_listing_sessions": 20,
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "signal_time": "after_signal_session_close",
+    "entry": "next_trading_session_open",
+    "exit": "third_trading_session_close",
+    "holding_period_trading_days": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "open_cost": 0.00012,
+    "close_cost": 0.00062
+  },
+  "diagnostic_gates": {
+    "minimum_non_overlapping_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "association_gate": "overall_and_each_year_mean_rank_ic_positive; positive_rank_ic_share_above_0.5; top3_minus_bottom3_mean_gross_return_positive",
+    "topk_gate": "association_gate_passed; overall_and_each_year_execution_aware_top3_net_return_positive; maximum_drawdown_not_below_minus_0.20; pilot_execution_gate_passed",
+    "failed_factor_policy": "retire_without_inverting_reformulating_rewindowing_thresholding_subsetting_reweighting_or_retesting_on_2019_2025",
+    "single_use_policy": "write_a_consumption_marker_immediately_before_the_first_forward_return_construction_and_never_rerun_after_that_marker_exists"
+  },
+  "execution_policies": {
+    "prospective_execution": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9",
+      "initial_capital_cny": 200000,
+      "buy_lot_size_shares": 100,
+      "primary_slippage_rate_each_side": 0.001,
+      "maximum_daily_amount_participation": 0.01
+    }
+  },
+  "post_diagnostic_decision": {
+    "if_either_full_gate_fails": "terminally_reject_this_exact_factor_direction",
+    "if_both_full_gates_pass": "admit_exactly_one_dual_gate_factor_but_keep_aggregation_blocked_until_at_least_two_economically_distinct_dual_gate_factors_exist",
+    "same_history_combination_return_evaluation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "future_only_paper_registration_required_before_any_current_use": true,
+    "level2_intake_justified_by_a_pass_or_failure": false
+  },
+  "research_boundary": {
+    "historical_window_is_exploratory_and_not_pristine_due_to_prior_research": true,
+    "forward_return_fields_read_before_registration": false,
+    "training_or_model_fitting_performed": false,
+    "investment_advice": false
+  }
+}

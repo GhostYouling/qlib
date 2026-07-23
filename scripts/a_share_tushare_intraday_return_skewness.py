@@ -44,9 +44,7 @@ DEFAULT_PREREGISTRATION = (
     / "a_share_tushare_intraday_return_skewness_no_return_preregistration.json"
 )
 DEFAULT_TERMINAL_RECORD = (
-    REPO_ROOT
-    / "docs"
-    / "a_share_tushare_intraday_return_skewness_research_record.json"
+    REPO_ROOT / "docs" / "a_share_tushare_intraday_return_skewness_research_record.json"
 )
 PREREGISTRATION_SHA256 = (
     "b7d20fade0436e706cbefc9abdf909f8b9ec7e2e565516af722ebda9864a3936"
@@ -94,8 +92,12 @@ MORNING_MINUTE_CODES = previous.MORNING_MINUTE_CODES
 AFTERNOON_MINUTE_CODES = previous.AFTERNOON_MINUTE_CODES
 
 # Filled only after the no-return build creates an immutable external snapshot.
-CANDIDATE_MANIFEST_SHA256 = "f4ff8ec91db7e86a56113ca3dab507f19537392c26de4912095aeed9b4f8c392"
-CANDIDATE_DATASET_SHA256 = "f9bcf84e41e7607a4a7891ef3de822ff8fa602e952b0a22d73ed51fedfacd13a"
+CANDIDATE_MANIFEST_SHA256 = (
+    "f4ff8ec91db7e86a56113ca3dab507f19537392c26de4912095aeed9b4f8c392"
+)
+CANDIDATE_DATASET_SHA256 = (
+    "f9bcf84e41e7607a4a7891ef3de822ff8fa602e952b0a22d73ed51fedfacd13a"
+)
 EXPECTED_ELIGIBLE_ROWS = 7_695_088
 EXPECTED_ZERO_SECOND_MOMENT_ROWS = 29_410
 
@@ -172,8 +174,7 @@ def load_preregistration(
         == previous_spec.get("point_in_time_context")
         and mechanism.get("sha256") == MECHANISM_AUDIT_SHA256
         and predecessor.get("sha256") == PREVIOUS_TERMINAL_RECORD_SHA256
-        and entropy_manifest.get("sha256")
-        == RETURN_VARIANCE_ENTROPY_MANIFEST_SHA256
+        and entropy_manifest.get("sha256") == RETURN_VARIANCE_ENTROPY_MANIFEST_SHA256
         and entropy_manifest.get("dataset_sha256")
         == RETURN_VARIANCE_ENTROPY_DATASET_SHA256
         and candidate.get("name") == FACTOR_NAME
@@ -198,9 +199,7 @@ def load_preregistration(
         and grid.get("cross_lunch_return_included") is False
         and grid.get("standalone_09_30_row_included") is False
         and candidate.get("formula") == FACTOR_FORMULA
-        and validity.get(
-            "all_240_continuous_closes_finite_and_strictly_positive"
-        )
+        and validity.get("all_240_continuous_closes_finite_and_strictly_positive")
         is True
         and validity.get("all_238_within_half_log_returns_finite") is True
         and validity.get(
@@ -280,6 +279,16 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
             and mechanisms[-1].get("mechanism")
             == "tushare_intraday_bar_vwap_close_pressure_240m"
         )
+        or (
+            state.get("status")
+            == "aggregation_blocked_after_intraday_price_update_share_terminal_rejection_zero_dual_gate_factors"
+            and summary.get("terminal_mechanism_count") == 45
+            and len(mechanisms) == 45
+            and mechanisms[-2].get("mechanism")
+            == "tushare_intraday_bar_vwap_close_pressure_240m"
+            and mechanisms[-1].get("mechanism")
+            == "tushare_intraday_price_update_share_238m"
+        )
     )
     if not (
         (predecessor_state or terminal_state)
@@ -301,9 +310,7 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
     mechanism_path = _repository_path(str(mechanism["path"]))
     _require_file(mechanism_path, MECHANISM_AUDIT_SHA256, "mechanism overlap audit")
     evidence["preregistered_current_research_state"] = {
-        "path": str(
-            _repository_path(str(spec["current_research_state"]["path"]))
-        ),
+        "path": str(_repository_path(str(spec["current_research_state"]["path"]))),
         "sha256": CURRENT_STATUS_SHA256,
         "terminal_mechanism_count_before_this_candidate": 42,
         "historical_binding_not_reinterpreted_as_current_file_bytes": True,
@@ -396,8 +403,7 @@ def _validate_entropy_manifest(
         == "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
         and manifest.get("factor_name") == previous.FACTOR_NAME
         and manifest.get("factor_direction") == "higher"
-        and manifest.get("dataset_sha256")
-        == RETURN_VARIANCE_ENTROPY_DATASET_SHA256
+        and manifest.get("dataset_sha256") == RETURN_VARIANCE_ENTROPY_DATASET_SHA256
         and manifest.get("partitions") == 33_015
         and manifest.get("rows") == 7_724_498
         and manifest.get("eligible_rows") == 7_695_088
@@ -419,12 +425,8 @@ def _validate_entropy_manifest(
     return manifest, path
 
 
-def validate_external_chain(
-    spec: dict[str, Any], data_root: Path
-) -> tuple[Any, ...]:
-    chain = previous.validate_external_chain(
-        previous.load_preregistration(), data_root
-    )
+def validate_external_chain(spec: dict[str, Any], data_root: Path) -> tuple[Any, ...]:
+    chain = previous.validate_external_chain(previous.load_preregistration(), data_root)
     entropy_manifest, entropy_path = _validate_entropy_manifest(spec, data_root)
     return (*chain, entropy_manifest, entropy_path)
 
@@ -494,9 +496,7 @@ def compute_partition_frame(
         )
     work["trade_date"] = work["datetime"].dt.normalize()
     work = work.loc[work["trade_date"].isin(base_work["trade_date"])].copy()
-    work["minute_code"] = (
-        work["datetime"].dt.hour * 60 + work["datetime"].dt.minute
-    )
+    work["minute_code"] = work["datetime"].dt.hour * 60 + work["datetime"].dt.minute
     source_counts = work.groupby("trade_date", sort=True, observed=True).size()
     if not source_counts.eq(241).all():
         raise IntradayReturnSkewnessError(
@@ -506,9 +506,7 @@ def compute_partition_frame(
         "minute_code"
     ].agg(lambda values: frozenset(int(value) for value in values))
     if not observed_codes.eq(SOURCE_MINUTE_CODE_SET).all():
-        raise IntradayReturnSkewnessError(
-            f"source minute grid changed for {symbol}"
-        )
+        raise IntradayReturnSkewnessError(f"source minute grid changed for {symbol}")
     continuous = work.loc[
         work["minute_code"].isin(CONTINUOUS_MINUTE_CODES),
         ["trade_date", "minute_code", "close"],
@@ -520,9 +518,9 @@ def compute_partition_frame(
     )
     continuous = continuous.sort_values(["trade_date", "minute_code"])
     closes = continuous["close"].to_numpy(dtype=float).reshape(-1, 2, 120)
-    required_closes_valid = np.isfinite(closes).all(axis=(1, 2)) & (
-        closes > 0.0
-    ).all(axis=(1, 2))
+    required_closes_valid = np.isfinite(closes).all(axis=(1, 2)) & (closes > 0.0).all(
+        axis=(1, 2)
+    )
     with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
         log_returns = np.diff(np.log(closes), axis=2).reshape(-1, 238)
         mean_return = log_returns.mean(axis=1)
@@ -538,8 +536,10 @@ def compute_partition_frame(
     skewness_finite = np.isfinite(values)
     eligible = required_valid & second_positive & third_finite & skewness_finite
     expected_dates = pd.Index(source_counts.index)
-    if not base_work["trade_date"].reset_index(drop=True).equals(
-        pd.Series(expected_dates).reset_index(drop=True)
+    if (
+        not base_work["trade_date"]
+        .reset_index(drop=True)
+        .equals(pd.Series(expected_dates).reset_index(drop=True))
     ):
         raise IntradayReturnSkewnessError(
             f"joint-clean base dates do not match raw dates for {symbol}"
@@ -563,11 +563,7 @@ def compute_partition_frame(
             ((~log_returns_finite) & ~invalid_required).sum()
         ),
         "zero_second_centered_moment_rows": int(
-            (
-                required_valid
-                & second_finite
-                & (second_moment == 0.0)
-            ).sum()
+            (required_valid & second_finite & (second_moment == 0.0)).sum()
         ),
         "nonfinite_second_centered_moment_rows": int(
             (required_valid & ~second_finite).sum()
@@ -576,12 +572,7 @@ def compute_partition_frame(
             (required_valid & second_positive & ~third_finite).sum()
         ),
         "nonfinite_standardized_skewness_rows": int(
-            (
-                required_valid
-                & second_positive
-                & third_finite
-                & ~skewness_finite
-            ).sum()
+            (required_valid & second_positive & third_finite & ~skewness_finite).sum()
         ),
     }
 
@@ -606,19 +597,16 @@ def _load_checkpoint(
     raw_path = Path(str(raw_record["path"]))
     base_path = Path(str(joint_record["path"]))
     valid = (
-        record.get("kind")
-        == "a_share_tushare_intraday_return_skewness_partition"
+        record.get("kind") == "a_share_tushare_intraday_return_skewness_partition"
         and record.get("protocol_sha256") == PREREGISTRATION_SHA256
         and record.get("raw_manifest_sha256") == RAW_MANIFEST_SHA256
         and record.get("joint_manifest_sha256") == JOINT_MANIFEST_SHA256
-        and record.get("raw_source_byte_sha256")
-        == raw_record.get("byte_sha256")
+        and record.get("raw_source_byte_sha256") == raw_record.get("byte_sha256")
         and record.get("joint_base_byte_sha256")
         == joint_record.get("output_byte_sha256")
         and paths.partial_data.is_file()
         and foundation.file_digest(raw_path) == raw_record.get("byte_sha256")
-        and foundation.file_digest(base_path)
-        == joint_record.get("output_byte_sha256")
+        and foundation.file_digest(base_path) == joint_record.get("output_byte_sha256")
         and foundation.file_digest(paths.partial_data)
         == record.get("output_byte_sha256")
     )
@@ -634,9 +622,7 @@ def _load_checkpoint(
             f"completed return-skewness frame changed: {paths.partial_data}"
         )
     dates = Counter(
-        pd.to_datetime(
-            output.loc[output[f"{FACTOR_NAME}_eligible"], "trade_date"]
-        )
+        pd.to_datetime(output.loc[output[f"{FACTOR_NAME}_eligible"], "trade_date"])
         .dt.strftime("%Y-%m-%d")
         .tolist()
     )
@@ -659,12 +645,8 @@ def _process_partition(
     base_path = Path(str(joint_record["path"]))
     if foundation.file_digest(raw_path) != raw_record.get("byte_sha256"):
         raise IntradayReturnSkewnessError(f"raw partition changed: {raw_path}")
-    if foundation.file_digest(base_path) != joint_record.get(
-        "output_byte_sha256"
-    ):
-        raise IntradayReturnSkewnessError(
-            f"joint-base partition changed: {base_path}"
-        )
+    if foundation.file_digest(base_path) != joint_record.get("output_byte_sha256"):
+        raise IntradayReturnSkewnessError(f"joint-base partition changed: {base_path}")
     raw = pd.read_parquet(raw_path, columns=list(RAW_COLUMNS))
     base = pd.read_parquet(base_path, columns=["trade_date", "symbol"])
     output, quality = compute_partition_frame(
@@ -705,9 +687,7 @@ def _process_partition(
     }
     foundation.atomic_write_json(record, paths.partial_sidecar)
     dates = Counter(
-        pd.to_datetime(
-            output.loc[output[f"{FACTOR_NAME}_eligible"], "trade_date"]
-        )
+        pd.to_datetime(output.loc[output[f"{FACTOR_NAME}_eligible"], "trade_date"])
         .dt.strftime("%Y-%m-%d")
         .tolist()
     )
@@ -745,8 +725,7 @@ def _validate_snapshot_manifest(
 ) -> None:
     quality = manifest.get("quality") or {}
     if not (
-        manifest.get("kind")
-        == "a_share_tushare_intraday_return_skewness_snapshot"
+        manifest.get("kind") == "a_share_tushare_intraday_return_skewness_snapshot"
         and manifest.get("status")
         == "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
         and manifest.get("protocol_sha256") == PREREGISTRATION_SHA256
@@ -819,26 +798,20 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
         )
         load_terminal_record_if_present()
         manifest = research.load_json_record(final_manifest)
-        _validate_snapshot_manifest(
-            manifest, require_fingerprint_constants=True
-        )
+        _validate_snapshot_manifest(manifest, require_fingerprint_constants=True)
         return final_manifest
     repository_evidence = validate_repository_chain(spec)
     chain = validate_external_chain(spec, data_root)
     raw, joint, raw_manifest_path, joint_manifest_path = chain[:4]
     if shutil.disk_usage(data_root).free < 5 * 1024**3:
-        raise IntradayReturnSkewnessError(
-            "external data root has less than 5 GiB free"
-        )
+        raise IntradayReturnSkewnessError("external data root has less than 5 GiB free")
     raw_records = list(raw.get("files") or [])
     joint_records = list(joint.get("files") or [])
     raw_by_key = {
-        (str(item["symbol"]), int(item["year"])): item
-        for item in raw_records
+        (str(item["symbol"]), int(item["year"])): item for item in raw_records
     }
     joint_by_key = {
-        (str(item["symbol"]), int(item["year"])): item
-        for item in joint_records
+        (str(item["symbol"]), int(item["year"])): item for item in joint_records
     }
     if (
         len(raw_by_key) != 33_015
@@ -853,17 +826,14 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
         raw_record = raw_by_key[key]
         joint_record = joint_by_key[key]
         if (
-            joint_record.get("source_byte_sha256")
-            != raw_record.get("byte_sha256")
+            joint_record.get("source_byte_sha256") != raw_record.get("byte_sha256")
             or Path(str(joint_record.get("source_path"))).resolve()
             != Path(str(raw_record.get("path"))).resolve()
         ):
             raise IntradayReturnSkewnessError(
                 f"joint-clean raw source binding changed for {key[0]}/{key[1]}"
             )
-        by_symbol.setdefault(key[0], []).append(
-            (raw_record, joint_record)
-        )
+        by_symbol.setdefault(key[0], []).append((raw_record, joint_record))
     lock_path = data_root / ".a_share_tushare_intraday_return_skewness.lock"
     with foundation.ProcessLock(lock_path):
         partial_root.mkdir(parents=True, exist_ok=True)
@@ -912,15 +882,11 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
             raise IntradayReturnSkewnessError(
                 "not every source partition produced a return-skewness checkpoint"
             )
-        _require_file(
-            raw_manifest_path, RAW_MANIFEST_SHA256, "raw minute manifest"
-        )
+        _require_file(raw_manifest_path, RAW_MANIFEST_SHA256, "raw minute manifest")
         _require_file(
             joint_manifest_path, JOINT_MANIFEST_SHA256, "joint-clean manifest"
         )
-        all_records.sort(
-            key=lambda item: (str(item["symbol"]), int(item["year"]))
-        )
+        all_records.sort(key=lambda item: (str(item["symbol"]), int(item["year"])))
         quality = foundation._aggregate_quality(all_records)
         dataset_payload = "\n".join(
             f"{item['symbol']}|{item['year']}|{item['output_byte_sha256']}"
@@ -965,12 +931,8 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
             "resumed_partitions": resumed,
             "repository_evidence": repository_evidence,
         }
-        _validate_snapshot_manifest(
-            manifest, require_fingerprint_constants=False
-        )
-        foundation.atomic_write_json(
-            manifest, partial_root / "snapshot_manifest.json"
-        )
+        _validate_snapshot_manifest(manifest, require_fingerprint_constants=False)
+        foundation.atomic_write_json(manifest, partial_root / "snapshot_manifest.json")
         final_root.parent.mkdir(parents=True, exist_ok=True)
         partial_root.replace(final_root)
         return final_manifest
@@ -983,9 +945,7 @@ def verify_snapshot_files(
 ) -> dict[str, int]:
     records = list(manifest.get("files") or [])
     if len(records) != 33_015:
-        raise IntradayReturnSkewnessError(
-            "candidate snapshot partition count changed"
-        )
+        raise IntradayReturnSkewnessError("candidate snapshot partition count changed")
     partition_root = (manifest_path.parent / "partitions").resolve()
 
     def verify(record: dict[str, Any]) -> tuple[int, int, int]:
@@ -996,9 +956,7 @@ def verify_snapshot_files(
             raise IntradayReturnSkewnessError(
                 f"candidate partition escapes its frozen root: {path}"
             ) from exc
-        _require_file(
-            path, str(record["output_byte_sha256"]), "candidate partition"
-        )
+        _require_file(path, str(record["output_byte_sha256"]), "candidate partition")
         _require_file(
             Path(str(record["raw_source_path"])),
             str(record["raw_source_byte_sha256"]),
@@ -1016,9 +974,7 @@ def verify_snapshot_files(
         )
 
     rows = eligible = byte_count = 0
-    with concurrent.futures.ThreadPoolExecutor(
-        max_workers=max(1, workers)
-    ) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
         for index, result in enumerate(pool.map(verify, records), start=1):
             partition_rows, partition_eligible, partition_bytes = result
             rows += partition_rows
@@ -1029,12 +985,8 @@ def verify_snapshot_files(
                     f"verified candidate partitions {index}/{len(records)}",
                     flush=True,
                 )
-    if rows != manifest.get("rows") or eligible != manifest.get(
-        "eligible_rows"
-    ):
-        raise IntradayReturnSkewnessError(
-            "candidate snapshot aggregate counts changed"
-        )
+    if rows != manifest.get("rows") or eligible != manifest.get("eligible_rows"):
+        raise IntradayReturnSkewnessError("candidate snapshot aggregate counts changed")
     return {
         "partitions_verified": len(records),
         "rows_verified": rows,
@@ -1043,9 +995,7 @@ def verify_snapshot_files(
     }
 
 
-def load_candidate_frame(
-    manifest_path: Path, manifest: dict[str, Any]
-) -> pd.DataFrame:
+def load_candidate_frame(manifest_path: Path, manifest: dict[str, Any]) -> pd.DataFrame:
     dataset = pa_dataset.dataset(
         str(manifest_path.parent / "partitions"), format="parquet"
     )
@@ -1054,32 +1004,23 @@ def load_candidate_frame(
     del table, dataset
     gc.collect()
     if len(frame) != int(manifest.get("rows", -1)):
-        raise IntradayReturnSkewnessError(
-            "candidate frame row count changed"
-        )
+        raise IntradayReturnSkewnessError("candidate frame row count changed")
     frame["trade_date"] = pd.to_datetime(
         frame["trade_date"], errors="coerce"
     ).dt.normalize()
     frame["symbol"] = frame["symbol"].astype(str).str.upper()
     frame[f"{FACTOR_NAME}_eligible"] = (
-        frame[f"{FACTOR_NAME}_eligible"]
-        .astype("boolean")
-        .fillna(False)
-        .astype(bool)
+        frame[f"{FACTOR_NAME}_eligible"].astype("boolean").fillna(False).astype(bool)
     )
     frame[FACTOR_NAME] = pd.to_numeric(frame[FACTOR_NAME], errors="coerce")
     eligible = frame[f"{FACTOR_NAME}_eligible"]
     if (
         frame["trade_date"].isna().any()
         or frame.duplicated(["trade_date", "symbol"]).any()
-        or not np.isfinite(
-            frame.loc[eligible, FACTOR_NAME].to_numpy(dtype=float)
-        ).all()
+        or not np.isfinite(frame.loc[eligible, FACTOR_NAME].to_numpy(dtype=float)).all()
         or frame.loc[~eligible, FACTOR_NAME].notna().any()
     ):
-        raise IntradayReturnSkewnessError(
-            "candidate frame values or keys are invalid"
-        )
+        raise IntradayReturnSkewnessError("candidate frame values or keys are invalid")
     frame["symbol"] = frame["symbol"].astype("category")
     return frame
 
@@ -1092,9 +1033,7 @@ def coverage_and_capacity(
     previous_name = previous.FACTOR_NAME
     previous.FACTOR_NAME = FACTOR_NAME
     try:
-        return previous.coverage_and_capacity(
-            candidate, eligible_keys, spec
-        )
+        return previous.coverage_and_capacity(candidate, eligible_keys, spec)
     finally:
         previous.FACTOR_NAME = previous_name
 
@@ -1106,26 +1045,20 @@ def _daily_directional_rank_correlations(
     minimum_names: int,
 ) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
-    for trade_date, group in frame[
-        ["trade_date", FACTOR_NAME, comparison]
-    ].groupby("trade_date", observed=True, sort=True):
-        pair = group[[FACTOR_NAME, comparison]].apply(
-            pd.to_numeric, errors="coerce"
-        )
+    for trade_date, group in frame[["trade_date", FACTOR_NAME, comparison]].groupby(
+        "trade_date", observed=True, sort=True
+    ):
+        pair = group[[FACTOR_NAME, comparison]].apply(pd.to_numeric, errors="coerce")
         pair = pair.replace([np.inf, -np.inf], np.nan).dropna()
         if len(pair) < minimum_names or pair.nunique().min() < 2:
             continue
-        candidate_score = pair[FACTOR_NAME].rank(
-            method="average", pct=True
-        )
+        candidate_score = pair[FACTOR_NAME].rank(method="average", pct=True)
         comparison_score = pair[comparison].rank(
             method="average",
             pct=True,
             ascending=(direction == "higher"),
         )
-        correlation = candidate_score.corr(
-            comparison_score, method="pearson"
-        )
+        correlation = candidate_score.corr(comparison_score, method="pearson")
         if math.isfinite(float(correlation)):
             rows.append(
                 {
@@ -1161,18 +1094,12 @@ def _one_comparison_result(
         int(gate["minimum_pairwise_names_per_session"]),
     )
     sessions = int(len(daily))
-    median = (
-        float(daily["rank_correlation"].median())
-        if sessions
-        else math.nan
-    )
+    median = float(daily["rank_correlation"].median()) if sessions else math.nan
     passed = bool(
         sessions >= int(gate["minimum_pairwise_sessions_per_comparison"])
         and math.isfinite(median)
         and abs(median)
-        < float(
-            gate["maximum_allowed_absolute_median_daily_rank_correlation"]
-        )
+        < float(gate["maximum_allowed_absolute_median_daily_rank_correlation"])
     )
     return {
         "comparison_factor": comparison,
@@ -1181,21 +1108,15 @@ def _one_comparison_result(
         "minimum_pairwise_names_observed": (
             int(daily["pairwise_names"].min()) if sessions else 0
         ),
-        "median_daily_rank_correlation": (
-            median if math.isfinite(median) else None
-        ),
+        "median_daily_rank_correlation": (median if math.isfinite(median) else None),
         "absolute_median_daily_rank_correlation": (
             abs(median) if math.isfinite(median) else None
         ),
         "daily_rank_correlation_p05": (
-            float(daily["rank_correlation"].quantile(0.05))
-            if sessions
-            else None
+            float(daily["rank_correlation"].quantile(0.05)) if sessions else None
         ),
         "daily_rank_correlation_p95": (
-            float(daily["rank_correlation"].quantile(0.95))
-            if sessions
-            else None
+            float(daily["rank_correlation"].quantile(0.95)) if sessions else None
         ),
         "daily_correlation_frame_sha256": (
             research.dataframe_content_sha256(daily) if sessions else None
@@ -1309,8 +1230,7 @@ def uniqueness_audit(
         if item["absolute_median_daily_rank_correlation"] is not None
     ]
     verifications = dict(
-        first_seventeen.get("prior_candidate_snapshot_file_verification")
-        or {}
+        first_seventeen.get("prior_candidate_snapshot_file_verification") or {}
     )
     verifications["return_variance_entropy"] = entropy_verification
     return {
@@ -1334,19 +1254,14 @@ def uniqueness_audit(
             first_seventeen.get("all_seventeen_comparisons_passed")
         ),
         "all_eighteen_comparisons_passed": bool(
-            len(results) == 18
-            and all(item["gate_passed"] for item in results)
+            len(results) == 18 and all(item["gate_passed"] for item in results)
         ),
     }
 
 
-def _find_existing_audit(
-    experiment_root: Path, manifest_sha256: str
-) -> Path | None:
+def _find_existing_audit(experiment_root: Path, manifest_sha256: str) -> Path | None:
     for path in sorted(
-        experiment_root.glob(
-            "*_intraday_return_skewness_no_return_audit.json"
-        )
+        experiment_root.glob("*_intraday_return_skewness_no_return_audit.json")
     ):
         record = research.load_json_record(path)
         if (
@@ -1403,9 +1318,7 @@ def run_no_return_audit(
                 "gate_passed_before_comparison_values"
             )
             is True
-            and (audit.get("uniqueness") or {}).get(
-                "all_eighteen_comparisons_passed"
-            )
+            and (audit.get("uniqueness") or {}).get("all_eighteen_comparisons_passed")
             is False
             and (audit.get("decision") or {}).get(
                 "separate_return_diagnostic_preregistration_allowed"
@@ -1428,22 +1341,16 @@ def run_no_return_audit(
         "return-skewness candidate manifest",
     )
     manifest = research.load_json_record(manifest_path)
-    _validate_snapshot_manifest(
-        manifest, require_fingerprint_constants=True
-    )
+    _validate_snapshot_manifest(manifest, require_fingerprint_constants=True)
     manifest_sha256 = foundation.file_digest(manifest_path)
     existing = _find_existing_audit(experiment_root, manifest_sha256)
     if existing is not None:
         return existing
-    verification = verify_snapshot_files(
-        manifest, manifest_path, workers
-    )
+    verification = verify_snapshot_files(manifest, manifest_path, workers)
     candidate = load_candidate_frame(manifest_path, manifest)
     print("building no-price quality/listing eligibility", flush=True)
     eligible_keys = foundation.quality_listing_eligible_keys(spec)
-    candidate_quality, coverage = coverage_and_capacity(
-        candidate, eligible_keys, spec
-    )
+    candidate_quality, coverage = coverage_and_capacity(candidate, eligible_keys, spec)
     del candidate, eligible_keys
     gc.collect()
     uniqueness: dict[str, Any] = {
@@ -1452,9 +1359,7 @@ def run_no_return_audit(
         "comparisons": [],
     }
     if coverage["gate_passed_before_comparison_values"]:
-        uniqueness = uniqueness_audit(
-            candidate_quality, chain, spec, workers
-        )
+        uniqueness = uniqueness_audit(candidate_quality, chain, spec, workers)
     del candidate_quality
     gc.collect()
     passed = bool(
@@ -1528,13 +1433,8 @@ def run_no_return_audit(
         "investment_advice": False,
     }
     experiment_root.mkdir(parents=True, exist_ok=True)
-    run_id = dt.datetime.now(dt.timezone.utc).strftime(
-        "%Y%m%dT%H%M%SZ"
-    )
-    path = (
-        experiment_root
-        / f"{run_id}_intraday_return_skewness_no_return_audit.json"
-    )
+    run_id = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    path = experiment_root / f"{run_id}_intraday_return_skewness_no_return_audit.json"
     foundation.atomic_write_json(audit, path)
     return path
 
@@ -1564,18 +1464,14 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     if args.command == "build":
-        path = build_snapshot(
-            data_root=args.data_root, workers=args.workers
-        )
+        path = build_snapshot(data_root=args.data_root, workers=args.workers)
     else:
         path = run_no_return_audit(
             data_root=args.data_root,
             experiment_root=args.experiment_root,
             workers=args.workers,
         )
-    print(
-        json.dumps({"status": "ok", "path": str(path)}, ensure_ascii=False)
-    )
+    print(json.dumps({"status": "ok", "path": str(path)}, ensure_ascii=False))
     return 0
 
 

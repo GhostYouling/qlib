@@ -82,15 +82,11 @@ CANDIDATE_MANIFEST_SHA256 = (
 CANDIDATE_DATASET_SHA256 = (
     "e49b7856b59dd5c24eaeb4a6748066dd0e42c2636495325d7b961d1844eb6775"
 )
-DIAGNOSTIC_SHA256 = (
-    "2b4a51c3f540258c7712ce637bef52d3a002104ca915f20e09c5a25a7d6f5b7a"
-)
+DIAGNOSTIC_SHA256 = "2b4a51c3f540258c7712ce637bef52d3a002104ca915f20e09c5a25a7d6f5b7a"
 STABILITY_AUDIT_SHA256 = (
     "42b9fec6621443b7716d1690cb1f94f08443b2963e6c21024d7de251b83a0e1d"
 )
-TOPK_AUDIT_SHA256 = (
-    "5c8be84690d5cc4d03c575706e9a7036f0a51de40149ef5102d91d6b62171551"
-)
+TOPK_AUDIT_SHA256 = "5c8be84690d5cc4d03c575706e9a7036f0a51de40149ef5102d91d6b62171551"
 CONSUMPTION_MARKER_SHA256 = (
     "186f65abe7d60d03a6a69f59461cedca02306341023f157dc41032b6507e8745"
 )
@@ -153,7 +149,9 @@ FACTOR_FORMULA = (
 DIAGNOSTIC_PURPOSE = (
     "single_preregistered_intraday_return_variance_entropy_three_session_diagnostic"
 )
-CONSUMPTION_FILENAME = "intraday_return_variance_entropy_238m_historical_consumption.json"
+CONSUMPTION_FILENAME = (
+    "intraday_return_variance_entropy_238m_historical_consumption.json"
+)
 COMPARISON_FACTORS = (*previous.COMPARISON_FACTORS, previous.FACTOR_NAME)
 COMPARISON_DIRECTIONS = (*previous.COMPARISON_DIRECTIONS, "higher")
 RAW_COLUMNS = ("datetime", "symbol", "provider", "close")
@@ -308,6 +306,7 @@ def load_preregistration(path: Path = DEFAULT_PREREGISTRATION) -> dict[str, Any]
         )
     return spec
 
+
 def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
     # The authoritative status is append-only at one stable path. Keep the
     # preregistered predecessor fingerprint as historical evidence while the
@@ -369,6 +368,16 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
             and mechanisms[-1].get("mechanism")
             == "tushare_intraday_bar_vwap_close_pressure_240m"
         )
+        or (
+            state.get("status")
+            == "aggregation_blocked_after_intraday_price_update_share_terminal_rejection_zero_dual_gate_factors"
+            and summary.get("terminal_mechanism_count") == 45
+            and len(mechanisms) == 45
+            and mechanisms[-2].get("mechanism")
+            == "tushare_intraday_bar_vwap_close_pressure_240m"
+            and mechanisms[-1].get("mechanism")
+            == "tushare_intraday_price_update_share_238m"
+        )
     )
     if not (
         (predecessor_state or terminal_state)
@@ -387,6 +396,7 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
         "sha256": previous.TERMINAL_RECORD_SHA256,
     }
     return evidence
+
 
 def load_terminal_record_if_present() -> dict[str, Any] | None:
     """Validate and return the immutable terminal record when this branch is closed."""
@@ -485,8 +495,7 @@ def _validate_amount_volatility_coupling_manifest(
         == "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
         and manifest.get("factor_name") == previous.FACTOR_NAME
         and manifest.get("factor_direction") == "higher"
-        and manifest.get("dataset_sha256")
-        == AMOUNT_VOLATILITY_COUPLING_DATASET_SHA256
+        and manifest.get("dataset_sha256") == AMOUNT_VOLATILITY_COUPLING_DATASET_SHA256
         and manifest.get("partitions") == 33_015
         and manifest.get("rows") == 7_724_498
         and manifest.get("eligible_rows") == 7_695_088
@@ -513,6 +522,7 @@ def _validate_amount_volatility_coupling_manifest(
             "amount-volatility-coupling manifest identity is rejected"
         )
     return manifest, path
+
 
 def validate_external_chain(spec: dict[str, Any], data_root: Path) -> tuple[Any, ...]:
     chain = previous.validate_external_chain(previous.load_preregistration(), data_root)
@@ -614,9 +624,9 @@ def compute_partition_frame(
             "continuous minute grid is not 120+120"
         )
     closes = continuous["close"].to_numpy(dtype=float).reshape(-1, 2, 120)
-    required_closes_valid = np.isfinite(closes).all(axis=(1, 2)) & (
-        closes > 0.0
-    ).all(axis=(1, 2))
+    required_closes_valid = np.isfinite(closes).all(axis=(1, 2)) & (closes > 0.0).all(
+        axis=(1, 2)
+    )
     with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
         log_returns = np.diff(np.log(closes), axis=2).reshape(-1, 238)
         squared_returns = np.square(log_returns)
@@ -711,9 +721,7 @@ def compute_partition_frame(
         ),
         "nonfinite_entropy_component_rows": int(
             (
-                required_valid
-                & realized_variance_positive
-                & ~entropy_components_finite
+                required_valid & realized_variance_positive & ~entropy_components_finite
             ).sum()
         ),
         "nonfinite_entropy_rows": int(
@@ -725,10 +733,9 @@ def compute_partition_frame(
             ).sum()
         ),
         "numerical_endpoint_canonicalization_rows": int((near_low | near_high).sum()),
-        "return_variance_entropy_range_violation_rows": int(
-            range_violation.sum()
-        ),
+        "return_variance_entropy_range_violation_rows": int(range_violation.sum()),
     }
+
 
 def output_root(data_root: Path) -> Path:
     return (
@@ -750,7 +757,8 @@ def _load_checkpoint(
     raw_path = Path(str(raw_record["path"]))
     base_path = Path(str(joint_record["path"]))
     valid = (
-        record.get("kind") == "a_share_tushare_intraday_return_variance_entropy_partition"
+        record.get("kind")
+        == "a_share_tushare_intraday_return_variance_entropy_partition"
         and record.get("protocol_sha256") == PREREGISTRATION_SHA256
         and record.get("raw_manifest_sha256") == RAW_MANIFEST_SHA256
         and record.get("joint_manifest_sha256") == JOINT_MANIFEST_SHA256
@@ -917,11 +925,8 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
             == 29_410
             and (manifest.get("quality") or {}).get("invalid_required_close_rows") == 0
             and (manifest.get("quality") or {}).get("invalid_required_value_rows") == 0
-            and (manifest.get("quality") or {}).get("nonfinite_log_return_rows")
-            == 0
-            and (manifest.get("quality") or {}).get(
-                "nonfinite_entropy_component_rows"
-            )
+            and (manifest.get("quality") or {}).get("nonfinite_log_return_rows") == 0
+            and (manifest.get("quality") or {}).get("nonfinite_entropy_component_rows")
             == 0
             and (manifest.get("quality") or {}).get("nonfinite_entropy_rows") == 0
             and (manifest.get("quality") or {}).get(
@@ -938,9 +943,7 @@ def build_snapshot(*, data_root: Path, workers: int) -> Path:
             and manifest.get("cross_lunch_return_included") is False
             and manifest.get("within_half_log_return_observations") == 238
             and manifest.get("variance_contribution_support_positions") == 238
-            and manifest.get(
-                "zero_variance_contributions_retained_in_entropy_support"
-            )
+            and manifest.get("zero_variance_contributions_retained_in_entropy_support")
             is True
             and manifest.get("forward_return_fields_read") is False
         ):
@@ -1310,7 +1313,9 @@ def uniqueness_audit(
         or comparisons["trade_date"].isna().any()
         or comparisons.duplicated(["trade_date", "symbol"]).any()
     ):
-        raise IntradayReturnVarianceEntropyError("base comparison frame identity changed")
+        raise IntradayReturnVarianceEntropyError(
+            "base comparison frame identity changed"
+        )
     efficiency = foundation.load_candidate_frame(
         efficiency_manifest_path, efficiency_manifest
     )[["trade_date", "symbol", foundation.FACTOR_NAME]]
@@ -1489,9 +1494,9 @@ def uniqueness_audit(
                 "minimum_pairwise_names_observed": (
                     int(daily["pairwise_names"].min()) if sessions else 0
                 ),
-                "median_daily_rank_correlation": median
-                if math.isfinite(median)
-                else None,
+                "median_daily_rank_correlation": (
+                    median if math.isfinite(median) else None
+                ),
                 "absolute_median_daily_rank_correlation": (
                     abs(median) if math.isfinite(median) else None
                 ),
@@ -1657,16 +1662,11 @@ def run_no_return_audit(
         and manifest.get("dataset_sha256") == CANDIDATE_DATASET_SHA256
         and manifest.get("rows") == 7_724_498
         and manifest.get("eligible_rows") == 7_695_088
-        and (manifest.get("quality") or {}).get("zero_realized_variance_rows")
-        == 29_410
+        and (manifest.get("quality") or {}).get("zero_realized_variance_rows") == 29_410
         and (manifest.get("quality") or {}).get("invalid_required_close_rows") == 0
         and (manifest.get("quality") or {}).get("invalid_required_value_rows") == 0
-        and (manifest.get("quality") or {}).get("nonfinite_log_return_rows")
-        == 0
-        and (manifest.get("quality") or {}).get(
-            "nonfinite_entropy_component_rows"
-        )
-        == 0
+        and (manifest.get("quality") or {}).get("nonfinite_log_return_rows") == 0
+        and (manifest.get("quality") or {}).get("nonfinite_entropy_component_rows") == 0
         and (manifest.get("quality") or {}).get("nonfinite_entropy_rows") == 0
         and (manifest.get("quality") or {}).get(
             "numerical_endpoint_canonicalization_rows"
@@ -1682,14 +1682,14 @@ def run_no_return_audit(
         and manifest.get("cross_lunch_return_included") is False
         and manifest.get("within_half_log_return_observations") == 238
         and manifest.get("variance_contribution_support_positions") == 238
-        and manifest.get(
-            "zero_variance_contributions_retained_in_entropy_support"
-        )
+        and manifest.get("zero_variance_contributions_retained_in_entropy_support")
         is True
         and manifest.get("comparison_factor_values_read") is False
         and manifest.get("forward_return_fields_read") is False
     ):
-        raise IntradayReturnVarianceEntropyError("candidate snapshot identity is rejected")
+        raise IntradayReturnVarianceEntropyError(
+            "candidate snapshot identity is rejected"
+        )
     manifest_sha256 = foundation.file_digest(manifest_path)
     if manifest_sha256 != CANDIDATE_MANIFEST_SHA256:
         raise IntradayReturnVarianceEntropyError(
@@ -1831,7 +1831,8 @@ def run_no_return_audit(
     experiment_root.mkdir(parents=True, exist_ok=True)
     run_id = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     path = (
-        experiment_root / f"{run_id}_intraday_return_variance_entropy_no_return_audit.json"
+        experiment_root
+        / f"{run_id}_intraday_return_variance_entropy_no_return_audit.json"
     )
     foundation.atomic_write_json(audit, path)
     return path

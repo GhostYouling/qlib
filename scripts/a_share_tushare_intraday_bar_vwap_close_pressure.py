@@ -287,6 +287,15 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
         and mechanisms[-2].get("mechanism") == "tushare_intraday_return_skewness_238m"
         and mechanisms[-1].get("mechanism")
         == "tushare_intraday_bar_vwap_close_pressure_240m"
+    ) or (
+        state.get("status")
+        == "aggregation_blocked_after_intraday_price_update_share_terminal_rejection_zero_dual_gate_factors"
+        and summary.get("terminal_mechanism_count") == 45
+        and len(mechanisms) == 45
+        and mechanisms[-2].get("mechanism")
+        == "tushare_intraday_bar_vwap_close_pressure_240m"
+        and mechanisms[-1].get("mechanism")
+        == "tushare_intraday_price_update_share_238m"
     )
     if not (
         (predecessor_state or terminal_state)
