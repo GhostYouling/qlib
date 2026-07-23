@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_amount_volatility_coupling_mechanism_overlap_reaudit",
+  "status": "selected_intraday_amount_volatility_coupling_before_candidate_values_comparison_values_or_forward_returns",
+  "recorded_at": "2026-07-23T00:32:18Z",
+  "purpose": "Reject price-impact and lead-lag near-duplicates before values and select one economically distinct synchronous price-movement and traded-amount coupling mechanism for the next ordered no-return audit.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "c33cbdabfc43ad0559548b8be0ea6ad251230314e040ce3709ff1f7c53861f7a",
+    "status": "aggregation_blocked_after_intraday_diffusive_variation_ratio_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count": 40,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "overlap_inventory": {
+    "terminal_minute_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_diffusive_variation_ratio_238m"
+    ],
+    "closest_existing_mechanisms": {
+      "intraday_amount_lead_return_correlation_238p": "Lagged amount-to-next-return dependence; it asks whether current activity predicts the direction of the next price move.",
+      "intraday_realized_volatility": "Total squared-return magnitude; it does not ask whether large moves and large traded amounts occur in the same minute.",
+      "intraday_up_move_amount_share_238m": "Directional allocation of amount to positive-return minutes; it does not measure magnitude co-movement and discards negative moves.",
+      "intraday_amount_profile_serial_persistence_240m": "Serial persistence of the amount profile alone; it is price-independent.",
+      "intraday_diffusive_variation_ratio_238m": "Temporal concentration of adjacent absolute price moves; it is amount-free."
+    }
+  },
+  "rejected_before_value_observation": [
+    {
+      "name": "return_leading_next_amount_correlation_238p",
+      "proposed_formula": "correlation between the current absolute or signed return and the next minute's amount",
+      "reason": "This reverses the lead-lag arrow of the terminal amount-to-next-return candidate without establishing a new contemporaneous mechanism and invites causality-direction search."
+    },
+    {
+      "name": "intraday_realized_volatility_to_amount_ratio",
+      "proposed_formula": "sum(r_j^2) divided by full-session amount",
+      "reason": "This is a scale-sensitive price-impact ratio that directly overlaps realized-volatility magnitude and liquidity/size rather than isolating minute-level confirmation."
+    },
+    {
+      "name": "signed_or_up_move_amount_volatility_coupling",
+      "proposed_formula": "correlate amount with signed returns or retain only positive-return minutes",
+      "reason": "Direction weighting overlaps terminal signed amount efficiency and up-move amount share mechanisms."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_amount_volatility_coupling_238p",
+    "direction": "higher",
+    "formula": "PearsonCorr(log1p(destination-bar amount_j), abs(r_j)) across the 238 within-half adjacent minute returns",
+    "pairing": "Each within-half return is paired with the amount of its destination bar: 09:32-11:30 and 13:02-15:00. The standalone 09:30 row, the first continuous bar in each half, and the cross-lunch transition are not pairs.",
+    "mechanism": "Contemporaneous magnitude coupling measures whether the session's largest continuous price moves were supported by proportionally high CNY trading activity instead of occurring as thin, unsupported price flicker.",
+    "hypothesis": "A high close-known coupling value indicates liquidity-confirmed information or attention arrival that may persist from the next open through the third close.",
+    "economic_distinction": "It is direction-blind and scale-normalized within each stock-day. It measures synchronous cross-minute co-movement between absolute return magnitude and amount magnitude, not total volatility, variance timing or continuity, amount timing or serial structure, signed amount allocation, or lagged amount-return dependence.",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "standalone_09_30_excluded": true,
+    "cross_lunch_return_excluded": true,
+    "candidate_factor_values_observed_before_selection": false,
+    "terminal_factor_comparison_values_observed_before_selection": false,
+    "daily_prices_or_forward_returns_read_before_selection": false
+  },
+  "rejected_formula_search": {
+    "lower_direction_or_sign_inversion_allowed": false,
+    "pearson_to_spearman_or_rank_transform_allowed": false,
+    "log1p_amount_to_raw_amount_share_volume_or_turnover_substitution_allowed": false,
+    "morning_afternoon_late_window_threshold_or_09_30_variants_allowed": false,
+    "winsorization_clipping_imputation_or_daily_substitution_allowed": false
+  },
+  "decision": {
+    "freeze_separate_no_return_preregistration_before_candidate_values": true,
+    "coverage_capacity_and_all_sixteen_minute_factor_uniqueness_required_before_daily_prices": true,
+    "same_history_direction_formula_window_pairing_or_transform_search_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  }
+}
